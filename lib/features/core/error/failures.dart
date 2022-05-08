@@ -12,3 +12,20 @@ class AuthenticationFailure extends Failure {
   @override
   List<Object?> get props => properties;
 }
+
+/// General failures
+class UnsuspectedFailure extends Failure {
+  final List properties;
+  const UnsuspectedFailure([this.properties = const []]) : super(properties);
+
+  @override
+  List<Object?> get props => properties;
+}
+
+class NetworkFailure extends Failure {
+  final List properties;
+  const NetworkFailure([this.properties = const []]) : super(properties);
+
+  @override
+  List<Object?> get props => properties;
+}
