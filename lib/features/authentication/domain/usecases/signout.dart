@@ -6,7 +6,7 @@ import 'package:under_control_v2/features/core/error/failures.dart';
 class Signout implements UseCase<void, NoParams> {
   final AuthenticationRepository authenticationRepository;
 
-  Signout({
+  const Signout({
     required this.authenticationRepository,
   });
 

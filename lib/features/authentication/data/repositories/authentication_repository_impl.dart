@@ -23,7 +23,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
             email: email, password: password);
         return Right(Future.value());
       } on FirebaseAuthException catch (e) {
-        return const Left(AuthenticationFailure());
+        return const Left(AuthenticationFailure([]));
       } catch (e) {
         return const Left(UnsuspectedFailure());
       }
