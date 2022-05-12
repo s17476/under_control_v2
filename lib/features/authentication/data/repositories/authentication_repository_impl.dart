@@ -24,10 +24,11 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         await firebaseAuth.signInWithEmailAndPassword(
             email: email, password: password);
         return Right(Future.value());
-      } on FirebaseAuthException catch (_) {
-        return const Left(AuthenticationFailure());
+      } on FirebaseAuthException catch (e) {
+        return Left(AuthenticationFailure(
+            message: e.message ?? 'Authentication failed'));
       } catch (e) {
-        return const Left(UnsuspectedFailure());
+        return const Left(UnsuspectedFailure(message: 'Unsuspected error'));
       }
     } else {
       return const Left(NetworkFailure());
@@ -53,9 +54,11 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
             email: email, password: password);
         return Right(Future.value());
       } on FirebaseAuthException catch (e) {
-        return const Left(AuthenticationFailure());
+        return Left(
+          AuthenticationFailure(message: e.message ?? 'Authentication failed'),
+        );
       } catch (e) {
-        return const Left(UnsuspectedFailure());
+        return const Left(UnsuspectedFailure(message: 'Unsuspected error'));
       }
     } else {
       return const Left(NetworkFailure());

@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../core/error/failures.dart';
 
 abstract class AuthenticationRepository {
-  Stream get user;
+  Stream<User?> get user;
 
   Future<Either<Failure, void>> signup({
     required String email,

@@ -4,17 +4,19 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/authentication/domain/repositories/authentication_repository.dart';
-import 'package:under_control_v2/features/authentication/domain/usecases/signin.dart';
-import 'package:under_control_v2/features/authentication/domain/usecases/signout.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/core/utils/input_validator.dart';
+
+import '../../../domain/usecases/auto_signin.dart';
+import '../../../domain/usecases/signin.dart';
+import '../../../domain/usecases/signout.dart';
+import '../../../../core/usecases/usecase.dart';
 
 import '../../../domain/usecases/signup.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
-const String AUTHENTICATION_FAILURE = 'Authentication failure';
+// const String AUTHENTICATION_FAILURE = 'Authentication failurexxxx';
 const String REGISTRATION_FAILURE = 'Registration failure';
 const String SIGNOUT_FAILURE = 'Signout failure';
 
@@ -22,18 +24,20 @@ const String SIGNOUT_FAILURE = 'Signout failure';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   late StreamSubscription streamSubscription;
-  final AuthenticationRepository repository;
   final Signin signin;
   final Signup signup;
   final Signout signout;
+  final AutoSignin autoSignin;
+  final InputValidator inputValidator;
 
   AuthenticationBloc({
-    required this.repository,
     required this.signin,
     required this.signup,
     required this.signout,
+    required this.autoSignin,
+    required this.inputValidator,
   }) : super(Empty()) {
-    streamSubscription = repository.user.listen((user) {
+    streamSubscription = autoSignin().listen((user) {
       add(AutoSigninEvent(user));
     });
 
@@ -49,25 +53,31 @@ class AuthenticationBloc
 
     on<SigninEvent>((event, emit) async {
       emit(Submitting());
-      final failureOrVoid = await signin(AuthParams(
-        email: event.email,
-        password: event.password,
-      ));
+      final failureOrAuthParam =
+          inputValidator.signinAndSignupValidator(event.email, event.password);
+      print(failureOrAuthParam);
+      await failureOrAuthParam.fold(
+        (failure) async => emit(Error(message: failure.message)),
+        (authParams) async {
+          final failureOrVoid = await signin(authParams);
 
-      failureOrVoid.fold(
-          (failure) => emit(Error(message: AUTHENTICATION_FAILURE)),
-          (_) => emit(Authenticated()));
+          failureOrVoid.fold(
+              (failure) async => emit(Error(message: failure.message)),
+              (_) async => emit(Authenticated()));
+        },
+      );
     });
 
     on<SignupEvent>((event, emit) async {
       emit(Submitting());
-      final failureOrVoid = await signup(AuthParams(
-        email: event.email,
-        password: event.password,
-      ));
+      final failureOrVoid = await signup(
+        AuthParams(
+          email: event.email,
+          password: event.password,
+        ),
+      );
 
-      failureOrVoid.fold(
-          (failure) => emit(Error(message: REGISTRATION_FAILURE)),
+      failureOrVoid.fold((failure) => emit(Error(message: failure.message)),
           (_) => emit(Registration()));
     });
 
@@ -75,8 +85,16 @@ class AuthenticationBloc
       emit(Submitting());
       final failureOrVoid = await signout(NoParams());
 
-      failureOrVoid.fold((failure) => emit(Error(message: SIGNOUT_FAILURE)),
-          (_) => emit(Empty()));
+      failureOrVoid.fold(
+        (failure) => emit(Error(message: failure.message)),
+        (_) => emit(Empty()),
+      );
     });
+  }
+
+  @override
+  Future<void> close() {
+    streamSubscription.cancel();
+    return super.close();
   }
 }
