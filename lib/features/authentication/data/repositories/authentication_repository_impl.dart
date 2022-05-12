@@ -1,10 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/authentication_repository.dart';
 import '../../../core/error/failures.dart';
 import '../../../core/network/network_info.dart';
 
+@LazySingleton(as: AuthenticationRepository)
 class AuthenticationRepositoryImpl extends AuthenticationRepository {
   final FirebaseAuth firebaseAuth;
   final NetworkInfo networkInfo;
@@ -22,8 +24,8 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         await firebaseAuth.signInWithEmailAndPassword(
             email: email, password: password);
         return Right(Future.value());
-      } on FirebaseAuthException catch (e) {
-        return const Left(AuthenticationFailure([]));
+      } on FirebaseAuthException catch (_) {
+        return const Left(AuthenticationFailure());
       } catch (e) {
         return const Left(UnsuspectedFailure());
       }

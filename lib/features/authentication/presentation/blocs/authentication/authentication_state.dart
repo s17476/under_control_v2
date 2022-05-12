@@ -15,7 +15,9 @@ class Submitting extends AuthenticationState {}
 
 class Registration extends AuthenticationState {}
 
-class Success extends AuthenticationState {}
+class Authenticated extends AuthenticationState {}
+
+class Unauthenticated extends AuthenticationState {}
 
 class Error extends AuthenticationState {
   final String message;

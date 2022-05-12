@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:under_control_v2/features/authentication/domain/usecases/signin.dart';
 import 'package:under_control_v2/features/authentication/domain/usecases/signout.dart';
 import 'package:under_control_v2/features/authentication/domain/usecases/signup.dart';
@@ -14,11 +15,14 @@ class MockSignup extends Mock implements Signup {}
 
 class MockSignout extends Mock implements Signout {}
 
+class MockRepository extends Mock implements AuthenticationRepository {}
+
 void main() {
   late AuthenticationBloc bloc;
   late MockSignin mockSignin;
   late MockSignup mockSignup;
   late MockSignout mockSignout;
+  late MockRepository mockRepository;
 
   const String email = 'test@test.com';
   const String password = '1234567';
@@ -28,10 +32,12 @@ void main() {
       mockSignin = MockSignin();
       mockSignup = MockSignup();
       mockSignout = MockSignout();
+      mockRepository = MockRepository();
       bloc = AuthenticationBloc(
         signin: mockSignin,
         signup: mockSignup,
         signout: mockSignout,
+        repository: mockRepository,
       );
     },
   );
@@ -81,7 +87,7 @@ void main() {
           // assert later
           final expected = [
             Submitting(),
-            Error(message: 'Authentication failure')
+            Error(message: AUTHENTICATION_FAILURE)
           ];
           expectLater(
             bloc.stream,
@@ -102,7 +108,7 @@ void main() {
           // assert later
           final expected = [
             Submitting(),
-            Success(),
+            Authenticated(),
           ];
           expectLater(
             bloc.stream,
@@ -146,10 +152,7 @@ void main() {
             () => mockSignup(any()),
           ).thenAnswer((_) async => const Left(AuthenticationFailure()));
           // assert later
-          final expected = [
-            Submitting(),
-            Error(message: 'Registration failure')
-          ];
+          final expected = [Submitting(), Error(message: REGISTRATION_FAILURE)];
           expectLater(
             bloc.stream,
             emitsInOrder(expected),
@@ -214,7 +217,7 @@ void main() {
             () => mockSignout(noParams),
           ).thenAnswer((_) async => const Left(AuthenticationFailure()));
           // assert later
-          final expected = [Submitting(), Error(message: 'Signout failure')];
+          final expected = [Submitting(), Error(message: SIGNOUT_FAILURE)];
           expectLater(
             bloc.stream,
             emitsInOrder(expected),
