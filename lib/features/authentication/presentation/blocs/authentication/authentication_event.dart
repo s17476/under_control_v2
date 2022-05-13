@@ -23,6 +23,8 @@ class SignupEvent extends AuthenticationEvent {
 
 class SignoutEvent extends AuthenticationEvent {}
 
+class ResendVerificationEmailEvent extends AuthenticationEvent {}
+
 class AutoSigninEvent extends AuthenticationEvent {
   const AutoSigninEvent(User? user) : super(user: user);
 }

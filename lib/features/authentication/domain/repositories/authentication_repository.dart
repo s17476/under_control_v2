@@ -6,6 +6,8 @@ import '../../../core/error/failures.dart';
 abstract class AuthenticationRepository {
   Stream<User?> get user;
 
+  bool get isEmailVerified;
+
   Future<Either<Failure, void>> signup({
     required String email,
     required String password,
@@ -17,4 +19,6 @@ abstract class AuthenticationRepository {
   });
 
   Future<Either<Failure, void>> signout();
+
+  Future<Either<Failure, void>> sendVerificationEmail();
 }

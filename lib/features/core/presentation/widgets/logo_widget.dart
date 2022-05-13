@@ -15,48 +15,41 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Stack(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'U',
-                style: TextStyle(
-                  color: Colors.green,
-                  fontSize: SizeConfig.blockSizeHorizontal * greenLettersSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'nder',
-                style: TextStyle(
-                  fontSize: SizeConfig.blockSizeHorizontal * whitheLettersSize,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                'C',
-                style: TextStyle(
-                  color: Colors.green,
-                  fontSize: SizeConfig.blockSizeHorizontal * greenLettersSize,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'ontrol',
-                style: TextStyle(
-                  fontSize: SizeConfig.blockSizeHorizontal * whitheLettersSize,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
-            ],
+        Text(
+          'U',
+          style: TextStyle(
+            color: Colors.green.shade700,
+            fontSize: SizeConfig.blockSizeHorizontal * greenLettersSize,
+            fontWeight: FontWeight.bold,
           ),
-        ]),
+        ),
+        Text(
+          'nder',
+          style: TextStyle(
+            fontSize: SizeConfig.blockSizeHorizontal * whitheLettersSize,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
+        Text(
+          'C',
+          style: TextStyle(
+            color: Colors.green.shade700,
+            fontSize: SizeConfig.blockSizeHorizontal * greenLettersSize,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          'ontrol',
+          style: TextStyle(
+            fontSize: SizeConfig.blockSizeHorizontal * whitheLettersSize,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
       ],
     );
   }

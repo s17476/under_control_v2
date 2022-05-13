@@ -13,9 +13,9 @@ class Empty extends AuthenticationState {}
 
 class Submitting extends AuthenticationState {}
 
-class Registration extends AuthenticationState {}
-
 class Authenticated extends AuthenticationState {}
+
+class AwaitingVerification extends AuthenticationState {}
 
 class Unauthenticated extends AuthenticationState {}
 

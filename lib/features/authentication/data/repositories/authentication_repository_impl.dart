@@ -25,8 +25,9 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
             email: email, password: password);
         return Right(Future.value());
       } on FirebaseAuthException catch (e) {
-        return Left(AuthenticationFailure(
-            message: e.message ?? 'Authentication failed'));
+        return Left(
+          AuthenticationFailure(message: e.message ?? 'Authentication failed'),
+        );
       } catch (e) {
         return const Left(UnsuspectedFailure(message: 'Unsuspected error'));
       }
@@ -67,4 +68,24 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
   @override
   Stream<User?> get user => firebaseAuth.userChanges();
+
+  @override
+  bool get isEmailVerified => firebaseAuth.currentUser!.emailVerified;
+
+  @override
+  Future<Either<Failure, void>> sendVerificationEmail() async {
+    try {
+      if (firebaseAuth.currentUser != null &&
+          !firebaseAuth.currentUser!.emailVerified) {
+        await firebaseAuth.currentUser!.sendEmailVerification();
+      } else {}
+      return Right(Future.value());
+    } on FirebaseAuthException catch (e) {
+      return Left(
+        AuthenticationFailure(message: e.message ?? 'Authentication failed'),
+      );
+    } catch (e) {
+      return const Left(UnsuspectedFailure(message: 'Unsuspected error'));
+    }
+  }
 }

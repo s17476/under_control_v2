@@ -1,0 +1,55 @@
+{
+    "password": "Password",
+    "@password": {
+      "description": "Authentication page - password text field label"
+    },
+    "repeat_password": "Repeat password",
+    "@password": {
+      "description": "Authentication page - repeat password text field label"
+    },
+    "signin": "Signin",
+    "@signin": {
+      "description": "Authentication page - signin button"
+    },
+    "signup": "Signup",
+    "@signin": {
+      "description": "Authentication page - signup button"
+    },
+    "new_account": "Create new account",
+    "@new_account": {
+      "description": "Authentication page - new account button"
+    
+    },
+    "take_photo": "Take a photo",
+    "@take_photo": {
+      "description": "Authentication page - take photo"
+    },
+    "choose_image": "Choose an image",
+    "@choose_image": {
+      "description": "Authentication page - chooose an image"
+    },
+    "account_exist": "I aleready have an account",
+    "@account_exist": {
+      "description": "Authentication page - create new / i have an account button"
+    },
+    "passwords_validation_message": "The password and repeat password fields must be identical",
+    "@passwords_validation_message": {
+      "description": "Authentication page - password and repeat password validation message"
+    },
+    "email_confirmation_message": "Confirm your email account by clicking on the link in the email sent to your registered email address and login to UnderControl",
+    "@email_confirmation_message": {
+      "description": "Email confirmation message"
+    },
+    "email_confirmation_failure_message": "Sending verification email failed",
+    "@email_confirmation_failure_message": {
+      "description": "Email confirmation message - failure message"
+    },
+    "email_confirmation_resend_button": "Resend verification email",
+    "@email_confirmation_resend_button": {
+      "description": "Email confirmation page - resend button"
+    },
+    "email_confirmation_signin_again": "Signin again",
+    "@email_confirmation_signin_again": {
+      "description": "Email confirmation page - signin again button"
+    }
+}

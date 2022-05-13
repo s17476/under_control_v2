@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/domain/usecases/check_email_verification.dart';
+import 'package:under_control_v2/features/authentication/domain/usecases/send_verification_email.dart';
 import 'package:under_control_v2/features/core/utils/input_validator.dart';
 
 import '../../../domain/usecases/auto_signin.dart';
@@ -28,6 +30,8 @@ class AuthenticationBloc
   final Signup signup;
   final Signout signout;
   final AutoSignin autoSignin;
+  final SendVerificationEmail sendVerificationEmail;
+  final CheckEmailVerification checkEmailVerification;
   final InputValidator inputValidator;
 
   AuthenticationBloc({
@@ -35,6 +39,8 @@ class AuthenticationBloc
     required this.signup,
     required this.signout,
     required this.autoSignin,
+    required this.sendVerificationEmail,
+    required this.checkEmailVerification,
     required this.inputValidator,
   }) : super(Empty()) {
     streamSubscription = autoSignin().listen((user) {
@@ -42,43 +48,70 @@ class AuthenticationBloc
     });
 
     on<AutoSigninEvent>(
-      (event, emit) {
+      (event, emit) async {
         if (event.user == null) {
           emit(Unauthenticated());
-        } else {
-          emit(Authenticated());
+        } else if (event.user != null) {
+          if (checkEmailVerification()) {
+            emit(Authenticated());
+          } else {
+            emit(AwaitingVerification());
+          }
         }
       },
     );
+
+    on<ResendVerificationEmailEvent>((event, emit) {
+      sendVerificationEmail(NoParams());
+    });
 
     on<SigninEvent>((event, emit) async {
       emit(Submitting());
       final failureOrAuthParam =
           inputValidator.signinAndSignupValidator(event.email, event.password);
-      print(failureOrAuthParam);
       await failureOrAuthParam.fold(
         (failure) async => emit(Error(message: failure.message)),
         (authParams) async {
           final failureOrVoid = await signin(authParams);
 
-          failureOrVoid.fold(
-              (failure) async => emit(Error(message: failure.message)),
-              (_) async => emit(Authenticated()));
+          failureOrVoid
+              .fold((failure) async => emit(Error(message: failure.message)),
+                  (_) async {
+            if (event.user != null) {
+              if (checkEmailVerification()) {
+                emit(Authenticated());
+              } else {
+                emit(AwaitingVerification());
+              }
+            }
+          });
         },
       );
     });
 
     on<SignupEvent>((event, emit) async {
       emit(Submitting());
-      final failureOrVoid = await signup(
-        AuthParams(
-          email: event.email,
-          password: event.password,
-        ),
-      );
+      final failureOrAuthParam =
+          inputValidator.signinAndSignupValidator(event.email, event.password);
+      await failureOrAuthParam.fold(
+        (failure) async => emit(Error(message: failure.message)),
+        (authParams) async {
+          final failureOrVoid = await signup(authParams);
 
-      failureOrVoid.fold((failure) => emit(Error(message: failure.message)),
-          (_) => emit(Registration()));
+          failureOrVoid
+              .fold((failure) async => emit(Error(message: failure.message)),
+                  (_) async {
+            if (event.user != null) {
+              if (checkEmailVerification()) {
+                emit(Authenticated());
+              } else {
+                sendVerificationEmail(NoParams());
+                emit(AwaitingVerification());
+              }
+            }
+          });
+        },
+      );
     });
 
     on<SignoutEvent>((event, emit) async {
@@ -87,7 +120,7 @@ class AuthenticationBloc
 
       failureOrVoid.fold(
         (failure) => emit(Error(message: failure.message)),
-        (_) => emit(Empty()),
+        (_) => emit(Unauthenticated()),
       );
     });
   }

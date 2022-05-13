@@ -15,13 +15,17 @@ import 'features/authentication/data/repositories/authentication_repository_impl
 import 'features/authentication/domain/repositories/authentication_repository.dart'
     as _i7;
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i14;
+    as _i16;
 import 'features/authentication/domain/usecases/auto_signin.dart' as _i9;
-import 'features/authentication/domain/usecases/signin.dart' as _i10;
-import 'features/authentication/domain/usecases/signout.dart' as _i11;
-import 'features/authentication/domain/usecases/signup.dart' as _i12;
+import 'features/authentication/domain/usecases/check_email_verification.dart'
+    as _i10;
+import 'features/authentication/domain/usecases/send_verification_email.dart'
+    as _i11;
+import 'features/authentication/domain/usecases/signin.dart' as _i12;
+import 'features/authentication/domain/usecases/signout.dart' as _i13;
+import 'features/authentication/domain/usecases/signup.dart' as _i14;
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart'
-    as _i13;
+    as _i15;
 import 'features/core/network/network_info.dart' as _i6;
 import 'features/core/utils/input_validator.dart'
     as _i5; // ignore_for_file: unnecessary_lambdas
@@ -46,22 +50,29 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
           networkInfo: get<_i6.NetworkInfo>()));
   gh.lazySingleton<_i9.AutoSignin>(() => _i9.AutoSignin(
       authenticationRepository: get<_i7.AuthenticationRepository>()));
-  gh.lazySingleton<_i10.Signin>(() => _i10.Signin(
+  gh.lazySingleton<_i10.CheckEmailVerification>(() =>
+      _i10.CheckEmailVerification(
+          authenticationRepository: get<_i7.AuthenticationRepository>()));
+  gh.lazySingleton<_i11.SendVerificationEmail>(() => _i11.SendVerificationEmail(
       authenticationRepository: get<_i7.AuthenticationRepository>()));
-  gh.lazySingleton<_i11.Signout>(() => _i11.Signout(
+  gh.lazySingleton<_i12.Signin>(() => _i12.Signin(
       authenticationRepository: get<_i7.AuthenticationRepository>()));
-  gh.lazySingleton<_i12.Signup>(() => _i12.Signup(
+  gh.lazySingleton<_i13.Signout>(() => _i13.Signout(
       authenticationRepository: get<_i7.AuthenticationRepository>()));
-  gh.factory<_i13.AuthenticationBloc>(() => _i13.AuthenticationBloc(
-      signin: get<_i10.Signin>(),
-      signup: get<_i12.Signup>(),
-      signout: get<_i11.Signout>(),
+  gh.lazySingleton<_i14.Signup>(() => _i14.Signup(
+      authenticationRepository: get<_i7.AuthenticationRepository>()));
+  gh.factory<_i15.AuthenticationBloc>(() => _i15.AuthenticationBloc(
+      signin: get<_i12.Signin>(),
+      signup: get<_i14.Signup>(),
+      signout: get<_i13.Signout>(),
       autoSignin: get<_i9.AutoSignin>(),
+      sendVerificationEmail: get<_i11.SendVerificationEmail>(),
+      checkEmailVerification: get<_i10.CheckEmailVerification>(),
       inputValidator: get<_i5.InputValidator>()));
   return get;
 }
 
-class _$DataConnectionCheckerModule extends _i14.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i16.DataConnectionCheckerModule {}
 
 class _$FirebaseAuthenticationService
-    extends _i14.FirebaseAuthenticationService {}
+    extends _i16.FirebaseAuthenticationService {}

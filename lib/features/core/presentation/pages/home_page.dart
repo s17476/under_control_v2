@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
+import 'package:under_control_v2/features/core/utils/custom_page_transition.dart';
+import 'package:under_control_v2/features/core/utils/size_config.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatelessWidget with CustomPageTransition {
   const HomePage({Key? key}) : super(key: key);
 
   static const routeName = '/home';
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     DateTime preBackpress = DateTime.now();
     return WillPopScope(
       // double click to exit the app
