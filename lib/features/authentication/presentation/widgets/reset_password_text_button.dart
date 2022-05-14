@@ -1,0 +1,78 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../blocs/authentication/authentication_bloc.dart';
+
+class ResetPasswordTextButton extends StatelessWidget {
+  const ResetPasswordTextButton({
+    Key? key,
+    required Animation<Offset>? slideAnimation,
+  })  : _slideAnimation = slideAnimation,
+        super(key: key);
+
+  final Animation<Offset>? _slideAnimation;
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: _slideAnimation!,
+      child: TextButton(
+          onPressed: () {
+            final _textEditingController = TextEditingController();
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                      title: Text(
+                        AppLocalizations.of(context)!.password_reset_dialog,
+                      ),
+                      content: TextFormField(
+                        controller: _textEditingController,
+                        key: const ValueKey('password-reset'),
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.person),
+                          floatingLabelStyle: TextStyle(
+                            color: Theme.of(context).textTheme.headline1!.color,
+                          ),
+                          labelText: 'E-mail',
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: Text(
+                            AppLocalizations.of(context)!.cancel,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        TextButton(
+                          child: Text(
+                            AppLocalizations.of(context)!.password_reset_button,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                          onPressed: () {
+                            context.read<AuthenticationBloc>().add(
+                                  SendPasswordResetEmailEvent(
+                                    _textEditingController.text,
+                                  ),
+                                );
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ));
+          },
+          child: Text(
+            AppLocalizations.of(context)!.password_reset_text_button,
+            style: TextStyle(
+              color: Colors.green.shade700,
+            ),
+          )),
+    );
+  }
+}

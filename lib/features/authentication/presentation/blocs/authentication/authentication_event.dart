@@ -21,6 +21,10 @@ class SignupEvent extends AuthenticationEvent {
       : super(email: email, password: password);
 }
 
+class SendPasswordResetEmailEvent extends AuthenticationEvent {
+  const SendPasswordResetEmailEvent(String email) : super(email: email);
+}
+
 class SignoutEvent extends AuthenticationEvent {}
 
 class ResendVerificationEmailEvent extends AuthenticationEvent {}

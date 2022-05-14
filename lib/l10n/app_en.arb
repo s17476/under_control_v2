@@ -1,7 +1,27 @@
 {
+    "password_reset_text_button": "I don't remember my password",
+    "@password_reset_text_button": {
+      "description": "Password reset - I don't remember my password"
+    },
+    "password_reset_button": "Reset password",
+    "@password_reset_button": {
+      "description": "Password reset buttons"
+    },
+    "cancel": "Cancel",
+    "@cancel": {
+      "description": "Cancel buttons"
+    },
     "password": "Password",
     "@password": {
       "description": "Authentication page - password text field label"
+    },
+    "password_reset_email": "Password reset email sent",
+    "@password_reset_email": {
+      "description": "Authentication page - password reset text button"
+    },
+    "password_reset_dialog": "Reset your password",
+    "@password_reset_dialog": {
+      "description": "Authentication page - password reset dialog"
     },
     "repeat_password": "Repeat password",
     "@password": {

@@ -7,6 +7,7 @@ import '../../../core/utils/responsive_size.dart';
 import '../../../core/presentation/widgets/logo_widget.dart';
 import '../../../core/utils/size_config.dart';
 import '../blocs/authentication/authentication_bloc.dart';
+import '../widgets/reset_password_text_button.dart';
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({Key? key}) : super(key: key);
@@ -26,6 +27,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>
   bool passwordIsVisible = false;
 
   bool isInLoginMode = true;
+
+  int failureCounter = 0;
 
   AnimationController? _animationController;
   Animation<Offset>? _slideAnimation;
@@ -273,6 +276,9 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                             backgroundColor: Theme.of(context).errorColor,
                           ),
                         );
+                      setState(() {
+                        failureCounter++;
+                      });
                     }
                   },
                   builder: (context, state) {
@@ -328,6 +334,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                   height: 8,
                 ),
               ),
+              // signin - signup button
               SlideTransition(
                 position: _slideAnimation!,
                 child: TextButton(
@@ -353,6 +360,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                   height: responsiveSizePx(small: 0, medium: 24),
                 ),
               ),
+              if (failureCounter > 2)
+                ResetPasswordTextButton(slideAnimation: _slideAnimation),
             ],
           ),
         ),

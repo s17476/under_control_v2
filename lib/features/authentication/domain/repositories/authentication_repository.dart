@@ -18,6 +18,11 @@ abstract class AuthenticationRepository {
     required String password,
   });
 
+  Future<Either<Failure, void>> sendPasswordResetEmail({
+    required String email,
+    String password,
+  });
+
   Future<Either<Failure, void>> signout();
 
   Future<Either<Failure, void>> sendVerificationEmail();

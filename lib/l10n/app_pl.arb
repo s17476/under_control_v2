@@ -1,5 +1,10 @@
 {
+    "password_reset_text_button": "Nie pamiętam hasła",
+    "password_reset_button": "Zresetuj hasło",
+    "cancel": "Anuluj",
     "password": "Hasło",
+    "password_reset_email": "Email resetujący hasło został wysłany",
+    "password_reset_dialog": "Zresetuj swoje hasło",
     "repeat_password": "Powtórz hasło",
     "signin": "Zaloguj",
     "signup": "Zarejestruj",

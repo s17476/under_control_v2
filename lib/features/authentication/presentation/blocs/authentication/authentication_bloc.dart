@@ -4,23 +4,19 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/authentication/domain/usecases/check_email_verification.dart';
-import 'package:under_control_v2/features/authentication/domain/usecases/send_verification_email.dart';
-import 'package:under_control_v2/features/core/utils/input_validator.dart';
 
+import '../../../domain/usecases/check_email_verification.dart';
+import '../../../domain/usecases/send_password_reset_email.dart';
+import '../../../domain/usecases/send_verification_email.dart';
+import '../../../../core/utils/input_validator.dart';
 import '../../../domain/usecases/auto_signin.dart';
 import '../../../domain/usecases/signin.dart';
 import '../../../domain/usecases/signout.dart';
 import '../../../../core/usecases/usecase.dart';
-
 import '../../../domain/usecases/signup.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
-
-// const String AUTHENTICATION_FAILURE = 'Authentication failurexxxx';
-const String REGISTRATION_FAILURE = 'Registration failure';
-const String SIGNOUT_FAILURE = 'Signout failure';
 
 @injectable
 class AuthenticationBloc
@@ -32,6 +28,7 @@ class AuthenticationBloc
   final AutoSignin autoSignin;
   final SendVerificationEmail sendVerificationEmail;
   final CheckEmailVerification checkEmailVerification;
+  final SendPasswordResetEmail sendPasswordResetEmail;
   final InputValidator inputValidator;
 
   AuthenticationBloc({
@@ -41,6 +38,7 @@ class AuthenticationBloc
     required this.autoSignin,
     required this.sendVerificationEmail,
     required this.checkEmailVerification,
+    required this.sendPasswordResetEmail,
     required this.inputValidator,
   }) : super(Empty()) {
     streamSubscription = autoSignin().listen((user) {
@@ -121,6 +119,16 @@ class AuthenticationBloc
       failureOrVoid.fold(
         (failure) => emit(Error(message: failure.message)),
         (_) => emit(Unauthenticated()),
+      );
+    });
+
+    on<SendPasswordResetEmailEvent>((event, emit) async {
+      final failureOrVoid = await sendPasswordResetEmail(
+          AuthParams(email: event.email, password: ''));
+
+      failureOrVoid.fold(
+        (failure) => emit(Error(message: failure.message)),
+        (_) => emit(Error(message: 'password-reset')),
       );
     });
   }

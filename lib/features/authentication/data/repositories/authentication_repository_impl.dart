@@ -26,7 +26,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         return Right(Future.value());
       } on FirebaseAuthException catch (e) {
         return Left(
-          AuthenticationFailure(message: e.message ?? 'Authentication failed'),
+          AuthenticationFailure(message: e.message ?? 'Authentication error'),
         );
       } catch (e) {
         return const Left(UnsuspectedFailure(message: 'Unsuspected error'));
@@ -56,7 +56,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         return Right(Future.value());
       } on FirebaseAuthException catch (e) {
         return Left(
-          AuthenticationFailure(message: e.message ?? 'Authentication failed'),
+          AuthenticationFailure(message: e.message ?? 'Authentication error'),
         );
       } catch (e) {
         return const Left(UnsuspectedFailure(message: 'Unsuspected error'));
@@ -82,7 +82,22 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       return Right(Future.value());
     } on FirebaseAuthException catch (e) {
       return Left(
-        AuthenticationFailure(message: e.message ?? 'Authentication failed'),
+        AuthenticationFailure(message: e.message ?? 'Authentication error'),
+      );
+    } catch (e) {
+      return const Left(UnsuspectedFailure(message: 'Unsuspected error'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> sendPasswordResetEmail(
+      {required String email, String password = ''}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return Right(Future.value());
+    } on FirebaseAuthException catch (e) {
+      return Left(
+        AuthenticationFailure(message: e.message ?? 'Authentication error'),
       );
     } catch (e) {
       return const Left(UnsuspectedFailure(message: 'Unsuspected error'));
