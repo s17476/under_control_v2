@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:under_control_v2/main.dart';
 
 import '../../utils/size_config.dart';
 
@@ -21,7 +22,7 @@ class Logo extends StatelessWidget {
         Text(
           'U',
           style: TextStyle(
-            color: Colors.green.shade700,
+            color: Theme.of(context).colorScheme.primary,
             fontSize: SizeConfig.blockSizeHorizontal * greenLettersSize,
             fontWeight: FontWeight.bold,
           ),
@@ -37,7 +38,7 @@ class Logo extends StatelessWidget {
         Text(
           'C',
           style: TextStyle(
-            color: Colors.green.shade700,
+            color: Theme.of(context).colorScheme.primary,
             fontSize: SizeConfig.blockSizeHorizontal * greenLettersSize,
             fontWeight: FontWeight.bold,
           ),

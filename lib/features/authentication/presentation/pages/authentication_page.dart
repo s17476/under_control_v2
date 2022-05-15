@@ -318,7 +318,6 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                                   ),
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 48),
-                          primary: Colors.green.shade700,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),
@@ -340,18 +339,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                 child: TextButton(
                   onPressed: _toggleLoginMode,
                   child: isInLoginMode
-                      ? Text(
-                          AppLocalizations.of(context)!.new_account,
-                          style: TextStyle(
-                            color: Colors.green.shade700,
-                          ),
-                        )
-                      : Text(
-                          AppLocalizations.of(context)!.account_exist,
-                          style: TextStyle(
-                            color: Colors.green.shade700,
-                          ),
-                        ),
+                      ? Text(AppLocalizations.of(context)!.new_account)
+                      : Text(AppLocalizations.of(context)!.account_exist),
                 ),
               ),
               SlideTransition(

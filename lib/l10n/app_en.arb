@@ -71,5 +71,9 @@
     "email_confirmation_signin_again": "Signin again",
     "@email_confirmation_signin_again": {
       "description": "Email confirmation page - signin again button"
+    },
+    "main_drawer_signout": "Signout",
+    "@main_drawer_signout": {
+      "description": "Main drawer signout button"
     }
 }

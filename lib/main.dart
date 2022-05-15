@@ -9,9 +9,9 @@ import 'package:under_control_v2/features/authentication/presentation/pages/auth
 import 'package:under_control_v2/features/authentication/presentation/pages/email_confirmation_page.dart';
 import 'package:under_control_v2/features/core/presentation/pages/home_page.dart';
 import 'package:under_control_v2/features/core/utils/custom_page_transition.dart';
+import 'package:under_control_v2/features/core/utils/material_color_generator.dart';
 
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
-import 'features/core/presentation/pages/splash_page.dart';
 
 import 'firebase_options.dart';
 import 'injection.dart';
@@ -31,8 +31,11 @@ void main() async {
   runApp(const App());
 }
 
-class App extends StatelessWidget with CustomPageTransition {
+class App extends StatelessWidget
+    with CustomPageTransition, MaterialColorGenerator {
   const App({Key? key}) : super(key: key);
+
+  static const Color greenControl = Color.fromRGBO(0, 168, 97, 100);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,17 @@ class App extends StatelessWidget with CustomPageTransition {
         title: 'UnderControl',
         theme: ThemeData(
           brightness: Brightness.dark,
-          primarySwatch: Colors.green,
+          primarySwatch: createMaterialColor(greenControl),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              primary: greenControl,
+            ),
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              primary: greenControl,
+            ),
+          ),
         ),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {

@@ -16,5 +16,6 @@
     "email_confirmation_message": "Potwierdź swoje konto email klikając w link w mailu wysłanym na zarejestrowany adres email i zaloguj się do UnderControl ponownie",
     "email_confirmation_failure_message": "Błąd podczas wysyłania emaila weryfikującego adres email",
     "email_confirmation_resend_button": "Wyślij email weryfikujący ponownie",
-    "email_confirmation_signin_again": "Zaloguj ponownie"
+    "email_confirmation_signin_again": "Zaloguj ponownie",
+    "main_drawer_signout": "Wyloguj"
 }

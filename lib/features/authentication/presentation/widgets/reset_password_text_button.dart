@@ -18,61 +18,59 @@ class ResetPasswordTextButton extends StatelessWidget {
     return SlideTransition(
       position: _slideAnimation!,
       child: TextButton(
-          onPressed: () {
-            final _textEditingController = TextEditingController();
-            showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                      title: Text(
-                        AppLocalizations.of(context)!.password_reset_dialog,
-                      ),
-                      content: TextFormField(
-                        controller: _textEditingController,
-                        key: const ValueKey('password-reset'),
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.person),
-                          floatingLabelStyle: TextStyle(
-                            color: Theme.of(context).textTheme.headline1!.color,
-                          ),
-                          labelText: 'E-mail',
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
+        onPressed: () {
+          final _textEditingController = TextEditingController();
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text(
+                      AppLocalizations.of(context)!.password_reset_dialog,
+                    ),
+                    content: TextFormField(
+                      controller: _textEditingController,
+                      key: const ValueKey('password-reset'),
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.person),
+                        floatingLabelStyle: TextStyle(
+                          color: Theme.of(context).textTheme.headline1!.color,
+                        ),
+                        labelText: 'E-mail',
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10,
                         ),
                       ),
-                      actions: [
-                        TextButton(
-                          child: Text(
-                            AppLocalizations.of(context)!.cancel,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                    ),
+                    actions: [
+                      TextButton(
+                        child: Text(
+                          AppLocalizations.of(context)!.cancel,
                         ),
-                        TextButton(
-                          child: Text(
-                            AppLocalizations.of(context)!.password_reset_button,
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                          onPressed: () {
-                            context.read<AuthenticationBloc>().add(
-                                  SendPasswordResetEmailEvent(
-                                    _textEditingController.text,
-                                  ),
-                                );
-                            Navigator.pop(context);
-                          },
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      TextButton(
+                        child: Text(
+                          AppLocalizations.of(context)!.password_reset_button,
+                          style: TextStyle(color: Theme.of(context).errorColor),
                         ),
-                      ],
-                    ));
-          },
-          child: Text(
-            AppLocalizations.of(context)!.password_reset_text_button,
-            style: TextStyle(
-              color: Colors.green.shade700,
-            ),
-          )),
+                        onPressed: () {
+                          context.read<AuthenticationBloc>().add(
+                                SendPasswordResetEmailEvent(
+                                  _textEditingController.text,
+                                ),
+                              );
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ));
+        },
+        child: Text(
+          AppLocalizations.of(context)!.password_reset_text_button,
+        ),
+      ),
     );
   }
 }
