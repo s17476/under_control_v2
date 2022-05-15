@@ -35,13 +35,6 @@ class HomePage extends StatelessWidget with CustomPageTransition {
       },
       child: Scaffold(
         appBar: AppBar(
-          actions: [
-            IconButton(
-                onPressed: () {
-                  context.read<AuthenticationBloc>().add(SignoutEvent());
-                },
-                icon: Icon(Icons.exit_to_app))
-          ],
           leading: Builder(builder: (context) {
             return GestureDetector(
               onTap: () {

@@ -276,9 +276,11 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                             backgroundColor: Theme.of(context).errorColor,
                           ),
                         );
-                      setState(() {
-                        failureCounter++;
-                      });
+                      if (isInLoginMode) {
+                        setState(() {
+                          failureCounter++;
+                        });
+                      }
                     }
                   },
                   builder: (context, state) {
@@ -343,12 +345,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                       : Text(AppLocalizations.of(context)!.account_exist),
                 ),
               ),
-              SlideTransition(
-                position: _slideAnimation!,
-                child: SizedBox(
-                  height: responsiveSizePx(small: 0, medium: 24),
-                ),
-              ),
+
               if (failureCounter > 2)
                 ResetPasswordTextButton(slideAnimation: _slideAnimation),
             ],

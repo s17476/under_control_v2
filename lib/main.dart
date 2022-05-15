@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:under_control_v2/features/authentication/presentation/pages/authentication_page.dart';
 import 'package:under_control_v2/features/authentication/presentation/pages/email_confirmation_page.dart';
+import 'package:under_control_v2/features/core/constants/app_colors.dart';
 import 'package:under_control_v2/features/core/presentation/pages/home_page.dart';
 import 'package:under_control_v2/features/core/utils/custom_page_transition.dart';
 import 'package:under_control_v2/features/core/utils/material_color_generator.dart';
@@ -23,7 +24,7 @@ void main() async {
   );
   await configureInjection();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.black,
+    statusBarColor: Colors.transparent,
     // statusBarIconBrightness: Brightness.dark,
     systemNavigationBarColor: Colors.black,
     systemNavigationBarIconBrightness: Brightness.dark,
@@ -35,8 +36,6 @@ class App extends StatelessWidget
     with CustomPageTransition, MaterialColorGenerator {
   const App({Key? key}) : super(key: key);
 
-  static const Color greenControl = Color.fromRGBO(0, 168, 97, 100);
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -46,17 +45,7 @@ class App extends StatelessWidget
         title: 'UnderControl',
         theme: ThemeData(
           brightness: Brightness.dark,
-          primarySwatch: createMaterialColor(greenControl),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              primary: greenControl,
-            ),
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-              primary: greenControl,
-            ),
-          ),
+          primarySwatch: createMaterialColor(AppColors.greenControl),
         ),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {

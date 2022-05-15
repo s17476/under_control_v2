@@ -21,51 +21,53 @@ class ResetPasswordTextButton extends StatelessWidget {
         onPressed: () {
           final _textEditingController = TextEditingController();
           showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                    title: Text(
-                      AppLocalizations.of(context)!.password_reset_dialog,
-                    ),
-                    content: TextFormField(
-                      controller: _textEditingController,
-                      key: const ValueKey('password-reset'),
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.person),
-                        floatingLabelStyle: TextStyle(
-                          color: Theme.of(context).textTheme.headline1!.color,
-                        ),
-                        labelText: 'E-mail',
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                        ),
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        child: Text(
-                          AppLocalizations.of(context)!.cancel,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      TextButton(
-                        child: Text(
-                          AppLocalizations.of(context)!.password_reset_button,
-                          style: TextStyle(color: Theme.of(context).errorColor),
-                        ),
-                        onPressed: () {
-                          context.read<AuthenticationBloc>().add(
-                                SendPasswordResetEmailEvent(
-                                  _textEditingController.text,
-                                ),
-                              );
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  ));
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(
+                AppLocalizations.of(context)!.password_reset_dialog,
+              ),
+              content: TextFormField(
+                controller: _textEditingController,
+                key: const ValueKey('password-reset'),
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.person),
+                  floatingLabelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.headline1!.color,
+                  ),
+                  labelText: 'E-mail',
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  child: Text(
+                    AppLocalizations.of(context)!.cancel,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: Text(
+                    AppLocalizations.of(context)!.password_reset_button,
+                    style: TextStyle(color: Theme.of(context).errorColor),
+                  ),
+                  onPressed: () {
+                    context.read<AuthenticationBloc>().add(
+                          SendPasswordResetEmailEvent(
+                            _textEditingController.text,
+                          ),
+                        );
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            ),
+          );
         },
         child: Text(
           AppLocalizations.of(context)!.password_reset_text_button,
