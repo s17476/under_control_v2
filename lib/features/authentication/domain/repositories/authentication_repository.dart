@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../core/usecases/usecase.dart';
 import '../../../core/error/failures.dart';
 
 abstract class AuthenticationRepository {
@@ -8,22 +9,22 @@ abstract class AuthenticationRepository {
 
   bool get isEmailVerified;
 
-  Future<Either<Failure, void>> signup({
+  Future<Either<Failure, VoidResult>> signup({
     required String email,
     required String password,
   });
 
-  Future<Either<Failure, void>> signin({
+  Future<Either<Failure, VoidResult>> signin({
     required String email,
     required String password,
   });
 
-  Future<Either<Failure, void>> sendPasswordResetEmail({
+  Future<Either<Failure, VoidResult>> sendPasswordResetEmail({
     required String email,
     String password,
   });
 
-  Future<Either<Failure, void>> signout();
+  Future<Either<Failure, VoidResult>> signout();
 
-  Future<Either<Failure, void>> sendVerificationEmail();
+  Future<Either<Failure, VoidResult>> sendVerificationEmail();
 }

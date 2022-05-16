@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/logo_widget.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
-import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'logo_widget.dart';
+import '../../utils/responsive_size.dart';
+import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 class MainDrawer extends StatelessWidget with ResponsiveSize {
   const MainDrawer({Key? key}) : super(key: key);
@@ -17,14 +19,14 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      width: responsiveSizePct(small: 40, medium: 25),
+      width: responsiveSizePct(small: 60, medium: 30),
       child: SafeArea(
         child: Column(
           children: [
             const FittedBox(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Logo(greenLettersSize: 10, whitheLettersSize: 7),
+                child: Logo(greenLettersSize: 30, whitheLettersSize: 20),
               ),
             ),
             const Expanded(child: SizedBox()),
