@@ -46,6 +46,12 @@ class App extends StatelessWidget
         theme: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: createMaterialColor(AppColors.greenControl),
+          drawerTheme: const DrawerThemeData(
+            backgroundColor: AppColors.darkBackground,
+          ),
+          scaffoldBackgroundColor: AppColors.darkScaffoldBackground,
+          appBarTheme: const AppBarTheme(
+              backgroundColor: AppColors.darkAppBarBackground),
         ),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {

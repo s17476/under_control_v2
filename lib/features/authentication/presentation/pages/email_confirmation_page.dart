@@ -43,7 +43,7 @@ class EmailConfirmationPage extends StatelessWidget with ResponsiveSize {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 48),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
               ),

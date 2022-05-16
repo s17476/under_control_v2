@@ -8,12 +8,12 @@ import 'package:injectable/injectable.dart';
 import '../../../domain/usecases/check_email_verification.dart';
 import '../../../domain/usecases/send_password_reset_email.dart';
 import '../../../domain/usecases/send_verification_email.dart';
-import '../../../../core/utils/input_validator.dart';
 import '../../../domain/usecases/auto_signin.dart';
 import '../../../domain/usecases/signin.dart';
 import '../../../domain/usecases/signout.dart';
-import '../../../../core/usecases/usecase.dart';
 import '../../../domain/usecases/signup.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../../../core/utils/input_validator.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';

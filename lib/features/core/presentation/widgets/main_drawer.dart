@@ -25,10 +25,13 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
           children: [
             const FittedBox(
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                 child: Logo(greenLettersSize: 30, whitheLettersSize: 20),
               ),
             ),
+            const Divider(),
+            Text('user data'),
+            const Divider(),
             const Expanded(child: SizedBox()),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,

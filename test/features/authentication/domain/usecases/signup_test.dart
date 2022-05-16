@@ -28,7 +28,7 @@ void main() {
       when(
         () => mockAuthenticationRepository.signup(
             email: any(named: 'email'), password: any(named: 'password')),
-      ).thenAnswer((_) async => Right(Future.value()));
+      ).thenAnswer((_) async => Right(VoidResult()));
       // act
       await usecase(authParams);
       // assert

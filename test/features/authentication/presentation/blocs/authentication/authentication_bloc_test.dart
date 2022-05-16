@@ -37,7 +37,6 @@ void main() {
         signin: mockSignin,
         signup: mockSignup,
         signout: mockSignout,
-        repository: mockRepository,
       );
     },
   );

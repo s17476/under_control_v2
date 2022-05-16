@@ -1,11 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/authentication/domain/repositories/authentication_repository.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/core/error/failures.dart';
+
+import '../repositories/authentication_repository.dart';
+import '../../../core/usecases/usecase.dart';
+import '../../../core/error/failures.dart';
 
 @lazySingleton
-class Signin implements UseCase<void, AuthParams> {
+class Signin implements FutureUseCase<VoidResult, AuthParams> {
   final AuthenticationRepository authenticationRepository;
 
   Signin({
@@ -13,7 +14,7 @@ class Signin implements UseCase<void, AuthParams> {
   });
 
   @override
-  Future<Either<Failure, void>> call(AuthParams params) async {
+  Future<Either<Failure, VoidResult>> call(AuthParams params) async {
     return await authenticationRepository.signin(
         email: params.email, password: params.password);
   }

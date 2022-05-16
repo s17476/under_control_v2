@@ -129,7 +129,12 @@ void main() {
             password: tAuthParams.password,
           ),
         );
-        expect(result, const Left(AuthenticationFailure()));
+        expect(
+          result,
+          const Left<Failure, VoidResult>(
+            AuthenticationFailure(message: 'Authentication error'),
+          ),
+        );
       },
     );
 
@@ -155,7 +160,12 @@ void main() {
             password: tAuthParams.password,
           ),
         );
-        expect(result, const Left(UnsuspectedFailure()));
+        expect(
+          result,
+          const Left<Failure, VoidResult>(
+            UnsuspectedFailure(message: 'Unsuspected error'),
+          ),
+        );
       },
     );
 
@@ -181,7 +191,12 @@ void main() {
             password: tAuthParams.password,
           ),
         );
-        expect(result, const Left(AuthenticationFailure()));
+        expect(
+          result,
+          const Left<Failure, VoidResult>(
+            AuthenticationFailure(message: 'Authentication error'),
+          ),
+        );
       },
     );
 
@@ -207,7 +222,12 @@ void main() {
             password: tAuthParams.password,
           ),
         );
-        expect(result, const Left(UnsuspectedFailure()));
+        expect(
+          result,
+          const Left<Failure, VoidResult>(
+            UnsuspectedFailure(message: 'Unsuspected error'),
+          ),
+        );
       },
     );
   });

@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/authentication/domain/repositories/authentication_repository.dart';
+
+import '../repositories/authentication_repository.dart';
 
 @lazySingleton
 class CheckEmailVerification {

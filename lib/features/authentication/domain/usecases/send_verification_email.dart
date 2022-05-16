@@ -6,7 +6,7 @@ import '../../../core/usecases/usecase.dart';
 import '../repositories/authentication_repository.dart';
 
 @lazySingleton
-class SendVerificationEmail implements UseCase<void, NoParams> {
+class SendVerificationEmail implements FutureUseCase<VoidResult, NoParams> {
   final AuthenticationRepository authenticationRepository;
 
   SendVerificationEmail({
@@ -14,7 +14,7 @@ class SendVerificationEmail implements UseCase<void, NoParams> {
   });
 
   @override
-  Future<Either<Failure, void>> call(NoParams params) async {
+  Future<Either<Failure, VoidResult>> call(NoParams params) async {
     return await authenticationRepository.sendVerificationEmail();
   }
 }

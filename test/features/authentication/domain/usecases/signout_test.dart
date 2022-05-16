@@ -24,7 +24,7 @@ void main() {
     () async {
       // arrange
       when(() => mockAuthenticationRepository.signout())
-          .thenAnswer((_) async => Right(Future.value()));
+          .thenAnswer((_) async => Right(VoidResult()));
       // act
       await usecase(noParams);
       // assert
