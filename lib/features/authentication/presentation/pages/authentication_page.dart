@@ -152,7 +152,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                       vertical: 10,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
@@ -189,7 +189,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                       vertical: 10,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
@@ -235,7 +235,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                               vertical: 10,
                             ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide.none,
                             ),
                             filled: true,
@@ -318,12 +318,6 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                                           small: 5.5, medium: 3, large: 1),
                                     ),
                                   ),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 48),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        ),
                       ),
                     );
                   },
