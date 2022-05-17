@@ -72,9 +72,4 @@ class CompanyModel extends Company {
       joinDate: DateTime.parse(map['joinDate']),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory CompanyModel.fromJson(String source) =>
-      CompanyModel.fromMap(json.decode(source));
 }
