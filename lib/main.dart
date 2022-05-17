@@ -1,17 +1,17 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:under_control_v2/features/authentication/presentation/pages/authentication_page.dart';
-import 'package:under_control_v2/features/authentication/presentation/pages/email_confirmation_page.dart';
-import 'package:under_control_v2/features/core/constants/app_colors.dart';
-import 'package:under_control_v2/features/core/presentation/pages/home_page.dart';
-import 'package:under_control_v2/features/core/utils/custom_page_transition.dart';
-import 'package:under_control_v2/features/core/utils/material_color_generator.dart';
-
+import 'features/authentication/presentation/pages/authentication_page.dart';
+import 'features/authentication/presentation/pages/email_confirmation_page.dart';
+import 'features/core/constants/app_colors.dart';
+import 'features/core/presentation/pages/home_page.dart';
+import 'features/core/utils/custom_page_transition.dart';
+import 'features/core/utils/material_color_generator.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import 'firebase_options.dart';
@@ -51,7 +51,17 @@ class App extends StatelessWidget
           ),
           scaffoldBackgroundColor: AppColors.darkScaffoldBackground,
           appBarTheme: const AppBarTheme(
-              backgroundColor: AppColors.darkAppBarBackground),
+            backgroundColor: AppColors.darkAppBarBackground,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              onPrimary: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              minimumSize: const Size(double.infinity, 48),
+            ),
+          ),
         ),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
