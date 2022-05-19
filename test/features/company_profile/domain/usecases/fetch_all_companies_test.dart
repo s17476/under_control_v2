@@ -22,6 +22,9 @@ void main() {
     city: 'city',
     country: 'country',
     vatNumber: 'vatNumber',
+    phoneNumber: 'phoneNumber',
+    email: 'email',
+    homepage: 'homepage',
     joinDate: DateTime.now(),
   );
 
@@ -35,6 +38,9 @@ void main() {
         city: 'city',
         country: 'country',
         vatNumber: 'vatNumber',
+        phoneNumber: 'phoneNumber',
+        email: 'email',
+        homepage: 'homepage',
         joinDate: DateTime.now(),
       ),
     );

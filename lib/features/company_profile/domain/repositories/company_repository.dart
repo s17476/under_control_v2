@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/companies.dart';
+import 'package:under_control_v2/features/company_profile/domain/entities/company_users.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
 import '../../../core/error/failures.dart';
@@ -13,4 +14,6 @@ abstract class CompanyRepository {
   Future<Either<Failure, Companies>> fetchAllCompanies();
 
   Future<Either<Failure, Company>> getCompanyById(String id);
+
+  Future<Either<Failure, CompanyUsers>> fetchAllCompanyUsers(String id);
 }

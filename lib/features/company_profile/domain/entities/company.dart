@@ -8,6 +8,9 @@ class Company extends Equatable {
   final String city;
   final String country;
   final String vatNumber;
+  final String phoneNumber;
+  final String email;
+  final String homepage;
   final DateTime joinDate;
 
   const Company({
@@ -18,23 +21,31 @@ class Company extends Equatable {
     required this.city,
     required this.country,
     required this.vatNumber,
+    required this.phoneNumber,
+    required this.email,
+    required this.homepage,
     required this.joinDate,
   });
 
   @override
-  List<Object> get props => [
-        id,
-        name,
-        address,
-        postCode,
-        city,
-        country,
-        vatNumber,
-        joinDate,
-      ];
+  List<Object> get props {
+    return [
+      id,
+      name,
+      address,
+      postCode,
+      city,
+      country,
+      vatNumber,
+      phoneNumber,
+      email,
+      homepage,
+      joinDate,
+    ];
+  }
 
   @override
   String toString() {
-    return 'Company(id: $id, name: $name, address: $address, postCode: $postCode, city: $city, country: $country, vatNumber: $vatNumber, joinDate: $joinDate)';
+    return 'Company(id: $id, name: $name, address: $address, postCode: $postCode, city: $city, country: $country, vatNumber: $vatNumber, phoneNumber: $phoneNumber, email: $email, homepage: $homepage, joinDate: $joinDate)';
   }
 }

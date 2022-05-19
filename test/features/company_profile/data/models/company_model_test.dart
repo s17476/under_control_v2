@@ -13,6 +13,9 @@ void main() {
     city: 'city',
     country: 'country',
     vatNumber: 'vatNumber',
+    phoneNumber: 'phoneNumber',
+    email: 'email',
+    homepage: 'homepage',
     joinDate: dateTime,
   );
   final Map<String, dynamic> companyMap = {
@@ -22,6 +25,9 @@ void main() {
     'city': 'city',
     'country': 'country',
     'vatNumber': 'vatNumber',
+    'phoneNumber': 'phoneNumber',
+    'email': 'email',
+    'homepage': 'homepage',
     'joinDate': dateTime.toIso8601String()
   };
 

@@ -5,7 +5,6 @@ import 'package:under_control_v2/features/company_profile/data/models/company_mo
 import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
 import 'package:under_control_v2/features/company_profile/domain/repositories/company_repository.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/add_company.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
 class MockCompanyRepository extends Mock implements CompanyRepository {}
 
@@ -21,6 +20,9 @@ void main() {
     city: 'city',
     country: 'country',
     vatNumber: 'vatNumber',
+    phoneNumber: 'phoneNumber',
+    email: 'email',
+    homepage: 'homepage',
     joinDate: DateTime.now(),
   );
 
@@ -34,6 +36,9 @@ void main() {
         city: 'city',
         country: 'country',
         vatNumber: 'vatNumber',
+        phoneNumber: 'phoneNumber',
+        email: 'email',
+        homepage: 'homepage',
         joinDate: DateTime.now(),
       ),
     );

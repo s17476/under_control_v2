@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:under_control_v2/features/company_profile/data/models/company_users_model.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/companies.dart';
+import 'package:under_control_v2/features/company_profile/domain/entities/company_user.dart';
+import 'package:under_control_v2/features/company_profile/domain/entities/company_users.dart';
 
 import '../models/company_model.dart';
 import '../../domain/entities/company.dart';
@@ -8,6 +11,7 @@ import '../../domain/repositories/company_repository.dart';
 import '../../../core/error/failures.dart';
 import '../../../core/network/network_info.dart';
 import '../../../core/usecases/usecase.dart';
+import '../models/company_user_model.dart';
 
 class CompanyRepositoryImpl extends CompanyRepository {
   final FirebaseFirestore firebaseFirestore;
@@ -99,6 +103,33 @@ class CompanyRepositoryImpl extends CompanyRepository {
         final companyMap = (company as CompanyModel).toMap();
         await companyReference.set(companyMap);
         return Right(VoidResult());
+      } on FirebaseException catch (e) {
+        return Left(DataBaseFailure(message: e.message ?? 'DataBase Failure'));
+      } catch (e) {
+        return const Left(
+          UnsuspectedFailure(message: 'Unsuspected error'),
+        );
+      }
+    } else {
+      return const Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, CompanyUsers>> fetchAllCompanyUsers(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final List<CompanyUser> result = [];
+        final QuerySnapshot querySnapshot;
+        querySnapshot = await firebaseFirestore
+            .collection('users')
+            .where('companyId', isEqualTo: id)
+            .get();
+        for (var doc in querySnapshot.docs) {
+          result.add(
+              CompanyUserModel.fromMap(doc.data() as Map<String, dynamic>));
+        }
+        return Right(CompanyUsersModel(allUsers: result));
       } on FirebaseException catch (e) {
         return Left(DataBaseFailure(message: e.message ?? 'DataBase Failure'));
       } catch (e) {

@@ -9,6 +9,9 @@ class CompanyModel extends Company {
     required String city,
     required String country,
     required String vatNumber,
+    required String phoneNumber,
+    required String email,
+    required String homepage,
     required DateTime joinDate,
   }) : super(
           id: id,
@@ -18,8 +21,25 @@ class CompanyModel extends Company {
           city: city,
           country: country,
           vatNumber: vatNumber,
+          phoneNumber: phoneNumber,
+          email: email,
+          homepage: homepage,
           joinDate: joinDate,
         );
+
+  factory CompanyModel.initial() => CompanyModel(
+        id: '',
+        name: '',
+        address: '',
+        postCode: '',
+        city: '',
+        country: '',
+        vatNumber: '',
+        phoneNumber: '',
+        email: '',
+        homepage: '',
+        joinDate: DateTime.now(),
+      );
 
   CompanyModel copyWith({
     String? id,
@@ -29,6 +49,9 @@ class CompanyModel extends Company {
     String? city,
     String? country,
     String? vatNumber,
+    String? phoneNumber,
+    String? email,
+    String? homepage,
     DateTime? joinDate,
   }) {
     return CompanyModel(
@@ -39,6 +62,9 @@ class CompanyModel extends Company {
       city: city ?? this.city,
       country: country ?? this.country,
       vatNumber: vatNumber ?? this.vatNumber,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      email: email ?? this.email,
+      homepage: homepage ?? this.homepage,
       joinDate: joinDate ?? this.joinDate,
     );
   }
@@ -51,6 +77,9 @@ class CompanyModel extends Company {
     result.addAll({'city': city});
     result.addAll({'country': country});
     result.addAll({'vatNumber': vatNumber});
+    result.addAll({'phoneNumber': phoneNumber});
+    result.addAll({'email': email});
+    result.addAll({'homepage': homepage});
     result.addAll({'joinDate': joinDate.toIso8601String()});
 
     return result;
@@ -65,6 +94,9 @@ class CompanyModel extends Company {
       city: map['city'] ?? '',
       country: map['country'] ?? '',
       vatNumber: map['vatNumber'] ?? '',
+      phoneNumber: map['phoneNumber'] ?? '',
+      email: map['email'] ?? '',
+      homepage: map['homepage'] ?? '',
       joinDate: DateTime.parse(map['joinDate']),
     );
   }
