@@ -38,3 +38,11 @@ class ValidationFailure extends Failure {
   @override
   List<Object?> get props => [message];
 }
+
+class DataBaseFailure extends Failure {
+  final String message;
+  const DataBaseFailure({this.message = ''}) : super(message: message);
+
+  @override
+  List<Object?> get props => [message];
+}

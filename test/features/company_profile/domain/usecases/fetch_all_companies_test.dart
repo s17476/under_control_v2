@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/company_profile/data/models/company_model.dart';
+import 'package:under_control_v2/features/company_profile/domain/entities/companies.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
 import 'package:under_control_v2/features/company_profile/domain/repositories/company_repository.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/fetch_all_companies.dart';
@@ -47,12 +48,12 @@ void main() {
   );
 
   test(
-    'should return [List<Company>] from repository when fetch all companies usecase is called',
+    'should return [Companies] from repository when fetch all companies usecase is called',
     () async {
       // arrange
       when(
         () => mockCompanyRepository.fetchAllCompanies(),
-      ).thenAnswer((_) async => Right([tCompanyModel]));
+      ).thenAnswer((_) async => Right(Companies(data: [tCompanyModel])));
       // act
       await usecase(NoParams());
       // assert

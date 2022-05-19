@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../../domain/entities/company.dart';
 
 class CompanyModel extends Company {
@@ -47,8 +45,6 @@ class CompanyModel extends Company {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-
-    result.addAll({'id': id});
     result.addAll({'name': name});
     result.addAll({'address': address});
     result.addAll({'postCode': postCode});
@@ -60,9 +56,9 @@ class CompanyModel extends Company {
     return result;
   }
 
-  factory CompanyModel.fromMap(Map<String, dynamic> map) {
+  factory CompanyModel.fromMap(Map<String, dynamic> map, String id) {
     return CompanyModel(
-      id: map['id'] ?? '',
+      id: id,
       name: map['name'] ?? '',
       address: map['address'] ?? '',
       postCode: map['postCode'] ?? '',

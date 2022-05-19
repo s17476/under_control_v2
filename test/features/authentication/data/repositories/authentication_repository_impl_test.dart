@@ -48,7 +48,7 @@ void main() {
     );
 
     test(
-      'should return NetworkFailure if called signin method',
+      'should return [NetworkFailure] if called signin method',
       () async {
         // arrange
 

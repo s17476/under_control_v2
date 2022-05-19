@@ -7,7 +7,7 @@ import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
 @lazySingleton
-class AddCompany extends FutureUseCase<VoidResult, Company> {
+class AddCompany extends FutureUseCase<String, Company> {
   final CompanyRepository companyRepository;
 
   AddCompany({
@@ -15,7 +15,7 @@ class AddCompany extends FutureUseCase<VoidResult, Company> {
   });
 
   @override
-  Future<Either<Failure, VoidResult>> call(Company params) async {
+  Future<Either<Failure, String>> call(Company params) async {
     return companyRepository.addCompany(params);
   }
 }

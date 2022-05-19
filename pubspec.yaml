@@ -49,6 +49,7 @@ dependencies:
   injectable: ^1.5.3
   intl: ^0.17.0
   image_picker: ^0.8.5+3
+  fake_cloud_firestore: ^1.2.2
   
 
 

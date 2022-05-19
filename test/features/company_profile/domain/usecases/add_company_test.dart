@@ -52,7 +52,7 @@ void main() {
       // arrange
       when(
         () => mockCompanyRepository.addCompany(any()),
-      ).thenAnswer((_) async => Right(VoidResult()));
+      ).thenAnswer((_) async => const Right(''));
       // act
       await usecase(tCompanyModel);
       // assert
