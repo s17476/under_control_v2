@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/companies.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/company_users.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
+import '../entities/companies.dart';
+import '../entities/company_users.dart';
+import '../../../core/usecases/usecase.dart';
 import '../../../core/error/failures.dart';
 import '../entities/company.dart';
 

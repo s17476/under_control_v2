@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:under_control_v2/features/company_profile/data/models/company_users_model.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/companies.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/company_user.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/company_users.dart';
+import 'package:injectable/injectable.dart';
 
+import '../models/company_users_model.dart';
+import '../../domain/entities/companies.dart';
+import '../../domain/entities/company_user.dart';
+import '../../domain/entities/company_users.dart';
 import '../models/company_model.dart';
 import '../../domain/entities/company.dart';
 import '../../domain/repositories/company_repository.dart';
@@ -13,6 +14,7 @@ import '../../../core/network/network_info.dart';
 import '../../../core/usecases/usecase.dart';
 import '../models/company_user_model.dart';
 
+@LazySingleton(as: CompanyRepositoryImpl)
 class CompanyRepositoryImpl extends CompanyRepository {
   final FirebaseFirestore firebaseFirestore;
   final NetworkInfo networkInfo;
