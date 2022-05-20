@@ -18,7 +18,7 @@ void main() {
     homepage: 'homepage',
     joinDate: dateTime,
   );
-  final Map<String, dynamic> companyMap = {
+  final Map<String, dynamic> tCompanyModelMap = {
     'name': 'name',
     'address': 'address',
     'postCode': 'postCode',
@@ -43,7 +43,7 @@ void main() {
     'should return a valid model from a map',
     () async {
       // act
-      final result = CompanyModel.fromMap(companyMap, tCompanyModel.id);
+      final result = CompanyModel.fromMap(tCompanyModelMap, tCompanyModel.id);
       // assert
       expect(result, tCompanyModel);
     },
@@ -55,7 +55,7 @@ void main() {
       // act
       final result = tCompanyModel.toMap();
       // assert
-      expect(result, companyMap);
+      expect(result, tCompanyModelMap);
     },
   );
 }

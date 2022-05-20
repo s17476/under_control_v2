@@ -7,7 +7,8 @@ import '../../../core/error/failures.dart';
 abstract class UserProfileRepository {
   Future<Either<Failure, UserProfile>> getUserById(String userId);
 
-  Future<Either<Failure, VoidResult>> assignUserToCompany(String companyId);
+  Future<Either<Failure, VoidResult>> assignUserToCompany(
+      AssignParams assignParams);
 
   Future<Either<Failure, String>> addUser(UserProfile userProfile);
 

@@ -21,9 +21,6 @@ class MockNetworkInfo extends Mock implements NetworkInfo {}
 void main() {
   final dateTime = DateTime.now();
 
-  // final List<Company> companies = [tCompanyModel];
-
-  // late MockFirebaseFirestore mockFirebaseFirstore;
   late FakeFirebaseFirestore fakeFirebaseFirestore;
   late MockNetworkInfo mockNetworkInfo;
   late CompanyRepositoryImpl repository;

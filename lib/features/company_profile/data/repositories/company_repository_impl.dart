@@ -34,7 +34,7 @@ class CompanyRepositoryImpl extends CompanyRepository {
         final String generatedCompanyId = documentReferance.id;
         return Right(generatedCompanyId);
       } on FirebaseException catch (e) {
-        return Left(DataBaseFailure(message: e.message ?? 'DataBase Failure'));
+        return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
       } catch (e) {
         return const Left(
           UnsuspectedFailure(message: 'Unsuspected error'),
@@ -61,7 +61,7 @@ class CompanyRepositoryImpl extends CompanyRepository {
         }
         return Right(Companies(data: result));
       } on FirebaseException catch (e) {
-        return Left(DataBaseFailure(message: e.message ?? 'DataBase Failure'));
+        return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
       } catch (e) {
         return const Left(
           UnsuspectedFailure(message: 'Unsuspected error'),
@@ -85,7 +85,7 @@ class CompanyRepositoryImpl extends CompanyRepository {
             documentSnapshot.id);
         return Right(result);
       } on FirebaseException catch (e) {
-        return Left(DataBaseFailure(message: e.message ?? 'DataBase Failure'));
+        return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
       } catch (e) {
         return const Left(
           UnsuspectedFailure(message: 'Unsuspected error'),
@@ -106,7 +106,7 @@ class CompanyRepositoryImpl extends CompanyRepository {
         await companyReference.set(companyMap);
         return Right(VoidResult());
       } on FirebaseException catch (e) {
-        return Left(DataBaseFailure(message: e.message ?? 'DataBase Failure'));
+        return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
       } catch (e) {
         return const Left(
           UnsuspectedFailure(message: 'Unsuspected error'),
@@ -133,7 +133,7 @@ class CompanyRepositoryImpl extends CompanyRepository {
         }
         return Right(CompanyUsersModel(allUsers: result));
       } on FirebaseException catch (e) {
-        return Left(DataBaseFailure(message: e.message ?? 'DataBase Failure'));
+        return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
       } catch (e) {
         return const Left(
           UnsuspectedFailure(message: 'Unsuspected error'),

@@ -33,3 +33,16 @@ class VoidResult extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
+class AssignParams extends Equatable {
+  final String userId;
+  final String companyId;
+
+  const AssignParams({
+    required this.userId,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [userId, companyId];
+}

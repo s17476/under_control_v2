@@ -13,6 +13,11 @@ void main() {
   late AssignUserToCompany usecase;
   late MockUserProfileRepository repository;
 
+  setUpAll(() {
+    registerFallbackValue(
+        const AssignParams(userId: 'userId', companyId: 'companyId'));
+  });
+
   setUp(
     () {
       repository = MockUserProfileRepository();
@@ -27,7 +32,8 @@ void main() {
       when(() => repository.assignUserToCompany(any()))
           .thenAnswer((_) async => Right(VoidResult()));
       // act
-      final result = await usecase('');
+      final result = await usecase(
+          const AssignParams(userId: 'userId', companyId: 'companyId'));
       // assert
       expect(result, Right<Failure, VoidResult>(VoidResult()));
     },

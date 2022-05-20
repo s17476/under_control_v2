@@ -6,7 +6,7 @@ import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
 
 @lazySingleton
-class AssignUserToCompany extends FutureUseCase<VoidResult, String> {
+class AssignUserToCompany extends FutureUseCase<VoidResult, AssignParams> {
   final UserProfileRepository repository;
 
   AssignUserToCompany({
@@ -14,7 +14,7 @@ class AssignUserToCompany extends FutureUseCase<VoidResult, String> {
   });
 
   @override
-  Future<Either<Failure, VoidResult>> call(String params) async {
+  Future<Either<Failure, VoidResult>> call(AssignParams params) async {
     return repository.assignUserToCompany(params);
   }
 }

@@ -71,6 +71,7 @@ class CompanyModel extends Company {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
+
     result.addAll({'name': name});
     result.addAll({'address': address});
     result.addAll({'postCode': postCode});
