@@ -14,7 +14,7 @@ import '../../../core/network/network_info.dart';
 import '../../../core/usecases/usecase.dart';
 import '../models/company_user_model.dart';
 
-@LazySingleton(as: CompanyRepositoryImpl)
+@LazySingleton(as: CompanyRepository)
 class CompanyRepositoryImpl extends CompanyRepository {
   final FirebaseFirestore firebaseFirestore;
   final NetworkInfo networkInfo;

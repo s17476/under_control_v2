@@ -9,11 +9,17 @@ abstract class AuthenticationState extends Equatable {
   List<Object> get props => [properties];
 }
 
-class Empty extends AuthenticationState {}
+class EmptyAuthenticationState extends AuthenticationState {}
 
 class Submitting extends AuthenticationState {}
 
-class Authenticated extends AuthenticationState {}
+class Authenticated extends AuthenticationState {
+  final String userId;
+
+  Authenticated({
+    required this.userId,
+  }) : super([userId]);
+}
 
 class AwaitingVerification extends AuthenticationState {}
 

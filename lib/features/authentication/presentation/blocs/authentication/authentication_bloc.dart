@@ -40,7 +40,7 @@ class AuthenticationBloc
     required this.checkEmailVerification,
     required this.sendPasswordResetEmail,
     required this.inputValidator,
-  }) : super(Empty()) {
+  }) : super(EmptyAuthenticationState()) {
     streamSubscription = autoSignin().listen((user) {
       add(AutoSigninEvent(user));
     });
@@ -51,7 +51,7 @@ class AuthenticationBloc
           emit(Unauthenticated());
         } else if (event.user != null) {
           if (checkEmailVerification()) {
-            emit(Authenticated());
+            emit(Authenticated(userId: event.user!.uid));
           } else {
             emit(AwaitingVerification());
           }
@@ -77,7 +77,7 @@ class AuthenticationBloc
                   (_) async {
             if (event.user != null) {
               if (checkEmailVerification()) {
-                emit(Authenticated());
+                emit(Authenticated(userId: event.user!.uid));
               } else {
                 emit(AwaitingVerification());
               }
@@ -101,7 +101,7 @@ class AuthenticationBloc
                   (_) async {
             if (event.user != null) {
               if (checkEmailVerification()) {
-                emit(Authenticated());
+                emit(Authenticated(userId: event.user!.uid));
               } else {
                 sendVerificationEmail(NoParams());
                 emit(AwaitingVerification());

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/company_profile/data/models/company_model.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
@@ -15,6 +16,7 @@ import '../../../domain/entities/company_users.dart';
 part 'company_profile_event.dart';
 part 'company_profile_state.dart';
 
+@injectable
 class CompanyProfileBloc
     extends Bloc<CompanyProfileEvent, CompanyProfileState> {
   late StreamSubscription streamSubscription;
@@ -30,7 +32,7 @@ class CompanyProfileBloc
     required this.updateCompany,
     required this.fetchAllCompanies,
     required this.getCompanyById,
-  }) : super(Empty()) {
+  }) : super(EmptyCompanyProfileState()) {
     streamSubscription = authenticationBloc.stream.listen(
       (state) {},
     );

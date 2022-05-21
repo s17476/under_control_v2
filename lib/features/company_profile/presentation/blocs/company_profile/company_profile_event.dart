@@ -15,11 +15,7 @@ class AddCompanyEvent extends CompanyProfileEvent {
   final Company company;
 }
 
-class UpdateCompanyEvent extends CompanyProfileEvent {
-  UpdateCompanyEvent({required this.company}) : super([company]);
-
-  final Company company;
-}
+class FetchAllCompaniesEvent extends CompanyProfileEvent {}
 
 class GetCompanyByIdEvent extends CompanyProfileEvent {
   final String id;
@@ -28,4 +24,8 @@ class GetCompanyByIdEvent extends CompanyProfileEvent {
   }) : super([id]);
 }
 
-class FetchAllCompaniesEvent extends CompanyProfileEvent {}
+class UpdateCompanyEvent extends CompanyProfileEvent {
+  UpdateCompanyEvent({required this.company}) : super([company]);
+
+  final Company company;
+}

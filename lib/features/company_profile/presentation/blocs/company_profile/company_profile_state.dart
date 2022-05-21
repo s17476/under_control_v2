@@ -9,9 +9,14 @@ abstract class CompanyProfileState extends Equatable {
   List<Object> get props => [properties];
 }
 
-class Empty extends CompanyProfileState {}
+class EmptyCompanyProfileState extends CompanyProfileState {}
 
-class Loading extends CompanyProfileState {}
+class Error extends CompanyProfileState {
+  final String message;
+  Error({
+    required this.message,
+  }) : super([message]);
+}
 
 class Loaded extends CompanyProfileState {
   final CompanyUsers companyUsers;
@@ -22,9 +27,4 @@ class Loaded extends CompanyProfileState {
   }) : super([company, companyUsers]);
 }
 
-class Error extends CompanyProfileState {
-  final String message;
-  Error({
-    required this.message,
-  }) : super([message]);
-}
+class Loading extends CompanyProfileState {}

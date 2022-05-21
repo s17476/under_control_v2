@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
@@ -7,6 +8,7 @@ import 'package:under_control_v2/features/user_profile/data/models/user_profile_
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 import 'package:under_control_v2/features/user_profile/domain/repositories/user_profile_repository.dart';
 
+@LazySingleton(as: UserProfileRepository)
 class UserProfileRepositoryImpl extends UserProfileRepository {
   final FirebaseFirestore firebaseFirestore;
 
