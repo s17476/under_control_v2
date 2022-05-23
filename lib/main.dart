@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/user_profile/presentation/pages/add_user_profile_page.dart';
 
+import 'features/core/themes/themes.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
 import 'features/authentication/presentation/pages/email_confirmation_page.dart';
-import 'features/core/constants/app_colors.dart';
 import 'features/core/presentation/pages/error_page.dart';
 import 'features/core/presentation/pages/home_page.dart';
+import 'features/core/presentation/pages/loading_page.dart';
 import 'features/core/utils/custom_page_transition.dart';
 import 'features/core/utils/material_color_generator.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
-
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import 'features/user_profile/presentation/pages/add_user_profile_page.dart';
 import 'firebase_options.dart';
 import 'injection.dart';
 
@@ -28,7 +27,6 @@ void main() async {
   await configureInjection();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
-    // statusBarIconBrightness: Brightness.dark,
     systemNavigationBarColor: Colors.black,
     systemNavigationBarIconBrightness: Brightness.dark,
   ));
@@ -53,26 +51,7 @@ class App extends StatelessWidget
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'UnderControl',
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: createMaterialColor(AppColors.greenControl),
-          drawerTheme: const DrawerThemeData(
-            backgroundColor: AppColors.darkBackground,
-          ),
-          scaffoldBackgroundColor: AppColors.darkScaffoldBackground,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: AppColors.darkAppBarBackground,
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              onPrimary: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              minimumSize: const Size(double.infinity, 48),
-            ),
-          ),
-        ),
+        theme: Themes().darkTheme(),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             if (state is Authenticated) {
@@ -82,6 +61,8 @@ class App extends StatelessWidget
                     return const HomePage();
                   } else if (state is UserProfileError) {
                     return const AddUserProfilePage();
+                  } else if (state is Loading) {
+                    return const LoadingPage();
                   } else {
                     return ErrorPage();
                   }

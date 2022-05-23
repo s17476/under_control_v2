@@ -6,6 +6,7 @@ class UserProfileModel extends UserProfile {
     required String firstName,
     required String lastName,
     required String email,
+    required String phoneNumber,
     required String avatarUrl,
     required List<String> userGroups,
     required List<String> locations,
@@ -19,6 +20,7 @@ class UserProfileModel extends UserProfile {
           firstName: firstName,
           lastName: lastName,
           email: email,
+          phoneNumber: phoneNumber,
           avatarUrl: avatarUrl,
           userGroups: userGroups,
           locations: locations,
@@ -34,6 +36,7 @@ class UserProfileModel extends UserProfile {
     String? firstName,
     String? lastName,
     String? email,
+    String? phoneNumber,
     String? avatarUrl,
     List<String>? userGroups,
     List<String>? locations,
@@ -48,6 +51,7 @@ class UserProfileModel extends UserProfile {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       userGroups: userGroups ?? this.userGroups,
       locations: locations ?? this.locations,
@@ -65,6 +69,7 @@ class UserProfileModel extends UserProfile {
     result.addAll({'firstName': firstName});
     result.addAll({'lastName': lastName});
     result.addAll({'email': email});
+    result.addAll({'phoneNumber': phoneNumber});
     result.addAll({'avatarUrl': avatarUrl});
     result.addAll({'userGroups': userGroups});
     result.addAll({'locations': locations});
@@ -83,6 +88,7 @@ class UserProfileModel extends UserProfile {
       firstName: map['firstName'] ?? '',
       lastName: map['lastName'] ?? '',
       email: map['email'] ?? '',
+      phoneNumber: map['phoneNumber'] ?? '',
       avatarUrl: map['avatarUrl'] ?? '',
       userGroups: List<String>.from(map['userGroups']),
       locations: List<String>.from(map['locations']),

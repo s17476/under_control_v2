@@ -25,6 +25,7 @@ void main() {
     firstName: 'firstName',
     lastName: 'lastName',
     email: 'email',
+    phoneNumber: 'phoneNumber',
     avatarUrl: 'avatarUrl',
     userGroups: ['userGroups'],
     locations: ['locations'],

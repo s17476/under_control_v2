@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/main.dart';
 
 import '../../utils/size_config.dart';
 

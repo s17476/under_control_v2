@@ -75,5 +75,53 @@
     "main_drawer_signout": "Signout",
     "@main_drawer_signout": {
       "description": "Main drawer signout button"
+    },
+    "user_profile_add_user_signout": "Signout",
+    "@user_profile_add_user_signout": {
+      "description": "Add user page signout button"
+    },
+    "user_profile_add_user_next": "Next",
+    "@user_profile_add_user_next": {
+      "description": "Add user page next button"
+    },
+    "user_profile_add_user_welcome": "Welcome!",
+    "@user_profile_add_user_welcome": {
+      "description": "Add user page welcome text"
+    },
+    "user_profile_add_user_personal_data_info": "In the next few steps you will complete your personal data. The information you provide is visible only to you and your colleagues. UnderControl does not share collected data with third parties.",
+    "@user_profile_add_user_personal_data_info": {
+      "description": "Add user page info about personal data text"
+    },
+    "user_profile_add_user_personal_data_back": "Back",
+    "@user_profile_add_user_personal_data_back": {
+      "description": "Add user page info about personal back button"
+    },
+    "user_profile_add_user_personal_data_first_name": "First name",
+    "@user_profile_add_user_personal_data_first_name": {
+      "description": "Add user page info about personal first name field"
+    },
+    "user_profile_add_user_personal_data_last_name": "Last name",
+    "@user_profile_add_user_personal_data_last_name": {
+      "description": "Add user page info about personal last name field"
+    },
+    "user_profile_add_user_personal_data_phone_number": "Phone number",
+    "@user_profile_add_user_personal_data_phone_number": {
+      "description": "Add user page info about personal phone number field"
+    },
+    "user_profile_add_user_personal_data_take_photo_btn": "Take a photo",
+    "@user_profile_add_user_personal_data_take_photo_btn": {
+      "description": "Add user page info about personal take a photo button"
+    },
+    "user_profile_add_user_personal_data_gallery": "Choose from gallery",
+    "@user_profile_add_user_personal_data_gallery": {
+      "description": "Add user page info about personal choose from gallery button"
+    },
+    "user_profile_add_user_personal_data_save": "Save",
+    "@user_profile_add_user_personal_data_save": {
+      "description": "Add user page info about personal save button"
+    },
+    "user_profile_add_user_image_pisker_error": "Error occures while picking image",
+    "@user_profile_add_user_image_pisker_error": {
+      "description": "Add user page image picker - error message"
     }
 }

@@ -1,5 +1,6 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
+
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -9,11 +10,8 @@ import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/add_user.dart';
-import 'package:under_control_v2/features/user_profile/domain/usecases/approve_ueer.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/assign_user_to_company.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/get_user_by_id.dart';
-import 'package:under_control_v2/features/user_profile/domain/usecases/reject_user.dart';
-import 'package:under_control_v2/features/user_profile/domain/usecases/suspend_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
@@ -67,6 +65,7 @@ void main() {
         firstName: 'firstName',
         lastName: 'lastName',
         email: 'email',
+        phoneNumber: 'phoneNumber',
         avatarUrl: 'avatarUrl',
         userGroups: ['userGroups'],
         locations: ['locations'],
@@ -85,6 +84,7 @@ void main() {
     firstName: 'firstName',
     lastName: 'lastName',
     email: 'email',
+    phoneNumber: 'phoneNumber',
     avatarUrl: '',
     userGroups: [''],
     locations: [''],
@@ -107,7 +107,7 @@ void main() {
       'should emit [UserProfileError] when usecase returns [UnsuspectedFailure]',
       build: () => userProfileBloc,
       act: (UserProfileBloc bloc) async {
-        bloc.add(FetchUserByIdEvent(userId: ''));
+        bloc.add(GetUserByIdEvent(userId: ''));
         when(() => mockGetUserById(any()))
             .thenAnswer((_) async => const Left(UnsuspectedFailure()));
       },
@@ -120,7 +120,7 @@ void main() {
       'should emit [DatabaseError] when usecase returns [DatabaseError]',
       build: () => userProfileBloc,
       act: (UserProfileBloc bloc) async {
-        bloc.add(FetchUserByIdEvent(userId: ''));
+        bloc.add(GetUserByIdEvent(userId: ''));
         when(() => mockGetUserById(any()))
             .thenAnswer((_) async => const Left(DatabaseFailure()));
       },
@@ -133,7 +133,7 @@ void main() {
       'should emit [NoCompany] when usecase returns [UserProfile] and companyId is empty',
       build: () => userProfileBloc,
       act: (UserProfileBloc bloc) async {
-        bloc.add(FetchUserByIdEvent(userId: ''));
+        bloc.add(GetUserByIdEvent(userId: ''));
         when(() => mockGetUserById(any())).thenAnswer(
           (_) async => const Right(tUserProfileModel),
         );
@@ -147,7 +147,7 @@ void main() {
       'should emit [NotApproved] when usecase returns [UserProfile], companyId is not empty and approved is false',
       build: () => userProfileBloc,
       act: (UserProfileBloc bloc) async {
-        bloc.add(FetchUserByIdEvent(userId: ''));
+        bloc.add(GetUserByIdEvent(userId: ''));
         when(() => mockGetUserById(any())).thenAnswer(
           (_) async => Right(
             tUserProfileModel.copyWith(companyId: 'companyId'),
@@ -167,7 +167,7 @@ void main() {
       'should emit [Rejected] when usecase returns [UserProfile], companyId is not empty, approved is false and rejected is true',
       build: () => userProfileBloc,
       act: (UserProfileBloc bloc) async {
-        bloc.add(FetchUserByIdEvent(userId: ''));
+        bloc.add(GetUserByIdEvent(userId: ''));
         when(() => mockGetUserById(any())).thenAnswer(
           (_) async => Right(
             tUserProfileModel.copyWith(companyId: 'companyId', rejected: true),
@@ -188,7 +188,7 @@ void main() {
       'should emit [Suspended] when usecase returns [UserProfile], companyId is not empty, approved is false and suspended is true',
       build: () => userProfileBloc,
       act: (UserProfileBloc bloc) async {
-        bloc.add(FetchUserByIdEvent(userId: ''));
+        bloc.add(GetUserByIdEvent(userId: ''));
         when(() => mockGetUserById(any())).thenAnswer(
           (_) async => Right(
             tUserProfileModel.copyWith(companyId: 'companyId', suspended: true),
@@ -209,7 +209,7 @@ void main() {
       'should emit [Approved] when usecase returns [UserProfile], companyId is not empty, approved is true',
       build: () => userProfileBloc,
       act: (UserProfileBloc bloc) async {
-        bloc.add(FetchUserByIdEvent(userId: ''));
+        bloc.add(GetUserByIdEvent(userId: ''));
         when(() => mockGetUserById(any())).thenAnswer(
           (_) async => Right(
             tUserProfileModel.copyWith(companyId: 'companyId', approved: true),

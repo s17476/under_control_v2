@@ -36,7 +36,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     streamSubscription = authenticationBloc.stream.listen(
       (state) {
         if (state is Authenticated) {
-          add(FetchUserByIdEvent(userId: state.userId));
+          add(GetUserByIdEvent(userId: state.userId));
         }
       },
     );
@@ -96,7 +96,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
       },
     );
 
-    on<FetchUserByIdEvent>((event, emit) async {
+    on<GetUserByIdEvent>((event, emit) async {
       emit(Loading());
       final failureOrUserProfile = await getUserById(event.userId);
       failureOrUserProfile.fold(

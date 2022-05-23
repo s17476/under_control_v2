@@ -35,10 +35,10 @@ class AssignToCompanyEvent extends UserProfileEvent {
   }) : super([userProfile, companyId]);
 }
 
-class FetchUserByIdEvent extends UserProfileEvent {
+class GetUserByIdEvent extends UserProfileEvent {
   final String userId;
 
-  FetchUserByIdEvent({
+  GetUserByIdEvent({
     required this.userId,
   }) : super([userId]);
 }

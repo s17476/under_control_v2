@@ -17,5 +17,17 @@
     "email_confirmation_failure_message": "Błąd podczas wysyłania emaila weryfikującego adres email",
     "email_confirmation_resend_button": "Wyślij email weryfikujący ponownie",
     "email_confirmation_signin_again": "Zaloguj ponownie",
-    "main_drawer_signout": "Wyloguj"
+    "main_drawer_signout": "Wyloguj",
+    "user_profile_add_user_signout": "Wyloguj",
+    "user_profile_add_user_next": "Dalej",
+    "user_profile_add_user_welcome": "Witaj!",
+    "user_profile_add_user_personal_data_info": "W następnych kilku krokach uzupełnisz swoje dane personalne. Informacje które podasz widoczne są tylko dla ciebie i twoich współpracowników. UnderControl nie udostępnia gromadzonych danych podmiotom trzecim.",
+    "user_profile_add_user_personal_data_back": "Wstecz",
+    "user_profile_add_user_personal_data_first_name": "Imię",
+    "user_profile_add_user_personal_data_last_name": "Nazwisko",
+    "user_profile_add_user_personal_data_phone_number": "Numer telefonu",
+    "user_profile_add_user_personal_data_take_photo_btn": "Zrób zdjęcie",
+    "user_profile_add_user_personal_data_gallery": "Wybierz z galerii",
+    "user_profile_add_user_personal_data_save": "Zapisz",
+    "user_profile_add_user_image_pisker_error": "Wystąpił błąd podczas dodawania obrazu"
 }

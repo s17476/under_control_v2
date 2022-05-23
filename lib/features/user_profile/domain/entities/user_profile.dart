@@ -5,6 +5,7 @@ class UserProfile extends Equatable {
   final String firstName;
   final String lastName;
   final String email;
+  final String phoneNumber;
   final String avatarUrl;
   final List<String> userGroups;
   final List<String> locations;
@@ -19,6 +20,7 @@ class UserProfile extends Equatable {
     required this.firstName,
     required this.lastName,
     required this.email,
+    required this.phoneNumber,
     required this.avatarUrl,
     required this.userGroups,
     required this.locations,
@@ -36,6 +38,7 @@ class UserProfile extends Equatable {
       firstName,
       lastName,
       email,
+      phoneNumber,
       avatarUrl,
       userGroups,
       locations,
@@ -49,6 +52,6 @@ class UserProfile extends Equatable {
 
   @override
   String toString() {
-    return 'UserProfile(id: $id, firstName: $firstName, lastName: $lastName, email: $email, avatarUrl: $avatarUrl, userGroups: $userGroups, locations: $locations, companyId: $companyId, approved: $approved, rejected: $rejected, suspended: $suspended, administrator: $administrator)';
+    return 'UserProfile(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phoneNumber: $phoneNumber, avatarUrl: $avatarUrl, userGroups: $userGroups, locations: $locations, companyId: $companyId, approved: $approved, rejected: $rejected, suspended: $suspended, administrator: $administrator)';
   }
 }
