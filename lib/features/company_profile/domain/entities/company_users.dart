@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import 'company_user.dart';
-
 class CompanyUsers extends Equatable {
-  final List<CompanyUser> allUsers;
+  final Stream allUsers;
 
   const CompanyUsers({
     required this.allUsers,

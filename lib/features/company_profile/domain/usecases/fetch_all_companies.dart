@@ -1,22 +1,21 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/companies.dart';
 
-import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
-import 'package:under_control_v2/features/company_profile/domain/repositories/company_repository.dart';
-import 'package:under_control_v2/features/core/error/failures.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import '../entities/companies.dart';
+import '../repositories/company_management_repository.dart';
+import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
 
 @lazySingleton
 class FetchAllCompanies extends FutureUseCase<Companies, NoParams> {
-  final CompanyRepository companyRepository;
+  final CompanyManagementRepository companyManagementRepository;
 
   FetchAllCompanies({
-    required this.companyRepository,
+    required this.companyManagementRepository,
   });
 
   @override
   Future<Either<Failure, Companies>> call(NoParams params) async {
-    return companyRepository.fetchAllCompanies();
+    return companyManagementRepository.fetchAllCompanies();
   }
 }

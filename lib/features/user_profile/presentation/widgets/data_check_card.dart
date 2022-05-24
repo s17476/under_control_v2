@@ -9,22 +9,17 @@ import '../../../core/utils/size_config.dart';
 class DataCheckCard extends StatelessWidget with ResponsiveSize {
   const DataCheckCard({
     Key? key,
-    required this.pageController,
     required this.firstNameTexEditingController,
     required this.lastNameTexEditingController,
     required this.phoneNumberTexEditingController,
     this.image,
-    required this.addUser,
   }) : super(key: key);
 
-  final PageController pageController;
   final TextEditingController firstNameTexEditingController;
   final TextEditingController lastNameTexEditingController;
   final TextEditingController phoneNumberTexEditingController;
 
   final File? image;
-
-  final VoidCallback addUser;
 
   @override
   Widget build(BuildContext context) {

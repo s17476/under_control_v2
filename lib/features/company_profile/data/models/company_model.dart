@@ -12,6 +12,7 @@ class CompanyModel extends Company {
     required String phoneNumber,
     required String email,
     required String homepage,
+    required String logo,
     required DateTime joinDate,
   }) : super(
           id: id,
@@ -24,6 +25,7 @@ class CompanyModel extends Company {
           phoneNumber: phoneNumber,
           email: email,
           homepage: homepage,
+          logo: logo,
           joinDate: joinDate,
         );
 
@@ -38,6 +40,7 @@ class CompanyModel extends Company {
         phoneNumber: '',
         email: '',
         homepage: '',
+        logo: '',
         joinDate: DateTime.now(),
       );
 
@@ -52,6 +55,7 @@ class CompanyModel extends Company {
     String? phoneNumber,
     String? email,
     String? homepage,
+    String? logo,
     DateTime? joinDate,
   }) {
     return CompanyModel(
@@ -65,6 +69,7 @@ class CompanyModel extends Company {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       email: email ?? this.email,
       homepage: homepage ?? this.homepage,
+      logo: logo ?? this.logo,
       joinDate: joinDate ?? this.joinDate,
     );
   }
@@ -81,6 +86,7 @@ class CompanyModel extends Company {
     result.addAll({'phoneNumber': phoneNumber});
     result.addAll({'email': email});
     result.addAll({'homepage': homepage});
+    result.addAll({'logo': logo});
     result.addAll({'joinDate': joinDate.toIso8601String()});
 
     return result;
@@ -98,6 +104,7 @@ class CompanyModel extends Company {
       phoneNumber: map['phoneNumber'] ?? '',
       email: map['email'] ?? '',
       homepage: map['homepage'] ?? '',
+      logo: map['logo'] ?? '',
       joinDate: DateTime.parse(map['joinDate']),
     );
   }

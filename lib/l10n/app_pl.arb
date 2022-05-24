@@ -33,5 +33,7 @@
     "input_validation_to_short": "Wprowadzone dane muszą składać się co najmniej z dwóch zanków.",
     "input_validation_name_invalid_format": "Niepoprawny format danych wejściowych. Imię i Nazwisko powinny rozpoczynać się wielką literą i zawierać tylko litery.",
     "input_validation_phone_number": "Numer telefonu musi zawierać minimum 8 cyfr oraz nie może zawierać liter ani znaków specjalnych.",
-    "input_validation_no_avatar": "Wybierz swój awatar."
+    "input_validation_no_avatar": "Wybierz swój awatar.",
+    "assign_company_congratulations": "Gratulacje!",
+    "assign_company_info": "Udało ci się utworzyć profil użytkownika. Teraz wybierz organizację dla której pracujesz z listy na następnej stronie, lub dodaj nową."
 }

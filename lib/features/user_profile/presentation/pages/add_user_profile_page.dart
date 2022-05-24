@@ -85,27 +85,21 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
   @override
   Widget build(BuildContext context) {
     pages = [
-      WelcomeCard(
-        pageController: pageController,
-      ),
+      const WelcomeCard(),
       PersonalDataCard(
-        pageController: pageController,
         firstNameTexEditingController: firstNameTexEditingController,
         lastNameTexEditingController: lastNameTexEditingController,
         phoneNumberTexEditingController: phoneNumberTexEditingController,
       ),
       AvatarCard(
-        pageController: pageController,
         setAvatar: setAvatar,
         image: userAvatar,
       ),
       DataCheckCard(
-        pageController: pageController,
         firstNameTexEditingController: firstNameTexEditingController,
         lastNameTexEditingController: lastNameTexEditingController,
         phoneNumberTexEditingController: phoneNumberTexEditingController,
         image: userAvatar,
-        addUser: addUser,
       )
     ];
     return Scaffold(

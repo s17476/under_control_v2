@@ -5,8 +5,7 @@ import 'package:under_control_v2/features/company_profile/data/models/company_mo
 import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
 import 'package:under_control_v2/features/company_profile/domain/repositories/company_repository.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/get_company_by_id.dart';
-import 'package:under_control_v2/features/company_profile/domain/usecases/update_company.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/core/error/failures.dart';
 
 class MockCompanyRepository extends Mock implements CompanyRepository {}
 
@@ -25,6 +24,7 @@ void main() {
     phoneNumber: 'phoneNumber',
     email: 'email',
     homepage: 'homepage',
+    logo: 'logo',
     joinDate: DateTime.now(),
   );
 
@@ -41,6 +41,7 @@ void main() {
         phoneNumber: 'phoneNumber',
         email: 'email',
         homepage: 'homepage',
+        logo: 'logo',
         joinDate: DateTime.now(),
       ),
     );
@@ -61,10 +62,11 @@ void main() {
         () => mockCompanyRepository.getCompanyById(any()),
       ).thenAnswer((_) async => Right(tCompanyModel));
       // act
-      await usecase('id');
+      final result = await usecase('id');
       // assert
       verify(() => mockCompanyRepository.getCompanyById('id'));
       verifyNoMoreInteractions(mockCompanyRepository);
+      expect(result, isA<Right<Failure, Company>>());
     },
   );
 }

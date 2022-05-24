@@ -1,235 +1,163 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/company_profile/data/models/company_model.dart';
-import 'package:under_control_v2/features/company_profile/data/models/company_user_model.dart';
-import 'package:under_control_v2/features/company_profile/data/models/company_users_model.dart';
+import 'package:under_control_v2/features/company_profile/data/repositories/company_management_repository_impl.dart';
 import 'package:under_control_v2/features/company_profile/data/repositories/company_repository_impl.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/companies.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company_users.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
-import 'package:under_control_v2/features/core/network/network_info.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
-// class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
-
-class MockNetworkInfo extends Mock implements NetworkInfo {}
+class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
 void main() {
-  final dateTime = DateTime.now();
-
   late FakeFirebaseFirestore fakeFirebaseFirestore;
-  late MockNetworkInfo mockNetworkInfo;
   late CompanyRepositoryImpl repository;
+  late CompanyRepositoryImpl badRepository;
+  late MockFirebaseFirestore badFirebaseFirestoreInstance;
   late CollectionReference mockCollectionReference;
 
   setUp(() {
     fakeFirebaseFirestore = FakeFirebaseFirestore();
-    mockNetworkInfo = MockNetworkInfo();
     repository = CompanyRepositoryImpl(
       firebaseFirestore: fakeFirebaseFirestore,
-      networkInfo: mockNetworkInfo,
+    );
+    badFirebaseFirestoreInstance = MockFirebaseFirestore();
+    badRepository = CompanyRepositoryImpl(
+      firebaseFirestore: badFirebaseFirestoreInstance,
     );
     mockCollectionReference = fakeFirebaseFirestore.collection('companies');
   });
 
-  group('device is offline', () {
-    setUp(() {
-      when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
-    });
+  final tCompany = CompanyModel.initial();
 
-    final tCompanyModel = CompanyModel(
-      id: 'id',
-      name: 'name',
-      address: 'address',
-      postCode: 'postCode',
-      city: 'city',
-      country: 'country',
-      vatNumber: 'vatNumber',
-      phoneNumber: 'phoneNumber',
-      email: 'email',
-      homepage: 'homepage',
-      joinDate: dateTime,
-    );
-
+  group('successful database response', () {
     test(
-      'should check if device is offline',
+      'should return [Company] when getCompanyById is called',
       () async {
+        // arrange
+        final companyReferance =
+            await mockCollectionReference.add(tCompany.toMap());
         // act
-        await repository.fetchAllCompanies();
+        final result = await repository.getCompanyById(companyReferance.id);
         // assert
-        verify(() => mockNetworkInfo.isConnected);
+        expect(result, isA<Right<Failure, Company>>());
       },
     );
 
     test(
-      'should return [NetworkFailure] if called fetchAllCompanies method',
+      'should return [VoidResult] when updateCompany is called',
       () async {
+        // arrange
+        final companyReferance =
+            await mockCollectionReference.add(tCompany.toMap());
         // act
-        final result = await repository.fetchAllCompanies();
+        final result = await repository
+            .updateCompany(tCompany.copyWith(id: companyReferance.id));
         // assert
-        expect(result, const Left(NetworkFailure()));
+        expect(result, isA<Right<Failure, VoidResult>>());
       },
     );
 
     test(
-      'should return [NetworkFailure] if called getCompanyById method',
+      'should return [CompanyUsers] when fetchAllCompanyUsers is called',
       () async {
+        // arrange
+        final companyReferance =
+            await mockCollectionReference.add(tCompany.toMap());
         // act
-        final result = await repository.getCompanyById('');
+        final result =
+            await repository.fetchAllCompanyUsers(companyReferance.id);
         // assert
-        expect(result, const Left(NetworkFailure()));
-      },
-    );
-
-    test(
-      'should return [NetworkFailure] if called addCompany method',
-      () async {
-        // act
-        final result = await repository.addCompany(tCompanyModel);
-        // assert
-        expect(result, const Left(NetworkFailure()));
-      },
-    );
-
-    test(
-      'should return [NetworkFailure] if called updateCompany method',
-      () async {
-        // act
-        final result = await repository.updateCompany(tCompanyModel);
-        // assert
-        expect(result, const Left(NetworkFailure()));
-      },
-    );
-
-    test(
-      'should return [NetworkFailure] if called fetchAllCompanyUsers method',
-      () async {
-        // act
-        final result = await repository.fetchAllCompanyUsers('');
-        // assert
-        expect(result, const Left(NetworkFailure()));
+        expect(result, isA<Right<Failure, CompanyUsers>>());
       },
     );
   });
 
-  group('device is online', () {
-    late String companyId;
-
-    CompanyModel tCompanyModel = CompanyModel(
-      id: 'id',
-      name: 'name',
-      address: 'address',
-      postCode: 'postCode',
-      city: 'city',
-      country: 'country',
-      vatNumber: 'vatNumber',
-      phoneNumber: 'phoneNumber',
-      email: 'email',
-      homepage: 'homepage',
-      joinDate: dateTime,
+  group('unsuccessful database response', () {
+    test(
+      'should return [DatabaseFailure] when getCompanyById is called',
+      () async {
+        // arrange
+        when(() => badFirebaseFirestoreInstance.collection(any()))
+            .thenThrow(FirebaseException(plugin: 'test'));
+        // act
+        final result = await badRepository.getCompanyById('');
+        // assert
+        expect(result, isA<Left<Failure, Company>>());
+      },
     );
 
-    CompanyUserModel tCompanyUserModel = const CompanyUserModel(
-      id: 'id',
-      firstName: 'firstName',
-      lastName: 'lastName',
-      avatarUrl: 'avatarUrl',
+    test(
+      'should return [DatabaseFailure] when updateCompany is called',
+      () async {
+        // arrange
+        when(() => badFirebaseFirestoreInstance.collection(any()))
+            .thenThrow(FirebaseException(plugin: 'test'));
+        // act
+        final result = await badRepository.updateCompany(tCompany);
+        // assert
+        expect(result, isA<Left<Failure, VoidResult>>());
+      },
     );
 
-    setUp(() async {
-      when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+    test(
+      'should return [DatabaseFailure] when fetchAllCompanyUsers is called',
+      () async {
+        // arrange
+        when(() => badFirebaseFirestoreInstance.collection(any()))
+            .thenThrow(FirebaseException(plugin: 'test'));
+        // act
+        final result = await badRepository.fetchAllCompanyUsers('');
+        // assert
+        expect(result, isA<Left<Failure, CompanyUsers>>());
+      },
+    );
+  });
 
-      // adds a company with known document id to fake Firebase Firestore
-      final DocumentReference documentReferance =
-          await mockCollectionReference.add(tCompanyModel.toMap());
-      companyId = documentReferance.id;
-      tCompanyModel = tCompanyModel.copyWith(id: companyId);
+  group('unsuspected failure', () {
+    test(
+      'should return [unsuspectedFailure] when getCompanyById is called',
+      () async {
+        // arrange
+        when(() => badFirebaseFirestoreInstance.collection(any()))
+            .thenThrow(Exception());
+        // act
+        final result = await badRepository.getCompanyById('');
+        // assert
+        expect(result, isA<Left<Failure, Company>>());
+      },
+    );
 
-      // adds a user with known company id to fake Firebase Firestore
-      final Map<String, dynamic> tUser = tCompanyUserModel.toMap();
-      tUser.addAll({'companyId': companyId});
-      fakeFirebaseFirestore.collection('users').add(tUser);
-    });
+    test(
+      'should return [UnsuspectedFailure] when updateCompany is called',
+      () async {
+        // arrange
+        when(() => badFirebaseFirestoreInstance.collection(any()))
+            .thenThrow(Exception());
+        // act
+        final result = await badRepository.updateCompany(tCompany);
+        // assert
+        expect(result, isA<Left<Failure, VoidResult>>());
+      },
+    );
 
-    group('successful database response', () {
-      test(
-        'should check if device is online',
-        () async {
-          // act
-          await repository.fetchAllCompanies();
-          // assert
-          verify(() => mockNetworkInfo.isConnected);
-        },
-      );
-
-      test(
-        'should return [Companies] if called fetchAllCompanies method',
-        () async {
-          // act
-          final result = await repository.fetchAllCompanies();
-          // assert
-          expect(
-              result,
-              equals(
-                  Right<Failure, Companies>(Companies(data: [tCompanyModel]))));
-        },
-      );
-
-      test(
-        'should return [Company] if called getCompanyById method',
-        () async {
-          // act
-          final result = await repository.getCompanyById(companyId);
-          // assert
-          expect(result, Right<Failure, Company>(tCompanyModel));
-        },
-      );
-
-      test(
-        'should return [VoidResult] if called updateCompany method',
-        () async {
-          // act
-          final result = await repository.updateCompany(tCompanyModel);
-
-          // assert
-          expect(result, Right<Failure, VoidResult>(VoidResult()));
-        },
-      );
-
-      test(
-        'should return from database all users with concrete companyId',
-        () async {
-          // act
-          final result = await repository.fetchAllCompanyUsers(companyId);
-          // assert
-          expect(
-            result,
-            Right<Failure, CompanyUsers>(
-              CompanyUsersModel(allUsers: [tCompanyUserModel]),
-            ),
-          );
-        },
-      );
-
-      test(
-        'should return document id [String] if called addCompany method',
-        () async {
-          // act
-          fakeFirebaseFirestore.collection('companies').doc(companyId).delete();
-          final result = await repository.addCompany(tCompanyModel);
-          final snapshot =
-              (await fakeFirebaseFirestore.collection('companies').get())
-                  .docs
-                  .first;
-
-          // assert
-          expect(result, Right<Failure, String>(snapshot.id));
-        },
-      );
-    });
+    test(
+      'should return [UnsuspectedFailure] when fetchAllCompanyUsers is called',
+      () async {
+        // arrange
+        when(() => badFirebaseFirestoreInstance.collection(any()))
+            .thenThrow(Exception());
+        // act
+        final result = await badRepository.fetchAllCompanyUsers('');
+        // assert
+        expect(result, isA<Left<Failure, CompanyUsers>>());
+      },
+    );
   });
 }

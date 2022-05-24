@@ -16,6 +16,7 @@ void main() {
     phoneNumber: 'phoneNumber',
     email: 'email',
     homepage: 'homepage',
+    logo: 'logo',
     joinDate: dateTime,
   );
   final Map<String, dynamic> tCompanyModelMap = {
@@ -28,6 +29,7 @@ void main() {
     'phoneNumber': 'phoneNumber',
     'email': 'email',
     'homepage': 'homepage',
+    'logo': 'logo',
     'joinDate': dateTime.toIso8601String()
   };
 

@@ -5,5 +5,5 @@ import '../../domain/entities/companies.dart';
 class CompaniesModel extends Companies {
   const CompaniesModel({
     required List<Company> data,
-  }) : super(data: data);
+  }) : super(allCompanies: data);
 }

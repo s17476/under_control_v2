@@ -6,6 +6,7 @@ import 'package:under_control_v2/features/company_profile/domain/entities/compan
 import 'package:under_control_v2/features/company_profile/domain/repositories/company_repository.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/add_company.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/update_company.dart';
+import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
 class MockCompanyRepository extends Mock implements CompanyRepository {}
@@ -25,6 +26,7 @@ void main() {
     phoneNumber: 'phoneNumber',
     email: 'email',
     homepage: 'homepage',
+    logo: 'logo',
     joinDate: DateTime.now(),
   );
 
@@ -41,6 +43,7 @@ void main() {
         phoneNumber: 'phoneNumber',
         email: 'email',
         homepage: 'homepage',
+        logo: 'logo',
         joinDate: DateTime.now(),
       ),
     );
@@ -61,10 +64,11 @@ void main() {
         () => mockCompanyRepository.updateCompany(any()),
       ).thenAnswer((_) async => Right(VoidResult()));
       // act
-      await usecase(tCompanyModel);
+      final result = await usecase(tCompanyModel);
       // assert
       verify(() => mockCompanyRepository.updateCompany(tCompanyModel));
       verifyNoMoreInteractions(mockCompanyRepository);
+      expect(result, isA<Right<Failure, VoidResult>>());
     },
   );
 }

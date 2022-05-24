@@ -1,10 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/company_user.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company_users.dart';
 import 'package:under_control_v2/features/company_profile/domain/repositories/company_repository.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/fetch_all_company_users.dart';
+import 'package:under_control_v2/features/core/error/failures.dart';
+import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
+import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 
 class MockCompanyRepository extends Mock implements CompanyRepository {}
 
@@ -19,14 +21,13 @@ void main() {
     },
   );
 
-  const tCompanyUser = CompanyUser(
-    id: 'id',
+  final tCompanyUser = UserProfileModel.newUser(
     firstName: 'firstName',
     lastName: 'lastName',
-    avatarUrl: 'avatarUrl',
+    phoneNumber: 'phoneNumber',
   );
 
-  const tCompanyUsers = [tCompanyUser];
+  final tCompanyUsers = [tCompanyUser];
 
   test(
     'should return [CompanyUsers] from repository when fetch all company users usecase is called',
@@ -34,13 +35,14 @@ void main() {
       // arrange
       when(
         () => mockCompanyRepository.fetchAllCompanyUsers(any()),
-      ).thenAnswer(
-          (_) async => const Right(CompanyUsers(allUsers: tCompanyUsers)));
+      ).thenAnswer((_) async =>
+          Right(CompanyUsers(allUsers: Stream.fromIterable(tCompanyUsers))));
       // act
-      await usecase('');
+      final result = await usecase('');
       // assert
       verify(() => mockCompanyRepository.fetchAllCompanyUsers(''));
       verifyNoMoreInteractions(mockCompanyRepository);
+      expect(result, isA<Right<Failure, CompanyUsers>>());
     },
   );
 }

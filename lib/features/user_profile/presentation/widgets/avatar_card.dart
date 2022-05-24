@@ -10,12 +10,9 @@ import '../../../core/utils/size_config.dart';
 class AvatarCard extends StatefulWidget {
   const AvatarCard({
     Key? key,
-    required this.pageController,
     this.image,
     required this.setAvatar,
   }) : super(key: key);
-
-  final PageController pageController;
 
   final File? image;
 

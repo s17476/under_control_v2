@@ -135,10 +135,17 @@
     "input_validation_phone_number": "The telephone number must contain at least 8 digits and cannot contain letters or special characters.",
     "@input_validation_phone_number": {
       "description": "Input validation -phone number badly formated"
-    }
-    ,
+    },
     "input_validation_no_avatar": "Choose avatar your image.",
     "@input_validation_no_avatar": {
       "description": "Input validation - no avatar image choosen"
+    },
+    "assign_company_congratulations": "Congratulations!",
+    "@assign_company_congratulations": {
+      "description": "Assign company page - congratulations text"
+    },
+    "assign_company_info": "You have successfully created a user profile. Now select the organization you are working for from the list on the next page, or add a new one.",
+    "@assign_company_info": {
+      "description": "Assign company page - info text"
     }
 }

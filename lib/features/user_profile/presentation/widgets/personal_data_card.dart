@@ -7,13 +7,11 @@ import '../../../core/utils/size_config.dart';
 class PersonalDataCard extends StatelessWidget with ResponsiveSize {
   const PersonalDataCard({
     Key? key,
-    required this.pageController,
     required this.firstNameTexEditingController,
     required this.lastNameTexEditingController,
     required this.phoneNumberTexEditingController,
   }) : super(key: key);
 
-  final PageController pageController;
   final TextEditingController firstNameTexEditingController;
   final TextEditingController lastNameTexEditingController;
   final TextEditingController phoneNumberTexEditingController;

@@ -1,18 +1,23 @@
+import 'dart:math';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
 import 'package:under_control_v2/features/company_profile/data/models/company_model.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/companies.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
-import 'package:under_control_v2/features/company_profile/domain/repositories/company_repository.dart';
+import 'package:under_control_v2/features/company_profile/domain/repositories/company_management_repository.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/fetch_all_companies.dart';
+import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
-class MockCompanyRepository extends Mock implements CompanyRepository {}
+class MockCompanyManagementRepository extends Mock
+    implements CompanyManagementRepository {}
 
 void main() {
   late FetchAllCompanies usecase;
-  late MockCompanyRepository mockCompanyRepository;
+  late MockCompanyManagementRepository mockCompanyRepository;
 
   final tCompanyModel = CompanyModel(
     id: 'id',
@@ -25,6 +30,7 @@ void main() {
     phoneNumber: 'phoneNumber',
     email: 'email',
     homepage: 'homepage',
+    logo: 'logo',
     joinDate: DateTime.now(),
   );
 
@@ -41,6 +47,7 @@ void main() {
         phoneNumber: 'phoneNumber',
         email: 'email',
         homepage: 'homepage',
+        logo: 'logo',
         joinDate: DateTime.now(),
       ),
     );
@@ -48,8 +55,9 @@ void main() {
 
   setUp(
     () {
-      mockCompanyRepository = MockCompanyRepository();
-      usecase = FetchAllCompanies(companyRepository: mockCompanyRepository);
+      mockCompanyRepository = MockCompanyManagementRepository();
+      usecase =
+          FetchAllCompanies(companyManagementRepository: mockCompanyRepository);
     },
   );
 
@@ -59,12 +67,14 @@ void main() {
       // arrange
       when(
         () => mockCompanyRepository.fetchAllCompanies(),
-      ).thenAnswer((_) async => Right(Companies(data: [tCompanyModel])));
+      ).thenAnswer(
+          (_) async => Right(Companies(allCompanies: [tCompanyModel])));
       // act
-      await usecase(NoParams());
+      final result = await usecase(NoParams());
       // assert
       verify(() => mockCompanyRepository.fetchAllCompanies());
       verifyNoMoreInteractions(mockCompanyRepository);
+      expect(result, isA<Right<Failure, Companies>>());
     },
   );
 }

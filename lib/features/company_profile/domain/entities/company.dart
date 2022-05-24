@@ -11,6 +11,7 @@ class Company extends Equatable {
   final String phoneNumber;
   final String email;
   final String homepage;
+  final String logo;
   final DateTime joinDate;
 
   const Company({
@@ -24,6 +25,7 @@ class Company extends Equatable {
     required this.phoneNumber,
     required this.email,
     required this.homepage,
+    required this.logo,
     required this.joinDate,
   });
 
@@ -40,6 +42,7 @@ class Company extends Equatable {
       phoneNumber,
       email,
       homepage,
+      logo,
       joinDate,
     ];
   }

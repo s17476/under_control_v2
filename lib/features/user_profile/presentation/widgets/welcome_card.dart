@@ -6,9 +6,7 @@ import '../../../core/presentation/widgets/logo_widget.dart';
 import '../../../core/utils/size_config.dart';
 
 class WelcomeCard extends StatelessWidget with ResponsiveSize {
-  const WelcomeCard({Key? key, required this.pageController}) : super(key: key);
-
-  final PageController pageController;
+  const WelcomeCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
