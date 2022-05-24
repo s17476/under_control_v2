@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
@@ -24,6 +26,23 @@ class AuthParams extends Equatable {
   List<Object> get props => [email, password];
 }
 
+class AddUserParams extends Equatable {
+  final String firstName;
+  final String lastName;
+  final String phoneNumber;
+  final File? avatar;
+
+  const AddUserParams({
+    required this.firstName,
+    required this.lastName,
+    required this.phoneNumber,
+    required this.avatar,
+  });
+
+  @override
+  List<Object> get props => [firstName, lastName, phoneNumber];
+}
+
 class NoParams extends Equatable {
   @override
   List<Object?> get props => [];
@@ -45,4 +64,17 @@ class AssignParams extends Equatable {
 
   @override
   List<Object> get props => [userId, companyId];
+}
+
+class AvatarParams extends Equatable {
+  final String userId;
+  final File avatar;
+
+  const AvatarParams({
+    required this.userId,
+    required this.avatar,
+  });
+
+  @override
+  List<Object> get props => [userId, avatar];
 }

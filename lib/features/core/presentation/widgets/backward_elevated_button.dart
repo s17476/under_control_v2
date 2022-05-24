@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class BackwardElevatedButton extends StatelessWidget {
   final Function function;
   final IconData icon;
-  final Color? color;
+  final Color color;
   final String child;
   const BackwardElevatedButton({
     Key? key,
     required this.icon,
-    this.color,
+    required this.color,
     required this.child,
     required this.function,
   }) : super(key: key);
@@ -24,11 +24,10 @@ class BackwardElevatedButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon),
-          const SizedBox(width: 8),
+          const SizedBox(width: 4),
           Text(
             child,
           ),
-          const SizedBox(width: 8),
         ],
       ),
       style: ElevatedButton.styleFrom(

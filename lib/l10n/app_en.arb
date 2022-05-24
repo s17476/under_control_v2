@@ -123,5 +123,22 @@
     "user_profile_add_user_image_pisker_error": "Error occures while picking image",
     "@user_profile_add_user_image_pisker_error": {
       "description": "Add user page image picker - error message"
+    },
+    "input_validation_to_short": "Input data must be at least two characters.",
+    "@input_validation_to_short": {
+      "description": "Input validation - input to short"
+    },
+    "input_validation_name_invalid_format": "Invalid input data format. First name and last name should start with a capital letter and contain only letters.",
+    "@input_validation_name_invalid_format": {
+      "description": "Input validation -first or last name badly formated"
+    },
+    "input_validation_phone_number": "The telephone number must contain at least 8 digits and cannot contain letters or special characters.",
+    "@input_validation_phone_number": {
+      "description": "Input validation -phone number badly formated"
+    }
+    ,
+    "input_validation_no_avatar": "Choose avatar your image.",
+    "@input_validation_no_avatar": {
+      "description": "Input validation - no avatar image choosen"
     }
 }

@@ -5,8 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
-import 'backward_elevated_button.dart';
-import 'forward_elevated_button.dart';
 
 class DataCheckCard extends StatelessWidget with ResponsiveSize {
   const DataCheckCard({
@@ -16,6 +14,7 @@ class DataCheckCard extends StatelessWidget with ResponsiveSize {
     required this.lastNameTexEditingController,
     required this.phoneNumberTexEditingController,
     this.image,
+    required this.addUser,
   }) : super(key: key);
 
   final PageController pageController;
@@ -24,6 +23,8 @@ class DataCheckCard extends StatelessWidget with ResponsiveSize {
   final TextEditingController phoneNumberTexEditingController;
 
   final File? image;
+
+  final VoidCallback addUser;
 
   @override
   Widget build(BuildContext context) {
@@ -146,47 +147,6 @@ class DataCheckCard extends StatelessWidget with ResponsiveSize {
                             ]),
                       ),
                     ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Divider(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16.0,
-                    right: 16.0,
-                    bottom: 8.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // signout button
-                      Expanded(
-                        child: BackwardElevatedButton(
-                          function: () => pageController.previousPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeIn,
-                          ),
-                          icon: Icons.arrow_back_ios,
-                          child: AppLocalizations.of(context)!
-                              .user_profile_add_user_personal_data_back,
-                        ),
-                      ),
-                      const SizedBox(width: 48),
-                      // forward button
-                      Expanded(
-                        child: ForwardElevatedButton(
-                          function: () => pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeIn,
-                          ),
-                          icon: Icons.person_add,
-                          child: AppLocalizations.of(context)!
-                              .user_profile_add_user_personal_data_save,
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ],

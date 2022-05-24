@@ -11,10 +11,15 @@ abstract class UserProfileEvent extends Equatable {
 
 class AddUserEvent extends UserProfileEvent {
   final UserProfile userProfile;
+  final File? avatar;
 
   AddUserEvent({
     required this.userProfile,
-  }) : super([userProfile]);
+    required this.avatar,
+  }) : super([
+          userProfile,
+          avatar,
+        ]);
 }
 
 // class ApproveUserEvent extends UserProfileEvent {
@@ -60,7 +65,8 @@ class GetUserByIdEvent extends UserProfileEvent {
 class UpdateUserDataEvent extends UserProfileEvent {
   final UserProfile userProfile;
 
-  UpdateUserDataEvent({
-    required this.userProfile,
-  }) : super([userProfile]);
+  UpdateUserDataEvent({required this.userProfile})
+      : super([
+          userProfile,
+        ]);
 }

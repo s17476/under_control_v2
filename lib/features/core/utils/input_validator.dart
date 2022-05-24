@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
+import '../error/error_messages.dart';
+import '../usecases/usecase.dart';
 import '../error/failures.dart';
 
 @lazySingleton
@@ -14,12 +17,35 @@ class InputValidator {
     if (emailValidationResult != null) {
       return Left(ValidationFailure(message: emailValidationResult));
     }
-    print('emial OK');
     final passwordValidationResult = passwordValidator(password);
     if (passwordValidationResult != null) {
       return Left(ValidationFailure(message: passwordValidationResult));
     }
     return Right(AuthParams(email: email, password: password));
+  }
+
+  Either<Failure, VoidResult> addUserValidator(
+    String firstName,
+    String lastName,
+    String phoneNumber,
+    File? avatar,
+  ) {
+    final firstNameValidationResult = textFieldValidator(firstName);
+    final lastNameValidationResult = textFieldValidator(lastName);
+    if (firstNameValidationResult != null) {
+      return Left(ValidationFailure(message: firstNameValidationResult));
+    }
+    if (lastNameValidationResult != null) {
+      return Left(ValidationFailure(message: lastNameValidationResult));
+    }
+    final phoneNumberValidationResult = phoneNumberFieldValidator(phoneNumber);
+    if (phoneNumberValidationResult != null) {
+      return Left(ValidationFailure(message: phoneNumberValidationResult));
+    }
+    if (avatar == null) {
+      return const Left(ValidationFailure(message: fileIsNull));
+    }
+    return Right(VoidResult());
   }
 
   String? emailValidator(String email) {
@@ -41,6 +67,27 @@ class InputValidator {
       return null;
     } else {
       return 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter and one number';
+    }
+  }
+
+  String? textFieldValidator(String text) {
+    if (text.trim().isEmpty || text.trim().length < 2) {
+      return inputToShort;
+    }
+    final result = RegExp(r'([A-Z][a-zA-Z]+)').hasMatch(text);
+    if (!result) {
+      return inputFormatInvalid;
+    } else {
+      return null;
+    }
+  }
+
+  String? phoneNumberFieldValidator(String number) {
+    final result = RegExp(r'^[0-9\-\+]{8,15}$').hasMatch(number);
+    if (!result) {
+      return phoneNumberFormatInvalid;
+    } else {
+      return null;
     }
   }
 }

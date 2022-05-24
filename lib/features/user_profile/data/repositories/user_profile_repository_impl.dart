@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:under_control_v2/features/core/error/failures.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
-import 'package:under_control_v2/features/user_profile/domain/repositories/user_profile_repository.dart';
+import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
+import '../models/user_profile_model.dart';
+import '../../domain/entities/user_profile.dart';
+import '../../domain/repositories/user_profile_repository.dart';
 
 @LazySingleton(as: UserProfileRepository)
 class UserProfileRepositoryImpl extends UserProfileRepository {
@@ -17,13 +17,13 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
   });
 
   @override
-  Future<Either<Failure, String>> addUser(UserProfile userProfile) async {
+  Future<Either<Failure, VoidResult>> addUser(UserProfile userProfile) async {
     try {
-      final usersReference = firebaseFirestore.collection('users');
+      final usersReference =
+          firebaseFirestore.collection('users').doc(userProfile.id);
       final userMap = (userProfile as UserProfileModel).toMap();
-      final documentReferance = await usersReference.add(userMap);
-      final String generatedUserId = documentReferance.id;
-      return Right(generatedUserId);
+      await usersReference.set(userMap);
+      return Right(VoidResult());
     } on FirebaseException catch (e) {
       return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
     } catch (e) {

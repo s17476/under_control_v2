@@ -15,10 +15,15 @@ class Submitting extends AuthenticationState {}
 
 class Authenticated extends AuthenticationState {
   final String userId;
+  final String email;
 
   Authenticated({
     required this.userId,
-  }) : super([userId]);
+    required this.email,
+  }) : super([
+          userId,
+          email,
+        ]);
 }
 
 class AwaitingVerification extends AuthenticationState {}

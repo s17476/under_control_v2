@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'features/company_profile/presentation/pages/assign_company_page.dart';
 import 'features/core/themes/themes.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
 import 'features/authentication/presentation/pages/email_confirmation_page.dart';
@@ -12,6 +13,7 @@ import 'features/core/presentation/pages/error_page.dart';
 import 'features/core/presentation/pages/home_page.dart';
 import 'features/core/presentation/pages/loading_page.dart';
 import 'features/core/utils/custom_page_transition.dart';
+import 'features/core/utils/error_message_handler.dart';
 import 'features/core/utils/material_color_generator.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -54,22 +56,31 @@ class App extends StatelessWidget
         theme: Themes().darkTheme(),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
+            // user authenticated
             if (state is Authenticated) {
-              return BlocBuilder<UserProfileBloc, UserProfileState>(
+              return BlocConsumer<UserProfileBloc, UserProfileState>(
+                listener: (context, state) {
+                  showSnackBar(state, context);
+                },
                 builder: (context, state) {
-                  if (state is Approved) {
-                    return const HomePage();
-                  } else if (state is UserProfileError) {
-                    return const AddUserProfilePage();
-                  } else if (state is Loading) {
-                    return const LoadingPage();
-                  } else {
-                    return ErrorPage();
+                  switch (state.runtimeType) {
+                    case Approved:
+                      return const HomePage();
+                    case NoUserProfileError:
+                      return const AddUserProfilePage();
+                    case Loading:
+                      return const LoadingPage();
+                    case NoCompany:
+                      return const AssignCompanyPage();
+                    default:
+                      return const ErrorPage();
                   }
                 },
               );
+              // awaiting email berification
             } else if (state is AwaitingVerification) {
               return const EmailConfirmationPage();
+              // user not authenticated
             } else {
               return const AuthenticationPage();
             }

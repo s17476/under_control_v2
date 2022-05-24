@@ -1,9 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../core/presentation/widgets/bottom_navigation.dart';
+import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
+import '../blocs/user_profile/user_profile_bloc.dart';
+import '../../data/models/user_profile_model.dart';
 import '../widgets/avatar_card.dart';
 import '../widgets/data_check_card.dart';
 import '../widgets/personal_data_card.dart';
@@ -17,18 +22,35 @@ class AddUserProfilePage extends StatefulWidget {
 }
 
 class _AddUserProfilePageState extends State<AddUserProfilePage> {
+  final Key formKey = GlobalKey<FormState>();
   final pageController = PageController();
   final firstNameTexEditingController = TextEditingController();
   final lastNameTexEditingController = TextEditingController();
   final phoneNumberTexEditingController = TextEditingController();
-  final String imageUrl = '';
+
   File? userAvatar;
+
+  List<Widget> pages = [];
+
+  void addUser() {
+    final userProfile = UserProfileModel.newUser(
+      firstName: firstNameTexEditingController.text,
+      lastName: lastNameTexEditingController.text,
+      phoneNumber: phoneNumberTexEditingController.text,
+    );
+
+    context.read<UserProfileBloc>().add(
+          AddUserEvent(
+            userProfile: userProfile,
+            avatar: userAvatar,
+          ),
+        );
+  }
 
   void setAvatar(ImageSource souruce) async {
     final picker = ImagePicker();
 
     try {
-      //gets low quality avatar image to improve loading speed
       final pickedFile = await picker.pickImage(
         source: souruce,
         imageQuality: 100,
@@ -62,34 +84,55 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    pages = [
+      WelcomeCard(
+        pageController: pageController,
+      ),
+      PersonalDataCard(
+        pageController: pageController,
+        firstNameTexEditingController: firstNameTexEditingController,
+        lastNameTexEditingController: lastNameTexEditingController,
+        phoneNumberTexEditingController: phoneNumberTexEditingController,
+      ),
+      AvatarCard(
+        pageController: pageController,
+        setAvatar: setAvatar,
+        image: userAvatar,
+      ),
+      DataCheckCard(
+        pageController: pageController,
+        firstNameTexEditingController: firstNameTexEditingController,
+        lastNameTexEditingController: lastNameTexEditingController,
+        phoneNumberTexEditingController: phoneNumberTexEditingController,
+        image: userAvatar,
+        addUser: addUser,
+      )
+    ];
     return Scaffold(
-      body: PageView(
-        controller: pageController,
+      body: Column(
         children: [
-          WelcomeCard(
-            pageController: pageController,
+          Expanded(
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              children: pages,
+            ),
           ),
-          PersonalDataCard(
+          BottomNavigation(
             pageController: pageController,
-            firstNameTexEditingController: firstNameTexEditingController,
-            lastNameTexEditingController: lastNameTexEditingController,
-            phoneNumberTexEditingController: phoneNumberTexEditingController,
+            collectionLenght: pages.length,
+            firstPageBackwardButtonFunction: () =>
+                context.read<AuthenticationBloc>().add(SignoutEvent()),
+            firstPageBackwardButtonLabel:
+                AppLocalizations.of(context)!.user_profile_add_user_signout,
+            firstPageBackwardButtonIconData: Icons.logout,
+            firstPageBackwardButtonColor: Colors.black,
+            lastPageForwardButtonFunction: addUser,
+            lastPageForwardButtonLabel: AppLocalizations.of(context)!
+                .user_profile_add_user_personal_data_save,
+            lastPageForwardButtonIconData: Icons.check,
+            lastPageForwardButtonColor: Theme.of(context).primaryColor,
           ),
-          AvatarCard(
-            pageController: pageController,
-            firstNameTexEditingController: firstNameTexEditingController,
-            lastNameTexEditingController: lastNameTexEditingController,
-            phoneNumberTexEditingController: phoneNumberTexEditingController,
-            setAvatar: setAvatar,
-            image: userAvatar,
-          ),
-          DataCheckCard(
-            pageController: pageController,
-            firstNameTexEditingController: firstNameTexEditingController,
-            lastNameTexEditingController: lastNameTexEditingController,
-            phoneNumberTexEditingController: phoneNumberTexEditingController,
-            image: userAvatar,
-          )
         ],
       ),
     );

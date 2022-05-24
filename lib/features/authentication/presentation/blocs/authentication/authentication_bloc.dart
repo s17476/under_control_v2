@@ -51,7 +51,8 @@ class AuthenticationBloc
           emit(Unauthenticated());
         } else if (event.user != null) {
           if (checkEmailVerification()) {
-            emit(Authenticated(userId: event.user!.uid));
+            emit(Authenticated(
+                userId: event.user!.uid, email: event.user!.email!));
           } else {
             emit(AwaitingVerification());
           }
@@ -77,7 +78,8 @@ class AuthenticationBloc
                   (_) async {
             if (event.user != null) {
               if (checkEmailVerification()) {
-                emit(Authenticated(userId: event.user!.uid));
+                emit(Authenticated(
+                    userId: event.user!.uid, email: event.user!.email!));
               } else {
                 emit(AwaitingVerification());
               }
@@ -101,7 +103,8 @@ class AuthenticationBloc
                   (_) async {
             if (event.user != null) {
               if (checkEmailVerification()) {
-                emit(Authenticated(userId: event.user!.uid));
+                emit(Authenticated(
+                    userId: event.user!.uid, email: event.user!.email!));
               } else {
                 sendVerificationEmail(NoParams());
                 emit(AwaitingVerification());

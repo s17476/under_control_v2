@@ -52,12 +52,12 @@ void main() {
     'successful database response',
     () {
       test(
-        'should return a [String] with user id when addUser is called',
+        'should return a [VoidResult] with user id when addUser is called',
         () async {
           // act
           final result = await repository.addUser(tUserProfile);
           // assert
-          expect(result, isA<Right<Failure, String>>());
+          expect(result, isA<Right<Failure, VoidResult>>());
         },
       );
 
@@ -162,7 +162,7 @@ void main() {
           // act
           final result = await badRepository.addUser(tUserProfile);
           // assert
-          expect(result, isA<Left<Failure, String>>());
+          expect(result, isA<Left<Failure, VoidResult>>());
         },
       );
 
@@ -267,7 +267,7 @@ void main() {
           // act
           final result = await badRepository.addUser(tUserProfile);
           // assert
-          expect(result, isA<Left<Failure, String>>());
+          expect(result, isA<Left<Failure, VoidResult>>());
         },
       );
 

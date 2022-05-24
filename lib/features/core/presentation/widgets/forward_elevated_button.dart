@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class ForwardElevatedButton extends StatelessWidget {
   final Function function;
   final IconData icon;
-  final Color? color;
+  final Color color;
   final String child;
   const ForwardElevatedButton({
     Key? key,
     required this.icon,
-    this.color,
+    required this.color,
     required this.child,
     required this.function,
   }) : super(key: key);
@@ -24,11 +24,10 @@ class ForwardElevatedButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(width: 8),
           Text(
             child,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 4),
           Icon(icon),
         ],
       ),

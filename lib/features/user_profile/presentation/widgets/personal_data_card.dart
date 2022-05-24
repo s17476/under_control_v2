@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'bottom_navigation.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
 
@@ -63,9 +62,11 @@ class PersonalDataCard extends StatelessWidget with ResponsiveSize {
                                   responsiveSizePx(small: 16, medium: 150),
                             ),
                             child: TextFormField(
+                              scrollPadding: const EdgeInsets.only(bottom: 500),
                               controller: firstNameTexEditingController,
                               key: const ValueKey('firstName'),
                               keyboardType: TextInputType.name,
+                              textCapitalization: TextCapitalization.words,
                               // textInputAction: TextInputAction.next,
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(Icons.person),
@@ -98,10 +99,11 @@ class PersonalDataCard extends StatelessWidget with ResponsiveSize {
                                   responsiveSizePx(small: 16, medium: 150),
                             ),
                             child: TextFormField(
+                              scrollPadding: const EdgeInsets.only(bottom: 500),
                               controller: lastNameTexEditingController,
                               key: const ValueKey('lastName'),
                               keyboardType: TextInputType.name,
-                              // textInputAction: TextInputAction.next,
+                              textCapitalization: TextCapitalization.words,
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(Icons.person_outline),
                                 floatingLabelStyle: TextStyle(
@@ -135,6 +137,7 @@ class PersonalDataCard extends StatelessWidget with ResponsiveSize {
                                   responsiveSizePx(small: 16, medium: 150),
                             ),
                             child: TextFormField(
+                              scrollPadding: const EdgeInsets.only(bottom: 500),
                               controller: phoneNumberTexEditingController,
                               key: const ValueKey('phoneNumber'),
                               keyboardType: TextInputType.phone,
@@ -160,12 +163,14 @@ class PersonalDataCard extends StatelessWidget with ResponsiveSize {
                               ),
                             ),
                           ),
+                          const SizedBox(
+                            height: 16,
+                          )
                         ],
                       ),
                     ),
                   ),
                 ),
-                BottomNavigation(pageController: pageController),
               ],
             ),
           ),

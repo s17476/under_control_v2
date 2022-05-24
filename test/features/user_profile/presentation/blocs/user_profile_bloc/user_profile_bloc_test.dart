@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 
 import 'package:bloc_test/bloc_test.dart';
@@ -7,9 +9,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/core/utils/input_validator.dart';
 import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/add_user.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/add_user_avatar.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/assign_user_to_company.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/get_user_by_id.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
@@ -26,6 +30,10 @@ class MockGetUserById extends Mock implements GetUserById {}
 
 class MockUpdateUserData extends Mock implements UpdateUserData {}
 
+class MockAddUserAvatar extends Mock implements AddUserAvatar {}
+
+class MockInputValidator extends Mock implements InputValidator {}
+
 void main() {
   late UserProfileBloc userProfileBloc;
   late MockAuthenticationBloc mockAuthenticationBloc;
@@ -33,6 +41,8 @@ void main() {
   late MockAssignUserToCompany mockAssignUserToCompany;
   late MockGetUserById mockGetUserById;
   late MockUpdateUserData mockUpdateUserData;
+  late MockAddUserAvatar mockAddUserAvatar;
+  late MockInputValidator mockInputValidator;
 
   setUp(() {
     mockAuthenticationBloc = MockAuthenticationBloc();
@@ -40,6 +50,8 @@ void main() {
     mockAssignUserToCompany = MockAssignUserToCompany();
     mockGetUserById = MockGetUserById();
     mockUpdateUserData = MockUpdateUserData();
+    mockAddUserAvatar = MockAddUserAvatar();
+    mockInputValidator = MockInputValidator();
 
     when(() => mockAuthenticationBloc.stream).thenAnswer(
       (_) => Stream.fromFuture(
@@ -55,6 +67,8 @@ void main() {
       assignUserToCompany: mockAssignUserToCompany,
       getUserById: mockGetUserById,
       updateUserData: mockUpdateUserData,
+      addUserAvatar: mockAddUserAvatar,
+      inputValidator: mockInputValidator,
     );
   });
 
@@ -76,7 +90,15 @@ void main() {
         administrator: false,
       ),
     );
-    registerFallbackValue(const AssignParams(companyId: '', userId: ''));
+    registerFallbackValue(
+      const AssignParams(companyId: '', userId: ''),
+    );
+    registerFallbackValue(
+      AvatarParams(
+        userId: 'userId',
+        avatar: File(''),
+      ),
+    );
   });
 
   const UserProfileModel tUserProfileModel = UserProfileModel(
@@ -94,6 +116,8 @@ void main() {
     suspended: false,
     administrator: false,
   );
+
+  File avatarFile = File('');
 
   test(
     'should emit [Empty] as an initial state',
@@ -113,7 +137,7 @@ void main() {
       },
       skip: 1,
       verify: (_) => verify(() => mockGetUserById('')).called(1),
-      expect: () => [isA<UserProfileError>()],
+      expect: () => [isA<NoUserProfileError>()],
     );
 
     blocTest(
@@ -126,7 +150,7 @@ void main() {
       },
       skip: 1,
       verify: (_) => verify(() => mockGetUserById('')).called(1),
-      expect: () => [isA<DatabaseError>()],
+      expect: () => [isA<DatabaseErrorUserProfile>()],
     );
 
     blocTest(
@@ -229,30 +253,96 @@ void main() {
 
   group('AddUser usecase', () {
     blocTest(
-      'should emit [DatabaseError] when usecase returns failure',
+      'should emit [DatabaseError] when AddUserAvatar usecase returns failure',
       build: () => userProfileBloc,
       act: (UserProfileBloc bloc) async {
-        bloc.add(AddUserEvent(userProfile: tUserProfileModel));
+        bloc.add(AddUserEvent(
+          userProfile: tUserProfileModel,
+          avatar: avatarFile,
+        ));
+        when(
+          () => mockInputValidator.addUserValidator(any(), any(), any(), any()),
+        ).thenReturn(Right<Failure, VoidResult>(VoidResult()));
+        when((() => mockAuthenticationBloc.state))
+            .thenReturn(Authenticated(userId: 'userId', email: 'email'));
+        when(() => mockAddUserAvatar(any()))
+            .thenAnswer((_) async => const Left(DatabaseFailure()));
         when(() => mockAddUser(any()))
             .thenAnswer((_) async => const Left(DatabaseFailure()));
       },
       skip: 1,
-      verify: (_) => verify(() => mockAddUser(tUserProfileModel)).called(1),
-      expect: () => [isA<DatabaseError>()],
+      expect: () => [isA<DatabaseErrorUserProfile>()],
+    );
+
+    blocTest(
+      'should emit [NoUserProfileError] when InputValidator usecase returns failure',
+      build: () => userProfileBloc,
+      act: (UserProfileBloc bloc) async {
+        bloc.add(AddUserEvent(
+          userProfile: tUserProfileModel,
+          avatar: avatarFile,
+        ));
+        when(
+          () => mockInputValidator.addUserValidator(any(), any(), any(), any()),
+        ).thenReturn(
+          const Left<Failure, VoidResult>(ValidationFailure()),
+        );
+        when((() => mockAuthenticationBloc.state))
+            .thenReturn(Authenticated(userId: 'userId', email: 'email'));
+        when(() => mockAddUserAvatar(any()))
+            .thenAnswer((_) async => const Left(DatabaseFailure()));
+        when(() => mockAddUser(any()))
+            .thenAnswer((_) async => const Left(DatabaseFailure()));
+      },
+      skip: 1,
+      expect: () => [isA<NoUserProfileError>()],
+    );
+
+    blocTest(
+      'should emit [DatabaseError] when AddUser usecase returns failure',
+      build: () => userProfileBloc,
+      act: (UserProfileBloc bloc) async {
+        bloc.add(AddUserEvent(
+          userProfile: tUserProfileModel,
+          avatar: avatarFile,
+        ));
+        when(
+          () => mockInputValidator.addUserValidator(any(), any(), any(), any()),
+        ).thenReturn(Right<Failure, VoidResult>(VoidResult()));
+        when((() => mockAuthenticationBloc.state))
+            .thenReturn(Authenticated(userId: 'userId', email: 'email'));
+        when(() => mockAddUserAvatar(any()))
+            .thenAnswer((_) async => const Right(''));
+        when(() => mockAddUser(any()))
+            .thenAnswer((_) async => const Left(DatabaseFailure()));
+      },
+      skip: 1,
+      expect: () => [isA<DatabaseErrorUserProfile>()],
     );
     blocTest(
       'should emit [NoCompany] when AddUser is called',
       build: () => userProfileBloc,
       act: (UserProfileBloc bloc) async {
-        bloc.add(AddUserEvent(userProfile: tUserProfileModel));
+        bloc.add(AddUserEvent(
+          userProfile: tUserProfileModel,
+          avatar: avatarFile,
+        ));
+        when(
+          () => mockInputValidator.addUserValidator(any(), any(), any(), any()),
+        ).thenReturn(Right<Failure, VoidResult>(VoidResult()));
+        when((() => mockAuthenticationBloc.state))
+            .thenReturn(Authenticated(userId: 'id', email: 'email'));
+        when(() => mockAddUserAvatar(any()))
+            .thenAnswer((_) async => const Right('avatarId'));
         when(() => mockAddUser(any())).thenAnswer(
-          (_) async => const Right('newId'),
+          (_) async => Right(VoidResult()),
         );
       },
       skip: 1,
-      verify: (_) => verify(() => mockAddUser(tUserProfileModel)).called(1),
       expect: () => [
-        NoCompany(userProfile: tUserProfileModel.copyWith(id: 'newId')),
+        NoCompany(
+            userProfile:
+                tUserProfileModel.copyWith(id: 'id', avatarUrl: 'avatarId')),
       ],
     );
   });
@@ -275,7 +365,7 @@ void main() {
           AssignParams(userId: tUserProfileModel.id, companyId: 'companyId'),
         ),
       ).called(1),
-      expect: () => [isA<DatabaseError>()],
+      expect: () => [isA<DatabaseErrorUserProfile>()],
     );
     blocTest(
       'should emit [NotApproved] when AssignUserToCompany is called',
@@ -318,7 +408,7 @@ void main() {
       verify: (_) => verify(
         () => mockUpdateUserData(tUserProfileModel),
       ).called(1),
-      expect: () => [isA<DatabaseError>()],
+      expect: () => [isA<DatabaseErrorUserProfile>()],
     );
     blocTest(
       'should emit [Approved] containing updated user data when UpdateUserData is called',

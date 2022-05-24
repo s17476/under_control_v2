@@ -99,4 +99,26 @@ class UserProfileModel extends UserProfile {
       administrator: map['administrator'] ?? false,
     );
   }
+
+  factory UserProfileModel.newUser({
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+  }) {
+    return UserProfileModel(
+      id: '',
+      firstName: firstName,
+      lastName: lastName,
+      email: '',
+      phoneNumber: phoneNumber,
+      avatarUrl: '',
+      userGroups: const [],
+      locations: const [],
+      companyId: '',
+      approved: false,
+      rejected: false,
+      suspended: false,
+      administrator: false,
+    );
+  }
 }

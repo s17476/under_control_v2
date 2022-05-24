@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'bottom_navigation.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
 
@@ -12,17 +11,11 @@ class AvatarCard extends StatefulWidget {
   const AvatarCard({
     Key? key,
     required this.pageController,
-    required this.firstNameTexEditingController,
-    required this.lastNameTexEditingController,
-    required this.phoneNumberTexEditingController,
     this.image,
     required this.setAvatar,
   }) : super(key: key);
 
   final PageController pageController;
-  final TextEditingController firstNameTexEditingController;
-  final TextEditingController lastNameTexEditingController;
-  final TextEditingController phoneNumberTexEditingController;
 
   final File? image;
 
@@ -144,7 +137,6 @@ class _AvatarCardState extends State<AvatarCard> with ResponsiveSize {
                     ),
                   ),
                 ),
-                BottomNavigation(pageController: widget.pageController),
               ],
             ),
           ),

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import '../utils/material_color_generator.dart';
 
 class Themes with MaterialColorGenerator {
+  /// Dark theme for UnderControl app.
   ThemeData darkTheme() => ThemeData(
+        primaryColor: const Color.fromRGBO(0, 240, 130, 100),
         primarySwatch:
             createMaterialColor(const Color.fromRGBO(0, 240, 130, 100)),
         brightness: Brightness.dark,

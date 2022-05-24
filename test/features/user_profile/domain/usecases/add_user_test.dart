@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import 'package:under_control_v2/features/core/error/failures.dart';
+import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 import 'package:under_control_v2/features/user_profile/domain/repositories/user_profile_repository.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/add_user.dart';
@@ -55,15 +56,15 @@ void main() {
   );
 
   test(
-    'should return [String] from repository when AddUser is called',
+    'should return [Voidresult] from repository when AddUser is called',
     () async {
       // arrange
       when(() => repository.addUser(any()))
-          .thenAnswer((_) async => const Right(''));
+          .thenAnswer((_) async => Right(VoidResult()));
       // act
       final result = await usecase(tUserProfile);
       // assert
-      expect(result, const Right<Failure, String>(''));
+      expect(result, Right<Failure, VoidResult>(VoidResult()));
     },
   );
 }
