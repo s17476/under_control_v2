@@ -1,30 +1,45 @@
 part of 'company_profile_bloc.dart';
 
 abstract class CompanyProfileState extends Equatable {
-  const CompanyProfileState([this.properties = const []]);
-
+  const CompanyProfileState(
+      {this.message = '', this.error = false, this.properties = const []});
+  final String message;
+  final bool error;
   final List properties;
 
   @override
-  List<Object> get props => [properties];
+  List<Object> get props => [message, error, properties];
 }
 
-class EmptyCompanyProfileState extends CompanyProfileState {}
+class CompanyProfileEmpty extends CompanyProfileState {}
 
-class Error extends CompanyProfileState {
-  final String message;
-  Error({
-    required this.message,
-  }) : super([message]);
+class CompanyProfileError extends CompanyProfileState {
+  final String msg;
+  final bool err;
+  const CompanyProfileError({
+    this.msg = '',
+    this.err = false,
+  }) : super(
+          message: msg,
+          error: err,
+        );
 }
 
-class Loaded extends CompanyProfileState {
-  final CompanyUsers companyUsers;
+class CompanyProfileLoaded extends CompanyProfileState {
+  final CompanyUsersList companyUsers;
   final Company company;
-  Loaded({
+  final String msg;
+  final bool err;
+  CompanyProfileLoaded({
     required this.companyUsers,
     required this.company,
-  }) : super([company, companyUsers]);
+    this.msg = '',
+    this.err = false,
+  }) : super(
+          message: msg,
+          error: err,
+          properties: [companyUsers, company],
+        );
 }
 
-class Loading extends CompanyProfileState {}
+class CompanyProfileLoading extends CompanyProfileState {}

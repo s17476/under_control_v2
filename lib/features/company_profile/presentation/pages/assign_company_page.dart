@@ -6,6 +6,8 @@ import 'package:under_control_v2/features/company_profile/presentation/widgets/i
 
 import '../../../core/presentation/widgets/bottom_navigation.dart';
 import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
+import '../blocs/company_management/company_management_bloc.dart';
+import '../blocs/company_profile/company_profile_bloc.dart';
 
 class AssignCompanyPage extends StatefulWidget {
   const AssignCompanyPage({Key? key}) : super(key: key);
@@ -35,6 +37,7 @@ class _AssignCompanyPageState extends State<AssignCompanyPage> {
       const IntroCard(),
       CompaniesList(),
     ];
+
     return Scaffold(
       body: Column(
         children: [

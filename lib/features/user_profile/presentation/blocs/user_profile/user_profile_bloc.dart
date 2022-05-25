@@ -39,7 +39,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     required this.updateUserData,
     required this.addUserAvatar,
     required this.inputValidator,
-  }) : super(EmptyUserProfileState()) {
+  }) : super(UserProfileEmpty()) {
     streamSubscription = authenticationBloc.stream.listen(
       (state) {
         if (state is Authenticated) {

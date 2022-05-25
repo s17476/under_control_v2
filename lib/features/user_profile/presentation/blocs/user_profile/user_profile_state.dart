@@ -21,7 +21,7 @@ class Approved extends UserProfileState {
 }
 
 // initial state
-class EmptyUserProfileState extends UserProfileState {}
+class UserProfileEmpty extends UserProfileState {}
 
 class NoUserProfileError extends UserProfileState {
   final String msg;

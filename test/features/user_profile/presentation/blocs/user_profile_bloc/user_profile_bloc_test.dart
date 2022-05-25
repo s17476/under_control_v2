@@ -120,9 +120,9 @@ void main() {
   File avatarFile = File('');
 
   test(
-    'should emit [Empty] as an initial state',
+    'should emit [UsreProfileEmpty] as an initial state',
     () async {
-      expect(userProfileBloc.state, EmptyUserProfileState());
+      expect(userProfileBloc.state, UserProfileEmpty());
     },
   );
 

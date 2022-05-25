@@ -9,14 +9,6 @@ abstract class CompanyProfileEvent extends Equatable {
   List<Object> get props => [properties];
 }
 
-class AddCompanyEvent extends CompanyProfileEvent {
-  AddCompanyEvent({required this.company}) : super([company]);
-
-  final Company company;
-}
-
-class FetchAllCompaniesEvent extends CompanyProfileEvent {}
-
 class GetCompanyByIdEvent extends CompanyProfileEvent {
   final String id;
   GetCompanyByIdEvent({

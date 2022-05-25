@@ -35,5 +35,6 @@
     "input_validation_phone_number": "Numer telefonu musi zawierać minimum 8 cyfr oraz nie może zawierać liter ani znaków specjalnych.",
     "input_validation_no_avatar": "Wybierz swój awatar.",
     "assign_company_congratulations": "Gratulacje!",
-    "assign_company_info": "Udało ci się utworzyć profil użytkownika. Teraz wybierz organizację dla której pracujesz z listy na następnej stronie, lub dodaj nową."
+    "assign_company_info": "Udało ci się utworzyć profil użytkownika. Teraz wybierz organizację dla której pracujesz z listy na następnej stronie, lub dodaj nową.",
+    "assign_company_list_loading": "Ładowanie listy organizacji..."
 }

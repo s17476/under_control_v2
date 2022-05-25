@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart';
+import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'features/company_profile/presentation/pages/assign_company_page.dart';
 import 'features/core/themes/themes.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
@@ -48,6 +50,12 @@ class App extends StatelessWidget
         ),
         BlocProvider(
           create: (context) => getIt<UserProfileBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<CompanyProfileBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<CompanyManagementBloc>(),
         ),
       ],
       child: MaterialApp(

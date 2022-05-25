@@ -17,7 +17,7 @@ import 'features/authentication/data/repositories/authentication_repository_impl
 import 'features/authentication/domain/repositories/authentication_repository.dart'
     as _i17;
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i43;
+    as _i44;
 import 'features/authentication/domain/usecases/auto_signin.dart' as _i19;
 import 'features/authentication/domain/usecases/check_email_verification.dart'
     as _i20;
@@ -47,8 +47,10 @@ import 'features/company_profile/domain/usecases/fetch_all_company_users.dart'
 import 'features/company_profile/domain/usecases/get_company_by_id.dart'
     as _i27;
 import 'features/company_profile/domain/usecases/update_company.dart' as _i36;
+import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart'
+    as _i42;
 import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart'
-    as _i41;
+    as _i43;
 import 'features/core/network/network_info.dart' as _i8;
 import 'features/core/utils/input_validator.dart' as _i7;
 import 'features/user_profile/data/repositories/user_files_repository_impl.dart'
@@ -56,7 +58,7 @@ import 'features/user_profile/data/repositories/user_files_repository_impl.dart'
 import 'features/user_profile/data/repositories/user_profile_repository_impl.dart'
     as _i12;
 import 'features/user_profile/domain/repositories/injectable_modules.dart'
-    as _i44;
+    as _i45;
 import 'features/user_profile/domain/repositories/user_files_repository.dart'
     as _i9;
 import 'features/user_profile/domain/repositories/user_profile_repository.dart'
@@ -71,7 +73,7 @@ import 'features/user_profile/domain/usecases/reject_user.dart' as _i29;
 import 'features/user_profile/domain/usecases/suspend_user.dart' as _i35;
 import 'features/user_profile/domain/usecases/update_user_data.dart' as _i37;
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart'
-    as _i42; // ignore_for_file: unnecessary_lambdas
+    as _i41; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -161,13 +163,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       checkEmailVerification: get<_i20.CheckEmailVerification>(),
       sendPasswordResetEmail: get<_i30.SendPasswordResetEmail>(),
       inputValidator: get<_i7.InputValidator>()));
-  gh.factory<_i41.CompanyProfileBloc>(() => _i41.CompanyProfileBloc(
-      authenticationBloc: get<_i40.AuthenticationBloc>(),
-      addCompany: get<_i38.AddCompany>(),
-      updateCompany: get<_i36.UpdateCompany>(),
-      fetchAllCompanies: get<_i25.FetchAllCompanies>(),
-      getCompanyById: get<_i27.GetCompanyById>()));
-  gh.factory<_i42.UserProfileBloc>(() => _i42.UserProfileBloc(
+  gh.factory<_i41.UserProfileBloc>(() => _i41.UserProfileBloc(
       authenticationBloc: get<_i40.AuthenticationBloc>(),
       addUser: get<_i13.AddUser>(),
       assignUserToCompany: get<_i16.AssignUserToCompany>(),
@@ -175,14 +171,26 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       updateUserData: get<_i37.UpdateUserData>(),
       addUserAvatar: get<_i14.AddUserAvatar>(),
       inputValidator: get<_i7.InputValidator>()));
+  gh.factory<_i42.CompanyManagementBloc>(() => _i42.CompanyManagementBloc(
+      userProfileBloc: get<_i41.UserProfileBloc>(),
+      inputValidator: get<_i7.InputValidator>(),
+      addCompany: get<_i38.AddCompany>(),
+      fetchAllCompanies: get<_i25.FetchAllCompanies>(),
+      addCompanyLogo: get<_i39.AddCompanyLogo>()));
+  gh.factory<_i43.CompanyProfileBloc>(() => _i43.CompanyProfileBloc(
+      userProfileBloc: get<_i41.UserProfileBloc>(),
+      updateCompany: get<_i36.UpdateCompany>(),
+      fetchAllCompanyUsers: get<_i26.FetchAllCompanyUsers>(),
+      getCompanyById: get<_i27.GetCompanyById>(),
+      inputValidator: get<_i7.InputValidator>()));
   return get;
 }
 
-class _$DataConnectionCheckerModule extends _i43.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i44.DataConnectionCheckerModule {}
 
 class _$FirebaseAuthenticationService
-    extends _i43.FirebaseAuthenticationService {}
+    extends _i44.FirebaseAuthenticationService {}
 
-class _$FirebaseFirestoreService extends _i44.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i45.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i44.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i45.FirebaseStorageService {}

@@ -147,5 +147,10 @@
     "assign_company_info": "You have successfully created a user profile. Now select the organization you are working for from the list on the next page, or add a new one.",
     "@assign_company_info": {
       "description": "Assign company page - info text"
+    
+    },
+    "assign_company_list_loading": "Loading organizations...",
+    "@assign_company_list_loading": {
+      "description": "Assign company page - loading info"
     }
 }
