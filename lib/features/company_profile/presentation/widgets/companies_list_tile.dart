@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:under_control_v2/features/core/utils/responsive_size.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 import '../../domain/entities/company.dart';
 
-class CompaniesListTile extends StatelessWidget with ResponsiveSize {
+class CompaniesListTile extends StatefulWidget {
   const CompaniesListTile({
     Key? key,
     required this.company,
@@ -13,9 +16,58 @@ class CompaniesListTile extends StatelessWidget with ResponsiveSize {
   final Company company;
 
   @override
+  State<CompaniesListTile> createState() => _CompaniesListTileState();
+}
+
+class _CompaniesListTileState extends State<CompaniesListTile>
+    with ResponsiveSize {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => print('object'),
+      onTap: () async {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            title: Text(
+              AppLocalizations.of(context)!
+                  .assign_company_list_confirm_dialog_title,
+            ),
+            content: Text(
+              AppLocalizations.of(context)!
+                  .assign_company_list_confirm_dialog_text(widget.company.name),
+            ),
+            actions: [
+              TextButton(
+                child: Text(
+                  AppLocalizations.of(context)!.cancel,
+                  style: TextStyle(
+                      color: Theme.of(context).textTheme.headline1!.color),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              const SizedBox(width: 8),
+              TextButton(
+                child: Text(AppLocalizations.of(context)!.confirm),
+                onPressed: () {
+                  final userProfileBloc = context.read<UserProfileBloc>();
+                  userProfileBloc.add(
+                    AssignToCompanyEvent(
+                      userProfile:
+                          (userProfileBloc.state as NoCompany).userProfile,
+                      companyId: widget.company.id,
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(width: 8),
+            ],
+          ),
+        );
+      },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: Container(
@@ -41,12 +93,12 @@ class CompaniesListTile extends StatelessWidget with ResponsiveSize {
                 child: SizedBox(
                   width: responsiveSizePx(small: 120, medium: 100),
                   height: responsiveSizePx(small: 120, medium: 100),
-                  child: company.logo == ''
-                      ? const Icon(Icons.build)
+                  child: widget.company.logo == ''
+                      ? Image.asset('undercontrol.png')
                       : FadeInImage.assetNetwork(
                           fit: BoxFit.cover,
                           placeholder: 'assets/uc-loading.gif',
-                          image: company.logo,
+                          image: widget.company.logo,
                         ),
                 ),
               ),
@@ -62,7 +114,7 @@ class CompaniesListTile extends StatelessWidget with ResponsiveSize {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(
-                        company.name,
+                        widget.company.name,
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w500,
@@ -91,7 +143,7 @@ class CompaniesListTile extends StatelessWidget with ResponsiveSize {
                               color: Theme.of(context).hintColor,
                             ),
                             Text(
-                              company.country,
+                              widget.company.country,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: Theme.of(context).hintColor,
@@ -110,7 +162,7 @@ class CompaniesListTile extends StatelessWidget with ResponsiveSize {
                               size: 16,
                             ),
                             Text(
-                              company.city,
+                              widget.company.city,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: Theme.of(context).hintColor,
@@ -129,7 +181,7 @@ class CompaniesListTile extends StatelessWidget with ResponsiveSize {
                               size: 16,
                             ),
                             Text(
-                              company.address,
+                              widget.company.address,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: Theme.of(context).hintColor,

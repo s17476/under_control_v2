@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/user_profile/presentation/pages/not_approved_page.dart';
 
 import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart';
 import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -80,6 +81,8 @@ class App extends StatelessWidget
                       return const LoadingPage();
                     case NoCompany:
                       return const AssignCompanyPage();
+                    case NotApproved:
+                      return const NotApprovedPage();
                     default:
                       return const ErrorPage();
                   }

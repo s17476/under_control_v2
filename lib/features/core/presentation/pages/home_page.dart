@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/logo_widget.dart';
@@ -25,9 +26,14 @@ class HomePage extends StatelessWidget with CustomPageTransition {
           ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
             ..showSnackBar(SnackBar(
-              content: const Text('Press Back button again to Exit'),
+              content: Text(
+                AppLocalizations.of(context)!.back_to_exit,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
               duration: const Duration(seconds: 2),
-              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+              backgroundColor: Colors.black,
             ));
           return false;
         } else {

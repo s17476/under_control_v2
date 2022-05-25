@@ -1,4 +1,8 @@
 {
+    "add": "Add",
+    "@add": {
+      "description": "Add"
+    },
     "password_reset_text_button": "I don't remember my password",
     "@password_reset_text_button": {
       "description": "Password reset - I don't remember my password"
@@ -10,6 +14,14 @@
     "cancel": "Cancel",
     "@cancel": {
       "description": "Cancel buttons"
+    },
+    "confirm": "Confirm",
+    "@confirm": {
+      "description": "Confirm buttons"
+    },
+    "back_to_exit": "Press Back button again to Exit.",
+    "@back_to_exit": {
+      "description": "Back button to exit - SnackBar"
     },
     "password": "Password",
     "@password": {
@@ -147,10 +159,23 @@
     "assign_company_info": "You have successfully created a user profile. Now select the organization you are working for from the list on the next page, or add a new one.",
     "@assign_company_info": {
       "description": "Assign company page - info text"
-    
     },
     "assign_company_list_loading": "Loading organizations...",
     "@assign_company_list_loading": {
       "description": "Assign company page - loading info"
+    },
+    "assign_company_list_confirm_dialog_title": "Confirm your choice",
+    "@assign_company_list_confirm_dialog_title": {
+      "description": "Assign company page - confirm dialog title"
+    },
+    "assign_company_list_confirm_dialog_text": "You have selected {company}. Do you confirm your choice?",
+    "@assign_company_list_confirm_dialog_text": {
+      "description": "Assign company page - confirm dialog text",
+       "placeholders": {
+        "company": {
+          "type": "String",
+          "example": "Google"
+        }
+      }
     }
 }

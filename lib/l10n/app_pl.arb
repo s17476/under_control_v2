@@ -1,7 +1,10 @@
 {
+    "add": "Dodaj",
     "password_reset_text_button": "Nie pamiętam hasła",
     "password_reset_button": "Zresetuj hasło",
     "cancel": "Anuluj",
+    "confirm": "Potwierdź",
+    "back_to_exit": "Wciśnij Wstecz ponownie by wyjść.",
     "password": "Hasło",
     "password_reset_email": "Email resetujący hasło został wysłany",
     "password_reset_dialog": "Zresetuj swoje hasło",
@@ -36,5 +39,7 @@
     "input_validation_no_avatar": "Wybierz swój awatar.",
     "assign_company_congratulations": "Gratulacje!",
     "assign_company_info": "Udało ci się utworzyć profil użytkownika. Teraz wybierz organizację dla której pracujesz z listy na następnej stronie, lub dodaj nową.",
-    "assign_company_list_loading": "Ładowanie listy organizacji..."
+    "assign_company_list_loading": "Ładowanie listy organizacji...",
+    "assign_company_list_confirm_dialog_title": "Potwierdź swój wybór",
+    "assign_company_list_confirm_dialog_text": "Wybrałeś(aś) {company}. Czy potwierdzasz swój wybór?"
 }
