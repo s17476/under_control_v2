@@ -3,9 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:under_control_v2/features/company_profile/domain/entities/companies.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
-
+import '../../domain/entities/companies.dart';
+import '../../domain/entities/company.dart';
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../domain/repositories/company_management_repository.dart';

@@ -14,10 +14,7 @@ class CompaniesList extends StatelessWidget with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    return BlocConsumer<CompanyManagementBloc, CompanyManagementState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+    return BlocBuilder<CompanyManagementBloc, CompanyManagementState>(
       builder: (context, state) {
         // data loaded
         switch (state.runtimeType) {

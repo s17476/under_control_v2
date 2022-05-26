@@ -25,6 +25,7 @@ class _CompaniesListTileState extends State<CompaniesListTile>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        FocusScope.of(context).unfocus();
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
