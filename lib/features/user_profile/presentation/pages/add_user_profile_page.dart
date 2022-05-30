@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/presentation/widgets/bottom_navigation.dart';
 import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
@@ -23,11 +23,10 @@ class AddUserProfilePage extends StatefulWidget {
 }
 
 class _AddUserProfilePageState extends State<AddUserProfilePage> {
-  final Key formKey = GlobalKey<FormState>();
-  final pageController = PageController();
   final firstNameTexEditingController = TextEditingController();
   final lastNameTexEditingController = TextEditingController();
   final phoneNumberTexEditingController = TextEditingController();
+  final pageController = PageController();
 
   File? userAvatar;
 
@@ -35,9 +34,9 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
 
   void addUser() {
     final userProfile = UserProfileModel.newUser(
-      firstName: firstNameTexEditingController.text,
-      lastName: lastNameTexEditingController.text,
-      phoneNumber: phoneNumberTexEditingController.text,
+      firstName: firstNameTexEditingController.text.trim(),
+      lastName: lastNameTexEditingController.text.trim(),
+      phoneNumber: phoneNumberTexEditingController.text.trim(),
     );
 
     context.read<UserProfileBloc>().add(
@@ -78,26 +77,24 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
   }
 
   @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     DateTime preBackpress = DateTime.now();
     pages = [
-      const WelcomeCard(),
+      WelcomeCard(pageController: pageController),
       PersonalDataCard(
+        pageController: pageController,
         firstNameTexEditingController: firstNameTexEditingController,
         lastNameTexEditingController: lastNameTexEditingController,
         phoneNumberTexEditingController: phoneNumberTexEditingController,
       ),
       AvatarCard(
+        pageController: pageController,
         setAvatar: setAvatar,
         image: userAvatar,
       ),
       DataCheckCard(
+        addUser: addUser,
+        pageController: pageController,
         firstNameTexEditingController: firstNameTexEditingController,
         lastNameTexEditingController: lastNameTexEditingController,
         phoneNumberTexEditingController: phoneNumberTexEditingController,
@@ -129,29 +126,25 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
         }
       },
       child: Scaffold(
-        body: Column(
+        body: Stack(
+          alignment: Alignment.bottomCenter,
           children: [
-            Expanded(
-              child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: pageController,
-                children: pages,
-              ),
+            PageView(
+              controller: pageController,
+              children: pages,
             ),
-            BottomNavigation(
-              pageController: pageController,
-              collectionLenght: pages.length,
-              firstPageBackwardButtonFunction: () =>
-                  context.read<AuthenticationBloc>().add(SignoutEvent()),
-              firstPageBackwardButtonLabel:
-                  AppLocalizations.of(context)!.user_profile_add_user_signout,
-              firstPageBackwardButtonIconData: Icons.logout,
-              firstPageBackwardButtonColor: Colors.black,
-              lastPageForwardButtonFunction: addUser,
-              lastPageForwardButtonLabel: AppLocalizations.of(context)!
-                  .user_profile_add_user_personal_data_save,
-              lastPageForwardButtonIconData: Icons.check,
-              lastPageForwardButtonColor: Theme.of(context).primaryColor,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 24),
+              child: SmoothPageIndicator(
+                controller: pageController,
+                count: pages.length,
+                effect: JumpingDotEffect(
+                  dotHeight: 10,
+                  dotWidth: 10,
+                  jumpScale: 2,
+                  activeDotColor: Theme.of(context).primaryColor,
+                ),
+              ),
             ),
           ],
         ),

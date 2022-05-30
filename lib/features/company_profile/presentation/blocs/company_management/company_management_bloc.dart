@@ -56,13 +56,15 @@ class CompanyManagementBloc
         emit(CompanyManagementLoading());
         final failureOrCompanyId = await addCompany(event.company);
         failureOrCompanyId.fold(
-          (failure) => emit(
-            CompanyManagementCompaniesLoaded(
-              companies: event.companies,
-              msg: failure.message,
-              err: true,
-            ),
-          ),
+          (failure) {
+            emit(
+              CompanyManagementCompaniesLoaded(
+                companies: event.companies,
+                msg: failure.message,
+                err: true,
+              ),
+            );
+          },
           (companyId) {
             final updatedCompany =
                 (event.company as CompanyModel).copyWith(id: companyId);
@@ -71,6 +73,7 @@ class CompanyManagementBloc
             emit(
               CompanyManagementCompaniesLoaded(
                 companies: Companies(allCompanies: updatedCompanies),
+                selectedCompany: updatedCompany,
               ),
             );
           },
@@ -80,6 +83,7 @@ class CompanyManagementBloc
 
     on<AddCompanyLogoEvent>(
       (event, emit) async {
+        print('AddLogo');
         emit(CompanyManagementLoading());
         final failureOrLogoUrl = await addCompanyLogo(
           AvatarParams(

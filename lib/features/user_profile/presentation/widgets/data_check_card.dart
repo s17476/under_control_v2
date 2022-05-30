@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../core/presentation/widgets/backward_text_button.dart';
+import '../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
 
@@ -13,11 +15,16 @@ class DataCheckCard extends StatelessWidget with ResponsiveSize {
     required this.lastNameTexEditingController,
     required this.phoneNumberTexEditingController,
     this.image,
+    required this.pageController,
+    required this.addUser,
   }) : super(key: key);
 
   final TextEditingController firstNameTexEditingController;
   final TextEditingController lastNameTexEditingController;
   final TextEditingController phoneNumberTexEditingController;
+  final PageController pageController;
+
+  final Function() addUser;
 
   final File? image;
 
@@ -142,6 +149,32 @@ class DataCheckCard extends StatelessWidget with ResponsiveSize {
                             ]),
                       ),
                     ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      BackwardTextButton(
+                        icon: Icons.arrow_back_ios,
+                        color: Theme.of(context).textTheme.headline4!.color!,
+                        label: AppLocalizations.of(context)!
+                            .user_profile_add_user_personal_data_back,
+                        function: () => pageController.previousPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeIn,
+                        ),
+                      ),
+                      ForwardTextButton(
+                        color: Theme.of(context).textTheme.headline6!.color!,
+                        label: AppLocalizations.of(context)!
+                            .user_profile_add_user_personal_data_save,
+                        function: addUser,
+                        icon: Icons.check,
+                      ),
+                    ],
                   ),
                 ),
               ],

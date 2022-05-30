@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/company_profile/presentation/widgets/companies_list_tile.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
-import 'package:under_control_v2/features/core/utils/size_config.dart';
 
+import '../../../core/utils/responsive_size.dart';
+import '../../../core/utils/size_config.dart';
 import '../blocs/company_management/company_management_bloc.dart';
 import 'companies_list_view.dart';
 
 class CompaniesList extends StatelessWidget with ResponsiveSize {
-  const CompaniesList({Key? key}) : super(key: key);
+  const CompaniesList({
+    Key? key,
+    required this.pageController,
+  }) : super(key: key);
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,7 @@ class CompaniesList extends StatelessWidget with ResponsiveSize {
         switch (state.runtimeType) {
           case CompanyManagementCompaniesLoaded:
             return CompaniesListView(
+              pageController: pageController,
               companies: (state as CompanyManagementCompaniesLoaded)
                   .companies
                   .allCompanies,

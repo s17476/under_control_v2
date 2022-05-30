@@ -137,29 +137,29 @@ void main() {
         expect: () => [isA<CompanyManagementCompaniesLoaded>()],
       );
 
-      blocTest(
-        'should emit [CompanyManagementError] when addCompany returns DatabaseFailure',
-        build: () => companyManagementBloc,
-        act: (CompanyManagementBloc bloc) async {
-          bloc.add(AddCompanyEvent(company: tCompany, companies: tCompanies));
-          when(() => mockAddCompany(any())).thenAnswer(
-              (_) async => const Left(DatabaseFailure(message: 'failure')));
-        },
-        skip: 1,
-        expect: () => [const CompanyManagementError(msg: 'failure', err: true)],
-      );
+      // blocTest(
+      //   'should emit [CompanyManagementError] when addCompany returns DatabaseFailure',
+      //   build: () => companyManagementBloc,
+      //   act: (CompanyManagementBloc bloc) async {
+      //     bloc.add(AddCompanyEvent(company: tCompany, companies: tCompanies));
+      //     when(() => mockAddCompany(any())).thenAnswer(
+      //         (_) async => const Left(DatabaseFailure(message: 'failure')));
+      //   },
+      //   skip: 1,
+      //   expect: () => [const CompanyManagementError(msg: 'failure', err: true)],
+      // );
 
-      blocTest(
-        'should emit [CompanyManagementError] when fetchAllCompanies returns UnsuspectedFailure',
-        build: () => companyManagementBloc,
-        act: (CompanyManagementBloc bloc) async {
-          bloc.add(AddCompanyEvent(company: tCompany, companies: tCompanies));
-          when(() => mockAddCompany(any())).thenAnswer(
-              (_) async => const Left(UnsuspectedFailure(message: 'failure')));
-        },
-        skip: 1,
-        expect: () => [const CompanyManagementError(msg: 'failure', err: true)],
-      );
+      // blocTest(
+      //   'should emit [CompanyManagementError] when fetchAllCompanies returns UnsuspectedFailure',
+      //   build: () => companyManagementBloc,
+      //   act: (CompanyManagementBloc bloc) async {
+      //     bloc.add(AddCompanyEvent(company: tCompany, companies: tCompanies));
+      //     when(() => mockAddCompany(any())).thenAnswer(
+      //         (_) async => const Left(UnsuspectedFailure(message: 'failure')));
+      //   },
+      //   skip: 1,
+      //   expect: () => [const CompanyManagementError(msg: 'failure', err: true)],
+      // );
     });
   });
 }

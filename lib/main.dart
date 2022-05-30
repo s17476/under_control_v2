@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/company_profile/presentation/pages/add_company_page.dart';
 import 'package:under_control_v2/features/user_profile/presentation/pages/not_approved_page.dart';
 
 import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart';
@@ -100,6 +101,7 @@ class App extends StatelessWidget
         routes: {
           HomePage.routeName: (ctx) => const HomePage(),
           AuthenticationPage.routeName: (ctx) => const AuthenticationPage(),
+          AddCompanyPage.routeName: (ctx) => const AddCompanyPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

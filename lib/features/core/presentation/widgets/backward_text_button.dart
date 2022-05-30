@@ -1,37 +1,34 @@
 import 'package:flutter/material.dart';
 
-class BackwardElevatedButton extends StatelessWidget {
+class BackwardTextButton extends StatelessWidget {
   final Function function;
   final IconData icon;
   final Color color;
-  final String child;
-  const BackwardElevatedButton({
+  final String label;
+  const BackwardTextButton({
     Key? key,
     required this.icon,
     required this.color,
-    required this.child,
+    required this.label,
     required this.function,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
       onPressed: () {
         FocusScope.of(context).unfocus();
         function();
       },
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon),
+          Icon(icon, color: color),
           const SizedBox(width: 4),
           Text(
-            child,
+            label,
+            style: TextStyle(color: color),
           ),
         ],
-      ),
-      style: ElevatedButton.styleFrom(
-        primary: color,
       ),
     );
   }

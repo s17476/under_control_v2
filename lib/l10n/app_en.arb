@@ -3,6 +3,10 @@
     "@add": {
       "description": "Add"
     },
+    "search": "Search...",
+    "@search": {
+      "description": "Search..."
+    },
     "password_reset_text_button": "I don't remember my password",
     "@password_reset_text_button": {
       "description": "Password reset - I don't remember my password"
@@ -177,5 +181,49 @@
           "example": "Google"
         }
       }
+    },
+    "add_company_intro_card_title": "Add new company",
+    "@add_company_intro_card_title": {
+      "description": "Add new company page - title"
+    },
+    "add_company_intro_card_name": "Organization name",
+    "@add_company_intro_card_name": {
+      "description": "Add new company page - name"
+    },
+    "add_company_intro_card_to_short": "At least 4 characters",
+    "@add_company_intro_card_to_short": {
+      "description": "Add new company page - to short error"
+    },
+    "add_company_intro_card_address": "Address",
+    "@add_company_intro_card_address": {
+      "description": "Add new company page - address"
+    },
+    "add_company_intro_card_postcode": "Post code",
+    "@add_company_intro_card_postcode": {
+      "description": "Add new company page - postcode"
+    },
+    "add_company_intro_card_city": "City",
+    "@add_company_intro_card_city": {
+      "description": "Add new company page - city"
+    },
+    "add_company_intro_card_country": "Country",
+    "@add_company_intro_card_country": {
+      "description": "Add new company page - country"
+    },
+    "add_company_intro_card_vat_number": "VAT Number",
+    "@add_company_intro_card_vat_number": {
+      "description": "Add new company page - VAT Number"
+    },
+    "add_company_intro_card_phone_number": "Phone number",
+    "@add_company_intro_card_phone_number": {
+      "description": "Add new company page - phone"
+    },
+    "add_company_intro_card_email": "Email",
+    "@add_company_intro_card_email": {
+      "description": "Add new company page - email"
+    },
+    "add_company_intro_card_homepage": "Homepage",
+    "@add_company_intro_card_homepage": {
+      "description": "Add new company page - homepage"
     }
 }

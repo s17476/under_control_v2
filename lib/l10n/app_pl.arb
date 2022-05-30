@@ -1,5 +1,6 @@
 {
     "add": "Dodaj",
+    "search": "Szukaj...",
     "password_reset_text_button": "Nie pamiętam hasła",
     "password_reset_button": "Zresetuj hasło",
     "cancel": "Anuluj",
@@ -41,5 +42,16 @@
     "assign_company_info": "Udało ci się utworzyć profil użytkownika. Teraz wybierz organizację dla której pracujesz z listy na następnej stronie, lub dodaj nową.",
     "assign_company_list_loading": "Ładowanie listy organizacji...",
     "assign_company_list_confirm_dialog_title": "Potwierdź swój wybór",
-    "assign_company_list_confirm_dialog_text": "Wybrałeś(aś) {company}. Czy potwierdzasz swój wybór?"
+    "assign_company_list_confirm_dialog_text": "Wybrałeś(aś) {company}. Czy potwierdzasz swój wybór?",
+    "add_company_intro_card_title": "Dodaj nową organizację",
+    "add_company_intro_card_name": "Nazwa organizacji",
+    "add_company_intro_card_to_short": "Przynajmniej 4 znaki",
+    "add_company_intro_card_address": "Adres",
+    "add_company_intro_card_postcode": "Kod pocztowy",
+    "add_company_intro_card_city": "Miasto",
+    "add_company_intro_card_country": "Kraj",
+    "add_company_intro_card_vat_number": "Numer VAT",
+    "add_company_intro_card_phone_number": "Numer telefonu",
+    "add_company_intro_card_email": "Email",
+    "add_company_intro_card_homepage": "Strona domowa"
 }

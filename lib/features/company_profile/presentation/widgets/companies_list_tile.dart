@@ -29,8 +29,9 @@ class _CompaniesListTileState extends State<CompaniesListTile>
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
+            actionsAlignment: MainAxisAlignment.spaceEvenly,
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             title: Text(
               AppLocalizations.of(context)!
                   .assign_company_list_confirm_dialog_title,
@@ -47,10 +48,9 @@ class _CompaniesListTileState extends State<CompaniesListTile>
                       color: Theme.of(context).textTheme.headline1!.color),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                 },
               ),
-              const SizedBox(width: 8),
               TextButton(
                 child: Text(AppLocalizations.of(context)!.confirm),
                 onPressed: () {
@@ -62,9 +62,9 @@ class _CompaniesListTileState extends State<CompaniesListTile>
                       companyId: widget.company.id,
                     ),
                   );
+                  Navigator.pop(context);
                 },
               ),
-              const SizedBox(width: 8),
             ],
           ),
         );
@@ -95,7 +95,7 @@ class _CompaniesListTileState extends State<CompaniesListTile>
                   width: responsiveSizePx(small: 120, medium: 100),
                   height: responsiveSizePx(small: 120, medium: 100),
                   child: widget.company.logo == ''
-                      ? Image.asset('undercontrol.png')
+                      ? Image.asset('assets/undercontrol-adaptive.png')
                       : FadeInImage.assetNetwork(
                           fit: BoxFit.cover,
                           placeholder: 'assets/uc-loading.gif',
