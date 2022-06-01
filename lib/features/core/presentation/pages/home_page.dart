@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/logo_widget.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/main_drawer.dart';
-import 'package:under_control_v2/features/core/utils/custom_page_transition.dart';
-import 'package:under_control_v2/features/core/utils/size_config.dart';
 
-class HomePage extends StatelessWidget with CustomPageTransition {
+import '../../utils/size_config.dart';
+import '../widgets/main_drawer.dart';
+
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   static const routeName = '/home';
@@ -54,7 +51,7 @@ class HomePage extends StatelessWidget with CustomPageTransition {
           ),
         ),
         drawer: const MainDrawer(),
-        body: Center(child: Text('Home')),
+        body: const Center(child: Text('Home')),
       ),
     );
   }

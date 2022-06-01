@@ -19,7 +19,7 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      width: responsiveSizePct(small: 60, medium: 30),
+      width: responsiveSizePct(small: 60),
       child: SafeArea(
         child: Column(
           children: [

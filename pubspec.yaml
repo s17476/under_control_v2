@@ -101,6 +101,7 @@ flutter:
     - assets/undercontrol-without-frame.png
     - assets/person.png
     - assets/company.png
+    - assets/validation.png
     - assets/uc-loading.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/utils/custom_page_transition.dart';
-import '../../../core/utils/responsive_size.dart';
 import '../../../core/presentation/widgets/logo_widget.dart';
+import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
 import '../blocs/authentication/authentication_bloc.dart';
 import '../widgets/reset_password_text_button.dart';
@@ -19,7 +18,7 @@ class AuthenticationPage extends StatefulWidget {
 }
 
 class _AuthenticationPageState extends State<AuthenticationPage>
-    with ResponsiveSize, CustomPageTransition, SingleTickerProviderStateMixin {
+    with ResponsiveSize, SingleTickerProviderStateMixin {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final repeatPasswordController = TextEditingController();
@@ -125,17 +124,24 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                 height: responsiveSizePx(small: 48),
               ),
               // logo widget
-              Logo(
-                greenLettersSize: responsiveSizePx(small: 18, medium: 12),
-                whitheLettersSize: responsiveSizePx(small: 12, medium: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                width: double.infinity,
+                child: const FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Logo(
+                    greenLettersSize: 18,
+                    whitheLettersSize: 12,
+                  ),
+                ),
               ),
-              SizedBox(
-                height: responsiveSizePx(small: 40, medium: 8),
+              const SizedBox(
+                height: 40,
               ),
               // email text field
               Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: responsiveSizePx(small: 32, medium: 150),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
                 ),
                 child: TextFormField(
                   controller: emailController,
@@ -164,8 +170,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>
               ),
               // password text field
               Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: responsiveSizePx(small: 32, medium: 150),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
                 ),
                 child: TextFormField(
                   controller: passwordController,
@@ -208,8 +214,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                         height: 16,
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: responsiveSizePx(small: 32, medium: 150),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 32,
                         ),
                         child: TextFormField(
                           controller: repeatPasswordController,
@@ -250,8 +256,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>
 
               SlideTransition(
                 position: _slideAnimation!,
-                child: SizedBox(
-                  height: responsiveSizePx(small: 32, medium: 16),
+                child: const SizedBox(
+                  height: 32,
                 ),
               ),
               // login button
@@ -285,8 +291,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                   },
                   builder: (context, state) {
                     return Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: responsiveSizePx(small: 32, medium: 150),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
                       ),
                       child: ElevatedButton(
                         onPressed: state is Submitting ? () {} : _tryToSubmit,

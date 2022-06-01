@@ -40,6 +40,14 @@ class AssignToCompanyEvent extends UserProfileEvent {
   }) : super([userProfile, companyId]);
 }
 
+class ResetCompanyEvent extends UserProfileEvent {
+  final UserProfile userProfile;
+
+  ResetCompanyEvent({
+    required this.userProfile,
+  }) : super([userProfile]);
+}
+
 class GetUserByIdEvent extends UserProfileEvent {
   final String userId;
 

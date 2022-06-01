@@ -1,32 +1,34 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:under_control_v2/features/company_profile/presentation/pages/add_company_page.dart';
-import 'package:under_control_v2/features/user_profile/presentation/pages/not_approved_page.dart';
 
-import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart';
-import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
-import 'features/company_profile/presentation/pages/assign_company_page.dart';
-import 'features/core/themes/themes.dart';
+import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
 import 'features/authentication/presentation/pages/email_confirmation_page.dart';
+import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart';
+import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import 'features/company_profile/presentation/pages/add_company_page.dart';
+import 'features/company_profile/presentation/pages/assign_company_page.dart';
 import 'features/core/presentation/pages/error_page.dart';
 import 'features/core/presentation/pages/home_page.dart';
 import 'features/core/presentation/pages/loading_page.dart';
+import 'features/core/themes/themes.dart';
 import 'features/core/utils/custom_page_transition.dart';
 import 'features/core/utils/error_message_handler.dart';
 import 'features/core/utils/material_color_generator.dart';
-import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import 'features/user_profile/presentation/pages/add_user_profile_page.dart';
+import 'features/user_profile/presentation/pages/not_approved_page.dart';
 import 'firebase_options.dart';
 import 'injection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

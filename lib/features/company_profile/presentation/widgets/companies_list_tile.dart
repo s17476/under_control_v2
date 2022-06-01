@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
-
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/company.dart';
 
 class CompaniesListTile extends StatefulWidget {
@@ -19,8 +17,7 @@ class CompaniesListTile extends StatefulWidget {
   State<CompaniesListTile> createState() => _CompaniesListTileState();
 }
 
-class _CompaniesListTileState extends State<CompaniesListTile>
-    with ResponsiveSize {
+class _CompaniesListTileState extends State<CompaniesListTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -72,14 +69,17 @@ class _CompaniesListTileState extends State<CompaniesListTile>
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: Container(
-          margin: const EdgeInsets.all(8),
+          margin: const EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 4,
+          ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
             color: Theme.of(context).cardColor,
             boxShadow: [
               BoxShadow(
                 color: Theme.of(context).shadowColor,
-                blurRadius: 8.0,
+                blurRadius: 4.0,
               ),
             ],
           ),
@@ -92,8 +92,8 @@ class _CompaniesListTileState extends State<CompaniesListTile>
                   bottomLeft: Radius.circular(15),
                 ),
                 child: SizedBox(
-                  width: responsiveSizePx(small: 120, medium: 100),
-                  height: responsiveSizePx(small: 120, medium: 100),
+                  width: 120,
+                  height: 120,
                   child: widget.company.logo == ''
                       ? Image.asset('assets/undercontrol-adaptive.png')
                       : FadeInImage.assetNetwork(
@@ -103,8 +103,8 @@ class _CompaniesListTileState extends State<CompaniesListTile>
                         ),
                 ),
               ),
-              SizedBox(
-                width: responsiveSizePx(small: 16, medium: 32),
+              const SizedBox(
+                width: 16,
               ),
               Expanded(
                 child: Column(

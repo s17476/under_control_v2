@@ -22,7 +22,7 @@ class Themes with MaterialColorGenerator {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
-            // minimumSize: const Size(double.infinity, 48),
+            minimumSize: const Size(double.infinity, 48),
           ),
         ),
       );

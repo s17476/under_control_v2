@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 
 import '../../../core/presentation/widgets/logo_widget.dart';
+import '../../../core/utils/responsive_size.dart';
 import 'user_image_picker.dart';
 
 class LogoOrImagePicker extends StatefulWidget {
@@ -63,9 +63,9 @@ class _LogoOrImagePickerState extends State<LogoOrImagePicker>
       child: widget.isInLoginMode
           ? FadeTransition(
               opacity: _opacityAnimationBackward!,
-              child: Logo(
-                greenLettersSize: responsiveSizePx(small: 18, medium: 12),
-                whitheLettersSize: responsiveSizePx(small: 12, medium: 8),
+              child: const Logo(
+                greenLettersSize: 18,
+                whitheLettersSize: 12,
               ),
             )
           : FadeTransition(

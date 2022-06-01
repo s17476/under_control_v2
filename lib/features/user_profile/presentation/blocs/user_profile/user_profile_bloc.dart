@@ -15,6 +15,7 @@ import '../../../domain/entities/user_profile.dart';
 import '../../../domain/usecases/add_user.dart';
 import '../../../domain/usecases/assign_user_to_company.dart';
 import '../../../domain/usecases/get_user_by_id.dart';
+import '../../../domain/usecases/reset_company.dart';
 import '../../../domain/usecases/update_user_data.dart';
 
 part 'user_profile_event.dart';
@@ -26,6 +27,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   final AuthenticationBloc authenticationBloc;
   final AddUser addUser;
   final AssignUserToCompany assignUserToCompany;
+  final ResetCompany resetCompany;
   final GetUserById getUserById;
   final UpdateUserData updateUserData;
   final AddUserAvatar addUserAvatar;
@@ -35,6 +37,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     required this.authenticationBloc,
     required this.addUser,
     required this.assignUserToCompany,
+    required this.resetCompany,
     required this.getUserById,
     required this.updateUserData,
     required this.addUserAvatar,
@@ -111,6 +114,23 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
             final updatedUser = (event.userProfile as UserProfileModel)
                 .copyWith(companyId: event.companyId);
             emit(NotApproved(userProfile: updatedUser));
+          },
+        );
+      },
+    );
+
+    on<ResetCompanyEvent>(
+      (event, emit) async {
+        emit(Loading());
+        final failureOrVoidResult = await resetCompany(event.userProfile.id);
+        failureOrVoidResult.fold(
+          (failure) async => emit(
+            DatabaseErrorUserProfile(msg: failure.message),
+          ),
+          (userId) async {
+            final updatedUser =
+                (event.userProfile as UserProfileModel).copyWith(companyId: '');
+            emit(NoCompany(userProfile: updatedUser));
           },
         );
       },

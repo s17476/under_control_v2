@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
+import '../../../core/presentation/pages/loading_page.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/company_model.dart';
 import '../blocs/company_management/company_management_bloc.dart';
 import '../widgets/add_company_card.dart';

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/company_profile/presentation/pages/add_company_page.dart';
 
 import '../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../core/presentation/widgets/forward_text_button.dart';
 import '../../domain/entities/company.dart';
 import '../blocs/company_management/company_management_bloc.dart';
+import '../pages/add_company_page.dart';
 import 'companies_list_tile.dart';
 
 class CompaniesListView extends StatefulWidget {
@@ -53,7 +53,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
                 top: 8,
                 left: 8,
                 right: 8,
-                bottom: 2,
+                bottom: 10,
               ),
               child: TextFormField(
                 controller: controller,

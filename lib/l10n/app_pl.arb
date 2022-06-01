@@ -1,5 +1,6 @@
 {
     "add": "Dodaj",
+    "well_done": "Dobra robota!",
     "search": "Szukaj...",
     "password_reset_text_button": "Nie pamiętam hasła",
     "password_reset_button": "Zresetuj hasło",
@@ -53,5 +54,8 @@
     "add_company_intro_card_vat_number": "Numer VAT",
     "add_company_intro_card_phone_number": "Numer telefonu",
     "add_company_intro_card_email": "Email",
-    "add_company_intro_card_homepage": "Strona domowa"
+    "add_company_intro_card_homepage": "Strona domowa",
+    "approve_page_text": "Ostatnim etapem jest akceptacja  twojej prośby o dołączenie do wybranej organizacji przez jej adminmistratora. Możesz też zmienić organizację do której chcesz dołączyć .",
+    "approve_page_change_button": "Zmień organizację",
+    "approve_page_change_button_refresh": "Odświerz status"
 }

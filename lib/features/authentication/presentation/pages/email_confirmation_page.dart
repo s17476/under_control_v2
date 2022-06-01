@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 
+import '../../../core/utils/responsive_size.dart';
 import '../blocs/authentication/authentication_bloc.dart';
 
 class EmailConfirmationPage extends StatelessWidget with ResponsiveSize {
@@ -26,8 +26,8 @@ class EmailConfirmationPage extends StatelessWidget with ResponsiveSize {
             ),
             const SizedBox(height: 24),
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: responsiveSizePx(small: 32, medium: 150),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 32,
               ),
               child: ElevatedButton(
                 onPressed: () {

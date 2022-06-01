@@ -6,10 +6,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../core/presentation/widgets/bottom_navigation.dart';
-import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
-import '../blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/user_profile_model.dart';
+import '../blocs/user_profile/user_profile_bloc.dart';
 import '../widgets/avatar_card.dart';
 import '../widgets/data_check_card.dart';
 import '../widgets/personal_data_card.dart';

@@ -60,6 +60,15 @@ void main() {
           expect(result, isA<Right<Failure, VoidResult>>());
         },
       );
+      test(
+        'should return a [VoidResult] with user id when resetCompany is called',
+        () async {
+          // act
+          final result = await repository.resetCompany(tUserProfile.id);
+          // assert
+          expect(result, isA<Right<Failure, VoidResult>>());
+        },
+      );
 
       test(
         'should return a [VoidResult] when approveUser is called',
@@ -167,6 +176,19 @@ void main() {
       );
 
       test(
+        'should return a [DatabaseFailure] when resetCompany is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(FirebaseException(plugin: 'Bad Firebase'));
+          // act
+          final result = await badRepository.resetCompany('');
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+      test(
         'should return a [DatabaseFailure] when approveUser is called',
         () async {
           // arrange
@@ -266,6 +288,20 @@ void main() {
           ).thenThrow(Exception());
           // act
           final result = await badRepository.addUser(tUserProfile);
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [UnsuspectedFailure] when resetCompany is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(Exception());
+          // act
+          final result = await badRepository.resetCompany('');
           // assert
           expect(result, isA<Left<Failure, VoidResult>>());
         },

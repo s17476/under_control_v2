@@ -16,6 +16,7 @@ import 'package:under_control_v2/features/user_profile/domain/usecases/add_user.
 import 'package:under_control_v2/features/user_profile/domain/usecases/add_user_avatar.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/assign_user_to_company.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/get_user_by_id.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/reset_company.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
@@ -25,6 +26,8 @@ class MockAuthenticationBloc extends Mock
 class MockAddUser extends Mock implements AddUser {}
 
 class MockAssignUserToCompany extends Mock implements AssignUserToCompany {}
+
+class MockResetCompany extends Mock implements ResetCompany {}
 
 class MockGetUserById extends Mock implements GetUserById {}
 
@@ -39,6 +42,7 @@ void main() {
   late MockAuthenticationBloc mockAuthenticationBloc;
   late MockAddUser mockAddUser;
   late MockAssignUserToCompany mockAssignUserToCompany;
+  late MockResetCompany mockResetCompany;
   late MockGetUserById mockGetUserById;
   late MockUpdateUserData mockUpdateUserData;
   late MockAddUserAvatar mockAddUserAvatar;
@@ -48,6 +52,7 @@ void main() {
     mockAuthenticationBloc = MockAuthenticationBloc();
     mockAddUser = MockAddUser();
     mockAssignUserToCompany = MockAssignUserToCompany();
+    mockResetCompany = MockResetCompany();
     mockGetUserById = MockGetUserById();
     mockUpdateUserData = MockUpdateUserData();
     mockAddUserAvatar = MockAddUserAvatar();
@@ -65,6 +70,7 @@ void main() {
       authenticationBloc: mockAuthenticationBloc,
       addUser: mockAddUser,
       assignUserToCompany: mockAssignUserToCompany,
+      resetCompany: mockResetCompany,
       getUserById: mockGetUserById,
       updateUserData: mockUpdateUserData,
       addUserAvatar: mockAddUserAvatar,
@@ -388,6 +394,46 @@ void main() {
       expect: () => [
         NotApproved(
           userProfile: tUserProfileModel.copyWith(companyId: 'companyId'),
+        ),
+      ],
+    );
+  });
+
+  group('ResetCompany usecase', () {
+    blocTest(
+      'should emit [DatabaseError] when usecase returns failure',
+      build: () => userProfileBloc,
+      act: (UserProfileBloc bloc) async {
+        bloc.add(
+          ResetCompanyEvent(userProfile: tUserProfileModel),
+        );
+        when(() => mockResetCompany(any()))
+            .thenAnswer((_) async => const Left(DatabaseFailure()));
+      },
+      skip: 1,
+      verify: (_) => verify(
+        () => mockResetCompany(tUserProfileModel.id),
+      ).called(1),
+      expect: () => [isA<DatabaseErrorUserProfile>()],
+    );
+    blocTest(
+      'should emit [NoCompany] when ResetCompany is called',
+      build: () => userProfileBloc,
+      act: (UserProfileBloc bloc) async {
+        bloc.add(
+          ResetCompanyEvent(userProfile: tUserProfileModel),
+        );
+        when(() => mockResetCompany(any())).thenAnswer(
+          (_) async => Right(VoidResult()),
+        );
+      },
+      skip: 1,
+      verify: (_) => verify(
+        () => mockResetCompany(tUserProfileModel.id),
+      ).called(1),
+      expect: () => [
+        NoCompany(
+          userProfile: tUserProfileModel.copyWith(companyId: ''),
         ),
       ],
     );

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../widgets/companies_list.dart';
 import '../widgets/intro_card.dart';
-import '../../../core/presentation/widgets/bottom_navigation.dart';
-import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 class AssignCompanyPage extends StatefulWidget {
   const AssignCompanyPage({Key? key}) : super(key: key);

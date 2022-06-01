@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/logo_widget.dart';
-import '../../utils/custom_page_transition.dart';
 import '../../utils/size_config.dart';
 
-class SplashPage extends StatelessWidget with CustomPageTransition {
+class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);
 
   static const routeName = '/';

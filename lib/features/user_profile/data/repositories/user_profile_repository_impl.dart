@@ -70,6 +70,21 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
   }
 
   @override
+  Future<Either<Failure, VoidResult>> resetCompany(String userId) async {
+    try {
+      final userReference = firebaseFirestore.collection('users').doc(userId);
+      await userReference.update({'companyId': ''});
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return Left(
+        UnsuspectedFailure(message: e.toString()),
+      );
+    }
+  }
+
+  @override
   Future<Either<Failure, UserProfile>> getUserById(String userId) async {
     try {
       final userSnapshot =

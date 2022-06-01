@@ -17,19 +17,19 @@ import 'features/authentication/data/repositories/authentication_repository_impl
 import 'features/authentication/domain/repositories/authentication_repository.dart'
     as _i17;
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i44;
+    as _i45;
 import 'features/authentication/domain/usecases/auto_signin.dart' as _i19;
 import 'features/authentication/domain/usecases/check_email_verification.dart'
     as _i20;
 import 'features/authentication/domain/usecases/send_password_reset_email.dart'
-    as _i30;
-import 'features/authentication/domain/usecases/send_verification_email.dart'
     as _i31;
-import 'features/authentication/domain/usecases/signin.dart' as _i32;
-import 'features/authentication/domain/usecases/signout.dart' as _i33;
-import 'features/authentication/domain/usecases/signup.dart' as _i34;
+import 'features/authentication/domain/usecases/send_verification_email.dart'
+    as _i32;
+import 'features/authentication/domain/usecases/signin.dart' as _i33;
+import 'features/authentication/domain/usecases/signout.dart' as _i34;
+import 'features/authentication/domain/usecases/signup.dart' as _i35;
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart'
-    as _i40;
+    as _i41;
 import 'features/company_profile/data/repositories/company_management_repository_impl.dart'
     as _i22;
 import 'features/company_profile/data/repositories/company_repository_impl.dart'
@@ -38,19 +38,19 @@ import 'features/company_profile/domain/repositories/company_management_reposito
     as _i21;
 import 'features/company_profile/domain/repositories/company_repository.dart'
     as _i23;
-import 'features/company_profile/domain/usecases/add_company.dart' as _i38;
-import 'features/company_profile/domain/usecases/add_company_logo.dart' as _i39;
+import 'features/company_profile/domain/usecases/add_company.dart' as _i39;
+import 'features/company_profile/domain/usecases/add_company_logo.dart' as _i40;
 import 'features/company_profile/domain/usecases/fetch_all_companies.dart'
     as _i25;
 import 'features/company_profile/domain/usecases/fetch_all_company_users.dart'
     as _i26;
 import 'features/company_profile/domain/usecases/get_company_by_id.dart'
     as _i27;
-import 'features/company_profile/domain/usecases/update_company.dart' as _i36;
+import 'features/company_profile/domain/usecases/update_company.dart' as _i37;
 import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart'
-    as _i42;
-import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart'
     as _i43;
+import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart'
+    as _i44;
 import 'features/core/network/network_info.dart' as _i8;
 import 'features/core/utils/input_validator.dart' as _i7;
 import 'features/user_profile/data/repositories/user_files_repository_impl.dart'
@@ -58,7 +58,7 @@ import 'features/user_profile/data/repositories/user_files_repository_impl.dart'
 import 'features/user_profile/data/repositories/user_profile_repository_impl.dart'
     as _i12;
 import 'features/user_profile/domain/repositories/injectable_modules.dart'
-    as _i45;
+    as _i46;
 import 'features/user_profile/domain/repositories/user_files_repository.dart'
     as _i9;
 import 'features/user_profile/domain/repositories/user_profile_repository.dart'
@@ -70,10 +70,11 @@ import 'features/user_profile/domain/usecases/assign_user_to_company.dart'
     as _i16;
 import 'features/user_profile/domain/usecases/get_user_by_id.dart' as _i28;
 import 'features/user_profile/domain/usecases/reject_user.dart' as _i29;
-import 'features/user_profile/domain/usecases/suspend_user.dart' as _i35;
-import 'features/user_profile/domain/usecases/update_user_data.dart' as _i37;
+import 'features/user_profile/domain/usecases/reset_company.dart' as _i30;
+import 'features/user_profile/domain/usecases/suspend_user.dart' as _i36;
+import 'features/user_profile/domain/usecases/update_user_data.dart' as _i38;
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart'
-    as _i41; // ignore_for_file: unnecessary_lambdas
+    as _i42; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -133,64 +134,67 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       () => _i28.GetUserById(repository: get<_i11.UserProfileRepository>()));
   gh.lazySingleton<_i29.RejectUser>(
       () => _i29.RejectUser(repository: get<_i11.UserProfileRepository>()));
-  gh.lazySingleton<_i30.SendPasswordResetEmail>(() =>
-      _i30.SendPasswordResetEmail(
+  gh.lazySingleton<_i30.ResetCompany>(
+      () => _i30.ResetCompany(repository: get<_i11.UserProfileRepository>()));
+  gh.lazySingleton<_i31.SendPasswordResetEmail>(() =>
+      _i31.SendPasswordResetEmail(
           authenticationRepository: get<_i17.AuthenticationRepository>()));
-  gh.lazySingleton<_i31.SendVerificationEmail>(() => _i31.SendVerificationEmail(
+  gh.lazySingleton<_i32.SendVerificationEmail>(() => _i32.SendVerificationEmail(
       authenticationRepository: get<_i17.AuthenticationRepository>()));
-  gh.lazySingleton<_i32.Signin>(() => _i32.Signin(
+  gh.lazySingleton<_i33.Signin>(() => _i33.Signin(
       authenticationRepository: get<_i17.AuthenticationRepository>()));
-  gh.lazySingleton<_i33.Signout>(() => _i33.Signout(
+  gh.lazySingleton<_i34.Signout>(() => _i34.Signout(
       authenticationRepository: get<_i17.AuthenticationRepository>()));
-  gh.lazySingleton<_i34.Signup>(() => _i34.Signup(
+  gh.lazySingleton<_i35.Signup>(() => _i35.Signup(
       authenticationRepository: get<_i17.AuthenticationRepository>()));
-  gh.lazySingleton<_i35.SuspendUser>(
-      () => _i35.SuspendUser(repository: get<_i11.UserProfileRepository>()));
-  gh.lazySingleton<_i36.UpdateCompany>(() =>
-      _i36.UpdateCompany(companyRepository: get<_i23.CompanyRepository>()));
-  gh.lazySingleton<_i37.UpdateUserData>(
-      () => _i37.UpdateUserData(repository: get<_i11.UserProfileRepository>()));
-  gh.lazySingleton<_i38.AddCompany>(() => _i38.AddCompany(
+  gh.lazySingleton<_i36.SuspendUser>(
+      () => _i36.SuspendUser(repository: get<_i11.UserProfileRepository>()));
+  gh.lazySingleton<_i37.UpdateCompany>(() =>
+      _i37.UpdateCompany(companyRepository: get<_i23.CompanyRepository>()));
+  gh.lazySingleton<_i38.UpdateUserData>(
+      () => _i38.UpdateUserData(repository: get<_i11.UserProfileRepository>()));
+  gh.lazySingleton<_i39.AddCompany>(() => _i39.AddCompany(
       companyManagementRepository: get<_i21.CompanyManagementRepository>()));
-  gh.lazySingleton<_i39.AddCompanyLogo>(() =>
-      _i39.AddCompanyLogo(repository: get<_i21.CompanyManagementRepository>()));
-  gh.factory<_i40.AuthenticationBloc>(() => _i40.AuthenticationBloc(
-      signin: get<_i32.Signin>(),
-      signup: get<_i34.Signup>(),
-      signout: get<_i33.Signout>(),
+  gh.lazySingleton<_i40.AddCompanyLogo>(() =>
+      _i40.AddCompanyLogo(repository: get<_i21.CompanyManagementRepository>()));
+  gh.factory<_i41.AuthenticationBloc>(() => _i41.AuthenticationBloc(
+      signin: get<_i33.Signin>(),
+      signup: get<_i35.Signup>(),
+      signout: get<_i34.Signout>(),
       autoSignin: get<_i19.AutoSignin>(),
-      sendVerificationEmail: get<_i31.SendVerificationEmail>(),
+      sendVerificationEmail: get<_i32.SendVerificationEmail>(),
       checkEmailVerification: get<_i20.CheckEmailVerification>(),
-      sendPasswordResetEmail: get<_i30.SendPasswordResetEmail>(),
+      sendPasswordResetEmail: get<_i31.SendPasswordResetEmail>(),
       inputValidator: get<_i7.InputValidator>()));
-  gh.factory<_i41.UserProfileBloc>(() => _i41.UserProfileBloc(
-      authenticationBloc: get<_i40.AuthenticationBloc>(),
+  gh.factory<_i42.UserProfileBloc>(() => _i42.UserProfileBloc(
+      authenticationBloc: get<_i41.AuthenticationBloc>(),
       addUser: get<_i13.AddUser>(),
       assignUserToCompany: get<_i16.AssignUserToCompany>(),
+      resetCompany: get<_i30.ResetCompany>(),
       getUserById: get<_i28.GetUserById>(),
-      updateUserData: get<_i37.UpdateUserData>(),
+      updateUserData: get<_i38.UpdateUserData>(),
       addUserAvatar: get<_i14.AddUserAvatar>(),
       inputValidator: get<_i7.InputValidator>()));
-  gh.factory<_i42.CompanyManagementBloc>(() => _i42.CompanyManagementBloc(
-      userProfileBloc: get<_i41.UserProfileBloc>(),
+  gh.factory<_i43.CompanyManagementBloc>(() => _i43.CompanyManagementBloc(
+      userProfileBloc: get<_i42.UserProfileBloc>(),
       inputValidator: get<_i7.InputValidator>(),
-      addCompany: get<_i38.AddCompany>(),
+      addCompany: get<_i39.AddCompany>(),
       fetchAllCompanies: get<_i25.FetchAllCompanies>(),
-      addCompanyLogo: get<_i39.AddCompanyLogo>()));
-  gh.factory<_i43.CompanyProfileBloc>(() => _i43.CompanyProfileBloc(
-      userProfileBloc: get<_i41.UserProfileBloc>(),
-      updateCompany: get<_i36.UpdateCompany>(),
+      addCompanyLogo: get<_i40.AddCompanyLogo>()));
+  gh.factory<_i44.CompanyProfileBloc>(() => _i44.CompanyProfileBloc(
+      userProfileBloc: get<_i42.UserProfileBloc>(),
+      updateCompany: get<_i37.UpdateCompany>(),
       fetchAllCompanyUsers: get<_i26.FetchAllCompanyUsers>(),
       getCompanyById: get<_i27.GetCompanyById>(),
       inputValidator: get<_i7.InputValidator>()));
   return get;
 }
 
-class _$DataConnectionCheckerModule extends _i44.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i45.DataConnectionCheckerModule {}
 
 class _$FirebaseAuthenticationService
-    extends _i44.FirebaseAuthenticationService {}
+    extends _i45.FirebaseAuthenticationService {}
 
-class _$FirebaseFirestoreService extends _i45.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i46.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i45.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i46.FirebaseStorageService {}

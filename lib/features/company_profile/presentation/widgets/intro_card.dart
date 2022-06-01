@@ -61,8 +61,8 @@ class IntroCard extends StatelessWidget with ResponsiveSize {
                                 .assign_company_congratulations,
                             style: const TextStyle(fontSize: 32),
                           ),
-                          SizedBox(
-                            height: responsiveSizePx(small: 32, medium: 5),
+                          const SizedBox(
+                            height: 32,
                           ),
                           Padding(
                             padding:

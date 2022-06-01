@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 
-class CustomTextFormField extends StatelessWidget with ResponsiveSize {
+class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     Key? key,
     required this.fieldKey,
@@ -22,8 +21,8 @@ class CustomTextFormField extends StatelessWidget with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: responsiveSizePx(small: 16, medium: 150),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
       ),
       child: TextFormField(
         scrollPadding: const EdgeInsets.only(bottom: 300),

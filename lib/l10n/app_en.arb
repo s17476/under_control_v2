@@ -3,6 +3,10 @@
     "@add": {
       "description": "Add"
     },
+    "well_done": "Well done!",
+    "@well_done": {
+      "description": "Well done"
+    },
     "search": "Search...",
     "@search": {
       "description": "Search..."
@@ -225,5 +229,17 @@
     "add_company_intro_card_homepage": "Homepage",
     "@add_company_intro_card_homepage": {
       "description": "Add new company page - homepage"
+    },
+    "approve_page_text": "The last stage is the approval of your request to join the selected organization by its administrator. You can also change the organization you want to join.",
+    "@approve_page_text": {
+      "description": "Approve page - text"
+    },
+    "approve_page_change_button": "Change organization",
+    "@approve_page_change_button": {
+      "description": "Approve page - button"
+    },
+    "approve_page_change_button_refresh": "Refresh status",
+    "@approve_page_change_button_refresh": {
+      "description": "Approve page - refresh button"
     }
 }

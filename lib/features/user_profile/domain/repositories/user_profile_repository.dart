@@ -10,6 +10,8 @@ abstract class UserProfileRepository {
   Future<Either<Failure, VoidResult>> assignUserToCompany(
       AssignParams assignParams);
 
+  Future<Either<Failure, VoidResult>> resetCompany(String userId);
+
   Future<Either<Failure, VoidResult>> addUser(UserProfile userProfile);
 
   Future<Either<Failure, VoidResult>> approveUser(String userId);
