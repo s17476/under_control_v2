@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/company_profile/data/models/company_users_list_model.dart';
@@ -18,8 +19,8 @@ part 'company_profile_state.dart';
 @injectable
 class CompanyProfileBloc
     extends Bloc<CompanyProfileEvent, CompanyProfileState> {
-  late StreamSubscription authenticationStreamSubscription;
-  late StreamSubscription companyUsersStreamSubscription;
+  late StreamSubscription userProfileStreamSubscription;
+  StreamSubscription? companyUsersStreamSubscription;
   late StreamSubscription streamSubscription;
   final UserProfileBloc userProfileBloc;
   final UpdateCompany updateCompany;
@@ -34,13 +35,17 @@ class CompanyProfileBloc
     required this.getCompanyById,
     required this.inputValidator,
   }) : super(CompanyProfileEmpty()) {
-    authenticationStreamSubscription = userProfileBloc.stream.listen(
+    userProfileStreamSubscription = userProfileBloc.stream.listen(
       (state) {
         if (state is Approved) {
           add(GetCompanyByIdEvent(id: state.userProfile.companyId));
         }
+        if (state is NotApproved) {
+          add(GetCompanyByIdEvent(id: state.userProfile.companyId));
+        }
       },
     );
+
     on<GetCompanyByIdEvent>((event, emit) async {
       emit(CompanyProfileLoading());
       final failureOrCompany = await getCompanyById(event.id);
@@ -55,25 +60,44 @@ class CompanyProfileBloc
               CompanyProfileError(msg: failure.message, err: true),
             ),
             (companyUsers) async {
-              print('xxxxxxxxxxxxxxxxxxxxx company ok');
-              companyUsersStreamSubscription =
-                  companyUsers.allUsers.listen((snapshot) {
-                final usersList = CompanyUsersListModel.fromSnapshot(snapshot);
-                print('xxxxxxxxxxxxxxxxxxxxx company users ok');
-                emit(CompanyProfileLoaded(
-                    companyUsers: usersList, company: company));
-              });
+              companyUsersStreamSubscription = companyUsers.allUsers.listen(
+                (snapshot) {
+                  add(
+                    UpdateCompanyUsersEvent(
+                      company: company,
+                      snapshot: snapshot,
+                    ),
+                  );
+                },
+              );
+              emit(
+                CompanyProfileLoaded(
+                  companyUsers: const CompanyUsersList(allUsers: []),
+                  company: company,
+                ),
+              );
             },
           );
         },
+      );
+    });
+
+    on<UpdateCompanyUsersEvent>((UpdateCompanyUsersEvent event, emit) async {
+      CompanyUsersList usersList = CompanyUsersListModel.fromSnapshot(
+          event.snapshot as QuerySnapshot<Map<String, dynamic>>);
+      emit(
+        CompanyProfileLoaded(
+          companyUsers: usersList,
+          company: event.company,
+        ),
       );
     });
   }
 
   @override
   Future<void> close() {
-    authenticationStreamSubscription.cancel();
-    companyUsersStreamSubscription.cancel();
+    userProfileStreamSubscription.cancel();
+    companyUsersStreamSubscription?.cancel();
     return super.close();
   }
 }

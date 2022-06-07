@@ -61,6 +61,7 @@ class CompanyRepositoryImpl extends CompanyRepository {
       querySnapshot = firebaseFirestore
           .collection('users')
           .where('companyId', isEqualTo: id)
+          .where('approved', isEqualTo: true)
           .snapshots();
 
       return Right(CompanyUsersModel(allUsers: querySnapshot));

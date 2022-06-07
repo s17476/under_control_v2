@@ -16,6 +16,15 @@ class GetCompanyByIdEvent extends CompanyProfileEvent {
   }) : super([id]);
 }
 
+class UpdateCompanyUsersEvent extends CompanyProfileEvent {
+  final Company company;
+  final QuerySnapshot<Object?> snapshot;
+  UpdateCompanyUsersEvent({
+    required this.company,
+    required this.snapshot,
+  }) : super([company, snapshot]);
+}
+
 class UpdateCompanyEvent extends CompanyProfileEvent {
   UpdateCompanyEvent({required this.company}) : super([company]);
 

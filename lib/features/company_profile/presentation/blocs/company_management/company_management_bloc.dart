@@ -40,6 +40,7 @@ class CompanyManagementBloc
         add(FetchAllCompaniesEvent());
       }
     });
+
     on<FetchAllCompaniesEvent>((event, emit) async {
       emit(CompanyManagementLoading());
       final failureOrCompanies = await fetchAllCompanies(NoParams());
@@ -83,7 +84,6 @@ class CompanyManagementBloc
 
     on<AddCompanyLogoEvent>(
       (event, emit) async {
-        print('AddLogo');
         emit(CompanyManagementLoading());
         final failureOrLogoUrl = await addCompanyLogo(
           AvatarParams(

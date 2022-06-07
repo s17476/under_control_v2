@@ -27,6 +27,14 @@
     "@confirm": {
       "description": "Confirm buttons"
     },
+    "continue_btn": "Continue",
+    "@continue_btn": {
+      "description": "Continue button"
+    },
+    "change": "Change",
+    "@change": {
+      "description": "Change button"
+    },
     "back_to_exit": "Press Back button again to Exit.",
     "@back_to_exit": {
       "description": "Back button to exit - SnackBar"
@@ -234,6 +242,10 @@
     "@approve_page_text": {
       "description": "Approve page - text"
     },
+    "approve_page_admin_text": "As you are the only UnderControl user in the selected organization, you get administrator privileges.",
+    "@approve_page_admin_text": {
+      "description": "Approve page - admin text"
+    },
     "approve_page_change_button": "Change organization",
     "@approve_page_change_button": {
       "description": "Approve page - button"
@@ -241,5 +253,9 @@
     "approve_page_change_button_refresh": "Refresh status",
     "@approve_page_change_button_refresh": {
       "description": "Approve page - refresh button"
+    },
+    "approve_page_change_dialog_text": "Are you sure you want to change your organization?",
+    "@approve_page_change_dialog_text": {
+      "description": "Approve page - change dialog"
     }
 }

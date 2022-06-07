@@ -14,7 +14,7 @@ class CompanyUsersListModel extends CompanyUsersList {
   factory CompanyUsersListModel.fromSnapshot(
       QuerySnapshot<Map<String, dynamic>> snapshot) {
     List<UserProfile> usersList = [];
-
+    print('FROM SHAPSHOT');
     usersList = snapshot.docs
         .map(
           (DocumentSnapshot doc) => UserProfileModel.fromMap(
