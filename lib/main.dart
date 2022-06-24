@@ -19,6 +19,7 @@ import 'features/core/themes/themes.dart';
 import 'features/core/utils/custom_page_transition.dart';
 import 'features/core/utils/error_message_handler.dart';
 import 'features/core/utils/material_color_generator.dart';
+import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import 'features/user_profile/presentation/pages/add_user_profile_page.dart';
 import 'features/user_profile/presentation/pages/not_approved_page.dart';
@@ -54,6 +55,9 @@ class App extends StatelessWidget
         ),
         BlocProvider(
           create: (context) => getIt<UserProfileBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<UserManagementBloc>(),
         ),
         BlocProvider(
           create: (context) => getIt<CompanyProfileBloc>(),

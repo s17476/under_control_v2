@@ -1,10 +1,22 @@
 part of 'user_management_bloc.dart';
 
 abstract class UserManagementState extends Equatable {
-  const UserManagementState();
-  
+  const UserManagementState({this.message = ''});
+
+  final String message;
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [message];
 }
 
-class UserManagementInitial extends UserManagementState {}
+class UserManagementEmpty extends UserManagementState {}
+
+class UserManagementLoading extends UserManagementState {}
+
+class UserManagementSuccessful extends UserManagementState {
+  const UserManagementSuccessful(String message) : super(message: message);
+}
+
+class UserManagementError extends UserManagementState {
+  const UserManagementError(String message) : super(message: message);
+}

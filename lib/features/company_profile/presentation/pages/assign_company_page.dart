@@ -60,7 +60,7 @@ class _AssignCompanyPageState extends State<AssignCompanyPage> {
               children: pages,
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 24),
+              padding: const EdgeInsets.only(bottom: 40),
               child: SmoothPageIndicator(
                 controller: pageController,
                 count: pages.length,

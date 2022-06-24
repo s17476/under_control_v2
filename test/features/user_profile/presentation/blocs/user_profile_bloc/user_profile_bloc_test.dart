@@ -138,8 +138,11 @@ void main() {
       build: () => userProfileBloc,
       act: (UserProfileBloc bloc) async {
         bloc.add(GetUserByIdEvent(userId: ''));
-        when(() => mockGetUserById(any()))
-            .thenAnswer((_) async => const Left(UnsuspectedFailure()));
+        when(() => mockGetUserById(any())).thenAnswer(
+          (_) async => const Left(
+            UnsuspectedFailure(),
+          ),
+        );
       },
       skip: 1,
       verify: (_) => verify(() => mockGetUserById('')).called(1),

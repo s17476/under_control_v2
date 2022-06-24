@@ -6,7 +6,7 @@ abstract class UserProfileEvent extends Equatable {
   final List properties;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [properties];
 }
 
 class AddUserEvent extends UserProfileEvent {
@@ -21,14 +21,6 @@ class AddUserEvent extends UserProfileEvent {
           avatar,
         ]);
 }
-
-// class ApproveUserEvent extends UserProfileEvent {
-//   final String userId;
-
-//   ApproveUserEvent({
-//     required this.userId,
-//   }) : super([userId]);
-// }
 
 class AssignToCompanyEvent extends UserProfileEvent {
   final UserProfile userProfile;
@@ -56,22 +48,8 @@ class GetUserByIdEvent extends UserProfileEvent {
   }) : super([userId]);
 }
 
-// class RejectUserEvent extends UserProfileEvent {
-//   final String userId;
-//   RejectUserEvent({
-//     required this.userId,
-//   }) : super([userId]);
-// }
-
-// class SuspendEvent extends UserProfileEvent {
-//   final String userId;
-//   SuspendEvent({
-//     required this.userId,
-//   }) : super([userId]);
-// }
-
 class UpdateUserDataEvent extends UserProfileEvent {
-  final UserProfile userProfile;
+  final userProfile;
 
   UpdateUserDataEvent({required this.userProfile})
       : super([

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/approve_user_and_make_admin.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -39,6 +40,27 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
       final userReference = firebaseFirestore.collection('users').doc(userId);
       await userReference.update({
         'approved': true,
+        'rejected': false,
+        'suspended': false,
+      });
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return Left(
+        UnsuspectedFailure(message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, VoidResult>> approveUserAndMakeAdmin(
+      String userId) async {
+    try {
+      final userReference = firebaseFirestore.collection('users').doc(userId);
+      await userReference.update({
+        'approved': true,
+        'administrator': true,
         'rejected': false,
         'suspended': false,
       });
