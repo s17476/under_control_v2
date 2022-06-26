@@ -14,9 +14,9 @@ class UserManagementEmpty extends UserManagementState {}
 class UserManagementLoading extends UserManagementState {}
 
 class UserManagementSuccessful extends UserManagementState {
-  const UserManagementSuccessful(String message) : super(message: message);
+  const UserManagementSuccessful({super.message});
 }
 
 class UserManagementError extends UserManagementState {
-  const UserManagementError(String message) : super(message: message);
+  const UserManagementError({super.message});
 }

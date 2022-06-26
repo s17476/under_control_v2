@@ -116,7 +116,16 @@ class NotApprovedPage extends StatelessWidget with ResponsiveSize {
                             ElevatedButton(
                               onPressed: () {
                                 context.read<UserManagementBloc>().add(
-                                      ApproveUserEvent(
+                                      ApproveUserAndMakeAdminEvent(
+                                        userId: (context
+                                                .read<UserProfileBloc>()
+                                                .state as NotApproved)
+                                            .userProfile
+                                            .id,
+                                      ),
+                                    );
+                                context.read<UserProfileBloc>().add(
+                                      GetUserByIdEvent(
                                         userId: (context
                                                 .read<UserProfileBloc>()
                                                 .state as NotApproved)

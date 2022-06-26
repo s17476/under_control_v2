@@ -49,7 +49,7 @@ class GetUserByIdEvent extends UserProfileEvent {
 }
 
 class UpdateUserDataEvent extends UserProfileEvent {
-  final userProfile;
+  final UserProfile userProfile;
 
   UpdateUserDataEvent({required this.userProfile})
       : super([

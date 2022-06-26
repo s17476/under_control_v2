@@ -14,18 +14,17 @@ abstract class UserManagementEvent extends Equatable {
 }
 
 class ApproveUserEvent extends UserManagementEvent {
-  const ApproveUserEvent({required String userId}) : super(userId: userId);
+  const ApproveUserEvent({required super.userId});
 }
 
 class ApproveUserAndMakeAdminEvent extends UserManagementEvent {
-  const ApproveUserAndMakeAdminEvent({required String userId})
-      : super(userId: userId);
+  const ApproveUserAndMakeAdminEvent({required super.userId});
 }
 
 class RejectUserEvent extends UserManagementEvent {
-  const RejectUserEvent({required String userId}) : super(userId: userId);
+  const RejectUserEvent({required super.userId});
 }
 
 class SuspendUserEvent extends UserManagementEvent {
-  const SuspendUserEvent({required String userId}) : super(userId: userId);
+  const SuspendUserEvent({required super.userId});
 }

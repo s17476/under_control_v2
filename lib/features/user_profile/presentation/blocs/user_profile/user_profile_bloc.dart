@@ -64,14 +64,14 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
           event.avatar,
         );
         await failureOrVoid.fold(
-          (failure) async => emit(NoUserProfileError(msg: failure.message)),
+          (failure) async => emit(NoUserProfileError(message: failure.message)),
           (_) async {
             // add avatar to cloud storage
             final failureOrAvatarString = await addUserAvatar(
                 AvatarParams(userId: userId, avatar: event.avatar!));
             await failureOrAvatarString.fold(
               (failure) async => emit(
-                DatabaseErrorUserProfile(msg: failure.message),
+                DatabaseErrorUserProfile(message: failure.message),
               ),
               (avatarUrl) async {
                 UserProfileModel updatedUser =
@@ -84,7 +84,8 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
                 final failureOrVoidResult = await addUser(updatedUser);
                 await failureOrVoidResult.fold(
                   (failure) async => emit(
-                    DatabaseErrorUserProfile(msg: failure.message, err: true),
+                    DatabaseErrorUserProfile(
+                        message: failure.message, error: true),
                   ),
                   (_) async {
                     emit(NoCompany(userProfile: updatedUser));
@@ -108,7 +109,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
         );
         failureOrVoidResult.fold(
           (failure) async => emit(
-            DatabaseErrorUserProfile(msg: failure.message),
+            DatabaseErrorUserProfile(message: failure.message),
           ),
           (userId) async {
             final updatedUser = (event.userProfile as UserProfileModel)
@@ -125,7 +126,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
         final failureOrVoidResult = await resetCompany(event.userProfile.id);
         failureOrVoidResult.fold(
           (failure) async => emit(
-            DatabaseErrorUserProfile(msg: failure.message),
+            DatabaseErrorUserProfile(message: failure.message),
           ),
           (userId) async {
             final updatedUser =
@@ -142,7 +143,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
         final failureOrVoidResult = await updateUserData(event.userProfile);
         failureOrVoidResult.fold(
           (failure) async => emit(
-            DatabaseErrorUserProfile(msg: failure.message),
+            DatabaseErrorUserProfile(message: failure.message),
           ),
           (_) async {
             final updatedUser = event.userProfile;
@@ -160,7 +161,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
           if (failure is UnsuspectedFailure) {
             emit(const NoUserProfileError());
           } else {
-            emit(DatabaseErrorUserProfile(msg: failure.message));
+            emit(DatabaseErrorUserProfile(message: failure.message));
           }
         },
         (userProfile) async {

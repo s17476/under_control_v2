@@ -14,30 +14,22 @@ abstract class CompanyManagementState extends Equatable {
 class CompanyManagementEmpty extends CompanyManagementState {}
 
 class CompanyManagementError extends CompanyManagementState {
-  final String msg;
-  final bool err;
   const CompanyManagementError({
-    this.msg = '',
-    this.err = false,
-  }) : super(
-          message: msg,
-          error: err,
-        );
+    super.message,
+    super.error,
+  });
 }
 
 class CompanyManagementCompaniesLoaded extends CompanyManagementState {
   final Company? selectedCompany;
   final Companies companies;
-  final String msg;
-  final bool err;
+
   CompanyManagementCompaniesLoaded({
     this.selectedCompany,
     required this.companies,
-    this.msg = '',
-    this.err = false,
+    super.message,
+    super.error,
   }) : super(
-          message: msg,
-          error: err,
           properties: [companies, selectedCompany],
         );
 }

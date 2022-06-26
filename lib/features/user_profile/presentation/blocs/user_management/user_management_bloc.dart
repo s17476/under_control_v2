@@ -28,8 +28,8 @@ class UserManagementBloc
       emit(UserManagementLoading());
       final failureOrVoidResult = await approveUser(event.userId);
       failureOrVoidResult.fold(
-        (failure) async => emit(UserManagementError(failure.message)),
-        (voidResult) async => emit(const UserManagementSuccessful('')),
+        (failure) async => emit(UserManagementError(message: failure.message)),
+        (voidResult) async => emit(const UserManagementSuccessful(message: '')),
       );
     });
 
@@ -37,8 +37,8 @@ class UserManagementBloc
       emit(UserManagementLoading());
       final failureOrVoidResult = await approveUserAndMakeAdmin(event.userId);
       failureOrVoidResult.fold(
-        (failure) async => emit(UserManagementError(failure.message)),
-        (voidResult) async => emit(const UserManagementSuccessful('')),
+        (failure) async => emit(UserManagementError(message: failure.message)),
+        (voidResult) async => emit(const UserManagementSuccessful(message: '')),
       );
     });
 
@@ -46,8 +46,8 @@ class UserManagementBloc
       emit(UserManagementLoading());
       final failureOrVoidResult = await rejectUser(event.userId);
       failureOrVoidResult.fold(
-        (failure) async => emit(UserManagementError(failure.message)),
-        (voidResult) async => emit(const UserManagementSuccessful('')),
+        (failure) async => emit(UserManagementError(message: failure.message)),
+        (voidResult) async => emit(const UserManagementSuccessful(message: '')),
       );
     });
 
@@ -55,8 +55,8 @@ class UserManagementBloc
       emit(UserManagementLoading());
       final failureOrVoidResult = await suspendUser(event.userId);
       failureOrVoidResult.fold(
-        (failure) async => emit(UserManagementError(failure.message)),
-        (voidResult) async => emit(const UserManagementSuccessful('')),
+        (failure) async => emit(UserManagementError(message: failure.message)),
+        (voidResult) async => emit(const UserManagementSuccessful(message: '')),
       );
     });
   }

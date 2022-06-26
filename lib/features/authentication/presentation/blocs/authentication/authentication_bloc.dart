@@ -42,7 +42,7 @@ class AuthenticationBloc
     required this.inputValidator,
   }) : super(EmptyAuthenticationState()) {
     streamSubscription = autoSignin().listen((user) {
-      add(AutoSigninEvent(user));
+      add(AutoSigninEvent(user: user));
     });
 
     on<AutoSigninEvent>(

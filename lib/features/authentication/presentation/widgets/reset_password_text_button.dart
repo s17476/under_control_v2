@@ -58,7 +58,7 @@ class ResetPasswordTextButton extends StatelessWidget {
                   onPressed: () {
                     context.read<AuthenticationBloc>().add(
                           SendPasswordResetEmailEvent(
-                            _textEditingController.text,
+                            email: _textEditingController.text,
                           ),
                         );
                     Navigator.pop(context);

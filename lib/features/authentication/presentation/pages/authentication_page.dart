@@ -97,16 +97,16 @@ class _AuthenticationPageState extends State<AuthenticationPage>
       } else {
         context.read<AuthenticationBloc>().add(
               SignupEvent(
-                emailController.text,
-                passwordController.text,
+                email: emailController.text,
+                password: passwordController.text,
               ),
             );
       }
     } else {
       context.read<AuthenticationBloc>().add(
             SigninEvent(
-              emailController.text,
-              passwordController.text,
+              email: emailController.text,
+              password: passwordController.text,
             ),
           );
     }

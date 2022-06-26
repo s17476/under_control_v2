@@ -108,7 +108,8 @@ void main() {
               (_) async => const Left(DatabaseFailure(message: 'failure')));
         },
         skip: 1,
-        expect: () => [const CompanyManagementError(msg: 'failure', err: true)],
+        expect: () =>
+            [const CompanyManagementError(message: 'failure', error: true)],
       );
 
       blocTest(
@@ -120,7 +121,8 @@ void main() {
               (_) async => const Left(UnsuspectedFailure(message: 'failure')));
         },
         skip: 1,
-        expect: () => [const CompanyManagementError(msg: 'failure', err: true)],
+        expect: () =>
+            [const CompanyManagementError(message: 'failure', error: true)],
       );
     });
 

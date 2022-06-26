@@ -257,5 +257,25 @@
     "approve_page_change_dialog_text": "Are you sure you want to change your organization?",
     "@approve_page_change_dialog_text": {
       "description": "Approve page - change dialog"
+    },
+    "bottom_bar_title_tasks": "Tasks",
+    "@bottom_bar_title_tasks": {
+      "description": "BottomBar and AppBar label"
+    },
+    "bottom_bar_title_inventory": "Inventory",
+    "@bottom_bar_title_inventory": {
+      "description": "BottomBar and AppBar label"
+    },
+    "bottom_bar_title_dashboard": "Dashboard",
+    "@bottom_bar_title_dashboard": {
+      "description": "BottomBar and AppBar label"
+    },
+    "bottom_bar_title_assets": "Assets",
+    "@bottom_bar_title_assets": {
+      "description": "BottomBar and AppBar label"
+    },
+    "bottom_bar_title_knowledge": "Knowledge base",
+    "@bottom_bar_title_knowledge": {
+      "description": "BottomBar and AppBar label"
     }
 }

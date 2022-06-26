@@ -12,17 +12,15 @@ abstract class AuthenticationEvent extends Equatable {
 }
 
 class SigninEvent extends AuthenticationEvent {
-  const SigninEvent(String email, String password)
-      : super(email: email, password: password);
+  const SigninEvent({super.email, super.password});
 }
 
 class SignupEvent extends AuthenticationEvent {
-  const SignupEvent(String email, String password)
-      : super(email: email, password: password);
+  const SignupEvent({super.email, super.password});
 }
 
 class SendPasswordResetEmailEvent extends AuthenticationEvent {
-  const SendPasswordResetEmailEvent(String email) : super(email: email);
+  const SendPasswordResetEmailEvent({super.email});
 }
 
 class SignoutEvent extends AuthenticationEvent {}
@@ -30,5 +28,5 @@ class SignoutEvent extends AuthenticationEvent {}
 class ResendVerificationEmailEvent extends AuthenticationEvent {}
 
 class AutoSigninEvent extends AuthenticationEvent {
-  const AutoSigninEvent(User? user) : super(user: user);
+  const AutoSigninEvent({super.user});
 }

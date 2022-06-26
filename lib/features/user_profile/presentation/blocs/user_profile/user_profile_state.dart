@@ -24,39 +24,24 @@ class Approved extends UserProfileState {
 class UserProfileEmpty extends UserProfileState {}
 
 class NoUserProfileError extends UserProfileState {
-  final String msg;
-  final bool err;
   const NoUserProfileError({
-    this.msg = '',
-    this.err = true,
-  }) : super(
-          message: msg,
-          error: err,
-        );
+    super.message,
+    super.error = true,
+  });
 }
 
 class DatabaseErrorUserProfile extends UserProfileState {
-  final String msg;
-  final bool err;
   const DatabaseErrorUserProfile({
-    required this.msg,
-    this.err = true,
-  }) : super(
-          message: msg,
-          error: err,
-        );
+    super.message,
+    super.error = true,
+  });
 }
 
 class ValidationErrorUserProfile extends UserProfileState {
-  final String msg;
-  final bool err;
   const ValidationErrorUserProfile({
-    required this.msg,
-    this.err = true,
-  }) : super(
-          message: msg,
-          error: err,
-        );
+    super.message,
+    super.error = true,
+  });
 }
 
 // loading
@@ -64,68 +49,60 @@ class Loading extends UserProfileState {}
 
 // user without company assigned
 class NoCompany extends UserProfileState {
-  final String msg;
-  final bool err;
   final UserProfile userProfile;
 
   NoCompany({
-    this.msg = '',
-    this.err = false,
+    String message = '',
+    bool error = false,
     required this.userProfile,
   }) : super(
-          message: msg,
-          error: err,
+          message: message,
+          error: error,
           properties: [userProfile],
         );
 }
 
 // user with company and awaiting approvement
 class NotApproved extends UserProfileState {
-  final String msg;
-  final bool err;
   final UserProfile userProfile;
 
   NotApproved({
-    this.msg = '',
-    this.err = false,
+    String message = '',
+    bool error = false,
     required this.userProfile,
   }) : super(
-          message: msg,
-          error: err,
+          message: message,
+          error: error,
           properties: [userProfile],
         );
 }
 
 // user rejected
 class Rejected extends UserProfileState {
-  final String msg;
-  final bool err;
   final UserProfile userProfile;
 
   Rejected({
-    this.msg = '',
-    this.err = false,
+    String message = '',
+    bool error = false,
     required this.userProfile,
   }) : super(
-          message: msg,
-          error: err,
+          message: message,
+          error: error,
           properties: [userProfile],
         );
 }
 
 // user suspended
 class Suspended extends UserProfileState {
-  final String msg;
-  final bool err;
   final UserProfile userProfile;
 
   Suspended({
-    this.msg = '',
-    this.err = false,
+    String message = '',
+    bool error = false,
     required this.userProfile,
   }) : super(
-          message: msg,
-          error: err,
+          message: message,
+          error: error,
           properties: [userProfile],
         );
 }

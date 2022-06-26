@@ -61,5 +61,10 @@
     "approve_page_admin_text": "Ponieważ jesteś jedynym użytkownikiem UnderControl w wybranej organizacji otrzymujesz uprawnienia administratora.",
     "approve_page_change_button": "Zmień organizację",
     "approve_page_change_button_refresh": "Odświerz status",
-    "approve_page_change_dialog_text": "Czy jesteś pewien, że chcesz zmienić organizację?"
+    "approve_page_change_dialog_text": "Czy jesteś pewien, że chcesz zmienić organizację?",
+    "bottom_bar_title_tasks": "Zadania",
+    "bottom_bar_title_inventory": "Inventarz",
+    "bottom_bar_title_dashboard": "Główna",
+    "bottom_bar_title_assets": "Aktywa",
+    "bottom_bar_title_knowledge": "Baza wiedzy"
 }

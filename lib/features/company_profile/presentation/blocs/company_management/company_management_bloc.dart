@@ -46,7 +46,7 @@ class CompanyManagementBloc
       final failureOrCompanies = await fetchAllCompanies(NoParams());
       failureOrCompanies.fold(
         (failure) =>
-            emit(CompanyManagementError(msg: failure.message, err: true)),
+            emit(CompanyManagementError(message: failure.message, error: true)),
         (companies) =>
             emit(CompanyManagementCompaniesLoaded(companies: companies)),
       );
@@ -61,8 +61,8 @@ class CompanyManagementBloc
             emit(
               CompanyManagementCompaniesLoaded(
                 companies: event.companies,
-                msg: failure.message,
-                err: true,
+                message: failure.message,
+                error: true,
               ),
             );
           },
@@ -96,8 +96,8 @@ class CompanyManagementBloc
             CompanyManagementCompaniesLoaded(
               companies: event.companies,
               selectedCompany: event.company,
-              msg: failure.message,
-              err: true,
+              message: failure.message,
+              error: true,
             ),
           ),
           (logoUrl) async {
