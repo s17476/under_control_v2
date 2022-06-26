@@ -2,32 +2,19 @@ import '../../domain/entities/company.dart';
 
 class CompanyModel extends Company {
   const CompanyModel({
-    required String id,
-    required String name,
-    required String address,
-    required String postCode,
-    required String city,
-    required String country,
-    required String vatNumber,
-    required String phoneNumber,
-    required String email,
-    required String homepage,
-    required String logo,
-    required DateTime joinDate,
-  }) : super(
-          id: id,
-          name: name,
-          address: address,
-          postCode: postCode,
-          city: city,
-          country: country,
-          vatNumber: vatNumber,
-          phoneNumber: phoneNumber,
-          email: email,
-          homepage: homepage,
-          logo: logo,
-          joinDate: joinDate,
-        );
+    required super.id,
+    required super.name,
+    required super.address,
+    required super.postCode,
+    required super.city,
+    required super.country,
+    required super.vatNumber,
+    required super.phoneNumber,
+    required super.email,
+    required super.homepage,
+    required super.logo,
+    required super.joinDate,
+  });
 
   factory CompanyModel.initial() => CompanyModel(
         id: '',

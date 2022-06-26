@@ -30,7 +30,7 @@ void main() {
   final tCompanyUsers = [tCompanyUser];
 
   test(
-    'should return [CompanyUsers] from repository when fetch all company users usecase is called',
+    'should return [CompanyUsers] from repository when FetchAllCompanyUsers usecase is called',
     () async {
       // arrange
       when(
