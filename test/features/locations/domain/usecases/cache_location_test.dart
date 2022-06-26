@@ -6,12 +6,12 @@ import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/locations/data/models/location_model.dart';
 import 'package:under_control_v2/features/locations/domain/entities/location.dart';
 import 'package:under_control_v2/features/locations/domain/repositories/location_repository.dart';
-import 'package:under_control_v2/features/locations/domain/usecases/add_location.dart';
+import 'package:under_control_v2/features/locations/domain/usecases/cache_location.dart';
 
 class MockLocationRepository extends Mock implements LocationRepository {}
 
 void main() {
-  late AddLocation usecase;
+  late CacheLocation usecase;
   late MockLocationRepository repository;
 
   setUpAll(() {
@@ -35,7 +35,7 @@ void main() {
   setUp(
     () {
       repository = MockLocationRepository();
-      usecase = AddLocation(locationRepository: repository);
+      usecase = CacheLocation(locationRepository: repository);
     },
   );
 
@@ -47,16 +47,16 @@ void main() {
   );
 
   test(
-    'should return [String] from repository when AddLocation is called',
+    'should return [Voidresult] from repository when CacheLocation is called',
     () async {
       // arrange
-      when(() => repository.addLocation(any()))
-          .thenAnswer((_) async => const Right(''));
+      when(() => repository.cacheLocation(any()))
+          .thenAnswer((_) async => Right(VoidResult()));
       // act
       final result = await usecase(
           const LocationParams(location: tLocation, comapnyId: 'comapnyId'));
       // assert
-      expect(result, isA<Right<Failure, String>>());
+      expect(result, isA<Right<Failure, VoidResult>>());
     },
   );
 }

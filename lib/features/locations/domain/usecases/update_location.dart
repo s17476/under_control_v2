@@ -1,11 +1,12 @@
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../entities/location.dart';
 import '../repositories/location_repository.dart';
 
-class UpdateLocation extends FutureUseCase<VoidResult, Location> {
+@lazySingleton
+class UpdateLocation extends FutureUseCase<VoidResult, LocationParams> {
   final LocationRepository locationRepository;
 
   UpdateLocation({
@@ -13,6 +14,6 @@ class UpdateLocation extends FutureUseCase<VoidResult, Location> {
   });
 
   @override
-  Future<Either<Failure, VoidResult>> call(Location params) async =>
+  Future<Either<Failure, VoidResult>> call(LocationParams params) async =>
       locationRepository.updateLocation(params);
 }

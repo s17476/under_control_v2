@@ -29,3 +29,7 @@ class ValidationFailure extends Failure {
 class DatabaseFailure extends Failure {
   const DatabaseFailure({message = ''}) : super(message: message);
 }
+
+class CacheFailure extends Failure {
+  const CacheFailure({message = ''}) : super(message: message);
+}

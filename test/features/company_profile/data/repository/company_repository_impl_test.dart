@@ -1,13 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/company_profile/data/models/company_model.dart';
-import 'package:under_control_v2/features/company_profile/data/repositories/company_management_repository_impl.dart';
 import 'package:under_control_v2/features/company_profile/data/repositories/company_repository_impl.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/companies.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company_users.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';

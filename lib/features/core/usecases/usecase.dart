@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../locations/domain/entities/location.dart';
 import '../error/failures.dart';
 
 abstract class FutureUseCase<Type, Params> {
@@ -77,4 +78,17 @@ class AvatarParams extends Equatable {
 
   @override
   List<Object> get props => [userId, avatar];
+}
+
+class LocationParams extends Equatable {
+  final Location location;
+  final String comapnyId;
+
+  const LocationParams({
+    required this.location,
+    required this.comapnyId,
+  });
+
+  @override
+  List<Object> get props => [location, comapnyId];
 }

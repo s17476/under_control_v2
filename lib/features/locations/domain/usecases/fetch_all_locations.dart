@@ -1,12 +1,13 @@
 import 'package:dartz/dartz.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/companies.dart';
-import 'package:under_control_v2/features/locations/domain/entities/locations.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
+import '../entities/locations.dart';
 import '../repositories/location_repository.dart';
 
-class FetchAllLocations extends FutureUseCase<Locations, NoParams> {
+@lazySingleton
+class FetchAllLocations extends FutureUseCase<Locations, String> {
   final LocationRepository locationRepository;
 
   FetchAllLocations({
@@ -14,6 +15,6 @@ class FetchAllLocations extends FutureUseCase<Locations, NoParams> {
   });
 
   @override
-  Future<Either<Failure, Locations>> call(NoParams params) async =>
-      locationRepository.fetchAllLocations();
+  Future<Either<Failure, Locations>> call(String params) async =>
+      locationRepository.fetchAllLocations(params);
 }

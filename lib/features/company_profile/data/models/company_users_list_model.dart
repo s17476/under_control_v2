@@ -5,16 +5,14 @@ import 'package:under_control_v2/features/user_profile/domain/entities/user_prof
 
 class CompanyUsersListModel extends CompanyUsersList {
   const CompanyUsersListModel({
-    required List<UserProfile> allUsers,
-  }) : super(allUsers: allUsers);
+    required super.allUsers,
+  });
 
   Future<int> get allUsersCount async => allUsers.length;
 
-// TODO test
   factory CompanyUsersListModel.fromSnapshot(
       QuerySnapshot<Map<String, dynamic>> snapshot) {
     List<UserProfile> usersList = [];
-    print('FROM SHAPSHOT');
     usersList = snapshot.docs
         .map(
           (DocumentSnapshot doc) => UserProfileModel.fromMap(

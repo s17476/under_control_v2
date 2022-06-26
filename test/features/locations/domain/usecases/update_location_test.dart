@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/locations/data/models/location_model.dart';
 import 'package:under_control_v2/features/locations/domain/entities/location.dart';
 import 'package:under_control_v2/features/locations/domain/repositories/location_repository.dart';
 import 'package:under_control_v2/features/locations/domain/usecases/update_location.dart';
@@ -20,6 +21,13 @@ void main() {
         name: 'name',
         parentId: 'parentId',
         children: ['children'],
+      ),
+    );
+
+    registerFallbackValue(
+      LocationParams(
+        location: LocationModel.initial(),
+        comapnyId: 'comapnyId',
       ),
     );
   });
@@ -45,7 +53,12 @@ void main() {
       when(() => repository.updateLocation(any()))
           .thenAnswer((_) async => Right(VoidResult()));
       // act
-      final result = await usecase(tLocation);
+      final result = await usecase(
+        const LocationParams(
+          location: tLocation,
+          comapnyId: 'comapnyId',
+        ),
+      );
       // assert
       expect(result, isA<Right<Failure, VoidResult>>());
     },
