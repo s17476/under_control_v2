@@ -7,13 +7,11 @@ void main() {
     id: 'id',
     name: 'name',
     parentId: 'parentId',
-    children: ['children'],
   );
 
   const Map<String, dynamic> tLocationModelMap = {
     'name': 'name',
     'parentId': 'parentId',
-    'children': ['children'],
   };
 
   group('[LocationModel]', () {

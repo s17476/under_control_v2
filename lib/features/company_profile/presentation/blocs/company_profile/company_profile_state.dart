@@ -14,30 +14,22 @@ abstract class CompanyProfileState extends Equatable {
 class CompanyProfileEmpty extends CompanyProfileState {}
 
 class CompanyProfileError extends CompanyProfileState {
-  final String msg;
-  final bool err;
   const CompanyProfileError({
-    this.msg = '',
-    this.err = false,
-  }) : super(
-          message: msg,
-          error: err,
-        );
+    super.message = '',
+    super.error = false,
+  });
 }
 
 class CompanyProfileLoaded extends CompanyProfileState {
   final CompanyUsersList companyUsers;
   final Company company;
-  final String msg;
-  final bool err;
+
   CompanyProfileLoaded({
     required this.companyUsers,
     required this.company,
-    this.msg = '',
-    this.err = false,
+    super.message = '',
+    super.error = false,
   }) : super(
-          message: msg,
-          error: err,
           properties: [companyUsers, company],
         );
 }

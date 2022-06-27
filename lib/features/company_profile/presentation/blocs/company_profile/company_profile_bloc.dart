@@ -4,14 +4,15 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/company_profile/data/models/company_users_list_model.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/company_users_list.dart';
-import 'package:under_control_v2/features/company_profile/domain/usecases/fetch_all_company_users.dart';
-import 'package:under_control_v2/features/company_profile/domain/usecases/get_company_by_id.dart';
-import 'package:under_control_v2/features/company_profile/domain/usecases/update_company.dart';
-import 'package:under_control_v2/features/core/utils/input_validator.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+
+import '../../../../core/utils/input_validator.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../../data/models/company_users_list_model.dart';
+import '../../../domain/entities/company.dart';
+import '../../../domain/entities/company_users_list.dart';
+import '../../../domain/usecases/fetch_all_company_users.dart';
+import '../../../domain/usecases/get_company_by_id.dart';
+import '../../../domain/usecases/update_company.dart';
 
 part 'company_profile_event.dart';
 part 'company_profile_state.dart';
@@ -21,7 +22,6 @@ class CompanyProfileBloc
     extends Bloc<CompanyProfileEvent, CompanyProfileState> {
   late StreamSubscription userProfileStreamSubscription;
   StreamSubscription? companyUsersStreamSubscription;
-  late StreamSubscription streamSubscription;
   final UserProfileBloc userProfileBloc;
   final UpdateCompany updateCompany;
   final FetchAllCompanyUsers fetchAllCompanyUsers;
@@ -51,13 +51,13 @@ class CompanyProfileBloc
       final failureOrCompany = await getCompanyById(event.id);
       await failureOrCompany.fold(
         (failure) async => emit(
-          CompanyProfileError(msg: failure.message, err: true),
+          CompanyProfileError(message: failure.message, error: true),
         ),
         (company) async {
           final failureOrCompanyUsers = await fetchAllCompanyUsers(company.id);
           await failureOrCompanyUsers.fold(
             (failure) async => emit(
-              CompanyProfileError(msg: failure.message, err: true),
+              CompanyProfileError(message: failure.message, error: true),
             ),
             (companyUsers) async {
               companyUsersStreamSubscription = companyUsers.allUsers.listen(

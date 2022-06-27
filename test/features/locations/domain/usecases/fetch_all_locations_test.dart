@@ -24,7 +24,6 @@ void main() {
     id: 'id',
     name: 'name',
     parentId: 'parentId',
-    children: ['children'],
   );
 
   const tLocations = [tLocation];

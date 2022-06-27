@@ -1,0 +1,217 @@
+import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import 'package:under_control_v2/features/core/error/failures.dart';
+import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/locations/data/models/location_model.dart';
+import 'package:under_control_v2/features/locations/domain/entities/locations.dart';
+import 'package:under_control_v2/features/locations/domain/usecases/add_location.dart';
+import 'package:under_control_v2/features/locations/domain/usecases/cache_location.dart';
+import 'package:under_control_v2/features/locations/domain/usecases/delete_location.dart';
+import 'package:under_control_v2/features/locations/domain/usecases/fetch_all_locations.dart';
+import 'package:under_control_v2/features/locations/domain/usecases/try_to_get_cached_location.dart';
+import 'package:under_control_v2/features/locations/domain/usecases/update_location.dart';
+import 'package:under_control_v2/features/locations/presentation/blocs/bloc/location_bloc.dart';
+
+class MockCompanyProfileBloc extends Mock
+    implements Stream<CompanyProfileState>, CompanyProfileBloc {}
+
+class MockFetchAllLocations extends Mock implements FetchAllLocations {}
+
+class MockAddLocation extends Mock implements AddLocation {}
+
+class MockDeleteLocation extends Mock implements DeleteLocation {}
+
+class MockUpdateLocation extends Mock implements UpdateLocation {}
+
+class MockCacheLocation extends Mock implements CacheLocation {}
+
+class MockTryToGetCachedLocation extends Mock
+    implements TryToGetCachedLocation {}
+
+void main() {
+  late MockCompanyProfileBloc mockCompanyProfileBloc;
+  late MockFetchAllLocations mockFetchAllLocations;
+  late MockAddLocation mockAddLocation;
+  late MockDeleteLocation mockDeleteLocation;
+  late MockUpdateLocation mockUpdateLocation;
+  late MockCacheLocation mockCacheLocation;
+  late MockTryToGetCachedLocation mockTryToGetCachedLocation;
+  late LocationBloc locationBloc;
+
+  setUp(
+    () {
+      mockCompanyProfileBloc = MockCompanyProfileBloc();
+      mockFetchAllLocations = MockFetchAllLocations();
+      mockAddLocation = MockAddLocation();
+      mockDeleteLocation = MockDeleteLocation();
+      mockUpdateLocation = MockUpdateLocation();
+      mockCacheLocation = MockCacheLocation();
+      mockTryToGetCachedLocation = MockTryToGetCachedLocation();
+
+      // when(() => mockCompanyProfileBloc.stream).thenAnswer(
+      //   (_) => Stream.fromFuture(
+      //     Future.value(
+      //       CompanyProfileLoaded(
+      //         company: CompanyModel.initial(),
+      //         companyUsers: const CompanyUsersListModel(allUsers: []),
+      //       ),
+      //     ),
+      //   ),
+      // );
+
+      when(() => mockCompanyProfileBloc.stream).thenAnswer(
+        (_) => Stream.fromFuture(
+          Future.value(CompanyProfileEmpty()),
+        ),
+      );
+
+      locationBloc = LocationBloc(
+        companyProfileBloc: mockCompanyProfileBloc,
+        addLocation: mockAddLocation,
+        cacheLocation: mockCacheLocation,
+        deleteLocation: mockDeleteLocation,
+        fetchAllLocations: mockFetchAllLocations,
+        tryToGetCachedLocation: mockTryToGetCachedLocation,
+        updateLocation: mockUpdateLocation,
+      );
+    },
+  );
+
+  setUpAll(() {
+    registerFallbackValue(
+      LocationParams(
+        location: LocationModel.initial(),
+        comapnyId: 'comapnyId',
+      ),
+    );
+  });
+
+  final tLocation = LocationModel.initial();
+
+  group('[LocationBloc]', () {
+    test(
+      'should emit [LocationEmptyState] as an initial state',
+      () async {
+        // assert
+        expect(locationBloc.state, LocationEmptyState());
+      },
+    );
+
+    group('[AddLocation] usecase', () {
+      blocTest(
+        'should emit [LocationErrorState] when Addlocation usecase returns failure',
+        build: () => locationBloc,
+        act: (LocationBloc bloc) async {
+          bloc.add(AddLocationEvent(location: tLocation));
+          when(() => mockAddLocation(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        expect: () => [LocationLoadingState(), isA<LocationErrorState>()],
+      );
+      blocTest(
+        'should emit [LocationLoadedState] when AddLocation usecase returns data',
+        build: () => locationBloc,
+        act: (LocationBloc bloc) async {
+          bloc.add(AddLocationEvent(location: tLocation));
+          when(() => mockAddLocation(any()))
+              .thenAnswer((_) async => const Right('companyid'));
+        },
+        expect: () => [LocationLoadingState(), isA<LocationLoadedState>()],
+      );
+    });
+
+    group('[UpdateLocation] usecase', () {
+      blocTest(
+        'should emit [LocationErrorState] when Updatelocation usecase returns failure',
+        build: () => locationBloc,
+        act: (LocationBloc bloc) async {
+          bloc.add(UpdateLocationEvent(location: tLocation));
+          when(() => mockUpdateLocation(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        expect: () => [LocationLoadingState(), isA<LocationErrorState>()],
+      );
+      blocTest(
+        'should emit [LocationLoadedState] when UpdateLocation usecase returns data',
+        build: () => locationBloc,
+        act: (LocationBloc bloc) async {
+          bloc.add(UpdateLocationEvent(location: tLocation));
+          when(() => mockUpdateLocation(any()))
+              .thenAnswer((_) async => Right(VoidResult()));
+        },
+        expect: () => [LocationLoadingState(), isA<LocationLoadedState>()],
+      );
+    });
+
+    group('[DeleteLocation] usecase', () {
+      blocTest(
+        'should emit [LocationErrorState] when Addlocation usecase returns failure',
+        build: () => locationBloc,
+        act: (LocationBloc bloc) async {
+          bloc.add(DeleteLocationEvent(location: tLocation));
+          when(() => mockDeleteLocation(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        expect: () => [LocationLoadingState(), isA<LocationErrorState>()],
+      );
+      blocTest(
+        'should emit [LocationLoadedState] when DeleteLocation usecase returns data',
+        build: () => locationBloc,
+        act: (LocationBloc bloc) async {
+          bloc.add(DeleteLocationEvent(location: tLocation));
+          when(() => mockDeleteLocation(any()))
+              .thenAnswer((_) async => Right(VoidResult()));
+        },
+        expect: () => [LocationLoadingState(), isA<LocationLoadedState>()],
+      );
+    });
+
+    group('[FetchAllLocations] usecase', () {
+      blocTest(
+        'should emit [LocationErrorState] when fetchAllLocations usecase returns failure',
+        build: () => locationBloc,
+        act: (LocationBloc bloc) async {
+          bloc.add(FetchAllLocationsEvent());
+          when(() => mockFetchAllLocations(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        expect: () => [LocationLoadingState(), isA<LocationErrorState>()],
+      );
+      blocTest(
+        'should emit [LocationLoadedState] when FetchAllLocations usecase returns data',
+        build: () => locationBloc,
+        act: (LocationBloc bloc) async {
+          bloc.add(FetchAllLocationsEvent());
+          when(() => mockFetchAllLocations(any())).thenAnswer((_) async =>
+              Right(Locations(allLocations: Stream.fromIterable([]))));
+        },
+        expect: () => [LocationLoadingState(), isA<LocationLoadedState>()],
+      );
+    });
+    group('[SelectLocation] event', () {
+      blocTest(
+        'should emit [LocationLoadedState] when SelectLocation event returns data',
+        build: () => locationBloc,
+        act: (LocationBloc bloc) async {
+          bloc.add(SelectLocationEvent(location: tLocation));
+          when(() => mockCacheLocation(any()))
+              .thenAnswer((_) async => Right(VoidResult()));
+        },
+        expect: () => [LocationLoadingState(), isA<LocationLoadedState>()],
+      );
+      blocTest(
+        'should emit [LocationLoadedState] when SelectLocation event returns failure',
+        build: () => locationBloc,
+        act: (LocationBloc bloc) async {
+          bloc.add(SelectLocationEvent(location: tLocation));
+          when(() => mockCacheLocation(any()))
+              .thenAnswer((_) async => const Left(CacheFailure()));
+        },
+        expect: () => [LocationLoadingState(), isA<LocationLoadedState>()],
+      );
+    });
+  });
+}

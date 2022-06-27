@@ -5,7 +5,6 @@ class LocationModel extends Location {
     required super.id,
     required super.name,
     required super.parentId,
-    required super.children,
     super.address,
     super.postCode,
     super.city,
@@ -16,14 +15,12 @@ class LocationModel extends Location {
         id: '',
         name: '',
         parentId: '',
-        children: [],
       );
 
   LocationModel copyWith({
     String? id,
     String? name,
     String? parentId,
-    List<String>? children,
     String? address,
     String? postCode,
     String? city,
@@ -33,7 +30,6 @@ class LocationModel extends Location {
       id: id ?? this.id,
       name: name ?? this.name,
       parentId: parentId ?? this.parentId,
-      children: children ?? this.children,
       address: address ?? this.address,
       postCode: postCode ?? this.postCode,
       city: city ?? this.city,
@@ -46,7 +42,6 @@ class LocationModel extends Location {
 
     result.addAll({'name': name});
     result.addAll({'parentId': parentId});
-    result.addAll({'children': children});
     if (address != null) {
       result.addAll({'address': address});
     }
@@ -68,7 +63,6 @@ class LocationModel extends Location {
       id: id,
       name: map['name'] ?? '',
       parentId: map['parentId'] ?? '',
-      children: List<String>.from(map['children']),
       address: map['address'],
       postCode: map['postCode'],
       city: map['city'],

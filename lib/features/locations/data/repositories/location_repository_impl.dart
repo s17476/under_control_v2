@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/core/error/exceptions.dart';
 
-import 'package:under_control_v2/features/core/error/failures.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/locations/data/datasources/location_local_data_source.dart';
-import 'package:under_control_v2/features/locations/data/datasources/location_remote_data_source.dart';
-import 'package:under_control_v2/features/locations/domain/entities/locations.dart';
-import 'package:under_control_v2/features/locations/domain/repositories/location_repository.dart';
+import '../../../core/error/exceptions.dart';
+import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
+import '../../domain/entities/locations.dart';
+import '../../domain/repositories/location_repository.dart';
+import '../datasources/location_local_data_source.dart';
+import '../datasources/location_remote_data_source.dart';
 
 @LazySingleton(as: LocationRepository)
 class LocationRepositoryImpl extends LocationRepository {
@@ -20,34 +20,34 @@ class LocationRepositoryImpl extends LocationRepository {
   });
 
   @override
-  Future<Either<Failure, String>> addLocation(LocationParams params) {
-    // TODO: implement addLocation
-    throw UnimplementedError();
+  Future<Either<Failure, String>> addLocation(LocationParams params) =>
+      locationRemoteDataSource.addLocation(params);
+
+  @override
+  Future<Either<Failure, VoidResult>> deleteLocation(LocationParams params) =>
+      locationRemoteDataSource.deleteLocation(params);
+
+  @override
+  Future<Either<Failure, Locations>> fetchAllLocations(String companyId) =>
+      locationRemoteDataSource.fetchAllLocations(companyId);
+
+  @override
+  Future<Either<Failure, String>> tryToGetCachedLocation() async {
+    try {
+      final cachedLocation = await locationLocalDataSource.getCachedLocation();
+      return Right(cachedLocation);
+    } on CacheException {
+      return const Left(CacheFailure());
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
   }
 
   @override
-  Future<Either<Failure, VoidResult>> deleteLocation(LocationParams params) {
-    // TODO: implement deleteLocation
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, Locations>> fetchAllLocations(String companyId) {
-    // TODO: implement fetchAllLocations
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, String>> tryToGetCachedLocation() {
-    // TODO: implement tryToGetCachedLocation
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, VoidResult>> updateLocation(LocationParams params) {
-    // TODO: implement updateLocation
-    throw UnimplementedError();
-  }
+  Future<Either<Failure, VoidResult>> updateLocation(LocationParams params) =>
+      locationRemoteDataSource.updateLocation(params);
 
   @override
   Future<Either<Failure, VoidResult>> cacheLocation(
@@ -55,7 +55,7 @@ class LocationRepositoryImpl extends LocationRepository {
     try {
       locationLocalDataSource.cacheLocation(params.location.id);
       return Right(VoidResult());
-    } on CacheException catch (e) {
+    } on CacheException {
       return const Left(CacheFailure());
     } catch (e) {
       return const Left(
