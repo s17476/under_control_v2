@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/locations/presentation/pages/location_management_page.dart';
 
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
@@ -19,6 +20,7 @@ import 'features/core/themes/themes.dart';
 import 'features/core/utils/custom_page_transition.dart';
 import 'features/core/utils/error_message_handler.dart';
 import 'features/core/utils/material_color_generator.dart';
+import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import 'features/user_profile/presentation/pages/add_user_profile_page.dart';
@@ -65,6 +67,9 @@ class App extends StatelessWidget
         BlocProvider(
           create: (context) => getIt<CompanyManagementBloc>(),
         ),
+        BlocProvider(
+          create: (context) => getIt<LocationBloc>(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -108,6 +113,8 @@ class App extends StatelessWidget
           HomePage.routeName: (ctx) => const HomePage(),
           AuthenticationPage.routeName: (ctx) => const AuthenticationPage(),
           AddCompanyPage.routeName: (ctx) => const AddCompanyPage(),
+          LocationManagementPage.routeName: (stx) =>
+              const LocationManagementPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

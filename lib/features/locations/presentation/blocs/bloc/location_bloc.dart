@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/locations/data/models/location_model.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -19,6 +21,12 @@ import '../../../domain/usecases/update_location.dart';
 part 'location_event.dart';
 part 'location_state.dart';
 
+const String locationAddedMessage = 'added';
+const String deleteFailed = 'deleteFailed';
+const String deleteSuccess = 'deleteSuccess';
+const String updateSuccess = 'updateSuccess';
+
+@injectable
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   late StreamSubscription companyProfileStreamSubscription;
   StreamSubscription? locationsStreamSubscription;
@@ -56,8 +64,15 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       await failureOrString.fold(
         (failure) async => emit(LocationErrorState(message: failure.message)),
         (locationId) async {
+          final updatedLocation =
+              (event.location as LocationModel).copyWith(id: locationId);
+          final updatedLocations = LocationsListModel(allLocations: [
+            ..._lastState!.allLocations.allLocations,
+            updatedLocation,
+          ]);
           if (_lastState != null) {
-            emit(_lastState!);
+            emit(_lastState!.copyWith(
+                allLocations: updatedLocations, message: locationAddedMessage));
           } else {
             emit(
               LocationLoadedState(
@@ -80,7 +95,17 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         (failure) async => emit(LocationErrorState(message: failure.message)),
         (_) async {
           if (_lastState != null) {
-            emit(_lastState!);
+            final updatedLocations = _lastState!.allLocations.allLocations
+              ..removeWhere((element) => element.id == event.location.id)
+              ..add(event.location);
+            emit(
+              _lastState!.copyWith(
+                allLocations: LocationsList(
+                  allLocations: updatedLocations,
+                ),
+                message: updateSuccess,
+              ),
+            );
           } else {
             emit(
               LocationLoadedState(
@@ -94,31 +119,46 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       );
     });
 
+    // TODO
+    // update tests
     on<DeleteLocationEvent>((event, emit) async {
       _saveState();
       emit(LocationLoadingState());
-      final failureOrVoidresult = await deleteLocation(
-        LocationParams(
-          location: event.location,
-          comapnyId: companyId,
-        ),
-      );
-      await failureOrVoidresult.fold(
-        (failure) async => emit(LocationErrorState(message: failure.message)),
-        (_) async {
-          if (_lastState != null) {
-            emit(_lastState!);
-          } else {
-            emit(
-              LocationLoadedState(
-                allLocations: const LocationsListModel(allLocations: []),
-                context: const [],
-                children: const [],
-              ),
-            );
-          }
-        },
-      );
+      final childrenList = (_lastState as LocationLoadedState)
+          .allLocations
+          .allLocations
+          .where((element) => element.parentId == event.location.id);
+      if (childrenList.isNotEmpty) {
+        emit(
+          _lastState!.copyWith(
+            message: deleteFailed,
+            error: true,
+          ),
+        );
+      } else {
+        final failureOrVoidresult = await deleteLocation(
+          LocationParams(
+            location: event.location,
+            comapnyId: companyId,
+          ),
+        );
+        await failureOrVoidresult.fold(
+          (failure) async => emit(LocationErrorState(message: failure.message)),
+          (_) async {
+            if (_lastState != null) {
+              emit(_lastState!.copyWith(message: deleteSuccess));
+            } else {
+              emit(
+                LocationLoadedState(
+                  allLocations: const LocationsListModel(allLocations: []),
+                  context: const [],
+                  children: const [],
+                ),
+              );
+            }
+          },
+        );
+      }
     });
 
     on<FetchAllLocationsEvent>((event, emit) async {
@@ -159,7 +199,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
                   .toList(),
             ),
           ),
-          // cached location id found
+          // cached location if found
           (locationId) async {
             final cachedLocation = locationsList.allLocations
                 .firstWhere((location) => location.id == locationId);
@@ -262,7 +302,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       tmpLocations.remove(tmpLocation);
     }
     updatedChildren.remove(selectedLocation.id);
-    print(updatedChildren);
     return updatedChildren;
   }
 

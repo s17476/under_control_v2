@@ -23,6 +23,14 @@
     "@cancel": {
       "description": "Cancel buttons"
     },
+    "delete": "Delete",
+    "@delete": {
+      "description": "Delete buttons"
+    },
+    "update": "Update",
+    "@update": {
+      "description": "Update buttons"
+    },
     "confirm": "Confirm",
     "@confirm": {
       "description": "Confirm buttons"
@@ -277,5 +285,87 @@
     "bottom_bar_title_knowledge": "Knowledge base",
     "@bottom_bar_title_knowledge": {
       "description": "BottomBar and AppBar label"
+    },
+    "drawer_item_locations": "Locations",
+    "@drawer_item_locations": {
+      "description": "Drawer item - locations"
+    },
+    "drawer_item_settings": "Settings",
+    "@drawer_item_settings": {
+      "description": "Drawer item - settings"
+    },
+    "drawer_item_groups": "Groups",
+    "@drawer_item_groups": {
+      "description": "Drawer item - groups"
+    },
+    "location_management_title": "Locations",
+    "@location_management_title": {
+      "description": "Location management page - title"
+    },
+    "location_management_add_card": "Add location",
+    "@location_management_add_card": {
+      "description": "Location management page - add card"
+    },
+    "location_management_add_sub_card": "Add sublocation to the ",
+    "@location_management_add_sub_card": {
+      "description": "Location management page - add sub card"
+    },
+    "location_management_add_location": "Add new location",
+    "@location_management_add_location": {
+      "description": "Location management page - add location bottom modal sheet"
+    },
+    "location_management_add_location_parent": "Parent name",
+    "@location_management_add_location_parent": {
+      "description": "Location management page - add location bottom modal sheet"
+    },
+    "location_management_add_location_name": "Location name",
+    "@location_management_add_location_name": {
+      "description": "Location management page - add location bottom modal sheet"
+    },
+    "location_management_add_location_none": "None",
+    "@location_management_add_location_none": {
+      "description": "Location management page - add location bottom modal sheet"
+    },
+    "location_management_add_location_required_fields": "Required fields",
+    "@location_management_add_location_required_fields": {
+      "description": "Location management page - add location bottom modal sheet"
+    },
+    "location_management_add_location_optional_fields": "Optional fields",
+    "@location_management_add_location_none": {
+      "description": "Location management page - add location bottom modal sheet"
+    },
+    "location_management_add_location_validation_error": "Minimum 2 characters",
+    "@location_management_add_location_validation_error": {
+      "description": "Location management page - add location bottom modal sheet"
+    },
+    "location_management_add_location_message_added": "New location added successfully",
+    "@location_management_add_location_message_added": {
+      "description": "Location management page - add location bottom modal sheet"
+    },
+    "location_management_add_location_message_delete_failed": "Delete failed. Make sure there are no sublocations in the location.",
+    "@location_management_add_location_message_delete_failed": {
+      "description": "Location management page - add location bottom modal sheet"
+    },
+    "location_management_add_location_message_delete_success": "Successfully deleted.",
+    "@location_management_add_location_message_delete_success": {
+      "description": "Location management page - add location bottom modal sheet"
+    },
+    "location_management_add_location_message_delete_confirm": "Confirm delete",
+    "@location_management_add_location_message_delete_confirm": {
+      "description": "Location management page - add location bottom modal sheet"
+    },
+    "location_management_add_location_message_delete_question": "Are you sure you want to delete {location}?",
+    "@location_management_add_location_message_delete_question": {
+      "description": "Location management page - add location bottom modal sheet",
+      "placeholders": {
+        "location": {
+          "type": "String",
+          "example": "Main"
+        }
+      }
+    },
+    "location_management_add_location_message_update_success": "Successfully updated.",
+    "@location_management_add_location_message_update_success": {
+      "description": "Location management page - add location bottom modal sheet"
     }
 }

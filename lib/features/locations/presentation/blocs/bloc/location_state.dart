@@ -38,6 +38,24 @@ class LocationLoadedState extends LocationState {
           context,
           children,
         ]);
+
+  LocationLoadedState copyWith({
+    Location? selectedLocation,
+    LocationsList? allLocations,
+    List<String>? context,
+    List<String>? children,
+    String? message,
+    bool? error,
+  }) {
+    return LocationLoadedState(
+      selectedLocation: selectedLocation ?? this.selectedLocation,
+      allLocations: allLocations ?? this.allLocations,
+      context: context ?? this.context,
+      children: children ?? this.children,
+      message: message ?? this.message,
+      error: error ?? this.error,
+    );
+  }
 }
 
 class LocationErrorState extends LocationState {

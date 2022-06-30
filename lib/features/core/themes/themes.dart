@@ -20,6 +20,7 @@ class Themes with MaterialColorGenerator {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             onPrimary: Colors.white,
+            primary: const Color.fromRGBO(0, 240, 130, 100),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),

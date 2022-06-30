@@ -118,6 +118,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           title: Text(appBarTitles[pageIndex]),
+          actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.tune))],
           centerTitle: true,
         ),
         drawer: const MainDrawer(),
