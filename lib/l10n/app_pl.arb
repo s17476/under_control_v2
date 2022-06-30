@@ -82,10 +82,10 @@
     "location_management_add_location_required_fields": "Pola wymagane",
     "location_management_add_location_optional_fields": "Pola opcjonalne",
     "location_management_add_location_validation_error": "Minimum 2 znaki",
-    "location_management_add_location_validation_added": "Nowa lokacja dodana pomyślnie",
-    "location_management_add_location_validation_delete_failed": "Usuwanie nieudane. Upewnij się, że w lokacji nie ma żadnych sublokacji.",
-    "location_management_add_location_validation_delete_success": "Pomyślnie usunięto.",
-    "location_management_add_location_validation_delete_confirm": "Potwierdź ususnięcie",
-    "location_management_add_location_validation_delete_question": "Czy jesteś pewien, że chcesz usunąć {location}?",
-    "location_management_add_location_validation_update_success": "Pomyślnie zaktualizowano."
+    "location_management_add_location_message_added": "Nowa lokacja dodana pomyślnie",
+    "location_management_add_location_message_delete_failed": "Usuwanie nieudane. Upewnij się, że w lokacji nie ma żadnych sublokacji.",
+    "location_management_add_location_message_delete_success": "Pomyślnie usunięto.",
+    "location_management_add_location_message_delete_confirm": "Potwierdź ususnięcie",
+    "location_management_add_location_message_delete_question": "Czy jesteś pewien, że chcesz usunąć {location}?",
+    "location_management_add_location_message_update_success": "Pomyślnie zaktualizowano."
 }

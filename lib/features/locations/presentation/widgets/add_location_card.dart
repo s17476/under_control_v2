@@ -9,7 +9,7 @@ class AddLocationCard extends StatelessWidget {
   final Location? parentLocation;
   const AddLocationCard({
     Key? key,
-    this.color = Colors.transparent,
+    this.color = const Color.fromRGBO(0, 240, 130, 100),
     this.parentLocation,
   }) : super(key: key);
 
@@ -28,7 +28,7 @@ class AddLocationCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Container(
-          height: 80,
+          height: 50,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Theme.of(context).cardColor,
@@ -36,7 +36,8 @@ class AddLocationCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 16,
+                width: 32,
+                height: 50,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
@@ -44,18 +45,13 @@ class AddLocationCard extends StatelessWidget {
                   ),
                   color: color,
                 ),
+                child: const Icon(
+                  Icons.add,
+                ),
               ),
               Expanded(
                 child: Row(
                   children: [
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Icon(
-                      Icons.add,
-                      size: 50,
-                      color: Theme.of(context).primaryColor,
-                    ),
                     const SizedBox(
                       width: 8,
                     ),
@@ -69,10 +65,11 @@ class AddLocationCard extends StatelessWidget {
                                 parentLocation!.name,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
+                        style: TextStyle(color: Colors.grey.shade100),
                       ),
                     ),
                     const SizedBox(
-                      width: 8,
+                      width: 4,
                     ),
                   ],
                 ),

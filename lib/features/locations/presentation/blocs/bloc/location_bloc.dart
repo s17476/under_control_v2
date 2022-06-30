@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/locations/data/models/location_model.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -39,6 +38,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final UpdateLocation updateLocation;
   LocationLoadedState? _lastState;
   String companyId = '';
+
   LocationBloc({
     required this.companyProfileBloc,
     required this.addLocation,
@@ -56,65 +56,34 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         }
       },
     );
+
     on<AddLocationEvent>((event, emit) async {
-      _saveState();
-      emit(LocationLoadingState());
       final failureOrString = await addLocation(
-          LocationParams(location: event.location, comapnyId: companyId));
+        LocationParams(location: event.location, comapnyId: companyId),
+      );
       await failureOrString.fold(
         (failure) async => emit(LocationErrorState(message: failure.message)),
         (locationId) async {
-          final updatedLocation =
-              (event.location as LocationModel).copyWith(id: locationId);
-          final updatedLocations = LocationsListModel(allLocations: [
-            ..._lastState!.allLocations.allLocations,
-            updatedLocation,
-          ]);
-          if (_lastState != null) {
-            emit(_lastState!.copyWith(
-                allLocations: updatedLocations, message: locationAddedMessage));
-          } else {
-            emit(
-              LocationLoadedState(
-                allLocations: const LocationsListModel(allLocations: []),
-                context: const [],
-                children: const [],
-              ),
-            );
-          }
+          emit(
+            (state as LocationLoadedState).copyWith(
+              message: locationAddedMessage,
+            ),
+          );
         },
       );
     });
 
     on<UpdateLocationEvent>((event, emit) async {
-      _saveState();
-      emit(LocationLoadingState());
       final failureOrVoidresult = await updateLocation(
           LocationParams(location: event.location, comapnyId: companyId));
       await failureOrVoidresult.fold(
         (failure) async => emit(LocationErrorState(message: failure.message)),
         (_) async {
-          if (_lastState != null) {
-            final updatedLocations = _lastState!.allLocations.allLocations
-              ..removeWhere((element) => element.id == event.location.id)
-              ..add(event.location);
-            emit(
-              _lastState!.copyWith(
-                allLocations: LocationsList(
-                  allLocations: updatedLocations,
-                ),
-                message: updateSuccess,
-              ),
-            );
-          } else {
-            emit(
-              LocationLoadedState(
-                allLocations: const LocationsListModel(allLocations: []),
-                context: const [],
-                children: const [],
-              ),
-            );
-          }
+          emit(
+            (state as LocationLoadedState).copyWith(
+              message: locationAddedMessage,
+            ),
+          );
         },
       );
     });
@@ -122,15 +91,12 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     // TODO
     // update tests
     on<DeleteLocationEvent>((event, emit) async {
-      _saveState();
-      emit(LocationLoadingState());
-      final childrenList = (_lastState as LocationLoadedState)
-          .allLocations
-          .allLocations
+      final currentState = (state as LocationLoadedState);
+      final childrenList = currentState.allLocations.allLocations
           .where((element) => element.parentId == event.location.id);
       if (childrenList.isNotEmpty) {
         emit(
-          _lastState!.copyWith(
+          currentState.copyWith(
             message: deleteFailed,
             error: true,
           ),
@@ -145,17 +111,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         await failureOrVoidresult.fold(
           (failure) async => emit(LocationErrorState(message: failure.message)),
           (_) async {
-            if (_lastState != null) {
-              emit(_lastState!.copyWith(message: deleteSuccess));
-            } else {
-              emit(
-                LocationLoadedState(
-                  allLocations: const LocationsListModel(allLocations: []),
-                  context: const [],
-                  children: const [],
-                ),
-              );
-            }
+            emit(currentState.copyWith(message: deleteSuccess));
           },
         );
       }

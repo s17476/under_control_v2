@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/locations/data/models/location_model.dart';
-import 'package:under_control_v2/features/locations/presentation/blocs/bloc/location_bloc.dart';
 
+import '../../data/models/location_model.dart';
 import '../../domain/entities/location.dart';
+import '../blocs/bloc/location_bloc.dart';
 
 Future<void> showAddLocationModalBottomSheet({
   required BuildContext context,
@@ -13,8 +13,23 @@ Future<void> showAddLocationModalBottomSheet({
 }) {
   final GlobalKey<FormState> _formKey = GlobalKey();
   LocationModel location = LocationModel.initial();
+  final String parentNameInitialValue = parentLocation != null
+      ? parentLocation.name
+      : (currentLocation != null && currentLocation.parentId.isNotEmpty)
+          ? (context.read<LocationBloc>().state as LocationLoadedState)
+              .allLocations
+              .allLocations
+              .firstWhere(
+                (element) => element.id == currentLocation.parentId,
+              )
+              .name
+          : AppLocalizations.of(context)!.location_management_add_location_none;
   location = location.copyWith(
-    parentId: parentLocation != null ? parentLocation.id : '',
+    parentId: parentLocation != null
+        ? parentLocation.id
+        : currentLocation != null
+            ? currentLocation.parentId
+            : '',
   );
   return showModalBottomSheet<void>(
     isScrollControlled: true,
@@ -82,22 +97,7 @@ Future<void> showAddLocationModalBottomSheet({
                               TextFormField(
                                 key: const ValueKey('parentName'),
                                 enabled: false,
-                                initialValue: parentLocation != null
-                                    ? parentLocation.name
-                                    : (currentLocation != null &&
-                                            currentLocation.parentId.isNotEmpty)
-                                        ? (context.read<LocationBloc>().state
-                                                as LocationLoadedState)
-                                            .allLocations
-                                            .allLocations
-                                            .firstWhere(
-                                              (element) =>
-                                                  element.id ==
-                                                  currentLocation.parentId,
-                                            )
-                                            .name
-                                        : AppLocalizations.of(context)!
-                                            .location_management_add_location_none,
+                                initialValue: parentNameInitialValue,
                                 decoration: InputDecoration(
                                   prefixIcon:
                                       const Icon(Icons.location_on_outlined),

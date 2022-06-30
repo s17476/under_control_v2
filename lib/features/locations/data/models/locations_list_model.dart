@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:under_control_v2/features/locations/data/models/location_model.dart';
-import 'package:under_control_v2/features/locations/domain/entities/location.dart';
-import 'package:under_control_v2/features/locations/domain/entities/locations_list.dart';
+
+import '../../domain/entities/location.dart';
+import '../../domain/entities/locations_list.dart';
+import 'location_model.dart';
 
 class LocationsListModel extends LocationsList {
   const LocationsListModel({required super.allLocations});
@@ -16,7 +17,10 @@ class LocationsListModel extends LocationsList {
             doc.id,
           ),
         )
-        .toList();
+        .toList()
+      ..sort(
+        (a, b) => a.name.compareTo(b.name),
+      );
 
     return LocationsListModel(allLocations: locationList);
   }
