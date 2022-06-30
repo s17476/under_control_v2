@@ -6,6 +6,7 @@ import 'package:under_control_v2/features/company_profile/presentation/blocs/com
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/locations/data/models/location_model.dart';
+import 'package:under_control_v2/features/locations/data/models/locations_list_model.dart';
 import 'package:under_control_v2/features/locations/domain/entities/locations.dart';
 import 'package:under_control_v2/features/locations/domain/usecases/add_location.dart';
 import 'package:under_control_v2/features/locations/domain/usecases/cache_location.dart';
@@ -109,17 +110,23 @@ void main() {
           when(() => mockAddLocation(any()))
               .thenAnswer((_) async => const Left(DatabaseFailure()));
         },
-        expect: () => [LocationLoadingState(), isA<LocationErrorState>()],
+        expect: () => [isA<LocationErrorState>()],
       );
       blocTest(
         'should emit [LocationLoadedState] when AddLocation usecase returns data',
         build: () => locationBloc,
+        // ignore: unnecessary_cast
+        seed: () => LocationLoadedState(
+          allLocations: const LocationsListModel(allLocations: []),
+          context: const [],
+          children: const [],
+        ) as LocationState,
         act: (LocationBloc bloc) async {
           bloc.add(AddLocationEvent(location: tLocation));
           when(() => mockAddLocation(any()))
               .thenAnswer((_) async => const Right('companyid'));
         },
-        expect: () => [LocationLoadingState(), isA<LocationLoadedState>()],
+        expect: () => [isA<LocationLoadedState>()],
       );
     });
 
@@ -127,22 +134,34 @@ void main() {
       blocTest(
         'should emit [LocationErrorState] when Updatelocation usecase returns failure',
         build: () => locationBloc,
+        // ignore: unnecessary_cast
+        seed: () => LocationLoadedState(
+          allLocations: const LocationsListModel(allLocations: []),
+          context: const [],
+          children: const [],
+        ) as LocationState,
         act: (LocationBloc bloc) async {
           bloc.add(UpdateLocationEvent(location: tLocation));
           when(() => mockUpdateLocation(any()))
               .thenAnswer((_) async => const Left(DatabaseFailure()));
         },
-        expect: () => [LocationLoadingState(), isA<LocationErrorState>()],
+        expect: () => [isA<LocationErrorState>()],
       );
       blocTest(
         'should emit [LocationLoadedState] when UpdateLocation usecase returns data',
         build: () => locationBloc,
+        // ignore: unnecessary_cast
+        seed: () => LocationLoadedState(
+          allLocations: const LocationsListModel(allLocations: []),
+          context: const [],
+          children: const [],
+        ) as LocationState,
         act: (LocationBloc bloc) async {
           bloc.add(UpdateLocationEvent(location: tLocation));
           when(() => mockUpdateLocation(any()))
               .thenAnswer((_) async => Right(VoidResult()));
         },
-        expect: () => [LocationLoadingState(), isA<LocationLoadedState>()],
+        expect: () => [isA<LocationLoadedState>()],
       );
     });
 
@@ -150,22 +169,34 @@ void main() {
       blocTest(
         'should emit [LocationErrorState] when Addlocation usecase returns failure',
         build: () => locationBloc,
+        // ignore: unnecessary_cast
+        seed: () => LocationLoadedState(
+          allLocations: const LocationsListModel(allLocations: []),
+          context: const [],
+          children: const [],
+        ) as LocationState,
         act: (LocationBloc bloc) async {
           bloc.add(DeleteLocationEvent(location: tLocation));
           when(() => mockDeleteLocation(any()))
               .thenAnswer((_) async => const Left(DatabaseFailure()));
         },
-        expect: () => [LocationLoadingState(), isA<LocationErrorState>()],
+        expect: () => [isA<LocationErrorState>()],
       );
       blocTest(
         'should emit [LocationLoadedState] when DeleteLocation usecase returns data',
         build: () => locationBloc,
+        // ignore: unnecessary_cast
+        seed: () => LocationLoadedState(
+          allLocations: const LocationsListModel(allLocations: []),
+          context: const [],
+          children: const [],
+        ) as LocationState,
         act: (LocationBloc bloc) async {
           bloc.add(DeleteLocationEvent(location: tLocation));
           when(() => mockDeleteLocation(any()))
               .thenAnswer((_) async => Right(VoidResult()));
         },
-        expect: () => [LocationLoadingState(), isA<LocationLoadedState>()],
+        expect: () => [isA<LocationLoadedState>()],
       );
     });
 
