@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../blocs/bloc/location_bloc.dart';
 import '../widgets/add_location_card.dart';
-import '../widgets/location_card.dart';
+import '../widgets/location_tile.dart';
 import '../widgets/show_location_snack_bar.dart';
 
 class LocationManagementPage extends StatefulWidget {
@@ -42,8 +42,9 @@ class _LocationManagementPageState extends State<LocationManagementPage> {
             final topLevelItems = state.allLocations.allLocations
                 .where((location) => location.parentId.isEmpty)
                 .toList();
-            return Padding(
-              padding: const EdgeInsets.only(top: 4.0),
+            return RefreshIndicator(
+              onRefresh: () async =>
+                  context.read<LocationBloc>().add(FetchAllLocationsEvent()),
               child: ListView.builder(
                 itemCount: topLevelItems.length + 1,
                 itemBuilder: (context, index) {
@@ -52,7 +53,7 @@ class _LocationManagementPageState extends State<LocationManagementPage> {
                       key: Key('top-level'),
                     );
                   } else {
-                    return LocationCard(
+                    return LocationTile(
                       key: Key(topLevelItems[index].id),
                       allLocations: state.allLocations.allLocations,
                       location: topLevelItems[index],

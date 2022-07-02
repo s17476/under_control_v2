@@ -20,27 +20,27 @@ class LocationEmptyState extends LocationState {}
 class LocationLoadingState extends LocationState {}
 
 class LocationLoadedState extends LocationState {
-  final Location? selectedLocation;
+  final List<Location> selectedLocations;
   final LocationsList allLocations;
   final List<String> context;
   final List<String> children;
 
   LocationLoadedState({
-    this.selectedLocation,
+    this.selectedLocations = const [],
     required this.allLocations,
     required this.context,
     required this.children,
     super.error = false,
     super.message = '',
   }) : super(properties: [
-          selectedLocation,
+          selectedLocations,
           allLocations,
           context,
           children,
         ]);
 
   LocationLoadedState copyWith({
-    Location? selectedLocation,
+    List<Location>? selectedLocations,
     LocationsList? allLocations,
     List<String>? context,
     List<String>? children,
@@ -48,7 +48,7 @@ class LocationLoadedState extends LocationState {
     bool? error,
   }) {
     return LocationLoadedState(
-      selectedLocation: selectedLocation ?? this.selectedLocation,
+      selectedLocations: selectedLocations ?? this.selectedLocations,
       allLocations: allLocations ?? this.allLocations,
       context: context ?? this.context,
       children: children ?? this.children,

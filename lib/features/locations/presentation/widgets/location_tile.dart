@@ -6,11 +6,11 @@ import 'address_row.dart';
 import 'bottom_modal_sheet.dart';
 import 'show_delete_dialog.dart';
 
-class LocationCard extends StatefulWidget {
+class LocationTile extends StatefulWidget {
   final List<Location> allLocations;
   final Location location;
   final Color color;
-  const LocationCard({
+  const LocationTile({
     Key? key,
     required this.allLocations,
     required this.location,
@@ -18,11 +18,11 @@ class LocationCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<LocationCard> createState() => _LocationCardState();
+  State<LocationTile> createState() => _LocationTileState();
 }
 
-class _LocationCardState extends State<LocationCard> {
-  _LocationCardState();
+class _LocationTileState extends State<LocationTile> {
+  _LocationTileState();
   bool expanded = false;
   bool locationContainAddress = false;
 
@@ -161,7 +161,7 @@ class _LocationCardState extends State<LocationCard> {
               children: [
                 for (var location in children)
                   // location card
-                  LocationCard(
+                  LocationTile(
                     allLocations: widget.allLocations,
                     location: location,
                     color: widget.color,

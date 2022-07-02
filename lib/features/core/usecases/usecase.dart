@@ -92,3 +92,16 @@ class LocationParams extends Equatable {
   @override
   List<Object> get props => [location, comapnyId];
 }
+
+class SelectedLocationsParams extends Equatable {
+  final List<String> locations;
+  final List<String> children;
+
+  const SelectedLocationsParams({
+    required this.locations,
+    required this.children,
+  });
+
+  @override
+  List<Object> get props => [locations, children];
+}

@@ -30,6 +30,13 @@ class SelectLocationEvent extends LocationEvent {
   }) : super(properties: [location]);
 }
 
+class UnselectLocationEvent extends LocationEvent {
+  final Location location;
+  UnselectLocationEvent({
+    required this.location,
+  }) : super(properties: [location]);
+}
+
 class DeleteLocationEvent extends LocationEvent {
   final Location location;
   DeleteLocationEvent({

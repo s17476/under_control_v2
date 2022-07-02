@@ -367,5 +367,13 @@
     "location_management_add_location_message_update_success": "Successfully updated.",
     "@location_management_add_location_message_update_success": {
       "description": "Location management page - add location bottom modal sheet"
+    },
+    "home_screen_filter_select_locations": "Select locations",
+    "@home_screen_filter_select_locations": {
+      "description": "Home screen filter - select locations label"
+    },
+    "home_screen_filter_select_group": "Select group",
+    "@home_screen_filter_select_group": {
+      "description": "Home screen filter - select group label"
     }
 }

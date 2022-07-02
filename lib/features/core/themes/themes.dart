@@ -6,8 +6,9 @@ class Themes with MaterialColorGenerator {
   ThemeData darkTheme() => ThemeData(
         useMaterial3: true,
         primaryColor: const Color.fromRGBO(0, 240, 130, 100),
-        primarySwatch:
-            createMaterialColor(const Color.fromRGBO(0, 240, 130, 100)),
+        primarySwatch: createMaterialColor(
+          const Color.fromRGBO(0, 240, 130, 100),
+        ),
         brightness: Brightness.dark,
         drawerTheme: const DrawerThemeData(
           backgroundColor: Color(0xFF191919),

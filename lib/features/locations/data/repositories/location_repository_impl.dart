@@ -32,10 +32,11 @@ class LocationRepositoryImpl extends LocationRepository {
       locationRemoteDataSource.fetchAllLocations(companyId);
 
   @override
-  Future<Either<Failure, String>> tryToGetCachedLocation() async {
+  Future<Either<Failure, SelectedLocationsParams>>
+      tryToGetCachedLocation() async {
     try {
-      final cachedLocation = await locationLocalDataSource.getCachedLocation();
-      return Right(cachedLocation);
+      final cachedLocations = await locationLocalDataSource.getCachedLocation();
+      return Right(cachedLocations);
     } on CacheException {
       return const Left(CacheFailure());
     } catch (e) {
@@ -50,10 +51,10 @@ class LocationRepositoryImpl extends LocationRepository {
       locationRemoteDataSource.updateLocation(params);
 
   @override
-  Future<Either<Failure, VoidResult>> cacheLocation(
-      LocationParams params) async {
+  Future<Either<Failure, VoidResult>> cacheSelectedLocations(
+      SelectedLocationsParams params) async {
     try {
-      locationLocalDataSource.cacheLocation(params.location.id);
+      locationLocalDataSource.cacheLocation(params);
       return Right(VoidResult());
     } on CacheException {
       return const Left(CacheFailure());

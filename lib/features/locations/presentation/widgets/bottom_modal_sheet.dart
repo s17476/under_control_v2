@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../data/models/location_model.dart';
 import '../../domain/entities/location.dart';
 import '../blocs/bloc/location_bloc.dart';
@@ -94,68 +95,37 @@ Future<void> showAddLocationModalBottomSheet({
                           child: Column(
                             children: [
                               // parent name
-                              TextFormField(
-                                key: const ValueKey('parentName'),
-                                enabled: false,
+                              CustomTextFormField(
+                                fieldKey: 'parentName',
+                                labelText: AppLocalizations.of(context)!
+                                    .location_management_add_location_parent,
                                 initialValue: parentNameInitialValue,
-                                decoration: InputDecoration(
-                                  prefixIcon:
-                                      const Icon(Icons.location_on_outlined),
-                                  floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headline1!
-                                        .color,
-                                  ),
-                                  labelText: AppLocalizations.of(context)!
-                                      .location_management_add_location_parent,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                ),
+                                enabled: false,
+                                prefixIcon:
+                                    const Icon(Icons.location_on_outlined),
                               ),
                               const SizedBox(
                                 height: 20,
                               ),
                               // location name
-                              TextFormField(
-                                key: const ValueKey('locationName'),
+                              CustomTextFormField(
+                                fieldKey: 'locationName',
                                 keyboardType: TextInputType.name,
                                 initialValue: currentLocation?.name,
-                                decoration: InputDecoration(
-                                  prefixIcon: const Icon(Icons.location_on),
-                                  floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headline1!
-                                        .color,
-                                  ),
-                                  labelText: AppLocalizations.of(context)!
-                                      .location_management_add_location_name,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                ),
+                                prefixIcon: const Icon(Icons.location_on),
+                                labelText: AppLocalizations.of(context)!
+                                    .location_management_add_location_name,
+                                textCapitalization: TextCapitalization.words,
+                                onSaved: (value) {
+                                  location =
+                                      location.copyWith(name: value?.trim());
+                                },
                                 validator: (value) {
                                   if (value!.isEmpty || value.length < 2) {
                                     return AppLocalizations.of(context)!
                                         .location_management_add_location_validation_error;
                                   }
                                   return null;
-                                },
-                                onSaved: (value) {
-                                  location =
-                                      location.copyWith(name: value?.trim());
                                 },
                               ),
                             ],
@@ -182,31 +152,14 @@ Future<void> showAddLocationModalBottomSheet({
                           child: Column(
                             children: [
                               // address
-                              TextFormField(
-                                key: const ValueKey('address'),
+                              CustomTextFormField(
+                                fieldKey: 'address',
                                 keyboardType: TextInputType.streetAddress,
                                 initialValue: currentLocation?.address,
-                                decoration: InputDecoration(
-                                  prefixIcon: const Icon(
-                                    Icons.store_mall_directory_sharp,
-                                  ),
-                                  floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headline1!
-                                        .color,
-                                  ),
-                                  labelText: AppLocalizations.of(context)!
-                                      .add_company_intro_card_address,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                ),
+                                labelText: AppLocalizations.of(context)!
+                                    .add_company_intro_card_address,
+                                prefixIcon: const Icon(
+                                    Icons.store_mall_directory_sharp),
                                 validator: (value) {
                                   if (value!.isNotEmpty && value.length < 2) {
                                     return AppLocalizations.of(context)!
@@ -223,31 +176,14 @@ Future<void> showAddLocationModalBottomSheet({
                                 height: 20,
                               ),
                               // post code
-                              TextFormField(
-                                key: const ValueKey('postCode'),
+                              CustomTextFormField(
+                                fieldKey: 'postCode',
                                 keyboardType: TextInputType.streetAddress,
                                 initialValue: currentLocation?.postCode,
-                                decoration: InputDecoration(
-                                  prefixIcon: const Icon(
-                                    Icons.local_post_office_rounded,
-                                  ),
-                                  floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headline1!
-                                        .color,
-                                  ),
-                                  labelText: AppLocalizations.of(context)!
-                                      .add_company_intro_card_postcode,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                ),
+                                prefixIcon:
+                                    const Icon(Icons.local_post_office_rounded),
+                                labelText: AppLocalizations.of(context)!
+                                    .add_company_intro_card_postcode,
                                 validator: (value) {
                                   if (value!.isNotEmpty && value.length < 2) {
                                     return AppLocalizations.of(context)!
@@ -264,29 +200,13 @@ Future<void> showAddLocationModalBottomSheet({
                                 height: 20,
                               ),
                               // city
-                              TextFormField(
-                                key: const ValueKey('city'),
+                              CustomTextFormField(
+                                fieldKey: 'city',
                                 keyboardType: TextInputType.streetAddress,
                                 initialValue: currentLocation?.city,
-                                decoration: InputDecoration(
-                                  prefixIcon: const Icon(Icons.location_city),
-                                  floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headline1!
-                                        .color,
-                                  ),
-                                  labelText: AppLocalizations.of(context)!
-                                      .add_company_intro_card_city,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                ),
+                                prefixIcon: const Icon(Icons.location_city),
+                                labelText: AppLocalizations.of(context)!
+                                    .add_company_intro_card_city,
                                 validator: (value) {
                                   if (value!.isNotEmpty && value.length < 2) {
                                     return AppLocalizations.of(context)!
@@ -303,29 +223,13 @@ Future<void> showAddLocationModalBottomSheet({
                                 height: 20,
                               ),
                               // country
-                              TextFormField(
-                                key: const ValueKey('country'),
+                              CustomTextFormField(
+                                fieldKey: 'country',
                                 keyboardType: TextInputType.name,
                                 initialValue: currentLocation?.country,
-                                decoration: InputDecoration(
-                                  prefixIcon: const Icon(Icons.flag),
-                                  floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headline1!
-                                        .color,
-                                  ),
-                                  labelText: AppLocalizations.of(context)!
-                                      .add_company_intro_card_country,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                ),
+                                prefixIcon: const Icon(Icons.flag),
+                                labelText: AppLocalizations.of(context)!
+                                    .add_company_intro_card_country,
                                 validator: (value) {
                                   if (value!.isNotEmpty && value.length < 2) {
                                     return AppLocalizations.of(context)!

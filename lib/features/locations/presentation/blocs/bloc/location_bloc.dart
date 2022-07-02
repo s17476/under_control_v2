@@ -36,7 +36,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final FetchAllLocations fetchAllLocations;
   final TryToGetCachedLocation tryToGetCachedLocation;
   final UpdateLocation updateLocation;
-  LocationLoadedState? _lastState;
   String companyId = '';
 
   LocationBloc({
@@ -81,15 +80,13 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         (_) async {
           emit(
             (state as LocationLoadedState).copyWith(
-              message: locationAddedMessage,
+              message: updateSuccess,
             ),
           );
         },
       );
     });
 
-    // TODO
-    // update tests
     on<DeleteLocationEvent>((event, emit) async {
       final currentState = (state as LocationLoadedState);
       final childrenList = currentState.allLocations.allLocations
@@ -143,34 +140,31 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         final locationsList = LocationsListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );
-        final failureOrString = await tryToGetCachedLocation(NoParams());
-        await failureOrString.fold(
+        final failureOrSelectedLocationsParams =
+            await tryToGetCachedLocation(NoParams());
+        await failureOrSelectedLocationsParams.fold(
           // no cached location id
           (failure) async => emit(
             LocationLoadedState(
+              selectedLocations: const [],
               allLocations: locationsList,
               context: const [],
-              children: locationsList.allLocations
-                  .map((location) => location.id)
-                  .toList(),
+              children: const [],
             ),
           ),
           // cached location if found
-          (locationId) async {
-            final cachedLocation = locationsList.allLocations
-                .firstWhere((location) => location.id == locationId);
+          (selectedLocationsParams) async {
+            final List<Location> cachedLocations = [];
+            for (var locationId in selectedLocationsParams.locations) {
+              cachedLocations.add(locationsList.allLocations
+                  .firstWhere((element) => element.id == locationId));
+            }
             emit(
               LocationLoadedState(
-                selectedLocation: cachedLocation,
+                selectedLocations: cachedLocations,
                 allLocations: locationsList,
-                context: updateContext(
-                  cachedLocation,
-                  locationsList.allLocations,
-                ),
-                children: updateChildren(
-                  cachedLocation,
-                  locationsList.allLocations,
-                ),
+                context: const [],
+                children: selectedLocationsParams.children,
               ),
             );
           },
@@ -180,50 +174,120 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
     on<SelectLocationEvent>(
       (event, emit) async {
-        emit(LocationLoadingState());
-        _saveState();
+        final currentState = state as LocationLoadedState;
+        List<String> tmpChildren = updateChildren(
+          event.location,
+          currentState.allLocations.allLocations,
+        );
+        List<Location> tmpLocations = [...currentState.selectedLocations];
+
+        // finds parent location
+        if (event.location.parentId.isNotEmpty) {
+          if (tmpChildren.contains(event.location.id)) {
+            tmpChildren.add(event.location.id);
+            tmpChildren.addAll(currentState.children);
+          } else {
+            if (currentState.children.contains(event.location.parentId) ||
+                currentState.allLocations.allLocations
+                    .where((element) => element.id == event.location.parentId)
+                    .toList()
+                    .isNotEmpty) {
+              tmpChildren.add(event.location.id);
+            } else {
+              tmpLocations.add(event.location);
+            }
+            tmpChildren.addAll(currentState.children);
+          }
+          // top level location
+        } else {
+          // remove all children from selected locations
+          for (var loc in tmpChildren) {
+            final location = currentState.allLocations.allLocations.firstWhere(
+              (element) => element.id == loc,
+            );
+            tmpLocations.remove(location);
+          }
+          // add selected location to selected locations list
+          tmpLocations.add(event.location);
+          // add selected location children to state children list
+          tmpChildren.addAll(currentState.children);
+        }
+        // remove duplicates
+        tmpChildren = tmpChildren.toSet().toList();
+        tmpLocations = tmpLocations.toSet().toList();
+        // update selected locations
+        List<Location> updatedLocations = [];
+        for (var location in tmpLocations) {
+          if (!tmpChildren.contains(location.id)) {
+            updatedLocations.add(location);
+          }
+        }
+        // try to cache locations and children
         final failureOrVoidresult = await cacheLocation(
-          LocationParams(
-            location: event.location,
-            comapnyId: companyId,
+          SelectedLocationsParams(
+            locations: updatedLocations.map((location) => location.id).toList(),
+            children: tmpChildren,
           ),
         );
         await failureOrVoidresult.fold(
-          (failure) async => emit(LocationLoadedState(
-            selectedLocation: event.location,
-            allLocations: _lastState?.allLocations ??
-                const LocationsList(allLocations: []),
-            context: updateContext(
-              event.location,
-              _lastState?.allLocations.allLocations ?? [],
+          (failure) async => emit(
+            currentState.copyWith(
+              children: tmpChildren,
+              selectedLocations: updatedLocations,
             ),
-            children: updateChildren(
-              event.location,
-              _lastState?.allLocations.allLocations ?? [],
+          ),
+          (_) async => emit(
+            currentState.copyWith(
+              children: tmpChildren,
+              selectedLocations: updatedLocations,
             ),
-          )),
-          (_) async => emit(LocationLoadedState(
-            selectedLocation: event.location,
-            allLocations: _lastState?.allLocations ??
-                const LocationsList(allLocations: []),
-            context: updateContext(
-              event.location,
-              _lastState?.allLocations.allLocations ?? [],
-            ),
-            children: updateChildren(
-              event.location,
-              _lastState?.allLocations.allLocations ?? [],
-            ),
-          )),
+          ),
         );
       },
     );
-  }
 
-  void _saveState() {
-    if (state is LocationLoadedState) {
-      _lastState = state as LocationLoadedState;
-    }
+    on<UnselectLocationEvent>(
+      (event, emit) async {
+        final currentState = state as LocationLoadedState;
+
+        // updates children
+        List<String> tmpChildren = updateChildren(
+          event.location,
+          currentState.allLocations.allLocations,
+        );
+        tmpChildren.add(event.location.id);
+        final List<String> updatedChildren = [];
+        for (var child in currentState.children) {
+          if (!tmpChildren.contains(child)) {
+            updatedChildren.add(child);
+          }
+        }
+
+        // updates selected locations
+        List<Location> tmpLocations = currentState.selectedLocations;
+        tmpLocations.remove(event.location);
+        final failureOrVoidresult = await cacheLocation(
+          SelectedLocationsParams(
+            locations: tmpLocations.map((location) => location.id).toList(),
+            children: updatedChildren,
+          ),
+        );
+        await failureOrVoidresult.fold(
+          (failure) async => emit(
+            currentState.copyWith(
+              children: updatedChildren,
+              selectedLocations: tmpLocations,
+            ),
+          ),
+          (_) async => emit(
+            currentState.copyWith(
+              children: updatedChildren,
+              selectedLocations: tmpLocations,
+            ),
+          ),
+        );
+      },
+    );
   }
 
   List<String> updateContext(
@@ -239,7 +303,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       );
     }
     updatedContext.add(tmpLocation.id);
-    print(updatedContext);
     return updatedContext;
   }
 

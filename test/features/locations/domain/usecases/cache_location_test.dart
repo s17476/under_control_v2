@@ -48,7 +48,7 @@ void main() {
     'should return [Voidresult] from repository when CacheLocation is called',
     () async {
       // arrange
-      when(() => repository.cacheLocation(any()))
+      when(() => repository.cacheSelectedLocations(any()))
           .thenAnswer((_) async => Right(VoidResult()));
       // act
       final result = await usecase(

@@ -1,14 +1,16 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
 import '../../../core/error/exceptions.dart';
 
 abstract class LocationLocalDataSource {
-  Future<String> getCachedLocation();
-  Future<void> cacheLocation(String locationId);
+  Future<SelectedLocationsParams> getCachedLocation();
+  Future<void> cacheLocation(SelectedLocationsParams selectedLocationsParams);
 }
 
-const ucCachedLocation = 'UC_CACHED_LOCATION';
+const ucCachedLocations = 'UC_CACHED_LOCATIONS';
+const ucCachedChildren = 'UC_CACHED_CHILDREN';
 
 @LazySingleton(as: LocationLocalDataSource)
 class LocationLocalDataSourceImpl extends LocationLocalDataSource {
@@ -19,15 +21,23 @@ class LocationLocalDataSourceImpl extends LocationLocalDataSource {
   });
 
   @override
-  Future<void> cacheLocation(String locationId) {
-    return source.setString(ucCachedLocation, locationId);
+  Future<void> cacheLocation(
+      SelectedLocationsParams selectedLocationsParams) async {
+    source.setStringList(ucCachedLocations, selectedLocationsParams.locations);
+    source.setStringList(ucCachedChildren, selectedLocationsParams.children);
   }
 
   @override
-  Future<String> getCachedLocation() {
-    final locationId = source.getString(ucCachedLocation);
-    if (locationId != null) {
-      return Future.value(locationId);
+  Future<SelectedLocationsParams> getCachedLocation() async {
+    final locations = source.getStringList(ucCachedLocations);
+    final children = source.getStringList(ucCachedChildren);
+    if (locations != null && children != null) {
+      return Future.value(
+        SelectedLocationsParams(
+          locations: locations,
+          children: children,
+        ),
+      );
     }
     throw CacheException();
   }

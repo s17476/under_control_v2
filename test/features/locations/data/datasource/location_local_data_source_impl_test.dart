@@ -30,7 +30,7 @@ void main() {
             // act
             final result = await dataSource.getCachedLocation();
             // assert
-            verify(() => mockSharedPreferences.getString(ucCachedLocation));
+            verify(() => mockSharedPreferences.getString(ucCachedLocations));
             expect(result, locationId);
           },
         );

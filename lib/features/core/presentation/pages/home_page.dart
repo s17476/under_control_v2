@@ -1,8 +1,13 @@
+import 'dart:ui';
+
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../../locations/presentation/widgets/location_filter_tile.dart';
 import '../../utils/size_config.dart';
 import '../widgets/main_drawer.dart';
 
@@ -21,6 +26,8 @@ class _HomePageState extends State<HomePage> {
   late CircularBottomNavigationController navigationController;
 
   List<TabItem> tabItems = [];
+
+  bool isFilterExpanded = false;
 
   @override
   void initState() {
@@ -66,6 +73,12 @@ class _HomePageState extends State<HomePage> {
       ),
     ];
     super.didChangeDependencies();
+  }
+
+  void toggleIsBackdropExpanded() {
+    setState(() {
+      isFilterExpanded = !isFilterExpanded;
+    });
   }
 
   @override
@@ -118,57 +131,177 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           title: Text(appBarTitles[pageIndex]),
-          actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.tune))],
+          actions: [
+            IconButton(
+              onPressed: toggleIsBackdropExpanded,
+              icon: Icon(
+                Icons.tune,
+                color: isFilterExpanded
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).iconTheme.color,
+              ),
+            ),
+          ],
           centerTitle: true,
+          elevation: 0,
         ),
         drawer: const MainDrawer(),
-        body: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: pageController,
-          children: [
-            Center(
-              child: Text(
-                AppLocalizations.of(context)!.bottom_bar_title_tasks,
+        body: Stack(children: [
+          PageView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: pageController,
+            children: [
+              Center(
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      children: [
+                        for (var i in Iterable<int>.generate(100).toList())
+                          Text(
+                            AppLocalizations.of(context)!
+                                .bottom_bar_title_tasks,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  AppLocalizations.of(context)!.bottom_bar_title_inventory,
+                ),
+              ),
+              Center(
+                child: Text(
+                  AppLocalizations.of(context)!.bottom_bar_title_dashboard,
+                ),
+              ),
+              Center(
+                child: Text(
+                  AppLocalizations.of(context)!.bottom_bar_title_assets,
+                ),
+              ),
+              Center(
+                child: Text(
+                  AppLocalizations.of(context)!.bottom_bar_title_knowledge,
+                ),
+              )
+            ],
+          ),
+          // bottom navigation bar
+          Positioned(
+            bottom: 0,
+            child: CircularBottomNavigation(
+              tabItems,
+              barBackgroundColor:
+                  Theme.of(context).appBarTheme.backgroundColor!,
+              barHeight: 44,
+              iconsSize: 24,
+              circleSize: 54,
+              controller: navigationController,
+              selectedCallback: (index) => setState(() {
+                pageIndex = index ?? 2;
+                pageController.animateToPage(
+                  pageIndex,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.decelerate,
+                );
+              }),
+            ),
+          ),
+          // glass layer
+          if (isFilterExpanded)
+            InkWell(
+              onTap: toggleIsBackdropExpanded,
+              child: ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                  child: Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height,
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                ),
               ),
             ),
-            Center(
-              child: Text(
-                AppLocalizations.of(context)!.bottom_bar_title_inventory,
+          // location and group selection
+          AnimatedSize(
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.fastOutSlowIn,
+            child: SingleChildScrollView(
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 44),
+                width: double.infinity,
+                height: isFilterExpanded ? null : 0,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).appBarTheme.backgroundColor,
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Divider(thickness: 1.5),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        AppLocalizations.of(context)!
+                            .home_screen_filter_select_locations,
+                      ),
+                    ),
+                    BlocBuilder<LocationBloc, LocationState>(
+                      builder: (context, state) {
+                        if (state is LocationLoadedState) {
+                          final topLevelItems = state.allLocations.allLocations
+                              .where((location) => location.parentId.isEmpty)
+                              .toList();
+                          return Flexible(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: topLevelItems.length,
+                                itemBuilder: (context, index) {
+                                  if (topLevelItems.isEmpty) {
+                                    return const SizedBox();
+                                  } else {
+                                    return LocationFilterTile(
+                                      key: Key(topLevelItems[index].id),
+                                      allLocations:
+                                          state.allLocations.allLocations,
+                                      location: topLevelItems[index],
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        AppLocalizations.of(context)!
+                            .home_screen_filter_select_group,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            Center(
-              child: Text(
-                AppLocalizations.of(context)!.bottom_bar_title_dashboard,
-              ),
-            ),
-            Center(
-              child: Text(
-                AppLocalizations.of(context)!.bottom_bar_title_assets,
-              ),
-            ),
-            Center(
-              child: Text(
-                AppLocalizations.of(context)!.bottom_bar_title_knowledge,
-              ),
-            )
-          ],
-        ),
-        bottomNavigationBar: CircularBottomNavigation(
-          tabItems,
-          barBackgroundColor: Theme.of(context).appBarTheme.backgroundColor!,
-          barHeight: 44,
-          iconsSize: 24,
-          circleSize: 54,
-          controller: navigationController,
-          selectedCallback: (index) => setState(() {
-            pageIndex = index ?? 2;
-            pageController.animateToPage(
-              pageIndex,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.decelerate,
-            );
-          }),
-        ),
+          ),
+        ]),
       ),
     );
   }

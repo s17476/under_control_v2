@@ -62,7 +62,7 @@ void main() {
           when(() => mockLocationLocalDataSource.cacheLocation(any()))
               .thenAnswer((_) => Future.value());
           // act
-          await mockLocationRepository.cacheLocation(tLocationParams);
+          await mockLocationRepository.cacheSelectedLocations(tLocationParams);
           // assert
           verify(() => mockLocationLocalDataSource
               .cacheLocation(tLocationParams.location.id));
@@ -75,8 +75,8 @@ void main() {
           when(() => mockLocationLocalDataSource.cacheLocation(any()))
               .thenThrow(CacheException());
           // act
-          final result =
-              await mockLocationRepository.cacheLocation(tLocationParams);
+          final result = await mockLocationRepository
+              .cacheSelectedLocations(tLocationParams);
           // assert
           expect(result, isA<Left<Failure, VoidResult>>());
         },
@@ -88,8 +88,8 @@ void main() {
           when(() => mockLocationLocalDataSource.cacheLocation(any()))
               .thenThrow(Exception());
           // act
-          final result =
-              await mockLocationRepository.cacheLocation(tLocationParams);
+          final result = await mockLocationRepository
+              .cacheSelectedLocations(tLocationParams);
           // assert
           expect(result, isA<Left<Failure, VoidResult>>());
         },

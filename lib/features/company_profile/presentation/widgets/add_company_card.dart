@@ -48,179 +48,182 @@ class AddCompanyCard extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 24),
-                            child: Text(
-                              AppLocalizations.of(context)!
-                                  .add_company_intro_card_title,
-                              style: const TextStyle(fontSize: 24),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 24),
+                              child: Text(
+                                AppLocalizations.of(context)!
+                                    .add_company_intro_card_title,
+                                style: const TextStyle(fontSize: 24),
+                              ),
                             ),
-                          ),
-                          CustomTextFormField(
-                            validator: (val) {
-                              if (val!.length < 4) {
-                                return AppLocalizations.of(context)!
-                                    .add_company_intro_card_to_short;
-                              }
-                              return null;
-                            },
-                            fieldKey: 'name',
-                            controller: nameTexEditingController,
-                            keyboardtype: TextInputType.name,
-                            textCapitalization: TextCapitalization.words,
-                            labelText: AppLocalizations.of(context)!
-                                .add_company_intro_card_name,
-                          ),
-                          const SizedBox(
-                            height: 32,
-                          ),
-                          CustomTextFormField(
-                            validator: (val) {
-                              if (val!.length < 4) {
-                                return AppLocalizations.of(context)!
-                                    .add_company_intro_card_to_short;
-                              }
-                              return null;
-                            },
-                            fieldKey: 'address',
-                            controller: addressTexEditingController,
-                            keyboardtype: TextInputType.name,
-                            textCapitalization: TextCapitalization.sentences,
-                            labelText: AppLocalizations.of(context)!
-                                .add_company_intro_card_address,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          CustomTextFormField(
-                            validator: (val) {
-                              if (val!.length < 4) {
-                                return AppLocalizations.of(context)!
-                                    .add_company_intro_card_to_short;
-                              }
-                              return null;
-                            },
-                            fieldKey: 'post-code',
-                            controller: postCodeTexEditingController,
-                            keyboardtype: TextInputType.number,
-                            textCapitalization: TextCapitalization.none,
-                            labelText: AppLocalizations.of(context)!
-                                .add_company_intro_card_postcode,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          CustomTextFormField(
-                            validator: (val) {
-                              if (val!.length < 4) {
-                                return AppLocalizations.of(context)!
-                                    .add_company_intro_card_to_short;
-                              }
-                              return null;
-                            },
-                            fieldKey: 'city',
-                            controller: cityTexEditingController,
-                            keyboardtype: TextInputType.name,
-                            textCapitalization: TextCapitalization.words,
-                            labelText: AppLocalizations.of(context)!
-                                .add_company_intro_card_city,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          CustomTextFormField(
-                            validator: (val) {
-                              if (val!.length < 2) {
-                                return AppLocalizations.of(context)!
-                                    .add_company_intro_card_to_short;
-                              }
-                              return null;
-                            },
-                            fieldKey: 'country',
-                            controller: countryTexEditingController,
-                            keyboardtype: TextInputType.name,
-                            textCapitalization: TextCapitalization.words,
-                            labelText: AppLocalizations.of(context)!
-                                .add_company_intro_card_country,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          CustomTextFormField(
-                            validator: (val) {
-                              if (val!.length < 4) {
-                                return AppLocalizations.of(context)!
-                                    .add_company_intro_card_to_short;
-                              }
-                              return null;
-                            },
-                            fieldKey: 'vat',
-                            controller: vatNumberTexEditingController,
-                            keyboardtype: TextInputType.text,
-                            textCapitalization: TextCapitalization.characters,
-                            labelText: AppLocalizations.of(context)!
-                                .add_company_intro_card_vat_number,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          CustomTextFormField(
-                            validator: (val) {
-                              if (val!.length < 4) {
-                                return AppLocalizations.of(context)!
-                                    .add_company_intro_card_to_short;
-                              }
-                              return null;
-                            },
-                            fieldKey: 'phone',
-                            controller: phoneNumberTexEditingController,
-                            keyboardtype: TextInputType.number,
-                            textCapitalization: TextCapitalization.none,
-                            labelText: AppLocalizations.of(context)!
-                                .add_company_intro_card_phone_number,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          CustomTextFormField(
-                            validator: (val) {
-                              if (val!.length < 4) {
-                                return AppLocalizations.of(context)!
-                                    .add_company_intro_card_to_short;
-                              }
-                              return null;
-                            },
-                            fieldKey: 'email',
-                            controller: emailTexEditingController,
-                            keyboardtype: TextInputType.emailAddress,
-                            textCapitalization: TextCapitalization.none,
-                            labelText: AppLocalizations.of(context)!
-                                .add_company_intro_card_email,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          CustomTextFormField(
-                            validator: (val) {
-                              if (val!.length < 4) {
-                                return AppLocalizations.of(context)!
-                                    .add_company_intro_card_to_short;
-                              }
-                              return null;
-                            },
-                            fieldKey: 'homepage',
-                            controller: homepageTexEditingController,
-                            keyboardtype: TextInputType.url,
-                            textCapitalization: TextCapitalization.none,
-                            labelText: AppLocalizations.of(context)!
-                                .add_company_intro_card_homepage,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                        ],
+                            CustomTextFormField(
+                              validator: (val) {
+                                if (val!.length < 4) {
+                                  return AppLocalizations.of(context)!
+                                      .add_company_intro_card_to_short;
+                                }
+                                return null;
+                              },
+                              fieldKey: 'name',
+                              controller: nameTexEditingController,
+                              keyboardType: TextInputType.name,
+                              textCapitalization: TextCapitalization.words,
+                              labelText: AppLocalizations.of(context)!
+                                  .add_company_intro_card_name,
+                            ),
+                            const SizedBox(
+                              height: 32,
+                            ),
+                            CustomTextFormField(
+                              validator: (val) {
+                                if (val!.length < 4) {
+                                  return AppLocalizations.of(context)!
+                                      .add_company_intro_card_to_short;
+                                }
+                                return null;
+                              },
+                              fieldKey: 'address',
+                              controller: addressTexEditingController,
+                              keyboardType: TextInputType.name,
+                              textCapitalization: TextCapitalization.sentences,
+                              labelText: AppLocalizations.of(context)!
+                                  .add_company_intro_card_address,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomTextFormField(
+                              validator: (val) {
+                                if (val!.length < 4) {
+                                  return AppLocalizations.of(context)!
+                                      .add_company_intro_card_to_short;
+                                }
+                                return null;
+                              },
+                              fieldKey: 'post-code',
+                              controller: postCodeTexEditingController,
+                              keyboardType: TextInputType.number,
+                              textCapitalization: TextCapitalization.none,
+                              labelText: AppLocalizations.of(context)!
+                                  .add_company_intro_card_postcode,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomTextFormField(
+                              validator: (val) {
+                                if (val!.length < 4) {
+                                  return AppLocalizations.of(context)!
+                                      .add_company_intro_card_to_short;
+                                }
+                                return null;
+                              },
+                              fieldKey: 'city',
+                              controller: cityTexEditingController,
+                              keyboardType: TextInputType.name,
+                              textCapitalization: TextCapitalization.words,
+                              labelText: AppLocalizations.of(context)!
+                                  .add_company_intro_card_city,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomTextFormField(
+                              validator: (val) {
+                                if (val!.length < 2) {
+                                  return AppLocalizations.of(context)!
+                                      .add_company_intro_card_to_short;
+                                }
+                                return null;
+                              },
+                              fieldKey: 'country',
+                              controller: countryTexEditingController,
+                              keyboardType: TextInputType.name,
+                              textCapitalization: TextCapitalization.words,
+                              labelText: AppLocalizations.of(context)!
+                                  .add_company_intro_card_country,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomTextFormField(
+                              validator: (val) {
+                                if (val!.length < 4) {
+                                  return AppLocalizations.of(context)!
+                                      .add_company_intro_card_to_short;
+                                }
+                                return null;
+                              },
+                              fieldKey: 'vat',
+                              controller: vatNumberTexEditingController,
+                              keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.characters,
+                              labelText: AppLocalizations.of(context)!
+                                  .add_company_intro_card_vat_number,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomTextFormField(
+                              validator: (val) {
+                                if (val!.length < 4) {
+                                  return AppLocalizations.of(context)!
+                                      .add_company_intro_card_to_short;
+                                }
+                                return null;
+                              },
+                              fieldKey: 'phone',
+                              controller: phoneNumberTexEditingController,
+                              keyboardType: TextInputType.number,
+                              textCapitalization: TextCapitalization.none,
+                              labelText: AppLocalizations.of(context)!
+                                  .add_company_intro_card_phone_number,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomTextFormField(
+                              validator: (val) {
+                                if (val!.length < 4) {
+                                  return AppLocalizations.of(context)!
+                                      .add_company_intro_card_to_short;
+                                }
+                                return null;
+                              },
+                              fieldKey: 'email',
+                              controller: emailTexEditingController,
+                              keyboardType: TextInputType.emailAddress,
+                              textCapitalization: TextCapitalization.none,
+                              labelText: AppLocalizations.of(context)!
+                                  .add_company_intro_card_email,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomTextFormField(
+                              validator: (val) {
+                                if (val!.length < 4) {
+                                  return AppLocalizations.of(context)!
+                                      .add_company_intro_card_to_short;
+                                }
+                                return null;
+                              },
+                              fieldKey: 'homepage',
+                              controller: homepageTexEditingController,
+                              keyboardType: TextInputType.url,
+                              textCapitalization: TextCapitalization.none,
+                              labelText: AppLocalizations.of(context)!
+                                  .add_company_intro_card_homepage,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

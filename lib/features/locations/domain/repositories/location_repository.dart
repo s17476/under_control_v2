@@ -27,13 +27,15 @@ abstract class LocationRepository {
   ///
   ///Returns [VoidResult] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
-  Future<Either<Failure, VoidResult>> cacheLocation(LocationParams params);
+  Future<Either<Failure, VoidResult>> cacheSelectedLocations(
+    SelectedLocationsParams params,
+  );
 
   ///Gets cached location from local memory.
   ///
   ///Returns [String] containing location id if location was found.
   ///Returns [Failure] if operation is unsuccessful.
-  Future<Either<Failure, String>> tryToGetCachedLocation();
+  Future<Either<Failure, SelectedLocationsParams>> tryToGetCachedLocation();
 
   ///fatches all locations from the DB.
   ///

@@ -6,7 +6,7 @@ import '../../../core/usecases/usecase.dart';
 import '../repositories/location_repository.dart';
 
 @lazySingleton
-class CacheLocation extends FutureUseCase<VoidResult, LocationParams> {
+class CacheLocation extends FutureUseCase<VoidResult, SelectedLocationsParams> {
   final LocationRepository locationRepository;
 
   CacheLocation({
@@ -14,6 +14,7 @@ class CacheLocation extends FutureUseCase<VoidResult, LocationParams> {
   });
 
   @override
-  Future<Either<Failure, VoidResult>> call(LocationParams params) async =>
-      locationRepository.cacheLocation(params);
+  Future<Either<Failure, VoidResult>> call(
+          SelectedLocationsParams params) async =>
+      locationRepository.cacheSelectedLocations(params);
 }
