@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
     super.didChangeDependencies();
   }
 
-  void toggleIsBackdropExpanded() {
+  void toggleIsFilterExpanded() {
     setState(() {
       isFilterExpanded = !isFilterExpanded;
     });
@@ -97,6 +97,10 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       // double click to exit the app
       onWillPop: () async {
+        if (isFilterExpanded) {
+          toggleIsFilterExpanded();
+          return false;
+        }
         final timegap = DateTime.now().difference(preBackpress);
         final cantExit = timegap >= const Duration(seconds: 2);
         preBackpress = DateTime.now();
@@ -133,7 +137,7 @@ class _HomePageState extends State<HomePage> {
           title: Text(appBarTitles[pageIndex]),
           actions: [
             IconButton(
-              onPressed: toggleIsBackdropExpanded,
+              onPressed: toggleIsFilterExpanded,
               icon: Icon(
                 Icons.tune,
                 color: isFilterExpanded
@@ -213,7 +217,7 @@ class _HomePageState extends State<HomePage> {
           // glass layer
           if (isFilterExpanded)
             InkWell(
-              onTap: toggleIsBackdropExpanded,
+              onTap: toggleIsFilterExpanded,
               child: ClipRect(
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),

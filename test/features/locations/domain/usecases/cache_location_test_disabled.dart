@@ -22,6 +22,9 @@ void main() {
         parentId: 'parentId',
       ),
     );
+    registerFallbackValue(
+      const SelectedLocationsParams(locations: ['any'], children: []),
+    );
 
     registerFallbackValue(
       LocationParams(
@@ -51,8 +54,8 @@ void main() {
       when(() => repository.cacheSelectedLocations(any()))
           .thenAnswer((_) async => Right(VoidResult()));
       // act
-      final result = await usecase(
-          const LocationParams(location: tLocation, comapnyId: 'comapnyId'));
+      final result = await usecase(SelectedLocationsParams(
+          children: [tLocation.id], locations: const ['any']));
       // assert
       expect(result, isA<Right<Failure, VoidResult>>());
     },

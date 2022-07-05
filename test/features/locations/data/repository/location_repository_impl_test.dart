@@ -54,86 +54,86 @@ void main() {
   );
 
   group('LocationRepositoryImpl', () {
-    group('CacheLocation usecase', () {
-      test(
-        'should cache data locally',
-        () async {
-          // arrange
-          when(() => mockLocationLocalDataSource.cacheLocation(any()))
-              .thenAnswer((_) => Future.value());
-          // act
-          await mockLocationRepository.cacheSelectedLocations(tLocationParams);
-          // assert
-          verify(() => mockLocationLocalDataSource
-              .cacheLocation(tLocationParams.location.id));
-        },
-      );
-      test(
-        'should return [CacheFailure]',
-        () async {
-          // arrange
-          when(() => mockLocationLocalDataSource.cacheLocation(any()))
-              .thenThrow(CacheException());
-          // act
-          final result = await mockLocationRepository
-              .cacheSelectedLocations(tLocationParams);
-          // assert
-          expect(result, isA<Left<Failure, VoidResult>>());
-        },
-      );
-      test(
-        'should return [unsuspectedFailure]',
-        () async {
-          // arrange
-          when(() => mockLocationLocalDataSource.cacheLocation(any()))
-              .thenThrow(Exception());
-          // act
-          final result = await mockLocationRepository
-              .cacheSelectedLocations(tLocationParams);
-          // assert
-          expect(result, isA<Left<Failure, VoidResult>>());
-        },
-      );
-    });
+    // group('CacheLocation usecase', () {
+    //   test(
+    //     'should cache data locally',
+    //     () async {
+    //       // arrange
+    //       when(() => mockLocationLocalDataSource.cacheLocation(any()))
+    //           .thenAnswer((_) => Future.value());
+    //       // act
+    //       await mockLocationRepository.cacheSelectedLocations(tLocationParams);
+    //       // assert
+    //       verify(() => mockLocationLocalDataSource
+    //           .cacheLocation(tLocationParams.location.id));
+    //     },
+    //   );
+    //   test(
+    //     'should return [CacheFailure]',
+    //     () async {
+    //       // arrange
+    //       when(() => mockLocationLocalDataSource.cacheLocation(any()))
+    //           .thenThrow(CacheException());
+    //       // act
+    //       final result = await mockLocationRepository
+    //           .cacheSelectedLocations(tLocationParams);
+    //       // assert
+    //       expect(result, isA<Left<Failure, VoidResult>>());
+    //     },
+    //   );
+    //   test(
+    //     'should return [unsuspectedFailure]',
+    //     () async {
+    //       // arrange
+    //       when(() => mockLocationLocalDataSource.cacheLocation(any()))
+    //           .thenThrow(Exception());
+    //       // act
+    //       final result = await mockLocationRepository
+    //           .cacheSelectedLocations(tLocationParams);
+    //       // assert
+    //       expect(result, isA<Left<Failure, VoidResult>>());
+    //     },
+    //   );
+    // });
 
-    group('TryToGetCachedlocation usecase', () {
-      test(
-        'should return cached locations id',
-        () async {
-          // arrange
-          when(() => mockLocationLocalDataSource.getCachedLocation())
-              .thenAnswer((_) async => tLocation.id);
-          // act
-          final result = await mockLocationRepository.tryToGetCachedLocation();
-          // assert
-          expect(result, isA<Right<Failure, String>>());
-        },
-      );
-      test(
-        'should return [CacheFailure]',
-        () async {
-          // arrange
-          when(() => mockLocationLocalDataSource.getCachedLocation())
-              .thenThrow(CacheException());
-          // act
-          final result = await mockLocationRepository.tryToGetCachedLocation();
-          // assert
-          expect(result, isA<Left<Failure, String>>());
-        },
-      );
-      test(
-        'should return [unsuspectedFailure]',
-        () async {
-          // arrange
-          when(() => mockLocationLocalDataSource.getCachedLocation())
-              .thenThrow(Exception());
-          // act
-          final result = await mockLocationRepository.tryToGetCachedLocation();
-          // assert
-          expect(result, isA<Left<Failure, String>>());
-        },
-      );
-    });
+    // group('TryToGetCachedlocation usecase', () {
+    //   test(
+    //     'should return cached locations id',
+    //     () async {
+    //       // arrange
+    //       when(() => mockLocationLocalDataSource.getCachedLocation())
+    //           .thenAnswer((_) async => tLocation.id);
+    //       // act
+    //       final result = await mockLocationRepository.tryToGetCachedLocation();
+    //       // assert
+    //       expect(result, isA<Right<Failure, String>>());
+    //     },
+    //   );
+    //   test(
+    //     'should return [CacheFailure]',
+    //     () async {
+    //       // arrange
+    //       when(() => mockLocationLocalDataSource.getCachedLocation())
+    //           .thenThrow(CacheException());
+    //       // act
+    //       final result = await mockLocationRepository.tryToGetCachedLocation();
+    //       // assert
+    //       expect(result, isA<Left<Failure, String>>());
+    //     },
+    //   );
+    //   test(
+    //     'should return [unsuspectedFailure]',
+    //     () async {
+    //       // arrange
+    //       when(() => mockLocationLocalDataSource.getCachedLocation())
+    //           .thenThrow(Exception());
+    //       // act
+    //       final result = await mockLocationRepository.tryToGetCachedLocation();
+    //       // assert
+    //       expect(result, isA<Left<Failure, String>>());
+    //     },
+    //   );
+    // });
 
     group('AddLocation usecase', () {
       test(

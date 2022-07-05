@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:under_control_v2/features/groups/domain/entities/group.dart';
 
 import '../../locations/domain/entities/location.dart';
 import '../error/failures.dart';
@@ -104,4 +105,17 @@ class SelectedLocationsParams extends Equatable {
 
   @override
   List<Object> get props => [locations, children];
+}
+
+class GroupParams extends Equatable {
+  final Group group;
+  final String comapnyId;
+
+  const GroupParams({
+    required this.group,
+    required this.comapnyId,
+  });
+
+  @override
+  List<Object> get props => [group, comapnyId];
 }
