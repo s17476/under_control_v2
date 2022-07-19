@@ -124,6 +124,21 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          bottom: PreferredSize(
+            child: Container(
+              height: 3.0,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.grey.shade700,
+                  Colors.transparent,
+                ],
+              )),
+            ),
+            preferredSize: const Size.fromHeight(3.0),
+          ),
           leading: Builder(
             builder: (context) {
               return GestureDetector(
@@ -249,7 +264,6 @@ class _HomePageState extends State<HomePage> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Divider(thickness: 1.5),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Text(
