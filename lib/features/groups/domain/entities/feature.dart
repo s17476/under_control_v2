@@ -4,11 +4,27 @@ enum FeatureType {
   tasks('tasks'),
   inventory('inventory'),
   assets('assets'),
-  locations('locations');
+  locations('locations'),
+  unknown('unknown');
 
   final String name;
 
   const FeatureType(this.name);
+
+  factory FeatureType.fromString(String name) {
+    switch (name) {
+      case 'tasks':
+        return FeatureType.tasks;
+      case 'inventory':
+        return FeatureType.inventory;
+      case 'assets':
+        return FeatureType.assets;
+      case 'locations':
+        return FeatureType.locations;
+      default:
+        return FeatureType.unknown;
+    }
+  }
 }
 
 class Feature extends Equatable {

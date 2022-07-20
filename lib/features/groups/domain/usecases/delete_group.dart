@@ -4,7 +4,7 @@ import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../repositories/group_repository.dart';
 
-class DeleteGroup extends FutureUseCase<VoidResult, String> {
+class DeleteGroup extends FutureUseCase<VoidResult, GroupParams> {
   final GroupRepository groupRepository;
 
   DeleteGroup({
@@ -12,6 +12,6 @@ class DeleteGroup extends FutureUseCase<VoidResult, String> {
   });
 
   @override
-  Future<Either<Failure, VoidResult>> call(String params) async =>
+  Future<Either<Failure, VoidResult>> call(GroupParams params) async =>
       groupRepository.deleteGroup(params);
 }

@@ -20,6 +20,16 @@ void main() {
       locations: [],
       features: [],
     ));
+    registerFallbackValue(
+      const GroupParams(
+          group: Group(
+            id: 'id',
+            name: 'name',
+            locations: [],
+            features: [],
+          ),
+          comapnyId: 'comapnyId'),
+    );
   });
 
   setUp(() {
@@ -35,12 +45,16 @@ void main() {
         when(() => repository.updateGroup(any()))
             .thenAnswer((_) async => Right(VoidResult()));
         // act
-        final result = await usecase(const Group(
-          id: 'id',
-          name: 'name',
-          locations: [],
-          features: [],
-        ));
+        final result = await usecase(
+          const GroupParams(
+              group: Group(
+                id: 'id',
+                name: 'name',
+                locations: [],
+                features: [],
+              ),
+              comapnyId: 'comapnyId'),
+        );
         // assert
         expect(result, isA<Right<Failure, VoidResult>>());
       },

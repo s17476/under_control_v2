@@ -13,6 +13,25 @@ void main() {
   late DeleteGroup usecase;
   late MockGroupRepository repository;
 
+  setUpAll(() {
+    registerFallbackValue(const Group(
+      id: 'id',
+      name: 'name',
+      locations: [],
+      features: [],
+    ));
+    registerFallbackValue(
+      const GroupParams(
+          group: Group(
+            id: 'id',
+            name: 'name',
+            locations: [],
+            features: [],
+          ),
+          comapnyId: 'comapnyId'),
+    );
+  });
+
   setUp(() {
     repository = MockGroupRepository();
     usecase = DeleteGroup(groupRepository: repository);
@@ -26,7 +45,16 @@ void main() {
         when(() => repository.deleteGroup(any()))
             .thenAnswer((_) async => Right(VoidResult()));
         // act
-        final result = await usecase('');
+        final result = await usecase(
+          const GroupParams(
+              group: Group(
+                id: 'id',
+                name: 'name',
+                locations: [],
+                features: [],
+              ),
+              comapnyId: 'comapnyId'),
+        );
         // assert
         expect(result, isA<Right<Failure, VoidResult>>());
       },

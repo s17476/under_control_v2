@@ -1,14 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
-
-import '../../../locations/domain/entities/location.dart';
+import '../../data/models/feature_model.dart';
 
 class Group extends Equatable {
   final String id;
   final String name;
-  final List<Location> locations;
-  final List<Feature> features;
+  final List<String> locations;
+  final List<FeatureModel> features;
 
   const Group({
     required this.id,

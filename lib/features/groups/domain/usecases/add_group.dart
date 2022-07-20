@@ -2,10 +2,9 @@ import 'package:dartz/dartz.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../entities/group.dart';
 import '../repositories/group_repository.dart';
 
-class AddGroup extends FutureUseCase<String, Group> {
+class AddGroup extends FutureUseCase<String, GroupParams> {
   final GroupRepository groupRepository;
 
   AddGroup({
@@ -13,6 +12,6 @@ class AddGroup extends FutureUseCase<String, Group> {
   });
 
   @override
-  Future<Either<Failure, String>> call(Group params) async =>
+  Future<Either<Failure, String>> call(GroupParams params) async =>
       groupRepository.addGroup(params);
 }

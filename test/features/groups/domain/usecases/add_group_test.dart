@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
+import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/groups/domain/entities/group.dart';
 import 'package:under_control_v2/features/groups/domain/repositories/group_repository.dart';
 import 'package:under_control_v2/features/groups/domain/usecases/add_group.dart';
@@ -19,6 +20,16 @@ void main() {
       locations: [],
       features: [],
     ));
+    registerFallbackValue(
+      const GroupParams(
+          group: Group(
+            id: 'id',
+            name: 'name',
+            locations: [],
+            features: [],
+          ),
+          comapnyId: 'comapnyId'),
+    );
   });
 
   setUp(() {
@@ -34,12 +45,16 @@ void main() {
         when(() => repository.addGroup(any()))
             .thenAnswer((_) async => const Right(''));
         // act
-        final result = await usecase(const Group(
-          id: 'id',
-          name: 'name',
-          locations: [],
-          features: [],
-        ));
+        final result = await usecase(
+          const GroupParams(
+              group: Group(
+                id: 'id',
+                name: 'name',
+                locations: [],
+                features: [],
+              ),
+              comapnyId: 'comapnyId'),
+        );
         // assert
         expect(result, isA<Right<Failure, String>>());
       },

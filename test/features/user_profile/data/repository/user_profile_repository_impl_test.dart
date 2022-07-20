@@ -52,7 +52,7 @@ void main() {
     'UserPorfile successful database response',
     () {
       test(
-        'should return a [VoidResult] with user id when addUser is called',
+        'should return a [VoidResult] when addUser is called',
         () async {
           // act
           final result = await repository.addUser(tUserProfile);
