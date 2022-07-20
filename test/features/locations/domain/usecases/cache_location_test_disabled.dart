@@ -48,7 +48,7 @@ void main() {
   );
 
   test(
-    'should return [Voidresult] from repository when CacheLocation is called',
+    'Locations should return [Voidresult] from repository when CacheLocation is called',
     () async {
       // arrange
       when(() => repository.cacheSelectedLocations(any()))

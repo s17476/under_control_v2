@@ -12,7 +12,7 @@ void main() {
 
   const tLocationsList = LocationsListModel(allLocations: [tLocationModel]);
 
-  group('[LocationsListModel]', () {
+  group('Locations', () {
     test('should be a subclass of [LocationsList] entity', () async {
       // assert
       expect(tLocationsList, isA<LocationsList>());

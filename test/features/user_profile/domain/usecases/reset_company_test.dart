@@ -21,7 +21,7 @@ void main() {
   );
 
   test(
-    'should return [VoidResult] from repository when resetCompany is called',
+    'UserPorfile should return [VoidResult] from repository when resetCompany is called',
     () async {
       // arrange
       when(() => repository.resetCompany(any()))

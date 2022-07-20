@@ -40,7 +40,7 @@ void main() {
     );
   });
 
-  group('User management bloc', () {
+  group('User Management BLoC', () {
     test(
       'should emit [UserManagementEmpty] as an initial state',
       () async {

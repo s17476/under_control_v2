@@ -98,7 +98,7 @@ void main() {
 
   final tLocation = LocationModel.initial();
 
-  group('[LocationBloc]', () {
+  group('Locations BLoC', () {
     test(
       'should emit [LocationEmptyState] as an initial state',
       () async {

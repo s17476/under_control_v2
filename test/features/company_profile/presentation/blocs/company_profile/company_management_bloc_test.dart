@@ -77,7 +77,7 @@ void main() {
 
   final tCompanies = CompaniesModel(data: [tCompany]);
 
-  group('company management', () {
+  group('Company Management BLoC', () {
     test(
       'should emit [CompanyManagementEmpty] as an initial state',
       () async {

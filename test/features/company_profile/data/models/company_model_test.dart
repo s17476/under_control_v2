@@ -32,32 +32,33 @@ void main() {
     'logo': 'logo',
     'joinDate': dateTime.toIso8601String()
   };
+  group('Company Profile', () {
+    test(
+      'should be a subclass of [Company] entity',
+      () async {
+        // assert
+        expect(tCompanyModel, isA<Company>());
+      },
+    );
 
-  test(
-    'should be a subclass of [Company] entity',
-    () async {
-      // assert
-      expect(tCompanyModel, isA<Company>());
-    },
-  );
+    test(
+      'should return a valid model from a map',
+      () async {
+        // act
+        final result = CompanyModel.fromMap(tCompanyModelMap, tCompanyModel.id);
+        // assert
+        expect(result, tCompanyModel);
+      },
+    );
 
-  test(
-    'should return a valid model from a map',
-    () async {
-      // act
-      final result = CompanyModel.fromMap(tCompanyModelMap, tCompanyModel.id);
-      // assert
-      expect(result, tCompanyModel);
-    },
-  );
-
-  test(
-    'should return a map containing proper data',
-    () async {
-      // act
-      final result = tCompanyModel.toMap();
-      // assert
-      expect(result, tCompanyModelMap);
-    },
-  );
+    test(
+      'should return a map containing proper data',
+      () async {
+        // act
+        final result = tCompanyModel.toMap();
+        // assert
+        expect(result, tCompanyModelMap);
+      },
+    );
+  });
 }

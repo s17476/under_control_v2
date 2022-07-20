@@ -38,7 +38,7 @@ void main() {
     );
   });
   test(
-    'should return [Voidresult] from repisitory when DeleteLocation is called',
+    'Locations should return [Voidresult] from repisitory when DeleteLocation is called',
     () async {
       // arrange
       when(() => repository.deleteLocation(any()))

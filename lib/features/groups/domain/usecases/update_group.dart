@@ -5,14 +5,14 @@ import '../../../core/usecases/usecase.dart';
 import '../entities/group.dart';
 import '../repositories/group_repository.dart';
 
-class AddGroup extends FutureUseCase<String, Group> {
+class UpdateGroup extends FutureUseCase<VoidResult, Group> {
   final GroupRepository groupRepository;
 
-  AddGroup({
+  UpdateGroup({
     required this.groupRepository,
   });
 
   @override
-  Future<Either<Failure, String>> call(Group params) async =>
-      groupRepository.addGroup(params);
+  Future<Either<Failure, VoidResult>> call(Group params) async =>
+      groupRepository.updateGroup(params);
 }

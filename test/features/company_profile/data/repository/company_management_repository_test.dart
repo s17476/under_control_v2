@@ -34,7 +34,7 @@ void main() {
 
   final tCompany = CompanyModel.initial();
 
-  group('successful database response', () {
+  group('Company Profile successful database response', () {
     test(
       'should return [String] when addCompany is called',
       () async {
@@ -56,7 +56,7 @@ void main() {
     );
   });
 
-  group('unsuccessful database response', () {
+  group('Company Profile unsuccessful database response', () {
     test(
       'should return [DatabaseFailure] when addCompany is called',
       () async {
@@ -84,7 +84,7 @@ void main() {
     );
   });
 
-  group('unsuspected error', () {
+  group('Company Profile unsuspected error', () {
     test(
       'should return [UnsuspectedFailure] when addCompany is called',
       () async {

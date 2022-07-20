@@ -55,7 +55,7 @@ void main() {
   );
 
   test(
-    'should return [Company] from repository when get company by id usecase is called',
+    'Company Profile should return [Company] from repository when get company by id usecase is called',
     () async {
       // arrange
       when(

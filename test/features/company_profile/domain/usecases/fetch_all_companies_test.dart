@@ -62,7 +62,7 @@ void main() {
   );
 
   test(
-    'should return [Companies] from repository when fetch all companies usecase is called',
+    'Company Profile should return [Companies] from repository when fetch all companies usecase is called',
     () async {
       // arrange
       when(

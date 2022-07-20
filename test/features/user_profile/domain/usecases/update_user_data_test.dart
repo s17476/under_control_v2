@@ -56,7 +56,7 @@ void main() {
   );
 
   test(
-    'should return [Voidresult] from repository when UpdateUserData is called',
+    'UserPorfile should return [Voidresult] from repository when UpdateUserData is called',
     () async {
       // arrange
       when(() => repository.updateUserdata(any()))

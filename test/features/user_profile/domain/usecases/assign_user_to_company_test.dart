@@ -26,7 +26,7 @@ void main() {
   );
 
   test(
-    'should return [VoidResult] from repository when assignUserToCompany is called',
+    'UserPorfile should return [VoidResult] from repository when assignUserToCompany is called',
     () async {
       // arrange
       when(() => repository.assignUserToCompany(any()))

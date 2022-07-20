@@ -9,7 +9,7 @@ void main() {
       LocationsModel(allLocations: Stream.fromIterable([tLocation]));
 
   test(
-    'should be a subclass of [Locations] entity',
+    'Locations should be a subclass of [Locations] entity',
     () async {
       // assert
       expect(tLocations, isA<Locations>());

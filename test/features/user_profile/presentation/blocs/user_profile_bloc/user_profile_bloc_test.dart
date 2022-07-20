@@ -125,396 +125,405 @@ void main() {
 
   File avatarFile = File('');
 
-  test(
-    'should emit [UsreProfileEmpty] as an initial state',
-    () async {
-      expect(userProfileBloc.state, UserProfileEmpty());
-    },
-  );
+  group('User Profile BLoC', () {
+    test(
+      'should emit [UsreProfileEmpty] as an initial state',
+      () async {
+        expect(userProfileBloc.state, UserProfileEmpty());
+      },
+    );
 
-  group('GetUserById usecase', () {
-    blocTest(
-      'should emit [UserProfileError] when usecase returns [UnsuspectedFailure]',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(GetUserByIdEvent(userId: ''));
-        when(() => mockGetUserById(any())).thenAnswer(
-          (_) async => const Left(
-            UnsuspectedFailure(),
+    group('GetUserById usecase', () {
+      blocTest(
+        'should emit [UserProfileError] when usecase returns [UnsuspectedFailure]',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(GetUserByIdEvent(userId: ''));
+          when(() => mockGetUserById(any())).thenAnswer(
+            (_) async => const Left(
+              UnsuspectedFailure(),
+            ),
+          );
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockGetUserById('')).called(1),
+        expect: () => [isA<NoUserProfileError>()],
+      );
+
+      blocTest(
+        'should emit [DatabaseError] when usecase returns [DatabaseError]',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(GetUserByIdEvent(userId: ''));
+          when(() => mockGetUserById(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockGetUserById('')).called(1),
+        expect: () => [isA<DatabaseErrorUserProfile>()],
+      );
+
+      blocTest(
+        'should emit [NoCompany] when usecase returns [UserProfile] and companyId is empty',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(GetUserByIdEvent(userId: ''));
+          when(() => mockGetUserById(any())).thenAnswer(
+            (_) async => const Right(tUserProfileModel),
+          );
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockGetUserById('')).called(1),
+        expect: () => [NoCompany(userProfile: tUserProfileModel)],
+      );
+
+      blocTest(
+        'should emit [NotApproved] when usecase returns [UserProfile], companyId is not empty and approved is false',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(GetUserByIdEvent(userId: ''));
+          when(() => mockGetUserById(any())).thenAnswer(
+            (_) async => Right(
+              tUserProfileModel.copyWith(companyId: 'companyId'),
+            ),
+          );
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockGetUserById('')).called(1),
+        expect: () => [
+          NotApproved(
+            userProfile: tUserProfileModel.copyWith(companyId: 'companyId'),
+          )
+        ],
+      );
+
+      blocTest(
+        'should emit [Rejected] when usecase returns [UserProfile], companyId is not empty, approved is false and rejected is true',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(GetUserByIdEvent(userId: ''));
+          when(() => mockGetUserById(any())).thenAnswer(
+            (_) async => Right(
+              tUserProfileModel.copyWith(
+                  companyId: 'companyId', rejected: true),
+            ),
+          );
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockGetUserById('')).called(1),
+        expect: () => [
+          Rejected(
+            userProfile: tUserProfileModel.copyWith(
+                companyId: 'companyId', rejected: true),
+          )
+        ],
+      );
+
+      blocTest(
+        'should emit [Suspended] when usecase returns [UserProfile], companyId is not empty, approved is false and suspended is true',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(GetUserByIdEvent(userId: ''));
+          when(() => mockGetUserById(any())).thenAnswer(
+            (_) async => Right(
+              tUserProfileModel.copyWith(
+                  companyId: 'companyId', suspended: true),
+            ),
+          );
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockGetUserById('')).called(1),
+        expect: () => [
+          Suspended(
+            userProfile: tUserProfileModel.copyWith(
+                companyId: 'companyId', suspended: true),
+          )
+        ],
+      );
+
+      blocTest(
+        'should emit [Approved] when usecase returns [UserProfile], companyId is not empty, approved is true',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(GetUserByIdEvent(userId: ''));
+          when(() => mockGetUserById(any())).thenAnswer(
+            (_) async => Right(
+              tUserProfileModel.copyWith(
+                  companyId: 'companyId', approved: true),
+            ),
+          );
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockGetUserById('')).called(1),
+        expect: () => [
+          Approved(
+            userProfile: tUserProfileModel.copyWith(
+                companyId: 'companyId', approved: true),
+          )
+        ],
+      );
+    });
+
+    group('AddUser usecase', () {
+      blocTest(
+        'should emit [DatabaseError] when AddUserAvatar usecase returns failure',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(AddUserEvent(
+            userProfile: tUserProfileModel,
+            avatar: avatarFile,
+          ));
+          when(
+            () =>
+                mockInputValidator.addUserValidator(any(), any(), any(), any()),
+          ).thenReturn(Right<Failure, VoidResult>(VoidResult()));
+          when((() => mockAuthenticationBloc.state))
+              .thenReturn(Authenticated(userId: 'userId', email: 'email'));
+          when(() => mockAddUserAvatar(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+          when(() => mockAddUser(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        skip: 1,
+        expect: () => [isA<DatabaseErrorUserProfile>()],
+      );
+
+      blocTest(
+        'should emit [NoUserProfileError] when InputValidator usecase returns failure',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(AddUserEvent(
+            userProfile: tUserProfileModel,
+            avatar: avatarFile,
+          ));
+          when(
+            () =>
+                mockInputValidator.addUserValidator(any(), any(), any(), any()),
+          ).thenReturn(
+            const Left<Failure, VoidResult>(ValidationFailure()),
+          );
+          when((() => mockAuthenticationBloc.state))
+              .thenReturn(Authenticated(userId: 'userId', email: 'email'));
+          when(() => mockAddUserAvatar(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+          when(() => mockAddUser(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        skip: 1,
+        expect: () => [isA<NoUserProfileError>()],
+      );
+
+      blocTest(
+        'should emit [DatabaseError] when AddUser usecase returns failure',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(AddUserEvent(
+            userProfile: tUserProfileModel,
+            avatar: avatarFile,
+          ));
+          when(
+            () =>
+                mockInputValidator.addUserValidator(any(), any(), any(), any()),
+          ).thenReturn(Right<Failure, VoidResult>(VoidResult()));
+          when((() => mockAuthenticationBloc.state))
+              .thenReturn(Authenticated(userId: 'userId', email: 'email'));
+          when(() => mockAddUserAvatar(any()))
+              .thenAnswer((_) async => const Right(''));
+          when(() => mockAddUser(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        skip: 1,
+        expect: () => [isA<DatabaseErrorUserProfile>()],
+      );
+      blocTest(
+        'should emit [NoCompany] when AddUser is called',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(AddUserEvent(
+            userProfile: tUserProfileModel,
+            avatar: avatarFile,
+          ));
+          when(
+            () =>
+                mockInputValidator.addUserValidator(any(), any(), any(), any()),
+          ).thenReturn(Right<Failure, VoidResult>(VoidResult()));
+          when((() => mockAuthenticationBloc.state))
+              .thenReturn(Authenticated(userId: 'id', email: 'email'));
+          when(() => mockAddUserAvatar(any()))
+              .thenAnswer((_) async => const Right('avatarId'));
+          when(() => mockAddUser(any())).thenAnswer(
+            (_) async => Right(VoidResult()),
+          );
+        },
+        skip: 1,
+        expect: () => [
+          NoCompany(
+              userProfile:
+                  tUserProfileModel.copyWith(id: 'id', avatarUrl: 'avatarId')),
+        ],
+      );
+    });
+
+    group('AssignUserToCompany usecase', () {
+      blocTest(
+        'should emit [DatabaseError] when usecase returns failure',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(
+            AssignToCompanyEvent(
+                userProfile: tUserProfileModel, companyId: 'companyId'),
+          );
+          when(() => mockAssignUserToCompany(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(
+          () => mockAssignUserToCompany(
+            AssignParams(userId: tUserProfileModel.id, companyId: 'companyId'),
           ),
-        );
-      },
-      skip: 1,
-      verify: (_) => verify(() => mockGetUserById('')).called(1),
-      expect: () => [isA<NoUserProfileError>()],
-    );
-
-    blocTest(
-      'should emit [DatabaseError] when usecase returns [DatabaseError]',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(GetUserByIdEvent(userId: ''));
-        when(() => mockGetUserById(any()))
-            .thenAnswer((_) async => const Left(DatabaseFailure()));
-      },
-      skip: 1,
-      verify: (_) => verify(() => mockGetUserById('')).called(1),
-      expect: () => [isA<DatabaseErrorUserProfile>()],
-    );
-
-    blocTest(
-      'should emit [NoCompany] when usecase returns [UserProfile] and companyId is empty',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(GetUserByIdEvent(userId: ''));
-        when(() => mockGetUserById(any())).thenAnswer(
-          (_) async => const Right(tUserProfileModel),
-        );
-      },
-      skip: 1,
-      verify: (_) => verify(() => mockGetUserById('')).called(1),
-      expect: () => [NoCompany(userProfile: tUserProfileModel)],
-    );
-
-    blocTest(
-      'should emit [NotApproved] when usecase returns [UserProfile], companyId is not empty and approved is false',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(GetUserByIdEvent(userId: ''));
-        when(() => mockGetUserById(any())).thenAnswer(
-          (_) async => Right(
-            tUserProfileModel.copyWith(companyId: 'companyId'),
+        ).called(1),
+        expect: () => [isA<DatabaseErrorUserProfile>()],
+      );
+      blocTest(
+        'should emit [NotApproved] when AssignUserToCompany is called',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(
+            AssignToCompanyEvent(
+                userProfile: tUserProfileModel, companyId: 'companyId'),
+          );
+          when(() => mockAssignUserToCompany(any())).thenAnswer(
+            (_) async => Right(VoidResult()),
+          );
+        },
+        skip: 1,
+        verify: (_) => verify(
+          () => mockAssignUserToCompany(
+            AssignParams(userId: tUserProfileModel.id, companyId: 'companyId'),
           ),
-        );
-      },
-      skip: 1,
-      verify: (_) => verify(() => mockGetUserById('')).called(1),
-      expect: () => [
-        NotApproved(
-          userProfile: tUserProfileModel.copyWith(companyId: 'companyId'),
-        )
-      ],
-    );
-
-    blocTest(
-      'should emit [Rejected] when usecase returns [UserProfile], companyId is not empty, approved is false and rejected is true',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(GetUserByIdEvent(userId: ''));
-        when(() => mockGetUserById(any())).thenAnswer(
-          (_) async => Right(
-            tUserProfileModel.copyWith(companyId: 'companyId', rejected: true),
+        ).called(1),
+        expect: () => [
+          NotApproved(
+            userProfile: tUserProfileModel.copyWith(companyId: 'companyId'),
           ),
-        );
-      },
-      skip: 1,
-      verify: (_) => verify(() => mockGetUserById('')).called(1),
-      expect: () => [
-        Rejected(
-          userProfile: tUserProfileModel.copyWith(
-              companyId: 'companyId', rejected: true),
-        )
-      ],
-    );
+        ],
+      );
+    });
 
-    blocTest(
-      'should emit [Suspended] when usecase returns [UserProfile], companyId is not empty, approved is false and suspended is true',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(GetUserByIdEvent(userId: ''));
-        when(() => mockGetUserById(any())).thenAnswer(
-          (_) async => Right(
-            tUserProfileModel.copyWith(companyId: 'companyId', suspended: true),
+    group('ResetCompany usecase', () {
+      blocTest(
+        'should emit [DatabaseError] when usecase returns failure',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(
+            ResetCompanyEvent(userProfile: tUserProfileModel),
+          );
+          when(() => mockResetCompany(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(
+          () => mockResetCompany(tUserProfileModel.id),
+        ).called(1),
+        expect: () => [isA<DatabaseErrorUserProfile>()],
+      );
+      blocTest(
+        'should emit [NoCompany] when ResetCompany is called',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(
+            ResetCompanyEvent(userProfile: tUserProfileModel),
+          );
+          when(() => mockResetCompany(any())).thenAnswer(
+            (_) async => Right(VoidResult()),
+          );
+        },
+        skip: 1,
+        verify: (_) => verify(
+          () => mockResetCompany(tUserProfileModel.id),
+        ).called(1),
+        expect: () => [
+          NoCompany(
+            userProfile: tUserProfileModel.copyWith(companyId: ''),
           ),
-        );
-      },
-      skip: 1,
-      verify: (_) => verify(() => mockGetUserById('')).called(1),
-      expect: () => [
-        Suspended(
-          userProfile: tUserProfileModel.copyWith(
-              companyId: 'companyId', suspended: true),
-        )
-      ],
-    );
+        ],
+      );
+    });
 
-    blocTest(
-      'should emit [Approved] when usecase returns [UserProfile], companyId is not empty, approved is true',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(GetUserByIdEvent(userId: ''));
-        when(() => mockGetUserById(any())).thenAnswer(
-          (_) async => Right(
-            tUserProfileModel.copyWith(companyId: 'companyId', approved: true),
-          ),
-        );
-      },
-      skip: 1,
-      verify: (_) => verify(() => mockGetUserById('')).called(1),
-      expect: () => [
-        Approved(
-          userProfile: tUserProfileModel.copyWith(
-              companyId: 'companyId', approved: true),
-        )
-      ],
-    );
+    group('UpdateUserData usecase', () {
+      blocTest(
+        'should emit [DatabaseError] when usecase returns failure',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(
+            UpdateUserDataEvent(userProfile: tUserProfileModel),
+          );
+          when(() => mockUpdateUserData(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(
+          () => mockUpdateUserData(tUserProfileModel),
+        ).called(1),
+        expect: () => [isA<DatabaseErrorUserProfile>()],
+      );
+      blocTest(
+        'should emit [Approved] containing updated user data when UpdateUserData is called',
+        build: () => userProfileBloc,
+        act: (UserProfileBloc bloc) async {
+          bloc.add(
+            UpdateUserDataEvent(
+              userProfile: tUserProfileModel.copyWith(id: 'updatedId'),
+            ),
+          );
+          when(() => mockUpdateUserData(any())).thenAnswer(
+            (_) async => Right(VoidResult()),
+          );
+        },
+        skip: 1,
+        verify: (_) => verify(
+          () => mockUpdateUserData(tUserProfileModel.copyWith(id: 'updatedId')),
+        ).called(1),
+        expect: () => [
+          Approved(userProfile: tUserProfileModel.copyWith(id: 'updatedId')),
+        ],
+      );
+    });
+
+    // group('ApproveUser usecase', () {
+    //   blocTest(
+    //     'should emit [DatabaseError] when usecase returns failure',
+    //     build: () => userProfileBloc,
+    //     act: (UserProfileBloc bloc) async {
+    //       bloc.add(
+    //         ApproveUserEvent(userId: tUserProfileModel.id),
+    //       );
+    //       when(() => mockApproveUser(any())).thenAnswer(
+    //         (_) async => const Left(DatabaseFailure()),
+    //       );
+    //     },
+    //     verify: (_) => verify(
+    //       () => mockApproveUser(tUserProfileModel.id),
+    //     ).called(1),
+    //     expect: () => [isA<DatabaseError>()],
+    //   );
+
+    //   blocTest(
+    //     'should not emit new state when ApproveUser is called',
+    //     build: () => userProfileBloc,
+    //     act: (UserProfileBloc bloc) async {
+    //       bloc.add(
+    //         ApproveUserEvent(userId: tUserProfileModel.id),
+    //       );
+    //       when(() => mockApproveUser(any())).thenAnswer(
+    //         (_) async => Right(VoidResult()),
+    //       );
+    //     },
+    //     verify: (_) => verify(
+    //       () => mockApproveUser(tUserProfileModel.id),
+    //     ).called(1),
+    //     expect: () => [],
+    //   );
+    // });
   });
-
-  group('AddUser usecase', () {
-    blocTest(
-      'should emit [DatabaseError] when AddUserAvatar usecase returns failure',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(AddUserEvent(
-          userProfile: tUserProfileModel,
-          avatar: avatarFile,
-        ));
-        when(
-          () => mockInputValidator.addUserValidator(any(), any(), any(), any()),
-        ).thenReturn(Right<Failure, VoidResult>(VoidResult()));
-        when((() => mockAuthenticationBloc.state))
-            .thenReturn(Authenticated(userId: 'userId', email: 'email'));
-        when(() => mockAddUserAvatar(any()))
-            .thenAnswer((_) async => const Left(DatabaseFailure()));
-        when(() => mockAddUser(any()))
-            .thenAnswer((_) async => const Left(DatabaseFailure()));
-      },
-      skip: 1,
-      expect: () => [isA<DatabaseErrorUserProfile>()],
-    );
-
-    blocTest(
-      'should emit [NoUserProfileError] when InputValidator usecase returns failure',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(AddUserEvent(
-          userProfile: tUserProfileModel,
-          avatar: avatarFile,
-        ));
-        when(
-          () => mockInputValidator.addUserValidator(any(), any(), any(), any()),
-        ).thenReturn(
-          const Left<Failure, VoidResult>(ValidationFailure()),
-        );
-        when((() => mockAuthenticationBloc.state))
-            .thenReturn(Authenticated(userId: 'userId', email: 'email'));
-        when(() => mockAddUserAvatar(any()))
-            .thenAnswer((_) async => const Left(DatabaseFailure()));
-        when(() => mockAddUser(any()))
-            .thenAnswer((_) async => const Left(DatabaseFailure()));
-      },
-      skip: 1,
-      expect: () => [isA<NoUserProfileError>()],
-    );
-
-    blocTest(
-      'should emit [DatabaseError] when AddUser usecase returns failure',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(AddUserEvent(
-          userProfile: tUserProfileModel,
-          avatar: avatarFile,
-        ));
-        when(
-          () => mockInputValidator.addUserValidator(any(), any(), any(), any()),
-        ).thenReturn(Right<Failure, VoidResult>(VoidResult()));
-        when((() => mockAuthenticationBloc.state))
-            .thenReturn(Authenticated(userId: 'userId', email: 'email'));
-        when(() => mockAddUserAvatar(any()))
-            .thenAnswer((_) async => const Right(''));
-        when(() => mockAddUser(any()))
-            .thenAnswer((_) async => const Left(DatabaseFailure()));
-      },
-      skip: 1,
-      expect: () => [isA<DatabaseErrorUserProfile>()],
-    );
-    blocTest(
-      'should emit [NoCompany] when AddUser is called',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(AddUserEvent(
-          userProfile: tUserProfileModel,
-          avatar: avatarFile,
-        ));
-        when(
-          () => mockInputValidator.addUserValidator(any(), any(), any(), any()),
-        ).thenReturn(Right<Failure, VoidResult>(VoidResult()));
-        when((() => mockAuthenticationBloc.state))
-            .thenReturn(Authenticated(userId: 'id', email: 'email'));
-        when(() => mockAddUserAvatar(any()))
-            .thenAnswer((_) async => const Right('avatarId'));
-        when(() => mockAddUser(any())).thenAnswer(
-          (_) async => Right(VoidResult()),
-        );
-      },
-      skip: 1,
-      expect: () => [
-        NoCompany(
-            userProfile:
-                tUserProfileModel.copyWith(id: 'id', avatarUrl: 'avatarId')),
-      ],
-    );
-  });
-
-  group('AssignUserToCompany usecase', () {
-    blocTest(
-      'should emit [DatabaseError] when usecase returns failure',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(
-          AssignToCompanyEvent(
-              userProfile: tUserProfileModel, companyId: 'companyId'),
-        );
-        when(() => mockAssignUserToCompany(any()))
-            .thenAnswer((_) async => const Left(DatabaseFailure()));
-      },
-      skip: 1,
-      verify: (_) => verify(
-        () => mockAssignUserToCompany(
-          AssignParams(userId: tUserProfileModel.id, companyId: 'companyId'),
-        ),
-      ).called(1),
-      expect: () => [isA<DatabaseErrorUserProfile>()],
-    );
-    blocTest(
-      'should emit [NotApproved] when AssignUserToCompany is called',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(
-          AssignToCompanyEvent(
-              userProfile: tUserProfileModel, companyId: 'companyId'),
-        );
-        when(() => mockAssignUserToCompany(any())).thenAnswer(
-          (_) async => Right(VoidResult()),
-        );
-      },
-      skip: 1,
-      verify: (_) => verify(
-        () => mockAssignUserToCompany(
-          AssignParams(userId: tUserProfileModel.id, companyId: 'companyId'),
-        ),
-      ).called(1),
-      expect: () => [
-        NotApproved(
-          userProfile: tUserProfileModel.copyWith(companyId: 'companyId'),
-        ),
-      ],
-    );
-  });
-
-  group('ResetCompany usecase', () {
-    blocTest(
-      'should emit [DatabaseError] when usecase returns failure',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(
-          ResetCompanyEvent(userProfile: tUserProfileModel),
-        );
-        when(() => mockResetCompany(any()))
-            .thenAnswer((_) async => const Left(DatabaseFailure()));
-      },
-      skip: 1,
-      verify: (_) => verify(
-        () => mockResetCompany(tUserProfileModel.id),
-      ).called(1),
-      expect: () => [isA<DatabaseErrorUserProfile>()],
-    );
-    blocTest(
-      'should emit [NoCompany] when ResetCompany is called',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(
-          ResetCompanyEvent(userProfile: tUserProfileModel),
-        );
-        when(() => mockResetCompany(any())).thenAnswer(
-          (_) async => Right(VoidResult()),
-        );
-      },
-      skip: 1,
-      verify: (_) => verify(
-        () => mockResetCompany(tUserProfileModel.id),
-      ).called(1),
-      expect: () => [
-        NoCompany(
-          userProfile: tUserProfileModel.copyWith(companyId: ''),
-        ),
-      ],
-    );
-  });
-
-  group('UpdateUserData usecase', () {
-    blocTest(
-      'should emit [DatabaseError] when usecase returns failure',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(
-          UpdateUserDataEvent(userProfile: tUserProfileModel),
-        );
-        when(() => mockUpdateUserData(any()))
-            .thenAnswer((_) async => const Left(DatabaseFailure()));
-      },
-      skip: 1,
-      verify: (_) => verify(
-        () => mockUpdateUserData(tUserProfileModel),
-      ).called(1),
-      expect: () => [isA<DatabaseErrorUserProfile>()],
-    );
-    blocTest(
-      'should emit [Approved] containing updated user data when UpdateUserData is called',
-      build: () => userProfileBloc,
-      act: (UserProfileBloc bloc) async {
-        bloc.add(
-          UpdateUserDataEvent(
-            userProfile: tUserProfileModel.copyWith(id: 'updatedId'),
-          ),
-        );
-        when(() => mockUpdateUserData(any())).thenAnswer(
-          (_) async => Right(VoidResult()),
-        );
-      },
-      skip: 1,
-      verify: (_) => verify(
-        () => mockUpdateUserData(tUserProfileModel.copyWith(id: 'updatedId')),
-      ).called(1),
-      expect: () => [
-        Approved(userProfile: tUserProfileModel.copyWith(id: 'updatedId')),
-      ],
-    );
-  });
-
-  // group('ApproveUser usecase', () {
-  //   blocTest(
-  //     'should emit [DatabaseError] when usecase returns failure',
-  //     build: () => userProfileBloc,
-  //     act: (UserProfileBloc bloc) async {
-  //       bloc.add(
-  //         ApproveUserEvent(userId: tUserProfileModel.id),
-  //       );
-  //       when(() => mockApproveUser(any())).thenAnswer(
-  //         (_) async => const Left(DatabaseFailure()),
-  //       );
-  //     },
-  //     verify: (_) => verify(
-  //       () => mockApproveUser(tUserProfileModel.id),
-  //     ).called(1),
-  //     expect: () => [isA<DatabaseError>()],
-  //   );
-
-  //   blocTest(
-  //     'should not emit new state when ApproveUser is called',
-  //     build: () => userProfileBloc,
-  //     act: (UserProfileBloc bloc) async {
-  //       bloc.add(
-  //         ApproveUserEvent(userId: tUserProfileModel.id),
-  //       );
-  //       when(() => mockApproveUser(any())).thenAnswer(
-  //         (_) async => Right(VoidResult()),
-  //       );
-  //     },
-  //     verify: (_) => verify(
-  //       () => mockApproveUser(tUserProfileModel.id),
-  //     ).called(1),
-  //     expect: () => [],
-  //   );
-  // });
 }

@@ -53,7 +53,7 @@ void main() {
     comapnyId: 'comapnyId',
   );
 
-  group('LocationRepositoryImpl', () {
+  group('Location RepositoryImpl', () {
     // group('CacheLocation usecase', () {
     //   test(
     //     'should cache data locally',

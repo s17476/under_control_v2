@@ -12,7 +12,7 @@ void main() {
   final tCompanyUsers = CompanyUsersListModel(allUsers: [tUserProfile]);
 
   test(
-    'should be a subclass of [CompanyUserList] entity',
+    'Company Profile should be a subclass of [CompanyUserList] entity',
     () async {
       // assert
       expect(tCompanyUsers, isA<CompanyUsersList>());

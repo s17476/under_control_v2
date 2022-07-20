@@ -22,7 +22,7 @@ void main() {
       const AuthParams(email: 'test@test.com', password: '1234567');
 
   test(
-    'should only call signup method in repository',
+    'Authentication should only call signup method in repository',
     () async {
       // arrange
       when(

@@ -2,14 +2,15 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
+import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/groups/domain/entities/group.dart';
 import 'package:under_control_v2/features/groups/domain/repositories/group_repository.dart';
-import 'package:under_control_v2/features/groups/domain/usecases/add_group.dart';
+import 'package:under_control_v2/features/groups/domain/usecases/update_group.dart';
 
 class MockGroupRepository extends Mock implements GroupRepository {}
 
 void main() {
-  late AddGroup usecase;
+  late UpdateGroup usecase;
   late MockGroupRepository repository;
 
   setUpAll(() {
@@ -23,16 +24,16 @@ void main() {
 
   setUp(() {
     repository = MockGroupRepository();
-    usecase = AddGroup(groupRepository: repository);
+    usecase = UpdateGroup(groupRepository: repository);
   });
 
   group('Groups', () {
     test(
-      'should return [String] from repository when AddGroup is called',
+      'should return [VoidResult] from repository when UpdateGroup is called',
       () async {
         // arrange
-        when(() => repository.addGroup(any()))
-            .thenAnswer((_) async => const Right(''));
+        when(() => repository.updateGroup(any()))
+            .thenAnswer((_) async => Right(VoidResult()));
         // act
         final result = await usecase(const Group(
           id: 'id',
@@ -41,7 +42,7 @@ void main() {
           features: [],
         ));
         // assert
-        expect(result, isA<Right<Failure, String>>());
+        expect(result, isA<Right<Failure, VoidResult>>());
       },
     );
   });

@@ -29,7 +29,7 @@ void main() {
   const tLocations = [tLocation];
 
   test(
-    'should return [Locations] from repository when FetchAllLocations usecase is called',
+    'Locations should return [Locations] from repository when FetchAllLocations usecase is called',
     () async {
       // arrange
       when(() => repository.fetchAllLocations(any())).thenAnswer((_) async =>

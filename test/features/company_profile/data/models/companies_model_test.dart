@@ -8,7 +8,7 @@ void main() {
   final tCompanies = CompaniesModel(data: [tCompany]);
 
   test(
-    'should be a subclass of [Companies] entity',
+    'Company Profile should be a subclass of [Companies] entity',
     () async {
       // assert
       expect(tCompanies, isA<Companies>());

@@ -33,32 +33,34 @@ void main() {
     'administrator': false,
   };
 
-  test(
-    'should be a subclass of [UserProfile] entity',
-    () async {
-      // assert
-      expect(tUserProfileModel, isA<UserProfile>());
-    },
-  );
+  group('UserPorfile', () {
+    test(
+      'should be a subclass of [UserProfile] entity',
+      () async {
+        // assert
+        expect(tUserProfileModel, isA<UserProfile>());
+      },
+    );
 
-  test(
-    'should return a valid model from a map',
-    () async {
-      // act
-      final result =
-          UserProfileModel.fromMap(tUserProfileModelMap, tUserProfileModel.id);
-      // assert
-      expect(result, tUserProfileModel);
-    },
-  );
+    test(
+      'should return a valid model from a map',
+      () async {
+        // act
+        final result = UserProfileModel.fromMap(
+            tUserProfileModelMap, tUserProfileModel.id);
+        // assert
+        expect(result, tUserProfileModel);
+      },
+    );
 
-  test(
-    'should return a map containing proper data',
-    () async {
-      // act
-      final result = tUserProfileModel.toMap();
-      // assert
-      expect(result, tUserProfileModelMap);
-    },
-  );
+    test(
+      'should return a map containing proper data',
+      () async {
+        // act
+        final result = tUserProfileModel.toMap();
+        // assert
+        expect(result, tUserProfileModelMap);
+      },
+    );
+  });
 }

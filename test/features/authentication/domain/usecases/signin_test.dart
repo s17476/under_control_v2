@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -23,7 +21,7 @@ void main() {
       const AuthParams(email: 'test@test.com', password: '1234567');
 
   test(
-    'should only call signin method in repository',
+    'Authentication should only call signin method in repository',
     () async {
       // arrange
       when(

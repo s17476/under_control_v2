@@ -37,7 +37,7 @@ void main() {
   );
 
   test(
-    'should return [UserProfile] from repository when getUserById is called',
+    'UserPorfile should return [UserProfile] from repository when getUserById is called',
     () async {
       // arrange
       when(() => repository.getUserById(any()))

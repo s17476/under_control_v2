@@ -45,7 +45,7 @@ void main() {
   );
 
   test(
-    'should return [VoidResult] from repository when UpdateLocation is called',
+    'Locations should return [VoidResult] from repository when UpdateLocation is called',
     () async {
       // arrange
       when(() => repository.updateLocation(any()))

@@ -45,7 +45,7 @@ void main() {
   );
 
   test(
-    'should return [String] from repository when AddLocation is called',
+    'Locations should return [String] from repository when AddLocation is called',
     () async {
       // arrange
       when(() => repository.addLocation(any()))

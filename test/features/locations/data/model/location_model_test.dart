@@ -14,8 +14,8 @@ void main() {
     'parentId': 'parentId',
   };
 
-  group('[LocationModel]', () {
-    test('should be a subclass of [location] entity', () async {
+  group('Location', () {
+    test('should be a subclass of [Location] entity', () async {
       // assert
       expect(tLocationModel, isA<Location>());
     });

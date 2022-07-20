@@ -21,7 +21,7 @@ void main() {
   );
 
   test(
-    'should return [Voidresult] from repository when RejectUser is called',
+    'UserPorfile should return [Voidresult] from repository when RejectUser is called',
     () async {
       // arrange
       when(() => repository.rejectUser(any()))

@@ -56,7 +56,7 @@ void main() {
   );
 
   test(
-    'should return [Voidresult] from repository when AddUser is called',
+    'UserPorfile should return [Voidresult] from repository when AddUser is called',
     () async {
       // arrange
       when(() => repository.addUser(any()))

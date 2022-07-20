@@ -29,7 +29,7 @@ void main() {
   File file = File('assets/undercontrol-adaptine.png');
 
   test(
-    'should return [String] from repository when AddUserAvatar is called',
+    'UserPorfile should return [String] from repository when AddUserAvatar is called',
     () async {
       // arrange
       when(() => repository.addUserAvatar(any()))

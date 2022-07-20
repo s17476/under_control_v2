@@ -30,7 +30,7 @@ void main() {
   File file = File('assets/undercontrol-adaptine.png');
 
   test(
-    'should return [String] from repository when AddCompanyLogo is called',
+    'Company Profile should return [String] from repository when AddCompanyLogo is called',
     () async {
       // arrange
       when(() => repository.addCompanyLogo(any()))

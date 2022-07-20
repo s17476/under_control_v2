@@ -13,7 +13,7 @@ void main() {
       CompanyUsersModel(allUsers: Stream.fromIterable([tUserProfile]));
 
   test(
-    'should be a subclass of [CompanyUser] entity',
+    'Company Profile should be a subclass of [CompanyUser] entity',
     () async {
       // assert
       expect(tCompanyUsers, isA<CompanyUsers>());

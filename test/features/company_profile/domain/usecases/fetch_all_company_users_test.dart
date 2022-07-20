@@ -6,7 +6,6 @@ import 'package:under_control_v2/features/company_profile/domain/repositories/co
 import 'package:under_control_v2/features/company_profile/domain/usecases/fetch_all_company_users.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 
 class MockCompanyRepository extends Mock implements CompanyRepository {}
 
@@ -30,7 +29,7 @@ void main() {
   final tCompanyUsers = [tCompanyUser];
 
   test(
-    'should return [CompanyUsers] from repository when FetchAllCompanyUsers usecase is called',
+    'Company Profile should return [CompanyUsers] from repository when FetchAllCompanyUsers usecase is called',
     () async {
       // arrange
       when(

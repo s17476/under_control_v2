@@ -21,7 +21,7 @@ void main() {
   );
 
   test(
-    'should return [Voidresult] from repository when SuspendUser is called',
+    'UserPorfile should return [Voidresult] from repository when SuspendUser is called',
     () async {
       // arrange
       when(() => repository.suspendUser(any()))

@@ -49,7 +49,7 @@ void main() {
   );
 
   group(
-    'successful database response',
+    'UserPorfile successful database response',
     () {
       test(
         'should return a [VoidResult] with user id when addUser is called',
@@ -173,7 +173,7 @@ void main() {
   );
 
   group(
-    'unsuccessful database response',
+    'UserPorfile unsuccessful database response',
     () {
       test(
         'should return a [DatabaseFailure] when addUser is called',
@@ -305,7 +305,7 @@ void main() {
   );
 
   group(
-    'unsuspected error',
+    'UserPorfile unsuspected error',
     () {
       test(
         'should return a [UnsuspectedFailure] when addUser is called',

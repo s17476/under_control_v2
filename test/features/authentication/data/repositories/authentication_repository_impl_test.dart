@@ -26,7 +26,7 @@ void main() {
     );
   });
 
-  group('device is offline', () {
+  group('Authentication device is offline', () {
     setUp(
       () {
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
@@ -86,7 +86,7 @@ void main() {
     );
   });
 
-  group('device is online and error is thrown', () {
+  group('Authentication device is online and error is thrown', () {
     setUp(
       () {
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);

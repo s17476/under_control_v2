@@ -21,7 +21,7 @@ void main() {
   );
 
   test(
-    'should return [Voidresult] from repository when ApproveUserAndMakeAdmin is called',
+    'UserPorfile should return [Voidresult] from repository when ApproveUserAndMakeAdmin is called',
     () async {
       // arrange
       when(() => repository.approveUserAndMakeAdmin(any()))

@@ -10,7 +10,7 @@ abstract class GroupRepository {
   ///
   ///Returns [GroupsStream] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
-  Future<Either<Failure, GroupsStream>> getGroupsStream();
+  Future<Either<Failure, GroupsStream>> getGroupsStream(String companyId);
 
   ///Adds new group to the DB.
   ///

@@ -54,7 +54,7 @@ void main() {
 
   final tCompanyUsers = CompanyUsersModel(allUsers: Stream.fromIterable([]));
 
-  group('company profile', () {
+  group('Company Profile BLoC', () {
     test(
       'should emit [CompanyProfileEmpty] as an initila state',
       () async {

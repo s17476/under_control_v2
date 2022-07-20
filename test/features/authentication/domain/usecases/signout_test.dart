@@ -20,7 +20,7 @@ void main() {
   NoParams noParams = NoParams();
 
   test(
-    'should only call signout method in repository',
+    'Authentication should only call signout method in repository',
     () async {
       // arrange
       when(() => mockAuthenticationRepository.signout())

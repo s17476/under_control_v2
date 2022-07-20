@@ -21,7 +21,7 @@ void main() {
   );
 
   test(
-    'should return [Voidresult] from repository when ApproveUser is called',
+    'UserPorfile should return [Voidresult] from repository when ApproveUser is called',
     () async {
       // arrange
       when(() => repository.approveUser(any()))
