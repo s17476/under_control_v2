@@ -1,55 +1,48 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/groups/data/models/group_model.dart';
-import 'package:under_control_v2/features/groups/domain/entities/groups_stream.dart';
-import 'package:under_control_v2/features/groups/domain/entities/group.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/core/error/failures.dart';
 
-import 'package:under_control_v2/features/groups/domain/repositories/group_repository.dart';
+import '../../../core/error/exceptions.dart';
+import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
+import '../../domain/entities/groups_stream.dart';
+import '../../domain/repositories/group_repository.dart';
+import '../datasources/group_local_data_source.dart';
+import '../datasources/group_remote_data_source.dart';
 
 @LazySingleton(as: GroupRepository)
 class GroupRepositoryImpl extends GroupRepository {
-  final FirebaseFirestore firebaseFirestore;
+  final GroupRemoteDataSource groupRemoteDataSource;
+  final GroupLocalDataSource groupLocalDataSource;
 
   GroupRepositoryImpl({
-    required this.firebaseFirestore,
+    required this.groupRemoteDataSource,
+    required this.groupLocalDataSource,
   });
 
   @override
-  Future<Either<Failure, String>> addGroup(GroupParams params) async {
-    try {
-      final groupReference = firebaseFirestore
-          .collection('companies')
-          .doc(params.companyId)
-          .collection('groups');
-      final groupMap = (params.group as GroupModel).toMap();
-      final documentReferance = await groupReference.add(groupMap);
-      final String generatedGroupId = documentReferance.id;
-      return Right(generatedGroupId);
-    } on FirebaseException catch (e) {
-      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
-    } catch (e) {
-      return const Left(
-        UnsuspectedFailure(message: 'Unsuspected error'),
-      );
-    }
-  }
+  Future<Either<Failure, String>> addGroup(GroupParams params) =>
+      groupRemoteDataSource.addGroup(params);
 
   @override
-  Future<Either<Failure, VoidResult>> deleteGroup(GroupParams params) async {
-    try {
-      firebaseFirestore
-          .collection('companies')
-          .doc(params.companyId)
-          .collection('groups')
-          .doc(params.group.id)
-          .delete();
+  Future<Either<Failure, VoidResult>> deleteGroup(GroupParams params) =>
+      groupRemoteDataSource.deleteGroup(params);
 
+  @override
+  Future<Either<Failure, GroupsStream>> getGroupsStream(String companyId) =>
+      groupRemoteDataSource.getGroupsStream(companyId);
+
+  @override
+  Future<Either<Failure, VoidResult>> updateGroup(GroupParams params) =>
+      groupRemoteDataSource.updateGroup(params);
+
+  @override
+  Future<Either<Failure, VoidResult>> cacheSelectedGroups(
+      SelectedGroupsParams params) async {
+    try {
+      groupLocalDataSource.cacheGroups(params);
       return Right(VoidResult());
-    } on FirebaseException catch (e) {
-      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } on CacheException {
+      return const Left(CacheFailure());
     } catch (e) {
       return const Left(
         UnsuspectedFailure(message: 'Unsuspected error'),
@@ -58,39 +51,12 @@ class GroupRepositoryImpl extends GroupRepository {
   }
 
   @override
-  Future<Either<Failure, GroupsStream>> getGroupsStream(
-      String companyId) async {
+  Future<Either<Failure, SelectedGroupsParams>> tryToGetCachedgroups() async {
     try {
-      final Stream<QuerySnapshot> querySnapshot;
-      querySnapshot = firebaseFirestore
-          .collection('companies')
-          .doc(companyId)
-          .collection('groups')
-          .snapshots();
-
-      return Right(GroupsStream(allGroups: querySnapshot));
-    } on FirebaseException catch (e) {
-      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
-    } catch (e) {
-      return const Left(
-        UnsuspectedFailure(message: 'Unsuspected error'),
-      );
-    }
-  }
-
-  @override
-  Future<Either<Failure, VoidResult>> updateGroup(GroupParams params) async {
-    try {
-      final groupReference = firebaseFirestore
-          .collection('companies')
-          .doc(params.companyId)
-          .collection('groups')
-          .doc(params.group.id);
-      final groupMap = (params.group as GroupModel).toMap();
-      await groupReference.update(groupMap);
-      return Right(VoidResult());
-    } on FirebaseException catch (e) {
-      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+      final cachedGroups = await groupLocalDataSource.getCachedGroups();
+      return Right(cachedGroups);
+    } on CacheException {
+      return const Left(CacheFailure());
     } catch (e) {
       return const Left(
         UnsuspectedFailure(message: 'Unsuspected error'),

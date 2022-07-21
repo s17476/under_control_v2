@@ -5,11 +5,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/groups/data/models/groups_list_model.dart';
 
 import 'package:under_control_v2/features/groups/domain/entities/groups_list.dart';
 import 'package:under_control_v2/features/groups/domain/usecases/add_group.dart';
+import 'package:under_control_v2/features/groups/domain/usecases/cache_groups.dart';
 import 'package:under_control_v2/features/groups/domain/usecases/delete_group.dart';
 import 'package:under_control_v2/features/groups/domain/usecases/get_groups_stream.dart';
+import 'package:under_control_v2/features/groups/domain/usecases/try_to_get_cached_groups.dart';
 import 'package:under_control_v2/features/groups/domain/usecases/update_group.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -32,6 +35,8 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   final UpdateGroup updateGroup;
   final DeleteGroup deleteGroup;
   final GetGroupsStream getGroupsStream;
+  final CacheGroups cacheGroups;
+  final TryToGetCachedGroups tryToGetCachedGroups;
   String companyId = '';
 
   GroupBloc({
@@ -40,6 +45,8 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     required this.updateGroup,
     required this.deleteGroup,
     required this.getGroupsStream,
+    required this.cacheGroups,
+    required this.tryToGetCachedGroups,
   }) : super(GroupEmptyState()) {
     companyProfileStreamSubscription = companyProfileBloc.stream.listen(
       (state) {
@@ -49,6 +56,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         }
       },
     );
+
     on<AddGroupEvent>((event, emit) async {
       final failureOrString = await addGroup(
         GroupParams(group: event.group, companyId: companyId),
@@ -62,6 +70,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         },
       );
     });
+
     on<UpdateGroupEvent>((event, emit) async {
       final failureOrVoidResult = await updateGroup(
         GroupParams(group: event.group, companyId: companyId),
@@ -75,6 +84,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         },
       );
     });
+
     on<DeleteGroupEvent>((event, emit) async {
       final failureOrVoidResult = await deleteGroup(
         GroupParams(group: event.group, companyId: companyId),
@@ -88,6 +98,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         },
       );
     });
+
     on<FetchAllGroupsEvent>(
       (event, emit) async {
         emit(GroupLoadingState());
@@ -106,6 +117,82 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
               ),
             );
           },
+        );
+      },
+    );
+
+    on<UpdateGroupsListEvent>(
+      (event, emit) async {
+        final groupsList = GroupsListModel.fromSnapshot(
+          event.snapshot as QuerySnapshot<Map<String, dynamic>>,
+        );
+        final failureOrSelectedGroupsParams =
+            await tryToGetCachedGroups(NoParams());
+        await failureOrSelectedGroupsParams.fold(
+          // no cached groups found
+          (failure) async => emit(GroupLoadedState(allGroups: groupsList)),
+          // cached groups found
+          (selectedGroupsParams) async {
+            final List<Group> cachedGroups = [];
+            for (var groupId in selectedGroupsParams.groups) {
+              cachedGroups.add(groupsList.allGroups
+                  .firstWhere((element) => element.id == groupId));
+            }
+            emit(GroupLoadedState(
+              allGroups: groupsList,
+              selectedGroups: cachedGroups,
+            ));
+          },
+        );
+      },
+    );
+
+    on<SelectGroupEvent>(
+      (event, emit) async {
+        final currentState = state as GroupLoadedState;
+        final selectedGroups = currentState.selectedGroups;
+        selectedGroups.add(event.group);
+        final failureOrVoidResult = await cacheGroups(
+          SelectedGroupsParams(
+            groups: selectedGroups.map((group) => group.id).toList(),
+          ),
+        );
+        await failureOrVoidResult.fold(
+          (failure) async => emit(
+            currentState.copyWith(
+              selectedGroups: selectedGroups,
+            ),
+          ),
+          (_) async => emit(
+            currentState.copyWith(
+              selectedGroups: selectedGroups,
+            ),
+          ),
+        );
+      },
+    );
+
+    on<UnselectGroupEvent>(
+      (event, emit) async {
+        final currentState = state as GroupLoadedState;
+        final selectedGroups = currentState.selectedGroups;
+        selectedGroups.remove(event.group);
+        final failureOrVoidResult = await cacheGroups(
+          SelectedGroupsParams(
+            groups: selectedGroups.map((group) => group.id).toList(),
+          ),
+        );
+        await failureOrVoidResult.fold(
+          (failure) async => emit(
+            currentState.copyWith(
+              selectedGroups: selectedGroups,
+            ),
+          ),
+          (_) async => emit(
+            currentState.copyWith(
+              selectedGroups: selectedGroups,
+            ),
+          ),
         );
       },
     );

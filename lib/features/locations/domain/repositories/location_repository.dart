@@ -33,7 +33,7 @@ abstract class LocationRepository {
 
   ///Gets cached location from local memory.
   ///
-  ///Returns [String] containing location id if location was found.
+  ///Returns [SelectedLocationsParams] containing locations id if found.
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, SelectedLocationsParams>> tryToGetCachedLocation();
 

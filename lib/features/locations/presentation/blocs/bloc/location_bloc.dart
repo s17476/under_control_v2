@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../../../../core/utils/location_selection_helpers.dart';
 import '../../../data/models/locations_list_model.dart';
 import '../../../domain/entities/location.dart';
 import '../../../domain/entities/locations_list.dart';
@@ -175,7 +176,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<SelectLocationEvent>(
       (event, emit) async {
         final currentState = state as LocationLoadedState;
-        List<String> tmpChildren = updateChildren(
+        List<String> tmpChildren = getSelectedLocationChildren(
           event.location,
           currentState.allLocations.allLocations,
         );
@@ -251,7 +252,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         final currentState = state as LocationLoadedState;
 
         // updates children
-        List<String> tmpChildren = updateChildren(
+        List<String> tmpChildren = getSelectedLocationChildren(
           event.location,
           currentState.allLocations.allLocations,
         );
@@ -288,40 +289,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         );
       },
     );
-  }
-
-  List<String> updateContext(
-    Location selectedLocation,
-    List<Location> allLocations,
-  ) {
-    List<String> updatedContext = [];
-    Location tmpLocation = selectedLocation;
-    while (tmpLocation.parentId.isNotEmpty) {
-      updatedContext.add(tmpLocation.id);
-      tmpLocation = allLocations.firstWhere(
-        (location) => location.id == tmpLocation.parentId,
-      );
-    }
-    updatedContext.add(tmpLocation.id);
-    return updatedContext;
-  }
-
-  List<String> updateChildren(
-    Location selectedLocation,
-    List<Location> allLocations,
-  ) {
-    List<String> updatedChildren = [];
-    List<Location> tmpLocations = [selectedLocation];
-    while (tmpLocations.isNotEmpty) {
-      Location tmpLocation = tmpLocations[0];
-      final tmpList =
-          allLocations.where((location) => location.parentId == tmpLocation.id);
-      tmpLocations.addAll(tmpList);
-      updatedChildren.add(tmpLocation.id);
-      tmpLocations.remove(tmpLocation);
-    }
-    updatedChildren.remove(selectedLocation.id);
-    return updatedChildren;
   }
 
   @override

@@ -9,8 +9,10 @@ import 'package:under_control_v2/features/groups/data/models/group_model.dart';
 import 'package:under_control_v2/features/groups/domain/entities/groups_list.dart';
 import 'package:under_control_v2/features/groups/domain/entities/groups_stream.dart';
 import 'package:under_control_v2/features/groups/domain/usecases/add_group.dart';
+import 'package:under_control_v2/features/groups/domain/usecases/cache_groups.dart';
 import 'package:under_control_v2/features/groups/domain/usecases/delete_group.dart';
 import 'package:under_control_v2/features/groups/domain/usecases/get_groups_stream.dart';
+import 'package:under_control_v2/features/groups/domain/usecases/try_to_get_cached_groups.dart';
 import 'package:under_control_v2/features/groups/domain/usecases/update_group.dart';
 import 'package:under_control_v2/features/groups/presentation/blocs/group/group_bloc.dart';
 
@@ -25,12 +27,18 @@ class MockDeleteGroup extends Mock implements DeleteGroup {}
 
 class MockGetGroupsStream extends Mock implements GetGroupsStream {}
 
+class MockCacheGroups extends Mock implements CacheGroups {}
+
+class MockTryToGetCachedGroups extends Mock implements TryToGetCachedGroups {}
+
 void main() {
   late MockCompanyProfileBloc mockCompanyProfileBloc;
   late MockAddGroup mockAddGroup;
   late MockUpdateGroup mockUpdateGroup;
   late MockDeleteGroup mockDeleteGroup;
   late MockGetGroupsStream mockGetGroupsStream;
+  late MockCacheGroups mockCacheGroups;
+  late MockTryToGetCachedGroups mockTryToGetCachedGroups;
   late GroupBloc groupBloc;
 
   final tGroup = GroupModel.inital();
@@ -45,6 +53,8 @@ void main() {
     mockUpdateGroup = MockUpdateGroup();
     mockDeleteGroup = MockDeleteGroup();
     mockGetGroupsStream = MockGetGroupsStream();
+    mockCacheGroups = MockCacheGroups();
+    mockTryToGetCachedGroups = MockTryToGetCachedGroups();
 
     when(() => mockCompanyProfileBloc.stream).thenAnswer(
       (_) => Stream.fromFuture(
@@ -58,6 +68,8 @@ void main() {
       updateGroup: mockUpdateGroup,
       deleteGroup: mockDeleteGroup,
       getGroupsStream: mockGetGroupsStream,
+      cacheGroups: mockCacheGroups,
+      tryToGetCachedGroups: mockTryToGetCachedGroups,
     );
   });
 

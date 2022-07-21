@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../entities/group.dart';
 import '../entities/groups_stream.dart';
 
 abstract class GroupRepository {
@@ -29,4 +28,18 @@ abstract class GroupRepository {
   ///Returns [VoidResult] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, VoidResult>> deleteGroup(GroupParams params);
+
+  ///Caches groups in local memory.
+  ///
+  ///Returns [VoidResult] if operation is successful.
+  ///Returns [Failure] if operation is unsuccessful.
+  Future<Either<Failure, VoidResult>> cacheSelectedGroups(
+    SelectedGroupsParams params,
+  );
+
+  ///Gets cached groups from local memory.
+  ///
+  ///Returns [SelectedGroupsParams] containing groups id if found.
+  ///Returns [Failure] if operation is unsuccessful.
+  Future<Either<Failure, SelectedGroupsParams>> tryToGetCachedgroups();
 }

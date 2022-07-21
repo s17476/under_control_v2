@@ -119,3 +119,14 @@ class GroupParams extends Equatable {
   @override
   List<Object> get props => [group, companyId];
 }
+
+class SelectedGroupsParams extends Equatable {
+  final List<String> groups;
+
+  const SelectedGroupsParams({
+    required this.groups,
+  });
+
+  @override
+  List<Object> get props => [groups];
+}
