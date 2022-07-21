@@ -49,7 +49,7 @@ void main() {
     ],
   );
 
-  const tGroupParams = GroupParams(group: tGroup, comapnyId: companyId);
+  const tGroupParams = GroupParams(group: tGroup, companyId: companyId);
 
   group('Groups', () {
     group('successful database response', () {

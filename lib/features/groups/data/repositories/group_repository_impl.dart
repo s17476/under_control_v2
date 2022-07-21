@@ -22,7 +22,7 @@ class GroupRepositoryImpl extends GroupRepository {
     try {
       final groupReference = firebaseFirestore
           .collection('companies')
-          .doc(params.comapnyId)
+          .doc(params.companyId)
           .collection('groups');
       final groupMap = (params.group as GroupModel).toMap();
       final documentReferance = await groupReference.add(groupMap);
@@ -42,7 +42,7 @@ class GroupRepositoryImpl extends GroupRepository {
     try {
       firebaseFirestore
           .collection('companies')
-          .doc(params.comapnyId)
+          .doc(params.companyId)
           .collection('groups')
           .doc(params.group.id)
           .delete();
@@ -83,7 +83,7 @@ class GroupRepositoryImpl extends GroupRepository {
     try {
       final groupReference = firebaseFirestore
           .collection('companies')
-          .doc(params.comapnyId)
+          .doc(params.companyId)
           .collection('groups')
           .doc(params.group.id);
       final groupMap = (params.group as GroupModel).toMap();

@@ -130,7 +130,7 @@ void main() {
         act: (LocationBloc bloc) async {
           bloc.add(AddLocationEvent(location: tLocation));
           when(() => mockAddLocation(any()))
-              .thenAnswer((_) async => const Right('companyid'));
+              .thenAnswer((_) async => const Right('locationid'));
         },
         expect: () => [isA<LocationLoadedState>()],
       );
@@ -173,7 +173,7 @@ void main() {
 
     group('[DeleteLocation] usecase', () {
       blocTest(
-        'should emit [LocationErrorState] when Addlocation usecase returns failure',
+        'should emit [LocationErrorState] when Deletelocation usecase returns failure',
         build: () => locationBloc,
         // ignore: unnecessary_cast
         seed: () => LocationLoadedState(

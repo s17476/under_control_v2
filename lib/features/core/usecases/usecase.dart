@@ -109,13 +109,13 @@ class SelectedLocationsParams extends Equatable {
 
 class GroupParams extends Equatable {
   final Group group;
-  final String comapnyId;
+  final String companyId;
 
   const GroupParams({
     required this.group,
-    required this.comapnyId,
+    required this.companyId,
   });
 
   @override
-  List<Object> get props => [group, comapnyId];
+  List<Object> get props => [group, companyId];
 }

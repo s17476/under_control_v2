@@ -28,7 +28,7 @@ void main() {
             locations: [],
             features: [],
           ),
-          comapnyId: 'comapnyId'),
+          companyId: 'comapnyId'),
     );
   });
 
@@ -53,7 +53,7 @@ void main() {
                 locations: [],
                 features: [],
               ),
-              comapnyId: 'comapnyId'),
+              companyId: 'comapnyId'),
         );
         // assert
         expect(result, isA<Right<Failure, String>>());
