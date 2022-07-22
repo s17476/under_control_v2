@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../blocs/bloc/location_bloc.dart';
-import '../widgets/add_location_card.dart';
-import '../widgets/location_tile.dart';
-import '../widgets/show_location_snack_bar.dart';
+import '../widgets/location_management_page/add_location_card.dart';
+import '../widgets/location_management_page/location_tile.dart';
+import '../widgets/location_management_page/show_location_snack_bar.dart';
 
 class LocationManagementPage extends StatefulWidget {
   const LocationManagementPage({Key? key}) : super(key: key);
 
-  static const routeName = '.locations';
+  static const routeName = '/locations';
 
   @override
   State<LocationManagementPage> createState() => _LocationManagementPageState();

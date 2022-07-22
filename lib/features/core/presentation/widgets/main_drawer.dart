@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/locations/presentation/pages/location_management_page.dart';
+import 'package:under_control_v2/features/groups/presentation/pages/group_management_page.dart';
 
+import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
+import '../../../locations/presentation/pages/location_management_page.dart';
+import '../../utils/responsive_size.dart';
 import 'custom_menu_item.dart';
 import 'logo_widget.dart';
-import '../../utils/responsive_size.dart';
-import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 class MainDrawer extends StatelessWidget with ResponsiveSize {
   const MainDrawer({Key? key}) : super(key: key);
@@ -40,8 +40,7 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
               const Divider(),
               CustomMenuItem(
                 onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(
+                  Navigator.popAndPushNamed(
                     context,
                     LocationManagementPage.routeName,
                   );
@@ -51,7 +50,10 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                 label: AppLocalizations.of(context)!.drawer_item_locations,
               ),
               CustomMenuItem(
-                onTap: () {},
+                onTap: () {
+                  Navigator.popAndPushNamed(
+                      context, GroupManagementPage.routeName);
+                },
                 icon: Icons.group,
                 // iconBackgroundColor: Colors.amber,
                 label: AppLocalizations.of(context)!.drawer_item_groups,

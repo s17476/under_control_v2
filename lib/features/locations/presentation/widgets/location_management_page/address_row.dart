@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/location.dart';
+import '../../../domain/entities/location.dart';
 
 class AddressRow extends StatelessWidget {
   final Location location;

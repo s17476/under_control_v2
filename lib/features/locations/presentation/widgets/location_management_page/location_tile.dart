@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/location.dart';
+import '../../../domain/entities/location.dart';
 import 'add_location_card.dart';
 import 'address_row.dart';
 import 'bottom_modal_sheet.dart';

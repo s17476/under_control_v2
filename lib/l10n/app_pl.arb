@@ -89,5 +89,7 @@
     "location_management_add_location_message_delete_question": "Czy jesteś pewien, że chcesz usunąć {location}?",
     "location_management_add_location_message_update_success": "Pomyślnie zaktualizowano.",
     "home_screen_filter_select_locations": "Wybierz lokacje",
-    "home_screen_filter_select_group": "Wybierz grupę"
+    "home_screen_filter_select_group": "Wybierz grupę",
+    "group_management_title": "Grupy",
+    "group_management_add_button": "Dodaj grupę"
 }

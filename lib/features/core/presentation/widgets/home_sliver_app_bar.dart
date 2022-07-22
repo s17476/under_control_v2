@@ -7,12 +7,12 @@ class HomeSliverAppBar extends StatelessWidget {
   final bool isFilterExpanded;
   final VoidCallback toggleIsFilterExpanded;
 
-  const HomeSliverAppBar(
-      {Key? key,
-      required this.pageIndex,
-      required this.isFilterExpanded,
-      required this.toggleIsFilterExpanded})
-      : super(key: key);
+  const HomeSliverAppBar({
+    Key? key,
+    required this.pageIndex,
+    required this.isFilterExpanded,
+    required this.toggleIsFilterExpanded,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +31,15 @@ class HomeSliverAppBar extends StatelessWidget {
         child: Container(
           height: 3.0,
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.grey.shade700,
-              Colors.transparent,
-            ],
-          )),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.grey.shade700,
+                Colors.transparent,
+              ],
+            ),
+          ),
         ),
         preferredSize: const Size.fromHeight(3.0),
       ),
@@ -46,6 +47,9 @@ class HomeSliverAppBar extends StatelessWidget {
         builder: (context) {
           return GestureDetector(
             onTap: () {
+              if (isFilterExpanded) {
+                toggleIsFilterExpanded();
+              }
               Scaffold.of(context).openDrawer();
             },
             child: Image.asset('assets/under_control_menu_icon.png'),

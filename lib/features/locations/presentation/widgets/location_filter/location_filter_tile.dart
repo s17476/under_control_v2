@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:under_control_v2/features/locations/presentation/blocs/bloc/location_bloc.dart';
 
-import '../../domain/entities/location.dart';
+import '../../../domain/entities/location.dart';
 
 class LocationFilterTile extends StatefulWidget {
   final List<Location> allLocations;
@@ -22,6 +22,7 @@ class _LocationFilterTileState extends State<LocationFilterTile> {
   _LocationFilterTileState();
   bool isExpanded = false;
   bool isSelected = false;
+  bool isContext = false;
 
   late Color color;
 
@@ -36,6 +37,8 @@ class _LocationFilterTileState extends State<LocationFilterTile> {
     } else {
       isSelected = false;
     }
+    isContext = state.context.contains(widget.location.id);
+
     super.didChangeDependencies();
   }
 
@@ -112,8 +115,14 @@ class _LocationFilterTileState extends State<LocationFilterTile> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    activeColor: Theme.of(context).primaryColor,
-                                    value: isSelected,
+                                    activeColor: isContext
+                                        ? isSelected
+                                            ? Theme.of(context)
+                                                .primaryColor
+                                                .withOpacity(0.2)
+                                            : Colors.grey.shade700
+                                        : Theme.of(context).primaryColor,
+                                    value: isSelected || isContext,
                                     onChanged: (bool? value) {
                                       isSelected
                                           ? context.read<LocationBloc>().add(

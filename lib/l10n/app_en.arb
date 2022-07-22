@@ -375,5 +375,13 @@
     "home_screen_filter_select_group": "Select group",
     "@home_screen_filter_select_group": {
       "description": "Home screen filter - select group label"
+    },
+    "group_management_title": "Groups",
+    "@group_management_title": {
+      "description": "Group management - AppBar title"
+    },
+    "group_management_add_button": "Add group",
+    "@group_management_add_button": {
+      "description": "Group management - add button"
     }
 }

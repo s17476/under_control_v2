@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
-import '../../../locations/presentation/widgets/location_filter_tile.dart';
+import '../../../locations/presentation/widgets/location_filter/location_filter_tile.dart';
 
 class Filter extends StatelessWidget {
   const Filter({
@@ -40,7 +40,8 @@ class Filter extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   child: Text(
                     AppLocalizations.of(context)!
                         .home_screen_filter_select_locations,
@@ -57,11 +58,16 @@ class Filter extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: ListView.builder(
                             shrinkWrap: true,
+                            padding: const EdgeInsets.all(0),
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: topLevelItems.length,
                             itemBuilder: (context, index) {
                               if (topLevelItems.isEmpty) {
-                                return const SizedBox();
+                                return const SizedBox(
+                                  child: Center(
+                                    child: Text('No data'),
+                                  ),
+                                );
                               } else {
                                 return LocationFilterTile(
                                   key: Key(topLevelItems[index].id),

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../domain/entities/location.dart';
-import '../blocs/bloc/location_bloc.dart';
+import '../../../domain/entities/location.dart';
+import '../../blocs/bloc/location_bloc.dart';
 
 Future<dynamic> showDeleteDialog({
   required BuildContext context,

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/groups/presentation/pages/group_management_page.dart';
 import 'package:under_control_v2/features/locations/presentation/pages/location_management_page.dart';
 
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
@@ -20,6 +21,7 @@ import 'features/core/themes/themes.dart';
 import 'features/core/utils/custom_page_transition.dart';
 import 'features/core/utils/error_message_handler.dart';
 import 'features/core/utils/material_color_generator.dart';
+import 'features/groups/presentation/blocs/group/group_bloc.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -52,24 +54,13 @@ class App extends StatelessWidget
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => getIt<AuthenticationBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<UserProfileBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<UserManagementBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<CompanyProfileBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<CompanyManagementBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<LocationBloc>(),
-        ),
+        BlocProvider(create: (context) => getIt<AuthenticationBloc>()),
+        BlocProvider(create: (context) => getIt<UserProfileBloc>()),
+        BlocProvider(create: (context) => getIt<UserManagementBloc>()),
+        BlocProvider(create: (context) => getIt<CompanyProfileBloc>()),
+        BlocProvider(create: (context) => getIt<CompanyManagementBloc>()),
+        BlocProvider(create: (context) => getIt<LocationBloc>()),
+        BlocProvider(create: (context) => getIt<GroupBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -113,8 +104,9 @@ class App extends StatelessWidget
           HomePage.routeName: (ctx) => const HomePage(),
           AuthenticationPage.routeName: (ctx) => const AuthenticationPage(),
           AddCompanyPage.routeName: (ctx) => const AddCompanyPage(),
-          LocationManagementPage.routeName: (stx) =>
+          LocationManagementPage.routeName: (ctx) =>
               const LocationManagementPage(),
+          GroupManagementPage.routeName: (ctx) => const GroupManagementPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

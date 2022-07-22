@@ -21,21 +21,74 @@ List<String> getSelectedLocationChildren(
   return updatedChildren;
 }
 
-///Gets location context in location tree.
+///Gets locations context in location tree.
 ///
 ///Returns a list containing locations ids.
-List<String> updateContext(
-  Location selectedLocation,
+List<String> getselectedLocationsContext(
+  List<Location> selectedLocations,
+  List<String> children,
   List<Location> allLocations,
 ) {
-  List<String> updatedContext = [];
-  Location tmpLocation = selectedLocation;
-  while (tmpLocation.parentId.isNotEmpty) {
-    updatedContext.add(tmpLocation.id);
-    tmpLocation = allLocations.firstWhere(
-      (location) => location.id == tmpLocation.parentId,
-    );
+  List<String> locationsContext = [];
+
+  for (var location in allLocations) {
+    if (location.parentId.isNotEmpty &&
+        !locationsContext.contains(location.parentId)) {
+      Location tmpLocation = location;
+      while (tmpLocation.parentId.isNotEmpty &&
+          !locationsContext.contains(tmpLocation.parentId)) {
+        final tmpChildren = allLocations
+            .where((element) => element.parentId == tmpLocation.parentId);
+        bool isContext = false;
+
+        final parentLocation = allLocations
+            .firstWhere((element) => element.id == tmpLocation.parentId);
+
+        // check is at least one child is selected
+
+        for (var child in tmpChildren) {
+          if (selectedLocations.contains(child) ||
+              children.contains(child.id) ||
+              locationsContext.contains(child.id)) {
+            isContext = true;
+          }
+        }
+
+        // check if parent is selected
+        if (!isContext) {
+          if (selectedLocations.contains(parentLocation) ||
+              children.contains(parentLocation.id)) {
+            isContext = true;
+          }
+        } else {
+          bool isAtLeastOneChildNotSelected = false;
+          // check is at least one child is not selected
+          for (var child in tmpChildren) {
+            if ((!selectedLocations.contains(child) &&
+                    !children.contains(child.id)) ||
+                locationsContext.contains(child.id)) {
+              isAtLeastOneChildNotSelected = true;
+            }
+          }
+          isContext = isAtLeastOneChildNotSelected;
+
+          // check if parent is selected
+          if (!isAtLeastOneChildNotSelected) {
+            if (!selectedLocations.contains(parentLocation) &&
+                !children.contains(parentLocation.id)) {
+              isContext = true;
+            }
+          }
+        }
+
+        if (isContext && !locationsContext.contains(parentLocation.id)) {
+          locationsContext.add(parentLocation.id);
+        }
+        tmpLocation = allLocations
+            .firstWhere((element) => element.id == tmpLocation.parentId);
+      }
+    }
   }
-  updatedContext.add(tmpLocation.id);
-  return updatedContext;
+
+  return locationsContext;
 }

@@ -160,11 +160,16 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
               cachedLocations.add(locationsList.allLocations
                   .firstWhere((element) => element.id == locationId));
             }
+            final locationsContext = getselectedLocationsContext(
+              cachedLocations,
+              selectedLocationsParams.children,
+              locationsList.allLocations,
+            );
             emit(
               LocationLoadedState(
                 selectedLocations: cachedLocations,
                 allLocations: locationsList,
-                context: const [],
+                context: locationsContext,
                 children: selectedLocationsParams.children,
               ),
             );
@@ -184,19 +189,15 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
         // finds parent location
         if (event.location.parentId.isNotEmpty) {
-          if (tmpChildren.contains(event.location.id)) {
+          if (currentState.children.contains(event.location.parentId) ||
+              currentState.selectedLocations
+                  .where((element) => element.id == event.location.parentId)
+                  .toList()
+                  .isNotEmpty) {
             tmpChildren.add(event.location.id);
             tmpChildren.addAll(currentState.children);
           } else {
-            if (currentState.children.contains(event.location.parentId) ||
-                currentState.allLocations.allLocations
-                    .where((element) => element.id == event.location.parentId)
-                    .toList()
-                    .isNotEmpty) {
-              tmpChildren.add(event.location.id);
-            } else {
-              tmpLocations.add(event.location);
-            }
+            tmpLocations.add(event.location);
             tmpChildren.addAll(currentState.children);
           }
           // top level location
@@ -223,6 +224,9 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             updatedLocations.add(location);
           }
         }
+        // update locations context
+        final updatedContext = getselectedLocationsContext(updatedLocations,
+            tmpChildren, currentState.allLocations.allLocations);
         // try to cache locations and children
         final failureOrVoidresult = await cacheLocation(
           SelectedLocationsParams(
@@ -235,12 +239,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             currentState.copyWith(
               children: tmpChildren,
               selectedLocations: updatedLocations,
+              context: updatedContext,
             ),
           ),
           (_) async => emit(
             currentState.copyWith(
               children: tmpChildren,
               selectedLocations: updatedLocations,
+              context: updatedContext,
             ),
           ),
         );
@@ -267,6 +273,12 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         // updates selected locations
         List<Location> tmpLocations = currentState.selectedLocations;
         tmpLocations.remove(event.location);
+        final updatedContext = getselectedLocationsContext(
+          tmpLocations,
+          updatedChildren,
+          currentState.allLocations.allLocations,
+        );
+
         final failureOrVoidresult = await cacheLocation(
           SelectedLocationsParams(
             locations: tmpLocations.map((location) => location.id).toList(),
@@ -278,12 +290,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             currentState.copyWith(
               children: updatedChildren,
               selectedLocations: tmpLocations,
+              context: updatedContext,
             ),
           ),
           (_) async => emit(
             currentState.copyWith(
               children: updatedChildren,
               selectedLocations: tmpLocations,
+              context: updatedContext,
             ),
           ),
         );
