@@ -1,11 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:under_control_v2/features/groups/data/models/feature_model.dart';
+
 import 'package:under_control_v2/features/groups/data/models/group_model.dart';
 import 'package:under_control_v2/features/groups/domain/entities/group.dart';
 
 void main() {
   const tGroupModel = GroupModel(
     id: 'id',
+    description: 'description',
     name: 'name',
     locations: [],
     features: [],
@@ -13,6 +14,7 @@ void main() {
 
   const tGroupModelMap = {
     'name': 'name',
+    'description': 'description',
     'locations': [],
     'features': [],
   };

@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
 import 'package:under_control_v2/features/authentication/data/repositories/authentication_repository_impl.dart';
-import 'package:under_control_v2/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/network/network_info.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';

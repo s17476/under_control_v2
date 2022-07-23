@@ -38,6 +38,7 @@ void main() {
   const tGroup = GroupModel(
     id: 'id',
     name: 'name',
+    description: 'description',
     locations: ['locations'],
     features: [
       FeatureModel(

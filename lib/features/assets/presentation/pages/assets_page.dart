@@ -15,7 +15,8 @@ class AssetsPage extends StatelessWidget {
             children: [
               for (var i in Iterable<int>.generate(100).toList())
                 Text(
-                  AppLocalizations.of(context)!.bottom_bar_title_assets,
+                  AppLocalizations.of(context)!.bottom_bar_title_assets +
+                      i.toString(),
                 ),
             ],
           ),

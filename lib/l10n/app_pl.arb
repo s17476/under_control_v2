@@ -91,5 +91,8 @@
     "home_screen_filter_select_locations": "Wybierz lokacje",
     "home_screen_filter_select_group": "Wybierz grupę",
     "group_management_title": "Grupy",
-    "group_management_add_button": "Dodaj grupę"
+    "group_management_add_button": "Dodaj grupę",
+    "group_management_add_card_title": "Dodaj nową grupę",
+    "group_management_add_card_name": "Nazwa grupy",
+    "group_management_add_card_description": "Opis grupy (opcjonalny)"
 }

@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
 import 'package:under_control_v2/features/authentication/domain/repositories/authentication_repository.dart';
-import 'package:under_control_v2/features/authentication/domain/usecases/signin.dart';
 import 'package:under_control_v2/features/authentication/domain/usecases/signup.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 

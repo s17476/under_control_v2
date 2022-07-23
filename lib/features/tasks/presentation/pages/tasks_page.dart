@@ -22,7 +22,8 @@ class _TasksPageState extends State<TasksPage> {
             children: [
               for (var i in Iterable<int>.generate(100).toList())
                 Text(
-                  AppLocalizations.of(context)!.bottom_bar_title_tasks,
+                  AppLocalizations.of(context)!.bottom_bar_title_tasks +
+                      i.toString(),
                 ),
             ],
           ),

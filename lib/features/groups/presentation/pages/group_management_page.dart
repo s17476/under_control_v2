@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/groups/presentation/pages/add_group_page.dart';
 
 class GroupManagementPage extends StatelessWidget {
   const GroupManagementPage({Key? key}) : super(key: key);
@@ -17,7 +18,9 @@ class GroupManagementPage extends StatelessWidget {
         child: Text('data'),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, AddGroupPage.routeName);
+        },
         icon: Icon(
           Icons.group_add,
           color: Colors.grey.shade200,

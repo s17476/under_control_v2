@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/groups/data/datasources/group_local_data_source.dart';
@@ -38,6 +38,7 @@ void main() {
 
   const tGroup = GroupModel(
     id: 'id',
+    description: 'description',
     name: 'name',
     locations: [],
     features: [],

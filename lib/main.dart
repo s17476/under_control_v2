@@ -22,6 +22,7 @@ import 'features/core/utils/custom_page_transition.dart';
 import 'features/core/utils/error_message_handler.dart';
 import 'features/core/utils/material_color_generator.dart';
 import 'features/groups/presentation/blocs/group/group_bloc.dart';
+import 'features/groups/presentation/pages/add_group_page.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -107,6 +108,7 @@ class App extends StatelessWidget
           LocationManagementPage.routeName: (ctx) =>
               const LocationManagementPage(),
           GroupManagementPage.routeName: (ctx) => const GroupManagementPage(),
+          AddGroupPage.routeName: (ctx) => const AddGroupPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

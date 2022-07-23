@@ -383,5 +383,17 @@
     "group_management_add_button": "Add group",
     "@group_management_add_button": {
       "description": "Group management - add button"
+    },
+    "group_management_add_card_title": "Add new group",
+    "@group_management_add_card_title": {
+      "description": "Group management - add card title"
+    },
+    "group_management_add_card_name": "Group name",
+    "@group_management_add_card_name": {
+      "description": "Group management - add card group name"
+    },
+    "group_management_add_card_description": "Group description (optional)",
+    "@group_management_add_card_description": {
+      "description": "Group management - add card group description"
     }
 }

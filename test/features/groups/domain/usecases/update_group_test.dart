@@ -17,18 +17,21 @@ void main() {
     registerFallbackValue(const Group(
       id: 'id',
       name: 'name',
+      description: 'description',
       locations: [],
       features: [],
     ));
     registerFallbackValue(
       const GroupParams(
-          group: Group(
-            id: 'id',
-            name: 'name',
-            locations: [],
-            features: [],
-          ),
-          companyId: 'comapnyId'),
+        group: Group(
+          id: 'id',
+          name: 'name',
+          description: 'description',
+          locations: [],
+          features: [],
+        ),
+        companyId: 'comapnyId',
+      ),
     );
   });
 
@@ -50,6 +53,7 @@ void main() {
               group: Group(
                 id: 'id',
                 name: 'name',
+                description: 'description',
                 locations: [],
                 features: [],
               ),

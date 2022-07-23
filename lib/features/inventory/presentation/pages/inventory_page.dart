@@ -15,7 +15,8 @@ class InventoryPage extends StatelessWidget {
             children: [
               for (var i in Iterable<int>.generate(100).toList())
                 Text(
-                  AppLocalizations.of(context)!.bottom_bar_title_inventory,
+                  AppLocalizations.of(context)!.bottom_bar_title_inventory +
+                      i.toString(),
                 ),
             ],
           ),

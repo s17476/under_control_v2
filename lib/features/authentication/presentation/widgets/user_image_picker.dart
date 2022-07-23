@@ -47,7 +47,9 @@ class _UserImagePickerState extends State<UserImagePicker> with ResponsiveSize {
         });
         widget.imagePickFn(_image!);
       }
-    } catch (e) {}
+    } catch (e) {
+      _image = null;
+    }
   }
 
   @override

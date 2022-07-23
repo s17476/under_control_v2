@@ -15,7 +15,8 @@ class DashboardPage extends StatelessWidget {
             children: [
               for (var i in Iterable<int>.generate(100).toList())
                 Text(
-                  AppLocalizations.of(context)!.bottom_bar_title_dashboard,
+                  AppLocalizations.of(context)!.bottom_bar_title_dashboard +
+                      i.toString(),
                 ),
             ],
           ),

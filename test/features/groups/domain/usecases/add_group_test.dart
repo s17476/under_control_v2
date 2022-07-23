@@ -16,6 +16,7 @@ void main() {
   setUpAll(() {
     registerFallbackValue(const Group(
       id: 'id',
+      description: 'description',
       name: 'name',
       locations: [],
       features: [],
@@ -24,6 +25,7 @@ void main() {
       const GroupParams(
           group: Group(
             id: 'id',
+            description: 'description',
             name: 'name',
             locations: [],
             features: [],
@@ -50,6 +52,7 @@ void main() {
               group: Group(
                 id: 'id',
                 name: 'name',
+                description: 'description',
                 locations: [],
                 features: [],
               ),
