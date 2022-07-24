@@ -4,7 +4,7 @@ enum FeatureType {
   tasks('tasks'),
   inventory('inventory'),
   assets('assets'),
-  locations('locations'),
+  knowledgeBase('knowledgeBase'),
   unknown('unknown');
 
   final String name;
@@ -19,22 +19,23 @@ enum FeatureType {
         return FeatureType.inventory;
       case 'assets':
         return FeatureType.assets;
-      case 'locations':
-        return FeatureType.locations;
+      case 'knowledgeBase':
+        return FeatureType.knowledgeBase;
       default:
         return FeatureType.unknown;
     }
   }
 }
 
+// ignore: must_be_immutable
 class Feature extends Equatable {
   final FeatureType type;
-  final bool create;
-  final bool read;
-  final bool edit;
-  final bool delete;
+  bool create;
+  bool read;
+  bool edit;
+  bool delete;
 
-  const Feature({
+  Feature({
     required this.type,
     required this.create,
     required this.read,

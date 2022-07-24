@@ -35,7 +35,7 @@ void main() {
         GroupRemoteDataSourceImpl(firebaseFirestore: badFirebaseFirestore);
   });
 
-  const tGroup = GroupModel(
+  final tGroup = GroupModel(
     id: 'id',
     name: 'name',
     description: 'description',
@@ -51,7 +51,7 @@ void main() {
     ],
   );
 
-  const tGroupParams = GroupParams(group: tGroup, companyId: companyId);
+  final tGroupParams = GroupParams(group: tGroup, companyId: companyId);
 
   group('Group RemoteDataSource', () {
     group('successful database response', () {

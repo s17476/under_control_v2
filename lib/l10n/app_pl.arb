@@ -10,6 +10,11 @@
     "confirm": "Potwierdź",
     "continue_btn": "Kontynuuj",
     "change": "Zmień",
+    "read": "Odczyt",
+    "create": "Tworzenie",
+    "edit": "Edycja",
+    "delete": "Usuwanie",
+    "summary": "Podsumowanie",
     "back_to_exit": "Wciśnij Wstecz ponownie by wyjść.",
     "password": "Hasło",
     "password_reset_email": "Email resetujący hasło został wysłany",
@@ -94,5 +99,7 @@
     "group_management_add_button": "Dodaj grupę",
     "group_management_add_card_title": "Dodaj nową grupę",
     "group_management_add_card_name": "Nazwa grupy",
-    "group_management_add_card_description": "Opis grupy (opcjonalny)"
+    "group_management_add_card_description": "Opis grupy (opcjonalny)",
+    "group_management_add_card_permissions": "Uprawnienia grupy",
+    "group_management_add_card_selected_locations": "Wybrane lokacje"
 }

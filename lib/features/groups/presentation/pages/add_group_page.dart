@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/keep_alive_page.dart';
 import 'package:under_control_v2/features/core/utils/location_selection_helpers.dart';
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 import 'package:under_control_v2/features/groups/presentation/widgets/add_group/add_group_features_card.dart';
 import 'package:under_control_v2/features/groups/presentation/widgets/add_group/add_group_locations_card.dart';
 import 'package:under_control_v2/features/groups/presentation/widgets/add_group/add_group_name_card.dart';
@@ -10,6 +12,7 @@ import 'package:under_control_v2/features/groups/presentation/widgets/add_group/
 import 'package:under_control_v2/features/locations/presentation/blocs/bloc/location_bloc.dart';
 
 import '../../../locations/domain/entities/location.dart';
+import '../../data/models/feature_model.dart';
 import '../blocs/group/group_bloc.dart';
 
 class AddGroupPage extends StatefulWidget {
@@ -34,6 +37,10 @@ class _AddGroupPageState extends State<AddGroupPage> {
   List<Location> selectedLocations = [];
   List<String> locationsChildren = [];
   List<String> locationsContext = [];
+
+  List<String> totalSelectedLocations = [];
+
+  List<FeatureModel> features = [];
 
   // select / unselect location
   void toggleLocationSelection(
@@ -129,10 +136,53 @@ class _AddGroupPageState extends State<AddGroupPage> {
         locationsContext = updatedContext;
       });
     }
+    setState(() {
+      totalSelectedLocations = [...locationsChildren];
+      totalSelectedLocations.addAll(
+        selectedLocations.map((e) => e.id).toList(),
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    features = [
+      FeatureModel(
+        type: FeatureType.tasks,
+        create: false,
+        read: false,
+        edit: false,
+        delete: false,
+      ),
+      FeatureModel(
+        type: FeatureType.inventory,
+        create: false,
+        read: false,
+        edit: false,
+        delete: false,
+      ),
+      FeatureModel(
+        type: FeatureType.assets,
+        create: false,
+        read: false,
+        edit: false,
+        delete: false,
+      ),
+      FeatureModel(
+        type: FeatureType.knowledgeBase,
+        create: false,
+        read: false,
+        edit: false,
+        delete: false,
+      ),
+    ];
+    super.initState();
   }
 
   // add new group
-  void addNewGroup(BuildContext context) {}
+  void addNewGroup(BuildContext context) {
+    print('Save group');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,18 +192,29 @@ class _AddGroupPageState extends State<AddGroupPage> {
         nameTexEditingController: nameTexEditingController,
         descriptionTexEditingController: descriptionTexEditingController,
       ),
-      AddGroupLocationsCard(
-        pageController: pageController,
-        locationsChildren: locationsChildren,
-        locationsContext: locationsContext,
-        selectedLocations: selectedLocations,
-        toggleLocationSelection: toggleLocationSelection,
+      KeepAlivePage(
+        child: AddGroupLocationsCard(
+          pageController: pageController,
+          locationsChildren: locationsChildren,
+          locationsContext: locationsContext,
+          selectedLocations: selectedLocations,
+          toggleLocationSelection: toggleLocationSelection,
+        ),
       ),
       AddGroupFeaturesCard(
         pageController: pageController,
+        features: features,
       ),
-      const AddGroupSummaryCard(),
+      AddGroupSummaryCard(
+        pageController: pageController,
+        addNewGroup: addNewGroup,
+        nameTexEditingController: nameTexEditingController,
+        descriptionTexEditingController: descriptionTexEditingController,
+        totalSelectedLocations: totalSelectedLocations,
+        features: features,
+      ),
     ];
+
     return Scaffold(body: BlocBuilder<GroupBloc, GroupState>(
       builder: (context, state) {
         if (state is GroupLoadingState) {

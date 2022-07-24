@@ -43,6 +43,26 @@
     "@change": {
       "description": "Change button"
     },
+    "read": "Read",
+    "@read": {
+      "description": "Read"
+    },
+    "create": "Create",
+    "@create": {
+      "description": "Create"
+    },
+    "edit": "Edit",
+    "@edit": {
+      "description": "Edit"
+    },
+    "delete": "Delete",
+    "@delete": {
+      "description": "Delete"
+    },
+    "summary": "Summary",
+    "@summary": {
+      "description": "Summary"
+    },
     "back_to_exit": "Press Back button again to Exit.",
     "@back_to_exit": {
       "description": "Back button to exit - SnackBar"
@@ -395,5 +415,13 @@
     "group_management_add_card_description": "Group description (optional)",
     "@group_management_add_card_description": {
       "description": "Group management - add card group description"
+    },
+    "group_management_add_card_permissions": "Group permissions",
+    "@group_management_add_card_permissions": {
+      "description": "Group management - add card group Group permissions"
+    },
+    "group_management_add_card_selected_locations": "Selected locations",
+    "@group_management_add_card_selected_locations": {
+      "description": "Group management - selected locations"
     }
 }

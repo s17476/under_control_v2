@@ -3,7 +3,7 @@ import 'package:under_control_v2/features/groups/data/models/feature_model.dart'
 import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 void main() {
-  const tFeatureModel = FeatureModel(
+  final tFeatureModel = FeatureModel(
     type: FeatureType.assets,
     create: true,
     read: true,

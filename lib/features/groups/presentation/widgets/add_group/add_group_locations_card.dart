@@ -123,7 +123,7 @@ class AddGroupLocationsCard extends StatelessWidget {
                     children: [
                       BackwardTextButton(
                         icon: Icons.arrow_back_ios_new,
-                        color: Theme.of(context).textTheme.headline4!.color!,
+                        color: Theme.of(context).textTheme.headline5!.color!,
                         label: AppLocalizations.of(context)!
                             .user_profile_add_user_personal_data_back,
                         function: () => pageController.previousPage(

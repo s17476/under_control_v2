@@ -1,13 +1,66 @@
 import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
+// ignore: must_be_immutable
 class FeatureModel extends Feature {
-  const FeatureModel({
+  FeatureModel({
     required super.type,
     required super.create,
     required super.read,
     required super.edit,
     required super.delete,
   });
+
+  void toggleRead() {
+    read = !read;
+    if (create) {
+      create = false;
+    }
+    if (edit) {
+      edit = false;
+    }
+    if (delete) {
+      delete = false;
+    }
+  }
+
+  void toggleCreate() {
+    create = !create;
+    if (!read) {
+      read = true;
+    }
+    if (edit) {
+      edit = false;
+    }
+    if (delete) {
+      delete = false;
+    }
+  }
+
+  void toggleEdit() {
+    edit = !edit;
+    if (!read) {
+      read = true;
+    }
+    if (!create) {
+      create = true;
+    }
+    if (delete) {
+      delete = false;
+    }
+  }
+
+  void toggleDelete() {
+    delete = !delete;
+    if (!read) {
+      read = true;
+    }
+    if (!create) {
+      create = true;
+    }
+    if (!edit) {
+      edit = true;
+    }
+  }
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
