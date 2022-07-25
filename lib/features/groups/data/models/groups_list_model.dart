@@ -18,7 +18,7 @@ class GroupsListModel extends GroupsList {
         )
         .toList()
       ..sort(
-        (a, b) => a.name.compareTo(b.name),
+        (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
       );
 
     return GroupsListModel(allGroups: groupslist);

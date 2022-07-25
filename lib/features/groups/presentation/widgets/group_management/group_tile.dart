@@ -16,7 +16,11 @@ class GroupTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, GroupDetailsPage.routeName),
+      onTap: () => Navigator.pushNamed(
+        context,
+        GroupDetailsPage.routeName,
+        arguments: group,
+      ),
       child: Container(
         margin: const EdgeInsets.symmetric(
           horizontal: 8,
@@ -36,7 +40,7 @@ class GroupTile extends StatelessWidget {
               children: [
                 Icon(
                   Icons.group,
-                  color: Colors.grey.shade200,
+                  color: Theme.of(context).primaryColor,
                   size: 30,
                 ),
                 const SizedBox(
@@ -51,54 +55,13 @@ class GroupTile extends StatelessWidget {
                 ),
               ],
             ),
-            const Divider(
-              thickness: 1.5,
-              height: 3,
-            ),
+
             // description
             if (group.description.isNotEmpty)
               Text(
                 group.description,
                 style: Theme.of(context).textTheme.labelMedium,
               ),
-            const SizedBox(
-              height: 4,
-            ),
-            // features
-            for (var feature in group.features)
-              GroupManagementFeatureCard(feature: feature),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 4,
-                horizontal: 4,
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    child: const Icon(
-                      Icons.location_on,
-                      size: 20,
-                      // color: Colors.grey.shade400,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    '${AppLocalizations.of(context)!.group_management_add_card_selected_locations} : ${group.locations.length}',
-                    style: TextStyle(
-                      color: Colors.grey.shade200,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
