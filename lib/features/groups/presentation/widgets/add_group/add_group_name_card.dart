@@ -67,7 +67,7 @@ class AddGroupNameCard extends StatelessWidget {
                               validator: (val) {
                                 if (val!.length < 2) {
                                   return AppLocalizations.of(context)!
-                                      .add_company_intro_card_to_short;
+                                      .validation_min_two_characters;
                                 }
                                 return null;
                               },

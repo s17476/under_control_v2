@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
 import 'package:under_control_v2/features/groups/presentation/pages/group_management_page.dart';
 import 'package:under_control_v2/features/locations/presentation/pages/location_management_page.dart';
 
@@ -109,6 +110,7 @@ class App extends StatelessWidget
               const LocationManagementPage(),
           GroupManagementPage.routeName: (ctx) => const GroupManagementPage(),
           AddGroupPage.routeName: (ctx) => const AddGroupPage(),
+          GroupDetailsPage.routeName: (ctx) => const GroupDetailsPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

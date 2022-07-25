@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/keep_alive_page.dart';
 import 'package:under_control_v2/features/core/utils/location_selection_helpers.dart';
+import 'package:under_control_v2/features/groups/data/models/group_model.dart';
 import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 import 'package:under_control_v2/features/groups/presentation/widgets/add_group/add_group_features_card.dart';
 import 'package:under_control_v2/features/groups/presentation/widgets/add_group/add_group_locations_card.dart';
@@ -13,12 +16,18 @@ import 'package:under_control_v2/features/locations/presentation/blocs/bloc/loca
 
 import '../../../locations/domain/entities/location.dart';
 import '../../data/models/feature_model.dart';
+import '../../domain/entities/group.dart';
 import '../blocs/group/group_bloc.dart';
 
 class AddGroupPage extends StatefulWidget {
-  const AddGroupPage({Key? key}) : super(key: key);
+  const AddGroupPage({
+    Key? key,
+    this.group,
+  }) : super(key: key);
 
   static const routeName = '/groups/ad-group';
+
+  final Group? group;
 
   @override
   State<AddGroupPage> createState() => _AddGroupPageState();
@@ -181,16 +190,83 @@ class _AddGroupPageState extends State<AddGroupPage> {
 
   // add new group
   void addNewGroup(BuildContext context) {
-    print('Save group');
+    String errorMessage = '';
+    // group name validation
+    if (!_formKey.currentState!.validate()) {
+      errorMessage = AppLocalizations.of(context)!
+          .group_management_add_error_name_to_short;
+    } else {
+      // locations selection validation
+      if (selectedLocations.isEmpty) {
+        errorMessage = AppLocalizations.of(context)!
+            .group_management_add_error_no_location_selected;
+      } else {
+        // premissions validation
+        bool isAtLeastOneFeatureSelected = false;
+        for (var feature in features) {
+          if (feature.create ||
+              feature.delete ||
+              feature.edit ||
+              feature.read) {
+            isAtLeastOneFeatureSelected = true;
+          }
+        }
+        if (!isAtLeastOneFeatureSelected) {
+          errorMessage = AppLocalizations.of(context)!
+              .group_management_add_error_no_premission_selected;
+          // group name validation
+        } else {
+          final currentState = context.read<GroupBloc>().state;
+          if (currentState is GroupLoadedState) {
+            final tmpGroups = currentState.allGroups.allGroups.where(
+                (group) => group.name == nameTexEditingController.text.trim());
+            if (tmpGroups.isNotEmpty) {
+              errorMessage = AppLocalizations.of(context)!
+                  .group_management_add_error_name_exists;
+            }
+          }
+        }
+      }
+    }
+
+    // shows SnackBar if validation error occures
+    if (errorMessage.isNotEmpty) {
+      ScaffoldMessenger.of(context)
+        ..clearSnackBars()
+        ..showSnackBar(SnackBar(
+          content: Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Theme.of(context).errorColor,
+        ));
+      // saves group to DB if no error
+    } else {
+      final newGroup = GroupModel(
+        id: '',
+        name: nameTexEditingController.text,
+        description: descriptionTexEditingController.text,
+        locations: totalSelectedLocations,
+        features: features,
+      );
+
+      context.read<GroupBloc>().add(
+            AddGroupEvent(group: newGroup),
+          );
+
+      Navigator.pop(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     pages = [
-      AddGroupNameCard(
-        pageController: pageController,
-        nameTexEditingController: nameTexEditingController,
-        descriptionTexEditingController: descriptionTexEditingController,
+      KeepAlivePage(
+        child: AddGroupNameCard(
+          pageController: pageController,
+          nameTexEditingController: nameTexEditingController,
+          descriptionTexEditingController: descriptionTexEditingController,
+        ),
       ),
       KeepAlivePage(
         child: AddGroupLocationsCard(

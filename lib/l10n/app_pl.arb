@@ -15,6 +15,7 @@
     "edit": "Edycja",
     "delete": "Usuwanie",
     "summary": "Podsumowanie",
+    "update_success": "Pomyślnie zaktualizowano",
     "back_to_exit": "Wciśnij Wstecz ponownie by wyjść.",
     "password": "Hasło",
     "password_reset_email": "Email resetujący hasło został wysłany",
@@ -25,6 +26,7 @@
     "new_account": "Zarejestruj nowe konto",
     "take_photo": "Zrób zdjęcie",
     "choose_image": "Wybierz obraz",
+    "validation_min_two_characters": "Przynajmniej 2 znaki",
     "account_exist": "Mam już konto",
     "passwords_validation_message": "Pola hasło i powtórzenie hasła muszą być identyczne",
     "email_confirmation_message": "Potwierdź swoje konto email klikając w link w mailu wysłanym na zarejestrowany adres email i zaloguj się do UnderControl ponownie",
@@ -101,5 +103,10 @@
     "group_management_add_card_name": "Nazwa grupy",
     "group_management_add_card_description": "Opis grupy (opcjonalny)",
     "group_management_add_card_permissions": "Uprawnienia grupy",
-    "group_management_add_card_selected_locations": "Wybrane lokacje"
+    "group_management_add_card_selected_locations": "Wybrane lokacje",
+    "group_management_add_error_name_to_short": "Nazwa grupy jest zbyt krótka - musi zawierać przynajmniej 2 znaki!",
+    "group_management_add_error_no_location_selected": "Wybierz przynajmniej jedną lokalizację!",
+    "group_management_add_error_no_premission_selected": "Wybierz przynajmniej jedno z uprawnień dla tej grupy!",
+    "group_management_add_error_name_exists": "Grupa o wybranej nazwie już istnieje!",
+    "group_management_add_added_new_msg": "Dodano nową grupę"
 }

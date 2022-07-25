@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../data/models/feature_model.dart';
+import 'feature_summary_card.dart';
 
 class AddGroupSummaryCard extends StatelessWidget {
   const AddGroupSummaryCard({
@@ -80,27 +81,45 @@ class AddGroupSummaryCard extends StatelessWidget {
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.easeInOut,
                             ),
-                            child: TextFormField(
-                              enabled: false,
-                              validator: (val) {
-                                if (val!.length < 2) {
-                                  return AppLocalizations.of(context)!
-                                      .add_company_intro_card_to_short;
-                                }
-                                return null;
-                              },
-                              controller: nameTexEditingController,
-                              decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context)!
-                                    .group_management_add_card_name,
-                                border: InputBorder.none,
-                                labelStyle: TextStyle(
-                                  color:
-                                      nameTexEditingController.text.length < 2
-                                          ? Colors.red
-                                          : Colors.grey,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    enabled: false,
+                                    validator: (val) {
+                                      if (val!.length < 2) {
+                                        return AppLocalizations.of(context)!
+                                            .validation_min_two_characters;
+                                      }
+                                      return null;
+                                    },
+                                    controller: nameTexEditingController,
+                                    decoration: InputDecoration(
+                                      errorStyle:
+                                          const TextStyle(color: Colors.red),
+                                      labelText: AppLocalizations.of(context)!
+                                          .group_management_add_card_name,
+                                      border: InputBorder.none,
+                                      labelStyle: TextStyle(
+                                        color: nameTexEditingController
+                                                    .text.length <
+                                                2
+                                            ? Colors.red
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                nameTexEditingController.text.length < 2
+                                    ? const Icon(
+                                        Icons.clear,
+                                        color: Colors.red,
+                                      )
+                                    : Icon(
+                                        Icons.done,
+                                        color: Colors.grey.shade100,
+                                      ),
+                              ],
                             ),
                           ),
                           // optional description
@@ -111,66 +130,134 @@ class AddGroupSummaryCard extends StatelessWidget {
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeInOut,
                               ),
-                              child: TextFormField(
-                                enabled: false,
-                                controller: descriptionTexEditingController,
-                                decoration: InputDecoration(
-                                  labelText: AppLocalizations.of(context)!
-                                      .group_management_add_card_description,
-                                  border: InputBorder.none,
-                                  labelStyle:
-                                      const TextStyle(color: Colors.grey),
-                                ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextFormField(
+                                      enabled: false,
+                                      controller:
+                                          descriptionTexEditingController,
+                                      decoration: InputDecoration(
+                                        labelText: AppLocalizations.of(context)!
+                                            .group_management_add_card_description,
+                                        border: InputBorder.none,
+                                        labelStyle:
+                                            const TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.done,
+                                    color: Colors.grey.shade100,
+                                  ),
+                                ],
                               ),
                             ),
                           const SizedBox(
                             height: 8,
                           ),
-                          Text(
-                            AppLocalizations.of(context)!
-                                .group_management_add_card_selected_locations,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(
-                                  color: totalSelectedLocations.isEmpty
-                                      ? Colors.red
-                                      : Colors.grey,
+                          // locations
+                          InkWell(
+                            onTap: () => pageController.animateToPage(
+                              1,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .group_management_add_card_selected_locations,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(
+                                          color: totalSelectedLocations.isEmpty
+                                              ? Colors.red
+                                              : Colors.grey,
+                                        ),
+                                  ),
                                 ),
+                                totalSelectedLocations.isEmpty
+                                    ? const Icon(
+                                        Icons.clear,
+                                        color: Colors.red,
+                                      )
+                                    : Icon(
+                                        Icons.done,
+                                        color: Colors.grey.shade100,
+                                      ),
+                              ],
+                            ),
                           ),
                           const SizedBox(
                             height: 4,
                           ),
-                          Text(
-                            totalSelectedLocations.length.toString(),
-                            style: const TextStyle(
-                              fontSize: 18,
+                          InkWell(
+                            onTap: () => pageController.animateToPage(
+                              1,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                            child: Text(
+                              totalSelectedLocations.length.toString(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                           const SizedBox(
                             height: 8,
                           ),
-                          Text(
-                            AppLocalizations.of(context)!
-                                .group_management_add_card_permissions,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(
-                                  color: !isAtLeastOneFeatureSelected
-                                      ? Colors.red
-                                      : Colors.grey,
+                          // premissions
+                          InkWell(
+                            onTap: () => pageController.animateToPage(
+                              2,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .group_management_add_card_permissions,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(
+                                          color: !isAtLeastOneFeatureSelected
+                                              ? Colors.red
+                                              : Colors.grey,
+                                        ),
+                                  ),
                                 ),
+                                !isAtLeastOneFeatureSelected
+                                    ? const Icon(
+                                        Icons.clear,
+                                        color: Colors.red,
+                                      )
+                                    : Icon(
+                                        Icons.done,
+                                        color: Colors.grey.shade100,
+                                      ),
+                              ],
+                            ),
                           ),
                           const SizedBox(
                             height: 4,
                           ),
-                          Text(
-                            isAtLeastOneFeatureSelected.toString(),
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
+
+                          for (var feature in features)
+                            InkWell(
+                              onTap: () => pageController.animateToPage(
+                                2,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              ),
+                              child: FeatureSummaryCard(feature: feature),
+                            )
                         ],
                       ),
                     ),

@@ -63,6 +63,10 @@
     "@summary": {
       "description": "Summary"
     },
+    "update_success": "Successfully updated",
+    "@update_success": {
+      "description": "Successfully updated"
+    },
     "back_to_exit": "Press Back button again to Exit.",
     "@back_to_exit": {
       "description": "Back button to exit - SnackBar"
@@ -103,6 +107,10 @@
     "choose_image": "Choose an image",
     "@choose_image": {
       "description": "Authentication page - chooose an image"
+    },
+    "validation_min_two_characters": "At least 2 characters",
+    "@validation_min_two_characters": {
+      "description": "Validation - min two characters"
     },
     "account_exist": "I aleready have an account",
     "@account_exist": {
@@ -423,5 +431,25 @@
     "group_management_add_card_selected_locations": "Selected locations",
     "@group_management_add_card_selected_locations": {
       "description": "Group management - selected locations"
+    },
+    "group_management_add_error_name_to_short": "The group name is too short - it must contain at least 2 characters!",
+    "@group_management_add_error_name_to_short": {
+      "description": "Group management - name error"
+    },
+    "group_management_add_error_no_location_selected": "Select at least one location!",
+    "@group_management_add_error_no_location_selected": {
+      "description": "Group management - no location selected"
+    },
+    "group_management_add_error_no_premission_selected": "Select at least one premission for this group!",
+    "@group_management_add_error_no_premission_selected": {
+      "description": "Group management - no premission selected"
+    },
+    "group_management_add_error_name_exists": "Group with selected name already exists!",
+    "@group_management_add_error_name_exists": {
+      "description": "Group management - group with selected name exists"
+    },
+    "group_management_add_added_new_msg": "New group added",
+    "@group_management_add_added_new_msg": {
+      "description": "Group management - new group added"
     }
 }

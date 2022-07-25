@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/feature_type_helpers.dart';
 
 import '../../../data/models/feature_model.dart';
 import '../../../domain/entities/feature.dart';
@@ -17,51 +18,6 @@ class FeatureCard extends StatefulWidget {
 }
 
 class _FeatureCardState extends State<FeatureCard> {
-  IconData getIcon() {
-    switch (widget.feature.type) {
-      case FeatureType.tasks:
-        return Icons.task_alt;
-      case FeatureType.inventory:
-        return Icons.auto_awesome_mosaic_outlined;
-      case FeatureType.assets:
-        return Icons.precision_manufacturing_outlined;
-      case FeatureType.knowledgeBase:
-        return Icons.menu_book_outlined;
-      case FeatureType.unknown:
-        return Icons.abc;
-    }
-  }
-
-  Color getColor() {
-    switch (widget.feature.type) {
-      case FeatureType.tasks:
-        return Colors.red;
-      case FeatureType.inventory:
-        return Colors.orange;
-      case FeatureType.assets:
-        return Colors.blue;
-      case FeatureType.knowledgeBase:
-        return Colors.deepPurple;
-      case FeatureType.unknown:
-        return Colors.pink;
-    }
-  }
-
-  String getTitle() {
-    switch (widget.feature.type) {
-      case FeatureType.tasks:
-        return AppLocalizations.of(context)!.bottom_bar_title_tasks;
-      case FeatureType.inventory:
-        return AppLocalizations.of(context)!.bottom_bar_title_inventory;
-      case FeatureType.assets:
-        return AppLocalizations.of(context)!.bottom_bar_title_assets;
-      case FeatureType.knowledgeBase:
-        return AppLocalizations.of(context)!.bottom_bar_title_knowledge;
-      case FeatureType.unknown:
-        return 'Unknown';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -84,7 +40,7 @@ class _FeatureCardState extends State<FeatureCard> {
                 Container(
                   width: 50,
                   height: 50,
-                  child: Icon(getIcon()),
+                  child: Icon(getIcon(widget.feature)),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: const [
@@ -94,7 +50,7 @@ class _FeatureCardState extends State<FeatureCard> {
                         spreadRadius: 0,
                       )
                     ],
-                    color: getColor(),
+                    color: getColor(widget.feature),
                   ),
                 ),
                 Expanded(
@@ -108,7 +64,7 @@ class _FeatureCardState extends State<FeatureCard> {
                           bottom: 4,
                         ),
                         child: Text(
-                          getTitle(),
+                          getTitle(context, widget.feature),
                           style: Theme.of(context).textTheme.headline6,
                         ),
                       ),
