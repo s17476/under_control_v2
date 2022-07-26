@@ -63,9 +63,25 @@
     "@summary": {
       "description": "Summary"
     },
+    "call": "Call",
+    "@call": {
+      "description": "Call"
+    },
+    "send_sms": "Send SMS",
+    "@send_sms": {
+      "description": "Send sms"
+    },
+    "send_email": "Send email",
+    "@send_email": {
+      "description": "Send email"
+    },
     "update_success": "Successfully updated",
     "@update_success": {
       "description": "Successfully updated"
+    },
+    "delete_success": "Successfully deleted",
+    "@delete_success": {
+      "description": "Successfully deleted"
     },
     "back_to_exit": "Press Back button again to Exit.",
     "@back_to_exit": {
@@ -451,5 +467,23 @@
     "group_management_add_added_new_msg": "New group added",
     "@group_management_add_added_new_msg": {
       "description": "Group management - new group added"
+    },
+    "group_management_delete_confirm": "Confirm delete",
+    "@group_management_delete_confirm": {
+      "description": "Confirm delete"
+    },
+    "group_management_delete_question": "Are you sure you want to delete {group}?",
+    "@group_management_delete_question": {
+      "description": "Delete question",
+      "placeholders": {
+        "group": {
+          "type": "String",
+          "example": "Main"
+        }
+      }
+    },
+    "group_members": "Group members",
+    "@group_members": {
+      "description": "Group members"
     }
 }

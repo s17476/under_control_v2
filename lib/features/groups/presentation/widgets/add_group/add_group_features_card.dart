@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/groups/presentation/widgets/add_group/feature_card.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../data/models/feature_model.dart';
+import 'feature_card.dart';
 
 class AddGroupFeaturesCard extends StatelessWidget {
   const AddGroupFeaturesCard({

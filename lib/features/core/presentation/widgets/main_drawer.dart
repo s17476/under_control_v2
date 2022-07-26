@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/groups/presentation/pages/group_management_page.dart';
 
 import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
+import '../../../groups/presentation/pages/group_management_page.dart';
 import '../../../locations/presentation/pages/location_management_page.dart';
 import '../../utils/responsive_size.dart';
 import 'custom_menu_item.dart';

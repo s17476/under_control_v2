@@ -3,21 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/keep_alive_page.dart';
-import 'package:under_control_v2/features/core/utils/location_selection_helpers.dart';
-import 'package:under_control_v2/features/groups/data/models/group_model.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
-import 'package:under_control_v2/features/groups/presentation/widgets/add_group/add_group_features_card.dart';
-import 'package:under_control_v2/features/groups/presentation/widgets/add_group/add_group_locations_card.dart';
-import 'package:under_control_v2/features/groups/presentation/widgets/add_group/add_group_name_card.dart';
-import 'package:under_control_v2/features/groups/presentation/widgets/add_group/add_group_summary_card.dart';
-import 'package:under_control_v2/features/locations/presentation/blocs/bloc/location_bloc.dart';
-
+import '../../../core/presentation/pages/loading_page.dart';
+import '../../../core/presentation/widgets/keep_alive_page.dart';
+import '../../../core/utils/location_selection_helpers.dart';
 import '../../../locations/domain/entities/location.dart';
+import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../data/models/feature_model.dart';
+import '../../data/models/group_model.dart';
+import '../../domain/entities/feature.dart';
 import '../../domain/entities/group.dart';
 import '../blocs/group/group_bloc.dart';
+import '../widgets/add_group/add_group_features_card.dart';
+import '../widgets/add_group/add_group_locations_card.dart';
+import '../widgets/add_group/add_group_name_card.dart';
+import '../widgets/add_group/add_group_summary_card.dart';
 
 class AddGroupPage extends StatefulWidget {
   const AddGroupPage({

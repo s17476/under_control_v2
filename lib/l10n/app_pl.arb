@@ -15,7 +15,11 @@
     "edit": "Edycja",
     "delete": "Usuwanie",
     "summary": "Podsumowanie",
+    "call": "Zadzwoń",
+    "send_sms": "Wyślij SMS",
+    "send_email": "Wyślij E-mail",
     "update_success": "Pomyślnie zaktualizowano",
+    "delete_success": "Pomyślnie usunięto",
     "back_to_exit": "Wciśnij Wstecz ponownie by wyjść.",
     "password": "Hasło",
     "password_reset_email": "Email resetujący hasło został wysłany",
@@ -108,5 +112,8 @@
     "group_management_add_error_no_location_selected": "Wybierz przynajmniej jedną lokalizację!",
     "group_management_add_error_no_premission_selected": "Wybierz przynajmniej jedno z uprawnień dla tej grupy!",
     "group_management_add_error_name_exists": "Grupa o wybranej nazwie już istnieje!",
-    "group_management_add_added_new_msg": "Dodano nową grupę"
+    "group_management_add_added_new_msg": "Dodano nową grupę",
+    "group_management_delete_confirm": "Potwierdź usunięcie",
+    "group_management_delete_question": "Czy na pewno chcesz usunąć {group}?",
+    "group_members": "Członkowie grupy"
 }

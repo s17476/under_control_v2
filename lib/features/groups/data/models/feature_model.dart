@@ -1,4 +1,4 @@
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
+import '../../domain/entities/feature.dart';
 
 // ignore: must_be_immutable
 class FeatureModel extends Feature {

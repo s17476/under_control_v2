@@ -52,6 +52,8 @@ dependencies:
   firebase_storage_mocks: ^0.5.0
   smooth_page_indicator: ^1.0.0+2
   circular_bottom_navigation: ^2.0.0
+  cached_network_image: ^3.2.1
+  url_launcher: ^6.1.5
   
 
 

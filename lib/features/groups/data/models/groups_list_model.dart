@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:under_control_v2/features/groups/data/models/group_model.dart';
-import 'package:under_control_v2/features/groups/domain/entities/group.dart';
-import 'package:under_control_v2/features/groups/domain/entities/groups_list.dart';
+
+import '../../domain/entities/group.dart';
+import '../../domain/entities/groups_list.dart';
+import 'group_model.dart';
 
 class GroupsListModel extends GroupsList {
   const GroupsListModel({required super.allGroups});

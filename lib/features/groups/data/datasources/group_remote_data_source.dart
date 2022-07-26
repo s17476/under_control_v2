@@ -2,10 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:under_control_v2/features/groups/domain/entities/groups_stream.dart';
-
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
+import '../../domain/entities/groups_stream.dart';
 import '../models/group_model.dart';
 
 abstract class GroupRemoteDataSource {

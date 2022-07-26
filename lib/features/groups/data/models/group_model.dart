@@ -1,5 +1,5 @@
-import 'feature_model.dart';
 import '../../domain/entities/group.dart';
+import 'feature_model.dart';
 
 class GroupModel extends Group {
   const GroupModel({

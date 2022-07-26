@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/feature_type_helpers.dart';
 
+import '../../../../core/utils/feature_type_helpers.dart';
 import '../../../data/models/feature_model.dart';
-import '../../../domain/entities/feature.dart';
 
 class FeatureCard extends StatefulWidget {
   const FeatureCard({

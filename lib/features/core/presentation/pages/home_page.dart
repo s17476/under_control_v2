@@ -3,16 +3,16 @@ import 'dart:ui';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/home_bottom_navigation_bar.dart';
 
 import '../../../assets/presentation/pages/assets_page.dart';
-import '../widgets/home_sliver_app_bar.dart';
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
 import '../../../inventory/presentation/pages/inventory_page.dart';
 import '../../../knowledge_base/presentation/pages/knowledge_base_page.dart';
 import '../../../tasks/presentation/pages/tasks_page.dart';
 import '../../utils/size_config.dart';
 import '../widgets/filter.dart';
+import '../widgets/home_bottom_navigation_bar.dart';
+import '../widgets/home_sliver_app_bar.dart';
 import '../widgets/main_drawer.dart';
 
 class HomePage extends StatefulWidget {

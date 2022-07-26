@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
-import 'package:under_control_v2/features/groups/presentation/widgets/group_management/group_management_feature_card.dart';
 
 import '../../../domain/entities/group.dart';
+import '../../pages/group_details.dart';
 
 class GroupTile extends StatelessWidget {
   const GroupTile({
@@ -41,17 +39,21 @@ class GroupTile extends StatelessWidget {
                 Icon(
                   Icons.group,
                   color: Theme.of(context).primaryColor,
-                  size: 30,
+                  size: 24,
                 ),
                 const SizedBox(
-                  width: 8,
+                  width: 12,
                 ),
-                Text(
-                  group.name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6!
-                      .copyWith(color: Colors.grey.shade200),
+                Expanded(
+                  child: Text(
+                    group.name,
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                          color: Colors.grey.shade200,
+                          fontSize: 18,
+                        ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),

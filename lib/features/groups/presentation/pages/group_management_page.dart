@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/loading_widget.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/search_text_field.dart';
-import 'package:under_control_v2/features/groups/domain/entities/group.dart';
-import 'package:under_control_v2/features/groups/presentation/widgets/group_management/group_tile.dart';
 
+import '../../../core/presentation/widgets/loading_widget.dart';
+import '../../../core/presentation/widgets/search_text_field.dart';
+import '../../domain/entities/group.dart';
 import '../blocs/group/group_bloc.dart';
+import '../widgets/group_management/group_tile.dart';
 import 'add_group_page.dart';
 
 class GroupManagementPage extends StatefulWidget {
@@ -87,22 +86,27 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
                 case updateSuccess:
                   message = AppLocalizations.of(context)!.update_success;
                   break;
+                case deleteSuccess:
+                  message = AppLocalizations.of(context)!.delete_success;
+                  break;
                 default:
                   message = '';
               }
-              ScaffoldMessenger.of(context)
-                ..clearSnackBars()
-                ..showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      message,
-                      style: const TextStyle(color: Colors.white),
+              if (message.isNotEmpty) {
+                ScaffoldMessenger.of(context)
+                  ..clearSnackBars()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        message,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: state.error
+                          ? Theme.of(context).errorColor
+                          : Theme.of(context).primaryColor,
                     ),
-                    backgroundColor: state.error
-                        ? Theme.of(context).errorColor
-                        : Theme.of(context).primaryColor,
-                  ),
-                );
+                  );
+              }
             }
           }
         },

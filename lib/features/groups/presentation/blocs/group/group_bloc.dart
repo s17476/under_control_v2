@@ -4,19 +4,18 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/groups/data/models/groups_list_model.dart';
-
-import 'package:under_control_v2/features/groups/domain/entities/groups_list.dart';
-import 'package:under_control_v2/features/groups/domain/usecases/add_group.dart';
-import 'package:under_control_v2/features/groups/domain/usecases/cache_groups.dart';
-import 'package:under_control_v2/features/groups/domain/usecases/delete_group.dart';
-import 'package:under_control_v2/features/groups/domain/usecases/get_groups_stream.dart';
-import 'package:under_control_v2/features/groups/domain/usecases/try_to_get_cached_groups.dart';
-import 'package:under_control_v2/features/groups/domain/usecases/update_group.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../../data/models/groups_list_model.dart';
 import '../../../domain/entities/group.dart';
+import '../../../domain/entities/groups_list.dart';
+import '../../../domain/usecases/add_group.dart';
+import '../../../domain/usecases/cache_groups.dart';
+import '../../../domain/usecases/delete_group.dart';
+import '../../../domain/usecases/get_groups_stream.dart';
+import '../../../domain/usecases/try_to_get_cached_groups.dart';
+import '../../../domain/usecases/update_group.dart';
 
 part 'group_event.dart';
 part 'group_state.dart';
