@@ -104,6 +104,7 @@
     "group_management_title": "Grupy",
     "group_management_add_button": "Dodaj grupę",
     "group_management_add_card_title": "Dodaj nową grupę",
+    "group_management_edit_card_title": "Edytuj grupę",
     "group_management_add_card_name": "Nazwa grupy",
     "group_management_add_card_description": "Opis grupy (opcjonalny)",
     "group_management_add_card_permissions": "Uprawnienia grupy",

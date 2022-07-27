@@ -8,11 +8,13 @@ import '../../../../core/presentation/widgets/forward_text_button.dart';
 class AddGroupNameCard extends StatelessWidget {
   const AddGroupNameCard({
     Key? key,
+    required this.isEditMode,
     required this.pageController,
     required this.nameTexEditingController,
     required this.descriptionTexEditingController,
   }) : super(key: key);
 
+  final bool isEditMode;
   final PageController pageController;
   final TextEditingController nameTexEditingController;
   final TextEditingController descriptionTexEditingController;
@@ -51,8 +53,11 @@ class AddGroupNameCard extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 24),
                               child: Text(
-                                AppLocalizations.of(context)!
-                                    .group_management_add_card_title,
+                                isEditMode
+                                    ? AppLocalizations.of(context)!
+                                        .group_management_edit_card_title
+                                    : AppLocalizations.of(context)!
+                                        .group_management_add_card_title,
                                 style: TextStyle(
                                   fontSize: Theme.of(context)
                                       .textTheme

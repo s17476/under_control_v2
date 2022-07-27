@@ -21,18 +21,17 @@ import '../widgets/add_group/add_group_summary_card.dart';
 class AddGroupPage extends StatefulWidget {
   const AddGroupPage({
     Key? key,
-    this.group,
   }) : super(key: key);
 
   static const routeName = '/groups/ad-group';
-
-  final Group? group;
 
   @override
   State<AddGroupPage> createState() => _AddGroupPageState();
 }
 
 class _AddGroupPageState extends State<AddGroupPage> {
+  Group? group;
+
   List<Widget> pages = [];
 
   final _formKey = GlobalKey<FormState>();
@@ -49,6 +48,36 @@ class _AddGroupPageState extends State<AddGroupPage> {
   List<String> totalSelectedLocations = [];
 
   List<FeatureModel> features = [];
+
+  @override
+  void didChangeDependencies() {
+    final arguments = ModalRoute.of(context)!.settings.arguments;
+
+    if (arguments != null && arguments is Group) {
+      group = arguments;
+      nameTexEditingController.text = group!.name;
+      descriptionTexEditingController.text = group!.description;
+
+      List<Location> tmpSelecedlocations = [];
+      final allLocations =
+          (context.read<LocationBloc>().state as LocationLoadedState)
+              .allLocations
+              .allLocations;
+      for (var groupId in group!.locations) {
+        final tmp =
+            allLocations.where((element) => element.id == groupId).toList();
+        if (tmp.isNotEmpty) {
+          tmpSelecedlocations.addAll(tmp);
+        }
+      }
+      selectedLocations = tmpSelecedlocations;
+      totalSelectedLocations = group!.locations;
+      locationsContext =
+          getselectedLocationsContext(selectedLocations, [], allLocations);
+      features = group!.features;
+    }
+    super.didChangeDependencies();
+  }
 
   // select / unselect location
   void toggleLocationSelection(
@@ -184,6 +213,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
         delete: false,
       ),
     ];
+
     super.initState();
   }
 
@@ -214,7 +244,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
           errorMessage = AppLocalizations.of(context)!
               .group_management_add_error_no_premission_selected;
           // group name validation
-        } else {
+        } else if (group == null) {
           final currentState = context.read<GroupBloc>().state;
           if (currentState is GroupLoadedState) {
             final tmpGroups = currentState.allGroups.allGroups.where(
@@ -242,16 +272,20 @@ class _AddGroupPageState extends State<AddGroupPage> {
       // saves group to DB if no error
     } else {
       final newGroup = GroupModel(
-        id: '',
+        id: (group != null) ? group!.id : '',
         name: nameTexEditingController.text,
         description: descriptionTexEditingController.text,
         locations: totalSelectedLocations,
         features: features,
       );
 
-      context.read<GroupBloc>().add(
-            AddGroupEvent(group: newGroup),
-          );
+      if (group != null) {
+        context.read<GroupBloc>().add(UpdateGroupEvent(group: newGroup));
+      } else {
+        context.read<GroupBloc>().add(
+              AddGroupEvent(group: newGroup),
+            );
+      }
 
       Navigator.pop(context);
     }
@@ -262,6 +296,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
     pages = [
       KeepAlivePage(
         child: AddGroupNameCard(
+          isEditMode: group != null,
           pageController: pageController,
           nameTexEditingController: nameTexEditingController,
           descriptionTexEditingController: descriptionTexEditingController,

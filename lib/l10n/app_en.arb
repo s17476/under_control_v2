@@ -432,6 +432,10 @@
     "@group_management_add_card_title": {
       "description": "Group management - add card title"
     },
+    "group_management_edit_card_title": "Edit group",
+    "@group_management_edit_card_title": {
+      "description": "Group management - edit card title"
+    },
     "group_management_add_card_name": "Group name",
     "@group_management_add_card_name": {
       "description": "Group management - add card group name"

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/groups/presentation/pages/add_group_page.dart';
 
 import '../../../core/presentation/widgets/user_info_card.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
@@ -60,7 +61,14 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           actions: [
             // edit button
             IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                hideUserInfoCard();
+                Navigator.popAndPushNamed(
+                  context,
+                  AddGroupPage.routeName,
+                  arguments: group,
+                );
+              },
               icon: const Icon(Icons.edit),
             ),
             // delete button
