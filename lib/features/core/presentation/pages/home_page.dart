@@ -10,7 +10,7 @@ import '../../../inventory/presentation/pages/inventory_page.dart';
 import '../../../knowledge_base/presentation/pages/knowledge_base_page.dart';
 import '../../../tasks/presentation/pages/tasks_page.dart';
 import '../../utils/size_config.dart';
-import '../widgets/filter.dart';
+import '../widgets/home_page_filter/home_page_filter.dart';
 import '../widgets/home_bottom_navigation_bar.dart';
 import '../widgets/home_sliver_app_bar.dart';
 import '../widgets/main_drawer.dart';
@@ -185,19 +185,24 @@ class _HomePageState extends State<HomePage>
                 if (isFilterExpanded)
                   InkWell(
                     onTap: toggleIsFilterExpanded,
-                    child: ClipRect(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                    child: TweenAnimationBuilder(
+                      duration: const Duration(milliseconds: 500),
+                      tween: Tween<double>(begin: 0.0, end: 0.5),
+                      builder: (context, double value, child) => BackdropFilter(
+                        filter: ImageFilter.blur(
+                          sigmaX: 5.0,
+                          sigmaY: 5.0,
+                        ),
                         child: Container(
                           width: double.infinity,
                           height: MediaQuery.of(context).size.height,
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withOpacity(value),
                         ),
                       ),
                     ),
                   ),
                 // location and group selection filter
-                Filter(isFilterExpanded: isFilterExpanded),
+                HomePageFilter(isFilterExpanded: isFilterExpanded),
               ],
             ),
           ),

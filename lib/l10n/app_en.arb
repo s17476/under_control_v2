@@ -472,6 +472,10 @@
     "@group_management_delete_confirm": {
       "description": "Confirm delete"
     },
+    "group_management_delete_error_not_empty": "Delete unsuccessful. Remove group members first",
+    "@group_management_delete_error_not_empty": {
+      "description": "Delete unsuccessful"
+    },
     "group_management_delete_question": "Are you sure you want to delete {group}?",
     "@group_management_delete_question": {
       "description": "Delete question",

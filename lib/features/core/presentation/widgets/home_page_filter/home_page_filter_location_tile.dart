@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:under_control_v2/features/locations/presentation/blocs/bloc/location_bloc.dart';
 
-import '../../../domain/entities/location.dart';
+import '../../../../locations/domain/entities/location.dart';
+import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 
-class LocationFilterTile extends StatefulWidget {
+class HomePageFilterLocationTile extends StatefulWidget {
   final List<Location> allLocations;
   final Location location;
 
-  const LocationFilterTile({
+  const HomePageFilterLocationTile({
     Key? key,
     required this.allLocations,
     required this.location,
   }) : super(key: key);
 
   @override
-  State<LocationFilterTile> createState() => _LocationFilterTileState();
+  State<HomePageFilterLocationTile> createState() =>
+      _HomePageFilterLocationTileState();
 }
 
-class _LocationFilterTileState extends State<LocationFilterTile> {
-  _LocationFilterTileState();
+class _HomePageFilterLocationTileState
+    extends State<HomePageFilterLocationTile> {
+  _HomePageFilterLocationTileState();
   bool isExpanded = false;
   bool isSelected = false;
   bool isContext = false;
@@ -142,6 +144,7 @@ class _LocationFilterTileState extends State<LocationFilterTile> {
                               ],
                             ),
                           ),
+                          // AddressRow(location: widget.location),
                         ],
                       ),
                     ),
@@ -163,7 +166,7 @@ class _LocationFilterTileState extends State<LocationFilterTile> {
               children: [
                 for (var location in children)
                   // location card
-                  LocationFilterTile(
+                  HomePageFilterLocationTile(
                     allLocations: widget.allLocations,
                     location: location,
                     key: Key(location.id),

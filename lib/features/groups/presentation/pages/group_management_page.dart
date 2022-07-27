@@ -83,6 +83,10 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
                   message = AppLocalizations.of(context)!
                       .group_management_add_added_new_msg;
                   break;
+                case groupContainsMembers:
+                  message = AppLocalizations.of(context)!
+                      .group_management_delete_error_not_empty;
+                  break;
                 case updateSuccess:
                   message = AppLocalizations.of(context)!.update_success;
                   break;
@@ -140,21 +144,23 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(context, AddGroupPage.routeName);
-        },
-        icon: Icon(
-          Icons.group_add,
-          color: Colors.grey.shade200,
-        ),
-        label: Text(
-          AppLocalizations.of(context)!.group_management_add_button,
-          style: TextStyle(
-            color: Colors.grey.shade200,
-          ),
-        ),
-      ),
+      floatingActionButton: context.watch<GroupBloc>().state is GroupLoadedState
+          ? FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.pushNamed(context, AddGroupPage.routeName);
+              },
+              icon: Icon(
+                Icons.group_add,
+                color: Colors.grey.shade200,
+              ),
+              label: Text(
+                AppLocalizations.of(context)!.group_management_add_button,
+                style: TextStyle(
+                  color: Colors.grey.shade200,
+                ),
+              ),
+            )
+          : null,
     );
   }
 }

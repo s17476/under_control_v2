@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/user_info_card.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../domain/entities/group.dart';
+import '../blocs/group/group_bloc.dart';
 import '../widgets/group_details/group_locations.dart';
 import '../widgets/group_details/group_members.dart';
 import '../widgets/group_details/show_group_delete_dialog.dart';
@@ -52,33 +54,65 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
         return true;
       },
       child: Scaffold(
-          appBar: AppBar(
-            title: Text(group.name),
-            centerTitle: true,
-            actions: [
-              // edit button
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.edit),
-              ),
-              // delete button
-              IconButton(
-                onPressed: () async {
-                  hideUserInfoCard();
-                  final result = await showGroupDeleteDialog(
-                      context: context, group: group);
-                  if (result != null && result) {
-                    Navigator.pop(context);
-                  }
-                },
-                icon: const Icon(Icons.delete),
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-            ],
-          ),
-          body: SizedBox(
+        appBar: AppBar(
+          title: Text(group.name),
+          centerTitle: true,
+          actions: [
+            // edit button
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.edit),
+            ),
+            // delete button
+            IconButton(
+              onPressed: () async {
+                hideUserInfoCard();
+                final result =
+                    await showGroupDeleteDialog(context: context, group: group);
+                if (result != null && result) {
+                  Navigator.pop(context);
+                }
+              },
+              icon: const Icon(Icons.delete),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+          ],
+        ),
+        body: BlocListener<GroupBloc, GroupState>(
+          listener: (context, state) {
+            String message = '';
+            if (state is GroupLoadedState) {
+              switch (state.message) {
+                case groupContainsMembers:
+                  message = AppLocalizations.of(context)!
+                      .group_management_delete_error_not_empty;
+                  break;
+                default:
+                  message = '';
+                  break;
+              }
+            }
+            if (message.isNotEmpty) {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      message,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    backgroundColor: state.error
+                        ? Theme.of(context).errorColor
+                        : Theme.of(context).primaryColor,
+                  ),
+                );
+            }
+          },
+          child: SizedBox(
             width: double.infinity,
             height: MediaQuery.of(context).size.height -
                 AppBar().preferredSize.height -
@@ -185,7 +219,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                   ),
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

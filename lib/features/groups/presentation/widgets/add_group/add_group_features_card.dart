@@ -52,6 +52,7 @@ class AddGroupFeaturesCard extends StatelessWidget {
                               ),
                             ),
                           ),
+                          // features cards
                           for (var feature in features)
                             FeatureCard(feature: feature)
                         ],

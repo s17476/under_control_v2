@@ -24,6 +24,7 @@ const String addedMessage = 'added';
 const String deleteFailed = 'deleteFailed';
 const String deleteSuccess = 'deleteSuccess';
 const String updateSuccess = 'updateSuccess';
+const String groupContainsMembers = 'groupContainsMembers';
 
 @injectable
 class GroupBloc extends Bloc<GroupEvent, GroupState> {
@@ -85,17 +86,30 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     });
 
     on<DeleteGroupEvent>((event, emit) async {
-      final failureOrVoidResult = await deleteGroup(
-        GroupParams(group: event.group, companyId: companyId),
-      );
-      await failureOrVoidResult.fold(
-        (failure) async => emit(const GroupErrorState(message: deleteFailed)),
-        (_) async {
-          emit(
-            (state as GroupLoadedState).copyWith(message: deleteSuccess),
-          );
-        },
-      );
+      // cheks for group members
+      final companyMembers = (companyProfileBloc.state as CompanyProfileLoaded)
+          .companyUsers
+          .allUsers;
+      final groupMembers = companyMembers
+          .where((member) => member.userGroups.contains(event.group.id));
+      if (groupMembers.isNotEmpty) {
+        emit((state as GroupLoadedState).copyWith(
+          message: groupContainsMembers,
+          error: true,
+        ));
+      } else {
+        final failureOrVoidResult = await deleteGroup(
+          GroupParams(group: event.group, companyId: companyId),
+        );
+        await failureOrVoidResult.fold(
+          (failure) async => emit(const GroupErrorState(message: deleteFailed)),
+          (_) async {
+            emit(
+              (state as GroupLoadedState).copyWith(message: deleteSuccess),
+            );
+          },
+        );
+      }
     });
 
     on<FetchAllGroupsEvent>(
@@ -149,7 +163,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     on<SelectGroupEvent>(
       (event, emit) async {
         final currentState = state as GroupLoadedState;
-        final selectedGroups = currentState.selectedGroups;
+        final selectedGroups = [...currentState.selectedGroups];
         selectedGroups.add(event.group);
         final failureOrVoidResult = await cacheGroups(
           SelectedGroupsParams(

@@ -84,16 +84,24 @@ class _FeatureCardState extends State<FeatureCard> {
             // read premission
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 48,
+                horizontal: 24,
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    AppLocalizations.of(context)!.read,
-                    style: TextStyle(
-                      color: Colors.grey.shade200,
-                      fontSize: 16,
+                  Icon(
+                    Icons.visibility,
+                    color: Colors.grey.shade200,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: Text(
+                      AppLocalizations.of(context)!.read,
+                      style: TextStyle(
+                        color: Colors.grey.shade200,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                   Switch(
@@ -114,16 +122,24 @@ class _FeatureCardState extends State<FeatureCard> {
             // create premission
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 48,
+                horizontal: 24,
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    AppLocalizations.of(context)!.create,
-                    style: TextStyle(
-                      color: Colors.grey.shade200,
-                      fontSize: 16,
+                  Icon(
+                    Icons.add,
+                    color: Colors.grey.shade200,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: Text(
+                      AppLocalizations.of(context)!.create,
+                      style: TextStyle(
+                        color: Colors.grey.shade200,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                   Switch(
@@ -144,16 +160,24 @@ class _FeatureCardState extends State<FeatureCard> {
             // edit premission
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 48,
+                horizontal: 24,
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    AppLocalizations.of(context)!.edit,
-                    style: TextStyle(
-                      color: Colors.grey.shade200,
-                      fontSize: 16,
+                  Icon(
+                    Icons.edit,
+                    color: Colors.grey.shade200,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: Text(
+                      AppLocalizations.of(context)!.edit,
+                      style: TextStyle(
+                        color: Colors.grey.shade200,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                   Switch(
@@ -174,16 +198,24 @@ class _FeatureCardState extends State<FeatureCard> {
             // delete premission
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 48,
+                horizontal: 24,
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    AppLocalizations.of(context)!.delete,
-                    style: TextStyle(
-                      color: Colors.grey.shade200,
-                      fontSize: 16,
+                  Icon(
+                    Icons.delete,
+                    color: Colors.grey.shade200,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: Text(
+                      AppLocalizations.of(context)!.delete,
+                      style: TextStyle(
+                        color: Colors.grey.shade200,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                   Switch(

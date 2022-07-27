@@ -100,7 +100,7 @@
     "location_management_add_location_message_delete_question": "Czy jesteś pewien, że chcesz usunąć {location}?",
     "location_management_add_location_message_update_success": "Pomyślnie zaktualizowano.",
     "home_screen_filter_select_locations": "Wybierz lokacje",
-    "home_screen_filter_select_group": "Wybierz grupę",
+    "home_screen_filter_select_group": "Wybierz grupy",
     "group_management_title": "Grupy",
     "group_management_add_button": "Dodaj grupę",
     "group_management_add_card_title": "Dodaj nową grupę",
@@ -114,6 +114,7 @@
     "group_management_add_error_name_exists": "Grupa o wybranej nazwie już istnieje!",
     "group_management_add_added_new_msg": "Dodano nową grupę",
     "group_management_delete_confirm": "Potwierdź usunięcie",
+    "group_management_delete_error_not_empty": "Usunięcie nie powiodło się. Najpierw usuń członków grupy.",
     "group_management_delete_question": "Czy na pewno chcesz usunąć {group}?",
     "group_members": "Członkowie grupy"
 }
