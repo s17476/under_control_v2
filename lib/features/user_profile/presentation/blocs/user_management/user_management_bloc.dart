@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
 
 import '../../../domain/usecases/approve_user_and_make_admin.dart';
 import '../../../domain/usecases/approve_user.dart';
@@ -17,12 +18,14 @@ class UserManagementBloc
   final ApproveUserAndMakeAdmin approveUserAndMakeAdmin;
   final RejectUser rejectUser;
   final SuspendUser suspendUser;
+  final UpdateUserData updateUserData;
 
   UserManagementBloc({
     required this.approveUser,
     required this.approveUserAndMakeAdmin,
     required this.rejectUser,
     required this.suspendUser,
+    required this.updateUserData,
   }) : super(UserManagementEmpty()) {
     on<ApproveUserEvent>((event, emit) async {
       emit(UserManagementLoading());
@@ -38,7 +41,7 @@ class UserManagementBloc
       final failureOrVoidResult = await approveUserAndMakeAdmin(event.userId);
       failureOrVoidResult.fold(
         (failure) async => emit(UserManagementError(message: failure.message)),
-        (voidResult) async => emit(const UserManagementSuccessful(message: '')),
+        (voidResult) async => emit(const UserManagementSuccessful()),
       );
     });
 
@@ -47,7 +50,7 @@ class UserManagementBloc
       final failureOrVoidResult = await rejectUser(event.userId);
       failureOrVoidResult.fold(
         (failure) async => emit(UserManagementError(message: failure.message)),
-        (voidResult) async => emit(const UserManagementSuccessful(message: '')),
+        (voidResult) async => emit(const UserManagementSuccessful()),
       );
     });
 
@@ -56,7 +59,7 @@ class UserManagementBloc
       final failureOrVoidResult = await suspendUser(event.userId);
       failureOrVoidResult.fold(
         (failure) async => emit(UserManagementError(message: failure.message)),
-        (voidResult) async => emit(const UserManagementSuccessful(message: '')),
+        (voidResult) async => emit(const UserManagementSuccessful()),
       );
     });
   }

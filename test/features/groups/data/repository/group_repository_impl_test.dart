@@ -38,8 +38,9 @@ void main() {
 
   const tGroup = GroupModel(
     id: 'id',
-    description: 'description',
     name: 'name',
+    description: 'description',
+    groupAdministrators: [],
     locations: [],
     features: [],
   );

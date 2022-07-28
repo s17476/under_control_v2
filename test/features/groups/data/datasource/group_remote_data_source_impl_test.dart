@@ -39,7 +39,8 @@ void main() {
     id: 'id',
     name: 'name',
     description: 'description',
-    locations: ['locations'],
+    groupAdministrators: const [],
+    locations: const ['locations'],
     features: [
       FeatureModel(
         type: FeatureType.assets,

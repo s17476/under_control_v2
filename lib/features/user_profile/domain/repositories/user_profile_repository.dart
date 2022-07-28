@@ -23,4 +23,12 @@ abstract class UserProfileRepository {
   Future<Either<Failure, VoidResult>> suspendUser(String userId);
 
   Future<Either<Failure, VoidResult>> updateUserdata(UserProfile userProfile);
+
+  Future<Either<Failure, VoidResult>> assignUserToGroup(
+    UserAndGroupParams params,
+  );
+
+  Future<Either<Failure, VoidResult>> unassignUserFromGroup(
+    UserAndGroupParams params,
+  );
 }

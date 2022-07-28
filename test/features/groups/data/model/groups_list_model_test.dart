@@ -6,8 +6,9 @@ import 'package:under_control_v2/features/groups/domain/entities/groups_list.dar
 void main() {
   const tGroupModel = GroupModel(
     id: 'id',
-    description: 'description',
     name: 'name',
+    description: 'description',
+    groupAdministrators: [],
     locations: [],
     features: [],
   );

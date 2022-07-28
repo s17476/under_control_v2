@@ -7,12 +7,14 @@ class Group extends Equatable {
   final String name;
   final String description;
   final List<String> locations;
+  final List<String> groupAdministrators;
   final List<FeatureModel> features;
 
   const Group({
     required this.id,
     required this.name,
     required this.description,
+    required this.groupAdministrators,
     required this.locations,
     required this.features,
   });
@@ -23,6 +25,7 @@ class Group extends Equatable {
       id,
       name,
       description,
+      groupAdministrators,
       locations,
       features,
     ];
@@ -30,6 +33,6 @@ class Group extends Equatable {
 
   @override
   String toString() {
-    return 'Group(id: $id, name: $name, description: $description, locations: $locations, features: $features)';
+    return 'Group(id: $id, name: $name, description: $description, locations: $locations, groupAdministrators: $groupAdministrators, features: $features)';
   }
 }

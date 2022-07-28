@@ -18,6 +18,7 @@ void main() {
       id: 'id',
       name: 'name',
       description: 'description',
+      groupAdministrators: [],
       locations: [],
       features: [],
     ));
@@ -27,6 +28,7 @@ void main() {
           id: 'id',
           name: 'name',
           description: 'description',
+          groupAdministrators: [],
           locations: [],
           features: [],
         ),
@@ -54,6 +56,7 @@ void main() {
                 id: 'id',
                 name: 'name',
                 description: 'description',
+                groupAdministrators: [],
                 locations: [],
                 features: [],
               ),

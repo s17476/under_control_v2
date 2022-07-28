@@ -169,6 +169,42 @@ void main() {
           expect(result, Right<Failure, VoidResult>(VoidResult()));
         },
       );
+
+      test(
+        'should return a [Voidresult] when assignUserToGroup is called',
+        () async {
+          // arrange
+          final userReferance =
+              await mockCollectionReference.add(tUserProfile.toMap());
+          // act
+          final result = await repository.assignUserToGroup(
+            UserAndGroupParams(
+              userId: userReferance.id,
+              groupId: 'groupId',
+            ),
+          );
+          // assert
+          expect(result, isA<Right<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [Voidresult] when unSssignUserFromGroup is called',
+        () async {
+          // arrange
+          final userReferance =
+              await mockCollectionReference.add(tUserProfile.toMap());
+          // act
+          final result = await repository.unassignUserFromGroup(
+            UserAndGroupParams(
+              userId: userReferance.id,
+              groupId: 'groupId',
+            ),
+          );
+          // assert
+          expect(result, isA<Right<Failure, VoidResult>>());
+        },
+      );
     },
   );
 
@@ -297,6 +333,38 @@ void main() {
           ).thenThrow(FirebaseException(plugin: 'Bad Firebase'));
           // act
           final result = await badRepository.updateUserdata(tUserProfile);
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [DatabaseFailure] when assignUserToGroup is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(FirebaseException(plugin: 'Bad Firebase'));
+          // act
+          final result = await badRepository.assignUserToGroup(
+            const UserAndGroupParams(userId: 'userId', groupId: 'groupId'),
+          );
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [DatabaseFailure] when unassignUserFromGroup is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(FirebaseException(plugin: 'Bad Firebase'));
+          // act
+          final result = await badRepository.unassignUserFromGroup(
+            const UserAndGroupParams(userId: 'userId', groupId: 'groupId'),
+          );
           // assert
           expect(result, isA<Left<Failure, VoidResult>>());
         },
@@ -430,6 +498,38 @@ void main() {
           ).thenThrow(Exception());
           // act
           final result = await badRepository.updateUserdata(tUserProfile);
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [UnsuspectedFailure] when assignUserToGroup is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(Exception());
+          // act
+          final result = await badRepository.assignUserToGroup(
+            const UserAndGroupParams(userId: 'userId', groupId: 'groupId'),
+          );
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [UnsuspectedFailure] when unassignUserFromGroup is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(Exception());
+          // act
+          final result = await badRepository.unassignUserFromGroup(
+            const UserAndGroupParams(userId: 'userId', groupId: 'groupId'),
+          );
           // assert
           expect(result, isA<Left<Failure, VoidResult>>());
         },

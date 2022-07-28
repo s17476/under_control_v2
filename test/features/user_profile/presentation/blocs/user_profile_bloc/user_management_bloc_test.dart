@@ -8,7 +8,9 @@ import 'package:under_control_v2/features/user_profile/domain/usecases/approve_u
 import 'package:under_control_v2/features/user_profile/domain/usecases/approve_user_and_make_admin.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/reject_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/suspend_user.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 class MockApproveUser extends Mock implements ApproveUser {}
 
@@ -19,11 +21,14 @@ class MockRejectUser extends Mock implements RejectUser {}
 
 class MockSuspendUser extends Mock implements SuspendUser {}
 
+class MockUpdateUserData extends Mock implements UpdateUserData {}
+
 void main() {
   late MockApproveUser mockApproveUser;
   late MockApproveUserAndMakeAdmin mockApproveUserAndMakeAdmin;
   late MockRejectUser mockRejectUser;
   late MockSuspendUser mockSuspendUser;
+  late MockUpdateUserData mockUpdateUserData;
   late UserManagementBloc userManagementBloc;
 
   setUp(() {
@@ -31,12 +36,14 @@ void main() {
     mockApproveUserAndMakeAdmin = MockApproveUserAndMakeAdmin();
     mockRejectUser = MockRejectUser();
     mockSuspendUser = MockSuspendUser();
+    mockUpdateUserData = MockUpdateUserData();
 
     userManagementBloc = UserManagementBloc(
       approveUser: mockApproveUser,
       approveUserAndMakeAdmin: mockApproveUserAndMakeAdmin,
       rejectUser: mockRejectUser,
       suspendUser: mockSuspendUser,
+      updateUserData: mockUpdateUserData,
     );
   });
 

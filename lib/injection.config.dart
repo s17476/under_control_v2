@@ -220,7 +220,8 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       approveUser: get<_i18.ApproveUser>(),
       approveUserAndMakeAdmin: get<_i19.ApproveUserAndMakeAdmin>(),
       rejectUser: get<_i39.RejectUser>(),
-      suspendUser: get<_i46.SuspendUser>()));
+      suspendUser: get<_i46.SuspendUser>(),
+      updateUserData: get<_i52.UpdateUserData>()));
   gh.lazySingleton<_i54.AddCompany>(() => _i54.AddCompany(
       companyManagementRepository: get<_i25.CompanyManagementRepository>()));
   gh.lazySingleton<_i55.AddCompanyLogo>(() =>

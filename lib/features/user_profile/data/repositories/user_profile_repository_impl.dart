@@ -179,4 +179,44 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, VoidResult>> assignUserToGroup(
+      UserAndGroupParams params) async {
+    final groupMap = {
+      'userGroups': FieldValue.arrayUnion([params.groupId])
+    };
+    try {
+      final userReference =
+          firebaseFirestore.collection('users').doc(params.userId);
+      await userReference.update(groupMap);
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return Left(
+        UnsuspectedFailure(message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, VoidResult>> unassignUserFromGroup(
+      UserAndGroupParams params) async {
+    final groupMap = {
+      'userGroups': FieldValue.arrayRemove([params.groupId])
+    };
+    try {
+      final userReference =
+          firebaseFirestore.collection('users').doc(params.userId);
+      await userReference.update(groupMap);
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return Left(
+        UnsuspectedFailure(message: e.toString()),
+      );
+    }
+  }
 }

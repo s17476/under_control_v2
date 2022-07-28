@@ -68,6 +68,19 @@ class AssignParams extends Equatable {
   List<Object> get props => [userId, companyId];
 }
 
+class UserAndGroupParams extends Equatable {
+  final String userId;
+  final String groupId;
+
+  const UserAndGroupParams({
+    required this.userId,
+    required this.groupId,
+  });
+
+  @override
+  List<Object> get props => [userId, groupId];
+}
+
 class AvatarParams extends Equatable {
   final String userId;
   final File avatar;

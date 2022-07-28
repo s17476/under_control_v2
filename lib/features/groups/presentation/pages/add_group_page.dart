@@ -275,6 +275,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
         id: (group != null) ? group!.id : '',
         name: nameTexEditingController.text,
         description: descriptionTexEditingController.text,
+        groupAdministrators: const [],
         locations: totalSelectedLocations,
         features: features,
       );

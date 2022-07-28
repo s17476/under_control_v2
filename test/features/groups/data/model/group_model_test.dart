@@ -6,8 +6,9 @@ import 'package:under_control_v2/features/groups/domain/entities/group.dart';
 void main() {
   const tGroupModel = GroupModel(
     id: 'id',
-    description: 'description',
     name: 'name',
+    description: 'description',
+    groupAdministrators: [],
     locations: [],
     features: [],
   );
@@ -15,6 +16,7 @@ void main() {
   const tGroupModelMap = {
     'name': 'name',
     'description': 'description',
+    'groupAdministrators': [],
     'locations': [],
     'features': [],
   };
