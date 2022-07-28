@@ -2,6 +2,8 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
+import 'package:under_control_v2/features/company_profile/domain/entities/company_users_list.dart';
 import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
@@ -145,6 +147,25 @@ void main() {
         ),
         act: (bloc) async {
           bloc.add(DeleteGroupEvent(group: tGroup));
+          when(() => mockCompanyProfileBloc.state).thenAnswer(
+            (_) => CompanyProfileLoaded(
+              companyUsers: const CompanyUsersList(allUsers: []),
+              company: Company(
+                id: 'id',
+                name: 'name',
+                address: 'address',
+                postCode: 'postCode',
+                city: '',
+                country: 'country',
+                vatNumber: 'vatNumber',
+                phoneNumber: 'phoneNumber',
+                email: 'email',
+                homepage: 'homepage',
+                logo: '',
+                joinDate: DateTime.now(),
+              ),
+            ),
+          );
           when(() => mockDeleteGroup(any()))
               .thenAnswer((_) async => const Left(DatabaseFailure()));
         },
@@ -159,6 +180,25 @@ void main() {
         ),
         act: (bloc) async {
           bloc.add(DeleteGroupEvent(group: tGroup));
+          when(() => mockCompanyProfileBloc.state).thenAnswer(
+            (_) => CompanyProfileLoaded(
+              companyUsers: const CompanyUsersList(allUsers: []),
+              company: Company(
+                id: 'id',
+                name: 'name',
+                address: 'address',
+                postCode: 'postCode',
+                city: '',
+                country: 'country',
+                vatNumber: 'vatNumber',
+                phoneNumber: 'phoneNumber',
+                email: 'email',
+                homepage: 'homepage',
+                logo: '',
+                joinDate: DateTime.now(),
+              ),
+            ),
+          );
           when(() => mockDeleteGroup(any()))
               .thenAnswer((_) async => Right(VoidResult()));
         },
