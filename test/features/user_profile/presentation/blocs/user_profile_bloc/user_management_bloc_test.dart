@@ -6,11 +6,12 @@ import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/approve_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/approve_user_and_make_admin.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/assign_user_to_group.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/reject_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/suspend_user.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/unassign_user_from_group.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 class MockApproveUser extends Mock implements ApproveUser {}
 
@@ -23,12 +24,18 @@ class MockSuspendUser extends Mock implements SuspendUser {}
 
 class MockUpdateUserData extends Mock implements UpdateUserData {}
 
+class MockAssignUserToGroup extends Mock implements AssignUserToGroup {}
+
+class MockUnassignUserFromGroup extends Mock implements UnassignUserFromGroup {}
+
 void main() {
   late MockApproveUser mockApproveUser;
   late MockApproveUserAndMakeAdmin mockApproveUserAndMakeAdmin;
   late MockRejectUser mockRejectUser;
   late MockSuspendUser mockSuspendUser;
   late MockUpdateUserData mockUpdateUserData;
+  late MockAssignUserToGroup mockAssignUserToGroup;
+  late MockUnassignUserFromGroup mockUnassignUserFromGroup;
   late UserManagementBloc userManagementBloc;
 
   setUp(() {
@@ -37,6 +44,8 @@ void main() {
     mockRejectUser = MockRejectUser();
     mockSuspendUser = MockSuspendUser();
     mockUpdateUserData = MockUpdateUserData();
+    mockAssignUserToGroup = MockAssignUserToGroup();
+    mockUnassignUserFromGroup = MockUnassignUserFromGroup();
 
     userManagementBloc = UserManagementBloc(
       approveUser: mockApproveUser,
@@ -44,6 +53,22 @@ void main() {
       rejectUser: mockRejectUser,
       suspendUser: mockSuspendUser,
       updateUserData: mockUpdateUserData,
+      assignUserToGroup: mockAssignUserToGroup,
+      unassignUserFromGroup: mockUnassignUserFromGroup,
+    );
+  });
+
+  const tUserAndGroupParams = UserAndGroupParams(
+    groupId: 'groupId',
+    userId: 'userId',
+  );
+
+  setUpAll(() {
+    registerFallbackValue(
+      const UserAndGroupParams(
+        userId: 'userId',
+        groupId: 'groupId',
+      ),
     );
   });
 
@@ -216,6 +241,112 @@ void main() {
         },
         skip: 1,
         verify: (_) => verify(() => mockSuspendUser('')).called(1),
+        expect: () => [isA<UserManagementSuccessful>()],
+      );
+    });
+
+    group('AssignUserToGroup', () {
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [UnsuspectedFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(
+            const AssignUserToGroupEvent(groupId: 'groupId', userId: 'userId'),
+          );
+          when(() => mockAssignUserToGroup(any()))
+              .thenAnswer((_) async => const Left(UnsuspectedFailure()));
+        },
+        skip: 1,
+        verify: (_) =>
+            verify(() => mockAssignUserToGroup(tUserAndGroupParams)).called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [DatabaseFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(
+            const AssignUserToGroupEvent(groupId: 'groupId', userId: 'userId'),
+          );
+          when(() => mockAssignUserToGroup(any()))
+              .thenAnswer((_) async => const Left(UnsuspectedFailure()));
+        },
+        skip: 1,
+        verify: (_) =>
+            verify(() => mockAssignUserToGroup(tUserAndGroupParams)).called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementSuccess] when usecase returns [VoidResult]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(
+            const AssignUserToGroupEvent(groupId: 'groupId', userId: 'userId'),
+          );
+          when(() => mockAssignUserToGroup(any()))
+              .thenAnswer((_) async => Right(VoidResult()));
+        },
+        skip: 1,
+        verify: (_) =>
+            verify(() => mockAssignUserToGroup(tUserAndGroupParams)).called(1),
+        expect: () => [isA<UserManagementSuccessful>()],
+      );
+    });
+
+    group('UnassignUserFromGroup', () {
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [UnsuspectedFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(
+            const UnassignUserFromGroupEvent(
+                groupId: 'groupId', userId: 'userId'),
+          );
+          when(() => mockUnassignUserFromGroup(any()))
+              .thenAnswer((_) async => const Left(UnsuspectedFailure()));
+        },
+        skip: 1,
+        verify: (_) =>
+            verify(() => mockUnassignUserFromGroup(tUserAndGroupParams))
+                .called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [DatabaseFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(
+            const UnassignUserFromGroupEvent(
+                groupId: 'groupId', userId: 'userId'),
+          );
+          when(() => mockUnassignUserFromGroup(any()))
+              .thenAnswer((_) async => const Left(UnsuspectedFailure()));
+        },
+        skip: 1,
+        verify: (_) =>
+            verify(() => mockUnassignUserFromGroup(tUserAndGroupParams))
+                .called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementSuccess] when usecase returns [VoidResult]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(
+            const UnassignUserFromGroupEvent(
+                groupId: 'groupId', userId: 'userId'),
+          );
+          when(() => mockUnassignUserFromGroup(any()))
+              .thenAnswer((_) async => Right(VoidResult()));
+        },
+        skip: 1,
+        verify: (_) =>
+            verify(() => mockUnassignUserFromGroup(tUserAndGroupParams))
+                .called(1),
         expect: () => [isA<UserManagementSuccessful>()],
       );
     });
