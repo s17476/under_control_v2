@@ -33,12 +33,18 @@ class IconTitleRow extends StatelessWidget {
           child: Icon(
             icon,
             size: iconSize,
+            color: iconColor,
           ),
         ),
         const SizedBox(
           width: 8,
         ),
-        Text(title),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: titleFontSize,
+          ),
+        ),
       ],
     );
   }

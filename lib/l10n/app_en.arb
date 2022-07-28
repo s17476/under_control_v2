@@ -1,4 +1,12 @@
 {
+    "yes": "Yes",
+    "@yes": {
+      "description": "Yes"
+    },
+    "no": "No",
+    "@no": {
+      "description": "No"
+    },
     "add": "Add",
     "@add": {
       "description": "Add"
@@ -114,7 +122,6 @@
     "new_account": "Create new account",
     "@new_account": {
       "description": "Authentication page - new account button"
-    
     },
     "take_photo": "Take a photo",
     "@take_photo": {
@@ -493,5 +500,29 @@
     "group_members": "Group members",
     "@group_members": {
       "description": "Group members"
+    },
+    "user_details_no_data": "No data",
+    "@user_details_no_data": {
+      "description": "No user details"
+    },
+    "user_details_title": "User details",
+    "@user_details_title": {
+      "description": "User details title"
+    },
+    "user_details_data": "User data",
+    "@user_details_data": {
+      "description": "User details data"
+    },
+    "user_details_premissions": "User premissions",
+    "@user_details_premissions": {
+      "description": "User details premissions"
+    },
+    "user_details_admin": "Administrator",
+    "@user_details_admin": {
+      "description": "User details administrator"
+    },
+    "user_details_sms": "SMS message",
+    "@user_details_sms": {
+      "description": "User details SMS"
     }
 }

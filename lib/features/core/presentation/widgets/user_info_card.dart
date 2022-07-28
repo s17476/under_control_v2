@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../user_profile/domain/entities/user_profile.dart';
@@ -87,18 +88,11 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                     height: 24,
                   ),
                   // avatar
-                  ClipOval(
-                    child: CachedNetworkImage(
-                      height: responsiveSizePct(small: 40),
-                      width: responsiveSizePct(small: 40),
-                      fit: BoxFit.fitWidth,
-                      imageUrl: widget.user.avatarUrl,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.image_not_supported_rounded),
-                    ),
+                  CachedUserAvatar(
+                    size: responsiveSizePct(small: 40),
+                    imageUrl: widget.user.avatarUrl,
                   ),
+
                   const SizedBox(
                     height: 16,
                   ),

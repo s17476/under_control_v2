@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
 
 import '../../../user_profile/domain/entities/user_profile.dart';
 
@@ -22,17 +23,9 @@ class UserListTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Row(
           children: [
-            ClipOval(
-              child: CachedNetworkImage(
-                height: 60,
-                width: 60,
-                fit: BoxFit.fitWidth,
-                imageUrl: user.avatarUrl,
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                errorWidget: (context, url, error) =>
-                    const Icon(Icons.image_not_supported_rounded),
-              ),
+            CachedUserAvatar(
+              size: 60,
+              imageUrl: user.avatarUrl,
             ),
             const SizedBox(
               width: 16,

@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
 import 'package:under_control_v2/features/groups/presentation/pages/group_management_page.dart';
 import 'package:under_control_v2/features/locations/presentation/pages/location_management_page.dart';
+import 'package:under_control_v2/features/user_profile/presentation/pages/user_details_page.dart';
 
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
@@ -103,14 +104,16 @@ class App extends StatelessWidget
           },
         ),
         routes: {
-          HomePage.routeName: (ctx) => const HomePage(),
-          AuthenticationPage.routeName: (ctx) => const AuthenticationPage(),
-          AddCompanyPage.routeName: (ctx) => const AddCompanyPage(),
-          LocationManagementPage.routeName: (ctx) =>
+          HomePage.routeName: (context) => const HomePage(),
+          AuthenticationPage.routeName: (context) => const AuthenticationPage(),
+          AddCompanyPage.routeName: (context) => const AddCompanyPage(),
+          LocationManagementPage.routeName: (context) =>
               const LocationManagementPage(),
-          GroupManagementPage.routeName: (ctx) => const GroupManagementPage(),
-          AddGroupPage.routeName: (ctx) => const AddGroupPage(),
-          GroupDetailsPage.routeName: (ctx) => const GroupDetailsPage(),
+          GroupManagementPage.routeName: (context) =>
+              const GroupManagementPage(),
+          AddGroupPage.routeName: (context) => const AddGroupPage(),
+          GroupDetailsPage.routeName: (context) => const GroupDetailsPage(),
+          UserDetailsPage.routeName: (context) => const UserDetailsPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

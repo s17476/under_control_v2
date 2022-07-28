@@ -1,6 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
+import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import 'package:under_control_v2/features/user_profile/presentation/pages/user_details_page.dart';
 
 import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../../groups/presentation/pages/group_management_page.dart';
@@ -36,7 +41,50 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                 ),
               ),
               const Divider(),
-              const Text('user data'),
+              BlocBuilder<UserProfileBloc, UserProfileState>(
+                builder: (context, state) {
+                  if (state is Approved) {
+                    return InkWell(
+                      onTap: () => Navigator.popAndPushNamed(
+                        context,
+                        UserDetailsPage.routeName,
+                        arguments: state.userProfile,
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          CachedUserAvatar(
+                            size: responsiveSizePct(small: 15),
+                            imageUrl: state.userProfile.avatarUrl,
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                state.userProfile.firstName,
+                                style: const TextStyle(fontSize: 16),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                state.userProfile.lastName,
+                                style: const TextStyle(fontSize: 16),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
+              ),
               const Divider(),
               CustomMenuItem(
                 onTap: () {

@@ -131,9 +131,12 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
                 } else {
                   return Padding(
                     padding: EdgeInsets.only(top: index == 0 ? 4 : 0),
-                    child: GroupTile(
-                      key: ValueKey(filteredGroups[index].id),
-                      group: filteredGroups[index],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: GroupTile(
+                        key: ValueKey(filteredGroups[index].id),
+                        group: filteredGroups[index],
+                      ),
                     ),
                   );
                 }

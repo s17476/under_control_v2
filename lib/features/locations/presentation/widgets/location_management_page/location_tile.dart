@@ -7,11 +7,13 @@ import 'bottom_modal_sheet.dart';
 import 'show_delete_dialog.dart';
 
 class LocationTile extends StatefulWidget {
+  final bool isAdministrator;
   final List<Location> allLocations;
   final Location location;
   final Color color;
   const LocationTile({
     Key? key,
+    required this.isAdministrator,
     required this.allLocations,
     required this.location,
     required this.color,
@@ -75,11 +77,13 @@ class _LocationTileState extends State<LocationTile> {
                         ),
                         color: widget.color,
                       ),
-                      child: Icon(
-                        expanded
-                            ? Icons.keyboard_arrow_up_rounded
-                            : Icons.keyboard_arrow_down_rounded,
-                      ),
+                      child: (children.isNotEmpty || widget.isAdministrator)
+                          ? Icon(
+                              expanded
+                                  ? Icons.keyboard_arrow_up_rounded
+                                  : Icons.keyboard_arrow_down_rounded,
+                            )
+                          : const SizedBox(),
                     ),
                     const SizedBox(
                       width: 16,
@@ -104,36 +108,37 @@ class _LocationTileState extends State<LocationTile> {
                                   ),
                                 ),
                                 // action buttons
-                                Row(
-                                  children: [
-                                    // edit button
-                                    IconButton(
-                                      onPressed: () {
-                                        showAddLocationModalBottomSheet(
-                                          context: context,
-                                          currentLocation: widget.location,
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.edit,
-                                        color: Colors.grey.shade200,
+                                if (widget.isAdministrator)
+                                  Row(
+                                    children: [
+                                      // edit button
+                                      IconButton(
+                                        onPressed: () {
+                                          showAddLocationModalBottomSheet(
+                                            context: context,
+                                            currentLocation: widget.location,
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: Colors.grey.shade200,
+                                        ),
                                       ),
-                                    ),
-                                    // delete button
-                                    IconButton(
-                                      onPressed: () {
-                                        showDeleteDialog(
-                                          context: context,
-                                          location: widget.location,
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.delete,
-                                        color: Colors.grey.shade200,
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                      // delete button
+                                      IconButton(
+                                        onPressed: () {
+                                          showDeleteDialog(
+                                            context: context,
+                                            location: widget.location,
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.grey.shade200,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                               ],
                             ),
                           ),
@@ -162,18 +167,20 @@ class _LocationTileState extends State<LocationTile> {
                 for (var location in children)
                   // location card
                   LocationTile(
+                    isAdministrator: widget.isAdministrator,
                     allLocations: widget.allLocations,
                     location: location,
                     color: widget.color,
                     key: Key(location.id),
                   ),
                 // add new location card
-                AddLocationCard(
-                  parentLocation: widget.location,
-                  key: Key(
-                    '${widget.location.id}add',
+                if (widget.isAdministrator)
+                  AddLocationCard(
+                    parentLocation: widget.location,
+                    key: Key(
+                      '${widget.location.id}add',
+                    ),
                   ),
-                ),
               ],
             ),
           ),
