@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/presentation/widgets/search_text_field.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/group.dart';
 import '../blocs/group/group_bloc.dart';
 import '../widgets/group_management/group_tile.dart';
@@ -20,6 +21,7 @@ class GroupManagementPage extends StatefulWidget {
 
 class _GroupManagementPageState extends State<GroupManagementPage> {
   bool isSearchFieldExpanded = false;
+  bool isAdministrator = false;
 
   TextEditingController searchController = TextEditingController();
 
@@ -38,6 +40,14 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
     setState(() {
       searchQuery = searchController.text;
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    isAdministrator = (context.read<UserProfileBloc>().state as Approved)
+        .userProfile
+        .administrator;
+    super.didChangeDependencies();
   }
 
   @override
@@ -147,22 +157,29 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
           }
         },
       ),
-      floatingActionButton: context.watch<GroupBloc>().state is GroupLoadedState
-          ? FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.pushNamed(context, AddGroupPage.routeName);
-              },
-              icon: Icon(
-                Icons.group_add,
-                color: Colors.grey.shade200,
-              ),
-              label: Text(
-                AppLocalizations.of(context)!.group_management_add_button,
-                style: TextStyle(
-                  color: Colors.grey.shade200,
-                ),
-              ),
-            )
+      // floating action button visible only if:
+      // user is administrator
+      // and GroupBloc state is GroupLoadedState
+      floatingActionButton: isAdministrator
+          ? context.watch<GroupBloc>().state is GroupLoadedState
+              ? FloatingActionButton.extended(
+                  onPressed: () {
+                    Navigator.pushNamed(context, AddGroupPage.routeName);
+                  },
+                  icon: Icon(
+                    Icons.group_add,
+                    color: Colors.grey.shade200,
+                  ),
+                  label: Text(
+                    AppLocalizations.of(context)!.group_management_add_button,
+                    style: TextStyle(
+                      color: Colors.grey.shade200,
+                    ),
+                  ),
+                )
+              // bloc state is not GroupLoadedState
+              : null
+          // not an administrator
           : null,
     );
   }

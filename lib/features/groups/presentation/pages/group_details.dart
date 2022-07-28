@@ -5,6 +5,7 @@ import 'package:under_control_v2/features/groups/presentation/pages/add_group_pa
 
 import '../../../core/presentation/widgets/user_info_card.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/group.dart';
 import '../blocs/group/group_bloc.dart';
 import '../widgets/group_details/group_locations.dart';
@@ -25,7 +26,9 @@ class GroupDetailsPage extends StatefulWidget {
 
 class _GroupDetailsPageState extends State<GroupDetailsPage> {
   UserProfile? userProfile;
+
   bool isUserInfoCardVisible = false;
+  bool isAdministrator = false;
 
   void showUserInfoCard(UserProfile userProfile) {
     setState(() {
@@ -39,6 +42,14 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       isUserInfoCardVisible = false;
       userProfile = null;
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    isAdministrator = (context.read<UserProfileBloc>().state as Approved)
+        .userProfile
+        .administrator;
+    super.didChangeDependencies();
   }
 
   @override
@@ -60,29 +71,31 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           centerTitle: true,
           actions: [
             // edit button
-            IconButton(
-              onPressed: () async {
-                hideUserInfoCard();
-                Navigator.popAndPushNamed(
-                  context,
-                  AddGroupPage.routeName,
-                  arguments: group,
-                );
-              },
-              icon: const Icon(Icons.edit),
-            ),
+            if (isAdministrator)
+              IconButton(
+                onPressed: () async {
+                  hideUserInfoCard();
+                  Navigator.popAndPushNamed(
+                    context,
+                    AddGroupPage.routeName,
+                    arguments: group,
+                  );
+                },
+                icon: const Icon(Icons.edit),
+              ),
             // delete button
-            IconButton(
-              onPressed: () async {
-                hideUserInfoCard();
-                final result =
-                    await showGroupDeleteDialog(context: context, group: group);
-                if (result != null && result) {
-                  Navigator.pop(context);
-                }
-              },
-              icon: const Icon(Icons.delete),
-            ),
+            if (isAdministrator)
+              IconButton(
+                onPressed: () async {
+                  hideUserInfoCard();
+                  final result = await showGroupDeleteDialog(
+                      context: context, group: group);
+                  if (result != null && result) {
+                    Navigator.pop(context);
+                  }
+                },
+                icon: const Icon(Icons.delete),
+              ),
             const SizedBox(
               width: 8,
             ),
@@ -137,7 +150,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                         // description
                         if (group.description.isNotEmpty)
                           Padding(
-                            padding: const EdgeInsets.only(left: 4),
+                            padding: const EdgeInsets.only(left: 4, top: 8),
                             child: Row(
                               children: [
                                 Container(
@@ -167,7 +180,12 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                             ),
                           ),
                         if (group.description.isNotEmpty)
-                          const Divider(thickness: 1.5),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: Divider(
+                              thickness: 1.5,
+                            ),
+                          ),
                         // features
                         Padding(
                           padding: const EdgeInsets.only(left: 4),
