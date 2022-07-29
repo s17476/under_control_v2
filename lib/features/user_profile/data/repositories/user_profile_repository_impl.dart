@@ -219,4 +219,50 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, VoidResult>> assignGroupAdmin(
+      AssignGroupAdminParams params) async {
+    final adminMap = {
+      'groupAdministrators': FieldValue.arrayUnion([params.userId])
+    };
+    try {
+      final groupReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('groups')
+          .doc(params.groupId);
+      await groupReference.update(adminMap);
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return Left(
+        UnsuspectedFailure(message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, VoidResult>> unassignGroupAdmin(
+      AssignGroupAdminParams params) async {
+    final adminMap = {
+      'groupAdministrators': FieldValue.arrayRemove([params.userId])
+    };
+    try {
+      final groupReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('groups')
+          .doc(params.groupId);
+      await groupReference.update(adminMap);
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return Left(
+        UnsuspectedFailure(message: e.toString()),
+      );
+    }
+  }
 }

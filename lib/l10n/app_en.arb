@@ -540,5 +540,9 @@
     "user_details_sms": "SMS message",
     "@user_details_sms": {
       "description": "User details SMS"
+    },
+    "user_show_profile": "Show profile",
+    "@user_show_profile": {
+      "description": "Show profile"
     }
 }

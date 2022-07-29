@@ -85,7 +85,15 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   @override
   void didChangeDependencies() {
     // gets group data
-    group = ModalRoute.of(context)!.settings.arguments as Group;
+    final groupId = (ModalRoute.of(context)!.settings.arguments as Group).id;
+    final groupState = context.watch<GroupBloc>().state;
+    if (groupState is GroupLoadedState) {
+      final index = groupState.allGroups.allGroups
+          .indexWhere((element) => element.id == groupId);
+      if (index >= 0) {
+        group = groupState.allGroups.allGroups[index];
+      }
+    }
     final currentUserProfile =
         (context.read<UserProfileBloc>().state as Approved).userProfile;
     isAdministrator = currentUserProfile.administrator;
@@ -132,7 +140,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 onPressed: () async {
                   hideUserInfoCard();
                   hideAddUsersCard();
-                  Navigator.popAndPushNamed(
+                  Navigator.pushNamed(
                     context,
                     AddGroupPage.routeName,
                     arguments: group,
@@ -331,6 +339,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                   UserInfoCard(
                     onDismiss: hideUserInfoCard,
                     user: userProfile!,
+                    group: group,
                   ),
                 // add users to the group card
                 if (isAddUsersCardVisible)

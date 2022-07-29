@@ -157,8 +157,11 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           (selectedLocationsParams) async {
             final List<Location> cachedLocations = [];
             for (var locationId in selectedLocationsParams.locations) {
-              cachedLocations.add(locationsList.allLocations
-                  .firstWhere((element) => element.id == locationId));
+              final index = locationsList.allLocations
+                  .indexWhere((element) => element.id == locationId);
+              if (index >= 0) {
+                cachedLocations.add(locationsList.allLocations[index]);
+              }
             }
             final locationsContext = getselectedLocationsContext(
               cachedLocations,

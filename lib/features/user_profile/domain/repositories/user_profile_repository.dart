@@ -31,4 +31,12 @@ abstract class UserProfileRepository {
   Future<Either<Failure, VoidResult>> unassignUserFromGroup(
     UserAndGroupParams params,
   );
+
+  Future<Either<Failure, VoidResult>> assignGroupAdmin(
+    AssignGroupAdminParams params,
+  );
+
+  Future<Either<Failure, VoidResult>> unassignGroupAdmin(
+    AssignGroupAdminParams params,
+  );
 }

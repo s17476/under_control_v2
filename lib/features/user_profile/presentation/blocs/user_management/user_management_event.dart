@@ -44,3 +44,23 @@ class UnassignUserFromGroupEvent extends UserManagementEvent {
     required super.userId,
   });
 }
+
+class AssignGroupAdminEvent extends UserManagementEvent {
+  final String groupId;
+  final String companyId;
+  const AssignGroupAdminEvent({
+    required this.groupId,
+    required this.companyId,
+    required super.userId,
+  });
+}
+
+class UnassignGroupAdminEvent extends UserManagementEvent {
+  final String groupId;
+  final String companyId;
+  const UnassignGroupAdminEvent({
+    required this.groupId,
+    required this.companyId,
+    required super.userId,
+  });
+}

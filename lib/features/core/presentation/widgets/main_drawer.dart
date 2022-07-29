@@ -26,7 +26,7 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      width: responsiveSizePct(small: 60),
+      width: responsiveSizePct(small: 70),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -55,6 +55,7 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                           const SizedBox(
                             width: 8,
                           ),
+                          // avatar
                           CachedUserAvatar(
                             size: responsiveSizePct(small: 15),
                             imageUrl: state.userProfile.avatarUrl,
@@ -62,20 +63,26 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                           const SizedBox(
                             width: 16,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                state.userProfile.firstName,
-                                style: const TextStyle(fontSize: 16),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                state.userProfile.lastName,
-                                style: const TextStyle(fontSize: 16),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // first name
+                                Text(
+                                  state.userProfile.firstName,
+                                  style: const TextStyle(fontSize: 16),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                                // last name
+                                Text(
+                                  state.userProfile.lastName,
+                                  style: const TextStyle(fontSize: 16),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

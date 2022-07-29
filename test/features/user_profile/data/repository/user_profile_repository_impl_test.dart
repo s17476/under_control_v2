@@ -6,6 +6,7 @@ import 'package:mocktail/mocktail.dart';
 
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/groups/data/models/group_model.dart';
 import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
 import 'package:under_control_v2/features/user_profile/data/repositories/user_profile_repository_impl.dart';
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
@@ -16,6 +17,7 @@ void main() {
   late FakeFirebaseFirestore fakeFirebaseFirestore;
   late UserProfileRepositoryImpl repository;
   late CollectionReference mockCollectionReference;
+  late CollectionReference mockGroupCollectionReference;
   late UserProfileRepositoryImpl badRepository;
   late MockFirebaseFirestore badFirebaseFirestoreInstance;
 
@@ -26,6 +28,7 @@ void main() {
         firebaseFirestore: fakeFirebaseFirestore,
       );
       mockCollectionReference = fakeFirebaseFirestore.collection('users');
+      mockGroupCollectionReference = fakeFirebaseFirestore.collection('groups');
       badFirebaseFirestoreInstance = MockFirebaseFirestore();
       badRepository = UserProfileRepositoryImpl(
           firebaseFirestore: badFirebaseFirestoreInstance);
@@ -47,6 +50,8 @@ void main() {
     suspended: false,
     administrator: false,
   );
+
+  final tGroup = GroupModel.inital();
 
   group(
     'UserPorfile successful database response',
@@ -200,6 +205,42 @@ void main() {
               userId: userReferance.id,
               groupId: 'groupId',
             ),
+          );
+          // assert
+          expect(result, isA<Right<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [Voidresult] when assigngroupAdmin is called',
+        () async {
+          // arrange
+          final groupReferance =
+              await mockGroupCollectionReference.add(tGroup.toMap());
+          // act
+          final result = await repository.assignGroupAdmin(
+            AssignGroupAdminParams(
+                userId: 'userId',
+                groupId: groupReferance.id,
+                companyId: 'companyId'),
+          );
+          // assert
+          expect(result, isA<Right<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [Voidresult] when unassigngroupAdmin is called',
+        () async {
+          // arrange
+          final groupReferance =
+              await mockGroupCollectionReference.add(tGroup.toMap());
+          // act
+          final result = await repository.unassignGroupAdmin(
+            AssignGroupAdminParams(
+                userId: 'userId',
+                groupId: groupReferance.id,
+                companyId: 'companyId'),
           );
           // assert
           expect(result, isA<Right<Failure, VoidResult>>());
@@ -369,6 +410,40 @@ void main() {
           expect(result, isA<Left<Failure, VoidResult>>());
         },
       );
+
+      test(
+        'should return a [DatabaseFailure] when assignGroupAdmin is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(FirebaseException(plugin: 'Bad Firebase'));
+          // act
+          final result = await badRepository.assignGroupAdmin(
+            const AssignGroupAdminParams(
+                userId: 'userId', groupId: 'groupId', companyId: 'companyId'),
+          );
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [DatabaseFailure] when unassignGroupAdmin is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(FirebaseException(plugin: 'Bad Firebase'));
+          // act
+          final result = await badRepository.unassignGroupAdmin(
+            const AssignGroupAdminParams(
+                userId: 'userId', groupId: 'groupId', companyId: 'companyId'),
+          );
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
     },
   );
 
@@ -529,6 +604,46 @@ void main() {
           // act
           final result = await badRepository.unassignUserFromGroup(
             const UserAndGroupParams(userId: 'userId', groupId: 'groupId'),
+          );
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [UnexpectedFailure] when assignGroupAdmin is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(Exception());
+          // act
+          final result = await badRepository.assignGroupAdmin(
+            const AssignGroupAdminParams(
+              userId: 'userId',
+              groupId: 'groupId',
+              companyId: 'companyId',
+            ),
+          );
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [UnexpectedFailure] when unassignGroupAdmin is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(Exception());
+          // act
+          final result = await badRepository.unassignGroupAdmin(
+            const AssignGroupAdminParams(
+              userId: 'userId',
+              groupId: 'groupId',
+              companyId: 'companyId',
+            ),
           );
           // assert
           expect(result, isA<Left<Failure, VoidResult>>());

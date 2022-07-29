@@ -148,8 +148,11 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
           (selectedGroupsParams) async {
             final List<Group> cachedGroups = [];
             for (var groupId in selectedGroupsParams.groups) {
-              cachedGroups.add(groupsList.allGroups
-                  .firstWhere((element) => element.id == groupId));
+              final index = groupsList.allGroups
+                  .indexWhere((element) => element.id == groupId);
+              if (index >= 0) {
+                cachedGroups.add(groupsList.allGroups[index]);
+              }
             }
             emit(GroupLoadedState(
               allGroups: groupsList,

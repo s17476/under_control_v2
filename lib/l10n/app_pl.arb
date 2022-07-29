@@ -129,5 +129,6 @@
     "user_details_premissions": "Uprawnienia użytkownika",
     "user_details_admin": "Administrator",
     "user_details_group_admin": "Administrator grupy",
-    "user_details_sms": "Wiadomość SMS"
+    "user_details_sms": "Wiadomość SMS",
+    "user_show_profile": "Pokaż profil"
 }

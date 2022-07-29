@@ -2,11 +2,19 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import 'package:under_control_v2/features/core/presentation/pages/home_page.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
+import 'package:under_control_v2/features/groups/presentation/pages/group_management_page.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
+import 'package:under_control_v2/features/user_profile/presentation/pages/user_details_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../groups/domain/entities/group.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../utils/responsive_size.dart';
 import '../../utils/size_config.dart';
 import 'url_launcher_helpers.dart';
@@ -14,10 +22,12 @@ import 'url_launcher_helpers.dart';
 class UserInfoCard extends StatefulWidget {
   const UserInfoCard({
     Key? key,
+    required this.group,
     required this.user,
     required this.onDismiss,
   }) : super(key: key);
 
+  final Group group;
   final UserProfile user;
   final VoidCallback onDismiss;
 
@@ -27,6 +37,28 @@ class UserInfoCard extends StatefulWidget {
 
 class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
   bool _hasCallSupport = false;
+  late UserProfile currentUser;
+  late UserProfile selectedUser;
+
+  void toggleGroupAdmin(bool value) {
+    if (value) {
+      context.read<UserManagementBloc>().add(
+            AssignGroupAdminEvent(
+              groupId: widget.group.id,
+              userId: selectedUser.id,
+              companyId: selectedUser.companyId,
+            ),
+          );
+    } else {
+      context.read<UserManagementBloc>().add(
+            UnassignGroupAdminEvent(
+              groupId: widget.group.id,
+              userId: selectedUser.id,
+              companyId: selectedUser.companyId,
+            ),
+          );
+    }
+  }
 
   @override
   void initState() {
@@ -37,6 +69,18 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
         _hasCallSupport = result;
       });
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    final userState = (context.read<UserProfileBloc>().state as Approved);
+    currentUser = userState.userProfile;
+    final companyState =
+        (context.watch<CompanyProfileBloc>().state as CompanyProfileLoaded);
+    final index = companyState.companyUsers.allUsers
+        .indexWhere((element) => element.id == widget.user.id);
+    selectedUser = companyState.companyUsers.allUsers[index];
+    super.didChangeDependencies();
   }
 
   @override
@@ -84,31 +128,60 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(
-                    height: 24,
-                  ),
                   // avatar
-                  CachedUserAvatar(
-                    size: responsiveSizePct(small: 40),
-                    imageUrl: widget.user.avatarUrl,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CachedUserAvatar(
+                      size: responsiveSizePct(small: 40),
+                      imageUrl: selectedUser.avatarUrl,
+                    ),
                   ),
 
-                  const SizedBox(
-                    height: 16,
-                  ),
                   // first name
                   Text(
-                    widget.user.firstName,
+                    selectedUser.firstName,
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   // last name
                   Text(
-                    widget.user.lastName,
+                    selectedUser.lastName,
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  const SizedBox(height: 16),
-                  const Divider(thickness: 1.5),
                   const SizedBox(height: 8),
+                  const Divider(thickness: 1.5),
+                  // toggle group administrator
+                  if (currentUser.administrator && !selectedUser.administrator)
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.gpp_good,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  AppLocalizations.of(context)!
+                                      .user_details_group_admin,
+                                ),
+                              ),
+                              Switch(
+                                value: widget.group.groupAdministrators
+                                    .contains(selectedUser.id),
+                                onChanged: toggleGroupAdmin,
+                                activeColor: Theme.of(context).primaryColor,
+                                activeTrackColor: Theme.of(context)
+                                    .primaryColor
+                                    .withAlpha(50),
+                              )
+                            ],
+                          ),
+                        ),
+                        const Divider(thickness: 1.5),
+                      ],
+                    ),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,7 +189,7 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                       // call
                       if (_hasCallSupport)
                         InkWell(
-                          onTap: () => makePhoneCall(widget.user.phoneNumber),
+                          onTap: () => makePhoneCall(selectedUser.phoneNumber),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: Row(
@@ -124,7 +197,6 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                               children: [
                                 Icon(
                                   Icons.call,
-                                  size: 30,
                                   color: Theme.of(context).primaryColor,
                                 ),
                                 const SizedBox(
@@ -132,7 +204,7 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                                 ),
                                 Text(
                                   AppLocalizations.of(context)!.call,
-                                  style: Theme.of(context).textTheme.headline6,
+                                  style: const TextStyle(fontSize: 18),
                                 )
                               ],
                             ),
@@ -141,7 +213,7 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                       // send sms
                       if (_hasCallSupport)
                         InkWell(
-                          onTap: () => sendSms(widget.user.phoneNumber),
+                          onTap: () => sendSms(selectedUser.phoneNumber),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: Row(
@@ -149,7 +221,6 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                               children: [
                                 Icon(
                                   Icons.message,
-                                  size: 30,
                                   color: Theme.of(context).primaryColor,
                                 ),
                                 const SizedBox(
@@ -157,7 +228,7 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                                 ),
                                 Text(
                                   AppLocalizations.of(context)!.send_sms,
-                                  style: Theme.of(context).textTheme.headline6,
+                                  style: const TextStyle(fontSize: 18),
                                 )
                               ],
                             ),
@@ -165,7 +236,7 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                         ),
                       // send email
                       InkWell(
-                        onTap: () => mailTo(widget.user.email),
+                        onTap: () => mailTo(selectedUser.email),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Row(
@@ -173,7 +244,6 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                             children: [
                               Icon(
                                 Icons.email,
-                                size: 30,
                                 color: Theme.of(context).primaryColor,
                               ),
                               const SizedBox(
@@ -181,7 +251,35 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                               ),
                               Text(
                                 AppLocalizations.of(context)!.send_email,
-                                style: Theme.of(context).textTheme.headline6,
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // profil
+                      InkWell(
+                        onTap: () => Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          UserDetailsPage.routeName,
+                          (route) => route.isFirst,
+                          arguments: selectedUser,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.person,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!.user_show_profile,
+                                style: const TextStyle(fontSize: 18),
                               ),
                             ],
                           ),
