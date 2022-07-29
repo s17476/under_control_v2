@@ -29,7 +29,6 @@ class CustomMenuItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
-        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: backgroundColor,

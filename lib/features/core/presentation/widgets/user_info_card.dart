@@ -1,22 +1,19 @@
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
-import 'package:under_control_v2/features/core/presentation/pages/home_page.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
-import 'package:under_control_v2/features/groups/presentation/pages/group_management_page.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
-import 'package:under_control_v2/features/user_profile/presentation/pages/user_details_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../groups/domain/entities/group.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
+import '../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../../user_profile/presentation/pages/user_details_page.dart';
 import '../../utils/responsive_size.dart';
 import '../../utils/size_config.dart';
+import 'cached_user_avatar.dart';
 import 'url_launcher_helpers.dart';
 
 class UserInfoCard extends StatefulWidget {
@@ -154,17 +151,21 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                     Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
                           child: Row(
                             children: [
                               Icon(
                                 Icons.gpp_good,
                                 color: Theme.of(context).primaryColor,
                               ),
+                              const SizedBox(
+                                width: 4,
+                              ),
                               Expanded(
                                 child: Text(
                                   AppLocalizations.of(context)!
                                       .user_details_group_admin,
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ),
                               Switch(

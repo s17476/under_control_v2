@@ -349,6 +349,10 @@
     "@drawer_item_groups": {
       "description": "Drawer item - groups"
     },
+    "drawer_item_users": "Users",
+    "@drawer_item_users": {
+      "description": "Drawer item - users"
+    },
     "location_management_title": "Locations",
     "@location_management_title": {
       "description": "Location management page - title"

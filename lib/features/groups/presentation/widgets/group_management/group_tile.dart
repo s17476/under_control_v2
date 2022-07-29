@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../domain/entities/group.dart';
 import '../../pages/group_details.dart';
 
@@ -13,6 +15,8 @@ class GroupTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser =
+        (context.read<UserProfileBloc>().state as Approved).userProfile;
     return InkWell(
       onTap: () => Navigator.pushNamed(
         context,
@@ -40,6 +44,14 @@ class GroupTile extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                   size: 24,
                 ),
+                // shows icon if user is group administrator
+                //and is not an company administrator
+                if (group.groupAdministrators.contains(currentUser.id) &&
+                    !currentUser.administrator)
+                  Icon(
+                    Icons.gpp_good,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 const SizedBox(
                   width: 12,
                 ),

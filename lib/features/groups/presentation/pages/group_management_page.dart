@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/presentation/widgets/search_text_field.dart';
@@ -22,6 +23,7 @@ class GroupManagementPage extends StatefulWidget {
 class _GroupManagementPageState extends State<GroupManagementPage> {
   bool isSearchFieldExpanded = false;
   bool isAdministrator = false;
+  late UserProfile currentUser;
 
   TextEditingController searchController = TextEditingController();
 

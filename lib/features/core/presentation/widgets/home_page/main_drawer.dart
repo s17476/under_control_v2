@@ -1,18 +1,16 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
-import 'package:under_control_v2/features/user_profile/presentation/pages/user_details_page.dart';
 
-import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
-import '../../../groups/presentation/pages/group_management_page.dart';
-import '../../../locations/presentation/pages/location_management_page.dart';
-import '../../utils/responsive_size.dart';
-import 'custom_menu_item.dart';
-import 'logo_widget.dart';
+import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
+import '../../../../groups/presentation/pages/group_management_page.dart';
+import '../../../../locations/presentation/pages/location_management_page.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../../../user_profile/presentation/pages/user_details_page.dart';
+import '../../../utils/responsive_size.dart';
+import '../cached_user_avatar.dart';
+import '../custom_menu_item.dart';
+import '../logo_widget.dart';
 
 class MainDrawer extends StatelessWidget with ResponsiveSize {
   const MainDrawer({Key? key}) : super(key: key);
@@ -93,6 +91,28 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                 },
               ),
               const Divider(),
+              // users
+              CustomMenuItem(
+                onTap: () {
+                  Navigator.popAndPushNamed(
+                    context,
+                    LocationManagementPage.routeName,
+                  );
+                },
+                icon: Icons.person,
+                label: AppLocalizations.of(context)!.drawer_item_users,
+              ),
+              // groups
+              CustomMenuItem(
+                onTap: () {
+                  Navigator.popAndPushNamed(
+                      context, GroupManagementPage.routeName);
+                },
+                icon: Icons.group,
+                // iconBackgroundColor: Colors.amber,
+                label: AppLocalizations.of(context)!.drawer_item_groups,
+              ),
+              // locations
               CustomMenuItem(
                 onTap: () {
                   Navigator.popAndPushNamed(
@@ -104,15 +124,7 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                 // iconBackgroundColor: Colors.red,
                 label: AppLocalizations.of(context)!.drawer_item_locations,
               ),
-              CustomMenuItem(
-                onTap: () {
-                  Navigator.popAndPushNamed(
-                      context, GroupManagementPage.routeName);
-                },
-                icon: Icons.group,
-                // iconBackgroundColor: Colors.amber,
-                label: AppLocalizations.of(context)!.drawer_item_groups,
-              ),
+              // settings
               CustomMenuItem(
                 onTap: () {},
                 icon: Icons.settings,
