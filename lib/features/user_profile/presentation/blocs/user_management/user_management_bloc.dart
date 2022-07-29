@@ -81,6 +81,7 @@ class UserManagementBloc
           userId: event.userId,
           groupId: event.groupId,
         );
+        print('ACTIVATED');
         final failureOrVoidResult = await assignUserToGroup(params);
         failureOrVoidResult.fold(
           (failure) async =>

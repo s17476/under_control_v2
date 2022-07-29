@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/user_list_tile.dart';
@@ -46,7 +47,9 @@ class _GroupMembersState extends State<GroupMembers> {
         ..sort(
           (a, b) => a.lastName.compareTo(b.lastName),
         );
-
+      // gets current user
+      final currentUser =
+          (context.read<UserProfileBloc>().state as Approved).userProfile;
       return Column(
         children: [
           // title
@@ -106,7 +109,11 @@ class _GroupMembersState extends State<GroupMembers> {
                 itemBuilder: (context, index) => UserListTile(
                   key: ValueKey(groupMembers[index].id),
                   user: groupMembers[index],
-                  onTap: widget.onTap,
+                  onTap: currentUser.id == groupMembers[index].id
+                      ? (UserProfile _) {}
+                      : widget.onTap,
+                  isGroupAdministrator: widget.group.groupAdministrators
+                      .contains(groupMembers[index].id),
                 ),
               ),
             ),

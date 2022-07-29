@@ -501,6 +501,18 @@
     "@group_members": {
       "description": "Group members"
     },
+    "group_details": "Group details",
+    "@group_details": {
+      "description": "Group details"
+    },
+    "group_data": "Group data",
+    "@group_data": {
+      "description": "Group data"
+    },
+    "group_toggle_group_members": "Manage group members",
+    "@group_toggle_group_members": {
+      "description": "Group manage members"
+    },
     "user_details_no_data": "No data",
     "@user_details_no_data": {
       "description": "No user details"
@@ -520,6 +532,10 @@
     "user_details_admin": "Administrator",
     "@user_details_admin": {
       "description": "User details administrator"
+    },
+    "user_details_group_admin": "Group administrator",
+    "@user_details_group_admin": {
+      "description": "User details group administrator"
     },
     "user_details_sms": "SMS message",
     "@user_details_sms": {

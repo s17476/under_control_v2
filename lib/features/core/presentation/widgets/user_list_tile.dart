@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
 
 import '../../../user_profile/domain/entities/user_profile.dart';
@@ -7,9 +7,18 @@ import '../../../user_profile/domain/entities/user_profile.dart';
 class UserListTile extends StatelessWidget {
   const UserListTile({
     Key? key,
+    this.isSelectionTile = false,
+    this.isGroupAdministrator = false,
+    this.isGroupMember = false,
     required this.user,
     required this.onTap,
   }) : super(key: key);
+
+  final bool isSelectionTile;
+
+  final bool isGroupAdministrator;
+
+  final bool isGroupMember;
 
   final UserProfile user;
 
@@ -30,23 +39,59 @@ class UserListTile extends StatelessWidget {
             const SizedBox(
               width: 16,
             ),
-            Text(
-              user.firstName,
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey.shade200,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Wrap(
+                    children: [
+                      Text(
+                        user.firstName,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey.shade200,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        user.lastName,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey.shade200,
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (user.administrator)
+                    Text(
+                      AppLocalizations.of(context)!.user_details_admin,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  if (!user.administrator && isGroupAdministrator)
+                    Text(
+                      AppLocalizations.of(context)!.user_details_group_admin,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                ],
               ),
             ),
-            const SizedBox(
-              width: 8,
-            ),
-            Text(
-              user.lastName,
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey.shade200,
+            if (isSelectionTile && isGroupMember)
+              SizedBox(
+                width: 50,
+                child: Icon(
+                  Icons.person_remove,
+                  size: 40,
+                  color: Theme.of(context).errorColor,
+                ),
               ),
-            ),
+            if (isSelectionTile && !isGroupMember)
+              Icon(
+                Icons.person_add,
+                size: 40,
+                color: Theme.of(context).primaryColor,
+              ),
           ],
         ),
       ),

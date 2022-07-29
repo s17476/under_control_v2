@@ -120,10 +120,14 @@
     "group_management_delete_error_not_empty": "Usunięcie nie powiodło się. Najpierw usuń członków grupy.",
     "group_management_delete_question": "Czy na pewno chcesz usunąć {group}?",
     "group_members": "Członkowie grupy",
+    "group_details": "Szczegóły grupy",
+    "group_data": "Dane grupy",
+    "group_toggle_group_members": "Zarządzaj czonkami grupy",
     "user_details_no_data": "Brak danych",
     "user_details_title": "Szczegóły użytkownika",
     "user_details_data": "Dane użytkownika",
     "user_details_premissions": "Uprawnienia użytkownika",
     "user_details_admin": "Administrator",
+    "user_details_group_admin": "Administrator grupy",
     "user_details_sms": "Wiadomość SMS"
 }
