@@ -8,6 +8,7 @@ import 'package:under_control_v2/features/groups/presentation/pages/group_detail
 import 'package:under_control_v2/features/groups/presentation/pages/group_management_page.dart';
 import 'package:under_control_v2/features/locations/presentation/pages/location_management_page.dart';
 import 'package:under_control_v2/features/user_profile/presentation/pages/user_details_page.dart';
+import 'package:under_control_v2/features/user_profile/presentation/pages/users_list_page.dart';
 
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
@@ -114,6 +115,7 @@ class App extends StatelessWidget
           AddGroupPage.routeName: (context) => const AddGroupPage(),
           GroupDetailsPage.routeName: (context) => const GroupDetailsPage(),
           UserDetailsPage.routeName: (context) => const UserDetailsPage(),
+          UsersListPage.routeName: (context) => const UsersListPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

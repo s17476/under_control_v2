@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/user_profile/presentation/pages/users_list_page.dart';
 
 import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../../../groups/presentation/pages/group_management_page.dart';
@@ -96,7 +97,7 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                 onTap: () {
                   Navigator.popAndPushNamed(
                     context,
-                    LocationManagementPage.routeName,
+                    UsersListPage.routeName,
                   );
                 },
                 icon: Icons.person,

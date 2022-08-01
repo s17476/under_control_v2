@@ -29,16 +29,16 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
 
   String searchQuery = '';
 
-  void hideSearchField() {
+  void _hideSearchField() {
     FocusScope.of(context).unfocus();
     setState(() {
       isSearchFieldExpanded = false;
       searchController.text = '';
     });
-    search();
+    _search();
   }
 
-  void search() {
+  void _search() {
     setState(() {
       searchQuery = searchController.text;
     });
@@ -66,8 +66,8 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
         title: isSearchFieldExpanded
             ? SearchTextField(
                 searchController: searchController,
-                onChanged: search,
-                onCancel: hideSearchField,
+                onChanged: _search,
+                onCancel: _hideSearchField,
               )
             : Text(AppLocalizations.of(context)!.group_management_title),
         centerTitle: true,
