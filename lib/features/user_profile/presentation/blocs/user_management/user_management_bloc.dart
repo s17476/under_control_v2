@@ -21,6 +21,8 @@ const assignedGroupAdmin = 'assignedGroupAdmin';
 const userUnassignedFromGroup = 'usserUnassignedFromGroup';
 const unassignedGroupAdmin = 'unassignedGroupAdmin';
 const updateUnsuccessful = 'updateUnsuccessful';
+const userApproved = 'userApproved';
+const userRejected = 'userRejected';
 
 @injectable
 class UserManagementBloc
@@ -51,7 +53,9 @@ class UserManagementBloc
       final failureOrVoidResult = await approveUser(event.userId);
       failureOrVoidResult.fold(
         (failure) async => emit(UserManagementError(message: failure.message)),
-        (voidResult) async => emit(const UserManagementSuccessful(message: '')),
+        (voidResult) async => emit(const UserManagementSuccessful(
+          message: userApproved,
+        )),
       );
     });
 
@@ -69,7 +73,9 @@ class UserManagementBloc
       final failureOrVoidResult = await rejectUser(event.userId);
       failureOrVoidResult.fold(
         (failure) async => emit(UserManagementError(message: failure.message)),
-        (voidResult) async => emit(const UserManagementSuccessful()),
+        (voidResult) async => emit(const UserManagementSuccessful(
+          message: userRejected,
+        )),
       );
     });
 

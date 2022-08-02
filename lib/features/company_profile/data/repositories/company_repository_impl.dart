@@ -73,4 +73,47 @@ class CompanyRepositoryImpl extends CompanyRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, CompanyUsers>> fetchNewUsers(String companyId) async {
+    try {
+      final Stream<QuerySnapshot> querySnapshot;
+      querySnapshot = firebaseFirestore
+          .collection('users')
+          .where('companyId', isEqualTo: companyId)
+          .where('approved', isEqualTo: false)
+          .where('rejected', isEqualTo: false)
+          .snapshots();
+
+      return Right(CompanyUsersModel(allUsers: querySnapshot));
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, CompanyUsers>> fetchSuspendedUsers(
+      String companyId) async {
+    try {
+      final Stream<QuerySnapshot> querySnapshot;
+      querySnapshot = firebaseFirestore
+          .collection('users')
+          .where('companyId', isEqualTo: companyId)
+          .where('approved', isEqualTo: true)
+          .where('suspended', isEqualTo: true)
+          .snapshots();
+
+      return Right(CompanyUsersModel(allUsers: querySnapshot));
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
 }

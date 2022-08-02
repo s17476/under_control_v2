@@ -1,8 +1,11 @@
 part of 'company_profile_bloc.dart';
 
 abstract class CompanyProfileState extends Equatable {
-  const CompanyProfileState(
-      {this.message = '', this.error = false, this.properties = const []});
+  const CompanyProfileState({
+    this.message = '',
+    this.error = false,
+    this.properties = const [],
+  });
   final String message;
   final bool error;
   final List properties;

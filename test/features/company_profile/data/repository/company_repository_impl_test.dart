@@ -74,6 +74,31 @@ void main() {
         expect(result, isA<Right<Failure, CompanyUsers>>());
       },
     );
+    test(
+      'should return [CompanyUsers] when fetchNewUsers is called',
+      () async {
+        // arrange
+        final companyReferance =
+            await mockCollectionReference.add(tCompany.toMap());
+        // act
+        final result = await repository.fetchNewUsers(companyReferance.id);
+        // assert
+        expect(result, isA<Right<Failure, CompanyUsers>>());
+      },
+    );
+    test(
+      'should return [CompanyUsers] when fetchSuspendedUsers is called',
+      () async {
+        // arrange
+        final companyReferance =
+            await mockCollectionReference.add(tCompany.toMap());
+        // act
+        final result =
+            await repository.fetchSuspendedUsers(companyReferance.id);
+        // assert
+        expect(result, isA<Right<Failure, CompanyUsers>>());
+      },
+    );
   });
 
   group('Company Profile unsuccessful database response', () {
@@ -115,6 +140,30 @@ void main() {
         expect(result, isA<Left<Failure, CompanyUsers>>());
       },
     );
+    test(
+      'should return [DatabaseFailure] when fetchNewUsers is called',
+      () async {
+        // arrange
+        when(() => badFirebaseFirestoreInstance.collection(any()))
+            .thenThrow(FirebaseException(plugin: 'test'));
+        // act
+        final result = await badRepository.fetchNewUsers('');
+        // assert
+        expect(result, isA<Left<Failure, CompanyUsers>>());
+      },
+    );
+    test(
+      'should return [DatabaseFailure] when fetchSuspendedUsers is called',
+      () async {
+        // arrange
+        when(() => badFirebaseFirestoreInstance.collection(any()))
+            .thenThrow(FirebaseException(plugin: 'test'));
+        // act
+        final result = await badRepository.fetchSuspendedUsers('');
+        // assert
+        expect(result, isA<Left<Failure, CompanyUsers>>());
+      },
+    );
   });
 
   group('Company Profile unsuspected failure', () {
@@ -152,6 +201,30 @@ void main() {
             .thenThrow(Exception());
         // act
         final result = await badRepository.fetchAllCompanyUsers('');
+        // assert
+        expect(result, isA<Left<Failure, CompanyUsers>>());
+      },
+    );
+    test(
+      'should return [UnsuspectedFailure] when fetchNewUsers is called',
+      () async {
+        // arrange
+        when(() => badFirebaseFirestoreInstance.collection(any()))
+            .thenThrow(Exception());
+        // act
+        final result = await badRepository.fetchNewUsers('');
+        // assert
+        expect(result, isA<Left<Failure, CompanyUsers>>());
+      },
+    );
+    test(
+      'should return [UnsuspectedFailure] when fetchSuspendedUsers is called',
+      () async {
+        // arrange
+        when(() => badFirebaseFirestoreInstance.collection(any()))
+            .thenThrow(Exception());
+        // act
+        final result = await badRepository.fetchSuspendedUsers('');
         // assert
         expect(result, isA<Left<Failure, CompanyUsers>>());
       },

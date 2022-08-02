@@ -43,6 +43,14 @@
     "@confirm": {
       "description": "Confirm buttons"
     },
+    "approve": "Approve",
+    "@approve": {
+      "description": "Approve buttons"
+    },
+    "reject": "Reject",
+    "@reject": {
+      "description": "Reject buttons"
+    },
     "continue_btn": "Continue",
     "@continue_btn": {
       "description": "Continue button"
@@ -548,5 +556,67 @@
     "user_show_profile": "Show profile",
     "@user_show_profile": {
       "description": "Show profile"
+    },
+    "user_awaiting_approval": "Users awaiting approval:",
+    "@user_awaiting_approval": {
+      "description": "Awaiting approval"
+    },
+    "user_new_users": "New users",
+    "@user_new_users": {
+      "description": "New users"
+    },
+    "user_new_user_approved": "User approved",
+    "@user_new_user_approved": {
+      "description": "New user approved"
+    },
+    "user_new_user_confirm_approved": "Confirm approval",
+    "@user_new_user_confirm_approved": {
+      "description": "New user approved confirm title"
+    },
+    "user_new_user_approve_question": "Are you sure you want to approve {name}?",
+    "@user_new_user_approve_question": {
+      "description": "Approve question",
+      "placeholders": {
+        "name": {
+          "type": "String",
+          "example": "Tonny"
+        }
+      }
+    },
+    "user_new_user_rejected": "User rejected",
+    "@user_new_user_rejected": {
+      "description": "New user rejected"
+    },
+    "user_new_user_confirm_rejected": "Confirm rejection",
+    "@user_new_user_confirm_rejected": {
+      "description": "New user rejected confirm title"
+    },
+    "user_new_user_rejected_question": "Are you sure you want to reject {name}?",
+    "@user_new_user_rejected_question": {
+      "description": "Reject question",
+      "placeholders": {
+        "name": {
+          "type": "String",
+          "example": "Tonny"
+        }
+      }
+    },
+    "user_suspended": "User suspended",
+    "@user_suspended": {
+      "description": "User suspended"
+    },
+    "user_confirm_suspended": "Confirm",
+    "@user_confirm_suspended": {
+      "description": "User suspended confirm title"
+    },
+    "user_suspended_question": "Are you sure you want to suspend {name}?",
+    "@user_suspended_question": {
+      "description": "Suspend question",
+      "placeholders": {
+        "name": {
+          "type": "String",
+          "example": "Tonny"
+        }
+      }
     }
 }

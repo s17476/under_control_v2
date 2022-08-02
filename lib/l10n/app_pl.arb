@@ -10,6 +10,8 @@
     "delete": "Usuń",
     "update": "Aktualizuj",
     "confirm": "Potwierdź",
+    "approve": "Zaakceptuj",
+    "reject": "Odrzuć",
     "continue_btn": "Kontynuuj",
     "change": "Zmień",
     "read": "Odczyt",
@@ -131,5 +133,16 @@
     "user_details_admin": "Administrator",
     "user_details_group_admin": "Administrator grupy",
     "user_details_sms": "Wiadomość SMS",
-    "user_show_profile": "Pokaż profil"
+    "user_show_profile": "Pokaż profil",
+    "user_awaiting_approval": "Użytkownicy oczekujący na akceptację:",
+    "user_new_users": "Nowi użytkownicy",
+    "user_new_user_approved": "Użytkownik zaakceptowany",
+    "user_new_user_confirm_approved": "Potwierdź akceptację",
+    "user_new_user_approve_question": "Czy na pewno chcesz zaakceptować {name}?",
+    "user_new_user_rejected": "Użytkownik odrzucony",
+    "user_new_user_confirm_rejected": "Potwierdź odrzucenie",
+    "user_new_user_rejected_question": "Czy na pewno chcesz odrzucić {name}?",
+    "user_suspended": "Użytkownik zawieszony",
+    "user_confirm_suspended": "Potwierdź zawieszenie",
+    "user_suspended_question": "Czy na pewno chcesz zawiesić {name}?"
 }

@@ -15,6 +15,7 @@ import 'features/authentication/presentation/pages/authentication_page.dart';
 import 'features/authentication/presentation/pages/email_confirmation_page.dart';
 import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart';
 import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dart';
 import 'features/company_profile/presentation/pages/add_company_page.dart';
 import 'features/company_profile/presentation/pages/assign_company_page.dart';
 import 'features/core/presentation/pages/error_page.dart';
@@ -30,6 +31,7 @@ import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import 'features/user_profile/presentation/pages/add_user_profile_page.dart';
+import 'features/user_profile/presentation/pages/new_users_list_page.dart';
 import 'features/user_profile/presentation/pages/not_approved_page.dart';
 import 'firebase_options.dart';
 import 'injection.dart';
@@ -65,6 +67,7 @@ class App extends StatelessWidget
         BlocProvider(create: (context) => getIt<CompanyManagementBloc>()),
         BlocProvider(create: (context) => getIt<LocationBloc>()),
         BlocProvider(create: (context) => getIt<GroupBloc>()),
+        BlocProvider(create: (context) => getIt<NewUsersBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -116,6 +119,7 @@ class App extends StatelessWidget
           GroupDetailsPage.routeName: (context) => const GroupDetailsPage(),
           UserDetailsPage.routeName: (context) => const UserDetailsPage(),
           UsersListPage.routeName: (context) => const UsersListPage(),
+          NewUsersListPage.routeName: (context) => const NewUsersListPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

@@ -8,7 +8,9 @@ import '../entities/company.dart';
 abstract class CompanyRepository {
   Future<Either<Failure, VoidResult>> updateCompany(Company company);
 
-  Future<Either<Failure, Company>> getCompanyById(String id);
+  Future<Either<Failure, Company>> getCompanyById(String companyId);
 
-  Future<Either<Failure, CompanyUsers>> fetchAllCompanyUsers(String id);
+  Future<Either<Failure, CompanyUsers>> fetchAllCompanyUsers(String companyId);
+  Future<Either<Failure, CompanyUsers>> fetchNewUsers(String companyId);
+  Future<Either<Failure, CompanyUsers>> fetchSuspendedUsers(String companyId);
 }
