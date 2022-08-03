@@ -190,3 +190,96 @@ Future<bool?> showUserUnsuspendDialog({
     ),
   );
 }
+
+Future<bool?> showMakeAdminDialog({
+  required BuildContext context,
+  required UserProfile user,
+}) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      actionsAlignment: MainAxisAlignment.spaceEvenly,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      title: Text(AppLocalizations.of(context)!.user_make_admin),
+      content: Text(
+        AppLocalizations.of(context)!.user_make_admin_question(user.firstName),
+      ),
+      actions: [
+        TextButton(
+          child: Text(
+            AppLocalizations.of(context)!.cancel,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.headline1!.color,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        TextButton(
+          child: Text(
+            AppLocalizations.of(context)!.confirm,
+            style: const TextStyle(
+              color: Colors.amber,
+            ),
+          ),
+          onPressed: () {
+            context
+                .read<UserManagementBloc>()
+                .add(MakeUserAdministratorEvent(userId: user.id));
+            Navigator.pop(context, true);
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+Future<bool?> showUnmakeAdminDialog({
+  required BuildContext context,
+  required UserProfile user,
+}) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      actionsAlignment: MainAxisAlignment.spaceEvenly,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      title: Text(AppLocalizations.of(context)!.user_unmake_admin),
+      content: Text(
+        AppLocalizations.of(context)!
+            .user_unmake_admin_question(user.firstName),
+      ),
+      actions: [
+        TextButton(
+          child: Text(
+            AppLocalizations.of(context)!.cancel,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.headline1!.color,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        TextButton(
+          child: Text(
+            AppLocalizations.of(context)!.confirm,
+            style: const TextStyle(
+              color: Colors.amber,
+            ),
+          ),
+          onPressed: () {
+            context
+                .read<UserManagementBloc>()
+                .add(UnmakeUserAdministratorEvent(userId: user.id));
+            Navigator.pop(context, true);
+          },
+        ),
+      ],
+    ),
+  );
+}

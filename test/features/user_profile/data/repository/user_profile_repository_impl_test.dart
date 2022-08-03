@@ -89,6 +89,34 @@ void main() {
       );
 
       test(
+        'should return a [VoidResult] when makeUserAdministrator is called',
+        () async {
+          // arrange
+          final userReferance =
+              await mockCollectionReference.add(tUserProfile.toMap());
+          // act
+          final result =
+              await repository.makeUserAdministrator(userReferance.id);
+          // assert
+          expect(result, Right<Failure, VoidResult>(VoidResult()));
+        },
+      );
+
+      test(
+        'should return a [VoidResult] when unmakeUserAdministrator is called',
+        () async {
+          // arrange
+          final userReferance =
+              await mockCollectionReference.add(tUserProfile.toMap());
+          // act
+          final result =
+              await repository.unmakeUserAdministrator(userReferance.id);
+          // assert
+          expect(result, Right<Failure, VoidResult>(VoidResult()));
+        },
+      );
+
+      test(
         'should return a [VoidResult] when approveUserAndMakeAdmin is called',
         () async {
           // arrange
@@ -307,6 +335,34 @@ void main() {
       );
 
       test(
+        'should return a [DatabaseFailure] when makeUserAdministrator is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(FirebaseException(plugin: 'Bad Firebase'));
+          // act
+          final result = await badRepository.makeUserAdministrator('');
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [DatabaseFailure] when unmakeUserAdministrator is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(FirebaseException(plugin: 'Bad Firebase'));
+          // act
+          final result = await badRepository.unmakeUserAdministrator('');
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
         'should return a [DatabaseFailure] when approveUserAndMakeAdmin is called',
         () async {
           // arrange
@@ -514,6 +570,34 @@ void main() {
           ).thenThrow(Exception());
           // act
           final result = await badRepository.approveUser('');
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [UnsuspectedFailure] when makeUserAdministrator is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(Exception());
+          // act
+          final result = await badRepository.makeUserAdministrator('');
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [UnsuspectedFailure] when unmakeUserAdministrator is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(Exception());
+          // act
+          final result = await badRepository.unmakeUserAdministrator('');
           // assert
           expect(result, isA<Left<Failure, VoidResult>>());
         },

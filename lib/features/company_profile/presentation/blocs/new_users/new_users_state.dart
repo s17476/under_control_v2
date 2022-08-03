@@ -11,7 +11,7 @@ abstract class NewUsersState extends Equatable {
   final bool error;
 
   @override
-  List<Object> get props => [properties];
+  List<Object> get props => [properties, message, error];
 }
 
 class NewUsersEmptyState extends NewUsersState {}

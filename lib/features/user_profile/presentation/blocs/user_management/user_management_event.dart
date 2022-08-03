@@ -17,6 +17,14 @@ class ApproveUserEvent extends UserManagementEvent {
   const ApproveUserEvent({required super.userId});
 }
 
+class MakeUserAdministratorEvent extends UserManagementEvent {
+  const MakeUserAdministratorEvent({required super.userId});
+}
+
+class UnmakeUserAdministratorEvent extends UserManagementEvent {
+  const UnmakeUserAdministratorEvent({required super.userId});
+}
+
 class ApproveUserAndMakeAdminEvent extends UserManagementEvent {
   const ApproveUserAndMakeAdminEvent({required super.userId});
 }

@@ -3,7 +3,9 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/assign_group_admin.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/make_user_administrator.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/unassign_group_admin.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/unmake_user_administrator.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/unsuspend_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
 
@@ -31,6 +33,8 @@ const userUnsuspended = 'userunsuspended';
 class UserManagementBloc
     extends Bloc<UserManagementEvent, UserManagementState> {
   final ApproveUser approveUser;
+  final MakeUserAdministrator makeUserAdministrator;
+  final UnmakeUserAdministrator unmakeUserAdministrator;
   final ApproveUserAndMakeAdmin approveUserAndMakeAdmin;
   final RejectUser rejectUser;
   final SuspendUser suspendUser;
@@ -43,6 +47,8 @@ class UserManagementBloc
 
   UserManagementBloc({
     required this.approveUser,
+    required this.makeUserAdministrator,
+    required this.unmakeUserAdministrator,
     required this.approveUserAndMakeAdmin,
     required this.rejectUser,
     required this.suspendUser,
@@ -61,6 +67,24 @@ class UserManagementBloc
         (voidResult) async => emit(const UserManagementSuccessful(
           message: userApproved,
         )),
+      );
+    });
+
+    on<MakeUserAdministratorEvent>((event, emit) async {
+      emit(UserManagementLoading());
+      final failureOrVoidResult = await makeUserAdministrator(event.userId);
+      failureOrVoidResult.fold(
+        (failure) async => emit(UserManagementError(message: failure.message)),
+        (voidResult) async => emit(const UserManagementSuccessful()),
+      );
+    });
+
+    on<UnmakeUserAdministratorEvent>((event, emit) async {
+      emit(UserManagementLoading());
+      final failureOrVoidResult = await unmakeUserAdministrator(event.userId);
+      failureOrVoidResult.fold(
+        (failure) async => emit(UserManagementError(message: failure.message)),
+        (voidResult) async => emit(const UserManagementSuccessful()),
       );
     });
 

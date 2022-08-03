@@ -8,15 +8,22 @@ import 'package:under_control_v2/features/user_profile/domain/usecases/approve_u
 import 'package:under_control_v2/features/user_profile/domain/usecases/approve_user_and_make_admin.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/assign_group_admin.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/assign_user_to_group.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/make_user_administrator.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/reject_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/suspend_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/unassign_group_admin.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/unassign_user_from_group.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/unmake_user_administrator.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/unsuspend_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 
 class MockApproveUser extends Mock implements ApproveUser {}
+
+class MockMakeUserAdministrator extends Mock implements MakeUserAdministrator {}
+
+class MockUnmakeUserAdministrator extends Mock
+    implements UnmakeUserAdministrator {}
 
 class MockApproveUserAndMakeAdmin extends Mock
     implements ApproveUserAndMakeAdmin {}
@@ -39,6 +46,8 @@ class MockUnassignGroupAdmin extends Mock implements UnassignGroupAdmin {}
 
 void main() {
   late MockApproveUser mockApproveUser;
+  late MockMakeUserAdministrator mockMakeUserAdministrator;
+  late MockUnmakeUserAdministrator mockUnmakeUserAdministrator;
   late MockApproveUserAndMakeAdmin mockApproveUserAndMakeAdmin;
   late MockRejectUser mockRejectUser;
   late MockSuspendUser mockSuspendUser;
@@ -52,6 +61,8 @@ void main() {
 
   setUp(() {
     mockApproveUser = MockApproveUser();
+    mockMakeUserAdministrator = MockMakeUserAdministrator();
+    mockUnmakeUserAdministrator = MockUnmakeUserAdministrator();
     mockApproveUserAndMakeAdmin = MockApproveUserAndMakeAdmin();
     mockRejectUser = MockRejectUser();
     mockSuspendUser = MockSuspendUser();
@@ -64,6 +75,8 @@ void main() {
 
     userManagementBloc = UserManagementBloc(
       approveUser: mockApproveUser,
+      makeUserAdministrator: mockMakeUserAdministrator,
+      unmakeUserAdministrator: mockUnmakeUserAdministrator,
       approveUserAndMakeAdmin: mockApproveUserAndMakeAdmin,
       rejectUser: mockRejectUser,
       suspendUser: mockSuspendUser,
@@ -150,6 +163,87 @@ void main() {
         },
         skip: 1,
         verify: (_) => verify(() => mockApproveUser('')).called(1),
+        expect: () => [isA<UserManagementSuccessful>()],
+      );
+    });
+
+    group('MakeUserAdministrator', () {
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [UnsuspectedFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const MakeUserAdministratorEvent(userId: ''));
+          when(() => mockMakeUserAdministrator(any()))
+              .thenAnswer((_) async => const Left(UnsuspectedFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockMakeUserAdministrator('')).called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [DatabaseFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const MakeUserAdministratorEvent(userId: ''));
+          when(() => mockMakeUserAdministrator(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockMakeUserAdministrator('')).called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementSuccess] when usecase returns [VoidResult]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const MakeUserAdministratorEvent(userId: ''));
+          when(() => mockMakeUserAdministrator(any()))
+              .thenAnswer((invocation) async => Right(VoidResult()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockMakeUserAdministrator('')).called(1),
+        expect: () => [isA<UserManagementSuccessful>()],
+      );
+    });
+    group('UnmakeUserAdministrator', () {
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [UnsuspectedFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const UnmakeUserAdministratorEvent(userId: ''));
+          when(() => mockUnmakeUserAdministrator(any()))
+              .thenAnswer((_) async => const Left(UnsuspectedFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockUnmakeUserAdministrator('')).called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [DatabaseFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const UnmakeUserAdministratorEvent(userId: ''));
+          when(() => mockUnmakeUserAdministrator(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockUnmakeUserAdministrator('')).called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementSuccess] when usecase returns [VoidResult]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const UnmakeUserAdministratorEvent(userId: ''));
+          when(() => mockUnmakeUserAdministrator(any()))
+              .thenAnswer((invocation) async => Right(VoidResult()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockUnmakeUserAdministrator('')).called(1),
         expect: () => [isA<UserManagementSuccessful>()],
       );
     });

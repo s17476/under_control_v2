@@ -11,6 +11,8 @@ abstract class CompanyRepository {
   Future<Either<Failure, Company>> getCompanyById(String companyId);
 
   Future<Either<Failure, CompanyUsers>> fetchAllCompanyUsers(String companyId);
+
   Future<Either<Failure, CompanyUsers>> fetchNewUsers(String companyId);
+
   Future<Either<Failure, CompanyUsers>> fetchSuspendedUsers(String companyId);
 }

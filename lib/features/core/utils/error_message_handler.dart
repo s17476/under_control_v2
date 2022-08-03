@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
-void showSnackBar(UserProfileState state, BuildContext context) {
+void showValidationSnackBar(UserProfileState state, BuildContext context) {
   if (state.message.isNotEmpty) {
     final String errorMessage;
     final localization = AppLocalizations.of(context)!;

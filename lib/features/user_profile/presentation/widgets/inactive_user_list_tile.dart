@@ -122,25 +122,24 @@ class InactiveUserListTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   // reject button
-                  if (isNewUser)
-                    Expanded(
-                      child: Container(
-                        color: Theme.of(context).errorColor,
-                        child: TextButton(
-                          onPressed: () => showUserRejectDialog(
-                            context: context,
-                            user: user,
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!.reject,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                            ),
+                  Expanded(
+                    child: Container(
+                      color: Theme.of(context).errorColor,
+                      child: TextButton(
+                        onPressed: () => showUserRejectDialog(
+                          context: context,
+                          user: user,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!.reject,
+                          style: const TextStyle(
+                            fontSize: 22,
+                            color: Colors.white,
                           ),
                         ),
                       ),
                     ),
+                  ),
                   // unsuspend button
                   if (!isNewUser)
                     Expanded(

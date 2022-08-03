@@ -16,6 +16,7 @@ import 'features/authentication/presentation/pages/email_confirmation_page.dart'
 import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart';
 import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dart';
+import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart';
 import 'features/company_profile/presentation/pages/add_company_page.dart';
 import 'features/company_profile/presentation/pages/assign_company_page.dart';
 import 'features/core/presentation/pages/error_page.dart';
@@ -33,6 +34,7 @@ import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.
 import 'features/user_profile/presentation/pages/add_user_profile_page.dart';
 import 'features/user_profile/presentation/pages/new_users_list_page.dart';
 import 'features/user_profile/presentation/pages/not_approved_page.dart';
+import 'features/user_profile/presentation/pages/suspended_users_list_page.dart';
 import 'firebase_options.dart';
 import 'injection.dart';
 
@@ -68,6 +70,7 @@ class App extends StatelessWidget
         BlocProvider(create: (context) => getIt<LocationBloc>()),
         BlocProvider(create: (context) => getIt<GroupBloc>()),
         BlocProvider(create: (context) => getIt<NewUsersBloc>()),
+        BlocProvider(create: (context) => getIt<SuspendedUsersBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -79,7 +82,7 @@ class App extends StatelessWidget
             if (state is Authenticated) {
               return BlocConsumer<UserProfileBloc, UserProfileState>(
                 listener: (context, state) {
-                  showSnackBar(state, context);
+                  showValidationSnackBar(state, context);
                 },
                 builder: (context, state) {
                   switch (state.runtimeType) {
@@ -87,14 +90,14 @@ class App extends StatelessWidget
                       return const HomePage();
                     case NoUserProfileError:
                       return const AddUserProfilePage();
-                    case Loading:
-                      return const LoadingPage();
+                    // case Loading:
+                    //   return const LoadingPage();
                     case NoCompany:
                       return const AssignCompanyPage();
                     case NotApproved:
                       return const NotApprovedPage();
                     default:
-                      return const ErrorPage();
+                      return const LoadingPage();
                   }
                 },
               );
@@ -120,6 +123,8 @@ class App extends StatelessWidget
           UserDetailsPage.routeName: (context) => const UserDetailsPage(),
           UsersListPage.routeName: (context) => const UsersListPage(),
           NewUsersListPage.routeName: (context) => const NewUsersListPage(),
+          SuspendedUsersListPage.routeName: (context) =>
+              const SuspendedUsersListPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

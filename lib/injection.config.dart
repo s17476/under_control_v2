@@ -18,19 +18,19 @@ import 'features/authentication/data/repositories/authentication_repository_impl
 import 'features/authentication/domain/repositories/authentication_repository.dart'
     as _i23;
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i78;
+    as _i81;
 import 'features/authentication/domain/usecases/auto_signin.dart' as _i25;
 import 'features/authentication/domain/usecases/check_email_verification.dart'
     as _i26;
 import 'features/authentication/domain/usecases/send_password_reset_email.dart'
-    as _i45;
-import 'features/authentication/domain/usecases/send_verification_email.dart'
     as _i46;
-import 'features/authentication/domain/usecases/signin.dart' as _i47;
-import 'features/authentication/domain/usecases/signout.dart' as _i48;
-import 'features/authentication/domain/usecases/signup.dart' as _i49;
+import 'features/authentication/domain/usecases/send_verification_email.dart'
+    as _i47;
+import 'features/authentication/domain/usecases/signin.dart' as _i48;
+import 'features/authentication/domain/usecases/signout.dart' as _i49;
+import 'features/authentication/domain/usecases/signup.dart' as _i50;
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart'
-    as _i65;
+    as _i67;
 import 'features/company_profile/data/repositories/company_management_repository_impl.dart'
     as _i28;
 import 'features/company_profile/data/repositories/company_repository_impl.dart'
@@ -39,8 +39,8 @@ import 'features/company_profile/domain/repositories/company_management_reposito
     as _i27;
 import 'features/company_profile/domain/repositories/company_repository.dart'
     as _i29;
-import 'features/company_profile/domain/usecases/add_company.dart' as _i61;
-import 'features/company_profile/domain/usecases/add_company_logo.dart' as _i62;
+import 'features/company_profile/domain/usecases/add_company.dart' as _i63;
+import 'features/company_profile/domain/usecases/add_company_logo.dart' as _i64;
 import 'features/company_profile/domain/usecases/fetch_all_companies.dart'
     as _i31;
 import 'features/company_profile/domain/usecases/fetch_all_company_users.dart'
@@ -50,27 +50,29 @@ import 'features/company_profile/domain/usecases/fetch_suspended_users.dart'
     as _i34;
 import 'features/company_profile/domain/usecases/get_company_by_id.dart'
     as _i35;
-import 'features/company_profile/domain/usecases/update_company.dart' as _i56;
+import 'features/company_profile/domain/usecases/update_company.dart' as _i58;
 import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart'
-    as _i73;
+    as _i75;
 import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart'
-    as _i74;
+    as _i76;
 import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dart'
-    as _i77;
-import 'features/core/injectable_modules/injectable_modules.dart' as _i79;
+    as _i79;
+import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
+    as _i80;
+import 'features/core/injectable_modules/injectable_modules.dart' as _i82;
 import 'features/core/network/network_info.dart' as _i10;
 import 'features/core/utils/input_validator.dart' as _i8;
 import 'features/groups/data/datasources/group_local_data_source.dart' as _i37;
 import 'features/groups/data/datasources/group_remote_data_source.dart' as _i7;
 import 'features/groups/data/repositories/group_repository_impl.dart' as _i39;
 import 'features/groups/domain/repositories/group_repository.dart' as _i38;
-import 'features/groups/domain/usecases/add_group.dart' as _i63;
-import 'features/groups/domain/usecases/cache_groups.dart' as _i66;
-import 'features/groups/domain/usecases/delete_group.dart' as _i68;
-import 'features/groups/domain/usecases/get_groups_stream.dart' as _i71;
-import 'features/groups/domain/usecases/try_to_get_cached_groups.dart' as _i51;
-import 'features/groups/domain/usecases/update_group.dart' as _i57;
-import 'features/groups/presentation/blocs/group/group_bloc.dart' as _i75;
+import 'features/groups/domain/usecases/add_group.dart' as _i65;
+import 'features/groups/domain/usecases/cache_groups.dart' as _i68;
+import 'features/groups/domain/usecases/delete_group.dart' as _i70;
+import 'features/groups/domain/usecases/get_groups_stream.dart' as _i73;
+import 'features/groups/domain/usecases/try_to_get_cached_groups.dart' as _i52;
+import 'features/groups/domain/usecases/update_group.dart' as _i59;
+import 'features/groups/presentation/blocs/group/group_bloc.dart' as _i77;
 import 'features/locations/data/datasources/location_local_data_source.dart'
     as _i40;
 import 'features/locations/data/datasources/location_remote_data_source.dart'
@@ -79,14 +81,14 @@ import 'features/locations/data/repositories/location_repository_impl.dart'
     as _i42;
 import 'features/locations/domain/repositories/location_repository.dart'
     as _i41;
-import 'features/locations/domain/usecases/add_location.dart' as _i64;
-import 'features/locations/domain/usecases/cache_location.dart' as _i67;
-import 'features/locations/domain/usecases/delete_location.dart' as _i69;
-import 'features/locations/domain/usecases/fetch_all_locations.dart' as _i70;
+import 'features/locations/domain/usecases/add_location.dart' as _i66;
+import 'features/locations/domain/usecases/cache_location.dart' as _i69;
+import 'features/locations/domain/usecases/delete_location.dart' as _i71;
+import 'features/locations/domain/usecases/fetch_all_locations.dart' as _i72;
 import 'features/locations/domain/usecases/try_to_get_cached_location.dart'
-    as _i52;
-import 'features/locations/domain/usecases/update_location.dart' as _i58;
-import 'features/locations/presentation/blocs/bloc/location_bloc.dart' as _i76;
+    as _i53;
+import 'features/locations/domain/usecases/update_location.dart' as _i60;
+import 'features/locations/presentation/blocs/bloc/location_bloc.dart' as _i78;
 import 'features/user_profile/data/repositories/user_files_repository_impl.dart'
     as _i13;
 import 'features/user_profile/data/repositories/user_profile_repository_impl.dart'
@@ -106,19 +108,23 @@ import 'features/user_profile/domain/usecases/assign_user_to_company.dart'
 import 'features/user_profile/domain/usecases/assign_user_to_group.dart'
     as _i22;
 import 'features/user_profile/domain/usecases/get_user_by_id.dart' as _i36;
-import 'features/user_profile/domain/usecases/reject_user.dart' as _i43;
-import 'features/user_profile/domain/usecases/reset_company.dart' as _i44;
-import 'features/user_profile/domain/usecases/suspend_user.dart' as _i50;
+import 'features/user_profile/domain/usecases/make_user_administrator.dart'
+    as _i43;
+import 'features/user_profile/domain/usecases/reject_user.dart' as _i44;
+import 'features/user_profile/domain/usecases/reset_company.dart' as _i45;
+import 'features/user_profile/domain/usecases/suspend_user.dart' as _i51;
 import 'features/user_profile/domain/usecases/unassign_group_admin.dart'
-    as _i53;
-import 'features/user_profile/domain/usecases/unassign_user_from_group.dart'
     as _i54;
-import 'features/user_profile/domain/usecases/unsuspend_user.dart' as _i55;
-import 'features/user_profile/domain/usecases/update_user_data.dart' as _i59;
+import 'features/user_profile/domain/usecases/unassign_user_from_group.dart'
+    as _i55;
+import 'features/user_profile/domain/usecases/unmake_user_administrator.dart'
+    as _i56;
+import 'features/user_profile/domain/usecases/unsuspend_user.dart' as _i57;
+import 'features/user_profile/domain/usecases/update_user_data.dart' as _i61;
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart'
-    as _i60;
+    as _i62;
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart'
-    as _i72; // ignore_for_file: unnecessary_lambdas
+    as _i74; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -207,131 +213,140 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i41.LocationRepository>(() => _i42.LocationRepositoryImpl(
       locationLocalDataSource: get<_i40.LocationLocalDataSource>(),
       locationRemoteDataSource: get<_i9.LocationRemoteDataSource>()));
-  gh.lazySingleton<_i43.RejectUser>(
-      () => _i43.RejectUser(repository: get<_i14.UserProfileRepository>()));
-  gh.lazySingleton<_i44.ResetCompany>(
-      () => _i44.ResetCompany(repository: get<_i14.UserProfileRepository>()));
-  gh.lazySingleton<_i45.SendPasswordResetEmail>(() =>
-      _i45.SendPasswordResetEmail(
-          authenticationRepository: get<_i23.AuthenticationRepository>()));
-  gh.lazySingleton<_i46.SendVerificationEmail>(() => _i46.SendVerificationEmail(
-      authenticationRepository: get<_i23.AuthenticationRepository>()));
-  gh.lazySingleton<_i47.Signin>(() => _i47.Signin(
-      authenticationRepository: get<_i23.AuthenticationRepository>()));
-  gh.lazySingleton<_i48.Signout>(() => _i48.Signout(
-      authenticationRepository: get<_i23.AuthenticationRepository>()));
-  gh.lazySingleton<_i49.Signup>(() => _i49.Signup(
-      authenticationRepository: get<_i23.AuthenticationRepository>()));
-  gh.lazySingleton<_i50.SuspendUser>(
-      () => _i50.SuspendUser(repository: get<_i14.UserProfileRepository>()));
-  gh.lazySingleton<_i51.TryToGetCachedGroups>(() =>
-      _i51.TryToGetCachedGroups(groupRepository: get<_i38.GroupRepository>()));
-  gh.lazySingleton<_i52.TryToGetCachedLocation>(() =>
-      _i52.TryToGetCachedLocation(
-          locationRepository: get<_i41.LocationRepository>()));
-  gh.lazySingleton<_i53.UnassignGroupAdmin>(() =>
-      _i53.UnassignGroupAdmin(repository: get<_i14.UserProfileRepository>()));
-  gh.lazySingleton<_i54.UnassignUserFromGroup>(() => _i54.UnassignUserFromGroup(
+  gh.lazySingleton<_i43.MakeUserAdministrator>(() => _i43.MakeUserAdministrator(
       repository: get<_i14.UserProfileRepository>()));
-  gh.lazySingleton<_i55.UnsuspendUser>(
-      () => _i55.UnsuspendUser(repository: get<_i14.UserProfileRepository>()));
-  gh.lazySingleton<_i56.UpdateCompany>(() =>
-      _i56.UpdateCompany(companyRepository: get<_i29.CompanyRepository>()));
-  gh.lazySingleton<_i57.UpdateGroup>(
-      () => _i57.UpdateGroup(groupRepository: get<_i38.GroupRepository>()));
-  gh.lazySingleton<_i58.UpdateLocation>(() =>
-      _i58.UpdateLocation(locationRepository: get<_i41.LocationRepository>()));
-  gh.lazySingleton<_i59.UpdateUserData>(
-      () => _i59.UpdateUserData(repository: get<_i14.UserProfileRepository>()));
-  gh.factory<_i60.UserManagementBloc>(() => _i60.UserManagementBloc(
+  gh.lazySingleton<_i44.RejectUser>(
+      () => _i44.RejectUser(repository: get<_i14.UserProfileRepository>()));
+  gh.lazySingleton<_i45.ResetCompany>(
+      () => _i45.ResetCompany(repository: get<_i14.UserProfileRepository>()));
+  gh.lazySingleton<_i46.SendPasswordResetEmail>(() =>
+      _i46.SendPasswordResetEmail(
+          authenticationRepository: get<_i23.AuthenticationRepository>()));
+  gh.lazySingleton<_i47.SendVerificationEmail>(() => _i47.SendVerificationEmail(
+      authenticationRepository: get<_i23.AuthenticationRepository>()));
+  gh.lazySingleton<_i48.Signin>(() => _i48.Signin(
+      authenticationRepository: get<_i23.AuthenticationRepository>()));
+  gh.lazySingleton<_i49.Signout>(() => _i49.Signout(
+      authenticationRepository: get<_i23.AuthenticationRepository>()));
+  gh.lazySingleton<_i50.Signup>(() => _i50.Signup(
+      authenticationRepository: get<_i23.AuthenticationRepository>()));
+  gh.lazySingleton<_i51.SuspendUser>(
+      () => _i51.SuspendUser(repository: get<_i14.UserProfileRepository>()));
+  gh.lazySingleton<_i52.TryToGetCachedGroups>(() =>
+      _i52.TryToGetCachedGroups(groupRepository: get<_i38.GroupRepository>()));
+  gh.lazySingleton<_i53.TryToGetCachedLocation>(() =>
+      _i53.TryToGetCachedLocation(
+          locationRepository: get<_i41.LocationRepository>()));
+  gh.lazySingleton<_i54.UnassignGroupAdmin>(() =>
+      _i54.UnassignGroupAdmin(repository: get<_i14.UserProfileRepository>()));
+  gh.lazySingleton<_i55.UnassignUserFromGroup>(() => _i55.UnassignUserFromGroup(
+      repository: get<_i14.UserProfileRepository>()));
+  gh.lazySingleton<_i56.UnmakeUserAdministrator>(() =>
+      _i56.UnmakeUserAdministrator(
+          repository: get<_i14.UserProfileRepository>()));
+  gh.lazySingleton<_i57.UnsuspendUser>(
+      () => _i57.UnsuspendUser(repository: get<_i14.UserProfileRepository>()));
+  gh.lazySingleton<_i58.UpdateCompany>(() =>
+      _i58.UpdateCompany(companyRepository: get<_i29.CompanyRepository>()));
+  gh.lazySingleton<_i59.UpdateGroup>(
+      () => _i59.UpdateGroup(groupRepository: get<_i38.GroupRepository>()));
+  gh.lazySingleton<_i60.UpdateLocation>(() =>
+      _i60.UpdateLocation(locationRepository: get<_i41.LocationRepository>()));
+  gh.lazySingleton<_i61.UpdateUserData>(
+      () => _i61.UpdateUserData(repository: get<_i14.UserProfileRepository>()));
+  gh.factory<_i62.UserManagementBloc>(() => _i62.UserManagementBloc(
       approveUser: get<_i18.ApproveUser>(),
+      makeUserAdministrator: get<_i43.MakeUserAdministrator>(),
+      unmakeUserAdministrator: get<_i56.UnmakeUserAdministrator>(),
       approveUserAndMakeAdmin: get<_i19.ApproveUserAndMakeAdmin>(),
-      rejectUser: get<_i43.RejectUser>(),
-      suspendUser: get<_i50.SuspendUser>(),
-      unsuspendUser: get<_i55.UnsuspendUser>(),
-      updateUserData: get<_i59.UpdateUserData>(),
+      rejectUser: get<_i44.RejectUser>(),
+      suspendUser: get<_i51.SuspendUser>(),
+      unsuspendUser: get<_i57.UnsuspendUser>(),
+      updateUserData: get<_i61.UpdateUserData>(),
       assignUserToGroup: get<_i22.AssignUserToGroup>(),
-      unassignUserFromGroup: get<_i54.UnassignUserFromGroup>(),
+      unassignUserFromGroup: get<_i55.UnassignUserFromGroup>(),
       assignGroupAdmin: get<_i20.AssignGroupAdmin>(),
-      unassignGroupAdmin: get<_i53.UnassignGroupAdmin>()));
-  gh.lazySingleton<_i61.AddCompany>(() => _i61.AddCompany(
+      unassignGroupAdmin: get<_i54.UnassignGroupAdmin>()));
+  gh.lazySingleton<_i63.AddCompany>(() => _i63.AddCompany(
       companyManagementRepository: get<_i27.CompanyManagementRepository>()));
-  gh.lazySingleton<_i62.AddCompanyLogo>(() =>
-      _i62.AddCompanyLogo(repository: get<_i27.CompanyManagementRepository>()));
-  gh.lazySingleton<_i63.AddGroup>(
-      () => _i63.AddGroup(groupRepository: get<_i38.GroupRepository>()));
-  gh.lazySingleton<_i64.AddLocation>(() =>
-      _i64.AddLocation(locationRepository: get<_i41.LocationRepository>()));
-  gh.factory<_i65.AuthenticationBloc>(() => _i65.AuthenticationBloc(
-      signin: get<_i47.Signin>(),
-      signup: get<_i49.Signup>(),
-      signout: get<_i48.Signout>(),
+  gh.lazySingleton<_i64.AddCompanyLogo>(() =>
+      _i64.AddCompanyLogo(repository: get<_i27.CompanyManagementRepository>()));
+  gh.lazySingleton<_i65.AddGroup>(
+      () => _i65.AddGroup(groupRepository: get<_i38.GroupRepository>()));
+  gh.lazySingleton<_i66.AddLocation>(() =>
+      _i66.AddLocation(locationRepository: get<_i41.LocationRepository>()));
+  gh.factory<_i67.AuthenticationBloc>(() => _i67.AuthenticationBloc(
+      signin: get<_i48.Signin>(),
+      signup: get<_i50.Signup>(),
+      signout: get<_i49.Signout>(),
       autoSignin: get<_i25.AutoSignin>(),
-      sendVerificationEmail: get<_i46.SendVerificationEmail>(),
+      sendVerificationEmail: get<_i47.SendVerificationEmail>(),
       checkEmailVerification: get<_i26.CheckEmailVerification>(),
-      sendPasswordResetEmail: get<_i45.SendPasswordResetEmail>(),
+      sendPasswordResetEmail: get<_i46.SendPasswordResetEmail>(),
       inputValidator: get<_i8.InputValidator>()));
-  gh.lazySingleton<_i66.CacheGroups>(
-      () => _i66.CacheGroups(groupRepository: get<_i38.GroupRepository>()));
-  gh.lazySingleton<_i67.CacheLocation>(() =>
-      _i67.CacheLocation(locationRepository: get<_i41.LocationRepository>()));
-  gh.lazySingleton<_i68.DeleteGroup>(
-      () => _i68.DeleteGroup(groupRepository: get<_i38.GroupRepository>()));
-  gh.lazySingleton<_i69.DeleteLocation>(() =>
-      _i69.DeleteLocation(locationRepository: get<_i41.LocationRepository>()));
-  gh.lazySingleton<_i70.FetchAllLocations>(() => _i70.FetchAllLocations(
+  gh.lazySingleton<_i68.CacheGroups>(
+      () => _i68.CacheGroups(groupRepository: get<_i38.GroupRepository>()));
+  gh.lazySingleton<_i69.CacheLocation>(() =>
+      _i69.CacheLocation(locationRepository: get<_i41.LocationRepository>()));
+  gh.lazySingleton<_i70.DeleteGroup>(
+      () => _i70.DeleteGroup(groupRepository: get<_i38.GroupRepository>()));
+  gh.lazySingleton<_i71.DeleteLocation>(() =>
+      _i71.DeleteLocation(locationRepository: get<_i41.LocationRepository>()));
+  gh.lazySingleton<_i72.FetchAllLocations>(() => _i72.FetchAllLocations(
       locationRepository: get<_i41.LocationRepository>()));
-  gh.lazySingleton<_i71.GetGroupsStream>(
-      () => _i71.GetGroupsStream(groupRepository: get<_i38.GroupRepository>()));
-  gh.factory<_i72.UserProfileBloc>(() => _i72.UserProfileBloc(
-      authenticationBloc: get<_i65.AuthenticationBloc>(),
+  gh.lazySingleton<_i73.GetGroupsStream>(
+      () => _i73.GetGroupsStream(groupRepository: get<_i38.GroupRepository>()));
+  gh.factory<_i74.UserProfileBloc>(() => _i74.UserProfileBloc(
+      authenticationBloc: get<_i67.AuthenticationBloc>(),
       addUser: get<_i16.AddUser>(),
       assignUserToCompany: get<_i21.AssignUserToCompany>(),
-      resetCompany: get<_i44.ResetCompany>(),
+      resetCompany: get<_i45.ResetCompany>(),
       getUserById: get<_i36.GetUserById>(),
-      updateUserData: get<_i59.UpdateUserData>(),
+      updateUserData: get<_i61.UpdateUserData>(),
       addUserAvatar: get<_i17.AddUserAvatar>(),
       inputValidator: get<_i8.InputValidator>()));
-  gh.factory<_i73.CompanyManagementBloc>(() => _i73.CompanyManagementBloc(
-      userProfileBloc: get<_i72.UserProfileBloc>(),
+  gh.factory<_i75.CompanyManagementBloc>(() => _i75.CompanyManagementBloc(
+      userProfileBloc: get<_i74.UserProfileBloc>(),
       inputValidator: get<_i8.InputValidator>(),
-      addCompany: get<_i61.AddCompany>(),
+      addCompany: get<_i63.AddCompany>(),
       fetchAllCompanies: get<_i31.FetchAllCompanies>(),
-      addCompanyLogo: get<_i62.AddCompanyLogo>()));
-  gh.factory<_i74.CompanyProfileBloc>(() => _i74.CompanyProfileBloc(
-      userProfileBloc: get<_i72.UserProfileBloc>(),
-      updateCompany: get<_i56.UpdateCompany>(),
+      addCompanyLogo: get<_i64.AddCompanyLogo>()));
+  gh.factory<_i76.CompanyProfileBloc>(() => _i76.CompanyProfileBloc(
+      userProfileBloc: get<_i74.UserProfileBloc>(),
+      updateCompany: get<_i58.UpdateCompany>(),
       fetchAllCompanyUsers: get<_i32.FetchAllCompanyUsers>(),
       getCompanyById: get<_i35.GetCompanyById>(),
       inputValidator: get<_i8.InputValidator>()));
-  gh.factory<_i75.GroupBloc>(() => _i75.GroupBloc(
-      companyProfileBloc: get<_i74.CompanyProfileBloc>(),
-      addGroup: get<_i63.AddGroup>(),
-      updateGroup: get<_i57.UpdateGroup>(),
-      deleteGroup: get<_i68.DeleteGroup>(),
-      getGroupsStream: get<_i71.GetGroupsStream>(),
-      cacheGroups: get<_i66.CacheGroups>(),
-      tryToGetCachedGroups: get<_i51.TryToGetCachedGroups>()));
-  gh.factory<_i76.LocationBloc>(() => _i76.LocationBloc(
-      companyProfileBloc: get<_i74.CompanyProfileBloc>(),
-      addLocation: get<_i64.AddLocation>(),
-      cacheLocation: get<_i67.CacheLocation>(),
-      deleteLocation: get<_i69.DeleteLocation>(),
-      fetchAllLocations: get<_i70.FetchAllLocations>(),
-      tryToGetCachedLocation: get<_i52.TryToGetCachedLocation>(),
-      updateLocation: get<_i58.UpdateLocation>()));
-  gh.factory<_i77.NewUsersBloc>(() => _i77.NewUsersBloc(
-      get<_i74.CompanyProfileBloc>(), get<_i33.FetchNewUsers>()));
+  gh.factory<_i77.GroupBloc>(() => _i77.GroupBloc(
+      companyProfileBloc: get<_i76.CompanyProfileBloc>(),
+      addGroup: get<_i65.AddGroup>(),
+      updateGroup: get<_i59.UpdateGroup>(),
+      deleteGroup: get<_i70.DeleteGroup>(),
+      getGroupsStream: get<_i73.GetGroupsStream>(),
+      cacheGroups: get<_i68.CacheGroups>(),
+      tryToGetCachedGroups: get<_i52.TryToGetCachedGroups>()));
+  gh.factory<_i78.LocationBloc>(() => _i78.LocationBloc(
+      companyProfileBloc: get<_i76.CompanyProfileBloc>(),
+      addLocation: get<_i66.AddLocation>(),
+      cacheLocation: get<_i69.CacheLocation>(),
+      deleteLocation: get<_i71.DeleteLocation>(),
+      fetchAllLocations: get<_i72.FetchAllLocations>(),
+      tryToGetCachedLocation: get<_i53.TryToGetCachedLocation>(),
+      updateLocation: get<_i60.UpdateLocation>()));
+  gh.factory<_i79.NewUsersBloc>(() => _i79.NewUsersBloc(
+      get<_i76.CompanyProfileBloc>(), get<_i33.FetchNewUsers>()));
+  gh.factory<_i80.SuspendedUsersBloc>(() => _i80.SuspendedUsersBloc(
+      get<_i76.CompanyProfileBloc>(), get<_i34.FetchSuspendedUsers>()));
   return get;
 }
 
-class _$DataConnectionCheckerModule extends _i78.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i81.DataConnectionCheckerModule {}
 
 class _$FirebaseAuthenticationService
-    extends _i78.FirebaseAuthenticationService {}
+    extends _i81.FirebaseAuthenticationService {}
 
-class _$FirebaseFirestoreService extends _i79.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i82.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i79.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i82.FirebaseStorageService {}
 
-class _$SharedPreferencesService extends _i79.SharedPreferencesService {}
+class _$SharedPreferencesService extends _i82.SharedPreferencesService {}

@@ -136,8 +136,11 @@
     "user_details_group_admin": "Administrator grupy",
     "user_details_sms": "Wiadomość SMS",
     "user_show_profile": "Pokaż profil",
-    "user_awaiting_approval": "Użytkownicy oczekujący na akceptację:",
+    "user_awaiting_approval": "Użytkownicy oczekujący na akceptację",
     "user_new_users": "Nowi użytkownicy",
+    "user_no_new_users": "Brak nowych użytkowników",
+    "user_suspended_users": "Zawieszeni użytkownicy",
+    "user_no_suspended_users": "Brak zawieszonych użytkowników",
     "user_new_user_approved": "Użytkownik zaakceptowany",
     "user_new_user_confirm_approved": "Potwierdź akceptację",
     "user_new_user_approve_question": "Czy na pewno chcesz zaakceptować {name}?",
@@ -149,5 +152,11 @@
     "user_suspended_question": "Czy na pewno chcesz zawiesić {name}?",
     "user_unsuspended": "Użytkownik odwieszony",
     "user_confirm_unsuspended": "Potwierdź odwieszenie",
-    "user_unsuspended_question": "Czy na pewno chcesz odwiesić {name}?"
+    "user_unsuspended_question": "Czy na pewno chcesz odwiesić {name}?",
+    "user_make_admin": "Nadaj prawa administratora",
+    "user_confirm_make_admin": "Potwierdź nadanie praw",
+    "user_make_admin_question": "Czy na pewno chcesz nadać prawa administratora dla {name}?",
+    "user_unmake_admin": "Odbierz prawa administratora",
+    "user_confirm_unmake_admin": "Potwierdź odebranie praw",
+    "user_unmake_admin_question": "Czy na pewno odebrać prawa administratora dla {name}?"
 }

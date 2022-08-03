@@ -53,6 +53,42 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
   }
 
   @override
+  Future<Either<Failure, VoidResult>> makeUserAdministrator(
+      String userId) async {
+    try {
+      final userReference = firebaseFirestore.collection('users').doc(userId);
+      await userReference.update({
+        'administrator': true,
+      });
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return Left(
+        UnsuspectedFailure(message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, VoidResult>> unmakeUserAdministrator(
+      String userId) async {
+    try {
+      final userReference = firebaseFirestore.collection('users').doc(userId);
+      await userReference.update({
+        'administrator': false,
+      });
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return Left(
+        UnsuspectedFailure(message: e.toString()),
+      );
+    }
+  }
+
+  @override
   Future<Either<Failure, VoidResult>> approveUserAndMakeAdmin(
       String userId) async {
     try {

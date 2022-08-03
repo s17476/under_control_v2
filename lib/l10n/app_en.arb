@@ -565,13 +565,25 @@
     "@user_show_profile": {
       "description": "Show profile"
     },
-    "user_awaiting_approval": "Users awaiting approval:",
+    "user_awaiting_approval": "Users awaiting approval",
     "@user_awaiting_approval": {
       "description": "Awaiting approval"
     },
     "user_new_users": "New users",
     "@user_new_users": {
       "description": "New users"
+    },
+    "user_no_new_users": "No new users",
+    "@user_no_new_users": {
+      "description": "No new users"
+    },
+    "user_suspended_users": "Suspended users",
+    "@user_suspended_users": {
+      "description": "Suspended users"
+    },
+    "user_no_suspended_users": "No suspended users",
+    "@user_no_suspended_users": {
+      "description": "No suspended users"
     },
     "user_new_user_approved": "User approved",
     "@user_new_user_approved": {
@@ -638,6 +650,42 @@
     "user_unsuspended_question": "Are you sure you want to unsuspend {name}?",
     "@user_unsuspended_question": {
       "description": "Unsuspend question",
+      "placeholders": {
+        "name": {
+          "type": "String",
+          "example": "Tonny"
+        }
+      }
+    },
+    "user_make_admin": "Make administrator",
+    "@user_make_admin": {
+      "description": "Make administrator"
+    },
+    "user_confirm_make_admin": "Confirm",
+    "@user_confirm_make_admin": {
+      "description": "User make admin confirm title"
+    },
+    "user_make_admin_question": "Are you sure you want to make {name} an administrator?",
+    "@user_make_admin_question": {
+      "description": "Make admin question",
+      "placeholders": {
+        "name": {
+          "type": "String",
+          "example": "Tonny"
+        }
+      }
+    },
+    "user_unmake_admin": "Revoke administrator",
+    "@user_unmake_admin": {
+      "description": "Revoke administrator"
+    },
+    "user_confirm_unmake_admin": "Confirm",
+    "@user_confirm_unmake_admin": {
+      "description": "User unmake admin confirm title"
+    },
+    "user_unmake_admin_question": "Are you sure you want to revoke administrator rights from {name}?",
+    "@user_unmake_admin_question": {
+      "description": "Unmake admin question",
       "placeholders": {
         "name": {
           "type": "String",

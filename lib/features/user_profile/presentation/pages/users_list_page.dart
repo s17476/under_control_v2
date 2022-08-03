@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/new_users/new_users_bloc.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/user_list_tile.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
-import 'package:under_control_v2/features/user_profile/presentation/pages/new_users_list_page.dart';
-import 'package:under_control_v2/features/user_profile/presentation/pages/user_details_page.dart';
 
+import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../company_profile/presentation/blocs/new_users/new_users_bloc.dart';
+import '../../../company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/presentation/widgets/search_text_field.dart';
+import '../../../core/presentation/widgets/user_list_tile.dart';
+import '../../../core/utils/show_snack_bar.dart';
+import '../../domain/entities/user_profile.dart';
+import '../blocs/user_profile/user_profile_bloc.dart';
+import 'new_users_list_page.dart';
+import 'suspended_users_list_page.dart';
+import 'user_details_page.dart';
 
 class UsersListPage extends StatefulWidget {
   const UsersListPage({Key? key}) : super(key: key);
@@ -32,7 +35,7 @@ class _UsersListPageState extends State<UsersListPage> {
 
   int? newUsersCount;
 
-  int suspendedUsersCount = 0;
+  int? suspendedUsersCount;
 
   void _hideSearchField() {
     FocusScope.of(context).unfocus();
@@ -58,6 +61,10 @@ class _UsersListPageState extends State<UsersListPage> {
     final newUsersState = context.watch<NewUsersBloc>().state;
     if (newUsersState is NewUsersLoadedState) {
       newUsersCount = newUsersState.newUsers.allUsers.length;
+    }
+    final suspendedUsersState = context.watch<SuspendedUsersBloc>().state;
+    if (suspendedUsersState is SuspendedUsersLoadedState) {
+      suspendedUsersCount = suspendedUsersState.suspendedUsers.allUsers.length;
     }
     super.didChangeDependencies();
   }
@@ -109,11 +116,71 @@ class _UsersListPageState extends State<UsersListPage> {
                 ),
                 child: Column(
                   children: [
+                    // new users
+                    InkWell(
+                      onTap: suspendedUsersCount == null
+                          ? null
+                          : suspendedUsersCount == 0
+                              ? () => showSnackBar(
+                                    context: context,
+                                    message: AppLocalizations.of(context)!
+                                        .user_no_suspended_users,
+                                  )
+                              : () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    SuspendedUsersListPage.routeName,
+                                  );
+                                },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Theme.of(context).focusColor,
+                        ),
+                        height: 55,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                AppLocalizations.of(context)!
+                                    .user_suspended_users,
+                                maxLines: 2,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            // suspended users loaded
+                            if (suspendedUsersCount != null)
+                              Text(
+                                suspendedUsersCount.toString(),
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            // suspended users not loaded
+                            if (suspendedUsersCount == null)
+                              const FittedBox(
+                                child: CircularProgressIndicator(),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    // suspended users
                     InkWell(
                       onTap: newUsersCount == null
                           ? null
                           : newUsersCount == 0
-                              ? null
+                              ? () => showSnackBar(
+                                    context: context,
+                                    message: AppLocalizations.of(context)!
+                                        .user_no_new_users,
+                                  )
                               : () {
                                   Navigator.pushNamed(
                                     context,
@@ -130,6 +197,7 @@ class _UsersListPageState extends State<UsersListPage> {
                           borderRadius: BorderRadius.circular(10),
                           color: Theme.of(context).focusColor,
                         ),
+                        height: 55,
                         child: Row(
                           children: [
                             Expanded(
@@ -148,7 +216,9 @@ class _UsersListPageState extends State<UsersListPage> {
                               ),
                             // new users not loaded
                             if (newUsersCount == null)
-                              const CircularProgressIndicator(),
+                              const FittedBox(
+                                child: CircularProgressIndicator(),
+                              ),
                           ],
                         ),
                       ),

@@ -19,12 +19,12 @@ class CompanyRepositoryImpl extends CompanyRepository {
   });
 
   @override
-  Future<Either<Failure, Company>> getCompanyById(String id) async {
+  Future<Either<Failure, Company>> getCompanyById(String companyId) async {
     try {
       final Company result;
       final DocumentSnapshot documentSnapshot;
       documentSnapshot =
-          await firebaseFirestore.collection('companies').doc(id).get();
+          await firebaseFirestore.collection('companies').doc(companyId).get();
       result = CompanyModel.fromMap(
           documentSnapshot.data() as Map<String, dynamic>, documentSnapshot.id);
       return Right(result);
@@ -55,13 +55,15 @@ class CompanyRepositoryImpl extends CompanyRepository {
   }
 
   @override
-  Future<Either<Failure, CompanyUsers>> fetchAllCompanyUsers(String id) async {
+  Future<Either<Failure, CompanyUsers>> fetchAllCompanyUsers(
+      String companyId) async {
     try {
       final Stream<QuerySnapshot> querySnapshot;
       querySnapshot = firebaseFirestore
           .collection('users')
-          .where('companyId', isEqualTo: id)
+          .where('companyId', isEqualTo: companyId)
           .where('approved', isEqualTo: true)
+          .where('suspended', isEqualTo: false)
           .snapshots();
 
       return Right(CompanyUsersModel(allUsers: querySnapshot));
