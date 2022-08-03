@@ -29,6 +29,10 @@ class SuspendUserEvent extends UserManagementEvent {
   const SuspendUserEvent({required super.userId});
 }
 
+class UnsuspendUserEvent extends UserManagementEvent {
+  const UnsuspendUserEvent({required super.userId});
+}
+
 class AssignUserToGroupEvent extends UserManagementEvent {
   final String groupId;
   const AssignUserToGroupEvent({

@@ -30,7 +30,7 @@ class _UsersListPageState extends State<UsersListPage> {
 
   late UserProfile currentUser;
 
-  int newUsersCount = 0;
+  int? newUsersCount;
 
   int suspendedUsersCount = 0;
 
@@ -110,14 +110,16 @@ class _UsersListPageState extends State<UsersListPage> {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: newUsersCount == 0
+                      onTap: newUsersCount == null
                           ? null
-                          : () {
-                              Navigator.pushNamed(
-                                context,
-                                NewUsersListPage.routeName,
-                              );
-                            },
+                          : newUsersCount == 0
+                              ? null
+                              : () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    NewUsersListPage.routeName,
+                                  );
+                                },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -138,10 +140,15 @@ class _UsersListPageState extends State<UsersListPage> {
                                 style: const TextStyle(fontSize: 16),
                               ),
                             ),
-                            Text(
-                              newUsersCount.toString(),
-                              style: const TextStyle(fontSize: 16),
-                            ),
+                            // new users loaded
+                            if (newUsersCount != null)
+                              Text(
+                                newUsersCount.toString(),
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            // new users not loaded
+                            if (newUsersCount == null)
+                              const CircularProgressIndicator(),
                           ],
                         ),
                       ),

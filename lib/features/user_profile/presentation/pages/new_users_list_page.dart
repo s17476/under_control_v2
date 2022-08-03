@@ -6,7 +6,7 @@ import '../../../company_profile/presentation/blocs/new_users/new_users_bloc.dar
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../domain/entities/user_profile.dart';
 import '../blocs/user_management/user_management_bloc.dart';
-import '../widgets/new_user_list_tile.dart';
+import '../widgets/inactive_user_list_tile.dart';
 
 class NewUsersListPage extends StatelessWidget {
   const NewUsersListPage({Key? key}) : super(key: key);
@@ -72,8 +72,9 @@ class NewUsersListPage extends StatelessWidget {
                         horizontal: 8.0,
                         vertical: 2.0,
                       ),
-                      child: NewUserListTile(
+                      child: InactiveUserListTile(
                         user: users[index],
+                        isNewUser: true,
                       ),
                     ),
                   );

@@ -12,6 +12,8 @@
     "confirm": "Potwierdź",
     "approve": "Zaakceptuj",
     "reject": "Odrzuć",
+    "suspend": "Zawieś",
+    "unsuspend": "Odwieś",
     "continue_btn": "Kontynuuj",
     "change": "Zmień",
     "read": "Odczyt",
@@ -144,5 +146,8 @@
     "user_new_user_rejected_question": "Czy na pewno chcesz odrzucić {name}?",
     "user_suspended": "Użytkownik zawieszony",
     "user_confirm_suspended": "Potwierdź zawieszenie",
-    "user_suspended_question": "Czy na pewno chcesz zawiesić {name}?"
+    "user_suspended_question": "Czy na pewno chcesz zawiesić {name}?",
+    "user_unsuspended": "Użytkownik odwieszony",
+    "user_confirm_unsuspended": "Potwierdź odwieszenie",
+    "user_unsuspended_question": "Czy na pewno chcesz odwiesić {name}?"
 }

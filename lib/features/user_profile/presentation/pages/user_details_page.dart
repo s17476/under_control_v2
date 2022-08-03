@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/company_profile/presentation/widgets/user_management_dialogs.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/icon_title_row.dart';
 import 'package:under_control_v2/features/core/utils/responsive_size.dart';
@@ -29,9 +30,18 @@ class UserDetailsPage extends StatelessWidget with ResponsiveSize {
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarIconBrightness: Brightness.light,
         ),
-        // actions: [
-        //   if(user.administrator || user)
-        // ],
+        actions: [
+          // TODO
+          // znaleźć admina
+          if (user.administrator)
+            IconButton(
+              onPressed: () =>
+                  showUserSuspendDialog(context: context, user: user),
+              icon: const Icon(
+                Icons.person_off_rounded,
+              ),
+            ),
+        ],
       ),
       body: SizedBox(
         width: double.infinity,

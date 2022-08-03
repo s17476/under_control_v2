@@ -98,3 +98,95 @@ Future<bool?> showUserRejectDialog({
     ),
   );
 }
+
+Future<bool?> showUserSuspendDialog({
+  required BuildContext context,
+  required UserProfile user,
+}) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      actionsAlignment: MainAxisAlignment.spaceEvenly,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      title: Text(AppLocalizations.of(context)!.user_confirm_suspended),
+      content: Text(
+        AppLocalizations.of(context)!.user_suspended_question(user.firstName),
+      ),
+      actions: [
+        TextButton(
+          child: Text(
+            AppLocalizations.of(context)!.cancel,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.headline1!.color,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        TextButton(
+          child: Text(
+            AppLocalizations.of(context)!.suspend,
+            style: const TextStyle(
+              color: Colors.amber,
+            ),
+          ),
+          onPressed: () {
+            context
+                .read<UserManagementBloc>()
+                .add(SuspendUserEvent(userId: user.id));
+            Navigator.pop(context, true);
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+Future<bool?> showUserUnsuspendDialog({
+  required BuildContext context,
+  required UserProfile user,
+}) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      actionsAlignment: MainAxisAlignment.spaceEvenly,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      title: Text(AppLocalizations.of(context)!.user_confirm_unsuspended),
+      content: Text(
+        AppLocalizations.of(context)!.user_unsuspended_question(user.firstName),
+      ),
+      actions: [
+        TextButton(
+          child: Text(
+            AppLocalizations.of(context)!.cancel,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.headline1!.color,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        TextButton(
+          child: Text(
+            AppLocalizations.of(context)!.unsuspend,
+            style: const TextStyle(
+              color: Colors.amber,
+            ),
+          ),
+          onPressed: () {
+            context
+                .read<UserManagementBloc>()
+                .add(UnsuspendUserEvent(userId: user.id));
+            Navigator.pop(context, true);
+          },
+        ),
+      ],
+    ),
+  );
+}

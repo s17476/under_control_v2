@@ -12,6 +12,7 @@ import 'package:under_control_v2/features/user_profile/domain/usecases/reject_us
 import 'package:under_control_v2/features/user_profile/domain/usecases/suspend_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/unassign_group_admin.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/unassign_user_from_group.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/unsuspend_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 
@@ -23,6 +24,8 @@ class MockApproveUserAndMakeAdmin extends Mock
 class MockRejectUser extends Mock implements RejectUser {}
 
 class MockSuspendUser extends Mock implements SuspendUser {}
+
+class MockUnsuspendUser extends Mock implements UnsuspendUser {}
 
 class MockUpdateUserData extends Mock implements UpdateUserData {}
 
@@ -39,6 +42,7 @@ void main() {
   late MockApproveUserAndMakeAdmin mockApproveUserAndMakeAdmin;
   late MockRejectUser mockRejectUser;
   late MockSuspendUser mockSuspendUser;
+  late MockUnsuspendUser mockUnsuspendUser;
   late MockUpdateUserData mockUpdateUserData;
   late MockAssignUserToGroup mockAssignUserToGroup;
   late MockUnassignUserFromGroup mockUnassignUserFromGroup;
@@ -51,6 +55,7 @@ void main() {
     mockApproveUserAndMakeAdmin = MockApproveUserAndMakeAdmin();
     mockRejectUser = MockRejectUser();
     mockSuspendUser = MockSuspendUser();
+    mockUnsuspendUser = MockUnsuspendUser();
     mockUpdateUserData = MockUpdateUserData();
     mockAssignUserToGroup = MockAssignUserToGroup();
     mockUnassignUserFromGroup = MockUnassignUserFromGroup();
@@ -62,6 +67,7 @@ void main() {
       approveUserAndMakeAdmin: mockApproveUserAndMakeAdmin,
       rejectUser: mockRejectUser,
       suspendUser: mockSuspendUser,
+      unsuspendUser: mockUnsuspendUser,
       updateUserData: mockUpdateUserData,
       assignUserToGroup: mockAssignUserToGroup,
       unassignUserFromGroup: mockUnassignUserFromGroup,
@@ -267,6 +273,47 @@ void main() {
         },
         skip: 1,
         verify: (_) => verify(() => mockSuspendUser('')).called(1),
+        expect: () => [isA<UserManagementSuccessful>()],
+      );
+    });
+
+    group('UnsuspendUser', () {
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [UnsuspectedFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const UnsuspendUserEvent(userId: ''));
+          when(() => mockUnsuspendUser(any()))
+              .thenAnswer((_) async => const Left(UnsuspectedFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockUnsuspendUser('')).called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [DatabaseFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const UnsuspendUserEvent(userId: ''));
+          when(() => mockUnsuspendUser(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockUnsuspendUser('')).called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementSuccess] when usecase returns [VoidResult]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const UnsuspendUserEvent(userId: ''));
+          when(() => mockUnsuspendUser(any()))
+              .thenAnswer((_) async => Right(VoidResult()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockUnsuspendUser('')).called(1),
         expect: () => [isA<UserManagementSuccessful>()],
       );
     });

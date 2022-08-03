@@ -51,6 +51,14 @@
     "@reject": {
       "description": "Reject buttons"
     },
+    "suspend": "Suspend",
+    "@suspend": {
+      "description": "Suspend buttons"
+    },
+    "unsuspend": "Unsuspend",
+    "@unsuspend": {
+      "description": "Unsuspend buttons"
+    },
     "continue_btn": "Continue",
     "@continue_btn": {
       "description": "Continue button"
@@ -612,6 +620,24 @@
     "user_suspended_question": "Are you sure you want to suspend {name}?",
     "@user_suspended_question": {
       "description": "Suspend question",
+      "placeholders": {
+        "name": {
+          "type": "String",
+          "example": "Tonny"
+        }
+      }
+    },
+    "user_unsuspended": "User unsuspended",
+    "@user_unsuspended": {
+      "description": "User unsuspended"
+    },
+    "user_confirm_unsuspended": "Confirm",
+    "@user_confirm_unsuspended": {
+      "description": "User unsuspended confirm title"
+    },
+    "user_unsuspended_question": "Are you sure you want to unsuspend {name}?",
+    "@user_unsuspended_question": {
+      "description": "Unsuspend question",
       "placeholders": {
         "name": {
           "type": "String",

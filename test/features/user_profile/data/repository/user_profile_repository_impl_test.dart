@@ -160,6 +160,19 @@ void main() {
       );
 
       test(
+        'should return a [VoidResult] when unsuspendUser is called',
+        () async {
+          // arrange
+          final userReferance =
+              await mockCollectionReference.add(tUserProfile.toMap());
+          // act
+          final result = await repository.unsuspendUser(userReferance.id);
+          // assert
+          expect(result, Right<Failure, VoidResult>(VoidResult()));
+        },
+      );
+
+      test(
         'should return a [Voidresult] when updateUserData is called',
         () async {
           // arrange
@@ -366,6 +379,20 @@ void main() {
       );
 
       test(
+        'should return a [DatabaseFailure] when unsuspendUser is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(FirebaseException(plugin: 'Bad Firebase'));
+          // act
+          final result = await badRepository.unsuspendUser('userReferance.id');
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
         'should return a [DatabaseFailure] when updateUserData is called',
         () async {
           // arrange
@@ -559,6 +586,20 @@ void main() {
           ).thenThrow(Exception());
           // act
           final result = await badRepository.suspendUser('userReferance.id');
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+
+      test(
+        'should return a [UnsuspectedFailure] when unsuspendUser is called',
+        () async {
+          // arrange
+          when(
+            () => badFirebaseFirestoreInstance.collection(any()),
+          ).thenThrow(Exception());
+          // act
+          final result = await badRepository.unsuspendUser('userReferance.id');
           // assert
           expect(result, isA<Left<Failure, VoidResult>>());
         },

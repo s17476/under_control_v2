@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/assign_group_admin.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/unassign_group_admin.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/unsuspend_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
 
 import '../../../domain/usecases/approve_user_and_make_admin.dart';
@@ -23,6 +24,8 @@ const unassignedGroupAdmin = 'unassignedGroupAdmin';
 const updateUnsuccessful = 'updateUnsuccessful';
 const userApproved = 'userApproved';
 const userRejected = 'userRejected';
+const userSuspended = 'userSuspended';
+const userUnsuspended = 'userunsuspended';
 
 @injectable
 class UserManagementBloc
@@ -31,6 +34,7 @@ class UserManagementBloc
   final ApproveUserAndMakeAdmin approveUserAndMakeAdmin;
   final RejectUser rejectUser;
   final SuspendUser suspendUser;
+  final UnsuspendUser unsuspendUser;
   final UpdateUserData updateUserData;
   final AssignUserToGroup assignUserToGroup;
   final UnassignUserFromGroup unassignUserFromGroup;
@@ -42,6 +46,7 @@ class UserManagementBloc
     required this.approveUserAndMakeAdmin,
     required this.rejectUser,
     required this.suspendUser,
+    required this.unsuspendUser,
     required this.updateUserData,
     required this.assignUserToGroup,
     required this.unassignUserFromGroup,
@@ -82,6 +87,15 @@ class UserManagementBloc
     on<SuspendUserEvent>((event, emit) async {
       emit(UserManagementLoading());
       final failureOrVoidResult = await suspendUser(event.userId);
+      failureOrVoidResult.fold(
+        (failure) async => emit(UserManagementError(message: failure.message)),
+        (voidResult) async => emit(const UserManagementSuccessful()),
+      );
+    });
+
+    on<UnsuspendUserEvent>((event, emit) async {
+      emit(UserManagementLoading());
+      final failureOrVoidResult = await unsuspendUser(event.userId);
       failureOrVoidResult.fold(
         (failure) async => emit(UserManagementError(message: failure.message)),
         (voidResult) async => emit(const UserManagementSuccessful()),
