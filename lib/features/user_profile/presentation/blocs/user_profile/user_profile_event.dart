@@ -47,12 +47,3 @@ class GetUserByIdEvent extends UserProfileEvent {
     required this.userId,
   }) : super([userId]);
 }
-
-class UpdateUserDataEvent extends UserProfileEvent {
-  final UserProfile userProfile;
-
-  UpdateUserDataEvent({required this.userProfile})
-      : super([
-          userProfile,
-        ]);
-}

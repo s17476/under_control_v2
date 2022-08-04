@@ -76,3 +76,11 @@ class UnassignGroupAdminEvent extends UserManagementEvent {
     required super.userId,
   });
 }
+
+class UpdateUserDataEvent extends UserManagementEvent {
+  final UserProfile userProfile;
+
+  UpdateUserDataEvent({
+    required this.userProfile,
+  }) : super(userId: userProfile.id);
+}

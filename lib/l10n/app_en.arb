@@ -545,6 +545,18 @@
     "@user_details_data": {
       "description": "User details data"
     },
+    "user_details_edit_avatar": "Edit avatar",
+    "@user_details_edit_avatar": {
+      "description": "User edit avatar"
+    },
+    "user_details_edit_data": "Edit data",
+    "@user_details_edit_data": {
+      "description": "User edit data"
+    },
+    "user_details_data_updated": "User data updated",
+    "@user_details_data_updated": {
+      "description": "User data updated"
+    },
     "user_details_premissions": "User premissions",
     "@user_details_premissions": {
       "description": "User details premissions"

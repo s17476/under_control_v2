@@ -137,22 +137,6 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
       },
     );
 
-    on<UpdateUserDataEvent>(
-      (event, emit) async {
-        emit(Loading());
-        final failureOrVoidResult = await updateUserData(event.userProfile);
-        failureOrVoidResult.fold(
-          (failure) async => emit(
-            DatabaseErrorUserProfile(message: failure.message),
-          ),
-          (_) async {
-            final updatedUser = event.userProfile;
-            emit(Approved(userProfile: updatedUser));
-          },
-        );
-      },
-    );
-
     on<GetUserByIdEvent>((event, emit) async {
       emit(Loading());
       final failureOrUserProfile = await getUserById(event.userId);

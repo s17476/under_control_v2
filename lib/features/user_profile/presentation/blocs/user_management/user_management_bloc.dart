@@ -9,6 +9,7 @@ import 'package:under_control_v2/features/user_profile/domain/usecases/unmake_us
 import 'package:under_control_v2/features/user_profile/domain/usecases/unsuspend_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
 
+import '../../../domain/entities/user_profile.dart';
 import '../../../domain/usecases/approve_user_and_make_admin.dart';
 import '../../../domain/usecases/approve_user.dart';
 import '../../../domain/usecases/assign_user_to_group.dart';
@@ -28,6 +29,7 @@ const userApproved = 'userApproved';
 const userRejected = 'userRejected';
 const userSuspended = 'userSuspended';
 const userUnsuspended = 'userunsuspended';
+const userUpdated = 'userUpdated';
 
 @injectable
 class UserManagementBloc
@@ -194,6 +196,20 @@ class UserManagementBloc
           (voidResult) async => emit(
             const UserManagementSuccessful(message: unassignedGroupAdmin),
           ),
+        );
+      },
+    );
+
+    on<UpdateUserDataEvent>(
+      (event, emit) async {
+        emit(UserManagementLoading());
+        final failureOrVoidResult = await updateUserData(event.userProfile);
+        failureOrVoidResult.fold(
+          (failure) async => emit(
+            UserManagementError(message: failure.message),
+          ),
+          (_) async =>
+              emit(const UserManagementSuccessful(message: userUpdated)),
         );
       },
     );
