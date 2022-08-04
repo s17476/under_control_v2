@@ -81,14 +81,14 @@ class UserListTile extends StatelessWidget {
               SizedBox(
                 width: 50,
                 child: Icon(
-                  Icons.person_remove,
+                  Icons.remove,
                   size: 40,
                   color: Theme.of(context).errorColor,
                 ),
               ),
             if (isSelectionTile && !isGroupMember)
               Icon(
-                Icons.person_add,
+                Icons.add,
                 size: 40,
                 color: Theme.of(context).primaryColor,
               ),

@@ -15,6 +15,7 @@ import 'package:under_control_v2/features/groups/domain/entities/group.dart';
 import 'package:under_control_v2/features/groups/presentation/widgets/group_management/group_tile.dart';
 import 'package:under_control_v2/features/user_profile/presentation/pages/add_user_profile_page.dart';
 import 'package:under_control_v2/features/user_profile/presentation/widgets/edit_user_modal_bottom_sheet.dart';
+import 'package:under_control_v2/features/user_profile/presentation/widgets/manage_groups_card.dart';
 
 import '../../../core/presentation/widgets/url_launcher_helpers.dart';
 import '../../../core/utils/choice.dart';
@@ -39,7 +40,10 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
 
   bool isAvatarEditorVisible = false;
 
+  bool isGroupManagementVisible = false;
+
   void showAvatarEditor() {
+    hideGroupManagement();
     setState(() {
       isAvatarEditorVisible = true;
     });
@@ -48,6 +52,19 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
   void hideAvatarEditor() {
     setState(() {
       isAvatarEditorVisible = false;
+    });
+  }
+
+  void showGroupManagement() {
+    hideAvatarEditor();
+    setState(() {
+      isGroupManagementVisible = true;
+    });
+  }
+
+  void hideGroupManagement() {
+    setState(() {
+      isGroupManagementVisible = false;
     });
   }
 
@@ -66,51 +83,60 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
       final index = companyState.companyUsers.allUsers
           .indexWhere((element) => element.id == userId);
       if (index >= 0) {
-        user = companyState.companyUsers.allUsers[index];
+        setState(() {
+          user = companyState.companyUsers.allUsers[index];
+        });
+        // popup menu items
+        choices = [
+          // edit users data
+          Choice(
+            title: AppLocalizations.of(context)!.user_details_edit_data,
+            icon: Icons.edit,
+            onTap: () => showEditUserModalBottomSheet(
+              context: context,
+              user: user!,
+            ),
+          ),
+          // edit users avatar image
+          Choice(
+            title: AppLocalizations.of(context)!.user_details_edit_avatar,
+            icon: Icons.person,
+            onTap: () => showAvatarEditor(),
+          ),
+          // manage groups
+          if (currentUser.administrator)
+            Choice(
+              title: AppLocalizations.of(context)!.group_manage_user_groups,
+              icon: Icons.group,
+              onTap: () => showGroupManagement(),
+            ),
+          // suspend user
+          if (user!.id != currentUser.id && currentUser.administrator)
+            Choice(
+              title: AppLocalizations.of(context)!.suspend,
+              icon: Icons.person_off,
+              onTap: () => showUserSuspendDialog(context: context, user: user!),
+            ),
+          // make admin
+          if (user!.id != currentUser.id &&
+              !user!.administrator &&
+              currentUser.administrator)
+            Choice(
+              title: AppLocalizations.of(context)!.user_make_admin,
+              icon: Icons.gpp_good,
+              onTap: () => showMakeAdminDialog(context: context, user: user!),
+            ),
+          // revoke admin
+          if (user!.id != currentUser.id &&
+              user!.administrator &&
+              currentUser.administrator)
+            Choice(
+              title: AppLocalizations.of(context)!.user_unmake_admin,
+              icon: Icons.gpp_bad,
+              onTap: () => showUnmakeAdminDialog(context: context, user: user!),
+            ),
+        ];
       }
-      // popup menu items
-      choices = [
-        // edit users avatar image
-        Choice(
-          title: AppLocalizations.of(context)!.user_details_edit_avatar,
-          icon: Icons.person,
-          onTap: () => showAvatarEditor(),
-        ),
-        // edit users data
-        Choice(
-          title: AppLocalizations.of(context)!.user_details_edit_data,
-          icon: Icons.edit,
-          onTap: () => showEditUserModalBottomSheet(
-            context: context,
-            user: user!,
-          ),
-        ),
-        // suspend user
-        if (user!.id != currentUser.id && currentUser.administrator)
-          Choice(
-            title: AppLocalizations.of(context)!.suspend,
-            icon: Icons.person_off,
-            onTap: () => showUserSuspendDialog(context: context, user: user!),
-          ),
-        // make admin
-        if (user!.id != currentUser.id &&
-            !user!.administrator &&
-            currentUser.administrator)
-          Choice(
-            title: AppLocalizations.of(context)!.user_make_admin,
-            icon: Icons.gpp_good,
-            onTap: () => showMakeAdminDialog(context: context, user: user!),
-          ),
-        // revoke admin
-        if (user!.id != currentUser.id &&
-            user!.administrator &&
-            currentUser.administrator)
-          Choice(
-            title: AppLocalizations.of(context)!.user_unmake_admin,
-            icon: Icons.gpp_bad,
-            onTap: () => showUnmakeAdminDialog(context: context, user: user!),
-          ),
-      ];
     }
     super.didChangeDependencies();
   }
@@ -135,6 +161,9 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
               onSelected: (Choice choice) {
                 if (isAvatarEditorVisible) {
                   hideAvatarEditor();
+                }
+                if (isGroupManagementVisible) {
+                  hideGroupManagement();
                 }
                 choice.onTap();
               },
@@ -476,6 +505,11 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                       AvatarEditorCard(
                         user: user!,
                         onDismiss: hideAvatarEditor,
+                      ),
+                    if (isGroupManagementVisible)
+                      ManageGroupsCard(
+                        user: user!,
+                        onDismiss: hideGroupManagement,
                       ),
                   ],
                 ),

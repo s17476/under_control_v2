@@ -5,55 +5,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/user_list_tile.dart';
+import 'package:under_control_v2/features/groups/domain/entities/group.dart';
+import 'package:under_control_v2/features/groups/presentation/blocs/group/group_bloc.dart';
+import 'package:under_control_v2/features/groups/presentation/widgets/group_management/group_tile.dart';
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import '../../../groups/domain/entities/group.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
-import '../../utils/responsive_size.dart';
-import '../../utils/size_config.dart';
 
-class AddUserCard extends StatefulWidget {
-  const AddUserCard({
+class ManageGroupsCard extends StatefulWidget {
+  const ManageGroupsCard({
     Key? key,
-    required this.group,
-    required this.onToggleUserSelection,
+    required this.user,
     required this.onDismiss,
   }) : super(key: key);
 
-  final Group group;
+  final UserProfile user;
   final VoidCallback onDismiss;
-  final Function(BuildContext context, Group group, UserProfile user)
-      onToggleUserSelection;
 
   @override
-  State<AddUserCard> createState() => _AddUserCardState();
+  State<ManageGroupsCard> createState() => _ManageGroupsCardState();
 }
 
-class _AddUserCardState extends State<AddUserCard> with ResponsiveSize {
-  List<UserProfile> allUsers = [];
-  late UserProfile currentUser;
-
-  void toggleUser(UserProfile user) {
-    widget.onToggleUserSelection(context, widget.group, user);
-  }
+class _ManageGroupsCardState extends State<ManageGroupsCard> {
+  List<Group> allGroups = [];
 
   @override
   void didChangeDependencies() {
-    final companyState = context.watch<CompanyProfileBloc>().state;
-    if (companyState is CompanyProfileLoaded) {
-      allUsers = companyState.companyUsers.allUsers;
+    final groupState = context.watch<GroupBloc>().state;
+    if (groupState is GroupLoadedState) {
+      allGroups = groupState.allGroups.allGroups;
     }
-    currentUser =
-        (context.read<UserProfileBloc>().state as Approved).userProfile;
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig.init(context);
     return Stack(children: [
       InkWell(
         onTap: () => widget.onDismiss(),
@@ -104,7 +90,7 @@ class _AddUserCardState extends State<AddUserCard> with ResponsiveSize {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           AppLocalizations.of(context)!
-                              .group_toggle_group_members,
+                              .group_manage_user_groups,
                           style: Theme.of(context).textTheme.headline6,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -115,24 +101,12 @@ class _AddUserCardState extends State<AddUserCard> with ResponsiveSize {
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: allUsers.length,
+                        itemCount: allGroups.length,
                         itemBuilder: (context, index) {
-                          return UserListTile(
-                            user: allUsers[index],
-                            onTap: currentUser.administrator
-                                ? toggleUser
-                                : currentUser.id == allUsers[index].id
-                                    ? (UserProfile _) {}
-                                    : toggleUser,
-                            isSelectionTile:
-                                (allUsers[index].id != currentUser.id) ||
-                                    currentUser.administrator,
-                            isGroupMember: allUsers[index]
-                                .userGroups
-                                .contains(widget.group.id),
-                            isGroupAdministrator: widget
-                                .group.groupAdministrators
-                                .contains(allUsers[index].id),
+                          return GroupTile(
+                            group: allGroups[index],
+                            isSelectionTile: true,
+                            user: widget.user,
                           );
                         },
                       ),
