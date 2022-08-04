@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/core/error/error_messages.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../error/error_messages.dart';
 
 void showValidationSnackBar(UserProfileState state, BuildContext context) {
   if (state.message.isNotEmpty) {

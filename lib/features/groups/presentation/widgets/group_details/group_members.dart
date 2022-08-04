@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/user_list_tile.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../domain/entities/group.dart';
 
 class GroupMembers extends StatefulWidget {

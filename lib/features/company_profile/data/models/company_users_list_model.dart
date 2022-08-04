@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/company_users_list.dart';
-import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
+import '../../domain/entities/company_users_list.dart';
+import '../../../user_profile/data/models/user_profile_model.dart';
+import '../../../user_profile/domain/entities/user_profile.dart';
 
 class CompanyUsersListModel extends CompanyUsersList {
   const CompanyUsersListModel({

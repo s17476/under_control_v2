@@ -5,11 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
-
 import '../../../../company_profile/domain/entities/company_users_list.dart';
 import '../../../data/models/company_users_list_model.dart';
 import '../../../domain/usecases/fetch_new_users.dart';
+import '../company_profile/company_profile_bloc.dart';
 
 part 'new_users_event.dart';
 part 'new_users_state.dart';

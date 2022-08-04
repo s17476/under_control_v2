@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/backward_text_button.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/forward_text_button.dart';
 
 import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
-import '../../../core/utils/responsive_size.dart';
+import '../../../core/presentation/widgets/backward_text_button.dart';
+import '../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../core/presentation/widgets/logo_widget.dart';
+import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
 
 class WelcomeCard extends StatelessWidget with ResponsiveSize {

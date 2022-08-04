@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 
 import '../../../core/presentation/widgets/custom_text_form_field.dart';
+import '../../data/models/user_profile_model.dart';
+import '../../domain/entities/user_profile.dart';
+import '../blocs/user_management/user_management_bloc.dart';
 
 Future<void> showEditUserModalBottomSheet({
   required BuildContext context,

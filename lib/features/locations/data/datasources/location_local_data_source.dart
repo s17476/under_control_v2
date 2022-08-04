@@ -1,8 +1,8 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/error/exceptions.dart';
+import '../../../core/usecases/usecase.dart';
 
 abstract class LocationLocalDataSource {
   Future<SelectedLocationsParams> getCachedLocation();

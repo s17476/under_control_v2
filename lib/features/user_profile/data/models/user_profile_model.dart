@@ -1,4 +1,4 @@
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
+import '../../domain/entities/user_profile.dart';
 
 class UserProfileModel extends UserProfile {
   const UserProfileModel({

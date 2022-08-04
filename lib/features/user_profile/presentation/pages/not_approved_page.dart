@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
+import '../blocs/user_management/user_management_bloc.dart';
 import '../blocs/user_profile/user_profile_bloc.dart';
 
 class NotApprovedPage extends StatelessWidget with ResponsiveSize {

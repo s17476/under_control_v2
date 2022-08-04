@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../blocs/bloc/location_bloc.dart';
 import '../widgets/location_management_page/add_location_card.dart';
 import '../widgets/location_management_page/location_tile.dart';

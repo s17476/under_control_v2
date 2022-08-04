@@ -1,4 +1,4 @@
-import 'package:under_control_v2/features/core/utils/size_config.dart';
+import 'size_config.dart';
 
 mixin ResponsiveSize {
   double responsiveSizePct(

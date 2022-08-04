@@ -1,19 +1,19 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:injectable/injectable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:under_control_v2/features/company_profile/data/models/company_model.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
-import 'package:under_control_v2/features/company_profile/domain/usecases/add_company.dart';
-import 'package:under_control_v2/features/company_profile/domain/usecases/add_company_logo.dart';
-import 'package:under_control_v2/features/company_profile/domain/usecases/fetch_all_companies.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/core/utils/input_validator.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import 'package:injectable/injectable.dart';
 
+import '../../../../core/usecases/usecase.dart';
+import '../../../../core/utils/input_validator.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../../data/models/company_model.dart';
 import '../../../domain/entities/companies.dart';
+import '../../../domain/entities/company.dart';
+import '../../../domain/usecases/add_company.dart';
+import '../../../domain/usecases/add_company_logo.dart';
+import '../../../domain/usecases/fetch_all_companies.dart';
 
 part 'company_management_event.dart';
 part 'company_management_state.dart';
