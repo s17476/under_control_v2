@@ -557,6 +557,10 @@
     "@user_details_data_updated": {
       "description": "User data updated"
     },
+    "user_details_avatar_updated": "User avatar updated",
+    "@user_details_avatar_updated": {
+      "description": "User avatar updated"
+    },
     "user_details_premissions": "User premissions",
     "@user_details_premissions": {
       "description": "User details premissions"

@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/add_user_avatar.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/assign_group_admin.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/make_user_administrator.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/unassign_group_admin.dart';
@@ -30,6 +34,7 @@ const userRejected = 'userRejected';
 const userSuspended = 'userSuspended';
 const userUnsuspended = 'userunsuspended';
 const userUpdated = 'userUpdated';
+const avatarUpdated = 'avatarUpdated';
 
 @injectable
 class UserManagementBloc
@@ -46,6 +51,7 @@ class UserManagementBloc
   final UnassignUserFromGroup unassignUserFromGroup;
   final AssignGroupAdmin assignGroupAdmin;
   final UnassignGroupAdmin unassignGroupAdmin;
+  final AddUserAvatar addUserAvatar;
 
   UserManagementBloc({
     required this.approveUser,
@@ -60,6 +66,7 @@ class UserManagementBloc
     required this.unassignUserFromGroup,
     required this.assignGroupAdmin,
     required this.unassignGroupAdmin,
+    required this.addUserAvatar,
   }) : super(UserManagementEmpty()) {
     on<ApproveUserEvent>((event, emit) async {
       emit(UserManagementLoading());
@@ -210,6 +217,32 @@ class UserManagementBloc
           ),
           (_) async =>
               emit(const UserManagementSuccessful(message: userUpdated)),
+        );
+      },
+    );
+
+    on<UpdateUserAvatarEvent>(
+      (event, emit) async {
+        emit(UserManagementLoading());
+        // saves avatar in DB
+        final failureOrAvatarUrl = await addUserAvatar(
+          AvatarParams(userId: event.userProfile.id, avatar: event.avatar!),
+        );
+        await failureOrAvatarUrl.fold(
+          (failure) async => UserManagementError(message: failure.message),
+          (avatarUrl) async {
+            // updates user profile
+            UserProfileModel updatedUser =
+                (event.userProfile as UserProfileModel)
+                    .copyWith(avatarUrl: avatarUrl);
+            final failureOrVoidResult = await updateUserData(updatedUser);
+            await failureOrVoidResult.fold(
+              (failure) async => UserManagementError(message: failure.message),
+              (_) async {
+                emit(const UserManagementSuccessful(message: avatarUpdated));
+              },
+            );
+          },
         );
       },
     );

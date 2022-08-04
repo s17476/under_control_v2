@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/add_user_avatar.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/approve_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/approve_user_and_make_admin.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/assign_group_admin.dart';
@@ -44,6 +45,8 @@ class MockAssignGroupAdmin extends Mock implements AssignGroupAdmin {}
 
 class MockUnassignGroupAdmin extends Mock implements UnassignGroupAdmin {}
 
+class MockAddUserAvatar extends Mock implements AddUserAvatar {}
+
 void main() {
   late MockApproveUser mockApproveUser;
   late MockMakeUserAdministrator mockMakeUserAdministrator;
@@ -57,6 +60,7 @@ void main() {
   late MockUnassignUserFromGroup mockUnassignUserFromGroup;
   late MockAssignGroupAdmin mockAssignGroupAdmin;
   late MockUnassignGroupAdmin mockUnassignGroupAdmin;
+  late MockAddUserAvatar mockAddUserAvatar;
   late UserManagementBloc userManagementBloc;
 
   setUp(() {
@@ -72,6 +76,7 @@ void main() {
     mockUnassignUserFromGroup = MockUnassignUserFromGroup();
     mockAssignGroupAdmin = MockAssignGroupAdmin();
     mockUnassignGroupAdmin = MockUnassignGroupAdmin();
+    mockAddUserAvatar = MockAddUserAvatar();
 
     userManagementBloc = UserManagementBloc(
       approveUser: mockApproveUser,
@@ -86,6 +91,7 @@ void main() {
       unassignUserFromGroup: mockUnassignUserFromGroup,
       assignGroupAdmin: mockAssignGroupAdmin,
       unassignGroupAdmin: mockUnassignGroupAdmin,
+      addUserAvatar: mockAddUserAvatar,
     );
   });
 

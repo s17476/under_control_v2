@@ -450,45 +450,45 @@ void main() {
       );
     });
 
-    group('UpdateUserData usecase', () {
-      blocTest(
-        'should emit [DatabaseError] when usecase returns failure',
-        build: () => userProfileBloc,
-        act: (UserProfileBloc bloc) async {
-          bloc.add(
-            UpdateUserDataEvent(userProfile: tUserProfileModel),
-          );
-          when(() => mockUpdateUserData(any()))
-              .thenAnswer((_) async => const Left(DatabaseFailure()));
-        },
-        skip: 1,
-        verify: (_) => verify(
-          () => mockUpdateUserData(tUserProfileModel),
-        ).called(1),
-        expect: () => [isA<DatabaseErrorUserProfile>()],
-      );
-      blocTest(
-        'should emit [Approved] containing updated user data when UpdateUserData is called',
-        build: () => userProfileBloc,
-        act: (UserProfileBloc bloc) async {
-          bloc.add(
-            UpdateUserDataEvent(
-              userProfile: tUserProfileModel.copyWith(id: 'updatedId'),
-            ),
-          );
-          when(() => mockUpdateUserData(any())).thenAnswer(
-            (_) async => Right(VoidResult()),
-          );
-        },
-        skip: 1,
-        verify: (_) => verify(
-          () => mockUpdateUserData(tUserProfileModel.copyWith(id: 'updatedId')),
-        ).called(1),
-        expect: () => [
-          Approved(userProfile: tUserProfileModel.copyWith(id: 'updatedId')),
-        ],
-      );
-    });
+    // group('UpdateUserData usecase', () {
+    //   blocTest(
+    //     'should emit [DatabaseError] when usecase returns failure',
+    //     build: () => userProfileBloc,
+    //     act: (UserProfileBloc bloc) async {
+    //       bloc.add(
+    //         UpdateUserDataEvent(userProfile: tUserProfileModel),
+    //       );
+    //       when(() => mockUpdateUserData(any()))
+    //           .thenAnswer((_) async => const Left(DatabaseFailure()));
+    //     },
+    //     skip: 1,
+    //     verify: (_) => verify(
+    //       () => mockUpdateUserData(tUserProfileModel),
+    //     ).called(1),
+    //     expect: () => [isA<DatabaseErrorUserProfile>()],
+    //   );
+    //   blocTest(
+    //     'should emit [Approved] containing updated user data when UpdateUserData is called',
+    //     build: () => userProfileBloc,
+    //     act: (UserProfileBloc bloc) async {
+    //       bloc.add(
+    //         UpdateUserDataEvent(
+    //           userProfile: tUserProfileModel.copyWith(id: 'updatedId'),
+    //         ),
+    //       );
+    //       when(() => mockUpdateUserData(any())).thenAnswer(
+    //         (_) async => Right(VoidResult()),
+    //       );
+    //     },
+    //     skip: 1,
+    //     verify: (_) => verify(
+    //       () => mockUpdateUserData(tUserProfileModel.copyWith(id: 'updatedId')),
+    //     ).called(1),
+    //     expect: () => [
+    //       Approved(userProfile: tUserProfileModel.copyWith(id: 'updatedId')),
+    //     ],
+    //   );
+    // });
 
     // group('ApproveUser usecase', () {
     //   blocTest(

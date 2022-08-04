@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/company_profile/presentation/widgets/user_management_dialogs.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
+import 'package:under_control_v2/features/user_profile/presentation/widgets/avatar_editor_card.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/icon_title_row.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/loading_widget.dart';
 import 'package:under_control_v2/features/core/utils/responsive_size.dart';
@@ -36,6 +37,20 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
   late UserProfile currentUser;
   List<Choice> choices = [];
 
+  bool isAvatarEditorVisible = false;
+
+  void showAvatarEditor() {
+    setState(() {
+      isAvatarEditorVisible = true;
+    });
+  }
+
+  void hideAvatarEditor() {
+    setState(() {
+      isAvatarEditorVisible = false;
+    });
+  }
+
   @override
   void didChangeDependencies() {
     // gets current user
@@ -59,10 +74,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
         Choice(
           title: AppLocalizations.of(context)!.user_details_edit_avatar,
           icon: Icons.person,
-          onTap: () => showEditUserModalBottomSheet(
-            context: context,
-            user: user!,
-          ),
+          onTap: () => showAvatarEditor(),
         ),
         // edit users data
         Choice(
@@ -120,7 +132,12 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
           if (user != null &&
               (currentUser.administrator || currentUser.id == user!.id))
             PopupMenuButton<Choice>(
-              onSelected: (Choice choice) => choice.onTap(),
+              onSelected: (Choice choice) {
+                if (isAvatarEditorVisible) {
+                  hideAvatarEditor();
+                }
+                choice.onTap();
+              },
               itemBuilder: (BuildContext context) {
                 return choices.map((Choice choice) {
                   return PopupMenuItem<Choice>(
@@ -149,293 +166,318 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
           : BlocListener<UserManagementBloc, UserManagementState>(
               listener: (context, state) {
                 if (state is UserManagementSuccessful) {
-                  if (state.message == userUpdated) {
+                  String message = '';
+                  switch (state.message) {
+                    case userUpdated:
+                      message = AppLocalizations.of(context)!
+                          .user_details_data_updated;
+                      break;
+                    case avatarUpdated:
+                      message = AppLocalizations.of(context)!
+                          .user_details_avatar_updated;
+                      break;
+                    default:
+                      message = '';
+                      break;
+                  }
+                  if (message.isNotEmpty) {
                     showSnackBar(
-                        context: context,
-                        message: AppLocalizations.of(context)!
-                            .user_details_data_updated);
+                      context: context,
+                      message: message,
+                    );
                   }
                 }
               },
               child: SizedBox(
                 width: double.infinity,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // avatar and name
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(50),
-                            bottomRight: Radius.circular(50),
-                          ),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: const Alignment(0, 1),
-                            colors: [
-                              Theme.of(context).primaryColor.withAlpha(50),
-                              Theme.of(context).primaryColor,
-                              Theme.of(context).primaryColor.withAlpha(50),
-                            ],
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            CachedUserAvatar(
-                              size: responsiveSizePct(small: 70),
-                              imageUrl: user!.avatarUrl,
-                            ),
-                            Text(
-                              user!.firstName,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(
-                                    color: Colors.white,
-                                  ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              user!.lastName,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(
-                                    color: Colors.white,
-                                  ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                      // user data
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 16,
-                          left: 16,
-                          right: 16,
-                        ),
-                        child: Column(
-                          children: [
-                            // title
-                            IconTitleRow(
-                              icon: Icons.person,
-                              iconColor: Colors.grey.shade300,
-                              iconBackground: Colors.black,
-                              title: AppLocalizations.of(context)!
-                                  .user_details_data,
-                              titleFontSize: 16,
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            // phone number
-                            InkWell(
-                              onTap: () => makePhoneCall(user!.phoneNumber),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.call,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .add_company_intro_card_phone_number,
-                                      ),
-                                    ),
-                                    Text(user!.phoneNumber),
-                                  ],
-                                ),
+                child: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          // avatar and name
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(50),
+                                bottomRight: Radius.circular(50),
                               ),
-                            ),
-                            // sms
-                            InkWell(
-                              onTap: () => sendSms(user!.phoneNumber),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.message,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .user_details_sms,
-                                      ),
-                                    ),
-                                    Text(user!.phoneNumber),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            // email
-                            InkWell(
-                              onTap: () => mailTo(user!.email),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.email,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .add_company_intro_card_email,
-                                      ),
-                                    ),
-                                    Text(
-                                      user!.email,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        indent: 8,
-                        endIndent: 8,
-                        thickness: 1.5,
-                      ),
-
-                      // user premissions
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 8,
-                          left: 16,
-                          right: 16,
-                        ),
-                        child: Column(
-                          children: [
-                            // title
-                            IconTitleRow(
-                              icon: Icons.error,
-                              iconColor: Colors.grey.shade300,
-                              iconBackground: Colors.black,
-                              title: AppLocalizations.of(context)!
-                                  .user_details_premissions,
-                              titleFontSize: 16,
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            // administrator
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    user!.administrator
-                                        ? Icons.gpp_good
-                                        : Icons.gpp_bad,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      AppLocalizations.of(context)!
-                                          .user_details_admin,
-                                    ),
-                                  ),
-                                  Text(
-                                    user!.administrator
-                                        ? AppLocalizations.of(context)!.yes
-                                        : AppLocalizations.of(context)!.no,
-                                  ),
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: const Alignment(0, 1),
+                                colors: [
+                                  Theme.of(context).primaryColor.withAlpha(50),
+                                  Theme.of(context).primaryColor,
+                                  Theme.of(context).primaryColor.withAlpha(50),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        indent: 8,
-                        endIndent: 8,
-                        thickness: 1.5,
-                      ),
+                            child: Column(
+                              children: [
+                                CachedUserAvatar(
+                                  size: responsiveSizePct(small: 70),
+                                  imageUrl: user!.avatarUrl,
+                                ),
+                                Text(
+                                  user!.firstName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(
+                                        color: Colors.white,
+                                      ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  user!.lastName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(
+                                        color: Colors.white,
+                                      ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          // user data
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 16,
+                              left: 16,
+                              right: 16,
+                            ),
+                            child: Column(
+                              children: [
+                                // title
+                                IconTitleRow(
+                                  icon: Icons.person,
+                                  iconColor: Colors.grey.shade300,
+                                  iconBackground: Colors.black,
+                                  title: AppLocalizations.of(context)!
+                                      .user_details_data,
+                                  titleFontSize: 16,
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                // phone number
+                                InkWell(
+                                  onTap: () => makePhoneCall(user!.phoneNumber),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.call,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .add_company_intro_card_phone_number,
+                                          ),
+                                        ),
+                                        Text(user!.phoneNumber),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                // sms
+                                InkWell(
+                                  onTap: () => sendSms(user!.phoneNumber),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.message,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .user_details_sms,
+                                          ),
+                                        ),
+                                        Text(user!.phoneNumber),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                // email
+                                InkWell(
+                                  onTap: () => mailTo(user!.email),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.email,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .add_company_intro_card_email,
+                                          ),
+                                        ),
+                                        Text(
+                                          user!.email,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Divider(
+                            indent: 8,
+                            endIndent: 8,
+                            thickness: 1.5,
+                          ),
 
-                      // user groups
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 8,
-                          left: 16,
-                          right: 16,
-                        ),
-                        child: Column(
-                          children: [
-                            // title
-                            IconTitleRow(
-                              icon: Icons.group,
-                              iconColor: Colors.grey.shade300,
-                              iconBackground: Colors.black,
-                              title: AppLocalizations.of(context)!
-                                  .drawer_item_groups,
-                              titleFontSize: 16,
+                          // user premissions
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 8,
+                              left: 16,
+                              right: 16,
                             ),
-                            const SizedBox(
-                              height: 8,
+                            child: Column(
+                              children: [
+                                // title
+                                IconTitleRow(
+                                  icon: Icons.error,
+                                  iconColor: Colors.grey.shade300,
+                                  iconBackground: Colors.black,
+                                  title: AppLocalizations.of(context)!
+                                      .user_details_premissions,
+                                  titleFontSize: 16,
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                // administrator
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        user!.administrator
+                                            ? Icons.gpp_good
+                                            : Icons.gpp_bad,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .user_details_admin,
+                                        ),
+                                      ),
+                                      Text(
+                                        user!.administrator
+                                            ? AppLocalizations.of(context)!.yes
+                                            : AppLocalizations.of(context)!.no,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            // groups
-                            BlocBuilder<GroupBloc, GroupState>(
-                              builder: (context, state) {
-                                if (state is GroupLoadedState) {
-                                  List<Group> userGroups = [];
-                                  for (var group in state.allGroups.allGroups) {
-                                    if (user!.userGroups.contains(group.id)) {
-                                      userGroups.add(group);
+                          ),
+                          const Divider(
+                            indent: 8,
+                            endIndent: 8,
+                            thickness: 1.5,
+                          ),
+
+                          // user groups
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 8,
+                              left: 16,
+                              right: 16,
+                            ),
+                            child: Column(
+                              children: [
+                                // title
+                                IconTitleRow(
+                                  icon: Icons.group,
+                                  iconColor: Colors.grey.shade300,
+                                  iconBackground: Colors.black,
+                                  title: AppLocalizations.of(context)!
+                                      .drawer_item_groups,
+                                  titleFontSize: 16,
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                // groups
+                                BlocBuilder<GroupBloc, GroupState>(
+                                  builder: (context, state) {
+                                    if (state is GroupLoadedState) {
+                                      List<Group> userGroups = [];
+                                      for (var group
+                                          in state.allGroups.allGroups) {
+                                        if (user!.userGroups
+                                            .contains(group.id)) {
+                                          userGroups.add(group);
+                                        }
+                                      }
+                                      return ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: userGroups.length,
+                                        itemBuilder: (context, index) =>
+                                            GroupTile(group: userGroups[index]),
+                                      );
+                                    } else {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
                                     }
-                                  }
-                                  return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: userGroups.length,
-                                    itemBuilder: (context, index) =>
-                                        GroupTile(group: userGroups[index]),
-                                  );
-                                } else {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                              },
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                              ],
                             ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    if (isAvatarEditorVisible && user != null)
+                      AvatarEditorCard(
+                        user: user!,
+                        onDismiss: hideAvatarEditor,
+                      ),
+                  ],
                 ),
               ),
             ),

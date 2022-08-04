@@ -84,3 +84,13 @@ class UpdateUserDataEvent extends UserManagementEvent {
     required this.userProfile,
   }) : super(userId: userProfile.id);
 }
+
+class UpdateUserAvatarEvent extends UserManagementEvent {
+  final UserProfile userProfile;
+  final File? avatar;
+
+  UpdateUserAvatarEvent({
+    required this.userProfile,
+    required this.avatar,
+  }) : super(userId: userProfile.id);
+}

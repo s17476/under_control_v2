@@ -134,6 +134,7 @@
     "user_details_edit_avatar": "Edytuj zdjęcie profilowe",
     "user_details_edit_data": "Edytuj dane",
     "user_details_data_updated": "Dane użytkownika zaktualizowane",
+    "user_details_avatar_updated": "Zdjęcie profilowe użytkownika zaktualizowane",
     "user_details_premissions": "Uprawnienia użytkownika",
     "user_details_admin": "Administrator",
     "user_details_group_admin": "Administrator grupy",

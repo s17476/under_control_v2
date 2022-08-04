@@ -266,7 +266,8 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       assignUserToGroup: get<_i22.AssignUserToGroup>(),
       unassignUserFromGroup: get<_i55.UnassignUserFromGroup>(),
       assignGroupAdmin: get<_i20.AssignGroupAdmin>(),
-      unassignGroupAdmin: get<_i54.UnassignGroupAdmin>()));
+      unassignGroupAdmin: get<_i54.UnassignGroupAdmin>(),
+      addUserAvatar: get<_i17.AddUserAvatar>()));
   gh.lazySingleton<_i63.AddCompany>(() => _i63.AddCompany(
       companyManagementRepository: get<_i27.CompanyManagementRepository>()));
   gh.lazySingleton<_i64.AddCompanyLogo>(() =>
