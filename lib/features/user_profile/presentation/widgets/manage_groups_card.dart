@@ -1,15 +1,12 @@
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/user_list_tile.dart';
-import 'package:under_control_v2/features/groups/domain/entities/group.dart';
-import 'package:under_control_v2/features/groups/presentation/blocs/group/group_bloc.dart';
-import 'package:under_control_v2/features/groups/presentation/widgets/group_management/group_tile.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+
+import '../../../groups/domain/entities/group.dart';
+import '../../../groups/presentation/blocs/group/group_bloc.dart';
+import '../../../groups/presentation/widgets/group_management/group_tile.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 
 class ManageGroupsCard extends StatefulWidget {
@@ -96,7 +93,6 @@ class _ManageGroupsCardState extends State<ManageGroupsCard> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-
                       const Divider(thickness: 1.5),
                       ListView.builder(
                         shrinkWrap: true,

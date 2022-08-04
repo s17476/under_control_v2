@@ -79,10 +79,6 @@
     "@edit": {
       "description": "Edit"
     },
-    "delete": "Delete",
-    "@delete": {
-      "description": "Delete"
-    },
     "summary": "Summary",
     "@summary": {
       "description": "Summary"

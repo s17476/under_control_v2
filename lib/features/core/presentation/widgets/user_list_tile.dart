@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
 
 import '../../../user_profile/domain/entities/user_profile.dart';
+import 'cached_user_avatar.dart';
 
 class UserListTile extends StatelessWidget {
   const UserListTile({
@@ -15,9 +15,7 @@ class UserListTile extends StatelessWidget {
   }) : super(key: key);
 
   final bool isSelectionTile;
-
   final bool isGroupAdministrator;
-
   final bool isGroupMember;
 
   final UserProfile user;

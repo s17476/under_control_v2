@@ -4,11 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
-import 'package:under_control_v2/features/groups/presentation/pages/group_management_page.dart';
-import 'package:under_control_v2/features/locations/presentation/pages/location_management_page.dart';
-import 'package:under_control_v2/features/user_profile/presentation/pages/user_details_page.dart';
-import 'package:under_control_v2/features/user_profile/presentation/pages/users_list_page.dart';
 
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
@@ -19,7 +14,6 @@ import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dar
 import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart';
 import 'features/company_profile/presentation/pages/add_company_page.dart';
 import 'features/company_profile/presentation/pages/assign_company_page.dart';
-import 'features/core/presentation/pages/error_page.dart';
 import 'features/core/presentation/pages/home_page.dart';
 import 'features/core/presentation/pages/loading_page.dart';
 import 'features/core/themes/themes.dart';
@@ -28,13 +22,18 @@ import 'features/core/utils/error_message_handler.dart';
 import 'features/core/utils/material_color_generator.dart';
 import 'features/groups/presentation/blocs/group/group_bloc.dart';
 import 'features/groups/presentation/pages/add_group_page.dart';
+import 'features/groups/presentation/pages/group_details.dart';
+import 'features/groups/presentation/pages/group_management_page.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
+import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import 'features/user_profile/presentation/pages/add_user_profile_page.dart';
 import 'features/user_profile/presentation/pages/new_users_list_page.dart';
 import 'features/user_profile/presentation/pages/not_approved_page.dart';
 import 'features/user_profile/presentation/pages/suspended_users_list_page.dart';
+import 'features/user_profile/presentation/pages/user_details_page.dart';
+import 'features/user_profile/presentation/pages/users_list_page.dart';
 import 'firebase_options.dart';
 import 'injection.dart';
 
@@ -90,8 +89,6 @@ class App extends StatelessWidget
                       return const HomePage();
                     case NoUserProfileError:
                       return const AddUserProfilePage();
-                    // case Loading:
-                    //   return const LoadingPage();
                     case NoCompany:
                       return const AssignCompanyPage();
                     case NotApproved:

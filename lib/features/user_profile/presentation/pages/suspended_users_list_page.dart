@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
+import '../../../core/utils/show_snack_bar.dart';
 import '../../domain/entities/user_profile.dart';
 import '../blocs/user_management/user_management_bloc.dart';
 import '../widgets/inactive_user_list_tile.dart';
@@ -32,19 +33,7 @@ class SuspendedUsersListPage extends StatelessWidget {
                 message = '';
             }
             if (message.isNotEmpty) {
-              ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      message,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    backgroundColor: Theme.of(context).errorColor,
-                  ),
-                );
+              showSnackBar(context: context, message: message);
             }
           }
         },

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/groups/presentation/pages/add_group_page.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../core/presentation/widgets/add_user_card.dart';
 import '../../../core/presentation/widgets/user_info_card.dart';
+import '../../../core/utils/choice.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
+import '../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/group.dart';
 import '../blocs/group/group_bloc.dart';
@@ -14,6 +15,7 @@ import '../widgets/group_details/group_locations.dart';
 import '../widgets/group_details/group_members.dart';
 import '../widgets/group_details/show_group_delete_dialog.dart';
 import '../widgets/group_management/group_management_feature_card.dart';
+import 'add_group_page.dart';
 
 class GroupDetailsPage extends StatefulWidget {
   const GroupDetailsPage({
@@ -36,6 +38,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   bool isGroupAdministrator = false;
 
   late Group group;
+
+  List<Choice> choices = [];
 
   void showUserInfoCard(UserProfile userProfile) {
     setState(() {
@@ -91,14 +95,54 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       final index = groupState.allGroups.allGroups
           .indexWhere((element) => element.id == groupId);
       if (index >= 0) {
-        group = groupState.allGroups.allGroups[index];
+        setState(() {
+          group = groupState.allGroups.allGroups[index];
+        });
       }
     }
+    // gets current user
     final currentUserProfile =
         (context.read<UserProfileBloc>().state as Approved).userProfile;
     isAdministrator = currentUserProfile.administrator;
     isGroupAdministrator =
         group.groupAdministrators.contains(currentUserProfile.id);
+
+    // popup menu items list
+    setState(() {
+      choices = [
+        // manage group members
+        if (isAdministrator || isGroupAdministrator)
+          Choice(
+            title: AppLocalizations.of(context)!.group_members,
+            icon: Icons.group,
+            onTap: () => showAddUsersCard(),
+          ),
+        // edit group
+        if (isAdministrator)
+          Choice(
+            title: AppLocalizations.of(context)!.user_details_edit_data,
+            icon: Icons.edit,
+            onTap: () => Navigator.pushNamed(
+              context,
+              AddGroupPage.routeName,
+              arguments: group,
+            ),
+          ),
+        // delete group
+        if (isAdministrator)
+          Choice(
+            title: AppLocalizations.of(context)!.delete,
+            icon: Icons.delete,
+            onTap: () async {
+              final result =
+                  await showGroupDeleteDialog(context: context, group: group);
+              if (result != null && result) {
+                Navigator.pop(context);
+              }
+            },
+          ),
+      ];
+    });
     super.didChangeDependencies();
   }
 
@@ -121,50 +165,39 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           title: Text(AppLocalizations.of(context)!.group_details),
           centerTitle: true,
           actions: [
-            // add member button
-            if (isAdministrator || isGroupAdministrator)
-              IconButton(
-                onPressed: () async {
-                  hideUserInfoCard();
+            // popup menu
+            if (choices.isNotEmpty)
+              PopupMenuButton<Choice>(
+                onSelected: (Choice choice) {
                   if (isAddUsersCardVisible) {
                     hideAddUsersCard();
-                  } else {
-                    showAddUsersCard();
                   }
-                },
-                icon: const Icon(Icons.group),
-              ),
-            // edit button
-            if (isAdministrator)
-              IconButton(
-                onPressed: () async {
-                  hideUserInfoCard();
-                  hideAddUsersCard();
-                  Navigator.pushNamed(
-                    context,
-                    AddGroupPage.routeName,
-                    arguments: group,
-                  );
-                },
-                icon: const Icon(Icons.edit),
-              ),
-            // delete button
-            if (isAdministrator)
-              IconButton(
-                onPressed: () async {
-                  hideUserInfoCard();
-                  hideAddUsersCard();
-                  final result = await showGroupDeleteDialog(
-                      context: context, group: group);
-                  if (result != null && result) {
-                    Navigator.pop(context);
+                  if (isUserInfoCardVisible) {
+                    hideUserInfoCard();
                   }
+                  choice.onTap();
                 },
-                icon: const Icon(Icons.delete),
+                itemBuilder: (BuildContext context) {
+                  return choices.map((Choice choice) {
+                    return PopupMenuItem<Choice>(
+                      value: choice,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(choice.icon),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            choice.title,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList();
+                },
               ),
-            const SizedBox(
-              width: 8,
-            ),
           ],
         ),
         body: BlocListener<GroupBloc, GroupState>(
@@ -182,21 +215,11 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               }
             }
             if (message.isNotEmpty) {
-              ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      message,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    backgroundColor: state.error
-                        ? Theme.of(context).errorColor
-                        : Theme.of(context).primaryColor,
-                  ),
-                );
+              showSnackBar(
+                context: context,
+                message: message,
+                isErrorMessage: state.error,
+              );
             }
           },
           child: SizedBox(
@@ -214,7 +237,6 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // data
-
                         Padding(
                           padding: const EdgeInsets.only(left: 4, top: 8),
                           child: Row(

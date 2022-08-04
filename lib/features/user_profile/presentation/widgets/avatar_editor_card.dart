@@ -3,14 +3,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
-import '../../domain/entities/user_profile.dart';
+import '../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
-import '../../../core/presentation/widgets/cached_user_avatar.dart';
+import '../../domain/entities/user_profile.dart';
+import '../blocs/user_management/user_management_bloc.dart';
 
 class AvatarEditorCard extends StatefulWidget {
   const AvatarEditorCard({

@@ -1,19 +1,16 @@
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/user_list_tile.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 
+import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../groups/domain/entities/group.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../utils/responsive_size.dart';
 import '../../utils/size_config.dart';
+import 'user_list_tile.dart';
 
 class AddUserCard extends StatefulWidget {
   const AddUserCard({
