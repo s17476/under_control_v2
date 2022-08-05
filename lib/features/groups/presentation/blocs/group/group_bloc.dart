@@ -124,11 +124,11 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
                 groupsStream.allGroups.listen((snapshot) {
               add(UpdateGroupsListEvent(snapshot: snapshot));
             });
-            emit(
-              GroupLoadedState(
-                allGroups: const GroupsList(allGroups: []),
-              ),
-            );
+            // emit(
+            //   GroupLoadedState(
+            //     allGroups: const GroupsList(allGroups: []),
+            //   ),
+            // );
           },
         );
       },

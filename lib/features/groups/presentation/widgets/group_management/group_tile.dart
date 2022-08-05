@@ -11,6 +11,8 @@ class GroupTile extends StatelessWidget {
   const GroupTile({
     Key? key,
     required this.group,
+    required this.onTap,
+    this.isGroupMember = false,
     this.user,
     this.isSelectionTile = false,
   }) : super(key: key);
@@ -18,6 +20,9 @@ class GroupTile extends StatelessWidget {
   final Group group;
   final UserProfile? user;
   final bool isSelectionTile;
+  final bool isGroupMember;
+
+  final Function(Group group) onTap;
 
   // assign / unassign member
   void toggleUser(
@@ -40,21 +45,8 @@ class GroupTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isGroupMember = false;
-
-    final currentUser =
-        (context.read<UserProfileBloc>().state as Approved).userProfile;
-    if (isSelectionTile) {
-      isGroupMember = user!.userGroups.contains(group.id);
-    }
     return InkWell(
-      onTap: (isSelectionTile && user != null)
-          ? () => toggleUser(context, group, user!)
-          : () => Navigator.pushNamed(
-                context,
-                GroupDetailsPage.routeName,
-                arguments: group,
-              ),
+      onTap: () => onTap(group),
       child: Container(
         margin: const EdgeInsets.symmetric(
           vertical: 4,
@@ -82,8 +74,8 @@ class GroupTile extends StatelessWidget {
                       ),
                       // shows icon if user is group administrator
                       //and is not an company administrator
-                      if (group.groupAdministrators.contains(currentUser.id) &&
-                          !currentUser.administrator)
+                      if (user != null &&
+                          group.groupAdministrators.contains(user!.id))
                         Icon(
                           Icons.gpp_good,
                           color: Theme.of(context).primaryColor,
@@ -121,7 +113,7 @@ class GroupTile extends StatelessWidget {
                 size: 40,
                 color: Theme.of(context).primaryColor,
               ),
-            if (isGroupMember)
+            if (isSelectionTile && isGroupMember)
               Icon(
                 Icons.remove,
                 size: 40,

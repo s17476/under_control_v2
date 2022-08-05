@@ -11,7 +11,7 @@
     "@add": {
       "description": "Add"
     },
-    "well_done": "Well done!",
+    "well_done": "Well done!", 
     "@well_done": {
       "description": "Well done"
     },
@@ -442,6 +442,10 @@
     "home_screen_filter_select_group": "Select group",
     "@home_screen_filter_select_group": {
       "description": "Home screen filter - select group label"
+    },
+    "group_no_user_groups": "The user does not belong to any of the groups",
+    "@group_no_user_groups": {
+      "description": "The user does not belong to any of the groups"
     },
     "group_management_title": "Groups",
     "@group_management_title": {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../company_profile/presentation/widgets/user_management_dialogs.dart';
@@ -65,6 +66,25 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
     setState(() {
       isGroupManagementVisible = false;
     });
+  }
+
+  // assign to / unassign from a group
+  void toggleGroup(
+    BuildContext context,
+    Group group,
+    UserProfile user,
+  ) {
+    // user is aleraedy a member
+    if (user.userGroups.contains(group.id)) {
+      context.read<UserManagementBloc>().add(
+            UnassignUserFromGroupEvent(groupId: group.id, userId: user.id),
+          );
+      // user is not a member
+    } else {
+      context.read<UserManagementBloc>().add(
+            AssignUserToGroupEvent(groupId: group.id, userId: user.id),
+          );
+    }
   }
 
   @override
@@ -476,14 +496,29 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                           userGroups.add(group);
                                         }
                                       }
-                                      return ListView.builder(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount: userGroups.length,
-                                        itemBuilder: (context, index) =>
-                                            GroupTile(group: userGroups[index]),
-                                      );
+                                      if (userGroups.isEmpty) {
+                                        return Text(
+                                          AppLocalizations.of(context)!
+                                              .group_no_user_groups,
+                                        );
+                                      } else {
+                                        return ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: userGroups.length,
+                                          itemBuilder: (context, index) =>
+                                              GroupTile(
+                                            group: userGroups[index],
+                                            onTap: (group) =>
+                                                Navigator.pushNamed(
+                                              context,
+                                              GroupDetailsPage.routeName,
+                                              arguments: group,
+                                            ),
+                                          ),
+                                        );
+                                      }
                                     } else {
                                       return const Center(
                                         child: CircularProgressIndicator(),
@@ -508,6 +543,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                     if (isGroupManagementVisible)
                       ManageGroupsCard(
                         user: user!,
+                        onToggleGroupSelection: toggleGroup,
                         onDismiss: hideGroupManagement,
                       ),
                   ],

@@ -70,12 +70,12 @@ class CompanyProfileBloc
                   );
                 },
               );
-              emit(
-                CompanyProfileLoaded(
-                  companyUsers: const CompanyUsersList(allUsers: []),
-                  company: company,
-                ),
-              );
+              // emit(
+              //   CompanyProfileLoaded(
+              //     companyUsers: const CompanyUsersList(allUsers: []),
+              //     company: company,
+              //   ),
+              // );
             },
           );
         },

@@ -14,10 +14,13 @@ class ManageGroupsCard extends StatefulWidget {
     Key? key,
     required this.user,
     required this.onDismiss,
+    required this.onToggleGroupSelection,
   }) : super(key: key);
 
   final UserProfile user;
   final VoidCallback onDismiss;
+  final Function(BuildContext context, Group group, UserProfile user)
+      onToggleGroupSelection;
 
   @override
   State<ManageGroupsCard> createState() => _ManageGroupsCardState();
@@ -25,6 +28,10 @@ class ManageGroupsCard extends StatefulWidget {
 
 class _ManageGroupsCardState extends State<ManageGroupsCard> {
   List<Group> allGroups = [];
+
+  void toggleGroup(Group group) {
+    widget.onToggleGroupSelection(context, group, widget.user);
+  }
 
   @override
   void didChangeDependencies() {
@@ -102,7 +109,10 @@ class _ManageGroupsCardState extends State<ManageGroupsCard> {
                           return GroupTile(
                             group: allGroups[index],
                             isSelectionTile: true,
-                            user: widget.user,
+                            isGroupMember: widget.user.userGroups.contains(
+                              allGroups[index].id,
+                            ),
+                            onTap: toggleGroup,
                           );
                         },
                       ),

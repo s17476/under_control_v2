@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -148,6 +149,11 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
                       child: GroupTile(
                         key: ValueKey(filteredGroups[index].id),
                         group: filteredGroups[index],
+                        onTap: (group) => Navigator.pushNamed(
+                          context,
+                          GroupDetailsPage.routeName,
+                          arguments: group,
+                        ),
                       ),
                     ),
                   );
@@ -165,6 +171,7 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
       floatingActionButton: isAdministrator
           ? context.watch<GroupBloc>().state is GroupLoadedState
               ? FloatingActionButton.extended(
+                  heroTag: null,
                   onPressed: () {
                     Navigator.pushNamed(context, AddGroupPage.routeName);
                   },

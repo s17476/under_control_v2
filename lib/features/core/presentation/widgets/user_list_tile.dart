@@ -76,13 +76,10 @@ class UserListTile extends StatelessWidget {
               ),
             ),
             if (isSelectionTile && isGroupMember)
-              SizedBox(
-                width: 50,
-                child: Icon(
-                  Icons.remove,
-                  size: 40,
-                  color: Theme.of(context).errorColor,
-                ),
+              Icon(
+                Icons.remove,
+                size: 40,
+                color: Theme.of(context).errorColor,
               ),
             if (isSelectionTile && !isGroupMember)
               Icon(
