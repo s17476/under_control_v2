@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/user_profile/presentation/pages/users_list_page.dart';
 
 import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
+import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../company_profile/presentation/pages/company_details_page.dart';
 import '../../../../groups/presentation/pages/group_management_page.dart';
 import '../../../../locations/presentation/pages/location_management_page.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../../user_profile/presentation/pages/user_details_page.dart';
+import '../../../../user_profile/presentation/pages/users_list_page.dart';
 import '../../../utils/responsive_size.dart';
 import '../cached_user_avatar.dart';
 import '../custom_menu_item.dart';
@@ -35,9 +37,37 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
             children: [
               const FittedBox(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: EdgeInsets.only(
+                    left: 8,
+                    right: 8,
+                    top: 4,
+                  ),
                   child: Logo(greenLettersSize: 30, whitheLettersSize: 20),
                 ),
+              ),
+              BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
+                builder: (context, state) {
+                  if (state is CompanyProfileLoaded) {
+                    return InkWell(
+                      onTap: () => Navigator.popAndPushNamed(
+                        context,
+                        CompanyDetailsPage.routeName,
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        child: Text(
+                          state.company.name,
+                          style: const TextStyle(fontSize: 22),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
               ),
               const Divider(),
               BlocBuilder<UserProfileBloc, UserProfileState>(

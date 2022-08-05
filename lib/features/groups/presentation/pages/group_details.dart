@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../core/presentation/widgets/add_user_card.dart';
 import '../../../core/presentation/widgets/user_info_card.dart';
 import '../../../core/utils/choice.dart';
+import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';

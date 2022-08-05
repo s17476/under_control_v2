@@ -136,6 +136,8 @@
     "user_details_edit_data": "Edytuj dane",
     "user_details_data_updated": "Dane użytkownika zaktualizowane",
     "user_details_avatar_updated": "Zdjęcie profilowe użytkownika zaktualizowane",
+    "user_details_user_assigned": "Użytkownik dodany do grupy",
+    "user_details_user_unassigned": "Użytkownik usunięty z grupy",
     "user_details_premissions": "Uprawnienia użytkownika",
     "user_details_admin": "Administrator",
     "user_details_group_admin": "Administrator grupy",
@@ -163,5 +165,7 @@
     "user_make_admin_question": "Czy na pewno chcesz nadać prawa administratora dla {name}?",
     "user_unmake_admin": "Odbierz prawa administratora",
     "user_confirm_unmake_admin": "Potwierdź odebranie praw",
-    "user_unmake_admin_question": "Czy na pewno odebrać prawa administratora dla {name}?"
+    "user_unmake_admin_question": "Czy na pewno odebrać prawa administratora dla {name}?",
+    "company_details_edit_logo": "Edytuj logo",
+    "company_details_title": "Szczegóły organizacji"
 }

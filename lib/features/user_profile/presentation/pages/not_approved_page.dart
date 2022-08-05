@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../core/utils/responsive_size.dart';
@@ -42,13 +43,7 @@ class NotApprovedPage extends StatelessWidget with ResponsiveSize {
       child: BlocListener<UserManagementBloc, UserManagementState>(
         listener: (context, state) {
           if (state is UserManagementSuccessful && state.message.isNotEmpty) {
-            ScaffoldMessenger.of(context)
-              ..clearSnackBars()
-              ..showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                ),
-              );
+            showSnackBar(context: context, message: state.message);
           }
         },
         child: Scaffold(

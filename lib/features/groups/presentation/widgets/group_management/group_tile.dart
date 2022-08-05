@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
-import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../domain/entities/group.dart';
-import '../../pages/group_details.dart';
 
 class GroupTile extends StatelessWidget {
   const GroupTile({

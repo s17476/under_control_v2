@@ -565,6 +565,14 @@
     "@user_details_avatar_updated": {
       "description": "User avatar updated"
     },
+    "user_details_user_assigned": "User assigned to the group",
+    "@user_details_user_assigned": {
+      "description": "User assigned to a group"
+    },
+    "user_details_user_unassigned": "User removed from the group",
+    "@user_details_user_unassigned": {
+      "description": "User removed from the group"
+    },
     "user_details_premissions": "User premissions",
     "@user_details_premissions": {
       "description": "User details premissions"
@@ -712,5 +720,13 @@
           "example": "Tonny"
         }
       }
+    },
+    "company_details_edit_logo": "Edit logo",
+    "@company_details_edit_logo": {
+      "description": "Edit logo"
+    },
+    "company_details_title": "Company details",
+    "@company_details_title": {
+      "description": "Company details"
     }
 }

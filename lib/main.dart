@@ -14,6 +14,7 @@ import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dar
 import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart';
 import 'features/company_profile/presentation/pages/add_company_page.dart';
 import 'features/company_profile/presentation/pages/assign_company_page.dart';
+import 'features/company_profile/presentation/pages/company_details_page.dart';
 import 'features/core/presentation/pages/home_page.dart';
 import 'features/core/presentation/pages/loading_page.dart';
 import 'features/core/themes/themes.dart';
@@ -122,6 +123,7 @@ class App extends StatelessWidget
           NewUsersListPage.routeName: (context) => const NewUsersListPage(),
           SuspendedUsersListPage.routeName: (context) =>
               const SuspendedUsersListPage(),
+          CompanyDetailsPage.routeName: (context) => const CompanyDetailsPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

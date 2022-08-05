@@ -1,8 +1,11 @@
 part of 'user_management_bloc.dart';
 
 abstract class UserManagementState extends Equatable {
-  const UserManagementState({this.message = ''});
-
+  const UserManagementState({
+    this.message = '',
+    this.error = false,
+  });
+  final bool error;
   final String message;
 
   @override
@@ -14,7 +17,10 @@ class UserManagementEmpty extends UserManagementState {}
 class UserManagementLoading extends UserManagementState {}
 
 class UserManagementSuccessful extends UserManagementState {
-  const UserManagementSuccessful({super.message = ''});
+  const UserManagementSuccessful({
+    super.message,
+    super.error,
+  });
 }
 
 class UserManagementError extends UserManagementState {

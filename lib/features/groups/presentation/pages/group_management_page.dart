@@ -47,9 +47,9 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
 
   @override
   void didChangeDependencies() {
-    isAdministrator = (context.read<UserProfileBloc>().state as Approved)
-        .userProfile
-        .administrator;
+    currentUser =
+        (context.read<UserProfileBloc>().state as Approved).userProfile;
+    isAdministrator = currentUser.administrator;
     super.didChangeDependencies();
   }
 
@@ -154,6 +154,7 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
                           GroupDetailsPage.routeName,
                           arguments: group,
                         ),
+                        user: currentUser,
                       ),
                     ),
                   );

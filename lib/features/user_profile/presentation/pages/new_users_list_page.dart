@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../company_profile/presentation/blocs/new_users/new_users_bloc.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -37,21 +38,11 @@ class NewUsersListPage extends StatelessWidget {
                 message = '';
             }
             if (message.isNotEmpty) {
-              ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      message,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    backgroundColor: isError
-                        ? Theme.of(context).errorColor
-                        : Theme.of(context).primaryColor,
-                  ),
-                );
+              showSnackBar(
+                context: context,
+                message: message,
+                isErrorMessage: isError,
+              );
             }
           }
         },
