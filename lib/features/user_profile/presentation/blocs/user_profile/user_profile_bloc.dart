@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -15,6 +16,7 @@ import '../../../domain/entities/user_profile.dart';
 import '../../../domain/usecases/add_user.dart';
 import '../../../domain/usecases/assign_user_to_company.dart';
 import '../../../domain/usecases/get_user_by_id.dart';
+import '../../../domain/usecases/get_user_stream_by_id.dart';
 import '../../../domain/usecases/reset_company.dart';
 import '../../../domain/usecases/update_user_data.dart';
 
@@ -24,11 +26,13 @@ part 'user_profile_state.dart';
 @injectable
 class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   late StreamSubscription streamSubscription;
+  StreamSubscription? userStreamSubscription;
   final AuthenticationBloc authenticationBloc;
   final AddUser addUser;
   final AssignUserToCompany assignUserToCompany;
   final ResetCompany resetCompany;
   final GetUserById getUserById;
+  final GetUserStreamById getUserStreamById;
   final UpdateUserData updateUserData;
   final AddUserAvatar addUserAvatar;
   final InputValidator inputValidator;
@@ -39,6 +43,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     required this.assignUserToCompany,
     required this.resetCompany,
     required this.getUserById,
+    required this.getUserStreamById,
     required this.updateUserData,
     required this.addUserAvatar,
     required this.inputValidator,
@@ -139,8 +144,39 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
 
     on<GetUserByIdEvent>((event, emit) async {
       emit(Loading());
-      final failureOrUserProfile = await getUserById(event.userId);
-      failureOrUserProfile.fold(
+      // final failureOrUserProfile = await getUserById(event.userId);
+      // failureOrUserProfile.fold(
+      //   (failure) async {
+      //     if (failure is UnsuspectedFailure) {
+      //       emit(const NoUserProfileError());
+      //     } else {
+      //       emit(DatabaseErrorUserProfile(message: failure.message));
+      //     }
+      //   },
+      //   (userProfile) async {
+      //     // user is not assigned to any company
+      //     if (userProfile.companyId.isEmpty) {
+      //       emit(NoCompany(userProfile: userProfile));
+      //       // user assigned to a company
+      //     } else if (!userProfile.approved) {
+      //       // user rejected by administrator
+      //       if (userProfile.rejected) {
+      //         emit(Rejected(userProfile: userProfile));
+      //         // user suspended by administrator
+      //       } else if (userProfile.suspended) {
+      //         emit(Suspended(userProfile: userProfile));
+      //         // user awaiting approvement by administrator
+      //       } else {
+      //         emit(NotApproved(userProfile: userProfile));
+      //       }
+      //       // user approved by administrator
+      //     } else {
+      //       emit(Approved(userProfile: userProfile));
+      //     }
+      //   },
+      // );
+      final failureOrUserStream = await getUserStreamById(event.userId);
+      failureOrUserStream.fold(
         (failure) async {
           if (failure is UnsuspectedFailure) {
             emit(const NoUserProfileError());
@@ -148,34 +184,45 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
             emit(DatabaseErrorUserProfile(message: failure.message));
           }
         },
-        (userProfile) async {
-          // user is not assigned to any company
-          if (userProfile.companyId.isEmpty) {
-            emit(NoCompany(userProfile: userProfile));
-            // user assigned to a company
-          } else if (!userProfile.approved) {
-            // user rejected by administrator
-            if (userProfile.rejected) {
-              emit(Rejected(userProfile: userProfile));
-              // user suspended by administrator
-            } else if (userProfile.suspended) {
-              emit(Suspended(userProfile: userProfile));
-              // user awaiting approvement by administrator
-            } else {
-              emit(NotApproved(userProfile: userProfile));
-            }
-            // user approved by administrator
-          } else {
-            emit(Approved(userProfile: userProfile));
-          }
+        (userStream) async {
+          userStreamSubscription = userStream.userStream.listen((userSnapshot) {
+            add(UpdateUserProfileEvent(snapshot: userSnapshot));
+          });
         },
       );
     });
+
+    on<UpdateUserProfileEvent>(
+      (event, emit) async {
+        final userProfile = UserProfileModel.fromSnapshot(
+            event.snapshot as DocumentSnapshot<Map<String, dynamic>>);
+        // user is not assigned to any company
+        if (userProfile.companyId.isEmpty) {
+          emit(NoCompany(userProfile: userProfile));
+          // user assigned to a company
+        } else if (!userProfile.approved) {
+          // user rejected by administrator
+          if (userProfile.rejected) {
+            emit(Rejected(userProfile: userProfile));
+            // user suspended by administrator
+          } else if (userProfile.suspended) {
+            emit(Suspended(userProfile: userProfile));
+            // user awaiting approvement by administrator
+          } else {
+            emit(NotApproved(userProfile: userProfile));
+          }
+          // user approved by administrator
+        } else {
+          emit(Approved(userProfile: userProfile));
+        }
+      },
+    );
   }
 
   @override
   Future<void> close() {
     streamSubscription.cancel();
+    userStreamSubscription?.cancel();
     return super.close();
   }
 }

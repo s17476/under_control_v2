@@ -47,3 +47,8 @@ class GetUserByIdEvent extends UserProfileEvent {
     required this.userId,
   }) : super([userId]);
 }
+
+class UpdateUserProfileEvent extends UserProfileEvent {
+  final DocumentSnapshot<Object?> snapshot;
+  UpdateUserProfileEvent({required this.snapshot}) : super([snapshot]);
+}

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/entities/user_profile.dart';
 
 class UserProfileModel extends UserProfile {
@@ -98,6 +100,11 @@ class UserProfileModel extends UserProfile {
       suspended: map['suspended'] ?? false,
       administrator: map['administrator'] ?? false,
     );
+  }
+
+  factory UserProfileModel.fromSnapshot(DocumentSnapshot snapshot) {
+    final doc = snapshot.data() as Map<String, dynamic>;
+    return UserProfileModel.fromMap(doc, snapshot.id);
   }
 
   factory UserProfileModel.newUser({

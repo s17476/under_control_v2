@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/user_profile/domain/entities/user_stream.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -154,6 +155,22 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
       } else {
         throw Exception(['No user found for the given ID']);
       }
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return Left(
+        UnsuspectedFailure(message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserStream>> getUserStreamById(String userId) async {
+    try {
+      final userSnapshot =
+          firebaseFirestore.collection('users').doc(userId).snapshots();
+
+      return Right(UserStream(userStream: userSnapshot));
     } on FirebaseException catch (e) {
       return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
     } catch (e) {
