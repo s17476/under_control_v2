@@ -219,14 +219,14 @@ void main() {
       );
 
       blocTest<GroupBloc, GroupState>(
-        'should emit [GroupLoadedState] when getGroupsStream usecase returns data',
+        'should emit [GroupLoadingState] when getGroupsStream usecase returns data',
         build: () => groupBloc,
         act: (bloc) async {
           bloc.add(FetchAllGroupsEvent());
           when(() => mockGetGroupsStream(any())).thenAnswer((_) async =>
               Right(GroupsStream(allGroups: Stream.fromIterable([]))));
         },
-        expect: () => [GroupLoadingState(), isA<GroupLoadedState>()],
+        expect: () => [GroupLoadingState()],
       );
     });
   });

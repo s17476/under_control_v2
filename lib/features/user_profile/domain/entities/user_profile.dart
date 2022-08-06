@@ -14,6 +14,7 @@ class UserProfile extends Equatable {
   final bool rejected;
   final bool suspended;
   final bool administrator;
+  final DateTime joinDate;
 
   const UserProfile({
     required this.id,
@@ -29,6 +30,7 @@ class UserProfile extends Equatable {
     required this.rejected,
     required this.suspended,
     required this.administrator,
+    required this.joinDate,
   });
 
   @override
@@ -47,11 +49,12 @@ class UserProfile extends Equatable {
       rejected,
       suspended,
       administrator,
+      joinDate,
     ];
   }
 
   @override
   String toString() {
-    return 'UserProfile(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phoneNumber: $phoneNumber, avatarUrl: $avatarUrl, userGroups: $userGroups, locations: $locations, companyId: $companyId, approved: $approved, rejected: $rejected, suspended: $suspended, administrator: $administrator)';
+    return 'UserProfile(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phoneNumber: $phoneNumber, avatarUrl: $avatarUrl, userGroups: $userGroups, locations: $locations, companyId: $companyId, approved: $approved, rejected: $rejected, suspended: $suspended, administrator: $administrator, joinDate: $joinDate)';
   }
 }

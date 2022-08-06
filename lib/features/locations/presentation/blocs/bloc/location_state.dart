@@ -15,7 +15,9 @@ abstract class LocationState extends Equatable {
   List<Object> get props => [message, error, properties];
 }
 
-class LocationEmptyState extends LocationState {}
+class LocationEmptyState extends LocationState {
+  const LocationEmptyState();
+}
 
 class LocationLoadingState extends LocationState {}
 
@@ -24,6 +26,16 @@ class LocationLoadedState extends LocationState {
   final LocationsList allLocations;
   final List<String> context;
   final List<String> children;
+
+  List<Location> get allSelectedLocations {
+    final List<Location> selectedLocations = [...this.selectedLocations];
+    for (var locId in children) {
+      selectedLocations.add(
+        allLocations.allLocations.firstWhere((e) => e.id == locId),
+      );
+    }
+    return selectedLocations;
+  }
 
   LocationLoadedState({
     this.selectedLocations = const [],

@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import 'package:under_control_v2/features/core/error/failures.dart';
+import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 import 'package:under_control_v2/features/user_profile/domain/repositories/user_profile_repository.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/get_user_by_id.dart';
@@ -20,20 +21,21 @@ void main() {
     },
   );
 
-  const tUserProfile = UserProfile(
+  final tUserProfile = UserProfileModel(
     id: 'id',
     firstName: 'firstName',
     lastName: 'lastName',
     email: 'email',
     phoneNumber: 'phoneNumber',
     avatarUrl: 'avatarUrl',
-    userGroups: ['userGroups'],
-    locations: ['locations'],
+    userGroups: const ['userGroups'],
+    locations: const ['locations'],
     companyId: 'companyId',
     approved: false,
     rejected: false,
     suspended: false,
     administrator: false,
+    joinDate: DateTime.now(),
   );
 
   test(
@@ -41,12 +43,12 @@ void main() {
     () async {
       // arrange
       when(() => repository.getUserById(any()))
-          .thenAnswer((_) async => const Right(tUserProfile));
+          .thenAnswer((_) async => Right(tUserProfile));
       // act
       final result = await usecase('');
 
       // assert
-      expect(result, const Right<Failure, UserProfile>(tUserProfile));
+      expect(result, Right<Failure, UserProfile>(tUserProfile));
     },
   );
 }

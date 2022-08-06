@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -422,6 +423,32 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                           ),
                                         ],
                                       ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.calendar_month,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .user_details_join_date,
+                                          ),
+                                        ),
+                                        Text(
+                                          DateFormat('dd/MM/yyyy')
+                                              .format(user!.joinDate),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],

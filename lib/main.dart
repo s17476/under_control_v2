@@ -21,6 +21,7 @@ import 'features/core/themes/themes.dart';
 import 'features/core/utils/custom_page_transition.dart';
 import 'features/core/utils/error_message_handler.dart';
 import 'features/core/utils/material_color_generator.dart';
+import 'features/filter/presentation/blocs/filter/filter_bloc.dart';
 import 'features/groups/presentation/blocs/group/group_bloc.dart';
 import 'features/groups/presentation/pages/add_group_page.dart';
 import 'features/groups/presentation/pages/group_details.dart';
@@ -67,10 +68,17 @@ class App extends StatelessWidget
         BlocProvider(create: (context) => getIt<UserManagementBloc>()),
         BlocProvider(create: (context) => getIt<CompanyProfileBloc>()),
         BlocProvider(create: (context) => getIt<CompanyManagementBloc>()),
-        BlocProvider(create: (context) => getIt<LocationBloc>()),
-        BlocProvider(create: (context) => getIt<GroupBloc>()),
+        BlocProvider(
+          create: (context) => getIt<LocationBloc>(),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (context) => getIt<GroupBloc>(),
+          lazy: false,
+        ),
         BlocProvider(create: (context) => getIt<NewUsersBloc>()),
         BlocProvider(create: (context) => getIt<SuspendedUsersBloc>()),
+        BlocProvider(create: (context) => getIt<FilterBloc>(), lazy: false),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

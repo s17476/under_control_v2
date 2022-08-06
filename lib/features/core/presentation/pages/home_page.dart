@@ -11,7 +11,7 @@ import '../../../knowledge_base/presentation/pages/knowledge_base_page.dart';
 import '../../../tasks/presentation/pages/tasks_page.dart';
 import '../../utils/size_config.dart';
 import '../widgets/home_page/home_bottom_navigation_bar.dart';
-import '../widgets/home_page/home_page_filter.dart';
+import '../../../filter/presentation/widgets/home_page_filter.dart';
 
 import '../widgets/home_page/home_sliver_app_bar.dart';
 import '../widgets/home_page/main_drawer.dart';

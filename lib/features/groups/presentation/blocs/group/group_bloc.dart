@@ -26,7 +26,7 @@ const String deleteSuccess = 'deleteSuccess';
 const String updateSuccess = 'updateSuccess';
 const String groupContainsMembers = 'groupContainsMembers';
 
-@injectable
+@lazySingleton
 class GroupBloc extends Bloc<GroupEvent, GroupState> {
   late StreamSubscription companyProfileStreamSubscription;
   StreamSubscription? groupsStreamSubscription;
@@ -166,8 +166,10 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     on<SelectGroupEvent>(
       (event, emit) async {
         final currentState = state as GroupLoadedState;
+        emit(GroupLoadingState());
         final selectedGroups = [...currentState.selectedGroups];
         selectedGroups.add(event.group);
+
         final failureOrVoidResult = await cacheGroups(
           SelectedGroupsParams(
             groups: selectedGroups.map((group) => group.id).toList(),
@@ -175,12 +177,14 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         );
         await failureOrVoidResult.fold(
           (failure) async => emit(
-            currentState.copyWith(
+            GroupLoadedState(
+              allGroups: currentState.allGroups,
               selectedGroups: selectedGroups,
             ),
           ),
           (_) async => emit(
-            currentState.copyWith(
+            GroupLoadedState(
+              allGroups: currentState.allGroups,
               selectedGroups: selectedGroups,
             ),
           ),
@@ -191,6 +195,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     on<UnselectGroupEvent>(
       (event, emit) async {
         final currentState = state as GroupLoadedState;
+        emit(GroupLoadingState());
         final selectedGroups = currentState.selectedGroups;
         selectedGroups.remove(event.group);
         final failureOrVoidResult = await cacheGroups(
@@ -200,13 +205,18 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         );
         await failureOrVoidResult.fold(
           (failure) async => emit(
-            currentState.copyWith(
-              selectedGroups: selectedGroups,
+            GroupLoadedState(
+              allGroups: currentState.allGroups,
+              selectedGroups: [...selectedGroups],
             ),
+            // currentState.copyWith(
+            //   selectedGroups: selectedGroups,
+            // ),
           ),
           (_) async => emit(
-            currentState.copyWith(
-              selectedGroups: selectedGroups,
+            GroupLoadedState(
+              allGroups: currentState.allGroups,
+              selectedGroups: [...selectedGroups],
             ),
           ),
         );

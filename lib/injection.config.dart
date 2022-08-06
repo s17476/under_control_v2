@@ -4,6 +4,7 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
+// ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:cloud_firestore/cloud_firestore.dart' as _i5;
 import 'package:data_connection_checker_nulls/data_connection_checker_nulls.dart'
     as _i3;
@@ -18,7 +19,7 @@ import 'features/authentication/data/repositories/authentication_repository_impl
 import 'features/authentication/domain/repositories/authentication_repository.dart'
     as _i23;
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i82;
+    as _i83;
 import 'features/authentication/domain/usecases/auto_signin.dart' as _i25;
 import 'features/authentication/domain/usecases/check_email_verification.dart'
     as _i26;
@@ -59,9 +60,10 @@ import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dar
     as _i80;
 import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
     as _i81;
-import 'features/core/injectable_modules/injectable_modules.dart' as _i83;
+import 'features/core/injectable_modules/injectable_modules.dart' as _i84;
 import 'features/core/network/network_info.dart' as _i10;
 import 'features/core/utils/input_validator.dart' as _i8;
+import 'features/filter/presentation/blocs/filter/filter_bloc.dart' as _i82;
 import 'features/groups/data/datasources/group_local_data_source.dart' as _i38;
 import 'features/groups/data/datasources/group_remote_data_source.dart' as _i7;
 import 'features/groups/data/repositories/group_repository_impl.dart' as _i40;
@@ -323,7 +325,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       fetchAllCompanyUsers: get<_i32.FetchAllCompanyUsers>(),
       getCompanyById: get<_i35.GetCompanyById>(),
       inputValidator: get<_i8.InputValidator>()));
-  gh.factory<_i78.GroupBloc>(() => _i78.GroupBloc(
+  gh.lazySingleton<_i78.GroupBloc>(() => _i78.GroupBloc(
       companyProfileBloc: get<_i77.CompanyProfileBloc>(),
       addGroup: get<_i66.AddGroup>(),
       updateGroup: get<_i60.UpdateGroup>(),
@@ -331,7 +333,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       getGroupsStream: get<_i74.GetGroupsStream>(),
       cacheGroups: get<_i69.CacheGroups>(),
       tryToGetCachedGroups: get<_i53.TryToGetCachedGroups>()));
-  gh.factory<_i79.LocationBloc>(() => _i79.LocationBloc(
+  gh.lazySingleton<_i79.LocationBloc>(() => _i79.LocationBloc(
       companyProfileBloc: get<_i77.CompanyProfileBloc>(),
       addLocation: get<_i67.AddLocation>(),
       cacheLocation: get<_i70.CacheLocation>(),
@@ -343,16 +345,20 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       get<_i77.CompanyProfileBloc>(), get<_i33.FetchNewUsers>()));
   gh.factory<_i81.SuspendedUsersBloc>(() => _i81.SuspendedUsersBloc(
       get<_i77.CompanyProfileBloc>(), get<_i34.FetchSuspendedUsers>()));
+  gh.factory<_i82.FilterBloc>(() => _i82.FilterBloc(
+      locationBloc: get<_i79.LocationBloc>(),
+      groupBloc: get<_i78.GroupBloc>(),
+      userProfileBloc: get<_i75.UserProfileBloc>()));
   return get;
 }
 
-class _$DataConnectionCheckerModule extends _i82.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i83.DataConnectionCheckerModule {}
 
 class _$FirebaseAuthenticationService
-    extends _i82.FirebaseAuthenticationService {}
+    extends _i83.FirebaseAuthenticationService {}
 
-class _$FirebaseFirestoreService extends _i83.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i84.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i83.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i84.FirebaseStorageService {}
 
-class _$SharedPreferencesService extends _i83.SharedPreferencesService {}
+class _$SharedPreferencesService extends _i84.SharedPreferencesService {}

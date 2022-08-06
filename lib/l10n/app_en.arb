@@ -443,6 +443,10 @@
     "@home_screen_filter_select_group": {
       "description": "Home screen filter - select group label"
     },
+    "home_screen_filter_no_groups": "No available groups in selected locations.",
+    "@home_screen_filter_no_groups": {
+      "description": "No available groups in selected locations."
+    },
     "group_no_user_groups": "The user does not belong to any of the groups",
     "@group_no_user_groups": {
       "description": "The user does not belong to any of the groups"
@@ -576,6 +580,10 @@
     "user_details_premissions": "User premissions",
     "@user_details_premissions": {
       "description": "User details premissions"
+    },
+    "user_details_join_date": "Join date",
+    "@user_details_join_date": {
+      "description": "Join date"
     },
     "user_details_admin": "Administrator",
     "@user_details_admin": {

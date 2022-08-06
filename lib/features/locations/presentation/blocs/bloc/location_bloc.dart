@@ -25,8 +25,10 @@ const String locationAddedMessage = 'added';
 const String deleteFailed = 'deleteFailed';
 const String deleteSuccess = 'deleteSuccess';
 const String updateSuccess = 'updateSuccess';
+const String locationSelected = 'locationSelected';
+const String locationRemoved = 'locationRemoved';
 
-@injectable
+@lazySingleton
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   late StreamSubscription companyProfileStreamSubscription;
   StreamSubscription? locationsStreamSubscription;
@@ -47,7 +49,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     required this.fetchAllLocations,
     required this.tryToGetCachedLocation,
     required this.updateLocation,
-  }) : super(LocationEmptyState()) {
+  }) : super(const LocationEmptyState()) {
     companyProfileStreamSubscription = companyProfileBloc.stream.listen(
       (state) {
         if (state is CompanyProfileLoaded) {
@@ -125,13 +127,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
               locations.allLocations.listen((snapshot) {
             add(UpdateLocationsListEvent(snapshot: snapshot));
           });
-          emit(
-            LocationLoadedState(
-              allLocations: const LocationsList(allLocations: []),
-              context: const [],
-              children: const [],
-            ),
-          );
         },
       );
     });
@@ -184,6 +179,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<SelectLocationEvent>(
       (event, emit) async {
         final currentState = state as LocationLoadedState;
+
         List<String> tmpChildren = getSelectedLocationChildren(
           event.location,
           currentState.allLocations.allLocations,
@@ -239,19 +235,25 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         );
         await failureOrVoidresult.fold(
           (failure) async => emit(
-            currentState.copyWith(
+            LocationLoadedState(
+              allLocations: currentState.allLocations,
+              context: updatedContext,
               children: tmpChildren,
               selectedLocations: updatedLocations,
-              context: updatedContext,
+              message: locationSelected,
             ),
           ),
-          (_) async => emit(
-            currentState.copyWith(
-              children: tmpChildren,
-              selectedLocations: updatedLocations,
-              context: updatedContext,
-            ),
-          ),
+          (_) async {
+            emit(
+              LocationLoadedState(
+                allLocations: currentState.allLocations,
+                context: updatedContext,
+                children: tmpChildren,
+                selectedLocations: updatedLocations,
+                message: locationSelected,
+              ),
+            );
+          },
         );
       },
     );
@@ -259,7 +261,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<UnselectLocationEvent>(
       (event, emit) async {
         final currentState = state as LocationLoadedState;
-
+        emit(LocationLoadingState());
         // updates children
         List<String> tmpChildren = getSelectedLocationChildren(
           event.location,
@@ -275,7 +277,9 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
         // updates selected locations
         List<Location> tmpLocations = currentState.selectedLocations;
+
         tmpLocations.remove(event.location);
+
         final updatedContext = getselectedLocationsContext(
           tmpLocations,
           updatedChildren,
@@ -290,19 +294,25 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         );
         await failureOrVoidresult.fold(
           (failure) async => emit(
-            currentState.copyWith(
+            LocationLoadedState(
+              allLocations: currentState.allLocations,
+              context: updatedContext,
               children: updatedChildren,
               selectedLocations: tmpLocations,
-              context: updatedContext,
+              message: locationRemoved,
             ),
           ),
-          (_) async => emit(
-            currentState.copyWith(
-              children: updatedChildren,
-              selectedLocations: tmpLocations,
-              context: updatedContext,
-            ),
-          ),
+          (_) async {
+            emit(
+              LocationLoadedState(
+                allLocations: currentState.allLocations,
+                context: updatedContext,
+                children: updatedChildren,
+                selectedLocations: tmpLocations,
+                message: locationRemoved,
+              ),
+            );
+          },
         );
       },
     );

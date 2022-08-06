@@ -35,20 +35,21 @@ void main() {
     },
   );
 
-  const tUserProfile = UserProfileModel(
+  final tUserProfile = UserProfileModel(
     id: 'id',
     firstName: 'firstName',
     lastName: 'lastName',
     email: 'email',
     phoneNumber: 'phoneNumber',
     avatarUrl: 'avatarUrl',
-    userGroups: ['userGroups'],
-    locations: ['locations'],
+    userGroups: const ['userGroups'],
+    locations: const ['locations'],
     companyId: 'companyId',
     approved: false,
     rejected: false,
     suspended: false,
     administrator: false,
+    joinDate: DateTime.now(),
   );
 
   final tGroup = GroupModel.inital();

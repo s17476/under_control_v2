@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../locations/domain/entities/location.dart';
-import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../../locations/domain/entities/location.dart';
+import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
 
 class HomePageFilterLocationTile extends StatefulWidget {
   final List<Location> allLocations;

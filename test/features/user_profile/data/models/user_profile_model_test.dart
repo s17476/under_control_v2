@@ -3,22 +3,24 @@ import 'package:under_control_v2/features/user_profile/data/models/user_profile_
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 
 void main() {
-  const tUserProfileModel = UserProfileModel(
+  final date = DateTime.now();
+  final tUserProfileModel = UserProfileModel(
     id: 'id',
     firstName: 'firstName',
     lastName: 'lastName',
     email: 'email',
     phoneNumber: 'phoneNumber',
     avatarUrl: 'avatarUrl',
-    userGroups: ['userGroups'],
-    locations: ['locations'],
+    userGroups: const ['userGroups'],
+    locations: const ['locations'],
     companyId: 'companyId',
     approved: false,
     rejected: false,
     suspended: false,
     administrator: false,
+    joinDate: date,
   );
-  const tUserProfileModelMap = {
+  final tUserProfileModelMap = {
     'firstName': 'firstName',
     'lastName': 'lastName',
     'email': 'email',
@@ -31,6 +33,7 @@ void main() {
     'rejected': false,
     'suspended': false,
     'administrator': false,
+    'joinDate': date.toIso8601String(),
   };
 
   group('UserPorfile', () {

@@ -4,34 +4,21 @@ import '../../domain/entities/user_profile.dart';
 
 class UserProfileModel extends UserProfile {
   const UserProfileModel({
-    required String id,
-    required String firstName,
-    required String lastName,
-    required String email,
-    required String phoneNumber,
-    required String avatarUrl,
-    required List<String> userGroups,
-    required List<String> locations,
-    required String companyId,
-    required bool approved,
-    required bool rejected,
-    required bool suspended,
-    required bool administrator,
-  }) : super(
-          id: id,
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          phoneNumber: phoneNumber,
-          avatarUrl: avatarUrl,
-          userGroups: userGroups,
-          locations: locations,
-          companyId: companyId,
-          approved: approved,
-          rejected: rejected,
-          suspended: suspended,
-          administrator: administrator,
-        );
+    required super.id,
+    required super.firstName,
+    required super.lastName,
+    required super.email,
+    required super.phoneNumber,
+    required super.avatarUrl,
+    required super.userGroups,
+    required super.locations,
+    required super.companyId,
+    required super.approved,
+    required super.rejected,
+    required super.suspended,
+    required super.administrator,
+    required super.joinDate,
+  });
 
   UserProfileModel copyWith({
     String? id,
@@ -47,6 +34,7 @@ class UserProfileModel extends UserProfile {
     bool? rejected,
     bool? suspended,
     bool? administrator,
+    DateTime? joinDate,
   }) {
     return UserProfileModel(
       id: id ?? this.id,
@@ -62,6 +50,7 @@ class UserProfileModel extends UserProfile {
       rejected: rejected ?? this.rejected,
       suspended: suspended ?? this.suspended,
       administrator: administrator ?? this.administrator,
+      joinDate: joinDate ?? this.joinDate,
     );
   }
 
@@ -80,6 +69,7 @@ class UserProfileModel extends UserProfile {
     result.addAll({'rejected': rejected});
     result.addAll({'suspended': suspended});
     result.addAll({'administrator': administrator});
+    result.addAll({'joinDate': joinDate.toIso8601String()});
 
     return result;
   }
@@ -99,6 +89,7 @@ class UserProfileModel extends UserProfile {
       rejected: map['rejected'] ?? false,
       suspended: map['suspended'] ?? false,
       administrator: map['administrator'] ?? false,
+      joinDate: DateTime.parse(map['joinDate']),
     );
   }
 
@@ -126,6 +117,7 @@ class UserProfileModel extends UserProfile {
       rejected: false,
       suspended: false,
       administrator: false,
+      joinDate: DateTime.now(),
     );
   }
 }
