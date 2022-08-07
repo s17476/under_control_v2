@@ -451,6 +451,14 @@
     "@group_no_user_groups": {
       "description": "The user does not belong to any of the groups"
     },
+    "group_assigned_group_admin": "Group administrator added",
+    "@group_assigned_group_admin": {
+      "description": "Group admin added"
+    },
+    "group_unassigned_group_admin": "Group administrator removed",
+    "@group_unassigned_group_admin": {
+      "description": "Gropu administrator removed"
+    },
     "group_management_title": "Groups",
     "@group_management_title": {
       "description": "Group management - AppBar title"

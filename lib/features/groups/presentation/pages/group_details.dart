@@ -160,59 +160,30 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
         }
         return true;
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.group_details),
-          centerTitle: true,
-          actions: [
-            // popup menu
-            if (choices.isNotEmpty)
-              PopupMenuButton<Choice>(
-                onSelected: (Choice choice) {
-                  if (isAddUsersCardVisible) {
-                    hideAddUsersCard();
-                  }
-                  if (isUserInfoCardVisible) {
-                    hideUserInfoCard();
-                  }
-                  choice.onTap();
-                },
-                itemBuilder: (BuildContext context) {
-                  return choices.map((Choice choice) {
-                    return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(choice.icon),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            choice.title,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList();
-                },
-              ),
-          ],
-        ),
-        body: BlocListener<GroupBloc, GroupState>(
-          listener: (context, state) {
+      child: BlocListener<UserManagementBloc, UserManagementState>(
+        listener: (context, state) {
+          if (state is UserManagementSuccessful) {
             String message = '';
-            if (state is GroupLoadedState) {
-              switch (state.message) {
-                case groupContainsMembers:
-                  message = AppLocalizations.of(context)!
-                      .group_management_delete_error_not_empty;
-                  break;
-                default:
-                  message = '';
-                  break;
-              }
+            switch (state.message) {
+              case userAssignedToGroup:
+                message =
+                    AppLocalizations.of(context)!.user_details_user_assigned;
+                break;
+              case userUnassignedFromGroup:
+                message =
+                    AppLocalizations.of(context)!.user_details_user_unassigned;
+                break;
+              case assignedGroupAdmin:
+                message =
+                    AppLocalizations.of(context)!.group_assigned_group_admin;
+                break;
+              case unassignedGroupAdmin:
+                message =
+                    AppLocalizations.of(context)!.group_unassigned_group_admin;
+                break;
+              default:
+                message = '';
+                break;
             }
             if (message.isNotEmpty) {
               showSnackBar(
@@ -221,71 +192,116 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 isErrorMessage: state.error,
               );
             }
-          },
-          child: SizedBox(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height -
-                AppBar().preferredSize.height -
-                MediaQuery.of(context).padding.top,
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // data
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4, top: 8),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.black,
-                                ),
-                                child: Icon(
-                                  Icons.group,
-                                  size: 20,
-                                  color: Colors.grey.shade300,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                AppLocalizations.of(context)!.group_data,
-                                maxLines: 2,
-                                style: TextStyle(
-                                  color: Colors.grey.shade200,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context)!.group_details),
+            centerTitle: true,
+            actions: [
+              // popup menu
+              if (choices.isNotEmpty)
+                PopupMenuButton<Choice>(
+                  onSelected: (Choice choice) {
+                    if (isAddUsersCardVisible) {
+                      hideAddUsersCard();
+                    }
+                    if (isUserInfoCardVisible) {
+                      hideUserInfoCard();
+                    }
+                    choice.onTap();
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return choices.map((Choice choice) {
+                      return PopupMenuItem<Choice>(
+                        value: choice,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(choice.icon),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              choice.title,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
-                        // name
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                            left: 8,
-                            right: 8,
-                          ),
-                          child: Text(
-                            group.name,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade300,
+                      );
+                    }).toList();
+                  },
+                ),
+            ],
+          ),
+          body: BlocListener<GroupBloc, GroupState>(
+            listener: (context, state) {
+              String message = '';
+              if (state is GroupLoadedState) {
+                switch (state.message) {
+                  case groupContainsMembers:
+                    message = AppLocalizations.of(context)!
+                        .group_management_delete_error_not_empty;
+                    break;
+                  default:
+                    message = '';
+                    break;
+                }
+              }
+              if (message.isNotEmpty) {
+                showSnackBar(
+                  context: context,
+                  message: message,
+                  isErrorMessage: state.error,
+                );
+              }
+            },
+            child: SizedBox(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top,
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // data
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4, top: 8),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.black,
+                                  ),
+                                  child: Icon(
+                                    Icons.group,
+                                    size: 20,
+                                    color: Colors.grey.shade300,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)!.group_data,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    color: Colors.grey.shade200,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                        // description
-                        if (group.description.isNotEmpty)
+                          // name
                           Padding(
                             padding: const EdgeInsets.only(
                               top: 8,
@@ -293,84 +309,103 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                               right: 8,
                             ),
                             child: Text(
-                              group.description,
-                              maxLines: 3,
+                              group.name,
                               overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade300,
+                              ),
                             ),
                           ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8),
-                          child: Divider(
+                          // description
+                          if (group.description.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                                left: 8,
+                                right: 8,
+                              ),
+                              child: Text(
+                                group.description,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: Divider(
+                              thickness: 1.5,
+                            ),
+                          ),
+                          // features
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.black,
+                                  ),
+                                  child: Icon(
+                                    Icons.error,
+                                    size: 20,
+                                    color: Colors.grey.shade300,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)!
+                                      .group_management_add_card_permissions,
+                                  style: TextStyle(
+                                    color: Colors.grey.shade200,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          for (var feature in group.features)
+                            GroupManagementFeatureCard(feature: feature),
+                          const Divider(thickness: 1.5),
+                          // locations
+                          GroupLocations(group: group),
+                          const Divider(
                             thickness: 1.5,
+                            // height: 32,
                           ),
-                        ),
-                        // features
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.black,
-                                ),
-                                child: Icon(
-                                  Icons.error,
-                                  size: 20,
-                                  color: Colors.grey.shade300,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                AppLocalizations.of(context)!
-                                    .group_management_add_card_permissions,
-                                style: TextStyle(
-                                  color: Colors.grey.shade200,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
+                          // group members
+                          GroupMembers(
+                            group: group,
+                            onTap: showUserInfoCard,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        for (var feature in group.features)
-                          GroupManagementFeatureCard(feature: feature),
-                        const Divider(thickness: 1.5),
-                        // locations
-                        GroupLocations(group: group),
-                        const Divider(
-                          thickness: 1.5,
-                          // height: 32,
-                        ),
-                        // group members
-                        GroupMembers(
-                          group: group,
-                          onTap: showUserInfoCard,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                // user info card
-                if (isUserInfoCardVisible)
-                  UserInfoCard(
-                    onDismiss: hideUserInfoCard,
-                    user: userProfile!,
-                    group: group,
-                  ),
-                // add users to the group card
-                if (isAddUsersCardVisible)
-                  AddUserCard(
-                    onDismiss: hideAddUsersCard,
-                    onToggleUserSelection: toggleUser,
-                    group: group,
-                  ),
-              ],
+                  // user info card
+                  if (isUserInfoCardVisible)
+                    UserInfoCard(
+                      onDismiss: hideUserInfoCard,
+                      user: userProfile!,
+                      group: group,
+                    ),
+                  // add users to the group card
+                  if (isAddUsersCardVisible)
+                    AddUserCard(
+                      onDismiss: hideAddUsersCard,
+                      onToggleUserSelection: toggleUser,
+                      group: group,
+                    ),
+                ],
+              ),
             ),
           ),
         ),

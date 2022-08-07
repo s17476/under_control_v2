@@ -109,6 +109,8 @@
     "home_screen_filter_select_group": "Wybierz grupy",
     "home_screen_filter_no_groups": "Brak dostępnych grup w wybranych lokacjach.",
     "group_no_user_groups": "Użytkownik nie należy do żadnej grupy",
+    "group_assigned_group_admin": "Dodano administratora grupy",
+    "group_unassigned_group_admin": "Usunięto administratora grupy",
     "group_management_title": "Grupy",
     "group_management_add_button": "Dodaj grupę",
     "group_management_add_card_title": "Dodaj nową grupę",

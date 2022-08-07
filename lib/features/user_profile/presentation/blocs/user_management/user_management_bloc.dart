@@ -204,7 +204,10 @@ class UserManagementBloc
           (failure) async =>
               emit(const UserManagementError(message: updateUnsuccessful)),
           (voidResult) async => emit(
-            const UserManagementSuccessful(message: unassignedGroupAdmin),
+            const UserManagementSuccessful(
+              message: unassignedGroupAdmin,
+              error: true,
+            ),
           ),
         );
       },

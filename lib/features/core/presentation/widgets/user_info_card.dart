@@ -129,7 +129,7 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CachedUserAvatar(
-                      size: responsiveSizePct(small: 40),
+                      size: responsiveSizePct(small: 60),
                       imageUrl: selectedUser.avatarUrl,
                     ),
                   ),

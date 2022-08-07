@@ -203,7 +203,7 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
                 // location and group selection filter
-                HomePageFilter(isFilterExpanded: isFilterExpanded),
+                if (isFilterExpanded) HomePageFilter(),
               ],
             ),
           ),
