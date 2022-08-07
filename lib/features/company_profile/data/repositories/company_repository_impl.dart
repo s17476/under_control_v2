@@ -43,7 +43,7 @@ class CompanyRepositoryImpl extends CompanyRepository {
       final companyReference =
           firebaseFirestore.collection('companies').doc(company.id);
       final companyMap = (company as CompanyModel).toMap();
-      await companyReference.set(companyMap);
+      await companyReference.update(companyMap);
       return Right(VoidResult());
     } on FirebaseException catch (e) {
       return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));

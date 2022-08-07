@@ -135,7 +135,13 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
             Choice(
               title: AppLocalizations.of(context)!.suspend,
               icon: Icons.person_off,
-              onTap: () => showUserSuspendDialog(context: context, user: user!),
+              onTap: () async {
+                final result =
+                    await showUserSuspendDialog(context: context, user: user!);
+                if (result != null && result) {
+                  Navigator.pop(context);
+                }
+              },
             ),
           // make admin
           if (user!.id != currentUser.id &&

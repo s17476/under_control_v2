@@ -20,6 +20,13 @@ class CompanyManagementError extends CompanyManagementState {
   });
 }
 
+class CompanyManagementLoaded extends CompanyManagementState {
+  const CompanyManagementLoaded({
+    super.message,
+    super.error,
+  });
+}
+
 class CompanyManagementCompaniesLoaded extends CompanyManagementState {
   final Company? selectedCompany;
   final Companies companies;

@@ -23,14 +23,12 @@ class CompanyProfileBloc
   late StreamSubscription userProfileStreamSubscription;
   StreamSubscription? companyUsersStreamSubscription;
   final UserProfileBloc userProfileBloc;
-  final UpdateCompany updateCompany;
   final FetchAllCompanyUsers fetchAllCompanyUsers;
   final GetCompanyById getCompanyById;
   final InputValidator inputValidator;
 
   CompanyProfileBloc({
     required this.userProfileBloc,
-    required this.updateCompany,
     required this.fetchAllCompanyUsers,
     required this.getCompanyById,
     required this.inputValidator,

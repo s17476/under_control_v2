@@ -25,8 +25,8 @@ class UpdateCompanyUsersEvent extends CompanyProfileEvent {
   }) : super([company, snapshot]);
 }
 
-class UpdateCompanyEvent extends CompanyProfileEvent {
-  UpdateCompanyEvent({required this.company}) : super([company]);
+// class UpdateCompanyEvent extends CompanyProfileEvent {
+//   UpdateCompanyEvent({required this.company}) : super([company]);
 
-  final Company company;
-}
+//   final Company company;
+// }

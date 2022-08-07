@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/company_profile/domain/usecases/update_company.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/input_validator.dart';
@@ -18,6 +19,9 @@ import '../../../domain/usecases/fetch_all_companies.dart';
 part 'company_management_event.dart';
 part 'company_management_state.dart';
 
+const String companyUpdated = 'companyUpdated';
+const String companyLogoUpdated = 'companyLogoUpdated';
+
 @injectable
 class CompanyManagementBloc
     extends Bloc<CompanyManagementEvent, CompanyManagementState> {
@@ -27,6 +31,7 @@ class CompanyManagementBloc
   final AddCompany addCompany;
   final FetchAllCompanies fetchAllCompanies;
   final AddCompanyLogo addCompanyLogo;
+  final UpdateCompany updateCompany;
 
   CompanyManagementBloc({
     required this.userProfileBloc,
@@ -34,6 +39,7 @@ class CompanyManagementBloc
     required this.addCompany,
     required this.fetchAllCompanies,
     required this.addCompanyLogo,
+    required this.updateCompany,
   }) : super(CompanyManagementEmpty()) {
     userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
       if (state is NoCompany) {
@@ -85,6 +91,7 @@ class CompanyManagementBloc
     on<AddCompanyLogoEvent>(
       (event, emit) async {
         emit(CompanyManagementLoading());
+        // adds company logo
         final failureOrLogoUrl = await addCompanyLogo(
           AvatarParams(
             userId: event.company.id,
@@ -93,23 +100,44 @@ class CompanyManagementBloc
         );
         failureOrLogoUrl.fold(
           (failure) async => emit(
-            CompanyManagementCompaniesLoaded(
-              companies: event.companies,
-              selectedCompany: event.company,
+            CompanyManagementError(
               message: failure.message,
               error: true,
             ),
           ),
           (logoUrl) async {
-            final updatedCompany =
-                (event.company as CompanyModel).copyWith(name: logoUrl);
-            emit(
-              CompanyManagementCompaniesLoaded(
-                companies: event.companies,
-                selectedCompany: updatedCompany,
+            // updates company
+            CompanyModel updatedCompany =
+                (event.company as CompanyModel).copyWith(logo: logoUrl);
+            final failureOrVoidResult = await updateCompany(updatedCompany);
+            await failureOrVoidResult.fold(
+              (failure) async => CompanyManagementError(
+                message: failure.message,
+                error: true,
               ),
+              (_) async {
+                emit(
+                  const CompanyManagementLoaded(
+                    message: companyLogoUpdated,
+                  ),
+                );
+              },
             );
           },
+        );
+      },
+    );
+    on<UpdateCompanyDataEvent>(
+      (event, emit) async {
+        emit(CompanyManagementLoading());
+        final failureOrVoidResult = await updateCompany(event.company);
+        failureOrVoidResult.fold(
+          (failure) async => emit(
+            CompanyManagementError(message: failure.message),
+          ),
+          (_) async => emit(const CompanyManagementLoaded(
+            message: companyUpdated,
+          )),
         );
       },
     );

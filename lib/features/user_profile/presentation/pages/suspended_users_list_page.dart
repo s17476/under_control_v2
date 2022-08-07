@@ -42,7 +42,7 @@ class SuspendedUsersListPage extends StatelessWidget {
             BlocBuilder<SuspendedUsersBloc, SuspendedUsersState>(
               builder: (context, state) {
                 if (state is SuspendedUsersLoadedState) {
-                  List<UserProfile> users = state.suspendedUsers.allUsers
+                  List<UserProfile> users = [...state.suspendedUsers.allUsers]
                     ..sort(
                       (a, b) => a.firstName.compareTo(b.firstName),
                     );

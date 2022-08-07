@@ -30,7 +30,6 @@ class _HomePageFilterState extends State<HomePageFilter> {
               child: Container(
                 margin: const EdgeInsets.only(bottom: 8),
                 width: double.infinity,
-                // height: widget.isFilterExpanded ? null : 0,
                 decoration: BoxDecoration(
                   color: Theme.of(context).appBarTheme.backgroundColor,
                   borderRadius: const BorderRadius.only(
@@ -45,7 +44,9 @@ class _HomePageFilterState extends State<HomePageFilter> {
                     // locations title
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       child: IconTitleRow(
                         icon: Icons.location_on,
                         iconColor: Colors.grey.shade200,

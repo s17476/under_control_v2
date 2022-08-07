@@ -123,7 +123,7 @@ Future<bool?> showUserSuspendDialog({
             ),
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, false);
           },
         ),
         TextButton(

@@ -20,10 +20,10 @@ class CompanyManagementRepositoryImpl extends CompanyManagementRepository {
     required this.firebaseStorage,
   });
   @override
-  Future<Either<Failure, String>> addCompany(Company company) async {
+  Future<Either<Failure, String>> addCompany(Company params) async {
     try {
       final companiesReference = firebaseFirestore.collection('companies');
-      final companyMap = (company as CompanyModel).toMap();
+      final companyMap = (params as CompanyModel).toMap();
       final documentReferance = await companiesReference.add(companyMap);
       final String generatedCompanyId = documentReferance.id;
       return Right(generatedCompanyId);
@@ -42,6 +42,7 @@ class CompanyManagementRepositoryImpl extends CompanyManagementRepository {
       final logoReferance = firebaseStorage
           .ref()
           .child('companies')
+          .child(params.userId)
           .child('logo')
           .child('${params.userId}.jpg');
       await logoReferance.putFile(params.avatar);
@@ -74,6 +75,22 @@ class CompanyManagementRepositoryImpl extends CompanyManagementRepository {
     } catch (e) {
       return const Left(
         UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, VoidResult>> updateCompanyData(Company params) async {
+    try {
+      final companyReference =
+          firebaseFirestore.collection('companies').doc(params.id);
+      await companyReference.update((params as CompanyModel).toMap());
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return Left(
+        UnsuspectedFailure(message: e.toString()),
       );
     }
   }

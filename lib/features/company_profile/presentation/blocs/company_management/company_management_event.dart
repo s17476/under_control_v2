@@ -23,12 +23,18 @@ class AddCompanyEvent extends CompanyManagementEvent {
 
 class AddCompanyLogoEvent extends CompanyManagementEvent {
   final Company company;
-  final Companies companies;
   final File? logo;
 
   AddCompanyLogoEvent({
     required this.company,
-    required this.companies,
     this.logo,
-  }) : super([company, companies, logo]);
+  }) : super([company, logo]);
+}
+
+class UpdateCompanyDataEvent extends CompanyManagementEvent {
+  final Company company;
+
+  UpdateCompanyDataEvent({
+    required this.company,
+  }) : super([company]);
 }
