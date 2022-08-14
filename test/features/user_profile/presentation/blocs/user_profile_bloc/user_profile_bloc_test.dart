@@ -365,7 +365,7 @@ void main() {
           },
           skip: 1,
           expect: () => [
-            NoCompany(
+            NoCompanyState(
                 userProfile: tUserProfileModel.copyWith(
                     id: 'id', avatarUrl: 'avatarId')),
           ],
@@ -453,7 +453,7 @@ void main() {
             () => mockResetCompany(tUserProfileModel.id),
           ).called(1),
           expect: () => [
-            NoCompany(
+            NoCompanyState(
               userProfile: tUserProfileModel.copyWith(companyId: ''),
             ),
           ],

@@ -3,12 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/company_profile/data/models/company_model.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
+import 'package:under_control_v2/features/company_profile/domain/repositories/company_management_repository.dart';
 import 'package:under_control_v2/features/company_profile/domain/repositories/company_repository.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/update_company.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
-class MockCompanyRepository extends Mock implements CompanyRepository {}
+class MockCompanyRepository extends Mock
+    implements CompanyManagementRepository {}
 
 void main() {
   late UpdateCompany usecase;
@@ -60,12 +62,12 @@ void main() {
     () async {
       // arrange
       when(
-        () => mockCompanyRepository.updateCompany(any()),
+        () => mockCompanyRepository.updateCompanyData(any()),
       ).thenAnswer((_) async => Right(VoidResult()));
       // act
       final result = await usecase(tCompanyModel);
       // assert
-      verify(() => mockCompanyRepository.updateCompany(tCompanyModel));
+      verify(() => mockCompanyRepository.updateCompanyData(tCompanyModel));
       verifyNoMoreInteractions(mockCompanyRepository);
       expect(result, isA<Right<Failure, VoidResult>>());
     },

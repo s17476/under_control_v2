@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
 import 'package:under_control_v2/features/groups/domain/entities/group.dart';
 
 import '../../locations/domain/entities/location.dart';
@@ -146,6 +147,19 @@ class GroupParams extends Equatable {
 
   @override
   List<Object> get props => [group, companyId];
+}
+
+class ChecklistParams extends Equatable {
+  final Checklist checklist;
+  final String companyId;
+
+  const ChecklistParams({
+    required this.checklist,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [checklist, companyId];
 }
 
 class SelectedGroupsParams extends Equatable {

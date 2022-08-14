@@ -42,7 +42,7 @@ class CompanyManagementBloc
     required this.updateCompany,
   }) : super(CompanyManagementEmpty()) {
     userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
-      if (state is NoCompany) {
+      if (state is NoCompanyState) {
         add(FetchAllCompaniesEvent());
       }
     });

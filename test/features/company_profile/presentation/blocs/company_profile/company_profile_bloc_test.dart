@@ -6,13 +6,10 @@ import 'package:under_control_v2/features/company_profile/data/models/company_mo
 import 'package:under_control_v2/features/company_profile/data/models/company_users_model.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/fetch_all_company_users.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/get_company_by_id.dart';
-import 'package:under_control_v2/features/company_profile/domain/usecases/update_company.dart';
 import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/utils/input_validator.dart';
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
-
-class MockUpdateCompany extends Mock implements UpdateCompany {}
 
 class MockFetchAllCompanyUsers extends Mock implements FetchAllCompanyUsers {}
 
@@ -25,7 +22,6 @@ class MockInputValidator extends Mock implements InputValidator {}
 
 void main() {
   late CompanyProfileBloc companyProfileBloc;
-  late MockUpdateCompany mockUpdateCompany;
   late MockFetchAllCompanyUsers mockFetchAllCompanyUsers;
   late MockGetCompanyById mockGetCompanyById;
   late MockUserProfileBloc mockUserProfileBloc;
@@ -33,7 +29,6 @@ void main() {
 
   setUp(() {
     mockUserProfileBloc = MockUserProfileBloc();
-    mockUpdateCompany = MockUpdateCompany();
     mockFetchAllCompanyUsers = MockFetchAllCompanyUsers();
     mockGetCompanyById = MockGetCompanyById();
     mockInputValidator = MockInputValidator();
@@ -43,7 +38,6 @@ void main() {
 
     companyProfileBloc = CompanyProfileBloc(
       userProfileBloc: mockUserProfileBloc,
-      updateCompany: mockUpdateCompany,
       fetchAllCompanyUsers: mockFetchAllCompanyUsers,
       getCompanyById: mockGetCompanyById,
       inputValidator: mockInputValidator,

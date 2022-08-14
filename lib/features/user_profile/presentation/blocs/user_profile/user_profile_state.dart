@@ -48,10 +48,10 @@ class ValidationErrorUserProfile extends UserProfileState {
 class Loading extends UserProfileState {}
 
 // user without company assigned
-class NoCompany extends UserProfileState {
+class NoCompanyState extends UserProfileState {
   final UserProfile userProfile;
 
-  NoCompany({
+  NoCompanyState({
     String message = '',
     bool error = false,
     required this.userProfile,

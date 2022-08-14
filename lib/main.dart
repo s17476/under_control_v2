@@ -98,7 +98,7 @@ class App extends StatelessWidget
                       return const HomePage();
                     case NoUserProfileError:
                       return const AddUserProfilePage();
-                    case NoCompany:
+                    case NoCompanyState:
                       return const AssignCompanyPage();
                     case NotApproved:
                       return const NotApprovedPage();

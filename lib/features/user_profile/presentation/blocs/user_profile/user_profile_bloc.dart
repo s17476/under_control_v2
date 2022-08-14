@@ -93,7 +93,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
                         message: failure.message, error: true),
                   ),
                   (_) async {
-                    emit(NoCompany(userProfile: updatedUser));
+                    emit(NoCompanyState(userProfile: updatedUser));
                   },
                 );
               },
@@ -136,7 +136,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
           (userId) async {
             final updatedUser =
                 (event.userProfile as UserProfileModel).copyWith(companyId: '');
-            emit(NoCompany(userProfile: updatedUser));
+            emit(NoCompanyState(userProfile: updatedUser));
           },
         );
       },
@@ -194,26 +194,30 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
 
     on<UpdateUserProfileEvent>(
       (event, emit) async {
-        final userProfile = UserProfileModel.fromSnapshot(
-            event.snapshot as DocumentSnapshot<Map<String, dynamic>>);
-        // user is not assigned to any company
-        if (userProfile.companyId.isEmpty) {
-          emit(NoCompany(userProfile: userProfile));
-          // user assigned to a company
-        } else if (!userProfile.approved) {
-          // user rejected by administrator
-          if (userProfile.rejected) {
-            emit(Rejected(userProfile: userProfile));
-            // user suspended by administrator
-          } else if (userProfile.suspended) {
-            emit(Suspended(userProfile: userProfile));
-            // user awaiting approvement by administrator
-          } else {
-            emit(NotApproved(userProfile: userProfile));
-          }
-          // user approved by administrator
+        if (!event.snapshot.exists) {
+          emit(const NoUserProfileError());
         } else {
-          emit(Approved(userProfile: userProfile));
+          final userProfile = UserProfileModel.fromSnapshot(
+              event.snapshot as DocumentSnapshot<Map<String, dynamic>>);
+          // user is not assigned to any company
+          if (userProfile.companyId.isEmpty) {
+            emit(NoCompanyState(userProfile: userProfile));
+            // user assigned to a company
+          } else if (!userProfile.approved) {
+            // user rejected by administrator
+            if (userProfile.rejected) {
+              emit(Rejected(userProfile: userProfile));
+              // user suspended by administrator
+            } else if (userProfile.suspended) {
+              emit(Suspended(userProfile: userProfile));
+              // user awaiting approvement by administrator
+            } else {
+              emit(NotApproved(userProfile: userProfile));
+            }
+            // user approved by administrator
+          } else {
+            emit(Approved(userProfile: userProfile));
+          }
         }
       },
     );

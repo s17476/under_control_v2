@@ -252,8 +252,8 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           repository: get<_i14.UserProfileRepository>()));
   gh.lazySingleton<_i58.UnsuspendUser>(
       () => _i58.UnsuspendUser(repository: get<_i14.UserProfileRepository>()));
-  gh.lazySingleton<_i59.UpdateCompany>(() =>
-      _i59.UpdateCompany(companyRepository: get<_i29.CompanyRepository>()));
+  gh.lazySingleton<_i59.UpdateCompany>(() => _i59.UpdateCompany(
+      companyRepository: get<_i27.CompanyManagementRepository>()));
   gh.lazySingleton<_i60.UpdateGroup>(
       () => _i60.UpdateGroup(groupRepository: get<_i39.GroupRepository>()));
   gh.lazySingleton<_i61.UpdateLocation>(() =>
@@ -318,10 +318,10 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       inputValidator: get<_i8.InputValidator>(),
       addCompany: get<_i64.AddCompany>(),
       fetchAllCompanies: get<_i31.FetchAllCompanies>(),
-      addCompanyLogo: get<_i65.AddCompanyLogo>()));
+      addCompanyLogo: get<_i65.AddCompanyLogo>(),
+      updateCompany: get<_i59.UpdateCompany>()));
   gh.factory<_i77.CompanyProfileBloc>(() => _i77.CompanyProfileBloc(
       userProfileBloc: get<_i75.UserProfileBloc>(),
-      updateCompany: get<_i59.UpdateCompany>(),
       fetchAllCompanyUsers: get<_i32.FetchAllCompanyUsers>(),
       getCompanyById: get<_i35.GetCompanyById>(),
       inputValidator: get<_i8.InputValidator>()));

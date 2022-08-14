@@ -55,7 +55,7 @@ class _CompaniesListTileState extends State<CompaniesListTile> {
                   userProfileBloc.add(
                     AssignToCompanyEvent(
                       userProfile:
-                          (userProfileBloc.state as NoCompany).userProfile,
+                          (userProfileBloc.state as NoCompanyState).userProfile,
                       companyId: widget.company.id,
                     ),
                   );

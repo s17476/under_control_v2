@@ -744,5 +744,17 @@
     "company_details_title": "Company details",
     "@company_details_title": {
       "description": "Company details"
+    },
+    "company_details_data": "Company data",
+    "@company_details_data": {
+      "description": "Company data"
+    },
+    "company_details_contact": "Contact",
+    "@company_details_contact": {
+      "description": "Contact"
+    },
+    "company_details_join_date": "Join date",
+    "@company_details_join_date": {
+      "description": "Join date"
     }
 }

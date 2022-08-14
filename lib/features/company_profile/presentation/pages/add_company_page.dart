@@ -106,9 +106,9 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
             context.read<UserProfileBloc>().add(
                   AssignToCompanyEvent(
                     companyId: state.selectedCompany!.id,
-                    userProfile:
-                        (context.read<UserProfileBloc>().state as NoCompany)
-                            .userProfile,
+                    userProfile: (context.read<UserProfileBloc>().state
+                            as NoCompanyState)
+                        .userProfile,
                   ),
                 );
           }

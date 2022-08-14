@@ -8,7 +8,10 @@ import 'filter_locations_list.dart';
 class HomePageFilter extends StatefulWidget {
   const HomePageFilter({
     Key? key,
+    required this.isFilterExpanded,
   }) : super(key: key);
+
+  final bool isFilterExpanded;
 
   @override
   State<HomePageFilter> createState() => _HomePageFilterState();
@@ -17,7 +20,10 @@ class HomePageFilter extends StatefulWidget {
 class _HomePageFilterState extends State<HomePageFilter> {
   @override
   Widget build(BuildContext context) {
-    return TweenAnimationBuilder(
+    if (!widget.isFilterExpanded) {
+      return const SizedBox();
+    } else {
+      return TweenAnimationBuilder(
         duration: const Duration(milliseconds: 300),
         tween: Tween<Offset>(
           begin: const Offset(0, -1),
@@ -87,6 +93,8 @@ class _HomePageFilterState extends State<HomePageFilter> {
               ),
             ),
           );
-        });
+        },
+      );
+    }
   }
 }

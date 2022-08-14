@@ -23,3 +23,11 @@ Future<void> mailTo(String emailAddress) async {
   );
   await launchUrl(launchUri);
 }
+
+Future<void> openInBrowser(String url) async {
+  final Uri launchUri = Uri(
+    scheme: 'https',
+    path: url,
+  );
+  await launchUrl(launchUri);
+}

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
 
 import '../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../data/models/user_profile_model.dart';
-import '../../domain/entities/user_profile.dart';
-import '../blocs/user_management/user_management_bloc.dart';
+import '../../data/models/company_model.dart';
+import '../blocs/company_management/company_management_bloc.dart';
 
-Future<void> showEditUserModalBottomSheet({
+Future<void> showEditCompanyModalBottomSheet({
   required BuildContext context,
-  required UserProfile user,
+  required Company company,
 }) {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  UserProfileModel updatedUser = user as UserProfileModel;
+  CompanyModel updatedCompany = company as CompanyModel;
 
   return showModalBottomSheet<void>(
     isScrollControlled: true,
@@ -35,7 +35,6 @@ Future<void> showEditUserModalBottomSheet({
             ),
           ),
           child: Column(
-            // mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
                 padding: const EdgeInsets.only(
@@ -67,14 +66,14 @@ Future<void> showEditUserModalBottomSheet({
                           ),
                           child: Column(
                             children: [
-                              // parent name
+                              // name
                               CustomTextFormField(
-                                fieldKey: 'userName',
+                                fieldKey: 'name',
                                 labelText: AppLocalizations.of(context)!
-                                    .user_profile_add_user_personal_data_first_name,
+                                    .add_company_intro_card_name,
                                 textCapitalization: TextCapitalization.words,
-                                initialValue: user.firstName,
-                                prefixIcon: const Icon(Icons.person),
+                                initialValue: company.name,
+                                prefixIcon: const Icon(Icons.factory),
                                 validator: (value) {
                                   if (value!.isEmpty || value.length < 2) {
                                     return AppLocalizations.of(context)!
@@ -83,56 +82,12 @@ Future<void> showEditUserModalBottomSheet({
                                   return null;
                                 },
                                 onSaved: (value) {
-                                  updatedUser = updatedUser.copyWith(
-                                      firstName: value?.trim());
+                                  updatedCompany = updatedCompany.copyWith(
+                                      name: value?.trim());
                                 },
                               ),
                               const SizedBox(
                                 height: 20,
-                              ),
-                              // location name
-                              CustomTextFormField(
-                                fieldKey: 'lastName',
-                                keyboardType: TextInputType.name,
-                                initialValue: user.lastName,
-                                prefixIcon: const Icon(Icons.person_outline),
-                                labelText: AppLocalizations.of(context)!
-                                    .user_profile_add_user_personal_data_last_name,
-                                textCapitalization: TextCapitalization.words,
-                                onSaved: (value) {
-                                  updatedUser = updatedUser.copyWith(
-                                      lastName: value?.trim());
-                                },
-                                validator: (value) {
-                                  if (value!.isEmpty || value.length < 2) {
-                                    return AppLocalizations.of(context)!
-                                        .validation_min_two_characters;
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              // phone number
-                              CustomTextFormField(
-                                fieldKey: 'phoneNumber',
-                                keyboardType: TextInputType.phone,
-                                initialValue: user.phoneNumber,
-                                prefixIcon: const Icon(Icons.phone),
-                                labelText: AppLocalizations.of(context)!
-                                    .user_profile_add_user_personal_data_phone_number,
-                                onSaved: (value) {
-                                  updatedUser = updatedUser.copyWith(
-                                      phoneNumber: value?.trim());
-                                },
-                                validator: (value) {
-                                  if (value!.isEmpty || value.length < 8) {
-                                    return AppLocalizations.of(context)!
-                                        .input_validation_phone_number;
-                                  }
-                                  return null;
-                                },
                               ),
                             ],
                           ),
@@ -174,8 +129,10 @@ Future<void> showEditUserModalBottomSheet({
                           }
                           _formKey.currentState!.save();
 
-                          context.read<UserManagementBloc>().add(
-                                UpdateUserDataEvent(userProfile: updatedUser),
+                          context.read<CompanyManagementBloc>().add(
+                                UpdateCompanyDataEvent(
+                                  company: updatedCompany,
+                                ),
                               );
 
                           Navigator.pop(context);

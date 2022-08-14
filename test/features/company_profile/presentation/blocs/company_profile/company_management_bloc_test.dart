@@ -9,6 +9,7 @@ import 'package:under_control_v2/features/company_profile/domain/entities/compan
 import 'package:under_control_v2/features/company_profile/domain/usecases/add_company.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/add_company_logo.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/fetch_all_companies.dart';
+import 'package:under_control_v2/features/company_profile/domain/usecases/update_company.dart';
 import 'package:under_control_v2/features/company_profile/presentation/blocs/company_management/company_management_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
@@ -21,6 +22,8 @@ class MockFetchAllCompanies extends Mock implements FetchAllCompanies {}
 
 class MockAddCompanyLogo extends Mock implements AddCompanyLogo {}
 
+class MockUpdateCompany extends Mock implements UpdateCompany {}
+
 class MockUserProfileBloc extends Mock
     implements Stream<UserProfileState>, UserProfileBloc {}
 
@@ -30,6 +33,7 @@ void main() {
   late CompanyManagementBloc companyManagementBloc;
   late MockAddCompany mockAddCompany;
   late MockAddCompanyLogo mockAddCompanyLogo;
+  late MockUpdateCompany mockUpdateCompany;
   late MockFetchAllCompanies mockFetchAllCompanies;
   late MockUserProfileBloc mockUserProfileBloc;
   late MockInputValidator mockInputValidator;
@@ -39,12 +43,14 @@ void main() {
     mockAddCompanyLogo = MockAddCompanyLogo();
     mockAddCompany = MockAddCompany();
     mockFetchAllCompanies = MockFetchAllCompanies();
+    mockUpdateCompany = MockUpdateCompany();
     mockInputValidator = MockInputValidator();
 
     when(() => mockUserProfileBloc.stream)
         .thenAnswer((_) => Stream.fromFuture(Future.value(UserProfileEmpty())));
 
     companyManagementBloc = CompanyManagementBloc(
+      updateCompany: mockUpdateCompany,
       userProfileBloc: mockUserProfileBloc,
       inputValidator: mockInputValidator,
       addCompany: mockAddCompany,
