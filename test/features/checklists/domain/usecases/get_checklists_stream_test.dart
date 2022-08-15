@@ -15,7 +15,7 @@ void main() {
   late GetChecklistStream usecase;
   late MockChecklistsRepository repository;
 
-  const tChecklist = Checklist(title: 'title', allCheckPoints: []);
+  const tChecklist = Checklist(id: 'id', title: 'title', allCheckpoints: []);
 
   setUp(() {
     repository = MockChecklistsRepository();

@@ -1,20 +1,22 @@
 import 'package:equatable/equatable.dart';
 
-import 'checkpoint.dart';
+import '../../data/models/checkpoint_model.dart';
 
 class Checklist extends Equatable {
+  final String id;
   final String title;
-  final List<Checkpoint> allCheckPoints;
+  final List<CheckpointModel> allCheckpoints;
 
   const Checklist({
+    required this.id,
     required this.title,
-    required this.allCheckPoints,
+    required this.allCheckpoints,
   });
 
   @override
-  List<Object> get props => [title, allCheckPoints];
+  List<Object> get props => [id, title, allCheckpoints];
 
   @override
   String toString() =>
-      'CheckList(title: $title, allCheckPoints: $allCheckPoints)';
+      'Checklist(id: $id, title: $title, allCheckPoints: $allCheckpoints)';
 }

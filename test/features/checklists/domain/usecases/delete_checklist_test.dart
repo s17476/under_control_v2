@@ -4,7 +4,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
 import 'package:under_control_v2/features/checklists/domain/repositories/checklists_repository.dart';
 import 'package:under_control_v2/features/checklists/domain/usecases/delete_checklist.dart';
-import 'package:under_control_v2/features/checklists/domain/usecases/update_checklist.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
@@ -14,7 +13,7 @@ void main() {
   late DeleteChecklist usecase;
   late MockChecklistsRepository repository;
 
-  const tChecklist = Checklist(title: 'title', allCheckPoints: []);
+  const tChecklist = Checklist(id: 'id', title: 'title', allCheckpoints: []);
 
   setUpAll(() {
     registerFallbackValue(const ChecklistParams(

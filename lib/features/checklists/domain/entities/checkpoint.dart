@@ -13,5 +13,5 @@ class Checkpoint extends Equatable {
   List<Object> get props => [title, isChecked];
 
   @override
-  String toString() => 'CheckPoint(title: $title, isChecked: $isChecked)';
+  String toString() => 'Checkpoint(title: $title, isChecked: $isChecked)';
 }

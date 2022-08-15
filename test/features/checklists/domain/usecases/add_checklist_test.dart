@@ -13,7 +13,7 @@ void main() {
   late AddChecklist usecase;
   late MockChecklistsRepository repository;
 
-  const tChecklist = Checklist(title: 'title', allCheckPoints: []);
+  const tChecklist = Checklist(id: 'id', title: 'title', allCheckpoints: []);
 
   setUpAll(() {
     registerFallbackValue(const ChecklistParams(
