@@ -1,10 +1,12 @@
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../entities/checklists_stream.dart';
 import '../repositories/checklists_repository.dart';
 
+@lazySingleton
 class GetChecklistStream extends FutureUseCase<ChecklistsStream, String> {
   final CheckListsRepository repository;
 

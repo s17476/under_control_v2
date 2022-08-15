@@ -11,12 +11,12 @@ class ChecklistModel extends Checklist {
   ChecklistModel copyWith({
     String? id,
     String? title,
-    List<CheckpointModel>? allCheckPoints,
+    List<CheckpointModel>? allCheckpoints,
   }) {
     return ChecklistModel(
       id: id ?? this.id,
       title: title ?? this.title,
-      allCheckpoints: allCheckPoints ?? this.allCheckpoints,
+      allCheckpoints: allCheckpoints ?? this.allCheckpoints,
     );
   }
 

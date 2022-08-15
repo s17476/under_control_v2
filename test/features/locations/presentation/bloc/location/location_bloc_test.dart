@@ -103,7 +103,7 @@ void main() {
       'should emit [LocationEmptyState] as an initial state',
       () async {
         // assert
-        expect(locationBloc.state, LocationEmptyState());
+        expect(locationBloc.state, const LocationEmptyState());
       },
     );
 
