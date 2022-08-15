@@ -7,20 +7,20 @@ class CheckpointTile extends StatelessWidget {
   const CheckpointTile({
     Key? key,
     required this.checkpoint,
-    required this.editCheckpoint,
-    required this.deleteCheckpoint,
+    this.editCheckpoint,
+    this.deleteCheckpoint,
   }) : super(key: key);
 
   final CheckpointModel checkpoint;
-  final Function(CheckpointModel checkpoint) editCheckpoint;
-  final Function(Checkpoint checkpoint) deleteCheckpoint;
+  final Function(CheckpointModel checkpoint)? editCheckpoint;
+  final Function(Checkpoint checkpoint)? deleteCheckpoint;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(
         vertical: 4,
-        horizontal: 8,
+        horizontal: 4,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       width: double.infinity,
@@ -62,20 +62,22 @@ class CheckpointTile extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.edit,
-              size: 30,
+          if (editCheckpoint != null)
+            IconButton(
+              icon: const Icon(
+                Icons.edit,
+                size: 30,
+              ),
+              onPressed: () => editCheckpoint!(checkpoint),
             ),
-            onPressed: () => editCheckpoint(checkpoint),
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.delete,
-              size: 30,
+          if (deleteCheckpoint != null)
+            IconButton(
+              icon: const Icon(
+                Icons.delete,
+                size: 30,
+              ),
+              onPressed: () => deleteCheckpoint!(checkpoint),
             ),
-            onPressed: () => deleteCheckpoint(checkpoint),
-          ),
         ],
       ),
     );

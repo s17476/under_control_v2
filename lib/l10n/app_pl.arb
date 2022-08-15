@@ -190,5 +190,8 @@
     "checklist_add_checkpoint": "Dodaj punkt kontrolny",
     "checklist_checkpoint_title": "Nazwa punktu kontrolnego",
     "checklist_add_checkpoints": "Dodaj punkty kontrolne",
-    "checklist_add_checkpoints_exists": "Punkt kontrolny o tej nazwie ju istnieje"
+    "checklist_add_checkpoints_exists": "Punkt kontrolny o tej nazwie ju istnieje",
+    "checklist_add_checkpoints_title": "Punkty kontrolne",
+    "checklist_details_delete_question": "Czy na pewno chcesz usunąć {checklist}?",
+    "checklist_details_title": "Szczegóły listy kontrolnej"
 }

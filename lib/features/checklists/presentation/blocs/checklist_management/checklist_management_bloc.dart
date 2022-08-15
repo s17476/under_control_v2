@@ -6,7 +6,6 @@ import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/checklists/domain/usecases/add_checklist.dart';
 import 'package:under_control_v2/features/checklists/domain/usecases/delete_checklist.dart';
 import 'package:under_control_v2/features/checklists/domain/usecases/update_checklist.dart';
-import 'package:under_control_v2/features/checklists/presentation/blocs/Checklist/checklist_bloc.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';

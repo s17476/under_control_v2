@@ -6,6 +6,7 @@ import 'package:under_control_v2/features/checklists/data/models/checkpoint_mode
 import 'package:under_control_v2/features/checklists/domain/entities/checkpoint.dart';
 import 'package:under_control_v2/features/checklists/presentation/blocs/checklist/checklist_bloc.dart';
 import 'package:under_control_v2/features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart';
+import 'package:under_control_v2/features/checklists/presentation/widgets/add_checklist_summary_card.dart';
 import 'package:under_control_v2/features/checklists/presentation/widgets/add_checkpoints_card.dart';
 import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/keep_alive_page.dart';
@@ -64,7 +65,7 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
         // checklist name validation
       } else if (checklist != null) {
         final currentState = context.read<ChecklistBloc>().state;
-        if (currentState is ChecklistLoadedState) {
+        if (checklist == null && currentState is ChecklistLoadedState) {
           final tmpChecklists = currentState.allChecklists.allChecklists.where(
               (checklist) =>
                   checklist.title.toLowerCase() ==
@@ -123,6 +124,13 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
           pageController: pageController,
           checkpoints: checkpoints,
         ),
+      ),
+      AddChecklistSummaryCard(
+        pageController: pageController,
+        titleTexEditingController: titleTexEditingController,
+        descriptionTexEditingController: descriptionTexEditingController,
+        checkpoints: checkpoints,
+        addNewChecklist: addNewChecklist,
       ),
     ];
     return Scaffold(

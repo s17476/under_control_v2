@@ -122,6 +122,7 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
                               );
                             } else {
                               return CheckpointTile(
+                                key: ValueKey(widget.checkpoints[index].title),
                                 checkpoint: widget.checkpoints[index],
                                 editCheckpoint: editCheckpoint,
                                 deleteCheckpoint: deleteCheckpoint,

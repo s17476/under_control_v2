@@ -51,6 +51,7 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
 
     on<UpdateChecklistsListEvent>(
       (event, emit) async {
+        emit(ChecklistLoadingState());
         final checklistsList = ChecklistsListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );

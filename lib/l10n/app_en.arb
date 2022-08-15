@@ -820,5 +820,23 @@
     "checklist_add_checkpoints_exists": "Checkpoint with this name aleready exists",
     "@checklist_add_checkpoints_exists": {
       "description": "Checklists - name exists"
+    },
+    "checklist_add_checkpoints_title": "Checkpoints",
+    "@checklist_add_checkpoints_title": {
+      "description": "Checklists - checkpoints"
+    },
+    "checklist_details_delete_question": "Are you sure you want to delete {checklist}?",
+    "@checklist_details_delete_question": {
+      "description": "Delete question",
+      "placeholders": {
+        "checklist": {
+          "type": "String",
+          "example": "Main"
+        }
+      }
+    },
+    "checklist_details_title": "Checklist details",
+    "@checklist_details_title": {
+      "description": "Checklists - appbar title"
     }
 }

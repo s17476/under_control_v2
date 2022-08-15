@@ -4,6 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
 import 'package:under_control_v2/features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart';
 import 'package:under_control_v2/features/checklists/presentation/pages/add_checklist_page.dart';
+import 'package:under_control_v2/features/checklists/presentation/pages/checklist_details_page.dart';
+import 'package:under_control_v2/features/checklists/presentation/widgets/checklist_tile.dart';
 import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -90,7 +92,7 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
         listener: (context, state) {
           if (state is ChecklistManagementSuccessState) {
             String message = '';
-            switch (ChecklistMessage.empty) {
+            switch (state.message) {
               case ChecklistMessage.checklistAdded:
                 message = AppLocalizations.of(context)!.checklist_msg_added;
                 break;
@@ -143,8 +145,15 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
                       padding: EdgeInsets.only(top: index == 0 ? 4 : 0),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        // TODO
-                        child: Text(filteredChecklists[index].title),
+                        child: ChecklistTile(
+                          checklist: filteredChecklists[index],
+                          user: currentUser,
+                          onTap: (checklist) => Navigator.pushNamed(
+                            context,
+                            ChecklistDetailsPage.routeName,
+                            arguments: checklist,
+                          ),
+                        ),
                       ),
                     );
                   }
