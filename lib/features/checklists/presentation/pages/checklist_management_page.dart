@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
 import 'package:under_control_v2/features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart';
+import 'package:under_control_v2/features/checklists/presentation/pages/add_checklist_page.dart';
 import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -142,6 +143,7 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
                       padding: EdgeInsets.only(top: index == 0 ? 4 : 0),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
+                        // TODO
                         child: Text(filteredChecklists[index].title),
                       ),
                     );
@@ -159,7 +161,7 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
               ? FloatingActionButton.extended(
                   heroTag: null,
                   onPressed: () {
-                    // Navigator.pushNamed(context, AddGroupPage.routeName);
+                    Navigator.pushNamed(context, AddChecklistPage.routeName);
                   },
                   icon: Icon(
                     Icons.add,
@@ -172,7 +174,7 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
                     ),
                   ),
                 )
-              // bloc state is not GroupLoadedState
+              // bloc state is not ChecklistLoadedState
               : null
           // not an administrator
           : null,

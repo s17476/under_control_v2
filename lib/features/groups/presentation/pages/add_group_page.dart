@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -23,7 +24,7 @@ class AddGroupPage extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  static const routeName = '/groups/ad-group';
+  static const routeName = '/groups/add-group';
 
   @override
   State<AddGroupPage> createState() => _AddGroupPageState();
@@ -260,15 +261,11 @@ class _AddGroupPageState extends State<AddGroupPage> {
 
     // shows SnackBar if validation error occures
     if (errorMessage.isNotEmpty) {
-      ScaffoldMessenger.of(context)
-        ..clearSnackBars()
-        ..showSnackBar(SnackBar(
-          content: Text(
-            errorMessage,
-            style: const TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Theme.of(context).errorColor,
-        ));
+      showSnackBar(
+        context: context,
+        message: errorMessage,
+        isErrorMessage: true,
+      );
       // saves group to DB if no error
     } else {
       final newGroup = GroupModel(

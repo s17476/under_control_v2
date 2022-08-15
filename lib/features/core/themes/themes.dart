@@ -28,5 +28,8 @@ class Themes with MaterialColorGenerator {
             minimumSize: const Size(double.infinity, 48),
           ),
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          fillColor: Colors.grey.shade800,
+        ),
       );
 }

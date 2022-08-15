@@ -11,6 +11,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.onSaved,
     this.enabled = true,
+    this.autofocus = false,
     this.initialValue,
     this.prefixIcon,
     this.scrollPadding = const EdgeInsets.all(20),
@@ -24,6 +25,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
   final bool enabled;
+  final bool autofocus;
   final String? initialValue;
   final Widget? prefixIcon;
   final EdgeInsets scrollPadding;
@@ -31,6 +33,7 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: autofocus,
       enabled: enabled,
       initialValue: initialValue,
       scrollPadding: scrollPadding,

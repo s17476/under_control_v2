@@ -5,12 +5,14 @@ import 'package:under_control_v2/features/checklists/domain/entities/checklist.d
 void main() {
   const tChecklistModel = ChecklistModel(
     id: 'id',
+    description: 'description',
     title: 'title',
     allCheckpoints: [],
   );
 
   const tChecklistModelMap = {
     'title': 'title',
+    'description': 'description',
     'allCheckpoints': [],
   };
 

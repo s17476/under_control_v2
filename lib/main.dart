@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/checklists/presentation/pages/add_checklist_page.dart';
 
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
@@ -139,6 +140,7 @@ class App extends StatelessWidget
           CompanyDetailsPage.routeName: (context) => const CompanyDetailsPage(),
           ChecklistManagementPage.routeName: (context) =>
               const ChecklistManagementPage(),
+          AddChecklistPage.routeName: (context) => const AddChecklistPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

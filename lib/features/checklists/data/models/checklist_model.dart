@@ -5,17 +5,20 @@ class ChecklistModel extends Checklist {
   const ChecklistModel({
     required super.id,
     required super.title,
+    required super.description,
     required super.allCheckpoints,
   });
 
   ChecklistModel copyWith({
     String? id,
     String? title,
+    String? description,
     List<CheckpointModel>? allCheckpoints,
   }) {
     return ChecklistModel(
       id: id ?? this.id,
       title: title ?? this.title,
+      description: description ?? this.description,
       allCheckpoints: allCheckpoints ?? this.allCheckpoints,
     );
   }
@@ -24,6 +27,7 @@ class ChecklistModel extends Checklist {
     final result = <String, dynamic>{};
 
     result.addAll({'title': title});
+    result.addAll({'description': description});
     result.addAll(
         {'allCheckpoints': allCheckpoints.map((x) => x.toMap()).toList()});
 
@@ -34,6 +38,7 @@ class ChecklistModel extends Checklist {
     return ChecklistModel(
       id: id,
       title: map['title'] ?? '',
+      description: map['description'] ?? '',
       allCheckpoints: List<CheckpointModel>.from(
         map['allCheckpoints']?.map(
           (x) => CheckpointModel.fromMap(x),

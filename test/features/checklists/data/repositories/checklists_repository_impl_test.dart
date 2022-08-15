@@ -30,6 +30,7 @@ void main() {
   const tChecklistmodel = ChecklistModel(
     id: 'id',
     title: 'title',
+    description: 'description',
     allCheckpoints: [tCheckpointModel],
   );
 

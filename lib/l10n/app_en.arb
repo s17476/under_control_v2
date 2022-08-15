@@ -788,5 +788,37 @@
     "checklist_msg_not_deleted": "Checklist NOT deleted",
     "@checklist_msg_not_deleted": {
       "description": "Checklists - NOT deleted msg"
+    },
+    "checklist_edit_card_title": "Edit checklist",
+    "@checklist_edit_card_title": {
+      "description": "Checklists - edit checklist"
+    },
+    "checklist_add_card_title": "Add new checklist",
+    "@checklist_add_card_title": {
+      "description": "Checklists - add checklist"
+    },
+    "checklist_name": "Checklist name",
+    "@checklist_name": {
+      "description": "Checklists - name"
+    },
+    "checklist_description": "Checklist description (optional)",
+    "@checklist_description": {
+      "description": "Checklists - description"
+    },
+    "checklist_add_checkpoint": "Add checkpoint",
+    "@checklist_add_checkpoint": {
+      "description": "Checklists - add checkpoint"
+    },
+    "checklist_checkpoint_title": "Checkpoint title",
+    "@checklist_checkpoint_title": {
+      "description": "Checklists - checklist_checkpoint_title"
+    },
+    "checklist_add_checkpoints": "Add checkpoints",
+    "@checklist_add_checkpoints": {
+      "description": "Checklists - add checkpoints"
+    },
+    "checklist_add_checkpoints_exists": "Checkpoint with this name aleready exists",
+    "@checklist_add_checkpoints_exists": {
+      "description": "Checklists - name exists"
     }
 }
