@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/checklists/presentation/pages/checklist_management_page.dart';
 
 import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -12,7 +13,7 @@ import '../../../../user_profile/presentation/pages/user_details_page.dart';
 import '../../../../user_profile/presentation/pages/users_list_page.dart';
 import '../../../utils/responsive_size.dart';
 import '../cached_user_avatar.dart';
-import '../custom_menu_item.dart';
+import 'custom_menu_item.dart';
 import '../logo_widget.dart';
 
 class MainDrawer extends StatelessWidget with ResponsiveSize {
@@ -152,8 +153,18 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                   );
                 },
                 icon: Icons.location_on,
-                // iconBackgroundColor: Colors.red,
                 label: AppLocalizations.of(context)!.drawer_item_locations,
+              ),
+              // checklists
+              CustomMenuItem(
+                onTap: () {
+                  Navigator.popAndPushNamed(
+                    context,
+                    ChecklistManagementPage.routeName,
+                  );
+                },
+                icon: Icons.checklist_rounded,
+                label: AppLocalizations.of(context)!.checklist_drawer_title,
               ),
               // settings
               CustomMenuItem(

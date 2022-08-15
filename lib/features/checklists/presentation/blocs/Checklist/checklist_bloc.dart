@@ -44,13 +44,19 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
           (checklistsStream) async {
         checklistsStreamSubscription =
             checklistsStream.allChecklists.listen((snapshot) {
-          final checklistsList = ChecklistsListModel.fromSnapshot(
-            snapshot as QuerySnapshot<Map<String, dynamic>>,
-          );
-          emit(ChecklistLoadedState(allChecklists: checklistsList));
+          add(UpdateChecklistsListEvent(snapshot: snapshot));
         });
       });
     });
+
+    on<UpdateChecklistsListEvent>(
+      (event, emit) async {
+        final checklistsList = ChecklistsListModel.fromSnapshot(
+          event.snapshot as QuerySnapshot<Map<String, dynamic>>,
+        );
+        emit(ChecklistLoadedState(allChecklists: checklistsList));
+      },
+    );
   }
 
   @override

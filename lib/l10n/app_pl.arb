@@ -174,5 +174,13 @@
     "company_details_title": "Szczegóły organizacji",
     "company_details_data": "Dane organizacji",
     "company_details_contact": "Dane kontaktowe",
-    "company_details_join_date": "Data dołączenia"
+    "company_details_join_date": "Data dołączenia",
+    "checklist_drawer_title": "Listy kontrolne",
+    "checklist_add_button": "Dodaj listę kontrolną",
+    "checklist_msg_added": "Dodano nową listę kontrolną",
+    "checklist_msg_not_added": "Lista kontrolna nie została dodana",
+    "checklist_msg_updated": "Zaktualizowano listę kontrolną",
+    "checklist_msg_not_updated": "Lista kontrolna nie została zaktualizowana",
+    "checklist_msg_deleted": "Usunięto listę kontrolną",
+    "checklist_msg_not_deleted": "Lista kontrolna nie została usunięta"
 }

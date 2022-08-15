@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 
@@ -110,19 +111,11 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
                   message = '';
               }
               if (message.isNotEmpty) {
-                ScaffoldMessenger.of(context)
-                  ..clearSnackBars()
-                  ..showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        message,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      backgroundColor: state.error
-                          ? Theme.of(context).errorColor
-                          : Theme.of(context).primaryColor,
-                    ),
-                  );
+                showSnackBar(
+                  context: context,
+                  message: message,
+                  isErrorMessage: state.error,
+                );
               }
             }
           }

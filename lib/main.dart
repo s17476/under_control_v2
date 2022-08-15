@@ -8,6 +8,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
 import 'features/authentication/presentation/pages/email_confirmation_page.dart';
+import 'features/checklists/presentation/blocs/checklist/checklist_bloc.dart';
+import 'features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart';
+import 'features/checklists/presentation/pages/checklist_management_page.dart';
 import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart';
 import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dart';
@@ -79,6 +82,8 @@ class App extends StatelessWidget
         BlocProvider(create: (context) => getIt<NewUsersBloc>()),
         BlocProvider(create: (context) => getIt<SuspendedUsersBloc>()),
         BlocProvider(create: (context) => getIt<FilterBloc>(), lazy: false),
+        BlocProvider(create: (context) => getIt<ChecklistBloc>()),
+        BlocProvider(create: (context) => getIt<ChecklistManagementBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -132,6 +137,8 @@ class App extends StatelessWidget
           SuspendedUsersListPage.routeName: (context) =>
               const SuspendedUsersListPage(),
           CompanyDetailsPage.routeName: (context) => const CompanyDetailsPage(),
+          ChecklistManagementPage.routeName: (context) =>
+              const ChecklistManagementPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,
