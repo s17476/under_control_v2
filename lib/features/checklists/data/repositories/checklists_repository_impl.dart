@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/checklists/data/models/checklist_model.dart';
 
-import 'package:under_control_v2/features/checklists/domain/entities/checklists_stream.dart';
-import 'package:under_control_v2/features/checklists/domain/repositories/checklists_repository.dart';
-import 'package:under_control_v2/features/core/error/failures.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
+import '../../domain/entities/checklists_stream.dart';
+import '../../domain/repositories/checklists_repository.dart';
+import '../models/checklist_model.dart';
 
 @LazySingleton(as: CheckListsRepository)
 class ChecklistsRepositoryImpl extends CheckListsRepository {

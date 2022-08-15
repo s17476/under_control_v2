@@ -1,4 +1,4 @@
-import 'package:under_control_v2/features/checklists/domain/entities/checkpoint.dart';
+import '../../domain/entities/checkpoint.dart';
 
 class CheckpointModel extends Checkpoint {
   const CheckpointModel({
