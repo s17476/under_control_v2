@@ -225,7 +225,7 @@ void main() {
           when(() => mockFetchAllLocations(any())).thenAnswer((_) async =>
               Right(Locations(allLocations: Stream.fromIterable([]))));
         },
-        expect: () => [LocationLoadingState(), isA<LocationLoadedState>()],
+        expect: () => [LocationLoadingState()],
       );
     });
     // group('[SelectLocation] event', () {

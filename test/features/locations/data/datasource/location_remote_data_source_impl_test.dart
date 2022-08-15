@@ -17,11 +17,18 @@ void main() {
   late LocationRemoteDataSourceImpl dataSource;
   late LocationRemoteDataSourceImpl badDataSource;
   late CollectionReference mockCollectionReference;
+  late LocationParams tLocationParams;
 
   const String companyId = 'companyId';
 
+  const tLocation = LocationModel(
+    id: 'id',
+    name: 'name',
+    parentId: 'parentId',
+  );
+
   setUp(
-    () {
+    () async {
       fakeFirebaseFirestore = FakeFirebaseFirestore();
       badFirebaseFirestore = MockFirebaseFirestore();
       dataSource = LocationRemoteDataSourceImpl(
@@ -34,18 +41,13 @@ void main() {
           .collection('companies')
           .doc(companyId)
           .collection('locations');
+      final documentReference =
+          await mockCollectionReference.add(tLocation.toMap());
+      tLocationParams = LocationParams(
+        location: tLocation.copyWith(id: documentReference.id),
+        comapnyId: companyId,
+      );
     },
-  );
-
-  const tLocation = LocationModel(
-    id: 'id',
-    name: 'name',
-    parentId: 'parentId',
-  );
-
-  const tLocationParams = LocationParams(
-    location: tLocation,
-    comapnyId: 'comapnyId',
   );
 
   group('LocationRemoteDatasource', () {

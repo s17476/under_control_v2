@@ -21,21 +21,9 @@ void main() {
   late UserProfileRepositoryImpl badRepository;
   late MockFirebaseFirestore badFirebaseFirestoreInstance;
 
-  setUp(
-    () {
-      fakeFirebaseFirestore = FakeFirebaseFirestore();
-      repository = UserProfileRepositoryImpl(
-        firebaseFirestore: fakeFirebaseFirestore,
-      );
-      mockCollectionReference = fakeFirebaseFirestore.collection('users');
-      mockGroupCollectionReference = fakeFirebaseFirestore.collection('groups');
-      badFirebaseFirestoreInstance = MockFirebaseFirestore();
-      badRepository = UserProfileRepositoryImpl(
-          firebaseFirestore: badFirebaseFirestoreInstance);
-    },
-  );
+  const companyId = 'companyId';
 
-  final tUserProfile = UserProfileModel(
+  UserProfileModel tUserProfile = UserProfileModel(
     id: 'id',
     firstName: 'firstName',
     lastName: 'lastName',
@@ -44,7 +32,7 @@ void main() {
     avatarUrl: 'avatarUrl',
     userGroups: const ['userGroups'],
     locations: const ['locations'],
-    companyId: 'companyId',
+    companyId: companyId,
     approved: false,
     rejected: false,
     suspended: false,
@@ -52,7 +40,36 @@ void main() {
     joinDate: DateTime.now(),
   );
 
-  final tGroup = GroupModel.inital();
+  GroupModel tGroup = const GroupModel(
+      id: 'id',
+      name: 'name',
+      description: 'description',
+      groupAdministrators: [],
+      locations: [],
+      features: []);
+
+  setUp(
+    () async {
+      fakeFirebaseFirestore = FakeFirebaseFirestore();
+      repository = UserProfileRepositoryImpl(
+        firebaseFirestore: fakeFirebaseFirestore,
+      );
+      mockCollectionReference = fakeFirebaseFirestore.collection('users');
+      mockGroupCollectionReference = fakeFirebaseFirestore
+          .collection('companies')
+          .doc(companyId)
+          .collection('groups');
+      badFirebaseFirestoreInstance = MockFirebaseFirestore();
+      badRepository = UserProfileRepositoryImpl(
+          firebaseFirestore: badFirebaseFirestoreInstance);
+      final userReference =
+          await mockCollectionReference.add(tUserProfile.toMap());
+      tUserProfile = tUserProfile.copyWith(id: userReference.id);
+      final groupReference =
+          await mockGroupCollectionReference.add(tGroup.toMap());
+      tGroup = tGroup.copyWith(id: groupReference.id);
+    },
+  );
 
   group(
     'UserPorfile successful database response',
@@ -256,15 +273,13 @@ void main() {
       test(
         'should return a [Voidresult] when assigngroupAdmin is called',
         () async {
-          // arrange
-          final groupReferance =
-              await mockGroupCollectionReference.add(tGroup.toMap());
           // act
           final result = await repository.assignGroupAdmin(
             AssignGroupAdminParams(
-                userId: 'userId',
-                groupId: groupReferance.id,
-                companyId: 'companyId'),
+              userId: tUserProfile.id,
+              groupId: tGroup.id,
+              companyId: companyId,
+            ),
           );
           // assert
           expect(result, isA<Right<Failure, VoidResult>>());
@@ -274,15 +289,13 @@ void main() {
       test(
         'should return a [Voidresult] when unassigngroupAdmin is called',
         () async {
-          // arrange
-          final groupReferance =
-              await mockGroupCollectionReference.add(tGroup.toMap());
           // act
           final result = await repository.unassignGroupAdmin(
             AssignGroupAdminParams(
-                userId: 'userId',
-                groupId: groupReferance.id,
-                companyId: 'companyId'),
+              userId: tUserProfile.id,
+              groupId: tGroup.id,
+              companyId: companyId,
+            ),
           );
           // assert
           expect(result, isA<Right<Failure, VoidResult>>());

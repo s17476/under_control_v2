@@ -19,21 +19,9 @@ void main() {
   late CollectionReference mockCollectionReferance;
   late GroupRemoteDataSourceImpl dataSource;
   late GroupRemoteDataSourceImpl badDataSource;
+  late GroupParams tGroupParams;
 
   const String companyId = 'companyId';
-
-  setUp(() {
-    fakeFirebaseFirestore = FakeFirebaseFirestore();
-    badFirebaseFirestore = MockFirebaseFirestore();
-    mockCollectionReferance = fakeFirebaseFirestore
-        .collection('companies')
-        .doc(companyId)
-        .collection('groups');
-    dataSource =
-        GroupRemoteDataSourceImpl(firebaseFirestore: fakeFirebaseFirestore);
-    badDataSource =
-        GroupRemoteDataSourceImpl(firebaseFirestore: badFirebaseFirestore);
-  });
 
   final tGroup = GroupModel(
     id: 'id',
@@ -52,7 +40,25 @@ void main() {
     ],
   );
 
-  final tGroupParams = GroupParams(group: tGroup, companyId: companyId);
+  setUp(() async {
+    fakeFirebaseFirestore = FakeFirebaseFirestore();
+    badFirebaseFirestore = MockFirebaseFirestore();
+    mockCollectionReferance = fakeFirebaseFirestore
+        .collection('companies')
+        .doc(companyId)
+        .collection('groups');
+    dataSource =
+        GroupRemoteDataSourceImpl(firebaseFirestore: fakeFirebaseFirestore);
+    badDataSource =
+        GroupRemoteDataSourceImpl(firebaseFirestore: badFirebaseFirestore);
+
+    final documentReference = await mockCollectionReferance.add(tGroup.toMap());
+    tGroupParams = GroupParams(
+        group: tGroup.copyWith(
+          id: documentReference.id,
+        ),
+        companyId: companyId);
+  });
 
   group('Group RemoteDataSource', () {
     group('successful database response', () {
