@@ -19,7 +19,7 @@ import 'features/authentication/data/repositories/authentication_repository_impl
 import 'features/authentication/domain/repositories/authentication_repository.dart'
     as _i23;
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i90;
+    as _i91;
 import 'features/authentication/domain/usecases/auto_signin.dart' as _i25;
 import 'features/authentication/domain/usecases/check_email_verification.dart'
     as _i26;
@@ -40,8 +40,10 @@ import 'features/checklists/domain/usecases/add_checklist.dart' as _i69;
 import 'features/checklists/domain/usecases/delete_checklist.dart' as _i33;
 import 'features/checklists/domain/usecases/get_checklists_stream.dart' as _i38;
 import 'features/checklists/domain/usecases/update_checklist.dart' as _i63;
-import 'features/checklists/presentation/blocs/Checklist/checklist_bloc.dart'
+import 'features/checklists/presentation/blocs/checklist/checklist_bloc.dart'
     as _i88;
+import 'features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart'
+    as _i89;
 import 'features/company_profile/data/repositories/company_management_repository_impl.dart'
     as _i30;
 import 'features/company_profile/data/repositories/company_repository_impl.dart'
@@ -70,10 +72,10 @@ import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dar
     as _i86;
 import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
     as _i87;
-import 'features/core/injectable_modules/injectable_modules.dart' as _i91;
+import 'features/core/injectable_modules/injectable_modules.dart' as _i92;
 import 'features/core/network/network_info.dart' as _i10;
 import 'features/core/utils/input_validator.dart' as _i8;
-import 'features/filter/presentation/blocs/filter/filter_bloc.dart' as _i89;
+import 'features/filter/presentation/blocs/filter/filter_bloc.dart' as _i90;
 import 'features/groups/data/datasources/group_local_data_source.dart' as _i42;
 import 'features/groups/data/datasources/group_remote_data_source.dart' as _i7;
 import 'features/groups/data/repositories/group_repository_impl.dart' as _i44;
@@ -369,20 +371,25 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.factory<_i88.ChecklistBloc>(() => _i88.ChecklistBloc(
       companyProfileBloc: get<_i83.CompanyProfileBloc>(),
       getChecklistsStream: get<_i38.GetChecklistStream>()));
-  gh.factory<_i89.FilterBloc>(() => _i89.FilterBloc(
+  gh.factory<_i89.ChecklistManagementBloc>(() => _i89.ChecklistManagementBloc(
+      companyProfileBloc: get<_i83.CompanyProfileBloc>(),
+      addChecklist: get<_i69.AddChecklist>(),
+      updateChecklist: get<_i63.UpdateChecklist>(),
+      deleteChecklist: get<_i33.DeleteChecklist>()));
+  gh.factory<_i90.FilterBloc>(() => _i90.FilterBloc(
       locationBloc: get<_i85.LocationBloc>(),
       groupBloc: get<_i84.GroupBloc>(),
       userProfileBloc: get<_i81.UserProfileBloc>()));
   return get;
 }
 
-class _$DataConnectionCheckerModule extends _i90.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i91.DataConnectionCheckerModule {}
 
 class _$FirebaseAuthenticationService
-    extends _i90.FirebaseAuthenticationService {}
+    extends _i91.FirebaseAuthenticationService {}
 
-class _$FirebaseFirestoreService extends _i91.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i92.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i91.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i92.FirebaseStorageService {}
 
-class _$SharedPreferencesService extends _i91.SharedPreferencesService {}
+class _$SharedPreferencesService extends _i92.SharedPreferencesService {}
