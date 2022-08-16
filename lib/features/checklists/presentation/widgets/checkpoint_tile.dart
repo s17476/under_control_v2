@@ -9,26 +9,23 @@ class CheckpointTile extends StatelessWidget {
     required this.editCheckpoint,
     required this.deleteCheckpoint,
     required this.trailing,
+    required this.index,
   }) : super(key: key);
 
   final CheckpointModel checkpoint;
   final Function(CheckpointModel checkpoint) editCheckpoint;
   final Function(CheckpointModel checkpoint) deleteCheckpoint;
   final Widget trailing;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
+    final Color oddItemColor = Theme.of(context).focusColor;
+    final Color evenItemColor = Theme.of(context).focusColor.withOpacity(0.05);
     return Container(
-      margin: const EdgeInsets.symmetric(
-        vertical: 4,
-        horizontal: 4,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).focusColor,
-      ),
+      color: index.isOdd ? oddItemColor : evenItemColor,
       child: Row(
         children: [
           Expanded(

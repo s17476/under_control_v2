@@ -6,6 +6,7 @@ class Themes with MaterialColorGenerator {
   ThemeData darkTheme() => ThemeData(
         useMaterial3: true,
         primaryColor: const Color.fromRGBO(0, 240, 130, 100),
+        // primaryColor: const Color.fromARGB(255, 28, 154, 97),
         primarySwatch: createMaterialColor(
           const Color.fromRGBO(0, 240, 130, 100),
         ),
@@ -31,5 +32,12 @@ class Themes with MaterialColorGenerator {
         inputDecorationTheme: InputDecorationTheme(
           fillColor: Colors.grey.shade800,
         ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color.fromARGB(255, 28, 154, 97),
+        ),
+        textTheme: TextTheme(
+          headline6: TextStyle(color: Colors.grey.shade600),
+        ),
+        iconTheme: IconThemeData(color: Colors.grey.shade200),
       );
 }

@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
 import 'package:under_control_v2/features/checklists/domain/entities/checkpoint.dart';
 import 'package:under_control_v2/features/checklists/presentation/widgets/add_checkpoint_bottom_modal_sheet.dart';
-import 'package:under_control_v2/features/checklists/presentation/widgets/add_checkpoint_tile.dart';
+import 'package:under_control_v2/features/checklists/presentation/widgets/add_checkpoint_button.dart';
 import 'package:under_control_v2/features/checklists/presentation/widgets/checkpoint_tile.dart';
 import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
@@ -78,113 +78,111 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ClipRRect(
-          clipBehavior: Clip.antiAlias,
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            color: Theme.of(context).cardColor,
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        // title
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 12,
-                            left: 8,
-                            right: 8,
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!
-                                .checklist_add_checkpoints,
-                            style: TextStyle(
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .headline5!
-                                  .fontSize,
-                            ),
-                          ),
-                        ),
-                        const Divider(
-                          thickness: 1.5,
-                          indent: 8,
-                          endIndent: 8,
-                        ),
-                        ReorderableListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return CheckpointTile(
-                              key: ValueKey(checkpoints[index].title),
-                              checkpoint: checkpoints[index],
-                              editCheckpoint: editCheckpoint,
-                              deleteCheckpoint: deleteCheckpoint,
-                              trailing: ReorderableDragStartListener(
-                                index: index,
-                                child: const Icon(
-                                  Icons.drag_handle,
-                                  size: 30,
-                                ),
-                              ),
-                            );
-                          },
-                          itemCount: checkpoints.length,
-                          onReorder: (int oldIndex, int newIndex) {
-                            setState(() {
-                              if (oldIndex < newIndex) {
-                                newIndex -= 1;
-                              }
-                              final CheckpointModel item =
-                                  checkpoints.removeAt(oldIndex);
-                              checkpoints.insert(newIndex, item);
-                            });
-                          },
-                        ),
-                        AddCheckpointTile(
-                          addCheckpoint: saveCheckpoint,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                // bottom navigation
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
                     children: [
-                      BackwardTextButton(
-                        icon: Icons.arrow_back_ios_new,
-                        color: Theme.of(context).textTheme.headline5!.color!,
-                        label: AppLocalizations.of(context)!
-                            .user_profile_add_user_personal_data_back,
-                        function: () => widget.pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
+                      // title
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 12,
+                          left: 8,
+                          right: 8,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!
+                              .checklist_add_checkpoints,
+                          style: TextStyle(
+                            fontSize:
+                                Theme.of(context).textTheme.headline5!.fontSize,
+                          ),
                         ),
                       ),
-                      ForwardTextButton(
-                        color: Theme.of(context).textTheme.headline5!.color!,
-                        label: AppLocalizations.of(context)!
-                            .user_profile_add_user_next,
-                        function: () => widget.pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                        icon: Icons.arrow_forward_ios_outlined,
+                      const Divider(
+                        thickness: 1.5,
+                      ),
+                      ReorderableListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return CheckpointTile(
+                            key: ValueKey('$index'),
+                            checkpoint: checkpoints[index],
+                            editCheckpoint: editCheckpoint,
+                            deleteCheckpoint: deleteCheckpoint,
+                            trailing: ReorderableDragStartListener(
+                              index: index,
+                              child: const Icon(
+                                Icons.drag_handle,
+                                size: 30,
+                              ),
+                            ),
+                            index: index,
+                          );
+                        },
+                        itemCount: checkpoints.length,
+                        onReorder: (int oldIndex, int newIndex) {
+                          setState(() {
+                            if (oldIndex < newIndex) {
+                              newIndex -= 1;
+                            }
+                            final CheckpointModel item =
+                                checkpoints.removeAt(oldIndex);
+                            checkpoints.insert(newIndex, item);
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: 70,
                       ),
                     ],
                   ),
                 ),
-              ],
+              ),
+
+              // bottom navigation
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    BackwardTextButton(
+                      icon: Icons.arrow_back_ios_new,
+                      color: Theme.of(context).textTheme.headline5!.color!,
+                      label: AppLocalizations.of(context)!
+                          .user_profile_add_user_personal_data_back,
+                      function: () => widget.pageController.previousPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      ),
+                    ),
+                    ForwardTextButton(
+                      color: Theme.of(context).textTheme.headline5!.color!,
+                      label: AppLocalizations.of(context)!
+                          .user_profile_add_user_next,
+                      function: () => widget.pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      ),
+                      icon: Icons.arrow_forward_ios_outlined,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            bottom: 60,
+            right: 10,
+            child: AddCheckpointButton(
+              addCheckpoint: saveCheckpoint,
             ),
           ),
-        ),
+        ],
       ),
     );
   }
