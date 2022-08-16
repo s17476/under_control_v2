@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
 import 'package:under_control_v2/features/groups/domain/entities/group.dart';
 
+import '../../inventory/domain/entities/item.dart';
 import '../../locations/domain/entities/location.dart';
 import '../error/failures.dart';
 
@@ -160,6 +162,32 @@ class ChecklistParams extends Equatable {
 
   @override
   List<Object> get props => [checklist, companyId];
+}
+
+class ItemParams extends Equatable {
+  final Item item;
+  final String companyId;
+
+  const ItemParams({
+    required this.item,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [item, companyId];
+}
+
+class ItemsInLocationsParams extends Equatable {
+  final List<String> locations;
+  final String companyId;
+
+  const ItemsInLocationsParams({
+    required this.locations,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [locations, companyId];
 }
 
 class SelectedGroupsParams extends Equatable {
