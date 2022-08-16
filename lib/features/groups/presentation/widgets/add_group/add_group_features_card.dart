@@ -21,78 +21,64 @@ class AddGroupFeaturesCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ClipRRect(
-          clipBehavior: Clip.antiAlias,
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            color: Theme.of(context).cardColor,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 4,
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          // title
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              AppLocalizations.of(context)!
-                                  .group_management_add_card_permissions,
-                              style: TextStyle(
-                                fontSize: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .fontSize,
-                              ),
-                            ),
-                          ),
-                          // features cards
-                          for (var feature in features)
-                            FeatureCard(feature: feature)
-                        ],
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8,
+          // vertical: 4,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // title
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        AppLocalizations.of(context)!
+                            .group_management_add_card_permissions,
+                        style: TextStyle(
+                          fontSize:
+                              Theme.of(context).textTheme.headline5!.fontSize,
+                        ),
                       ),
                     ),
-                  ),
-                  // bottom navigation
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        BackwardTextButton(
-                          icon: Icons.arrow_back_ios_new,
-                          color: Theme.of(context).textTheme.headline5!.color!,
-                          label: AppLocalizations.of(context)!
-                              .user_profile_add_user_personal_data_back,
-                          function: () => pageController.previousPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          ),
-                        ),
-                        ForwardTextButton(
-                          color: Theme.of(context).textTheme.headline5!.color!,
-                          label: AppLocalizations.of(context)!
-                              .user_profile_add_user_next,
-                          function: () => pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          ),
-                          icon: Icons.arrow_forward_ios_outlined,
-                        ),
-                      ],
+                    // features cards
+                    for (var feature in features) FeatureCard(feature: feature)
+                  ],
+                ),
+              ),
+            ),
+            // bottom navigation
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BackwardTextButton(
+                    icon: Icons.arrow_back_ios_new,
+                    color: Theme.of(context).textTheme.headline5!.color!,
+                    label: AppLocalizations.of(context)!
+                        .user_profile_add_user_personal_data_back,
+                    function: () => pageController.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
                     ),
+                  ),
+                  ForwardTextButton(
+                    color: Theme.of(context).textTheme.headline5!.color!,
+                    label: AppLocalizations.of(context)!
+                        .user_profile_add_user_next,
+                    function: () => pageController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    ),
+                    icon: Icons.arrow_forward_ios_outlined,
                   ),
                 ],
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

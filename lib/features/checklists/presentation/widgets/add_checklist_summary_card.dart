@@ -30,7 +30,7 @@ class AddChecklistSummaryCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 8,
-          vertical: 4,
+          // vertical: 4,
         ),
         child: Column(
           children: [
@@ -43,7 +43,11 @@ class AddChecklistSummaryCard extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       alignment: Alignment.center,
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.only(
+                        top: 12,
+                        left: 8,
+                        right: 8,
+                      ),
                       child: Text(
                         AppLocalizations.of(context)!.summary,
                         style: TextStyle(

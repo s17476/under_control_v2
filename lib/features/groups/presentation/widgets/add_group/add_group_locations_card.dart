@@ -34,120 +34,103 @@ class AddGroupLocationsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ClipRRect(
-          clipBehavior: Clip.antiAlias,
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            color: Theme.of(context).cardColor,
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        // title
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 12,
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!
-                                .home_screen_filter_select_locations,
-                            style: TextStyle(
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .headline5!
-                                  .fontSize,
-                            ),
-                          ),
-                        ),
-                        BlocBuilder<LocationBloc, LocationState>(
-                          builder: (context, state) {
-                            if (state is LocationLoadedState) {
-                              final topLevelItems = state
-                                  .allLocations.allLocations
-                                  .where(
-                                      (location) => location.parentId.isEmpty)
-                                  .toList();
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  padding: const EdgeInsets.all(0),
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: topLevelItems.length,
-                                  itemBuilder: (context, index) {
-                                    if (topLevelItems.isEmpty) {
-                                      return const SizedBox(
-                                        child: Center(
-                                          child: Text('No data'),
-                                        ),
-                                      );
-                                    } else {
-                                      return LocationSelectionTile(
-                                        key: Key(topLevelItems[index].id),
-                                        allLocations:
-                                            state.allLocations.allLocations,
-                                        location: topLevelItems[index],
-                                        locationsChildren: locationsChildren,
-                                        locationsContext: locationsContext,
-                                        selectedLocations: selectedLocations,
-                                        toggleLocationSelection:
-                                            toggleLocationSelection,
-                                      );
-                                    }
-                                  },
-                                ),
-                              );
-                            } else {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          },
-                        ),
-                      ],
+      child: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // title
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 12,
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!
+                          .home_screen_filter_select_locations,
+                      style: TextStyle(
+                        fontSize:
+                            Theme.of(context).textTheme.headline5!.fontSize,
+                      ),
                     ),
                   ),
-                ),
-                // bottom navigation
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      BackwardTextButton(
-                        icon: Icons.arrow_back_ios_new,
-                        color: Theme.of(context).textTheme.headline5!.color!,
-                        label: AppLocalizations.of(context)!
-                            .user_profile_add_user_personal_data_back,
-                        function: () => pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                      ),
-                      ForwardTextButton(
-                        color: Theme.of(context).textTheme.headline5!.color!,
-                        label: AppLocalizations.of(context)!
-                            .user_profile_add_user_next,
-                        function: () => pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                        icon: Icons.arrow_forward_ios_outlined,
-                      ),
-                    ],
+                  BlocBuilder<LocationBloc, LocationState>(
+                    builder: (context, state) {
+                      if (state is LocationLoadedState) {
+                        final topLevelItems = state.allLocations.allLocations
+                            .where((location) => location.parentId.isEmpty)
+                            .toList();
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(0),
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: topLevelItems.length,
+                            itemBuilder: (context, index) {
+                              if (topLevelItems.isEmpty) {
+                                return const SizedBox(
+                                  child: Center(
+                                    child: Text('No data'),
+                                  ),
+                                );
+                              } else {
+                                return LocationSelectionTile(
+                                  key: Key(topLevelItems[index].id),
+                                  allLocations: state.allLocations.allLocations,
+                                  location: topLevelItems[index],
+                                  locationsChildren: locationsChildren,
+                                  locationsContext: locationsContext,
+                                  selectedLocations: selectedLocations,
+                                  toggleLocationSelection:
+                                      toggleLocationSelection,
+                                );
+                              }
+                            },
+                          ),
+                        );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
                   ),
+                ],
+              ),
+            ),
+          ),
+          // bottom navigation
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                BackwardTextButton(
+                  icon: Icons.arrow_back_ios_new,
+                  color: Theme.of(context).textTheme.headline5!.color!,
+                  label: AppLocalizations.of(context)!
+                      .user_profile_add_user_personal_data_back,
+                  function: () => pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  ),
+                ),
+                ForwardTextButton(
+                  color: Theme.of(context).textTheme.headline5!.color!,
+                  label:
+                      AppLocalizations.of(context)!.user_profile_add_user_next,
+                  function: () => pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  ),
+                  icon: Icons.arrow_forward_ios_outlined,
                 ),
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }
