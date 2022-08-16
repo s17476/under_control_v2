@@ -41,7 +41,7 @@ void main() {
             (_) async => Right(ItemsCategoriesStream(
                 allItemsCategories: Stream.fromIterable([]))));
         // act
-        final result = await usecase(tItemCategoryParams);
+        final result = await usecase('companyId');
         // assert
         expect(result, isA<Right<Failure, ItemsCategoriesStream>>());
       },
