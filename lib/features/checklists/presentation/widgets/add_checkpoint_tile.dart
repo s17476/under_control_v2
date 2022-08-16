@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
 
 import 'package:under_control_v2/features/checklists/domain/entities/checkpoint.dart';
 import 'package:under_control_v2/features/checklists/presentation/widgets/add_checkpoint_bottom_modal_sheet.dart';
 
 class AddCheckpointTile extends StatelessWidget {
   final Color color;
-  final Function(Checkpoint? oldCheckpoint, Checkpoint newCheckpoint)
+  final Function(CheckpointModel? oldCheckpoint, CheckpointModel newCheckpoint)
       addCheckpoint;
 
   const AddCheckpointTile({
@@ -18,7 +19,7 @@ class AddCheckpointTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       child: InkWell(
         onTap: () {
           showAddCheckpointModalBottomSheet(
@@ -38,7 +39,7 @@ class AddCheckpointTile extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 32,
+                width: 42,
                 height: 50,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
@@ -49,6 +50,7 @@ class AddCheckpointTile extends StatelessWidget {
                 ),
                 child: const Icon(
                   Icons.add,
+                  size: 30,
                 ),
               ),
               Expanded(

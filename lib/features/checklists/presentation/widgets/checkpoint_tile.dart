@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
 
-import '../../domain/entities/checkpoint.dart';
+import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
 
 class CheckpointTile extends StatelessWidget {
   const CheckpointTile({
     Key? key,
     required this.checkpoint,
-    this.editCheckpoint,
-    this.deleteCheckpoint,
+    required this.editCheckpoint,
+    required this.deleteCheckpoint,
+    required this.trailing,
   }) : super(key: key);
 
   final CheckpointModel checkpoint;
-  final Function(CheckpointModel checkpoint)? editCheckpoint;
-  final Function(Checkpoint checkpoint)? deleteCheckpoint;
+  final Function(CheckpointModel checkpoint) editCheckpoint;
+  final Function(CheckpointModel checkpoint) deleteCheckpoint;
+  final Widget trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -36,48 +37,44 @@ class CheckpointTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // title row
-                Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle_outline_outlined,
-                      color: Theme.of(context).primaryColor,
-                      size: 30,
-                    ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    Expanded(
-                      child: Text(
-                        checkpoint.title,
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
-                              color: Colors.grey.shade200,
-                              fontSize: 18,
-                            ),
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
+                InkWell(
+                  onTap: () => editCheckpoint(checkpoint),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle_outline_outlined,
+                        color: Theme.of(context).primaryColor,
+                        size: 30,
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        child: Text(
+                          checkpoint.title,
+                          style:
+                              Theme.of(context).textTheme.headline6!.copyWith(
+                                    color: Colors.grey.shade200,
+                                    fontSize: 18,
+                                  ),
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-          if (editCheckpoint != null)
-            IconButton(
-              icon: const Icon(
-                Icons.edit,
-                size: 30,
-              ),
-              onPressed: () => editCheckpoint!(checkpoint),
+          IconButton(
+            icon: const Icon(
+              Icons.delete,
+              size: 30,
             ),
-          if (deleteCheckpoint != null)
-            IconButton(
-              icon: const Icon(
-                Icons.delete,
-                size: 30,
-              ),
-              onPressed: () => deleteCheckpoint!(checkpoint),
-            ),
+            onPressed: () => deleteCheckpoint(checkpoint),
+          ),
+          trailing,
         ],
       ),
     );

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:under_control_v2/features/checklists/data/models/checklist_model.dart';
-import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
-import 'package:under_control_v2/features/checklists/domain/entities/checkpoint.dart';
-import 'package:under_control_v2/features/checklists/presentation/blocs/checklist/checklist_bloc.dart';
-import 'package:under_control_v2/features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart';
-import 'package:under_control_v2/features/checklists/presentation/widgets/add_checklist_summary_card.dart';
-import 'package:under_control_v2/features/checklists/presentation/widgets/add_checkpoints_card.dart';
-import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/keep_alive_page.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
+import '../../../core/presentation/pages/loading_page.dart';
+import '../../../core/presentation/widgets/keep_alive_page.dart';
+import '../../../core/utils/show_snack_bar.dart';
+import '../../data/models/checklist_model.dart';
+import '../../data/models/checkpoint_model.dart';
 import '../../domain/entities/checklist.dart';
+import '../blocs/checklist/checklist_bloc.dart';
+import '../blocs/checklist_management/checklist_management_bloc.dart';
+import '../widgets/add_checklist_summary_card.dart';
 import '../widgets/add_checklist_title_card.dart';
+import '../widgets/add_checkpoints_card.dart';
 
 class AddChecklistPage extends StatefulWidget {
   const AddChecklistPage({Key? key}) : super(key: key);
@@ -42,8 +42,13 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
   void didChangeDependencies() {
     final arguments = ModalRoute.of(context)!.settings.arguments;
 
-    if (arguments != null && arguments is Checklist) {
-      checklist = arguments;
+    if (arguments != null && arguments is ChecklistModel) {
+      checklist = arguments.deepCopy();
+      // checklist = arguments.copyWith(
+      //   id: arguments.id,
+      //   description: arguments.description,
+      //   allCheckpoints: [...arguments.allCheckpoints],
+      // );
       titleTexEditingController.text = checklist!.title;
       descriptionTexEditingController.text = checklist!.description;
 
@@ -57,13 +62,14 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
     String errorMessage = '';
     // title validation
     if (!_formKey.currentState!.validate()) {
-      errorMessage = 'title error';
+      errorMessage = AppLocalizations.of(context)!.checklist_add_name_to_short;
       // checkpoints validation
     } else {
       if (checkpoints.isEmpty) {
-        errorMessage = 'checkpoint empty';
+        errorMessage =
+            AppLocalizations.of(context)!.checklist_add_checkpoints_empty;
         // checklist name validation
-      } else if (checklist != null) {
+      } else {
         final currentState = context.read<ChecklistBloc>().state;
         if (checklist == null && currentState is ChecklistLoadedState) {
           final tmpChecklists = currentState.allChecklists.allChecklists.where(
@@ -71,7 +77,7 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
                   checklist.title.toLowerCase() ==
                   titleTexEditingController.text.trim().toLowerCase());
           if (tmpChecklists.isNotEmpty) {
-            errorMessage = 'checklist exists';
+            errorMessage = AppLocalizations.of(context)!.checklist_add_exists;
           }
         }
       }

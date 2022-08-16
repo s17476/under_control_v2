@@ -92,19 +92,14 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
         listener: (context, state) {
           if (state is ChecklistManagementSuccessState) {
             String message = '';
+            bool error = false;
             switch (state.message) {
               case ChecklistMessage.checklistAdded:
                 message = AppLocalizations.of(context)!.checklist_msg_added;
                 break;
               case ChecklistMessage.checklistNotAdded:
                 message = AppLocalizations.of(context)!.checklist_msg_not_added;
-                break;
-              case ChecklistMessage.checklistUpdated:
-                message = AppLocalizations.of(context)!.checklist_msg_updated;
-                break;
-              case ChecklistMessage.checklistNotUpdated:
-                message =
-                    AppLocalizations.of(context)!.checklist_msg_not_updated;
+                error = true;
                 break;
               case ChecklistMessage.checklistDeleted:
                 message = AppLocalizations.of(context)!.checklist_msg_deleted;
@@ -112,6 +107,7 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
               case ChecklistMessage.checklistNotDeleted:
                 message =
                     AppLocalizations.of(context)!.checklist_msg_not_deleted;
+                error = true;
                 break;
               default:
                 message = '';
@@ -120,6 +116,7 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
               showSnackBar(
                 context: context,
                 message: message,
+                isErrorMessage: error,
               );
             }
           }

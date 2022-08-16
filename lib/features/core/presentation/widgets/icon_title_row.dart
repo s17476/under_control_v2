@@ -39,10 +39,14 @@ class IconTitleRow extends StatelessWidget {
         const SizedBox(
           width: 8,
         ),
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: titleFontSize,
+        Expanded(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: titleFontSize,
+            ),
+            maxLines: 10,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],

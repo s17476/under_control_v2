@@ -12,7 +12,6 @@ class CheckpointModel extends Checkpoint {
       );
 
   CheckpointModel copyWith({
-    String? id,
     String? title,
     bool? isChecked,
   }) {

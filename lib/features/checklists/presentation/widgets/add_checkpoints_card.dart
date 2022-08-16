@@ -27,7 +27,7 @@ class AddCheckpointsCard extends StatefulWidget {
 }
 
 class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
-  List<Checkpoint> checkpoints = [];
+  List<CheckpointModel> checkpoints = [];
 
   @override
   void initState() {
@@ -35,7 +35,8 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
     super.initState();
   }
 
-  void saveCheckpoint(Checkpoint? oldCheckpoint, Checkpoint newCheckpoint) {
+  void saveCheckpoint(
+      CheckpointModel? oldCheckpoint, CheckpointModel newCheckpoint) {
     if (checkpoints
         .map((e) => e.title.toLowerCase())
         .contains(newCheckpoint.title.trim().toLowerCase())) {
@@ -45,11 +46,13 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
         isErrorMessage: true,
       );
     } else {
+      // edit checkpoint
       if (oldCheckpoint != null) {
         setState(() {
           checkpoints.remove(oldCheckpoint);
           checkpoints.add(newCheckpoint);
         });
+        // add checkpoint
       } else {
         setState(() {
           checkpoints.add(newCheckpoint);
@@ -66,7 +69,7 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
     );
   }
 
-  void deleteCheckpoint(Checkpoint checkpoint) {
+  void deleteCheckpoint(CheckpointModel checkpoint) {
     setState(() {
       checkpoints.remove(checkpoint);
     });
@@ -111,24 +114,38 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
                           indent: 8,
                           endIndent: 8,
                         ),
-                        ListView.builder(
+                        ReorderableListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: widget.checkpoints.length + 1,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            if (index >= widget.checkpoints.length) {
-                              return AddCheckpointTile(
-                                addCheckpoint: saveCheckpoint,
-                              );
-                            } else {
-                              return CheckpointTile(
-                                key: ValueKey(widget.checkpoints[index].title),
-                                checkpoint: widget.checkpoints[index],
-                                editCheckpoint: editCheckpoint,
-                                deleteCheckpoint: deleteCheckpoint,
-                              );
-                            }
+                            return CheckpointTile(
+                              key: ValueKey(checkpoints[index].title),
+                              checkpoint: checkpoints[index],
+                              editCheckpoint: editCheckpoint,
+                              deleteCheckpoint: deleteCheckpoint,
+                              trailing: ReorderableDragStartListener(
+                                index: index,
+                                child: const Icon(
+                                  Icons.drag_handle,
+                                  size: 30,
+                                ),
+                              ),
+                            );
                           },
+                          itemCount: checkpoints.length,
+                          onReorder: (int oldIndex, int newIndex) {
+                            setState(() {
+                              if (oldIndex < newIndex) {
+                                newIndex -= 1;
+                              }
+                              final CheckpointModel item =
+                                  checkpoints.removeAt(oldIndex);
+                              checkpoints.insert(newIndex, item);
+                            });
+                          },
+                        ),
+                        AddCheckpointTile(
+                          addCheckpoint: saveCheckpoint,
                         ),
                       ],
                     ),

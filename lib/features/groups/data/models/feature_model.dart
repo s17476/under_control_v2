@@ -83,4 +83,20 @@ class FeatureModel extends Feature {
       delete: map['delete'] ?? false,
     );
   }
+
+  FeatureModel copyWith({
+    FeatureType? type,
+    bool? create,
+    bool? read,
+    bool? edit,
+    bool? delete,
+  }) {
+    return FeatureModel(
+      type: type ?? this.type,
+      create: create ?? this.create,
+      read: read ?? this.read,
+      edit: edit ?? this.edit,
+      delete: delete ?? this.delete,
+    );
+  }
 }

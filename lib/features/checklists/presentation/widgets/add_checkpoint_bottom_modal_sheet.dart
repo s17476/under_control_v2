@@ -3,12 +3,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../data/models/checkpoint_model.dart';
-import '../../domain/entities/checkpoint.dart';
 
 Future<void> showAddCheckpointModalBottomSheet({
   required BuildContext context,
   CheckpointModel? currentCheckpoint,
-  required Function(Checkpoint? oldCheckpoint, Checkpoint newCheckpoint) onSave,
+  required Function(
+          CheckpointModel? oldCheckpoint, CheckpointModel newCheckpoint)
+      onSave,
 }) {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
@@ -88,7 +89,7 @@ Future<void> showAddCheckpointModalBottomSheet({
                                 },
                                 onSaved: (value) {
                                   checkpoint = CheckpointModel(
-                                    title: value!,
+                                    title: value!.trim(),
                                     isChecked: false,
                                   );
                                 },

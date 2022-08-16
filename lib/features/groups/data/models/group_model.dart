@@ -62,4 +62,23 @@ class GroupModel extends Group {
       ),
     );
   }
+
+  GroupModel deepCopy() {
+    return copyWith(
+      id: id,
+      name: name,
+      description: description,
+      locations: [...locations],
+      features: features
+          .map((FeatureModel e) => e.copyWith(
+                create: e.create,
+                delete: e.delete,
+                edit: e.edit,
+                read: e.read,
+                type: e.type,
+              ))
+          .toList(),
+      groupAdministrators: [...groupAdministrators],
+    );
+  }
 }

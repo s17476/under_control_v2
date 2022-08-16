@@ -838,5 +838,21 @@
     "checklist_details_title": "Checklist details",
     "@checklist_details_title": {
       "description": "Checklists - appbar title"
+    },
+    "checklist_add_name_to_short": "Checklist name is to short. It has to conatin at least 2 characters.",
+    "@checklist_add_name_to_short": {
+      "description": "Checklists - name to short"
+    },
+    "checklist_add_checkpoints_empty": "Checklist must contain at least one checkpoint",
+    "@checklist_add_checkpoints_empty": {
+      "description": "Checklists - no checkpoints"
+    },
+    "checklist_add_exists": "Checklist with choosen name aleready exists. Cheange checklist's name",
+    "@checklist_add_exists": {
+      "description": "Checklists - checklist exists"
+    },
+    "checklist_details_data": "Checklist's data",
+    "@checklist_details_data": {
+      "description": "Checklists - checklis's data"
     }
 }

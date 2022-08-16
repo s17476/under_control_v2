@@ -4,6 +4,7 @@ import 'package:under_control_v2/features/checklists/domain/entities/checklist.d
 import 'package:under_control_v2/features/checklists/presentation/pages/add_checklist_page.dart';
 import 'package:under_control_v2/features/checklists/presentation/widgets/checkpoint_tile.dart';
 import 'package:under_control_v2/features/checklists/presentation/widgets/show_checklist_delete_dialog.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/icon_title_row.dart';
 import 'package:under_control_v2/features/core/utils/choice.dart';
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -89,24 +90,14 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
       listener: (context, state) {
         if (state is ChecklistManagementSuccessState) {
           String message = '';
+          bool error = false;
           switch (state.message) {
-            case ChecklistMessage.checklistAdded:
-              message = AppLocalizations.of(context)!.checklist_msg_added;
-              break;
-            case ChecklistMessage.checklistNotAdded:
-              message = AppLocalizations.of(context)!.checklist_msg_not_added;
-              break;
             case ChecklistMessage.checklistUpdated:
               message = AppLocalizations.of(context)!.checklist_msg_updated;
               break;
             case ChecklistMessage.checklistNotUpdated:
               message = AppLocalizations.of(context)!.checklist_msg_not_updated;
-              break;
-            case ChecklistMessage.checklistDeleted:
-              message = AppLocalizations.of(context)!.checklist_msg_deleted;
-              break;
-            case ChecklistMessage.checklistNotDeleted:
-              message = AppLocalizations.of(context)!.checklist_msg_not_deleted;
+              error = true;
               break;
             default:
               message = '';
@@ -115,6 +106,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
             showSnackBar(
               context: context,
               message: message,
+              isErrorMessage: error,
             );
           }
         }
@@ -160,7 +152,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // data
+                // name
                 Padding(
                   padding: const EdgeInsets.only(left: 4, top: 8),
                   child: Row(
@@ -172,7 +164,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                           color: Colors.black,
                         ),
                         child: Icon(
-                          Icons.group,
+                          Icons.checklist,
                           size: 20,
                           color: Colors.grey.shade300,
                         ),
@@ -181,7 +173,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                         width: 8,
                       ),
                       Text(
-                        AppLocalizations.of(context)!.group_data,
+                        AppLocalizations.of(context)!.checklist_details_data,
                         maxLines: 2,
                         style: TextStyle(
                           color: Colors.grey.shade200,
@@ -200,6 +192,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                   ),
                   child: Text(
                     checklist.title,
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 20,
@@ -218,7 +211,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                     ),
                     child: Text(
                       checklist.description,
-                      maxLines: 3,
+                      maxLines: 4,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -228,7 +221,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                     thickness: 1.5,
                   ),
                 ),
-                // features
+                // checkpoints
                 Padding(
                   padding: const EdgeInsets.only(left: 4),
                   child: Row(
@@ -240,7 +233,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                           color: Colors.black,
                         ),
                         child: Icon(
-                          Icons.error,
+                          Icons.check,
                           size: 20,
                           color: Colors.grey.shade300,
                         ),
@@ -250,7 +243,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                       ),
                       Text(
                         AppLocalizations.of(context)!
-                            .group_management_add_card_permissions,
+                            .checklist_add_checkpoints_title,
                         style: TextStyle(
                           color: Colors.grey.shade200,
                           fontSize: 16,
@@ -260,10 +253,28 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 12,
                 ),
-                for (var checkpoint in checklist.allCheckpoints)
-                  CheckpointTile(checkpoint: checkpoint),
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: checklist.allCheckpoints.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        left: 4,
+                        right: 4,
+                        bottom: 8.0,
+                      ),
+                      child: IconTitleRow(
+                        icon: Icons.check_circle_outline_outlined,
+                        iconColor: Colors.grey.shade200,
+                        iconBackground: Theme.of(context).primaryColor,
+                        title: checklist.allCheckpoints[index].title,
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),

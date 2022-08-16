@@ -193,5 +193,9 @@
     "checklist_add_checkpoints_exists": "Punkt kontrolny o tej nazwie ju istnieje",
     "checklist_add_checkpoints_title": "Punkty kontrolne",
     "checklist_details_delete_question": "Czy na pewno chcesz usunąć {checklist}?",
-    "checklist_details_title": "Szczegóły listy kontrolnej"
+    "checklist_details_title": "Szczegóły listy kontrolnej",
+    "checklist_add_name_to_short": "Nazwa listy kontrolnej jest za krótka. Musi zawierać przynajmniej 2 znaki.",
+    "checklist_add_checkpoints_empty": "Lista kontrolna musi zawierać conajmniej jeden punkt kontrolny",
+    "checklist_add_exists": "Lista kontrolna o wybranej nazwie już istnieje. Zmień nazwę.",
+    "checklist_details_data": "Dane listy kontrolnej"
 }
