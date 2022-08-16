@@ -10,7 +10,7 @@ abstract class ItemCategoryRepository {
   ///Returns [ItemsCategoriesStream] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, ItemsCategoriesStream>> getItemsCategoriesStream(
-    ItemCategoryParams params,
+    String params,
   );
 
   ///Adds new item category to the DB.

@@ -8,7 +8,7 @@ import '../repositories/item_category_repository.dart';
 
 @lazySingleton
 class GetItemsCategoriesStream
-    extends FutureUseCase<ItemsCategoriesStream, ItemCategoryParams> {
+    extends FutureUseCase<ItemsCategoriesStream, String> {
   final ItemCategoryRepository repository;
 
   GetItemsCategoriesStream({
@@ -17,7 +17,7 @@ class GetItemsCategoriesStream
 
   @override
   Future<Either<Failure, ItemsCategoriesStream>> call(
-    ItemCategoryParams params,
+    String params,
   ) async =>
       repository.getItemsCategoriesStream(params);
 }
