@@ -8,8 +8,6 @@ import 'package:under_control_v2/features/checklists/data/models/checklists_list
 import 'package:under_control_v2/features/checklists/domain/usecases/get_checklists_stream.dart';
 import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 
-import '../../../domain/entities/checklist.dart';
-
 part 'checklist_event.dart';
 part 'checklist_state.dart';
 

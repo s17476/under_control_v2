@@ -11,7 +11,7 @@ abstract class ItemCategoryEvent extends Equatable {
   List<Object> get props => [properties];
 }
 
-class GetAllItemscategoriesEvent extends ItemCategoryEvent {}
+class GetAllItemsCategoriesEvent extends ItemCategoryEvent {}
 
 class UpdateItemsCategoriesListEvent extends ItemCategoryEvent {
   final QuerySnapshot<Object?> snapshot;

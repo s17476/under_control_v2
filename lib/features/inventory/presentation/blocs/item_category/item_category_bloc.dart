@@ -14,7 +14,7 @@ part 'item_category_state.dart';
 @lazySingleton
 class ItemCategoryBloc extends Bloc<ItemCategoryEvent, ItemCategoryState> {
   late StreamSubscription userProfileStreamSubscription;
-  StreamSubscription? itemscategoriesStreamSubscription;
+  StreamSubscription? itemsCategoriesStreamSubscription;
   final UserProfileBloc userProfileBloc;
   final GetItemsCategoriesStream getItemsCategoriesStream;
 
@@ -27,12 +27,43 @@ class ItemCategoryBloc extends Bloc<ItemCategoryEvent, ItemCategoryState> {
     userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
       if (state is Approved) {
         companyId = state.userProfile.companyId;
-        add(GetAllItemscategoriesEvent());
+        add(GetAllItemsCategoriesEvent());
       }
     });
 
-    on<ItemCategoryEvent>((event, emit) {
-      // TODO: implement event handler
+    on<GetAllItemsCategoriesEvent>((event, emit) async {
+      emit(ItemCategoryLoadingState());
+
+      final failureIrItemCategoriesStream =
+          await getItemsCategoriesStream(companyId);
+      await failureIrItemCategoriesStream.fold(
+        (failure) async => emit(
+          ItemCategoryErrorState(message: failure.message),
+        ),
+        (categoriesStream) async {
+          itemsCategoriesStreamSubscription =
+              categoriesStream.allItemsCategories.listen((snapshot) {
+            add(UpdateItemsCategoriesListEvent(snapshot: snapshot));
+          });
+        },
+      );
     });
+
+    on<UpdateItemsCategoriesListEvent>(
+      (event, emit) async {
+        emit(ItemCategoryLoadingState());
+        final itemCategoryList = ItemsCategoriesListModel.fromSnapshot(
+          event.snapshot as QuerySnapshot<Map<String, dynamic>>,
+        );
+        emit(ItemCategoryLoadedState(allItemsCategories: itemCategoryList));
+      },
+    );
+  }
+
+  @override
+  Future<void> close() {
+    userProfileStreamSubscription.cancel();
+    itemsCategoriesStreamSubscription?.cancel();
+    return super.close();
   }
 }
