@@ -7,7 +7,6 @@ import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_category_model.dart';
 import 'package:under_control_v2/features/inventory/data/repositories/item_category_repository_impl.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_category.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/items_categories_stream.dart';
 
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}

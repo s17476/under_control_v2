@@ -31,6 +31,7 @@ import 'features/groups/presentation/blocs/group/group_bloc.dart';
 import 'features/groups/presentation/pages/add_group_page.dart';
 import 'features/groups/presentation/pages/group_details.dart';
 import 'features/groups/presentation/pages/group_management_page.dart';
+import 'features/inventory/presentation/blocs/item_category/item_category_bloc.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
@@ -86,6 +87,10 @@ class App extends StatelessWidget
         BlocProvider(create: (context) => getIt<FilterBloc>(), lazy: false),
         BlocProvider(create: (context) => getIt<ChecklistBloc>()),
         BlocProvider(create: (context) => getIt<ChecklistManagementBloc>()),
+        BlocProvider(
+          create: (context) => getIt<ItemCategoryBloc>(),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
