@@ -854,5 +854,41 @@
     "checklist_details_data": "Checklist's data",
     "@checklist_details_data": {
       "description": "Checklists - checklis's data"
+    },
+    "item_category_title": "Categories",
+    "@item_category_title": {
+      "description": "Items Categories - title"
+    },
+    "item_category_add_new": "Add new category",
+    "@item_category_add_new": {
+      "description": "Items Categories - add button"
+    },
+    "item_category_msg_added": "New category added",
+    "@item_category_msg_added": {
+      "description": "category - added msg"
+    },
+    "item_category_msg_not_added": "New category NOT added",
+    "@item_category_msg_not_added": {
+      "description": "category - NOT added msg"
+    },
+    "item_category_msg_updated": "Category updated",
+    "@item_category_msg_updated": {
+      "description": "category - updated msg"
+    },
+    "item_category_msg_not_updated": "Category NOT updated",
+    "@item_category_msg_not_updated": {
+      "description": "category - NOT updated msg"
+    },
+    "item_category_msg_deleted": "Category deleted",
+    "@item_category_msg_deleted": {
+      "description": "category - deleted msg"
+    },
+    "item_category_msg_not_deleted": "Category NOT deleted",
+    "@item_category_msg_not_deleted": {
+      "description": "category - NOT deleted msg"
+    },
+    "item_category_edit": "Edit category",
+    "@item_category_edit": {
+      "description": "Edit category"
     }
 }

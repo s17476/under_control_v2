@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/inventory/presentation/pages/item_category_management_page.dart';
 
-import '../../../checklists/presentation/pages/checklist_management_page.dart';
 import '../../../core/utils/choice.dart';
 
 List<Choice> inventoryOverlayMenuItems(BuildContext context) {
   final List<Choice> choices = [
     Choice(
-      title: AppLocalizations.of(context)!.checklist_drawer_title,
-      icon: Icons.checklist_rounded,
+      title: AppLocalizations.of(context)!.item_category_title,
+      icon: Icons.category,
       onTap: () {
         Navigator.pushNamed(
           context,
-          ChecklistManagementPage.routeName,
+          ItemCategoryManagementPage.routeName,
         );
       },
     ),

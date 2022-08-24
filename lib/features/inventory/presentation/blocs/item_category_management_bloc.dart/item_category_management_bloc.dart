@@ -94,6 +94,7 @@ class ItemCategoryManagementBloc
 
     on<DeleteItemCategoryEvent>((event, emit) async {
       emit(ItemCategoryManagementLoadingState());
+      // TODO check if there are no items in this category
       final failureOrVoidResult = await deleteItemCategory(
         ItemCategoryParams(
           itemCategory: event.itemCategory,

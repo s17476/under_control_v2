@@ -4,14 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:under_control_v2/features/checklists/presentation/pages/add_checklist_page.dart';
-import 'package:under_control_v2/features/checklists/presentation/pages/checklist_details_page.dart';
+import 'package:under_control_v2/features/inventory/presentation/pages/item_category_management_page.dart';
 
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
 import 'features/authentication/presentation/pages/email_confirmation_page.dart';
 import 'features/checklists/presentation/blocs/checklist/checklist_bloc.dart';
 import 'features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart';
+import 'features/checklists/presentation/pages/add_checklist_page.dart';
+import 'features/checklists/presentation/pages/checklist_details_page.dart';
 import 'features/checklists/presentation/pages/checklist_management_page.dart';
 import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart';
 import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -121,7 +122,7 @@ class App extends StatelessWidget
                   }
                 },
               );
-              // awaiting email berification
+              // awaiting email verification
             } else if (state is AwaitingVerification) {
               return const EmailConfirmationPage();
               // user not authenticated
@@ -151,6 +152,8 @@ class App extends StatelessWidget
           AddChecklistPage.routeName: (context) => const AddChecklistPage(),
           ChecklistDetailsPage.routeName: (context) =>
               const ChecklistDetailsPage(),
+          ItemCategoryManagementPage.routeName: (context) =>
+              const ItemCategoryManagementPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,
