@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/overlay_menu/overlay_menu.dart';
 
 import '../../../assets/presentation/pages/assets_page.dart';
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
@@ -36,29 +37,23 @@ class _HomePageState extends State<HomePage>
 
   bool isControlsVisible = true;
 
+  bool isMenuVisible = false;
+
   final ScrollController scrollController = ScrollController();
 
   double currentOffset = 0;
 
   // bottom navigation show/hide animation
-  AnimationController? _animationController;
-  Animation<Offset>? downSlideAnimation;
+  AnimationController? animationController;
+  // Animation<Offset>? downSlideAnimation;
 
   @override
   void initState() {
-    _animationController = AnimationController(
+    animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
     );
-    downSlideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0),
-      end: const Offset(0, 1),
-    ).animate(
-      CurvedAnimation(
-        parent: _animationController!,
-        curve: Curves.linear,
-      ),
-    );
+
     navigationController = CircularBottomNavigationController(pageIndex);
     scrollController.addListener(() {
       if (isControlsVisible && scrollController.offset > currentOffset) {
@@ -75,7 +70,7 @@ class _HomePageState extends State<HomePage>
   @override
   void dispose() {
     super.dispose();
-    _animationController!.dispose();
+    animationController!.dispose();
   }
 
   // set page index
@@ -88,16 +83,20 @@ class _HomePageState extends State<HomePage>
   // show BottomNavigationTabBar
   void showControls() {
     if (!isControlsVisible) {
-      _animationController!.reverse();
-      isControlsVisible = true;
+      animationController!.reverse();
+      setState(() {
+        isControlsVisible = true;
+      });
     }
   }
 
   // hide BottomNavigationTabBar
   void hideControls() {
     if (isControlsVisible) {
-      _animationController!.forward();
-      isControlsVisible = false;
+      animationController!.forward();
+      setState(() {
+        isControlsVisible = false;
+      });
     }
   }
 
@@ -105,6 +104,13 @@ class _HomePageState extends State<HomePage>
   void toggleIsFilterExpanded() {
     setState(() {
       isFilterExpanded = !isFilterExpanded;
+    });
+  }
+
+  // show overlay menu
+  void toggleIsMenuVisible() {
+    setState(() {
+      isMenuVisible = !isMenuVisible;
     });
   }
 
@@ -118,6 +124,10 @@ class _HomePageState extends State<HomePage>
         // hide filter widget if expanded
         if (isFilterExpanded) {
           toggleIsFilterExpanded();
+          return false;
+        }
+        if (isMenuVisible) {
+          toggleIsMenuVisible();
           return false;
         }
         // double click to exit the app
@@ -153,6 +163,8 @@ class _HomePageState extends State<HomePage>
               pageIndex: pageIndex,
               isFilterExpanded: isFilterExpanded,
               toggleIsFilterExpanded: toggleIsFilterExpanded,
+              isMenuVisible: isMenuVisible,
+              toggleIsMenuVisible: toggleIsMenuVisible,
             )
           ],
           // body
@@ -177,10 +189,11 @@ class _HomePageState extends State<HomePage>
                 ),
                 // bottom navigation bar
                 HomeBottomNavigationBar(
-                  downSlideAnimation: downSlideAnimation!,
+                  animationController: animationController!,
                   navigationController: navigationController,
                   pageController: pageController,
                   setPageIndex: setPageIndex,
+                  toggleShowMenu: toggleIsMenuVisible,
                 ),
                 // glass layer
                 if (isFilterExpanded)
@@ -204,6 +217,11 @@ class _HomePageState extends State<HomePage>
                   ),
                 // location and group selection filter
                 HomePageFilter(isFilterExpanded: isFilterExpanded),
+                OverlayMenu(
+                  isVisible: isMenuVisible,
+                  onDismiss: toggleIsMenuVisible,
+                  pageIndex: pageIndex,
+                ),
               ],
             ),
           ),

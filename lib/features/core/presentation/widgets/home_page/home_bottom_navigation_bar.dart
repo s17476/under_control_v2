@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/animated_floating_menu.dart';
 
 class HomeBottomNavigationBar extends StatefulWidget {
-  final Animation<Offset> downSlideAnimation;
+  final AnimationController animationController;
   final CircularBottomNavigationController navigationController;
   final PageController pageController;
   final Function setPageIndex;
+  final Function toggleShowMenu;
 
   const HomeBottomNavigationBar({
     Key? key,
-    required this.downSlideAnimation,
+    required this.animationController,
     required this.navigationController,
     required this.pageController,
     required this.setPageIndex,
+    required this.toggleShowMenu,
   }) : super(key: key);
 
   @override
@@ -24,6 +27,44 @@ class HomeBottomNavigationBar extends StatefulWidget {
 
 class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar> {
   List<TabItem> tabItems = [];
+  Animation<Offset>? _tabBarSlideAnimation;
+  Animation<Offset>? _buttonSlideAnimation;
+  Animation<double>? _fadeAnimation;
+  bool isFloatingButtonVisible = true;
+  Color floatingButtonBackgroundColor = const Color.fromRGBO(0, 240, 130, 100);
+
+  @override
+  void initState() {
+    _tabBarSlideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, 1),
+    ).animate(
+      CurvedAnimation(
+        parent: widget.animationController,
+        curve: Curves.linear,
+      ),
+    );
+    _buttonSlideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, 2),
+    ).animate(
+      CurvedAnimation(
+        parent: widget.animationController,
+        curve: Curves.linear,
+      ),
+    );
+    _fadeAnimation = Tween<double>(
+      begin: 1,
+      end: 0,
+    ).animate(
+      CurvedAnimation(
+        parent: widget.animationController,
+        curve: Curves.bounceIn,
+      ),
+    );
+
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -69,25 +110,45 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar> {
   Widget build(BuildContext context) {
     return Positioned(
       bottom: 0,
-      child: SlideTransition(
-        position: widget.downSlideAnimation,
-        child: CircularBottomNavigation(
-          tabItems,
-          barBackgroundColor: Theme.of(context).appBarTheme.backgroundColor!,
-          barHeight: 44,
-          iconsSize: 24,
-          circleSize: 54,
-          controller: widget.navigationController,
-          selectedCallback: (index) => setState(() {
-            // widget.pageIndex = index ?? 2;
-            widget.setPageIndex(index ?? 2);
-            widget.pageController.animateToPage(
-              index ?? 2,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.decelerate,
-            );
-          }),
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          // floating action button
+          SlideTransition(
+            position: _buttonSlideAnimation!,
+            child: FadeTransition(
+              opacity: _fadeAnimation!,
+              child: AnimatedFloatingMenu(
+                padding: const EdgeInsets.all(12),
+                backgroundColor: floatingButtonBackgroundColor,
+                onPressed: widget.toggleShowMenu,
+              ),
+            ),
+          ),
+          // bottom tab bar
+          SlideTransition(
+            position: _tabBarSlideAnimation!,
+            child: CircularBottomNavigation(
+              tabItems,
+              barBackgroundColor:
+                  Theme.of(context).appBarTheme.backgroundColor!,
+              barHeight: 44,
+              iconsSize: 24,
+              circleSize: 54,
+              controller: widget.navigationController,
+              selectedCallback: (index) => setState(() {
+                floatingButtonBackgroundColor =
+                    tabItems[index ?? 2].circleColor;
+                widget.setPageIndex(index ?? 2);
+                widget.pageController.animateToPage(
+                  index ?? 2,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.decelerate,
+                );
+              }),
+            ),
+          ),
+        ],
       ),
     );
   }

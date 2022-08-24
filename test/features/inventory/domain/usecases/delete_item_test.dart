@@ -19,6 +19,8 @@ void main() {
       name: 'name',
       description: 'description',
       itemPhoto: 'itemPhoto',
+      itemCode: 'itemCode',
+      sparePartFor: [],
       itemUnit: ItemUnit.pcs,
       locations: [],
       amountInLocations: [],

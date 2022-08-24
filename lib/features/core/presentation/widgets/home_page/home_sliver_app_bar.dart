@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -6,12 +7,16 @@ class HomeSliverAppBar extends StatelessWidget {
   final int pageIndex;
   final bool isFilterExpanded;
   final VoidCallback toggleIsFilterExpanded;
+  final bool isMenuVisible;
+  final VoidCallback toggleIsMenuVisible;
 
   const HomeSliverAppBar({
     Key? key,
     required this.pageIndex,
     required this.isFilterExpanded,
     required this.toggleIsFilterExpanded,
+    required this.isMenuVisible,
+    required this.toggleIsMenuVisible,
   }) : super(key: key);
 
   @override
@@ -24,6 +29,9 @@ class HomeSliverAppBar extends StatelessWidget {
       AppLocalizations.of(context)!.bottom_bar_title_knowledge,
     ];
     return SliverAppBar(
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context).appBarTheme.backgroundColor,
+      ),
       floating: true,
       pinned: false,
       snap: true,
@@ -50,6 +58,9 @@ class HomeSliverAppBar extends StatelessWidget {
               if (isFilterExpanded) {
                 toggleIsFilterExpanded();
               }
+              if (isMenuVisible) {
+                toggleIsMenuVisible();
+              }
               Scaffold.of(context).openDrawer();
             },
             child: Image.asset('assets/under_control_menu_icon.png'),
@@ -59,7 +70,12 @@ class HomeSliverAppBar extends StatelessWidget {
       title: Text(appBarTitles[pageIndex]),
       actions: [
         IconButton(
-          onPressed: toggleIsFilterExpanded,
+          onPressed: () {
+            if (isMenuVisible) {
+              toggleIsMenuVisible();
+            }
+            toggleIsFilterExpanded();
+          },
           icon: Icon(
             Icons.tune,
             color: isFilterExpanded

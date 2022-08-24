@@ -9,6 +9,8 @@ class ItemModel extends Item {
     required super.name,
     required super.description,
     required super.itemPhoto,
+    required super.itemCode,
+    required super.sparePartFor,
     required super.itemUnit,
     required super.locations,
     required super.amountInLocations,
@@ -19,6 +21,8 @@ class ItemModel extends Item {
     String? name,
     String? description,
     String? itemPhoto,
+    String? itemCode,
+    List<String>? sparePartFor,
     ItemUnit? itemUnit,
     List<String>? locations,
     List<ItemAmountInLocation>? amountInLocations,
@@ -28,6 +32,8 @@ class ItemModel extends Item {
       name: name ?? this.name,
       description: description ?? this.description,
       itemPhoto: itemPhoto ?? this.itemPhoto,
+      itemCode: itemCode ?? this.itemCode,
+      sparePartFor: sparePartFor ?? this.sparePartFor,
       itemUnit: itemUnit ?? this.itemUnit,
       locations: locations ?? this.locations,
       amountInLocations: amountInLocations ?? this.amountInLocations,
@@ -40,6 +46,8 @@ class ItemModel extends Item {
     result.addAll({'name': name});
     result.addAll({'description': description});
     result.addAll({'itemPhoto': itemPhoto});
+    result.addAll({'itemCode': itemCode});
+    result.addAll({'sparePartFor': sparePartFor});
     result.addAll({'itemUnit': itemUnit.name});
     result.addAll({'locations': locations});
     result.addAll({
@@ -57,6 +65,8 @@ class ItemModel extends Item {
       name: map['name'] ?? '',
       description: map['description'] ?? '',
       itemPhoto: map['itemPhoto'] ?? '',
+      itemCode: map['itemCode'] ?? '',
+      sparePartFor: List<String>.from(map['sparePartFor']),
       itemUnit: ItemUnit.fromString(map['itemUnit']),
       locations: List<String>.from(map['locations']),
       amountInLocations: List<ItemAmountInLocation>.from(
