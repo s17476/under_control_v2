@@ -170,7 +170,14 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-
+    String appBarTitle = '';
+    if (isAvatarEditorVisible) {
+      appBarTitle = AppLocalizations.of(context)!.user_details_edit_avatar;
+    } else if (isGroupManagementVisible) {
+      appBarTitle = AppLocalizations.of(context)!.group_manage_user_groups;
+    } else {
+      appBarTitle = AppLocalizations.of(context)!.user_details_title;
+    }
     return WillPopScope(
       onWillPop: () async {
         if (isGroupManagementVisible) {
@@ -186,7 +193,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor.withAlpha(50),
-          title: Text(AppLocalizations.of(context)!.user_details_title),
+          title: Text(appBarTitle),
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarIconBrightness: Brightness.light,
           ),

@@ -135,11 +135,11 @@
     "@new_account": {
       "description": "Authentication page - new account button"
     },
-    "take_photo": "Take a photo",
+    "take_photo": "Camera",
     "@take_photo": {
       "description": "Authentication page - take photo"
     },
-    "choose_image": "Choose an image",
+    "choose_image": "Gallery",
     "@choose_image": {
       "description": "Authentication page - chooose an image"
     },
@@ -207,11 +207,11 @@
     "@user_profile_add_user_personal_data_phone_number": {
       "description": "Add user page info about personal phone number field"
     },
-    "user_profile_add_user_personal_data_take_photo_btn": "Take a photo",
+    "user_profile_add_user_personal_data_take_photo_btn": "Camera",
     "@user_profile_add_user_personal_data_take_photo_btn": {
       "description": "Add user page info about personal take a photo button"
     },
-    "user_profile_add_user_personal_data_gallery": "Choose from gallery",
+    "user_profile_add_user_personal_data_gallery": "Gallery",
     "@user_profile_add_user_personal_data_gallery": {
       "description": "Add user page info about personal choose from gallery button"
     },

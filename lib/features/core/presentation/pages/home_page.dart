@@ -195,28 +195,11 @@ class _HomePageState extends State<HomePage>
                   setPageIndex: setPageIndex,
                   toggleShowMenu: toggleIsMenuVisible,
                 ),
-                // glass layer
-                if (isFilterExpanded)
-                  InkWell(
-                    onTap: toggleIsFilterExpanded,
-                    child: TweenAnimationBuilder(
-                      duration: const Duration(milliseconds: 500),
-                      tween: Tween<double>(begin: 0.0, end: 0.5),
-                      builder: (context, double value, child) => BackdropFilter(
-                        filter: ImageFilter.blur(
-                          sigmaX: 5.0,
-                          sigmaY: 5.0,
-                        ),
-                        child: Container(
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height,
-                          color: Colors.black.withOpacity(value),
-                        ),
-                      ),
-                    ),
-                  ),
                 // location and group selection filter
-                HomePageFilter(isFilterExpanded: isFilterExpanded),
+                HomePageFilter(
+                  isFilterExpanded: isFilterExpanded,
+                  onDismiss: toggleIsFilterExpanded,
+                ),
                 OverlayMenu(
                   isVisible: isMenuVisible,
                   onDismiss: toggleIsMenuVisible,

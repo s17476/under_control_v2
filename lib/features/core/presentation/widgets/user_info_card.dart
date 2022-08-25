@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/glass_layer.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/overlay_icon_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -83,220 +85,132 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    return Stack(children: [
-      InkWell(
-        onTap: () => widget.onDismiss(),
-        child: TweenAnimationBuilder(
-          duration: const Duration(milliseconds: 300),
-          tween: Tween<double>(begin: 0.0, end: 0.5),
-          builder: (context, double value, child) {
-            return BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 5.0,
-                sigmaY: 5.0,
-              ),
-              child: Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height,
-                color: Colors.black.withOpacity(value),
-              ),
-            );
-          },
-        ),
-      ),
-      TweenAnimationBuilder(
-        duration: const Duration(milliseconds: 300),
-        tween: Tween<double>(begin: 0.0, end: 1.0),
-        builder: (context, double value, child) {
-          return Opacity(
-            opacity: value,
-            child: child,
-          );
-        },
-        child: Center(
-          child: Container(
-            width: responsiveSizePct(small: 70),
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // avatar
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CachedUserAvatar(
-                      size: responsiveSizePct(small: 60),
-                      imageUrl: selectedUser.avatarUrl,
-                    ),
+    return GlassLayer(
+      onDismiss: widget.onDismiss,
+      child: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // avatar
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CachedUserAvatar(
+                    size: responsiveSizePct(small: 60),
+                    imageUrl: selectedUser.avatarUrl,
                   ),
+                ),
 
-                  // first name
-                  Text(
-                    selectedUser.firstName,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  // last name
-                  Text(
-                    selectedUser.lastName,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  const SizedBox(height: 8),
-                  const Divider(thickness: 1.5),
-                  // toggle group administrator
-                  if (currentUser.administrator && !selectedUser.administrator)
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 0),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.gpp_good,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              const SizedBox(
-                                width: 4,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .user_details_group_admin,
-                                  style: const TextStyle(fontSize: 16),
-                                ),
-                              ),
-                              Switch(
-                                value: widget.group.groupAdministrators
-                                    .contains(selectedUser.id),
-                                onChanged: toggleGroupAdmin,
-                                activeColor: Theme.of(context).primaryColor,
-                                activeTrackColor: Theme.of(context)
-                                    .primaryColor
-                                    .withAlpha(50),
-                              )
-                            ],
-                          ),
-                        ),
-                        const Divider(thickness: 1.5),
-                      ],
-                    ),
+                // first name
+                Text(
+                  selectedUser.firstName,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                // last name
+                Text(
+                  selectedUser.lastName,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                const SizedBox(height: 8),
+                // toggle group administrator
+                if (currentUser.administrator && !selectedUser.administrator)
                   Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // call
-                      if (_hasCallSupport)
-                        InkWell(
-                          onTap: () => makePhoneCall(selectedUser.phoneNumber),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.call,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!.call,
-                                  style: const TextStyle(fontSize: 18),
-                                )
-                              ],
+                      const Divider(thickness: 1.5),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.gpp_good,
+                              color: Theme.of(context).primaryColor,
                             ),
-                          ),
-                        ),
-                      // send sms
-                      if (_hasCallSupport)
-                        InkWell(
-                          onTap: () => sendSms(selectedUser.phoneNumber),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.message,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!.send_sms,
-                                  style: const TextStyle(fontSize: 18),
-                                )
-                              ],
+                            const SizedBox(
+                              width: 4,
                             ),
-                          ),
-                        ),
-                      // send email
-                      InkWell(
-                        onTap: () => mailTo(selectedUser.email),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.email,
-                                color: Theme.of(context).primaryColor,
+                            Expanded(
+                              child: Text(
+                                AppLocalizations.of(context)!
+                                    .user_details_group_admin,
+                                style: const TextStyle(fontSize: 16),
                               ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                AppLocalizations.of(context)!.send_email,
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
+                            ),
+                            Switch(
+                              value: widget.group.groupAdministrators
+                                  .contains(selectedUser.id),
+                              onChanged: toggleGroupAdmin,
+                              activeColor: Theme.of(context).primaryColor,
+                              activeTrackColor:
+                                  Theme.of(context).primaryColor.withAlpha(50),
+                            )
+                          ],
                         ),
                       ),
-                      // profil
-                      InkWell(
-                        onTap: () => Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          UserDetailsPage.routeName,
-                          (route) => route.isFirst,
-                          arguments: selectedUser,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.person,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                AppLocalizations.of(context)!.user_show_profile,
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
+                      const Divider(thickness: 1.5),
                     ],
                   ),
-                ],
-              ),
+                const SizedBox(height: 8),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (_hasCallSupport)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // call
+                          OverlayIconButton(
+                            onPressed: () =>
+                                makePhoneCall(selectedUser.phoneNumber),
+                            icon: Icons.call,
+                            title: AppLocalizations.of(context)!.call,
+                          ),
+                          // send sms
+                          OverlayIconButton(
+                            onPressed: () => sendSms(selectedUser.phoneNumber),
+                            icon: Icons.message,
+                            title: AppLocalizations.of(context)!.send_sms,
+                          )
+                        ],
+                      ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // send email
+                        OverlayIconButton(
+                          onPressed: () => mailTo(selectedUser.email),
+                          icon: Icons.email,
+                          title: AppLocalizations.of(context)!.send_email,
+                        ),
+                        // go to profile page
+                        OverlayIconButton(
+                          onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            UserDetailsPage.routeName,
+                            (route) => route.isFirst,
+                            arguments: selectedUser,
+                          ),
+                          icon: Icons.person,
+                          title:
+                              AppLocalizations.of(context)!.user_show_profile,
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
       ),
-    ]);
+    );
   }
 }

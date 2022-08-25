@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/presentation/widgets/add_user_card.dart';
+import '../../../core/presentation/widgets/add_members_card.dart';
 import '../../../core/presentation/widgets/user_info_card.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/show_snack_bar.dart';
@@ -32,7 +32,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   UserProfile? userProfile;
 
   bool isUserInfoCardVisible = false;
-  bool isAddUsersCardVisible = false;
+  bool isAddMembersCardVisible = false;
 
   bool isAdministrator = false;
   bool isGroupAdministrator = false;
@@ -57,13 +57,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
 
   void showAddUsersCard() {
     setState(() {
-      isAddUsersCardVisible = true;
+      isAddMembersCardVisible = true;
     });
   }
 
   void hideAddUsersCard() {
     setState(() {
-      isAddUsersCardVisible = false;
+      isAddMembersCardVisible = false;
     });
   }
 
@@ -148,13 +148,21 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    String appBarTitle = '';
+    if (isAddMembersCardVisible) {
+      appBarTitle = AppLocalizations.of(context)!.group_toggle_group_members;
+    } else if (isUserInfoCardVisible) {
+      appBarTitle = AppLocalizations.of(context)!.user_details_title;
+    } else {
+      appBarTitle = AppLocalizations.of(context)!.group_details;
+    }
     return WillPopScope(
       onWillPop: () async {
         if (isUserInfoCardVisible) {
           hideUserInfoCard();
           return false;
         }
-        if (isAddUsersCardVisible) {
+        if (isAddMembersCardVisible) {
           hideAddUsersCard();
           return false;
         }
@@ -196,14 +204,14 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.group_details),
+            title: Text(appBarTitle),
             centerTitle: true,
             actions: [
               // popup menu
               if (choices.isNotEmpty)
                 PopupMenuButton<Choice>(
                   onSelected: (Choice choice) {
-                    if (isAddUsersCardVisible) {
+                    if (isAddMembersCardVisible) {
                       hideAddUsersCard();
                     }
                     if (isUserInfoCardVisible) {
@@ -398,8 +406,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                       group: group,
                     ),
                   // add users to the group card
-                  if (isAddUsersCardVisible)
-                    AddUserCard(
+                  if (isAddMembersCardVisible)
+                    AddMembersCard(
                       onDismiss: hideAddUsersCard,
                       onToggleUserSelection: toggleUser,
                       group: group,

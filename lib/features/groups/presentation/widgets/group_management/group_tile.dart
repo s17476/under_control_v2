@@ -53,7 +53,9 @@ class GroupTile extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).focusColor,
+          color: isSelectionTile
+              ? Theme.of(context).cardColor
+              : Theme.of(context).focusColor,
         ),
         child: Row(
           children: [

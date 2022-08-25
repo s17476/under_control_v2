@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/glass_layer.dart';
 
 import '../../../groups/domain/entities/group.dart';
 import '../../../groups/presentation/blocs/group/group_bloc.dart';
@@ -44,86 +45,38 @@ class _ManageGroupsCardState extends State<ManageGroupsCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      InkWell(
-        onTap: () => widget.onDismiss(),
-        child: TweenAnimationBuilder(
-          duration: const Duration(milliseconds: 300),
-          tween: Tween<double>(begin: 0.0, end: 0.5),
-          builder: (context, double value, child) {
-            return BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 5.0,
-                sigmaY: 5.0,
-              ),
-              child: Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height,
-                color: Colors.black.withOpacity(value),
-              ),
-            );
-          },
-        ),
-      ),
-      TweenAnimationBuilder(
-        duration: const Duration(milliseconds: 300),
-        tween: Tween<double>(begin: 0.0, end: 1.0),
-        builder: (context, double value, child) {
-          return Opacity(
-            opacity: value,
-            child: child,
-          );
-        },
-        child: Center(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: Container(
-              margin: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      // title
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          AppLocalizations.of(context)!
-                              .group_manage_user_groups,
-                          style: Theme.of(context).textTheme.headline6,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+    return GlassLayer(
+      onDismiss: widget.onDismiss,
+      child: Center(
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 16),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: allGroups.length,
+                    itemBuilder: (context, index) {
+                      return GroupTile(
+                        group: allGroups[index],
+                        isSelectionTile: true,
+                        isGroupMember: widget.user.userGroups.contains(
+                          allGroups[index].id,
                         ),
-                      ),
-                      const Divider(thickness: 1.5),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: allGroups.length,
-                        itemBuilder: (context, index) {
-                          return GroupTile(
-                            group: allGroups[index],
-                            isSelectionTile: true,
-                            isGroupMember: widget.user.userGroups.contains(
-                              allGroups[index].id,
-                            ),
-                            onTap: toggleGroup,
-                          );
-                        },
-                      ),
-                    ],
+                        onTap: toggleGroup,
+                      );
+                    },
                   ),
-                ),
+                ],
               ),
             ),
           ),
         ),
       ),
-    ]);
+    );
   }
 }

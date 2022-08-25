@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/glass_layer.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/overlay_icon_button.dart';
 
 import '../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../core/utils/responsive_size.dart';
@@ -62,139 +64,103 @@ class _AvatarEditorCardState extends State<AvatarEditorCard>
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    return Stack(children: [
-      InkWell(
-        onTap: () => widget.onDismiss(),
-        child: TweenAnimationBuilder(
-          duration: const Duration(milliseconds: 300),
-          tween: Tween<double>(begin: 0.0, end: 0.5),
-          builder: (context, double value, child) {
-            return BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 5.0,
-                sigmaY: 5.0,
-              ),
-              child: Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height,
-                color: Colors.black.withOpacity(value),
-              ),
-            );
-          },
-        ),
-      ),
-      TweenAnimationBuilder(
-        duration: const Duration(milliseconds: 300),
-        tween: Tween<double>(begin: 0.0, end: 1.0),
-        builder: (context, double value, child) {
-          return Opacity(
-            opacity: value,
-            child: child,
-          );
-        },
-        child: Center(
-          child: Container(
-            width: responsiveSizePct(small: 80),
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // avatar
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+    return GlassLayer(
+      onDismiss: widget.onDismiss,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // avatar
+              Padding(
+                padding: const EdgeInsets.all(8.0),
 
-                    // indexed stack
-                    child: IndexedStack(
-                      index: userAvatar == null ? 0 : 1,
-                      children: [
-                        // original avatar
-                        CachedUserAvatar(
-                          size: responsiveSizePct(small: 70),
-                          imageUrl: widget.user.avatarUrl,
-                        ),
-                        // updated avatar
-                        CircleAvatar(
-                          radius: responsiveSizePct(
-                            small: 35,
-                          ),
-                          backgroundColor:
-                              Theme.of(context).scaffoldBackgroundColor,
-                          backgroundImage: userAvatar != null
-                              ? FileImage(userAvatar!)
-                              : null,
-                        ),
-                      ],
+                // indexed stack
+                child: IndexedStack(
+                  index: userAvatar == null ? 0 : 1,
+                  children: [
+                    // original avatar
+                    CachedUserAvatar(
+                      size: responsiveSizePct(small: 90),
+                      imageUrl: widget.user.avatarUrl,
                     ),
-                  ),
-                  const Divider(
-                    thickness: 1.5,
-                  ),
+                    // updated avatar
+                    CircleAvatar(
+                      radius: responsiveSizePct(
+                        small: 45,
+                      ),
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      backgroundImage:
+                          userAvatar != null ? FileImage(userAvatar!) : null,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
                   // camera button
-                  TextButton.icon(
+                  OverlayIconButton(
                     onPressed: () => setAvatar(ImageSource.camera),
-                    icon: const Icon(Icons.camera),
-                    label: Text(
-                      AppLocalizations.of(context)!
-                          .user_profile_add_user_personal_data_take_photo_btn,
-                      style: const TextStyle(color: Colors.white),
-                    ),
+                    icon: Icons.camera,
+                    title: AppLocalizations.of(context)!
+                        .user_profile_add_user_personal_data_take_photo_btn,
                   ),
                   // gallery button
-                  TextButton.icon(
+                  OverlayIconButton(
                     onPressed: () => setAvatar(ImageSource.gallery),
-                    icon: const Icon(Icons.photo_size_select_actual_rounded),
-                    label: Text(
-                      AppLocalizations.of(context)!
-                          .user_profile_add_user_personal_data_gallery,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  const Divider(
-                    thickness: 1.5,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      TextButton(
-                        child: Text(
-                          AppLocalizations.of(context)!.cancel,
-                          style: TextStyle(
-                            color: Theme.of(context).textTheme.headline1!.color,
-                          ),
-                        ),
-                        onPressed: () => widget.onDismiss(),
-                      ),
-                      TextButton(
-                        child: Text(
-                          AppLocalizations.of(context)!
-                              .user_profile_add_user_personal_data_save,
-                          style: const TextStyle(
-                            color: Colors.amber,
-                          ),
-                        ),
-                        onPressed: () {
-                          context.read<UserManagementBloc>().add(
-                                UpdateUserAvatarEvent(
-                                  userProfile: widget.user,
-                                  avatar: userAvatar,
-                                ),
-                              );
-                          widget.onDismiss();
-                        },
-                      ),
-                    ],
+                    icon: Icons.photo_size_select_actual_rounded,
+                    title: AppLocalizations.of(context)!
+                        .user_profile_add_user_personal_data_gallery,
                   ),
                 ],
               ),
-            ),
+              const SizedBox(
+                height: 24,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    child: Text(
+                      AppLocalizations.of(context)!.cancel,
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.headline1!.color,
+                        fontSize: 24,
+                      ),
+                    ),
+                    onPressed: () => widget.onDismiss(),
+                  ),
+                  TextButton(
+                    child: Text(
+                      AppLocalizations.of(context)!
+                          .user_profile_add_user_personal_data_save,
+                      style: const TextStyle(
+                        color: Colors.amber,
+                        fontSize: 24,
+                      ),
+                    ),
+                    onPressed: () {
+                      context.read<UserManagementBloc>().add(
+                            UpdateUserAvatarEvent(
+                              userProfile: widget.user,
+                              avatar: userAvatar,
+                            ),
+                          );
+                      widget.onDismiss();
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
-    ]);
+    );
   }
 }
