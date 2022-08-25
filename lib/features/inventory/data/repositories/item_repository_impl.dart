@@ -69,7 +69,7 @@ class ItemRepositoryImpl extends ItemRepository {
           .collection('companies')
           .doc(params.companyId)
           .collection('items')
-          .where('category', whereIn: params.locations)
+          .where('locations', arrayContainsAny: params.locations)
           .snapshots();
 
       return Right(ItemsStream(allItems: querySnapshot));

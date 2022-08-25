@@ -57,7 +57,7 @@ void main() {
       );
 
       tItemsInLocationsParams =
-          ItemsInLocationsParams(locations: [], companyId: companyId);
+          const ItemsInLocationsParams(locations: [], companyId: companyId);
     },
   );
 

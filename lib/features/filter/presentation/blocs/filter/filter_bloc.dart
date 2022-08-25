@@ -21,6 +21,9 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
   late StreamSubscription locationStreamSubscription;
   late StreamSubscription groupStreamSubscription;
+
+  String companyId = '';
+
   FilterBloc({
     required this.locationBloc,
     required this.groupBloc,
@@ -42,6 +45,8 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       }
     });
 
+    companyId = (userProfileBloc.state as Approved).userProfile.companyId;
+
     on<UpdateLocationsEvent>(
       (event, emit) async {
         emit(FilterLoadingState());
@@ -62,6 +67,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
         if (groupBloc.state is GroupLoadedState) {
           emit(
             FilterLoadedState(
+              companyId: companyId,
               locations: event.locations,
               groups: updatedGroups,
               allPossibleGroups: getAllPossibleGroups(),
@@ -70,6 +76,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
         } else {
           emit(
             FilterLoadedState(
+              companyId: companyId,
               locations: event.locations,
               groups: updatedGroups,
             ),
@@ -94,6 +101,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       }
       emit(
         FilterLoadedState(
+          companyId: companyId,
           locations: state.locations,
           groups: updatedGroups,
           allPossibleGroups: getAllPossibleGroups(),

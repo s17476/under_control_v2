@@ -19,7 +19,7 @@ import 'features/authentication/data/repositories/authentication_repository_impl
 import 'features/authentication/domain/repositories/authentication_repository.dart'
     as _i31;
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i105;
+    as _i106;
 import 'features/authentication/domain/usecases/auto_signin.dart' as _i33;
 import 'features/authentication/domain/usecases/check_email_verification.dart'
     as _i34;
@@ -72,7 +72,7 @@ import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dar
     as _i100;
 import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
     as _i101;
-import 'features/core/injectable_modules/injectable_modules.dart' as _i106;
+import 'features/core/injectable_modules/injectable_modules.dart' as _i107;
 import 'features/core/network/network_info.dart' as _i14;
 import 'features/core/utils/input_validator.dart' as _i8;
 import 'features/filter/presentation/blocs/filter/filter_bloc.dart' as _i104;
@@ -106,6 +106,7 @@ import 'features/inventory/presentation/blocs/item_category/item_category_bloc.d
     as _i97;
 import 'features/inventory/presentation/blocs/item_category_management_bloc.dart/item_category_management_bloc.dart'
     as _i98;
+import 'features/inventory/presentation/blocs/items/items_bloc.dart' as _i105;
 import 'features/locations/data/datasources/location_local_data_source.dart'
     as _i57;
 import 'features/locations/data/datasources/location_remote_data_source.dart'
@@ -430,16 +431,19 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       locationBloc: get<_i99.LocationBloc>(),
       groupBloc: get<_i96.GroupBloc>(),
       userProfileBloc: get<_i93.UserProfileBloc>()));
+  gh.factory<_i105.ItemsBloc>(() => _i105.ItemsBloc(
+      filterBloc: get<_i104.FilterBloc>(),
+      getChecklistsStream: get<_i51.GetItemsStream>()));
   return get;
 }
 
-class _$DataConnectionCheckerModule extends _i105.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i106.DataConnectionCheckerModule {}
 
 class _$FirebaseAuthenticationService
-    extends _i105.FirebaseAuthenticationService {}
+    extends _i106.FirebaseAuthenticationService {}
 
-class _$FirebaseFirestoreService extends _i106.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i107.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i106.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i107.FirebaseStorageService {}
 
-class _$SharedPreferencesService extends _i106.SharedPreferencesService {}
+class _$SharedPreferencesService extends _i107.SharedPreferencesService {}

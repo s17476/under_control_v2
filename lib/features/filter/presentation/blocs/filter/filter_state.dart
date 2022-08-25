@@ -1,11 +1,13 @@
 part of 'filter_bloc.dart';
 
 abstract class FilterState extends Equatable {
+  final String companyId;
   final List<Location> locations;
   final List<Group> groups;
   final List<Group> allPossibleGroups;
 
   const FilterState({
+    this.companyId = '',
     this.locations = const [],
     this.groups = const [],
     this.allPossibleGroups = const [],
@@ -27,17 +29,20 @@ class FilterLoadingState extends FilterState {}
 
 class FilterLoadedState extends FilterState {
   const FilterLoadedState({
+    super.companyId,
     super.locations,
     super.groups,
     super.allPossibleGroups,
   });
 
   FilterLoadedState copyWith(
+    String? companyId,
     List<Location>? locations,
     List<Group>? groups,
     List<Group>? allPossibleGroups,
   ) {
     return FilterLoadedState(
+      companyId: companyId ?? this.companyId,
       locations: locations ?? this.locations,
       groups: groups ?? this.groups,
       allPossibleGroups: allPossibleGroups ?? this.allPossibleGroups,
