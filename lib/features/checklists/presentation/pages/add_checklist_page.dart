@@ -60,7 +60,7 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
   // add new checklist
   void addNewChecklist(BuildContext context) {
     String errorMessage = '';
-    // title validation
+    // name lenght validation
     if (!_formKey.currentState!.validate()) {
       errorMessage = AppLocalizations.of(context)!.checklist_add_name_to_short;
       // checkpoints validation
@@ -71,11 +71,12 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
         // checklist name validation
       } else {
         final currentState = context.read<ChecklistBloc>().state;
-        if (checklist == null && currentState is ChecklistLoadedState) {
+        if (currentState is ChecklistLoadedState) {
           final tmpChecklists = currentState.allChecklists.allChecklists.where(
               (checklist) =>
                   checklist.title.toLowerCase() ==
                   titleTexEditingController.text.trim().toLowerCase());
+
           if (tmpChecklists.isNotEmpty) {
             errorMessage = AppLocalizations.of(context)!.checklist_add_exists;
           }

@@ -887,8 +887,16 @@
     "@item_category_msg_not_deleted": {
       "description": "category - NOT deleted msg"
     },
+    "item_category_msg_not_empty": "Category NOT deleted, because there are items in this category. Delete or edit items first.",
+    "@item_category_msg_not_empty": {
+      "description": "category - NOT empty msg"
+    },
     "item_category_edit": "Edit category",
     "@item_category_edit": {
       "description": "Edit category"
+    },
+    "item_category_exists": "Category with this name aleready exists.",
+    "@item_category_exists": {
+      "description": "Category exists"
     }
 }

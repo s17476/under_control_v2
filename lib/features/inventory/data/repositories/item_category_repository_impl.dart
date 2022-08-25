@@ -41,12 +41,26 @@ class ItemCategoryRepositoryImpl extends ItemCategoryRepository {
   Future<Either<Failure, VoidResult>> deleteItemCategory(
       ItemCategoryParams params) async {
     try {
-      firebaseFirestore
+      // checks if there is no items in given category
+      final itemsInCategory = await firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('itemsCategories')
-          .doc(params.itemCategory.id)
-          .delete();
+          .collection('items')
+          .where('category', isEqualTo: params.itemCategory.id)
+          .get();
+
+      if (itemsInCategory.docs.isEmpty) {
+        firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('itemsCategories')
+            .doc(params.itemCategory.id)
+            .delete();
+      } else {
+        return const Left(
+          CategoryNotEmptyFailure(message: 'Unsuspected error'),
+        );
+      }
 
       return Right(VoidResult());
     } on FirebaseException catch (e) {

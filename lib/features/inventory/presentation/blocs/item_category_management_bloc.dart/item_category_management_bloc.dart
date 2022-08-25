@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/core/error/failures.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -22,6 +23,7 @@ enum ItemCategoryMessage {
   itemCategoryNotUpdated,
   itemCategoryDeleted,
   itemCategoryNotDeleted,
+  itemCategoryNotEmpty,
 }
 
 @injectable
@@ -94,7 +96,6 @@ class ItemCategoryManagementBloc
 
     on<DeleteItemCategoryEvent>((event, emit) async {
       emit(ItemCategoryManagementLoadingState());
-      // TODO check if there are no items in this category
       final failureOrVoidResult = await deleteItemCategory(
         ItemCategoryParams(
           itemCategory: event.itemCategory,
@@ -102,11 +103,21 @@ class ItemCategoryManagementBloc
         ),
       );
       await failureOrVoidResult.fold(
-        (failure) async => emit(
-          ItemCategoryManagementErrorState(
-            message: ItemCategoryMessage.itemCategoryNotDeleted,
-          ),
-        ),
+        (failure) async {
+          if (failure is CategoryNotEmptyFailure) {
+            emit(
+              ItemCategoryManagementErrorState(
+                message: ItemCategoryMessage.itemCategoryNotEmpty,
+              ),
+            );
+          } else {
+            emit(
+              ItemCategoryManagementErrorState(
+                message: ItemCategoryMessage.itemCategoryNotDeleted,
+              ),
+            );
+          }
+        },
         (_) async => emit(
           ItemCategoryManagementSuccessState(
             message: ItemCategoryMessage.itemCategoryDeleted,

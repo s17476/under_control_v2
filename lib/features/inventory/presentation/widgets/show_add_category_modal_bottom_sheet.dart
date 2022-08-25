@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_category_model.dart';
+import 'package:under_control_v2/features/inventory/presentation/blocs/item_category/item_category_bloc.dart';
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_category_management_bloc.dart/item_category_management_bloc.dart';
 
 import '../../../core/presentation/widgets/custom_text_form_field.dart';
@@ -82,6 +84,19 @@ Future<void> showAddCategoryModalBottomSheet({
                                     return AppLocalizations.of(context)!
                                         .validation_min_two_characters;
                                   }
+                                  // chesck if category with choosen name aleready exists
+                                  final isCategoryExists = (context
+                                          .read<ItemCategoryBloc>()
+                                          .state as ItemCategoryLoadedState)
+                                      .allItemsCategories
+                                      .allItemsCategories
+                                      .map((e) => e.name.toLowerCase())
+                                      .toList()
+                                      .contains(value.toLowerCase());
+                                  if (isCategoryExists) {
+                                    return AppLocalizations.of(context)!
+                                        .item_category_exists;
+                                  }
                                   return null;
                                 },
                                 onSaved: (value) {
@@ -140,12 +155,13 @@ Future<void> showAddCategoryModalBottomSheet({
                                   ),
                                 );
                             // update category
-                          } else {}
-                          context.read<ItemCategoryManagementBloc>().add(
-                                UpdateItemCategoryEvent(
-                                  itemCategory: itemCategoryModel,
-                                ),
-                              );
+                          } else {
+                            context.read<ItemCategoryManagementBloc>().add(
+                                  UpdateItemCategoryEvent(
+                                    itemCategory: itemCategoryModel,
+                                  ),
+                                );
+                          }
 
                           Navigator.pop(context);
                         },

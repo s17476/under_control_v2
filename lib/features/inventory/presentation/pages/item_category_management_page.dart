@@ -45,7 +45,8 @@ class _ItemCategoryManagementPageState
       body:
           BlocListener<ItemCategoryManagementBloc, ItemCategoryManagementState>(
         listener: (context, state) {
-          if (state is ItemCategoryManagementSuccessState) {
+          if (state is ItemCategoryManagementSuccessState ||
+              state is ItemCategoryManagementErrorState) {
             String message = '';
             bool error = false;
             switch (state.message) {
@@ -73,6 +74,11 @@ class _ItemCategoryManagementPageState
               case ItemCategoryMessage.itemCategoryNotUpdated:
                 message =
                     AppLocalizations.of(context)!.item_category_msg_not_updated;
+                error = true;
+                break;
+              case ItemCategoryMessage.itemCategoryNotEmpty:
+                message =
+                    AppLocalizations.of(context)!.item_category_msg_not_empty;
                 error = true;
                 break;
               default:
