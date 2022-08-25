@@ -8,6 +8,7 @@ class ItemModel extends Item {
     required super.id,
     required super.name,
     required super.description,
+    required super.category,
     required super.itemPhoto,
     required super.itemCode,
     required super.sparePartFor,
@@ -20,6 +21,7 @@ class ItemModel extends Item {
     String? id,
     String? name,
     String? description,
+    String? category,
     String? itemPhoto,
     String? itemCode,
     List<String>? sparePartFor,
@@ -31,6 +33,7 @@ class ItemModel extends Item {
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
+      category: category ?? this.category,
       itemPhoto: itemPhoto ?? this.itemPhoto,
       itemCode: itemCode ?? this.itemCode,
       sparePartFor: sparePartFor ?? this.sparePartFor,
@@ -45,6 +48,7 @@ class ItemModel extends Item {
 
     result.addAll({'name': name});
     result.addAll({'description': description});
+    result.addAll({'category': category});
     result.addAll({'itemPhoto': itemPhoto});
     result.addAll({'itemCode': itemCode});
     result.addAll({'sparePartFor': sparePartFor});
@@ -64,6 +68,7 @@ class ItemModel extends Item {
       id: id,
       name: map['name'] ?? '',
       description: map['description'] ?? '',
+      category: map['category'] ?? '',
       itemPhoto: map['itemPhoto'] ?? '',
       itemCode: map['itemCode'] ?? '',
       sparePartFor: List<String>.from(map['sparePartFor']),

@@ -18,6 +18,7 @@ void main() {
       id: 'id',
       name: 'name',
       description: 'description',
+      category: 'category',
       itemPhoto: 'itemPhoto',
       itemCode: 'itemCode',
       sparePartFor: [],

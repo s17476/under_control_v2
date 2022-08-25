@@ -5,7 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_category_model.dart';
+import 'package:under_control_v2/features/inventory/data/models/item_category/item_category_model.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/add_item_category.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/delete_item_category.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/update_item_category.dart';

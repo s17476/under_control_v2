@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../entities/items_categories_stream.dart';
+import '../entities/item_category/items_categories_stream.dart';
 
 abstract class ItemCategoryRepository {
   ///Gets stream of all items categories.

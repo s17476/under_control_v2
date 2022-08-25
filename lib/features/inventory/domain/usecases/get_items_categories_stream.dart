@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../entities/items_categories_stream.dart';
+import '../entities/item_category/items_categories_stream.dart';
 import '../repositories/item_category_repository.dart';
 
 @lazySingleton

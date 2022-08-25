@@ -7,7 +7,7 @@ import 'package:under_control_v2/features/core/error/failures.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../../../domain/entities/item_category.dart';
+import '../../../domain/entities/item_category/item_category.dart';
 import '../../../domain/usecases/add_item_category.dart';
 import '../../../domain/usecases/delete_item_category.dart';
 import '../../../domain/usecases/update_item_category.dart';

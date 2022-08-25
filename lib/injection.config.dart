@@ -186,7 +186,8 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i9.ItemCategoryRepository>(() =>
       _i10.ItemCategoryRepositoryImpl(
           firebaseFirestore: get<_i5.FirebaseFirestore>()));
-  gh.lazySingleton<_i11.ItemRepository>(() => _i12.ItemRepositoryImpl());
+  gh.lazySingleton<_i11.ItemRepository>(() =>
+      _i12.ItemRepositoryImpl(firebaseFirestore: get<_i5.FirebaseFirestore>()));
   gh.lazySingleton<_i13.LocationRemoteDataSource>(() =>
       _i13.LocationRemoteDataSourceImpl(
           firebaseFirestore: get<_i5.FirebaseFirestore>()));

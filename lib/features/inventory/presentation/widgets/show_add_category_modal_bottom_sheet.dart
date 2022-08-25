@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_category_model.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_category/item_category_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_category_management_bloc.dart/item_category_management_bloc.dart';
+import '../../data/models/item_category/item_category_model.dart';
+import '../blocs/item_category/item_category_bloc.dart';
+import '../blocs/item_category_management_bloc.dart/item_category_management_bloc.dart';
 
 import '../../../core/presentation/widgets/custom_text_form_field.dart';
 
@@ -28,7 +27,7 @@ Future<void> showAddCategoryModalBottomSheet({
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          height: 200,
+          height: 210,
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: const BorderRadius.only(

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_category_model.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_category.dart';
+import 'package:under_control_v2/features/inventory/data/models/item_category/item_category_model.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_category/item_category.dart';
 
 void main() {
   const tItemCategoryModel = ItemCategoryModel(

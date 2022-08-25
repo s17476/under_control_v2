@@ -5,9 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_category_model.dart';
+import 'package:under_control_v2/features/inventory/data/models/item_category/item_category_model.dart';
 import 'package:under_control_v2/features/inventory/data/repositories/item_category_repository_impl.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/items_categories_stream.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_category/items_categories_stream.dart';
 
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_category_model.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_category.dart';
+import 'package:under_control_v2/features/inventory/data/models/item_category/item_category_model.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_category/item_category.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/show_add_category_modal_bottom_sheet.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/show_category_delete_dialog.dart';
 

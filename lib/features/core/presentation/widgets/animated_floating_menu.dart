@@ -4,11 +4,11 @@ class AnimatedFloatingMenu extends StatefulWidget {
   const AnimatedFloatingMenu({
     Key? key,
     required this.backgroundColor,
-    required this.padding,
+    this.padding,
     required this.onPressed,
   }) : super(key: key);
   final Color backgroundColor;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
   final Function onPressed;
 
   @override
@@ -19,7 +19,7 @@ class _AnimatedFloatingMenuState extends State<AnimatedFloatingMenu> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: widget.padding,
+      padding: widget.padding ?? const EdgeInsets.all(0),
       child: SizedBox(
         width: 48,
         height: 48,

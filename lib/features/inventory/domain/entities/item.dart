@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
 import 'item_amount_in_location.dart';
@@ -32,6 +30,7 @@ class Item extends Equatable {
   final String id;
   final String name;
   final String description;
+  final String category;
   final String itemPhoto;
   final String itemCode;
   final List<String> sparePartFor;
@@ -40,6 +39,7 @@ class Item extends Equatable {
   final List<ItemAmountInLocation> amountInLocations;
 
   const Item({
+    required this.category,
     required this.id,
     required this.name,
     required this.description,
@@ -57,6 +57,7 @@ class Item extends Equatable {
       id,
       name,
       description,
+      category,
       itemPhoto,
       itemCode,
       sparePartFor,
@@ -68,6 +69,6 @@ class Item extends Equatable {
 
   @override
   String toString() {
-    return 'Item(id: $id, name: $name, description: $description, itemPhoto: $itemPhoto, itemCode: $itemCode, sparePartFor: $sparePartFor, itemUnit: $itemUnit, locations: $locations, amountInLocations: $amountInLocations)';
+    return 'Item(id: $id, name: $name, description: $description, category: $category, itemPhoto: $itemPhoto, itemCode: $itemCode, sparePartFor: $sparePartFor, itemUnit: $itemUnit, locations: $locations, amountInLocations: $amountInLocations)';
   }
 }

@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
 import 'package:under_control_v2/features/groups/domain/entities/group.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_category.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_category/item_category.dart';
 
 import '../../inventory/domain/entities/item.dart';
 import '../../locations/domain/entities/location.dart';

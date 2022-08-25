@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_category.dart';
 
-import '../../domain/entities/items_categories_list.dart';
+import '../../../domain/entities/item_category/item_category.dart';
+import '../../../domain/entities/item_category/items_categories_list.dart';
 import 'item_category_model.dart';
 
 class ItemsCategoriesListModel extends ItemsCategoriesList {

@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/animated_floating_menu.dart';
+import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 
 class HomeBottomNavigationBar extends StatefulWidget {
   final AnimationController animationController;
@@ -25,13 +26,17 @@ class HomeBottomNavigationBar extends StatefulWidget {
       _HomeBottomNavigationBarState();
 }
 
-class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar> {
+class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
+    with ResponsiveSize {
   List<TabItem> tabItems = [];
   Animation<Offset>? _tabBarSlideAnimation;
   Animation<Offset>? _buttonSlideAnimation;
   Animation<double>? _fadeAnimation;
   bool isFloatingButtonVisible = true;
   Color floatingButtonBackgroundColor = const Color.fromRGBO(0, 240, 130, 100);
+  double floatingActionButtonPosition = 0;
+  double floatingActionButtonPositionTop = 85;
+  double floatingActionButtonPositionBottom = 55;
 
   @override
   void initState() {
@@ -62,7 +67,7 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar> {
         curve: Curves.bounceIn,
       ),
     );
-
+    floatingActionButtonPosition = floatingActionButtonPositionBottom;
     super.initState();
   }
 
@@ -108,48 +113,67 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          // floating action button
-          SlideTransition(
+    return Stack(
+      children: [
+        // floating action button
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.elasticInOut,
+          bottom: floatingActionButtonPosition,
+          right: responsiveSizePct(small: 10) - 24,
+          child: SlideTransition(
             position: _buttonSlideAnimation!,
             child: FadeTransition(
               opacity: _fadeAnimation!,
               child: AnimatedFloatingMenu(
-                padding: const EdgeInsets.all(12),
                 backgroundColor: floatingButtonBackgroundColor,
                 onPressed: widget.toggleShowMenu,
               ),
             ),
           ),
-          // bottom tab bar
-          SlideTransition(
-            position: _tabBarSlideAnimation!,
-            child: CircularBottomNavigation(
-              tabItems,
-              barBackgroundColor:
-                  Theme.of(context).appBarTheme.backgroundColor!,
-              barHeight: 44,
-              iconsSize: 24,
-              circleSize: 54,
-              controller: widget.navigationController,
-              selectedCallback: (index) => setState(() {
-                floatingButtonBackgroundColor =
-                    tabItems[index ?? 2].circleColor;
-                widget.setPageIndex(index ?? 2);
-                widget.pageController.animateToPage(
-                  index ?? 2,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.decelerate,
-                );
-              }),
-            ),
+        ),
+        Positioned(
+          bottom: 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              // bottom tab bar
+              SlideTransition(
+                position: _tabBarSlideAnimation!,
+                child: CircularBottomNavigation(
+                  tabItems,
+                  barBackgroundColor:
+                      Theme.of(context).appBarTheme.backgroundColor!,
+                  barHeight: 44,
+                  iconsSize: 24,
+                  circleSize: 54,
+                  controller: widget.navigationController,
+                  selectedCallback: (index) {
+                    setState(() {
+                      if (index == 4) {
+                        floatingActionButtonPosition =
+                            floatingActionButtonPositionTop;
+                      } else if (floatingActionButtonPosition ==
+                          floatingActionButtonPositionTop) {
+                        floatingActionButtonPosition =
+                            floatingActionButtonPositionBottom;
+                      }
+                      floatingButtonBackgroundColor =
+                          tabItems[index ?? 2].circleColor;
+                      widget.setPageIndex(index ?? 2);
+                      widget.pageController.animateToPage(
+                        index ?? 2,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.decelerate,
+                      );
+                    });
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

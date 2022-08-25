@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_category.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/items_categories_stream.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_category/item_category.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_category/items_categories_stream.dart';
 import 'package:under_control_v2/features/inventory/domain/repositories/item_category_repository.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/get_items_categories_stream.dart';
 
