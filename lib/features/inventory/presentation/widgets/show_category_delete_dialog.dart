@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_category_management_bloc.dart/item_category_management_bloc.dart';
 
 import '../../domain/entities/item_category/item_category.dart';
+import '../blocs/item_category_management/item_category_management_bloc.dart';
 
 Future<dynamic> showCategoryDeleteDialog({
   required BuildContext context,

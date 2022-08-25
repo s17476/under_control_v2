@@ -104,7 +104,7 @@ import 'features/inventory/domain/usecases/update_item.dart' as _i16;
 import 'features/inventory/domain/usecases/update_item_category.dart' as _i17;
 import 'features/inventory/presentation/blocs/item_category/item_category_bloc.dart'
     as _i97;
-import 'features/inventory/presentation/blocs/item_category_management_bloc.dart/item_category_management_bloc.dart'
+import 'features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart'
     as _i98;
 import 'features/inventory/presentation/blocs/items/items_bloc.dart' as _i105;
 import 'features/locations/data/datasources/location_local_data_source.dart'

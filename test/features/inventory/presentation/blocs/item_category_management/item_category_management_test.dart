@@ -9,7 +9,7 @@ import 'package:under_control_v2/features/inventory/data/models/item_category/it
 import 'package:under_control_v2/features/inventory/domain/usecases/add_item_category.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/delete_item_category.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/update_item_category.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_category_management_bloc.dart/item_category_management_bloc.dart';
+import 'package:under_control_v2/features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart';
 
 class MockCompanyProfileBloc extends Mock
     implements Stream<CompanyProfileState>, CompanyProfileBloc {}

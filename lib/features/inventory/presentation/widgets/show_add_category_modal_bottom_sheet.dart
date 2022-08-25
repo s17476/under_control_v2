@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/models/item_category/item_category_model.dart';
 import '../blocs/item_category/item_category_bloc.dart';
-import '../blocs/item_category_management_bloc.dart/item_category_management_bloc.dart';
 
 import '../../../core/presentation/widgets/custom_text_form_field.dart';
+import '../blocs/item_category_management/item_category_management_bloc.dart';
 
 Future<void> showAddCategoryModalBottomSheet({
   required BuildContext context,
