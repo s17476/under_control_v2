@@ -21,6 +21,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
   late StreamSubscription locationStreamSubscription;
   late StreamSubscription groupStreamSubscription;
+  late StreamSubscription userProfileStreamSubscription;
 
   String companyId = '';
 
@@ -45,7 +46,11 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       }
     });
 
-    companyId = (userProfileBloc.state as Approved).userProfile.companyId;
+    userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
+      if (state is Approved) {
+        companyId = state.userProfile.companyId;
+      }
+    });
 
     on<UpdateLocationsEvent>(
       (event, emit) async {
@@ -152,6 +157,8 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
   @override
   Future<void> close() {
     locationStreamSubscription.cancel();
+    groupStreamSubscription.cancel();
+    userProfileStreamSubscription.cancel();
     return super.close();
   }
 }

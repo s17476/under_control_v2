@@ -34,6 +34,8 @@ import 'features/groups/presentation/pages/group_details.dart';
 import 'features/groups/presentation/pages/group_management_page.dart';
 import 'features/inventory/presentation/blocs/item_category/item_category_bloc.dart';
 import 'features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart';
+import 'features/inventory/presentation/blocs/items/items_bloc.dart';
+import 'features/inventory/presentation/blocs/items_management/items_management_bloc.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
@@ -94,6 +96,8 @@ class App extends StatelessWidget
           lazy: false,
         ),
         BlocProvider(create: (context) => getIt<ItemCategoryManagementBloc>()),
+        BlocProvider(create: (context) => getIt<ItemsBloc>()),
+        BlocProvider(create: (context) => getIt<ItemsManagementBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
