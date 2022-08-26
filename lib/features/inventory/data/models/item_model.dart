@@ -27,7 +27,7 @@ class ItemModel extends Item {
     List<String>? sparePartFor,
     ItemUnit? itemUnit,
     List<String>? locations,
-    List<ItemAmountInLocation>? amountInLocations,
+    List<ItemAmountInLocationModel>? amountInLocations,
   }) {
     return ItemModel(
       id: id ?? this.id,
@@ -74,9 +74,19 @@ class ItemModel extends Item {
       sparePartFor: List<String>.from(map['sparePartFor']),
       itemUnit: ItemUnit.fromString(map['itemUnit']),
       locations: List<String>.from(map['locations']),
-      amountInLocations: List<ItemAmountInLocation>.from(
+      amountInLocations: List<ItemAmountInLocationModel>.from(
           map['amountInLocations']
               ?.map((x) => ItemAmountInLocationModel.fromMap(x))),
+    );
+  }
+
+  ItemModel deepCopy() {
+    return copyWith(
+      sparePartFor: [...sparePartFor],
+      locations: [...locations],
+      amountInLocations: amountInLocations
+          .map((ItemAmountInLocationModel e) => e.copyWith())
+          .toList(),
     );
   }
 }

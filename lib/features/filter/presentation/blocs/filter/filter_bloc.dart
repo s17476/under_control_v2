@@ -67,9 +67,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
               }
             }
           }
-        }
 
-        if (groupBloc.state is GroupLoadedState) {
           emit(
             FilterLoadedState(
               companyId: companyId,

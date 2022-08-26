@@ -208,5 +208,11 @@
     "item_category_msg_not_deleted": "Kategoria nie została usunięta",
     "item_category_msg_not_empty": "Kategoria nie została usunięta, ponieważ nie jest pusta. Najpierw usuń lub edytuj elementy inwentarza.",
     "item_category_edit": "Edytuj kategorię",
-    "item_category_exists": "Kategoria już istnieje"
+    "item_category_exists": "Kategoria już istnieje",
+    "item_add": "Dodaj nowy",
+    "item_add_card_title": "Dodaj nowy przedmiot",
+    "item_edit_card_title": "Edytuj przedmiot",
+    "item_name": "Nazwa przedmiotu",
+    "item_description": "Opis przedmiotu (opcjonalny)",
+    "item_data": "Dane przedmiotu"
 }

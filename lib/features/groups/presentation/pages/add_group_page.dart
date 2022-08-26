@@ -56,22 +56,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
 
     if (arguments != null && arguments is GroupModel) {
       group = arguments.deepCopy();
-      // group = arguments.copyWith(
-      //   id: arguments.id,
-      //   name: arguments.name,
-      //   description: arguments.description,
-      //   locations: [...arguments.locations],
-      //   features: arguments.features
-      //       .map((FeatureModel e) => e.copyWith(
-      //             create: e.create,
-      //             delete: e.delete,
-      //             edit: e.edit,
-      //             read: e.read,
-      //             type: e.type,
-      //           ))
-      //       .toList(),
-      //   groupAdministrators: [...arguments.groupAdministrators],
-      // );
+
       nameTexEditingController.text = group!.name;
       descriptionTexEditingController.text = group!.description;
 

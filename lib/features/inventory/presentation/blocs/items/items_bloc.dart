@@ -7,7 +7,11 @@ import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/checklists/presentation/blocs/checklist/checklist_bloc.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
+import 'package:under_control_v2/features/groups/domain/entities/group.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/get_items_stream.dart';
+import 'package:under_control_v2/features/locations/domain/entities/location.dart';
+import 'package:under_control_v2/features/locations/presentation/blocs/bloc/location_bloc.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../data/models/items_list_model.dart';
@@ -29,10 +33,7 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     filterStreamSubscription = filterBloc.stream.listen((state) {
       if (state is FilterLoadedState && state.companyId.isNotEmpty) {
         add(
-          GetItemsEvent(
-            companyId: state.companyId,
-            locations: state.locations.map((loc) => loc.id).toList(),
-          ),
+          GetItemsEvent(companyId: state.companyId, groups: state.groups),
         );
       }
     });
@@ -40,9 +41,11 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     on<GetItemsEvent>((event, emit) async {
       emit(ItemsLoadingState());
 
+      final availableLocations = getAvailableLocations(groups: event.groups);
+
       final failureOrItemsStream = await getChecklistsStream(
         ItemsInLocationsParams(
-          locations: event.locations,
+          locations: availableLocations,
           companyId: event.companyId,
         ),
       );
@@ -65,5 +68,24 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     filterStreamSubscription.cancel();
     itemsStreamSubscription?.cancel();
     return super.close();
+  }
+
+  // gets only locations for the groups, with inventory read premission
+  List<String> getAvailableLocations({required List<Group> groups}) {
+    List<String> availableLocations = [];
+    for (var group in groups) {
+      if (group.features
+          .where((feature) =>
+              (feature.type == FeatureType.inventory && feature.read))
+          .isNotEmpty) {
+        for (var location in group.locations) {
+          if (!availableLocations.contains(location)) {
+            availableLocations.add(location);
+          }
+        }
+      }
+    }
+    print(availableLocations);
+    return availableLocations;
   }
 }

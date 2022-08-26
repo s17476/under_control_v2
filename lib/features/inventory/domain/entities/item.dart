@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:under_control_v2/features/inventory/data/models/item_amount_in_location_model.dart';
 
 import 'item_amount_in_location.dart';
 
@@ -36,7 +37,7 @@ class Item extends Equatable {
   final List<String> sparePartFor;
   final ItemUnit itemUnit;
   final List<String> locations;
-  final List<ItemAmountInLocation> amountInLocations;
+  final List<ItemAmountInLocationModel> amountInLocations;
 
   const Item({
     required this.category,

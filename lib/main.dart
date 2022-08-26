@@ -36,6 +36,7 @@ import 'features/inventory/presentation/blocs/item_category/item_category_bloc.d
 import 'features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart';
 import 'features/inventory/presentation/blocs/items/items_bloc.dart';
 import 'features/inventory/presentation/blocs/items_management/items_management_bloc.dart';
+import 'features/inventory/presentation/pages/add_item_page.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
@@ -158,6 +159,7 @@ class App extends StatelessWidget
               const ChecklistDetailsPage(),
           ItemCategoryManagementPage.routeName: (context) =>
               const ItemCategoryManagementPage(),
+          AddItemPage.routeName: (context) => const AddItemPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

@@ -77,7 +77,7 @@ void main() {
         build: () => itemsBloc,
         act: (bloc) async {
           bloc.add(
-            GetItemsEvent(companyId: companyId, locations: const []),
+            GetItemsEvent(companyId: companyId, groups: const []),
           );
           when(() => mockGetItemsStream(any())).thenAnswer(
             (_) async => Right(
@@ -97,7 +97,7 @@ void main() {
         build: () => itemsBloc,
         act: (bloc) async {
           bloc.add(
-            GetItemsEvent(companyId: companyId, locations: const []),
+            GetItemsEvent(companyId: companyId, groups: const []),
           );
           when(() => mockGetItemsStream(any())).thenAnswer(
             (_) async => const Left(DatabaseFailure()),

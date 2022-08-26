@@ -65,9 +65,6 @@ class GroupModel extends Group {
 
   GroupModel deepCopy() {
     return copyWith(
-      id: id,
-      name: name,
-      description: description,
       locations: [...locations],
       features: features
           .map((FeatureModel e) => e.copyWith(

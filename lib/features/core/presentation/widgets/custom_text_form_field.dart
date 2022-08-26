@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({
-    Key? key,
-    required this.fieldKey,
-    this.controller,
-    this.keyboardType,
-    this.textCapitalization = TextCapitalization.none,
-    required this.labelText,
-    this.validator,
-    this.onSaved,
-    this.enabled = true,
-    this.autofocus = false,
-    this.initialValue,
-    this.prefixIcon,
-    this.scrollPadding = const EdgeInsets.all(20),
-  }) : super(key: key);
+  const CustomTextFormField(
+      {Key? key,
+      required this.fieldKey,
+      this.controller,
+      this.keyboardType,
+      this.textCapitalization = TextCapitalization.none,
+      required this.labelText,
+      this.validator,
+      this.onSaved,
+      this.enabled = true,
+      this.autofocus = false,
+      this.initialValue,
+      this.prefixIcon,
+      this.scrollPadding = const EdgeInsets.all(20),
+      this.maxLines})
+      : super(key: key);
 
   final String fieldKey;
   final TextEditingController? controller;
@@ -29,6 +30,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? initialValue;
   final Widget? prefixIcon;
   final EdgeInsets scrollPadding;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,7 @@ class CustomTextFormField extends StatelessWidget {
       key: ValueKey(fieldKey),
       keyboardType: keyboardType,
       textCapitalization: textCapitalization,
+      maxLines: maxLines,
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         floatingLabelStyle: TextStyle(

@@ -898,5 +898,29 @@
     "item_category_exists": "Category with this name aleready exists.",
     "@item_category_exists": {
       "description": "Category exists"
+    },
+    "item_add": "Add new item",
+    "@item_add": {
+      "description": "Add new item"
+    },
+    "item_add_card_title": "Add new item",
+    "@item_add_card_title": {
+      "description": "Add new item"
+    },
+    "item_edit_card_title": "Edit item",
+    "@item_edit_card_title": {
+      "description": "Edit item"
+    },
+    "item_name": "Item's name",
+    "@item_name": {
+      "description": "Item's name"
+    },
+    "item_description": "Item's description (optional)",
+    "@item_description": {
+      "description": "Item's description"
+    },
+    "item_data": "Item's data",
+    "@item_data": {
+      "description": "Item's data"
     }
 }
