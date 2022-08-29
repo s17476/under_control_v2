@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../data/models/user_profile_model.dart';
 import '../blocs/user_profile/user_profile_bloc.dart';
@@ -61,16 +62,11 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context)
-        ..clearSnackBars()
-        ..showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!
-                  .user_profile_add_user_image_pisker_error,
-            ),
-          ),
-        );
+      showSnackBar(
+        context: context,
+        message: AppLocalizations.of(context)!
+            .user_profile_add_user_image_pisker_error,
+      );
     }
   }
 

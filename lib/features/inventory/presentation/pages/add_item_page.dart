@@ -1,16 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 
 import '../../../core/presentation/widgets/keep_alive_page.dart';
+import '../../../core/utils/show_snack_bar.dart';
 import '../../../groups/presentation/widgets/add_group/add_group_name_card.dart';
 import '../../domain/entities/item.dart';
 import '../blocs/items/items_bloc.dart';
-import '../widgets/add_item_card.dart';
-import '../widgets/add_item_data_card.dart';
+import '../widgets/add_item/add_item_card.dart';
+import '../widgets/add_item/add_item_photo_card.dart';
+import '../widgets/add_item/add_item_spare_part_card.dart';
 
 class AddItemPage extends StatefulWidget {
   const AddItemPage({
@@ -36,7 +42,39 @@ class _AddItemPageState extends State<AddItemPage> {
   final descriptionTexEditingController = TextEditingController();
   final itemCodeTexEditingController = TextEditingController();
   String category = '';
-  ItemUnit itemUnit = ItemUnit.unknown;
+  String itemUnit = '';
+
+  File? itemImage;
+
+  void setImage(ImageSource souruce) async {
+    final picker = ImagePicker();
+
+    try {
+      final pickedFile = await picker.pickImage(
+        source: souruce,
+        imageQuality: 100,
+        maxHeight: 500,
+        maxWidth: 500,
+      );
+      if (pickedFile != null) {
+        setState(() {
+          itemImage = File(pickedFile.path);
+        });
+      }
+    } catch (e) {
+      showSnackBar(
+        context: context,
+        message: AppLocalizations.of(context)!
+            .user_profile_add_user_image_pisker_error,
+      );
+    }
+  }
+
+  void deleteImage() {
+    setState(() {
+      itemImage = null;
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -49,7 +87,7 @@ class _AddItemPageState extends State<AddItemPage> {
       descriptionTexEditingController.text = item!.description;
       itemCodeTexEditingController.text = item!.itemCode;
       category = item!.category;
-      itemUnit = item!.itemUnit;
+      itemUnit = item!.itemUnit.name;
     }
     super.didChangeDependencies();
   }
@@ -131,6 +169,12 @@ class _AddItemPageState extends State<AddItemPage> {
     });
   }
 
+  void setItemUnit(String value) {
+    setState(() {
+      itemUnit = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     pages = [
@@ -140,13 +184,23 @@ class _AddItemPageState extends State<AddItemPage> {
           pageController: pageController,
           nameTexEditingController: nameTexEditingController,
           descriptionTexEditingController: descriptionTexEditingController,
+          category: category,
+          itemUnit: itemUnit,
+          setCategory: setCategory,
+          setItemUnit: setItemUnit,
         ),
       ),
       KeepAlivePage(
-        child: AddItemDataCard(
+        child: AddItemPhotoCard(
           pageController: pageController,
-          category: category,
-          setCategory: setCategory,
+          setImage: setImage,
+          deleteImage: deleteImage,
+          image: itemImage,
+        ),
+      ),
+      KeepAlivePage(
+        child: AddItemSparePartCard(
+          pageController: pageController,
         ),
       ),
       // AddGroupFeaturesCard(

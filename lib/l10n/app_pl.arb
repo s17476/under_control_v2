@@ -19,6 +19,7 @@
     "read": "Odczyt",
     "create": "Tworzenie",
     "edit": "Edycja",
+    "reset_image": "Resetuj obraz",
     "summary": "Podsumowanie",
     "call": "Zadzwoń",
     "send_sms": "Wyślij SMS",
@@ -214,5 +215,16 @@
     "item_edit_card_title": "Edytuj przedmiot",
     "item_name": "Nazwa przedmiotu",
     "item_description": "Opis przedmiotu (opcjonalny)",
-    "item_data": "Dane przedmiotu"
+    "item_data": "Dane przedmiotu",
+    "item_category": "Kategoria przedmiotu",
+    "item_select_category": "Wybierz kategorię przedmiotu",
+    "item_unit_kg": "Kilogram",
+    "item_unit_pcs": "Sztuka",
+    "item_unit_ltr": "Litr",
+    "item_select_unit": "Wybierz jednostkę",
+    "item_unit": "Jednostka",
+    "item_photo": "Zdjęcie przedmiotu (opcjonalne)",
+    "item_spare_part": "Część zamienna",
+    "item_spare_part_not": "To NIE jest część zamienna",
+    "item_spare_part_yes": "To jest część zamienna"
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/presentation/widgets/backward_text_button.dart';
-import '../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../../core/presentation/widgets/forward_text_button.dart';
+import '../../../../core/presentation/widgets/backward_text_button.dart';
+import '../../../../core/presentation/widgets/custom_text_form_field.dart';
+import '../../../../core/presentation/widgets/forward_text_button.dart';
+import 'category_dropdown_button.dart';
+import 'item_unit_dropdown_button.dart';
 
 class AddItemCard extends StatelessWidget {
   const AddItemCard({
@@ -12,12 +14,20 @@ class AddItemCard extends StatelessWidget {
     required this.pageController,
     required this.nameTexEditingController,
     required this.descriptionTexEditingController,
+    required this.setCategory,
+    required this.setItemUnit,
+    required this.category,
+    required this.itemUnit,
   }) : super(key: key);
 
   final bool isEditMode;
   final PageController pageController;
   final TextEditingController nameTexEditingController;
   final TextEditingController descriptionTexEditingController;
+  final Function(String category) setCategory;
+  final Function(String category) setItemUnit;
+  final String category;
+  final String itemUnit;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +46,7 @@ class AddItemCard extends StatelessWidget {
                         padding: const EdgeInsets.only(
                           left: 48.0,
                           right: 48.0,
-                          top: 48,
+                          top: 16,
                         ),
                         child: Image.asset(
                           'assets/new_item.png',
@@ -81,10 +91,26 @@ class AddItemCard extends StatelessWidget {
                         fieldKey: 'description',
                         controller: descriptionTexEditingController,
                         keyboardType: TextInputType.multiline,
-                        maxLines: 4,
+                        maxLines: 3,
                         textCapitalization: TextCapitalization.sentences,
                         labelText:
                             AppLocalizations.of(context)!.item_description,
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+
+                      // category selection
+                      CategoryDropdownButton(
+                        selectedValue: category,
+                        onSelected: setCategory,
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      ItemUnitDropdownButton(
+                        selectedUnit: itemUnit,
+                        onSelected: setItemUnit,
                       ),
                       const SizedBox(
                         height: 16,

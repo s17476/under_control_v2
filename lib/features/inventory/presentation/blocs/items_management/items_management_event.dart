@@ -2,8 +2,10 @@ part of 'items_management_bloc.dart';
 
 abstract class ItemsManagementEvent extends Equatable {
   final Item item;
+  final File? itemPhoto;
   const ItemsManagementEvent({
     required this.item,
+    this.itemPhoto,
   });
 
   @override
@@ -11,7 +13,10 @@ abstract class ItemsManagementEvent extends Equatable {
 }
 
 class AddItemEvent extends ItemsManagementEvent {
-  const AddItemEvent({required super.item});
+  const AddItemEvent({
+    required super.item,
+    super.itemPhoto,
+  });
 }
 
 class DeleteItemEvent extends ItemsManagementEvent {

@@ -59,7 +59,15 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     });
 
     on<UpdateItemsListEvent>(
-      (event, emit) async {},
+      (event, emit) async {
+        emit(ItemsLoadingState());
+        final itemsList = ItemsListModel.fromSnapshot(
+          event.snapshot as QuerySnapshot<Map<String, dynamic>>,
+        );
+        emit(
+          ItemsLoadedState(allItems: itemsList),
+        );
+      },
     );
   }
 

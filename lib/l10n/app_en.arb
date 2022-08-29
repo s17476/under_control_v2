@@ -79,6 +79,10 @@
     "@edit": {
       "description": "Edit"
     },
+    "reset_image": "Reset image",
+    "@reset_image": {
+      "description": "Reset image"
+    },
     "summary": "Summary",
     "@summary": {
       "description": "Summary"
@@ -922,5 +926,49 @@
     "item_data": "Item's data",
     "@item_data": {
       "description": "Item's data"
+    },
+    "item_category": "Item's category",
+    "@item_category": {
+      "description": "Item's category"
+    },
+    "item_select_category": "Select item category",
+    "@item_select_category": {
+      "description": "Item's category selection"
+    },
+    "item_unit_kg": "Kilogram",
+    "@item_unit_kg": {
+      "description": "Kg - unit"
+    },
+    "item_unit_pcs": "Piece",
+    "@item_unit_pcs": {
+      "description": "Pcs - unit"
+    },
+    "item_unit_ltr": "Liter",
+    "@item_unit_ltr": {
+      "description": "Ltr - unit"
+    },
+    "item_select_unit": "Select item unit",
+    "@item_select_unit": {
+      "description": "Select unit"
+    },
+    "item_unit": "Item unit",
+    "@item_unit": {
+      "description": "Item unit"
+    },
+    "item_photo": "Item photo (optional)",
+    "@item_photo": {
+      "description": "Item photo"
+    },
+    "item_spare_part": "Spare part",
+    "@item_spare_part": {
+      "description": "Spare part"
+    },
+    "item_spare_part_not": "This is NOT a spare part",
+    "@item_spare_part_not": {
+      "description": "Not a spare part"
+    },
+    "item_spare_part_yes": "This is a spare part",
+    "@item_spare_part_yes": {
+      "description": "This is spare part"
     }
 }
