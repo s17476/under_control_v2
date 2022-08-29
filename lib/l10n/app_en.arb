@@ -982,5 +982,9 @@
      "item_add_error_unit_not_selected": "Item unit not selected!",
     "@item_add_error_unit_not_selected": {
       "description": "Item unit not selected"
+    },
+     "item_add_added_new_msg": "Item added!",
+    "@item_add_added_new_msg": {
+      "description": "Item added"
     }
 }

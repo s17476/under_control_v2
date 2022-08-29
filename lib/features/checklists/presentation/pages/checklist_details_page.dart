@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
 import 'package:under_control_v2/features/checklists/presentation/pages/add_checklist_page.dart';
-import 'package:under_control_v2/features/checklists/presentation/widgets/checkpoint_tile.dart';
 import 'package:under_control_v2/features/checklists/presentation/widgets/show_checklist_delete_dialog.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/icon_title_row.dart';
 import 'package:under_control_v2/features/core/utils/choice.dart';

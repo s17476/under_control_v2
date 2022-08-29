@@ -1,7 +1,5 @@
-import 'package:under_control_v2/features/inventory/data/models/item_amount_in_location_model.dart';
-
 import '../../domain/entities/item.dart';
-import '../../domain/entities/item_amount_in_location.dart';
+import 'item_amount_in_location_model.dart';
 
 class ItemModel extends Item {
   const ItemModel({
@@ -55,9 +53,7 @@ class ItemModel extends Item {
     result.addAll({'itemUnit': itemUnit.name});
     result.addAll({'locations': locations});
     result.addAll({
-      'amountInLocations': amountInLocations
-          .map((x) => (x as ItemAmountInLocationModel).toMap())
-          .toList()
+      'amountInLocations': amountInLocations.map((x) => x.toMap()).toList()
     });
 
     return result;

@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/items_stream.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
+import '../entities/items_stream.dart';
 import '../repositories/item_repository.dart';
 
 @lazySingleton

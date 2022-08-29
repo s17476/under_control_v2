@@ -92,18 +92,24 @@ class App extends StatelessWidget
         ),
         BlocProvider(create: (context) => getIt<NewUsersBloc>()),
         BlocProvider(create: (context) => getIt<SuspendedUsersBloc>()),
-        BlocProvider(create: (context) => getIt<FilterBloc>(), lazy: false),
-        BlocProvider(create: (context) => getIt<ChecklistBloc>()),
-        BlocProvider(create: (context) => getIt<ChecklistManagementBloc>()),
         BlocProvider(
-          create: (context) => getIt<ItemCategoryBloc>(),
+          create: (context) => getIt<FilterBloc>(),
           lazy: false,
         ),
+        BlocProvider(create: (context) => getIt<ChecklistBloc>()),
+        BlocProvider(
+          create: (context) => getIt<ChecklistManagementBloc>(),
+          lazy: false,
+        ),
+        BlocProvider(create: (context) => getIt<ItemCategoryBloc>()),
         BlocProvider(
           create: (context) => getIt<ItemCategoryManagementBloc>(),
           lazy: false,
         ),
-        BlocProvider(create: (context) => getIt<ItemsBloc>(), lazy: false),
+        BlocProvider(
+          create: (context) => getIt<ItemsBloc>(),
+          lazy: false,
+        ),
         BlocProvider(
           create: (context) => getIt<ItemsManagementBloc>(),
           lazy: false,

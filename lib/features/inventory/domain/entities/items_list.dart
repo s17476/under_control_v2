@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
+import 'item.dart';
 
 class ItemsList extends Equatable {
   final List<Item> allItems;

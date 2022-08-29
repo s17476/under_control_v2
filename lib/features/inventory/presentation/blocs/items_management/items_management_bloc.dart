@@ -4,13 +4,13 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/add_item.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/delete_item.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/update_item.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/usecases/usecase.dart';
 import '../../../domain/entities/item.dart';
+import '../../../domain/usecases/add_item.dart';
+import '../../../domain/usecases/delete_item.dart';
+import '../../../domain/usecases/update_item.dart';
 
 part 'items_management_event.dart';
 part 'items_management_state.dart';
@@ -26,7 +26,7 @@ enum ItemsMessage {
   itemInUse,
 }
 
-@lazySingleton
+@injectable
 class ItemsManagementBloc
     extends Bloc<ItemsManagementEvent, ItemsManagementState> {
   late StreamSubscription companyProfileStreamSubscription;

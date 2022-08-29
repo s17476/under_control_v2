@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/items_list.dart';
+
+import '../../domain/entities/item.dart';
+import '../../domain/entities/items_list.dart';
+import 'item_model.dart';
 
 class ItemsListModel extends ItemsList {
   const ItemsListModel({required super.allItems});

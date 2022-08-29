@@ -3,14 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_category/item_category_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/items/items_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/get_localized_unit_name.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
+import '../../../domain/entities/item.dart';
+import '../../blocs/item_category/item_category_bloc.dart';
+import '../get_localized_unit_name.dart';
 
 class AddItemSummaryCard extends StatelessWidget {
   const AddItemSummaryCard({

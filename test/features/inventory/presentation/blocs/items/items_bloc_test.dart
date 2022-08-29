@@ -5,9 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
 import 'package:under_control_v2/features/inventory/data/models/items_stream_model.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/get_items_stream.dart';
 import 'package:under_control_v2/features/inventory/presentation/blocs/items/items_bloc.dart';
 
@@ -22,18 +20,18 @@ void main() {
 
   const companyId = 'companyId';
 
-  const tItemModel = ItemModel(
-    id: 'id',
-    name: 'name',
-    description: 'description',
-    category: 'category',
-    itemPhoto: 'itemPhoto',
-    itemCode: 'itemCode',
-    sparePartFor: [],
-    itemUnit: ItemUnit.kg,
-    locations: [],
-    amountInLocations: [],
-  );
+  // const tItemModel = ItemModel(
+  //   id: 'id',
+  //   name: 'name',
+  //   description: 'description',
+  //   category: 'category',
+  //   itemPhoto: 'itemPhoto',
+  //   itemCode: 'itemCode',
+  //   sparePartFor: [],
+  //   itemUnit: ItemUnit.kg,
+  //   locations: [],
+  //   amountInLocations: [],
+  // );
 
   const tItemsInLocationsParams = ItemsInLocationsParams(
     locations: [],
@@ -77,7 +75,11 @@ void main() {
         build: () => itemsBloc,
         act: (bloc) async {
           bloc.add(
-            GetItemsEvent(companyId: companyId, selectedGroups: const []),
+            GetItemsEvent(
+              companyId: companyId,
+              selectedGroups: const [],
+              selectedLocations: const [],
+            ),
           );
           when(() => mockGetItemsStream(any())).thenAnswer(
             (_) async => Right(
@@ -97,7 +99,11 @@ void main() {
         build: () => itemsBloc,
         act: (bloc) async {
           bloc.add(
-            GetItemsEvent(companyId: companyId, selectedGroups: const []),
+            GetItemsEvent(
+              companyId: companyId,
+              selectedGroups: const [],
+              selectedLocations: const [],
+            ),
           );
           when(() => mockGetItemsStream(any())).thenAnswer(
             (_) async => const Left(DatabaseFailure()),

@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
 import 'package:under_control_v2/features/checklists/domain/repositories/checklists_repository.dart';
-import 'package:under_control_v2/features/checklists/domain/usecases/add_checklist.dart';
 import 'package:under_control_v2/features/checklists/domain/usecases/update_checklist.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';

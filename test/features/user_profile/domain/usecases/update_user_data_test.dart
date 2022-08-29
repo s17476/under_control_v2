@@ -5,7 +5,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 import 'package:under_control_v2/features/user_profile/domain/repositories/user_profile_repository.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/update_user_data.dart';
 

@@ -66,6 +66,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
       Choice(
         title: AppLocalizations.of(context)!.company_details_edit_logo,
         icon: Icons.image,
+        // TODO
         onTap: () => print('image'),
       ),
     ];

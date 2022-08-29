@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_category/item_category_model.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../domain/entities/item_category/items_categories_stream.dart';
 import '../../domain/repositories/item_category_repository.dart';
+import '../models/item_category/item_category_model.dart';
 
 @LazySingleton(as: ItemCategoryRepository)
 class ItemCategoryRepositoryImpl extends ItemCategoryRepository {

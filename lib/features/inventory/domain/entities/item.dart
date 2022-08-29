@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_amount_in_location_model.dart';
+
+import '../../data/models/item_amount_in_location_model.dart';
 
 enum ItemUnit {
   pcs('pcs'),

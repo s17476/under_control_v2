@@ -11,7 +11,6 @@ import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/core/utils/input_validator.dart';
 import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/add_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/add_user_avatar.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/assign_user_to_company.dart';

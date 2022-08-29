@@ -11,7 +11,7 @@ import 'package:under_control_v2/features/company_profile/presentation/blocs/com
 part 'checklist_event.dart';
 part 'checklist_state.dart';
 
-@injectable
+@lazySingleton
 class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
   late StreamSubscription companyProfileStreamSubscription;
   StreamSubscription? checklistsStreamSubscription;
@@ -26,7 +26,7 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
   }) : super(ChecklistEmptyState()) {
     companyProfileStreamSubscription =
         companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded) {
+      if (state is CompanyProfileLoaded && companyId.isEmpty) {
         companyId = state.company.id;
         add(GetAllChecklistsEvent());
       }

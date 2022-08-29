@@ -12,12 +12,11 @@ import '../../../domain/entities/company.dart';
 import '../../../domain/entities/company_users_list.dart';
 import '../../../domain/usecases/fetch_all_company_users.dart';
 import '../../../domain/usecases/get_company_by_id.dart';
-import '../../../domain/usecases/update_company.dart';
 
 part 'company_profile_event.dart';
 part 'company_profile_state.dart';
 
-@lazySingleton
+@injectable
 class CompanyProfileBloc
     extends Bloc<CompanyProfileEvent, CompanyProfileState> {
   late StreamSubscription userProfileStreamSubscription;
@@ -83,7 +82,6 @@ class CompanyProfileBloc
     on<UpdateCompanyUsersEvent>((UpdateCompanyUsersEvent event, emit) async {
       CompanyUsersList usersList = CompanyUsersListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>);
-      print(event.company);
       emit(
         CompanyProfileLoaded(
           companyUsers: usersList,

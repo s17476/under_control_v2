@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
-import 'package:under_control_v2/features/checklists/domain/entities/checkpoint.dart';
 import 'package:under_control_v2/features/checklists/presentation/widgets/add_checkpoint_bottom_modal_sheet.dart';
 import 'package:under_control_v2/features/checklists/presentation/widgets/add_checkpoint_button.dart';
 import 'package:under_control_v2/features/checklists/presentation/widgets/checkpoint_tile.dart';

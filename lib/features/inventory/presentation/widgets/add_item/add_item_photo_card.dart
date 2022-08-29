@@ -1,14 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/overlay_icon_button.dart';
+import '../../../../core/utils/responsive_size.dart';
 
 class AddItemPhotoCard extends StatefulWidget {
   const AddItemPhotoCard({

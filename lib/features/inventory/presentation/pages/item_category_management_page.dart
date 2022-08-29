@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/category_tile.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/show_add_category_modal_bottom_sheet.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/show_snack_bar.dart';
@@ -10,6 +8,8 @@ import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../blocs/item_category/item_category_bloc.dart';
 import '../blocs/item_category_management/item_category_management_bloc.dart';
+import '../widgets/category_tile.dart';
+import '../widgets/show_add_category_modal_bottom_sheet.dart';
 
 class ItemCategoryManagementPage extends StatefulWidget {
   const ItemCategoryManagementPage({Key? key}) : super(key: key);

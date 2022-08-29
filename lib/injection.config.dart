@@ -387,7 +387,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       fetchAllCompanies: get<_i44.FetchAllCompanies>(),
       addCompanyLogo: get<_i83.AddCompanyLogo>(),
       updateCompany: get<_i76.UpdateCompany>()));
-  gh.lazySingleton<_i95.CompanyProfileBloc>(() => _i95.CompanyProfileBloc(
+  gh.factory<_i95.CompanyProfileBloc>(() => _i95.CompanyProfileBloc(
       userProfileBloc: get<_i93.UserProfileBloc>(),
       fetchAllCompanyUsers: get<_i45.FetchAllCompanyUsers>(),
       getCompanyById: get<_i49.GetCompanyById>(),
@@ -403,13 +403,13 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i97.ItemCategoryBloc>(() => _i97.ItemCategoryBloc(
       userProfileBloc: get<_i93.UserProfileBloc>(),
       getItemsCategoriesStream: get<_i50.GetItemsCategoriesStream>()));
-  gh.lazySingleton<_i98.ItemCategoryManagementBloc>(() =>
+  gh.factory<_i98.ItemCategoryManagementBloc>(() =>
       _i98.ItemCategoryManagementBloc(
           companyProfileBloc: get<_i95.CompanyProfileBloc>(),
           addItemCategory: get<_i23.AddItemCategory>(),
           updateItemCategory: get<_i17.UpdateItemCategory>(),
           deleteItemCategory: get<_i43.DeleteItemCategory>()));
-  gh.lazySingleton<_i99.ItemsManagementBloc>(() => _i99.ItemsManagementBloc(
+  gh.factory<_i99.ItemsManagementBloc>(() => _i99.ItemsManagementBloc(
       companyProfileBloc: get<_i95.CompanyProfileBloc>(),
       addItem: get<_i22.AddItem>(),
       deleteItem: get<_i42.DeleteItem>(),
@@ -426,7 +426,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       get<_i95.CompanyProfileBloc>(), get<_i46.FetchNewUsers>()));
   gh.factory<_i102.SuspendedUsersBloc>(() => _i102.SuspendedUsersBloc(
       get<_i95.CompanyProfileBloc>(), get<_i47.FetchSuspendedUsers>()));
-  gh.factory<_i103.ChecklistBloc>(() => _i103.ChecklistBloc(
+  gh.lazySingleton<_i103.ChecklistBloc>(() => _i103.ChecklistBloc(
       companyProfileBloc: get<_i95.CompanyProfileBloc>(),
       getChecklistsStream: get<_i48.GetChecklistStream>()));
   gh.factory<_i104.ChecklistManagementBloc>(() => _i104.ChecklistManagementBloc(
@@ -438,7 +438,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       locationBloc: get<_i100.LocationBloc>(),
       groupBloc: get<_i96.GroupBloc>(),
       userProfileBloc: get<_i93.UserProfileBloc>()));
-  gh.lazySingleton<_i106.ItemsBloc>(() => _i106.ItemsBloc(
+  gh.factory<_i106.ItemsBloc>(() => _i106.ItemsBloc(
       filterBloc: get<_i105.FilterBloc>(),
       getChecklistsStream: get<_i51.GetItemsStream>()));
   return get;

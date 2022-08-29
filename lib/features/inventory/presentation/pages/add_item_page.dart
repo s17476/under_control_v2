@@ -2,23 +2,21 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/items_management/items_management_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/add_item/add_item_summary_card.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
-
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/show_snack_bar.dart';
-import '../../../groups/presentation/widgets/add_group/add_group_name_card.dart';
+import '../../data/models/item_model.dart';
 import '../../domain/entities/item.dart';
 import '../blocs/items/items_bloc.dart';
+import '../blocs/items_management/items_management_bloc.dart';
 import '../widgets/add_item/add_item_card.dart';
 import '../widgets/add_item/add_item_photo_card.dart';
 import '../widgets/add_item/add_item_spare_part_card.dart';
+import '../widgets/add_item/add_item_summary_card.dart';
 
 class AddItemPage extends StatefulWidget {
   const AddItemPage({

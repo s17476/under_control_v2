@@ -4,7 +4,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/company_profile/data/models/company_model.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
 import 'package:under_control_v2/features/company_profile/domain/repositories/company_management_repository.dart';
-import 'package:under_control_v2/features/company_profile/domain/repositories/company_repository.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/update_company.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';

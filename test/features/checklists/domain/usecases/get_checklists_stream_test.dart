@@ -4,10 +4,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
 import 'package:under_control_v2/features/checklists/domain/entities/checklists_stream.dart';
 import 'package:under_control_v2/features/checklists/domain/repositories/checklists_repository.dart';
-import 'package:under_control_v2/features/checklists/domain/usecases/delete_checklist.dart';
 import 'package:under_control_v2/features/checklists/domain/usecases/get_checklists_stream.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
 class MockChecklistsRepository extends Mock implements CheckListsRepository {}
 
