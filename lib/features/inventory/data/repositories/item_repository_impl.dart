@@ -69,7 +69,9 @@ class ItemRepositoryImpl extends ItemRepository {
           .collection('companies')
           .doc(params.companyId)
           .collection('items')
-          .where('locations', arrayContainsAny: params.locations)
+          // TODO
+          // max items <= 10!
+          // .where('locations', arrayContainsAny: params.locations)
           .snapshots();
 
       return Right(ItemsStream(allItems: querySnapshot));

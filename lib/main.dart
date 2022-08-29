@@ -77,7 +77,10 @@ class App extends StatelessWidget
         BlocProvider(create: (context) => getIt<AuthenticationBloc>()),
         BlocProvider(create: (context) => getIt<UserProfileBloc>()),
         BlocProvider(create: (context) => getIt<UserManagementBloc>()),
-        BlocProvider(create: (context) => getIt<CompanyProfileBloc>()),
+        BlocProvider(
+          create: (context) => getIt<CompanyProfileBloc>(),
+          lazy: false,
+        ),
         BlocProvider(create: (context) => getIt<CompanyManagementBloc>()),
         BlocProvider(
           create: (context) => getIt<LocationBloc>(),
@@ -96,9 +99,15 @@ class App extends StatelessWidget
           create: (context) => getIt<ItemCategoryBloc>(),
           lazy: false,
         ),
-        BlocProvider(create: (context) => getIt<ItemCategoryManagementBloc>()),
-        BlocProvider(create: (context) => getIt<ItemsBloc>()),
-        BlocProvider(create: (context) => getIt<ItemsManagementBloc>()),
+        BlocProvider(
+          create: (context) => getIt<ItemCategoryManagementBloc>(),
+          lazy: false,
+        ),
+        BlocProvider(create: (context) => getIt<ItemsBloc>(), lazy: false),
+        BlocProvider(
+          create: (context) => getIt<ItemsManagementBloc>(),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -10,12 +10,14 @@ abstract class ItemsEvent extends Equatable {
 }
 
 class GetItemsEvent extends ItemsEvent {
-  final List<Group> groups;
+  final List<Group> selectedGroups;
+  final List<Location> selectedLocations;
   final String companyId;
   GetItemsEvent({
-    required this.groups,
+    required this.selectedGroups,
+    required this.selectedLocations,
     required this.companyId,
-  }) : super(properties: [groups, companyId]);
+  }) : super(properties: [selectedLocations, selectedGroups, companyId]);
 }
 
 class UpdateItemsListEvent extends ItemsEvent {

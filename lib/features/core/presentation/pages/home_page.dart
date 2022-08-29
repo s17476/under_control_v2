@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/keep_alive_page.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/overlay_menu/overlay_menu.dart';
 
 import '../../../assets/presentation/pages/assets_page.dart';
@@ -181,7 +182,7 @@ class _HomePageState extends State<HomePage>
                   controller: pageController,
                   children: const [
                     TasksPage(),
-                    InventoryPage(),
+                    KeepAlivePage(child: InventoryPage()),
                     DashboardPage(),
                     AssetsPage(),
                     KnowledgeBasePage(),

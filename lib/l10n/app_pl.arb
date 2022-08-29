@@ -226,5 +226,8 @@
     "item_photo": "Zdjęcie przedmiotu (opcjonalne)",
     "item_spare_part": "Część zamienna",
     "item_spare_part_not": "To NIE jest część zamienna",
-    "item_spare_part_yes": "To jest część zamienna"
+    "item_spare_part_yes": "To jest część zamienna",
+    "item_add_error_name_to_short": "Nazwa jest zbyt krótka - musi zawierać conajmniej 2 znaki",
+    "item_add_error_category_not_selected": "Nie wybrano kategorii!",
+    "item_add_error_unit_not_selected": "Nie wybrano jednostki!"
 }

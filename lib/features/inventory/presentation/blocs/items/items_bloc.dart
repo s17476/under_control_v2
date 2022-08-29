@@ -19,21 +19,27 @@ import '../../../data/models/items_list_model.dart';
 part 'items_event.dart';
 part 'items_state.dart';
 
-@injectable
+@lazySingleton
 class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   late StreamSubscription filterStreamSubscription;
   StreamSubscription? itemsStreamSubscription;
   final FilterBloc filterBloc;
   final GetItemsStream getChecklistsStream;
 
+  // czange to load only once after filter changes
+
   ItemsBloc({
     required this.filterBloc,
     required this.getChecklistsStream,
   }) : super(ItemsEmptyState()) {
     filterStreamSubscription = filterBloc.stream.listen((state) {
-      if (state is FilterLoadedState && state.companyId.isNotEmpty) {
+      if (state is FilterLoadedState) {
         add(
-          GetItemsEvent(companyId: state.companyId, groups: state.groups),
+          GetItemsEvent(
+            companyId: state.companyId,
+            selectedGroups: state.groups,
+            selectedLocations: state.locations,
+          ),
         );
       }
     });
@@ -41,11 +47,9 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     on<GetItemsEvent>((event, emit) async {
       emit(ItemsLoadingState());
 
-      final availableLocations = getAvailableLocations(groups: event.groups);
-
       final failureOrItemsStream = await getChecklistsStream(
         ItemsInLocationsParams(
-          locations: availableLocations,
+          locations: const [],
           companyId: event.companyId,
         ),
       );
@@ -61,6 +65,10 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     on<UpdateItemsListEvent>(
       (event, emit) async {
         emit(ItemsLoadingState());
+        //   final availableLocations = getAvailableLocationsForGroups(
+        //   groups: event.selectedGroups,
+        //   locations: event.selectedLocations,
+        // );
         final itemsList = ItemsListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );
@@ -79,21 +87,26 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   }
 
   // gets only locations for the groups, with inventory read premission
-  List<String> getAvailableLocations({required List<Group> groups}) {
+  List<String> getAvailableLocationsForGroups({
+    required List<Group> groups,
+    required List<Location> locations,
+  }) {
     List<String> availableLocations = [];
+
     for (var group in groups) {
       if (group.features
           .where((feature) =>
               (feature.type == FeatureType.inventory && feature.read))
           .isNotEmpty) {
         for (var location in group.locations) {
-          if (!availableLocations.contains(location)) {
+          if (locations.map((loc) => loc.id).contains(location) &&
+              !availableLocations.contains(location)) {
             availableLocations.add(location);
           }
         }
       }
     }
-    print(availableLocations);
+
     return availableLocations;
   }
 }

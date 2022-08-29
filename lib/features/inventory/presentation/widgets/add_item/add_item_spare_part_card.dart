@@ -12,9 +12,13 @@ class AddItemSparePartCard extends StatefulWidget {
   const AddItemSparePartCard({
     Key? key,
     required this.pageController,
+    required this.setIsSparePart,
+    required this.isSparePart,
   }) : super(key: key);
 
   final PageController pageController;
+  final Function(bool) setIsSparePart;
+  final bool isSparePart;
 
   @override
   State<AddItemSparePartCard> createState() => _AddItemSparePartCardState();
@@ -22,15 +26,6 @@ class AddItemSparePartCard extends StatefulWidget {
 
 class _AddItemSparePartCardState extends State<AddItemSparePartCard>
     with ResponsiveSize {
-  // is item a spare part
-  bool isSparePart = false;
-
-  void setIsSparePart(bool value) {
-    setState(() {
-      isSparePart = value;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,7 +53,8 @@ class _AddItemSparePartCardState extends State<AddItemSparePartCard>
                 ),
                 AnimatedPadding(
                   padding: EdgeInsets.only(
-                    top: responsiveSizeVerticalPct(small: isSparePart ? 0 : 30),
+                    top: responsiveSizeVerticalPct(
+                        small: widget.isSparePart ? 0 : 30),
                   ),
                   duration: const Duration(milliseconds: 300),
                   // sellection cards
@@ -66,17 +62,17 @@ class _AddItemSparePartCardState extends State<AddItemSparePartCard>
                     children: [
                       // not a spare part
                       SelectionRadioCard(
-                        onTap: setIsSparePart,
+                        onTap: widget.setIsSparePart,
                         value: false,
-                        groupValue: isSparePart,
+                        groupValue: widget.isSparePart,
                         title:
                             AppLocalizations.of(context)!.item_spare_part_not,
                       ),
                       // spare part
                       SelectionRadioCard(
-                        onTap: setIsSparePart,
+                        onTap: widget.setIsSparePart,
                         value: true,
-                        groupValue: isSparePart,
+                        groupValue: widget.isSparePart,
                         title:
                             AppLocalizations.of(context)!.item_spare_part_yes,
                       ),

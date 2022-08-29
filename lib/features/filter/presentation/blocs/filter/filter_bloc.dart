@@ -63,11 +63,13 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
               if (group.locations.contains(location.id) &&
                   !updatedGroups.contains(group)) {
                 updatedGroups.add(group);
-                break;
               }
             }
           }
-
+          // print('updatedGroups');
+          // print(updatedGroups.map((e) => e.name).toList());
+          // print('locations');
+          // print(event.locations.map((e) => e.name).toList());
           emit(
             FilterLoadedState(
               companyId: companyId,
@@ -89,23 +91,27 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     );
 
     on<UpdateGroupsEvent>((event, emit) async {
+      final locations = state.locations;
       emit(FilterLoadingState());
       List<Group> updatedGroups = [];
       if (locationBloc.state is LocationLoadedState) {
-        for (var location in state.locations) {
+        for (var location in locations) {
           for (var group in event.groups) {
             if (group.locations.contains(location.id) &&
                 !updatedGroups.contains(group)) {
               updatedGroups.add(group);
-              break;
             }
           }
         }
       }
+      // print('updatedGroups');
+      // print(updatedGroups.map((e) => e.name).toList());
+      // print('locations');
+      // print(locations.map((e) => e.name).toList());
       emit(
         FilterLoadedState(
           companyId: companyId,
-          locations: state.locations,
+          locations: locations,
           groups: updatedGroups,
           allPossibleGroups: getAllPossibleGroups(),
         ),
@@ -127,10 +133,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
           if (group.locations.contains(location.id) &&
               !groupsInSelectedLocations.contains(group)) {
             groupsInSelectedLocations.add(group);
-            break;
           }
         }
       }
+
       // gets groups where current user is a member
       List<Group> groupsForUser = [];
       if (userProfileState.userProfile.administrator) {

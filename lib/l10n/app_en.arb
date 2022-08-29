@@ -970,5 +970,17 @@
     "item_spare_part_yes": "This is a spare part",
     "@item_spare_part_yes": {
       "description": "This is spare part"
+    },
+     "item_add_error_name_to_short": "The item name is too short - it must contain at least 2 characters!",
+    "@item_add_error_name_to_short": {
+      "description": "Item - name error"
+    },
+     "item_add_error_category_not_selected": "Item category not selected!",
+    "@item_add_error_category_not_selected": {
+      "description": "Item category not selected"
+    },
+     "item_add_error_unit_not_selected": "Item unit not selected!",
+    "@item_add_error_unit_not_selected": {
+      "description": "Item unit not selected"
     }
 }

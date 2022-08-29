@@ -26,7 +26,7 @@ enum ItemCategoryMessage {
   itemCategoryNotEmpty,
 }
 
-@injectable
+@lazySingleton
 class ItemCategoryManagementBloc
     extends Bloc<ItemCategoryManagementEvent, ItemCategoryManagementState> {
   late StreamSubscription companyProfileStreamSubscription;

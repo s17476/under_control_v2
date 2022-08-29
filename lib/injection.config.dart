@@ -19,7 +19,7 @@ import 'features/authentication/data/repositories/authentication_repository_impl
 import 'features/authentication/domain/repositories/authentication_repository.dart'
     as _i31;
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i106;
+    as _i107;
 import 'features/authentication/domain/usecases/auto_signin.dart' as _i33;
 import 'features/authentication/domain/usecases/check_email_verification.dart'
     as _i34;
@@ -41,9 +41,9 @@ import 'features/checklists/domain/usecases/delete_checklist.dart' as _i41;
 import 'features/checklists/domain/usecases/get_checklists_stream.dart' as _i48;
 import 'features/checklists/domain/usecases/update_checklist.dart' as _i75;
 import 'features/checklists/presentation/blocs/checklist/checklist_bloc.dart'
-    as _i102;
-import 'features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart'
     as _i103;
+import 'features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart'
+    as _i104;
 import 'features/company_profile/data/repositories/company_management_repository_impl.dart'
     as _i38;
 import 'features/company_profile/data/repositories/company_repository_impl.dart'
@@ -69,13 +69,13 @@ import 'features/company_profile/presentation/blocs/company_management/company_m
 import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart'
     as _i95;
 import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dart'
-    as _i100;
-import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
     as _i101;
-import 'features/core/injectable_modules/injectable_modules.dart' as _i107;
+import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
+    as _i102;
+import 'features/core/injectable_modules/injectable_modules.dart' as _i108;
 import 'features/core/network/network_info.dart' as _i14;
 import 'features/core/utils/input_validator.dart' as _i8;
-import 'features/filter/presentation/blocs/filter/filter_bloc.dart' as _i104;
+import 'features/filter/presentation/blocs/filter/filter_bloc.dart' as _i105;
 import 'features/groups/data/datasources/group_local_data_source.dart' as _i54;
 import 'features/groups/data/datasources/group_remote_data_source.dart' as _i7;
 import 'features/groups/data/repositories/group_repository_impl.dart' as _i56;
@@ -106,7 +106,9 @@ import 'features/inventory/presentation/blocs/item_category/item_category_bloc.d
     as _i97;
 import 'features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart'
     as _i98;
-import 'features/inventory/presentation/blocs/items/items_bloc.dart' as _i105;
+import 'features/inventory/presentation/blocs/items/items_bloc.dart' as _i106;
+import 'features/inventory/presentation/blocs/items_management/items_management_bloc.dart'
+    as _i99;
 import 'features/locations/data/datasources/location_local_data_source.dart'
     as _i57;
 import 'features/locations/data/datasources/location_remote_data_source.dart'
@@ -122,7 +124,7 @@ import 'features/locations/domain/usecases/fetch_all_locations.dart' as _i91;
 import 'features/locations/domain/usecases/try_to_get_cached_location.dart'
     as _i70;
 import 'features/locations/domain/usecases/update_location.dart' as _i78;
-import 'features/locations/presentation/blocs/bloc/location_bloc.dart' as _i99;
+import 'features/locations/presentation/blocs/bloc/location_bloc.dart' as _i100;
 import 'features/user_profile/data/repositories/user_files_repository_impl.dart'
     as _i19;
 import 'features/user_profile/data/repositories/user_profile_repository_impl.dart'
@@ -385,7 +387,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       fetchAllCompanies: get<_i44.FetchAllCompanies>(),
       addCompanyLogo: get<_i83.AddCompanyLogo>(),
       updateCompany: get<_i76.UpdateCompany>()));
-  gh.factory<_i95.CompanyProfileBloc>(() => _i95.CompanyProfileBloc(
+  gh.lazySingleton<_i95.CompanyProfileBloc>(() => _i95.CompanyProfileBloc(
       userProfileBloc: get<_i93.UserProfileBloc>(),
       fetchAllCompanyUsers: get<_i45.FetchAllCompanyUsers>(),
       getCompanyById: get<_i49.GetCompanyById>(),
@@ -401,13 +403,18 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i97.ItemCategoryBloc>(() => _i97.ItemCategoryBloc(
       userProfileBloc: get<_i93.UserProfileBloc>(),
       getItemsCategoriesStream: get<_i50.GetItemsCategoriesStream>()));
-  gh.factory<_i98.ItemCategoryManagementBloc>(() =>
+  gh.lazySingleton<_i98.ItemCategoryManagementBloc>(() =>
       _i98.ItemCategoryManagementBloc(
           companyProfileBloc: get<_i95.CompanyProfileBloc>(),
           addItemCategory: get<_i23.AddItemCategory>(),
           updateItemCategory: get<_i17.UpdateItemCategory>(),
           deleteItemCategory: get<_i43.DeleteItemCategory>()));
-  gh.lazySingleton<_i99.LocationBloc>(() => _i99.LocationBloc(
+  gh.lazySingleton<_i99.ItemsManagementBloc>(() => _i99.ItemsManagementBloc(
+      companyProfileBloc: get<_i95.CompanyProfileBloc>(),
+      addItem: get<_i22.AddItem>(),
+      deleteItem: get<_i42.DeleteItem>(),
+      updateItem: get<_i16.UpdateItem>()));
+  gh.lazySingleton<_i100.LocationBloc>(() => _i100.LocationBloc(
       companyProfileBloc: get<_i95.CompanyProfileBloc>(),
       addLocation: get<_i85.AddLocation>(),
       cacheLocation: get<_i88.CacheLocation>(),
@@ -415,35 +422,35 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       fetchAllLocations: get<_i91.FetchAllLocations>(),
       tryToGetCachedLocation: get<_i70.TryToGetCachedLocation>(),
       updateLocation: get<_i78.UpdateLocation>()));
-  gh.factory<_i100.NewUsersBloc>(() => _i100.NewUsersBloc(
+  gh.factory<_i101.NewUsersBloc>(() => _i101.NewUsersBloc(
       get<_i95.CompanyProfileBloc>(), get<_i46.FetchNewUsers>()));
-  gh.factory<_i101.SuspendedUsersBloc>(() => _i101.SuspendedUsersBloc(
+  gh.factory<_i102.SuspendedUsersBloc>(() => _i102.SuspendedUsersBloc(
       get<_i95.CompanyProfileBloc>(), get<_i47.FetchSuspendedUsers>()));
-  gh.factory<_i102.ChecklistBloc>(() => _i102.ChecklistBloc(
+  gh.factory<_i103.ChecklistBloc>(() => _i103.ChecklistBloc(
       companyProfileBloc: get<_i95.CompanyProfileBloc>(),
       getChecklistsStream: get<_i48.GetChecklistStream>()));
-  gh.factory<_i103.ChecklistManagementBloc>(() => _i103.ChecklistManagementBloc(
+  gh.factory<_i104.ChecklistManagementBloc>(() => _i104.ChecklistManagementBloc(
       companyProfileBloc: get<_i95.CompanyProfileBloc>(),
       addChecklist: get<_i81.AddChecklist>(),
       updateChecklist: get<_i75.UpdateChecklist>(),
       deleteChecklist: get<_i41.DeleteChecklist>()));
-  gh.factory<_i104.FilterBloc>(() => _i104.FilterBloc(
-      locationBloc: get<_i99.LocationBloc>(),
+  gh.factory<_i105.FilterBloc>(() => _i105.FilterBloc(
+      locationBloc: get<_i100.LocationBloc>(),
       groupBloc: get<_i96.GroupBloc>(),
       userProfileBloc: get<_i93.UserProfileBloc>()));
-  gh.factory<_i105.ItemsBloc>(() => _i105.ItemsBloc(
-      filterBloc: get<_i104.FilterBloc>(),
+  gh.lazySingleton<_i106.ItemsBloc>(() => _i106.ItemsBloc(
+      filterBloc: get<_i105.FilterBloc>(),
       getChecklistsStream: get<_i51.GetItemsStream>()));
   return get;
 }
 
-class _$DataConnectionCheckerModule extends _i106.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i107.DataConnectionCheckerModule {}
 
 class _$FirebaseAuthenticationService
-    extends _i106.FirebaseAuthenticationService {}
+    extends _i107.FirebaseAuthenticationService {}
 
-class _$FirebaseFirestoreService extends _i107.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i108.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i107.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i108.FirebaseStorageService {}
 
-class _$SharedPreferencesService extends _i107.SharedPreferencesService {}
+class _$SharedPreferencesService extends _i108.SharedPreferencesService {}

@@ -108,6 +108,7 @@ class AddItemCard extends StatelessWidget {
                       const SizedBox(
                         height: 12,
                       ),
+                      // unit selection
                       ItemUnitDropdownButton(
                         selectedUnit: itemUnit,
                         onSelected: setItemUnit,

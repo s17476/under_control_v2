@@ -24,5 +24,8 @@ class DeleteItemEvent extends ItemsManagementEvent {
 }
 
 class UpdateItemEvent extends ItemsManagementEvent {
-  const UpdateItemEvent({required super.item});
+  const UpdateItemEvent({
+    required super.item,
+    super.itemPhoto,
+  });
 }

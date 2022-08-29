@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/inventory/presentation/blocs/items_management/items_management_bloc.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/add_item/add_item_summary_card.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 
@@ -43,8 +45,16 @@ class _AddItemPageState extends State<AddItemPage> {
   final itemCodeTexEditingController = TextEditingController();
   String category = '';
   String itemUnit = '';
+  bool isSparePart = false;
+  List<String> sparePartFor = [];
 
   File? itemImage;
+
+  void setIsSparePart(bool value) {
+    setState(() {
+      isSparePart = value;
+    });
+  }
 
   void setImage(ImageSource souruce) async {
     final picker = ImagePicker();
@@ -92,76 +102,72 @@ class _AddItemPageState extends State<AddItemPage> {
     super.didChangeDependencies();
   }
 
-  // add new group
-  // void addNewGroup(BuildContext context) {
-  //   String errorMessage = '';
-  //   // group name validation
-  //   if (!_formKey.currentState!.validate()) {
-  //     errorMessage = AppLocalizations.of(context)!
-  //         .group_management_add_error_name_to_short;
-  //   } else {
-  //     // locations selection validation
-  //     if (selectedLocations.isEmpty) {
-  //       errorMessage = AppLocalizations.of(context)!
-  //           .group_management_add_error_no_location_selected;
-  //     } else {
-  //       // premissions validation
-  //       bool isAtLeastOneFeatureSelected = false;
-  //       for (var feature in features) {
-  //         if (feature.create ||
-  //             feature.delete ||
-  //             feature.edit ||
-  //             feature.read) {
-  //           isAtLeastOneFeatureSelected = true;
-  //         }
-  //       }
-  //       if (!isAtLeastOneFeatureSelected) {
-  //         errorMessage = AppLocalizations.of(context)!
-  //             .group_management_add_error_no_premission_selected;
-  //         // group name validation
-  //       } else if (group == null) {
-  //         final currentState = context.read<GroupBloc>().state;
-  //         if (currentState is GroupLoadedState) {
-  //           final tmpGroups = currentState.allGroups.allGroups.where(
-  //               (group) => group.name == nameTexEditingController.text.trim());
-  //           if (tmpGroups.isNotEmpty) {
-  //             errorMessage = AppLocalizations.of(context)!
-  //                 .group_management_add_error_name_exists;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
+  void addNewItem(BuildContext context) {
+    String errorMessage = '';
+    // item name validation
+    if (!_formKey.currentState!.validate()) {
+      errorMessage = AppLocalizations.of(context)!.item_add_error_name_to_short;
+    } else {
+      // category selection validation
+      if (category.isEmpty) {
+        errorMessage =
+            AppLocalizations.of(context)!.item_add_error_category_not_selected;
+      } else {
+        // item unit selection validation
 
-  //   // shows SnackBar if validation error occures
-  //   if (errorMessage.isNotEmpty) {
-  //     showSnackBar(
-  //       context: context,
-  //       message: errorMessage,
-  //       isErrorMessage: true,
-  //     );
-  //     // saves group to DB if no error
-  //   } else {
-  //     final newGroup = GroupModel(
-  //       id: (group != null) ? group!.id : '',
-  //       name: nameTexEditingController.text,
-  //       description: descriptionTexEditingController.text,
-  //       groupAdministrators: const [],
-  //       locations: totalSelectedLocations,
-  //       features: features,
-  //     );
+        if (itemUnit.isEmpty) {
+          errorMessage =
+              AppLocalizations.of(context)!.item_add_error_unit_not_selected;
+        } else if (item == null) {
+          final currentState = context.read<ItemsBloc>().state;
+          if (currentState is ItemsLoadedState) {
+            final tmpItems = currentState.allItems.allItems
+                .where((i) => i.name == nameTexEditingController.text.trim());
+            if (tmpItems.isNotEmpty) {
+              errorMessage = AppLocalizations.of(context)!
+                  .group_management_add_error_name_exists;
+            }
+          }
+        }
+      }
+    }
 
-  //     if (group != null) {
-  //       context.read<GroupBloc>().add(UpdateGroupEvent(group: newGroup));
-  //     } else {
-  //       context.read<GroupBloc>().add(
-  //             AddGroupEvent(group: newGroup),
-  //           );
-  //     }
+    // shows SnackBar if validation error occures
+    if (errorMessage.isNotEmpty) {
+      showSnackBar(
+        context: context,
+        message: errorMessage,
+        isErrorMessage: true,
+      );
+      // saves group to DB if no error
+    } else {
+      final newItem = ItemModel(
+        id: item != null ? item!.id : '',
+        name: nameTexEditingController.text,
+        description: descriptionTexEditingController.text,
+        category: category,
+        itemCode: itemCodeTexEditingController.text,
+        itemPhoto: '',
+        itemUnit: ItemUnit.fromString(itemUnit),
+        amountInLocations: const [],
+        locations: const [],
+        sparePartFor: sparePartFor,
+      );
 
-  //     Navigator.pop(context);
-  //   }
-  // }
+      if (item != null) {
+        context.read<ItemsManagementBloc>().add(UpdateItemEvent(
+              item: newItem,
+              itemPhoto: itemImage,
+            ));
+      } else {
+        context.read<ItemsManagementBloc>().add(
+              AddItemEvent(item: newItem, itemPhoto: itemImage),
+            );
+      }
+
+      Navigator.pop(context);
+    }
+  }
 
   void setCategory(String value) {
     setState(() {
@@ -201,7 +207,20 @@ class _AddItemPageState extends State<AddItemPage> {
       KeepAlivePage(
         child: AddItemSparePartCard(
           pageController: pageController,
+          setIsSparePart: setIsSparePart,
+          isSparePart: isSparePart,
         ),
+      ),
+      AddItemSummaryCard(
+        pageController: pageController,
+        titleTexEditingController: nameTexEditingController,
+        descriptionTexEditingController: descriptionTexEditingController,
+        sparePartFor: sparePartFor,
+        addNewItem: addNewItem,
+        category: category,
+        itemUnit: itemUnit,
+        isSparePart: isSparePart,
+        itemImage: itemImage,
       ),
       // AddGroupFeaturesCard(
       //   pageController: pageController,

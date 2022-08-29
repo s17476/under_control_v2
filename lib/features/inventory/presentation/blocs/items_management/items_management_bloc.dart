@@ -26,7 +26,7 @@ enum ItemsMessage {
   itemInUse,
 }
 
-@injectable
+@lazySingleton
 class ItemsManagementBloc
     extends Bloc<ItemsManagementEvent, ItemsManagementState> {
   late StreamSubscription companyProfileStreamSubscription;
@@ -60,16 +60,20 @@ class ItemsManagementBloc
           ),
         );
         await failureOrString.fold(
-          (failure) async => emit(
-            ItemsManagementErrorState(
-              message: ItemsMessage.itemNotAdded,
-            ),
-          ),
-          (_) async => emit(
-            ItemsManagementSuccessState(
-              message: ItemsMessage.itemAdded,
-            ),
-          ),
+          (failure) async {
+            emit(
+              ItemsManagementErrorState(
+                message: ItemsMessage.itemNotAdded,
+              ),
+            );
+          },
+          (_) async {
+            emit(
+              ItemsManagementSuccessState(
+                message: ItemsMessage.itemAdded,
+              ),
+            );
+          },
         );
       },
     );
