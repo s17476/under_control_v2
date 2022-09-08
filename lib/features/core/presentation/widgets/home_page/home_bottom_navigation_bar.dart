@@ -84,7 +84,7 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
         labelStyle: labelTextStyle,
       ),
       TabItem(
-        Icons.auto_awesome_mosaic_outlined,
+        Icons.apps,
         AppLocalizations.of(context)!.bottom_bar_title_inventory,
         Colors.orange,
         labelStyle: labelTextStyle,

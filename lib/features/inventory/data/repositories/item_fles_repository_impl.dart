@@ -23,8 +23,7 @@ class ItemFilesRepositoryImpl extends ItemFilesRepository {
           .ref()
           .child(params.companyId)
           .child('items')
-          .child(params.item.id)
-          .child('photo.jpg');
+          .child('${params.item.name}.jpg');
       await imageReference.putFile(params.photo!);
 
       final imageUrl = await imageReference.getDownloadURL();
@@ -45,8 +44,7 @@ class ItemFilesRepositoryImpl extends ItemFilesRepository {
           .ref()
           .child(params.companyId)
           .child('items')
-          .child(params.item.id)
-          .child('photo.jpg');
+          .child('${params.item.name}.jpg');
       await imageReference.delete();
 
       return Right(VoidResult());
@@ -69,8 +67,7 @@ class ItemFilesRepositoryImpl extends ItemFilesRepository {
           .ref()
           .child(params.companyId)
           .child('items')
-          .child(params.item.id)
-          .child('photo.jpg');
+          .child('${params.item.name}.jpg');
       await imageReference.putFile(params.photo!);
 
       return Right(VoidResult());

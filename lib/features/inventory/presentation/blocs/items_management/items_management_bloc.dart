@@ -4,6 +4,10 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/add_item_photo.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/delete_item_photo.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/update_item_photo.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -34,10 +38,16 @@ class ItemsManagementBloc
   final AddItem addItem;
   final DeleteItem deleteItem;
   final UpdateItem updateItem;
+  final AddItemPhoto addItemPhoto;
+  final DeleteItemPhoto deleteItemPhoto;
+  final UpdateItemPhoto updateItemPhoto;
 
   String companyId = '';
 
   ItemsManagementBloc({
+    required this.addItemPhoto,
+    required this.deleteItemPhoto,
+    required this.updateItemPhoto,
     required this.companyProfileBloc,
     required this.addItem,
     required this.deleteItem,
@@ -53,9 +63,23 @@ class ItemsManagementBloc
     on<AddItemEvent>(
       (event, emit) async {
         emit(ItemsManagementLoadingState());
-        final failureOrString = await addItem(
+        ItemModel item = event.item as ItemModel;
+        final failureOrImageUrl = await addItemPhoto(
           ItemParams(
             item: event.item,
+            companyId: companyId,
+            photo: event.itemPhoto,
+          ),
+        );
+        failureOrImageUrl.fold(
+          (failure) => null,
+          (imageUrl) {
+            item = item.copyWith(itemPhoto: imageUrl);
+          },
+        );
+        final failureOrString = await addItem(
+          ItemParams(
+            item: item,
             companyId: companyId,
           ),
         );
@@ -105,9 +129,23 @@ class ItemsManagementBloc
     on<UpdateItemEvent>(
       (event, emit) async {
         emit(ItemsManagementLoadingState());
-        final failureOrVoidResult = await updateItem(
+        ItemModel item = event.item as ItemModel;
+        final failureOrImageUrl = await addItemPhoto(
           ItemParams(
             item: event.item,
+            companyId: companyId,
+            photo: event.itemPhoto,
+          ),
+        );
+        failureOrImageUrl.fold(
+          (failure) => null,
+          (imageUrl) {
+            item = item.copyWith(itemPhoto: imageUrl);
+          },
+        );
+        final failureOrVoidResult = await updateItem(
+          ItemParams(
+            item: item,
             companyId: companyId,
           ),
         );

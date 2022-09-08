@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:under_control_v2/features/inventory/presentation/pages/item_category_management_page.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/item_details_page.dart';
 
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
@@ -175,6 +176,7 @@ class App extends StatelessWidget
           ItemCategoryManagementPage.routeName: (context) =>
               const ItemCategoryManagementPage(),
           AddItemPage.routeName: (context) => const AddItemPage(),
+          ItemDetailsPage.routeName: (context) => const ItemDetailsPage(),
         },
         localizationsDelegates: const [
           AppLocalizations.delegate,

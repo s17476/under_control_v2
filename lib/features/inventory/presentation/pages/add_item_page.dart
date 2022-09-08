@@ -145,7 +145,7 @@ class _AddItemPageState extends State<AddItemPage> {
         description: descriptionTexEditingController.text,
         category: category,
         itemCode: itemCodeTexEditingController.text,
-        itemPhoto: '',
+        itemPhoto: item != null ? item!.itemPhoto : '',
         itemUnit: ItemUnit.fromString(itemUnit),
         amountInLocations: const [],
         locations: const [],
@@ -159,7 +159,10 @@ class _AddItemPageState extends State<AddItemPage> {
             ));
       } else {
         context.read<ItemsManagementBloc>().add(
-              AddItemEvent(item: newItem, itemPhoto: itemImage),
+              AddItemEvent(
+                item: newItem,
+                itemPhoto: itemImage,
+              ),
             );
       }
 
@@ -200,6 +203,7 @@ class _AddItemPageState extends State<AddItemPage> {
           setImage: setImage,
           deleteImage: deleteImage,
           image: itemImage,
+          imageUrl: item?.itemPhoto,
         ),
       ),
       KeepAlivePage(
@@ -220,18 +224,6 @@ class _AddItemPageState extends State<AddItemPage> {
         isSparePart: isSparePart,
         itemImage: itemImage,
       ),
-      // AddGroupFeaturesCard(
-      //   pageController: pageController,
-      //   features: features,
-      // ),
-      // AddGroupSummaryCard(
-      //   pageController: pageController,
-      //   addNewGroup: addNewGroup,
-      //   nameTexEditingController: nameTexEditingController,
-      //   descriptionTexEditingController: descriptionTexEditingController,
-      //   totalSelectedLocations: totalSelectedLocations,
-      //   features: features,
-      // ),
     ];
 
     return Scaffold(body: BlocBuilder<ItemsBloc, ItemsState>(

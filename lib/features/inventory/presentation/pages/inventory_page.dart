@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/item_tile.dart';
 
 import '../../../core/utils/show_snack_bar.dart';
 import '../blocs/items/items_bloc.dart';
@@ -50,15 +51,19 @@ class InventoryPage extends StatelessWidget {
               BlocBuilder<ItemsBloc, ItemsState>(
                 builder: (context, state) {
                   if (state is ItemsLoadedState) {
+                    if (state.allItems.allItems.isEmpty) {
+                      return const Center(
+                        child: Text('No added items yet'),
+                      );
+                    }
                     final filteredItems = state.allItems.allItems;
                     return ListView.builder(
+                      padding: const EdgeInsets.only(top: 2),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: filteredItems.length,
                       itemBuilder: (context, index) {
-                        return Card(
-                          child: Text(filteredItems[index].name),
-                        );
+                        return ItemTile(item: filteredItems[index]);
                       },
                     );
                   } else {

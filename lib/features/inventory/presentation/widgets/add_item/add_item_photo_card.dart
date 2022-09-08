@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +15,7 @@ class AddItemPhotoCard extends StatefulWidget {
     Key? key,
     required this.pageController,
     this.image,
+    this.imageUrl,
     required this.setImage,
     required this.deleteImage,
   }) : super(key: key);
@@ -21,6 +23,8 @@ class AddItemPhotoCard extends StatefulWidget {
   final PageController pageController;
 
   final File? image;
+
+  final String? imageUrl;
 
   final Function(
     ImageSource souruce,
@@ -61,8 +65,7 @@ class _AddItemPhotoCardState extends State<AddItemPhotoCard>
                   const Divider(
                     thickness: 1.5,
                   ),
-                  IndexedStack(
-                    index: widget.image == null ? 0 : 1,
+                  Stack(
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -71,6 +74,21 @@ class _AddItemPhotoCardState extends State<AddItemPhotoCard>
                           fit: BoxFit.fill,
                         ),
                       ),
+                      if (widget.imageUrl != null)
+                        SizedBox(
+                          width: responsiveSizePct(small: 100),
+                          height: responsiveSizePct(small: 100),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.imageUrl!,
+                            placeholder: (context, url) => const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                const SizedBox(),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       if (widget.image != null)
                         SizedBox(
                           width: responsiveSizePct(small: 100),
