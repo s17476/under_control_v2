@@ -232,7 +232,7 @@ class UserManagementBloc
         emit(UserManagementLoading());
         // saves avatar in DB
         final failureOrAvatarUrl = await addUserAvatar(
-          AvatarParams(userId: event.userProfile.id, avatar: event.avatar!),
+          AvatarParams(id: event.userProfile.id, avatar: event.avatar!),
         );
         await failureOrAvatarUrl.fold(
           (failure) async => UserManagementError(message: failure.message),

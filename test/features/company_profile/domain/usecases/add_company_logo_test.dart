@@ -24,7 +24,7 @@ void main() {
   );
 
   setUpAll(() {
-    registerFallbackValue(AvatarParams(userId: 'userId', avatar: File('')));
+    registerFallbackValue(AvatarParams(id: 'userId', avatar: File('')));
   });
 
   File file = File('assets/undercontrol-adaptine.png');
@@ -36,8 +36,7 @@ void main() {
       when(() => repository.addCompanyLogo(any()))
           .thenAnswer((_) async => const Right(''));
       // act
-      final result =
-          await usecase(AvatarParams(userId: 'userId', avatar: file));
+      final result = await usecase(AvatarParams(id: 'userId', avatar: file));
       // assert
       expect(result, const Right<Failure, String>(''));
     },

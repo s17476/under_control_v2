@@ -42,9 +42,9 @@ class CompanyManagementRepositoryImpl extends CompanyManagementRepository {
       final logoReferance = firebaseStorage
           .ref()
           .child('companies')
-          .child(params.userId)
+          .child(params.id)
           .child('logo')
-          .child('${params.userId}.jpg');
+          .child('${params.id}.jpg');
       await logoReferance.putFile(params.avatar);
 
       final logoUrl = await logoReferance.getDownloadURL();

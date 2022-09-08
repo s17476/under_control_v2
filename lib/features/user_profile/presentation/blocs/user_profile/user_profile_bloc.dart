@@ -73,7 +73,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
           (_) async {
             // add avatar to cloud storage
             final failureOrAvatarString = await addUserAvatar(
-                AvatarParams(userId: userId, avatar: event.avatar!));
+                AvatarParams(id: userId, avatar: event.avatar!));
             await failureOrAvatarString.fold(
               (failure) async => emit(
                 DatabaseErrorUserProfile(message: failure.message),

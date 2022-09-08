@@ -94,7 +94,7 @@ class CompanyManagementBloc
         // adds company logo
         final failureOrLogoUrl = await addCompanyLogo(
           AvatarParams(
-            userId: event.company.id,
+            id: event.company.id,
             avatar: event.logo!,
           ),
         );

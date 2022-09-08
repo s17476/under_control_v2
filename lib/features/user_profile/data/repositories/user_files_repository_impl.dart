@@ -18,7 +18,7 @@ class UserFilesRepositoryImpl extends UserFilesRepository {
   Future<Either<Failure, String>> addUserAvatar(AvatarParams params) async {
     try {
       final avatarReference =
-          firebaseStorage.ref().child('avatars').child('${params.userId}.jpg');
+          firebaseStorage.ref().child('avatars').child('${params.id}.jpg');
       await avatarReference.putFile(params.avatar);
 
       final avatarUrl = await avatarReference.getDownloadURL();

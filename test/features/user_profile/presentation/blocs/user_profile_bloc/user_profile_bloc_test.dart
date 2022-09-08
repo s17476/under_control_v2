@@ -107,7 +107,7 @@ void main() {
     );
     registerFallbackValue(
       AvatarParams(
-        userId: 'userId',
+        id: 'userId',
         avatar: File(''),
       ),
     );

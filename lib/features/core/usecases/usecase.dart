@@ -101,16 +101,16 @@ class AssignGroupAdminParams extends Equatable {
 }
 
 class AvatarParams extends Equatable {
-  final String userId;
+  final String id;
   final File avatar;
 
   const AvatarParams({
-    required this.userId,
+    required this.id,
     required this.avatar,
   });
 
   @override
-  List<Object> get props => [userId, avatar];
+  List<Object> get props => [id, avatar];
 }
 
 class LocationParams extends Equatable {
@@ -167,10 +167,12 @@ class ChecklistParams extends Equatable {
 
 class ItemParams extends Equatable {
   final Item item;
+  final File? photo;
   final String companyId;
 
   const ItemParams({
     required this.item,
+    this.photo,
     required this.companyId,
   });
 
