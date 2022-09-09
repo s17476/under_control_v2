@@ -182,18 +182,18 @@ class ItemParams extends Equatable {
 }
 
 class ItemActionParams extends Equatable {
-  final Item item;
+  final Item updatedItem;
   final ItemAction itemAction;
   final String companyId;
 
   const ItemActionParams({
-    required this.item,
+    required this.updatedItem,
     required this.itemAction,
     required this.companyId,
   });
 
   @override
-  List<Object> get props => [item, itemAction, companyId];
+  List<Object> get props => [updatedItem, itemAction, companyId];
 }
 
 class ItemsInLocationsParams extends Equatable {

@@ -41,7 +41,7 @@ void main() {
   );
 
   final tItemActionParams = ItemActionParams(
-    item: tItem,
+    updatedItem: tItem,
     itemAction: tItemAction,
     companyId: companyId,
   );
