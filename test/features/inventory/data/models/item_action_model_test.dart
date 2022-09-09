@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_action_model.dart';
+import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
 

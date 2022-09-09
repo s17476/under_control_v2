@@ -1,6 +1,6 @@
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
 
-import '../../domain/entities/item.dart';
+import '../../../domain/entities/item.dart';
 
 class ItemActionModel extends ItemAction {
   const ItemActionModel({
