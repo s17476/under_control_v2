@@ -98,16 +98,19 @@ import 'features/inventory/domain/repositories/item_files_repository.dart'
     as _i11;
 import 'features/inventory/domain/repositories/item_repository.dart' as _i13;
 import 'features/inventory/domain/usecases/add_item.dart' as _i25;
-import 'features/inventory/domain/usecases/add_item_category.dart' as _i26;
+import 'features/inventory/domain/usecases/item_category/add_item_category.dart'
+    as _i26;
 import 'features/inventory/domain/usecases/add_item_photo.dart' as _i27;
 import 'features/inventory/domain/usecases/delete_item.dart' as _i46;
-import 'features/inventory/domain/usecases/delete_item_category.dart' as _i47;
+import 'features/inventory/domain/usecases/item_category/delete_item_category.dart'
+    as _i47;
 import 'features/inventory/domain/usecases/delete_item_photo.dart' as _i48;
-import 'features/inventory/domain/usecases/get_items_categories_stream.dart'
+import 'features/inventory/domain/usecases/item_category/get_items_categories_stream.dart'
     as _i55;
 import 'features/inventory/domain/usecases/get_items_stream.dart' as _i56;
 import 'features/inventory/domain/usecases/update_item.dart' as _i18;
-import 'features/inventory/domain/usecases/update_item_category.dart' as _i19;
+import 'features/inventory/domain/usecases/item_category/update_item_category.dart'
+    as _i19;
 import 'features/inventory/domain/usecases/update_item_photo.dart' as _i20;
 import 'features/inventory/presentation/blocs/item_category/item_category_bloc.dart'
     as _i102;

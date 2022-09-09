@@ -6,9 +6,9 @@ import 'package:under_control_v2/features/company_profile/presentation/blocs/com
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_category/item_category_model.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/add_item_category.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/delete_item_category.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/update_item_category.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/item_category/add_item_category.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/item_category/delete_item_category.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/item_category/update_item_category.dart';
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart';
 
 class MockCompanyProfileBloc extends Mock

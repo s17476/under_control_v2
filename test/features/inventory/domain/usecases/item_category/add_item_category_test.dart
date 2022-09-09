@@ -4,15 +4,14 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_category/item_category.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_category/items_categories_stream.dart';
 import 'package:under_control_v2/features/inventory/domain/repositories/item_category_repository.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/get_items_categories_stream.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/item_category/add_item_category.dart';
 
 class MockItemCategoryRepository extends Mock
     implements ItemCategoryRepository {}
 
 void main() {
-  late GetItemsCategoriesStream usecase;
+  late AddItemCategory usecase;
   late MockItemCategoryRepository repository;
 
   const tItemCategoryParams = ItemCategoryParams(
@@ -29,21 +28,20 @@ void main() {
 
   setUp(() {
     repository = MockItemCategoryRepository();
-    usecase = GetItemsCategoriesStream(repository: repository);
+    usecase = AddItemCategory(repository: repository);
   });
 
   group('Inventory', () {
     test(
-      'should return [VoidResult] from repository when GetItemsCategoriesStream is called',
+      'should return [String] from repository when AddItemCategory is called',
       () async {
         // arrange
-        when(() => repository.getItemsCategoriesStream(any())).thenAnswer(
-            (_) async => Right(ItemsCategoriesStream(
-                allItemsCategories: Stream.fromIterable([]))));
+        when(() => repository.addItemCategory(any()))
+            .thenAnswer((_) async => const Right(''));
         // act
-        final result = await usecase('companyId');
+        final result = await usecase(tItemCategoryParams);
         // assert
-        expect(result, isA<Right<Failure, ItemsCategoriesStream>>());
+        expect(result, isA<Right<Failure, String>>());
       },
     );
   });

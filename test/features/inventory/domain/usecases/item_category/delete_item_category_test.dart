@@ -5,13 +5,13 @@ import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_category/item_category.dart';
 import 'package:under_control_v2/features/inventory/domain/repositories/item_category_repository.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/add_item_category.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/item_category/delete_item_category.dart';
 
 class MockItemCategoryRepository extends Mock
     implements ItemCategoryRepository {}
 
 void main() {
-  late AddItemCategory usecase;
+  late DeleteItemCategory usecase;
   late MockItemCategoryRepository repository;
 
   const tItemCategoryParams = ItemCategoryParams(
@@ -28,20 +28,20 @@ void main() {
 
   setUp(() {
     repository = MockItemCategoryRepository();
-    usecase = AddItemCategory(repository: repository);
+    usecase = DeleteItemCategory(repository: repository);
   });
 
   group('Inventory', () {
     test(
-      'should return [String] from repository when AddItemCategory is called',
+      'should return [VoidResult] from repository when DeleteItemCategory is called',
       () async {
         // arrange
-        when(() => repository.addItemCategory(any()))
-            .thenAnswer((_) async => const Right(''));
+        when(() => repository.deleteItemCategory(any()))
+            .thenAnswer((_) async => Right(VoidResult()));
         // act
         final result = await usecase(tItemCategoryParams);
         // assert
-        expect(result, isA<Right<Failure, String>>());
+        expect(result, isA<Right<Failure, VoidResult>>());
       },
     );
   });

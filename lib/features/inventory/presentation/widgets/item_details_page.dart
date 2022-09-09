@@ -6,7 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
+import 'package:under_control_v2/features/inventory/presentation/blocs/item_category/item_category_bloc.dart';
 import 'package:under_control_v2/features/inventory/presentation/pages/add_item_page.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/get_localized_unit_name.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../company_profile/presentation/widgets/user_management_dialogs.dart';
@@ -36,30 +38,19 @@ class ItemDetailsPage extends StatefulWidget {
 }
 
 class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
-  Item? item;
-  late UserProfile currentUser;
-  List<Choice> choices = [];
+  Item? _item;
+  late UserProfile _currentUser;
 
-  bool isPhotoEditorVisible = false;
+  List<Choice> _choices = [];
 
-  void showPhotoEditor() {
-    setState(() {
-      isPhotoEditorVisible = true;
-    });
-  }
-
-  void hidePhotoEditor() {
-    setState(() {
-      isPhotoEditorVisible = false;
-    });
-  }
+  String _category = '';
 
   @override
   void didChangeDependencies() {
     // gets current user
     final currentState = context.read<UserProfileBloc>().state;
     if (currentState is Approved) {
-      currentUser = currentState.userProfile;
+      _currentUser = currentState.userProfile;
     }
     // gets selected item
     final itemId = (ModalRoute.of(context)?.settings.arguments as Item).id;
@@ -69,25 +60,19 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
           .indexWhere((element) => element.id == itemId);
       if (index >= 0) {
         setState(() {
-          item = itemsState.allItems.allItems[index];
+          _item = itemsState.allItems.allItems[index];
         });
         // popup menu items
-        choices = [
+        _choices = [
           // edit item
           Choice(
-            title: AppLocalizations.of(context)!.user_details_edit_avatar,
+            title: AppLocalizations.of(context)!.edit,
             icon: Icons.edit,
             onTap: () => Navigator.pushNamed(
               context,
               AddItemPage.routeName,
-              arguments: item,
+              arguments: _item,
             ),
-          ),
-          // edit item image
-          Choice(
-            title: AppLocalizations.of(context)!.user_details_edit_avatar,
-            icon: Icons.image,
-            onTap: () => showPhotoEditor(),
           ),
         ];
       }
@@ -98,147 +83,242 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
     String appBarTitle = '';
-    if (isPhotoEditorVisible) {
-      appBarTitle = AppLocalizations.of(context)!.user_details_edit_avatar;
-    } else {
-      appBarTitle = AppLocalizations.of(context)!.user_details_title;
-    }
-    return WillPopScope(
-      onWillPop: () async {
-        if (isPhotoEditorVisible) {
-          hidePhotoEditor();
-          return false;
-        }
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor.withAlpha(50),
-          title: Text(appBarTitle),
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarIconBrightness: Brightness.light,
-          ),
-          actions: [
-            // popup menu
-            if (currentUser.administrator)
-              PopupMenuButton<Choice>(
-                onSelected: (Choice choice) {
-                  if (isPhotoEditorVisible) {
-                    hidePhotoEditor();
+
+    appBarTitle = AppLocalizations.of(context)!.item_details_title;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(appBarTitle),
+        actions: [
+          // popup menu
+          if (_currentUser.administrator)
+            PopupMenuButton<Choice>(
+              onSelected: (Choice choice) {
+                choice.onTap();
+              },
+              itemBuilder: (BuildContext context) {
+                return _choices.map((Choice choice) {
+                  return PopupMenuItem<Choice>(
+                    value: choice,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(choice.icon),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          choice.title,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList();
+              },
+            ),
+        ],
+      ),
+      body: _item == null
+          ? const LoadingWidget()
+          : BlocListener<ItemsManagementBloc, ItemsManagementState>(
+              listener: (context, state) {
+                if (state is ItemsManagementSuccessState) {
+                  String message = '';
+                  switch (state.message) {
+                    case ItemsMessage.itemUpdated:
+                      message = AppLocalizations.of(context)!.item_msg_updated;
+                      break;
+
+                    case ItemsMessage.itemNotUpdated:
+                      message =
+                          AppLocalizations.of(context)!.item_msg_not_updated;
+                      break;
+
+                    default:
+                      message = '';
+                      break;
                   }
-                  choice.onTap();
-                },
-                itemBuilder: (BuildContext context) {
-                  return choices.map((Choice choice) {
-                    return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(choice.icon),
-                          const SizedBox(
-                            width: 4,
+                  if (message.isNotEmpty) {
+                    showSnackBar(
+                      context: context,
+                      message: message,
+                      isErrorMessage: state.error,
+                    );
+                  }
+                }
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // photo
+                    if (_item!.itemPhoto.isNotEmpty)
+                      SizedBox(
+                        width: responsiveSizePct(small: 100),
+                        height: responsiveSizePct(small: 100),
+                        child: Hero(
+                          tag: _item!.id,
+                          child: CachedNetworkImage(
+                            imageUrl: _item!.itemPhoto,
+                            placeholder: (context, url) => const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                const SizedBox(),
+                            fit: BoxFit.cover,
                           ),
-                          Text(
-                            choice.title,
-                            overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+
+                    // item data
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          // item name and description
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 8.0,
+                              bottom: 8,
+                              left: 8,
+                              right: 8,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                IconTitleRow(
+                                  icon: Icons.api,
+                                  iconColor: Colors.grey.shade300,
+                                  iconBackground: Colors.black,
+                                  title: AppLocalizations.of(context)!
+                                      .item_details_data,
+                                  titleFontSize: 16,
+                                ),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                // name
+                                Text(
+                                  _item!.name,
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  maxLines: 4,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                // description
+                                Text(
+                                  _item!.name,
+                                  style: const TextStyle(fontSize: 16),
+                                  maxLines: 4,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                // category
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: IconTitleRow(
+                                        icon: Icons.category,
+                                        iconColor: Colors.grey.shade300,
+                                        iconBackground:
+                                            Theme.of(context).primaryColor,
+                                        title: AppLocalizations.of(context)!
+                                            .item_details_category,
+                                        titleFontSize: 16,
+                                      ),
+                                    ),
+                                    BlocBuilder<ItemCategoryBloc,
+                                        ItemCategoryState>(
+                                      builder: (context, state) {
+                                        if (state is ItemCategoryLoadedState) {
+                                          final categoryIdex = state
+                                              .allItemsCategories
+                                              .allItemsCategories
+                                              .indexWhere((element) =>
+                                                  element.id ==
+                                                  _item!.category);
+                                          if (categoryIdex >= 0) {
+                                            return Text(
+                                              state
+                                                  .allItemsCategories
+                                                  .allItemsCategories[
+                                                      categoryIdex]
+                                                  .name,
+                                              style:
+                                                  const TextStyle(fontSize: 16),
+                                            );
+                                          } else {
+                                            return Text(
+                                              AppLocalizations.of(context)!
+                                                  .item_details_category_not_found,
+                                            );
+                                          }
+                                        } else {
+                                          return const CircularProgressIndicator();
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                // unit
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: IconTitleRow(
+                                        icon: Icons.balance,
+                                        iconColor: Colors.grey.shade300,
+                                        iconBackground:
+                                            Theme.of(context).primaryColor,
+                                        title: AppLocalizations.of(context)!
+                                            .item_unit,
+                                        titleFontSize: 16,
+                                      ),
+                                    ),
+                                    Text(
+                                      getLocalizedUnitName(
+                                        context,
+                                        _item!.itemUnit,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Divider(
+                            thickness: 1.5,
+                          ),
+                          //
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 8.0,
+                              bottom: 4,
+                              left: 8,
+                              right: 8,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [],
+                            ),
                           ),
                         ],
                       ),
-                    );
-                  }).toList();
-                },
-              ),
-          ],
-        ),
-        body: item == null
-            ? const LoadingWidget()
-            : BlocListener<ItemsManagementBloc, ItemsManagementState>(
-                listener: (context, state) {
-                  if (state is ItemsManagementSuccessState) {
-                    String message = '';
-                    switch (state.message) {
-                      case ItemsMessage.itemUpdated:
-                        message = 'AppLocalizations.of(context)! updated';
-                        break;
-
-                      case ItemsMessage.itemNotUpdated:
-                        message = 'AppLocalizations.of(context)! Not updated';
-                        break;
-
-                      default:
-                        message = '';
-                        break;
-                    }
-                    if (message.isNotEmpty) {
-                      showSnackBar(
-                        context: context,
-                        message: message,
-                        isErrorMessage: state.error,
-                      );
-                    }
-                  }
-                },
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Stack(
-                    children: [
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            // photo
-                            if (item!.itemPhoto.isNotEmpty)
-                              SizedBox(
-                                width: responsiveSizePct(small: 100),
-                                height: responsiveSizePct(small: 100),
-                                child: Hero(
-                                  tag: item!.id,
-                                  child: CachedNetworkImage(
-                                    imageUrl: item!.itemPhoto,
-                                    placeholder: (context, url) =>
-                                        const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        const SizedBox(),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            // user data
-                            IconTitleRow(
-                              icon: Icons.person,
-                              iconColor: Colors.grey.shade300,
-                              iconBackground: Colors.black,
-                              title: AppLocalizations.of(context)!
-                                  .user_details_data,
-                              titleFontSize: 16,
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-
-                            const Divider(
-                              indent: 8,
-                              endIndent: 8,
-                              thickness: 1.5,
-                            ),
-
-                            // user premissions
-                          ],
-                        ),
-                      ),
-                      // if (isPhotoEditorVisible)
-                      //   AvatarEditorCard(
-                      //     user: user!,
-                      //     onDismiss: hideAvatarEditor,
-                      //   ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-      ),
+            ),
     );
   }
 }

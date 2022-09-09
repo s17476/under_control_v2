@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/item_category/items_categories_list_model.dart';
-import '../../../domain/usecases/get_items_categories_stream.dart';
+import '../../../domain/usecases/item_category/get_items_categories_stream.dart';
 
 part 'item_category_event.dart';
 part 'item_category_state.dart';

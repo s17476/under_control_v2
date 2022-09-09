@@ -8,8 +8,11 @@ import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/add_item.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/add_item_photo.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/delete_item.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/delete_item_photo.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/update_item.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/update_item_photo.dart';
 import 'package:under_control_v2/features/inventory/presentation/blocs/items_management/items_management_bloc.dart';
 
 class MockCompanyProfileBloc extends Mock
@@ -21,12 +24,21 @@ class MockDeleteItem extends Mock implements DeleteItem {}
 
 class MockUpdateItem extends Mock implements UpdateItem {}
 
+class MockAddItemPhoto extends Mock implements AddItemPhoto {}
+
+class MockDeleteItemPhoto extends Mock implements DeleteItemPhoto {}
+
+class MockUpdateItemPhoto extends Mock implements UpdateItemPhoto {}
+
 void main() {
   late MockCompanyProfileBloc mockCompanyProfileBloc;
 
   late MockAddItem mockAddItem;
   late MockDeleteItem mockDeleteItem;
   late MockUpdateItem mockUpdateItem;
+  late MockAddItemPhoto mockAddItemPhoto;
+  late MockDeleteItemPhoto mockDeleteItemPhoto;
+  late MockUpdateItemPhoto mockUpdateItemPhoto;
 
   late ItemsManagementBloc itemsManagementBloc;
 
@@ -56,6 +68,9 @@ void main() {
     mockAddItem = MockAddItem();
     mockDeleteItem = MockDeleteItem();
     mockUpdateItem = MockUpdateItem();
+    mockAddItemPhoto = MockAddItemPhoto();
+    mockDeleteItemPhoto = MockDeleteItemPhoto();
+    mockUpdateItemPhoto = MockUpdateItemPhoto();
 
     when(() => mockCompanyProfileBloc.stream).thenAnswer(
       (_) => Stream.fromFuture(
@@ -68,6 +83,9 @@ void main() {
       addItem: mockAddItem,
       deleteItem: mockDeleteItem,
       updateItem: mockUpdateItem,
+      addItemPhoto: mockAddItemPhoto,
+      deleteItemPhoto: mockDeleteItemPhoto,
+      updateItemPhoto: mockUpdateItemPhoto,
     );
   });
 
@@ -89,6 +107,8 @@ void main() {
         'should emit [ItemManagementSuccessfulStete]',
         build: () => itemsManagementBloc,
         act: (bloc) async {
+          when(() => mockAddItemPhoto(any()))
+              .thenAnswer((_) async => const Right(''));
           when(() => mockAddItem(any()))
               .thenAnswer((_) async => const Right(''));
           bloc.add(const AddItemEvent(item: tItemModel));
@@ -102,6 +122,8 @@ void main() {
         'should emit [ItemManagementErrorStete]',
         build: () => itemsManagementBloc,
         act: (bloc) async {
+          when(() => mockAddItemPhoto(any()))
+              .thenAnswer((_) async => const Right(''));
           when(() => mockAddItem(any())).thenAnswer(
             (_) async => const Left(
               DatabaseFailure(),
@@ -151,6 +173,8 @@ void main() {
         'should emit [ItemManagementSuccessfulStete]',
         build: () => itemsManagementBloc,
         act: (bloc) async {
+          when(() => mockAddItemPhoto(any()))
+              .thenAnswer((_) async => const Right(''));
           when(() => mockUpdateItem(any()))
               .thenAnswer((_) async => Right(VoidResult()));
           bloc.add(const UpdateItemEvent(item: tItemModel));
@@ -164,6 +188,8 @@ void main() {
         'should emit [ItemManagementErrorStete]',
         build: () => itemsManagementBloc,
         act: (bloc) async {
+          when(() => mockAddItemPhoto(any()))
+              .thenAnswer((_) async => const Right(''));
           when(() => mockUpdateItem(any())).thenAnswer(
             (_) async => const Left(
               DatabaseFailure(),

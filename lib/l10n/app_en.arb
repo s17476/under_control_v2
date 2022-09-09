@@ -986,5 +986,37 @@
      "item_add_added_new_msg": "Item added!",
     "@item_add_added_new_msg": {
       "description": "Item added"
+    },
+     "item_details_title": "Item details",
+    "@item_details_title": {
+      "description": "Item details title"
+    },
+     "item_details_data": "Item data",
+    "@item_details_data": {
+      "description": "Item details data"
+    },
+     "item_details_category": "Category",
+    "@item_details_category": {
+      "description": "Item details category"
+    },
+     "item_details_category_not_found": "Category not found",
+    "@item_details_category_not_found": {
+      "description": "Item details category not found"
+    },
+    "item_msg_updated": "Item updated",
+    "@item_msg_updated": {
+      "description": "item - updated msg"
+    },
+    "item_msg_not_updated": "Item NOT updated",
+    "@item_msg_not_updated": {
+      "description": "item - NOT updated msg"
+    },
+    "item_msg_deleted": "Item deleted",
+    "@item_msg_deleted": {
+      "description": "item - delete msg"
+    },
+    "item_msg_not_deleted": "Item NOT deleted",
+    "@item_msg_not_deleted": {
+      "description": "item - NOT deleted msg"
     }
 }

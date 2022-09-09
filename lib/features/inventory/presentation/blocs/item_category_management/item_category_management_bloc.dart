@@ -8,9 +8,9 @@ import '../../../../company_profile/presentation/blocs/company_profile/company_p
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../domain/entities/item_category/item_category.dart';
-import '../../../domain/usecases/add_item_category.dart';
-import '../../../domain/usecases/delete_item_category.dart';
-import '../../../domain/usecases/update_item_category.dart';
+import '../../../domain/usecases/item_category/add_item_category.dart';
+import '../../../domain/usecases/item_category/delete_item_category.dart';
+import '../../../domain/usecases/item_category/update_item_category.dart';
 
 part 'item_category_management_event.dart';
 part 'item_category_management_state.dart';

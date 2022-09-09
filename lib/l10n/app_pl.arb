@@ -230,5 +230,13 @@
     "item_add_error_name_to_short": "Nazwa jest zbyt krótka - musi zawierać conajmniej 2 znaki",
     "item_add_error_category_not_selected": "Nie wybrano kategorii!",
     "item_add_error_unit_not_selected": "Nie wybrano jednostki!",
-    "item_add_added_new_msg": "Dodano przedmiot!"
+    "item_add_added_new_msg": "Dodano przedmiot!",
+    "item_details_title": "Szczegóły przedmiotu",
+    "item_details_data": "Dane przedmiotu",
+    "item_details_category": "Kategoria",
+    "item_details_category_not_found": "Kategoria nie znaleziona",
+    "item_msg_updated": "Przedmiot został zaktualizowany",
+    "item_msg_not_updated": "Przedmiot NIE został zaktualizowany",
+    "item_msg_deleted": "Przedmiot został usunięty",
+    "item_msg_not_deleted": "Przedmiot NIE został usunięty"
 }

@@ -5,7 +5,7 @@ import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_category/item_category.dart';
 import 'package:under_control_v2/features/inventory/domain/repositories/item_category_repository.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/update_item_category.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/item_category/update_item_category.dart';
 
 class MockItemCategoryRepository extends Mock
     implements ItemCategoryRepository {}

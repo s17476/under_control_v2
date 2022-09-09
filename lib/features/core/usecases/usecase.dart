@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
 import 'package:under_control_v2/features/groups/domain/entities/group.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_category/item_category.dart';
 
 import '../../inventory/domain/entities/item.dart';
@@ -178,6 +179,21 @@ class ItemParams extends Equatable {
 
   @override
   List<Object> get props => [item, companyId];
+}
+
+class ItemActionParams extends Equatable {
+  final Item item;
+  final ItemAction itemAction;
+  final String companyId;
+
+  const ItemActionParams({
+    required this.item,
+    required this.itemAction,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [item, itemAction, companyId];
 }
 
 class ItemsInLocationsParams extends Equatable {

@@ -38,8 +38,8 @@ class _AvatarEditorCardState extends State<AvatarEditorCard>
       final pickedFile = await picker.pickImage(
         source: souruce,
         imageQuality: 100,
-        maxHeight: 500,
-        maxWidth: 500,
+        maxHeight: 2000,
+        maxWidth: 2000,
       );
       if (pickedFile != null) {
         setState(() {
