@@ -9,6 +9,7 @@ import 'package:under_control_v2/features/inventory/data/models/item_action/item
 import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
 import 'package:under_control_v2/features/inventory/data/repositories/item_action_repository_impl.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_actions_stream.dart';
 
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
@@ -61,7 +62,7 @@ void main() {
 
     final tItemAction = ItemActionModel(
       id: 'id',
-      title: 'title',
+      type: ItemActionType.add,
       description: 'description',
       ammount: 1,
       itemUnit: ItemUnit.pcs,

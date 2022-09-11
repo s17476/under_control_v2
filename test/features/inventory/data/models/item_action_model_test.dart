@@ -8,7 +8,7 @@ void main() {
 
   final tItemActionModel = ItemActionModel(
     id: 'id',
-    title: 'title',
+    type: ItemActionType.add,
     description: 'description',
     ammount: 0,
     itemUnit: ItemUnit.kg,
@@ -19,7 +19,7 @@ void main() {
   );
 
   final tItemActionModelMap = {
-    'title': 'title',
+    'type': ItemActionType.add.name,
     'description': 'description',
     'ammount': 0,
     'itemUnit': ItemUnit.kg.name,

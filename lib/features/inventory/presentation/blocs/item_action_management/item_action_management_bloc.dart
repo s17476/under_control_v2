@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_amount_in_location_model.dart';
@@ -26,6 +27,7 @@ enum ItemActionMessage {
   notDeleted,
 }
 
+@injectable
 class ItemActionManagementBloc
     extends Bloc<ItemActionManagementEvent, ItemActionManagementState> {
   late StreamSubscription companyProfileStreamSubscription;
@@ -69,8 +71,8 @@ class ItemActionManagementBloc
       itemAmountInLocation = itemAmountInLocation.copyWith(
         amount: itemAmountInLocation.amount + event.itemAction.ammount,
       );
-      final amountInLocations = event.item.amountInLocations;
-      final itemLocations = event.item.locations;
+      final amountInLocations = [...event.item.amountInLocations];
+      final itemLocations = [...event.item.locations];
       if (index >= 0) {
         amountInLocations.insert(index, itemAmountInLocation);
       } else {
@@ -96,8 +98,120 @@ class ItemActionManagementBloc
           ),
         ),
         (_) async {
-          ItemActionManagementSuccessState(
-            message: ItemActionMessage.added,
+          emit(
+            ItemActionManagementSuccessState(
+              message: ItemActionMessage.added,
+            ),
+          );
+        },
+      );
+    });
+
+    on<UpdateItemActionEvent>((event, emit) async {
+      emit(ItemActionManagementLoadingState());
+      ItemAmountInLocationModel itemAmountInLocation;
+      int index = event.item.amountInLocations.indexWhere(
+        (element) => element.locationId == event.itemAction.locationId,
+      );
+      // if item exist in location
+      if (index >= 0) {
+        itemAmountInLocation = event.item.amountInLocations[index];
+        // if there is no item in location
+      } else {
+        emit(
+          ItemActionManagementErrorState(
+            message: ItemActionMessage.notUpdated,
+          ),
+        );
+        return;
+      }
+      // updates amount in location
+      itemAmountInLocation = itemAmountInLocation.copyWith(
+        amount: itemAmountInLocation.amount + event.itemAction.ammount,
+      );
+      final amountInLocations = [...event.item.amountInLocations];
+      final itemLocations = [...event.item.locations];
+
+      amountInLocations.insert(index, itemAmountInLocation);
+
+      ItemModel updatedItem = event.item.copyWith(
+        amountInLocations: amountInLocations,
+        locations: itemLocations,
+      );
+
+      final failureOrVoidResult = await updateItemAction(
+        ItemActionParams(
+          updatedItem: updatedItem,
+          itemAction: event.itemAction,
+          companyId: companyId,
+        ),
+      );
+      await failureOrVoidResult.fold(
+        (failure) async => emit(
+          ItemActionManagementErrorState(
+            message: ItemActionMessage.notUpdated,
+          ),
+        ),
+        (_) async {
+          emit(
+            ItemActionManagementSuccessState(
+              message: ItemActionMessage.updated,
+            ),
+          );
+        },
+      );
+    });
+
+    on<DeleteItemActionEvent>((event, emit) async {
+      emit(ItemActionManagementLoadingState());
+      ItemAmountInLocationModel itemAmountInLocation;
+      int index = event.item.amountInLocations.indexWhere(
+        (element) => element.locationId == event.itemAction.locationId,
+      );
+      // if item exist in location
+      if (index >= 0) {
+        itemAmountInLocation = event.item.amountInLocations[index];
+        // if there is no item in location
+      } else {
+        emit(
+          ItemActionManagementErrorState(
+            message: ItemActionMessage.notDeleted,
+          ),
+        );
+        return;
+      }
+      // updates amount in location
+      itemAmountInLocation = itemAmountInLocation.copyWith(
+        amount: itemAmountInLocation.amount + event.itemAction.ammount,
+      );
+      final amountInLocations = [...event.item.amountInLocations];
+      final itemLocations = [...event.item.locations];
+
+      amountInLocations.insert(index, itemAmountInLocation);
+
+      ItemModel updatedItem = event.item.copyWith(
+        amountInLocations: amountInLocations,
+        locations: itemLocations,
+      );
+
+      final failureOrVoidResult = await deleteItemAction(
+        ItemActionParams(
+          updatedItem: updatedItem,
+          itemAction: event.itemAction,
+          companyId: companyId,
+        ),
+      );
+      await failureOrVoidResult.fold(
+        (failure) async => emit(
+          ItemActionManagementErrorState(
+            message: ItemActionMessage.notDeleted,
+          ),
+        ),
+        (_) async {
+          emit(
+            ItemActionManagementSuccessState(
+              message: ItemActionMessage.deleted,
+            ),
           );
         },
       );

@@ -31,7 +31,7 @@ void main() {
 
   final tItemAction = ItemAction(
     id: 'id',
-    title: 'title',
+    type: ItemActionType.add,
     description: 'description',
     ammount: 1,
     itemUnit: ItemUnit.pcs,
