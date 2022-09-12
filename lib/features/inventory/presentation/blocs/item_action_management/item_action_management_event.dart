@@ -26,6 +26,14 @@ class UpdateItemActionEvent extends ItemActionManagementEvent {
   });
 }
 
+class MoveItemActionEvent extends ItemActionManagementEvent {
+  const MoveItemActionEvent({
+    required super.item,
+    required super.itemAction,
+    required super.oldItemAction,
+  });
+}
+
 class DeleteItemActionEvent extends ItemActionManagementEvent {
   const DeleteItemActionEvent({required super.item, required super.itemAction});
 }

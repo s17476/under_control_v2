@@ -23,6 +23,7 @@ void main() {
   late ItemActionRepositoryImpl badRepository;
   late ItemParams tItemParams;
   late ItemActionParams tItemActionParams;
+  late MoveItemActionParams tMoveItemActionParams;
 
   const companyId = 'companyId';
 
@@ -84,6 +85,13 @@ void main() {
       itemAction: tItemAction.copyWith(id: actionReference.id),
       companyId: companyId,
     );
+
+    tMoveItemActionParams = MoveItemActionParams(
+      updatedItem: tItemModel.copyWith(id: itemReference.id),
+      moveFromItemAction: tItemAction.copyWith(id: actionReference.id),
+      moveToItemAction: tItemAction.copyWith(id: actionReference.id),
+      companyId: companyId,
+    );
   });
 
   group('Inventory Actions repository', () {
@@ -111,6 +119,15 @@ void main() {
         () async {
           // act
           final result = await repository.updateItemAction(tItemActionParams);
+          // assert
+          expect(result, isA<Right<Failure, VoidResult>>());
+        },
+      );
+      test(
+        'should return [VoidResult] when moveItemAction is called',
+        () async {
+          // act
+          final result = await repository.moveItemAction(tMoveItemActionParams);
           // assert
           expect(result, isA<Right<Failure, VoidResult>>());
         },
@@ -168,6 +185,20 @@ void main() {
         },
       );
       test(
+        'should return [DatabaseFailure] when moveItemAction is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            FirebaseException(plugin: 'Bad Firebase'),
+          );
+          // act
+          final result =
+              await badRepository.moveItemAction(tMoveItemActionParams);
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+      test(
         'should return [DatabaseFailure] when getItemActionsStream is called',
         () async {
           // arrange
@@ -219,6 +250,20 @@ void main() {
           // act
           final result =
               await badRepository.updateItemAction(tItemActionParams);
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+      test(
+        'should return [UnsuspectedFailure] when moveItemAction is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            Exception(),
+          );
+          // act
+          final result =
+              await badRepository.moveItemAction(tMoveItemActionParams);
           // assert
           expect(result, isA<Left<Failure, VoidResult>>());
         },

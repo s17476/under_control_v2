@@ -11,6 +11,7 @@ import 'package:under_control_v2/features/inventory/domain/entities/item_action/
 import 'package:under_control_v2/features/inventory/domain/entities/item_amount_in_location.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/add_item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/delete_item_action.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/item_action/move_item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/update_item_action.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -30,6 +31,8 @@ enum ItemActionMessage {
   notMoved,
 }
 
+// TODO remove locations if amount = 0
+
 @injectable
 class ItemActionManagementBloc
     extends Bloc<ItemActionManagementEvent, ItemActionManagementState> {
@@ -38,6 +41,7 @@ class ItemActionManagementBloc
   final AddItemAction addItemAction;
   final UpdateItemAction updateItemAction;
   final DeleteItemAction deleteItemAction;
+  final MoveItemAction moveItemAction;
 
   String companyId = '';
 
@@ -46,6 +50,7 @@ class ItemActionManagementBloc
     required this.addItemAction,
     required this.updateItemAction,
     required this.deleteItemAction,
+    required this.moveItemAction,
   }) : super(ItemActionManagementEmptyState()) {
     companyProfileStreamSubscription =
         companyProfileBloc.stream.listen((state) {
@@ -242,6 +247,95 @@ class ItemActionManagementBloc
           emit(
             ItemActionManagementSuccessState(
               message: ItemActionMessage.deleted,
+            ),
+          );
+        },
+      );
+    });
+
+    on<MoveItemActionEvent>((event, emit) async {
+      emit(ItemActionManagementLoadingState());
+      ItemAmountInLocationModel itemAmountInOldLocation;
+      ItemAmountInLocationModel itemAmountInNewLocation;
+
+      int indexOfOldLocation = event.item.amountInLocations.indexWhere(
+        (element) => element.locationId == event.oldItemAction!.locationId,
+      );
+      int indexOfNewLocation = event.item.amountInLocations.indexWhere(
+        (element) => element.locationId == event.itemAction.locationId,
+      );
+      // item exist in old location
+      if (indexOfOldLocation >= 0) {
+        itemAmountInOldLocation =
+            event.item.amountInLocations[indexOfOldLocation];
+        // item in new location exists
+        if (indexOfNewLocation >= 0) {
+          itemAmountInNewLocation =
+              event.item.amountInLocations[indexOfNewLocation];
+          // there is no item to new location
+        } else {
+          itemAmountInNewLocation = ItemAmountInLocationModel(
+            amount: 0,
+            locationId: event.itemAction.locationId,
+          );
+        }
+        // there is no item in old location
+      } else {
+        emit(
+          ItemActionManagementErrorState(
+            message: ItemActionMessage.notUpdated,
+          ),
+        );
+        return;
+      }
+
+      // updates items amounts in locations
+      itemAmountInOldLocation = itemAmountInOldLocation.copyWith(
+        amount: itemAmountInOldLocation.amount - event.oldItemAction!.ammount,
+      );
+      itemAmountInNewLocation = itemAmountInNewLocation.copyWith(
+        amount: itemAmountInNewLocation.amount + event.itemAction.ammount,
+      );
+
+      final updatedAmountInLocations = [...event.item.amountInLocations];
+      final itemLocations = [...event.item.locations];
+
+      // update old location
+      updatedAmountInLocations.insert(
+          indexOfOldLocation, itemAmountInOldLocation);
+
+      // item exists in new location
+      if (indexOfNewLocation >= 0) {
+        updatedAmountInLocations.insert(
+            indexOfNewLocation, itemAmountInNewLocation);
+        // there is no item in new location
+      } else {
+        updatedAmountInLocations.add(itemAmountInNewLocation);
+      }
+
+      ItemModel updatedItem = event.item.copyWith(
+        amountInLocations: updatedAmountInLocations,
+        locations: itemLocations,
+      );
+
+      final failureOrVoidResult = await moveItemAction(
+        MoveItemActionParams(
+          updatedItem: updatedItem,
+          moveFromItemAction: event.oldItemAction!,
+          moveToItemAction: event.itemAction,
+          companyId: companyId,
+        ),
+      );
+      await failureOrVoidResult.fold(
+        (failure) async => emit(
+          ItemActionManagementErrorState(
+            message: ItemActionMessage.notUpdated,
+          ),
+        ),
+        (_) async {
+          emit(
+            ItemActionManagementSuccessState(
+              message: ItemActionMessage.updated,
             ),
           );
         },

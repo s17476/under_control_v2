@@ -30,4 +30,12 @@ abstract class ItemActionRepository {
   ///Returns [VoidResult] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, VoidResult>> deleteItemAction(ItemActionParams params);
+
+  ///Moves items between locations in the DB.
+  ///
+  ///Returns [VoidResult] if operation is successful.
+  ///Returns [Failure] if operation is unsuccessful.
+  Future<Either<Failure, VoidResult>> moveItemAction(
+    MoveItemActionParams params,
+  );
 }

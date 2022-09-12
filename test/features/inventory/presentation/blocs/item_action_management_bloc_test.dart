@@ -13,6 +13,7 @@ import 'package:under_control_v2/features/inventory/domain/entities/item_action/
 import 'package:under_control_v2/features/inventory/domain/entities/item_amount_in_location.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/add_item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/delete_item_action.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/item_action/move_item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/update_item_action.dart';
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart';
 
@@ -25,12 +26,15 @@ class MockUpdateItemAction extends Mock implements UpdateItemAction {}
 
 class MockDeleteItemAction extends Mock implements DeleteItemAction {}
 
+class MockMoveItemAction extends Mock implements MoveItemAction {}
+
 void main() {
   late MockCompanyProfileBloc mockCompanyProfileBloc;
 
   late MockAddItemAction mockAddItemAction;
   late MockUpdateItemAction mockUpdateItemAction;
   late MockDeleteItemAction mockDeleteItemAction;
+  late MockMoveItemAction mockMoveItemAction;
 
   late ItemActionManagementBloc itemActionManagementBloc;
 
@@ -71,6 +75,13 @@ void main() {
     companyId: companyId,
   );
 
+  final tMoveItemActionParams = MoveItemActionParams(
+    updatedItem: item,
+    moveFromItemAction: itemAction,
+    moveToItemAction: itemAction,
+    companyId: companyId,
+  );
+
   const tItemParams = ItemParams(
     item: item,
     companyId: companyId,
@@ -82,6 +93,7 @@ void main() {
     mockAddItemAction = MockAddItemAction();
     mockUpdateItemAction = MockUpdateItemAction();
     mockDeleteItemAction = MockDeleteItemAction();
+    mockMoveItemAction = MockMoveItemAction();
 
     when(() => mockCompanyProfileBloc.stream).thenAnswer(
       (_) => Stream.fromFuture(
@@ -94,13 +106,14 @@ void main() {
       addItemAction: mockAddItemAction,
       updateItemAction: mockUpdateItemAction,
       deleteItemAction: mockDeleteItemAction,
+      moveItemAction: mockMoveItemAction,
     );
   });
 
   setUpAll(
     () {
       registerFallbackValue(tItemActionParams);
-      registerFallbackValue(tItemParams);
+      registerFallbackValue(tMoveItemActionParams);
     },
   );
 
@@ -183,6 +196,47 @@ void main() {
               .thenAnswer((_) async => const Left(DatabaseFailure()));
           bloc.add(
             UpdateItemActionEvent(
+              item: item,
+              itemAction: itemAction,
+              oldItemAction: itemAction,
+            ),
+          );
+        },
+        expect: () => [
+          ItemActionManagementLoadingState(),
+          isA<ItemActionManagementErrorState>(),
+        ],
+      );
+    });
+
+    group('MoveItemAction', () {
+      blocTest<ItemActionManagementBloc, ItemActionManagementState>(
+        'should emit [ItemActionManagementSuccessfulState] when MoveItemAction is called',
+        build: () => itemActionManagementBloc,
+        act: (bloc) async {
+          when(() => mockMoveItemAction(any()))
+              .thenAnswer((_) async => Right(VoidResult()));
+          bloc.add(
+            MoveItemActionEvent(
+              item: item,
+              itemAction: itemAction,
+              oldItemAction: itemAction,
+            ),
+          );
+        },
+        expect: () => [
+          ItemActionManagementLoadingState(),
+          isA<ItemActionManagementSuccessState>(),
+        ],
+      );
+      blocTest<ItemActionManagementBloc, ItemActionManagementState>(
+        'should emit [ItemActionManagementErrorState] when MoveItemAction is called',
+        build: () => itemActionManagementBloc,
+        act: (bloc) async {
+          when(() => mockMoveItemAction(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+          bloc.add(
+            MoveItemActionEvent(
               item: item,
               itemAction: itemAction,
               oldItemAction: itemAction,

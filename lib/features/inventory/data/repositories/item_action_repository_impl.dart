@@ -169,4 +169,57 @@ class ItemActionRepositoryImpl extends ItemActionRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, VoidResult>> moveItemAction(
+      MoveItemActionParams params) async {
+    try {
+      // item
+      final itemReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('items')
+          .doc(params.updatedItem.id);
+      final itemMap = (params.updatedItem as ItemModel).toMap();
+
+      // action
+      final actionsReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('items');
+
+      final moveFromActionMap =
+          (params.moveFromItemAction as ItemActionModel).toMap();
+      final moveToActionMap =
+          (params.moveToItemAction as ItemActionModel).toMap();
+
+      // get action reference
+      final moveFromActionReference = await actionsReference.add({'name': ''});
+      final moveToActionReference = await actionsReference.add({'name': ''});
+
+      // batch
+      final batch = firebaseFirestore.batch();
+
+      // add actions
+      batch.set(
+          actionsReference.doc(moveFromActionReference.id), moveFromActionMap);
+      batch.set(
+          actionsReference.doc(moveToActionReference.id), moveToActionMap);
+      // update item
+      batch.update(itemReference, itemMap);
+
+      // commit the batch
+      batch.commit();
+
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(
+        DatabaseFailure(message: e.message ?? 'Database Failure'),
+      );
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
 }
