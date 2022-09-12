@@ -166,6 +166,7 @@ void main() {
             UpdateItemActionEvent(
               item: item,
               itemAction: itemAction,
+              oldItemAction: itemAction,
             ),
           );
         },
@@ -184,6 +185,7 @@ void main() {
             UpdateItemActionEvent(
               item: item,
               itemAction: itemAction,
+              oldItemAction: itemAction,
             ),
           );
         },

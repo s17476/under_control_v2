@@ -7,6 +7,7 @@ import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_amount_in_location_model.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_amount_in_location.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/add_item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/delete_item_action.dart';
@@ -25,6 +26,8 @@ enum ItemActionMessage {
   notUpdated,
   deleted,
   notDeleted,
+  moved,
+  notMoved,
 }
 
 @injectable
@@ -68,9 +71,15 @@ class ItemActionManagementBloc
         );
       }
       // updates amount in location
-      itemAmountInLocation = itemAmountInLocation.copyWith(
-        amount: itemAmountInLocation.amount + event.itemAction.ammount,
-      );
+      if (event.itemAction.type == ItemActionType.add) {
+        itemAmountInLocation = itemAmountInLocation.copyWith(
+          amount: itemAmountInLocation.amount + event.itemAction.ammount,
+        );
+      } else if (event.itemAction.type == ItemActionType.remove) {
+        itemAmountInLocation = itemAmountInLocation.copyWith(
+          amount: itemAmountInLocation.amount - event.itemAction.ammount,
+        );
+      }
       final amountInLocations = [...event.item.amountInLocations];
       final itemLocations = [...event.item.locations];
       if (index >= 0) {
@@ -125,10 +134,26 @@ class ItemActionManagementBloc
         );
         return;
       }
+      // remove old action
+      if (event.oldItemAction!.type == ItemActionType.add) {
+        itemAmountInLocation = itemAmountInLocation.copyWith(
+          amount: itemAmountInLocation.amount - event.oldItemAction!.ammount,
+        );
+      } else if (event.oldItemAction!.type == ItemActionType.remove) {
+        itemAmountInLocation = itemAmountInLocation.copyWith(
+          amount: itemAmountInLocation.amount + event.oldItemAction!.ammount,
+        );
+      }
       // updates amount in location
-      itemAmountInLocation = itemAmountInLocation.copyWith(
-        amount: itemAmountInLocation.amount + event.itemAction.ammount,
-      );
+      if (event.itemAction.type == ItemActionType.add) {
+        itemAmountInLocation = itemAmountInLocation.copyWith(
+          amount: itemAmountInLocation.amount + event.itemAction.ammount,
+        );
+      } else if (event.itemAction.type == ItemActionType.remove) {
+        itemAmountInLocation = itemAmountInLocation.copyWith(
+          amount: itemAmountInLocation.amount - event.itemAction.ammount,
+        );
+      }
       final amountInLocations = [...event.item.amountInLocations];
       final itemLocations = [...event.item.locations];
 
@@ -181,9 +206,15 @@ class ItemActionManagementBloc
         return;
       }
       // updates amount in location
-      itemAmountInLocation = itemAmountInLocation.copyWith(
-        amount: itemAmountInLocation.amount + event.itemAction.ammount,
-      );
+      if (event.itemAction.type == ItemActionType.add) {
+        itemAmountInLocation = itemAmountInLocation.copyWith(
+          amount: itemAmountInLocation.amount - event.itemAction.ammount,
+        );
+      } else if (event.itemAction.type == ItemActionType.remove) {
+        itemAmountInLocation = itemAmountInLocation.copyWith(
+          amount: itemAmountInLocation.amount + event.itemAction.ammount,
+        );
+      }
       final amountInLocations = [...event.item.amountInLocations];
       final itemLocations = [...event.item.locations];
 
