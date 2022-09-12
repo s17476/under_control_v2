@@ -54,6 +54,7 @@ dependencies:
   circular_bottom_navigation: ^2.0.0
   cached_network_image: ^3.2.1
   url_launcher: ^6.1.5
+  photo_view: ^0.14.0
   
 
 

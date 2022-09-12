@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../core/utils/feature_type_helpers.dart';
 import '../../../data/models/feature_model.dart';
 
@@ -25,33 +26,12 @@ class GroupManagementFeatureCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: Row(
-                    children: [
-                      // icon
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: getColor(feature),
-                        ),
-                        child: Icon(
-                          getIcon(feature),
-                          size: 20,
-                          // color: Colors.grey.shade400,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      // title
-                      Text(
-                        getTitle(context, feature),
-                        style: TextStyle(
-                          color: Colors.grey.shade200,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
+                  child: IconTitleRow(
+                    icon: getIcon(feature),
+                    iconColor: Colors.white,
+                    iconBackground: getColor(feature),
+                    title: getTitle(context, feature),
+                    titleFontSize: 16,
                   ),
                 ),
                 Row(

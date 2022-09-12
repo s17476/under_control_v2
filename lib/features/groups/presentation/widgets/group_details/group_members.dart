@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../core/presentation/widgets/user_list_tile.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -64,27 +65,13 @@ class _GroupMembersState extends State<GroupMembers> {
               ),
               child: Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.black,
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      size: 20,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
                   Expanded(
-                    child: Text(
-                      '${AppLocalizations.of(context)!.group_members}: ${groupMembers.length}',
-                      style: TextStyle(
-                        color: Colors.grey.shade200,
-                        fontSize: 16,
-                      ),
+                    child: IconTitleRow(
+                      icon: Icons.person,
+                      iconColor: Colors.white,
+                      iconBackground: Colors.black,
+                      title:
+                          '${AppLocalizations.of(context)!.group_members}: ${groupMembers.length}',
                     ),
                   ),
                   Icon(

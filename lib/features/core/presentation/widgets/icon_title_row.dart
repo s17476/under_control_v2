@@ -22,13 +22,37 @@ class IconTitleRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color topLeftColor;
+    Color bottomRightColor;
+    if (iconBackground == Colors.black) {
+      bottomRightColor = iconBackground;
+      topLeftColor = Colors.grey.shade800;
+    } else {
+      bottomRightColor = iconBackground.withAlpha(80);
+      topLeftColor = iconBackground;
+    }
     return Row(
       children: [
         Container(
           padding: EdgeInsets.all(iconPadding),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: iconBackground,
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black,
+                offset: Offset(1, 1),
+                blurRadius: 1,
+              ),
+            ],
+            gradient: LinearGradient(
+              colors: [
+                topLeftColor,
+                bottomRightColor,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            // color: iconBackground,
           ),
           child: Icon(
             icon,

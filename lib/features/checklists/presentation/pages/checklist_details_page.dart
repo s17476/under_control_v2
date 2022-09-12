@@ -154,32 +154,12 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                 // name
                 Padding(
                   padding: const EdgeInsets.only(left: 4, top: 8),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.black,
-                        ),
-                        child: Icon(
-                          Icons.checklist,
-                          size: 20,
-                          color: Colors.grey.shade300,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.checklist_details_data,
-                        maxLines: 2,
-                        style: TextStyle(
-                          color: Colors.grey.shade200,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
+                  child: IconTitleRow(
+                    icon: Icons.checklist,
+                    iconColor: Colors.white,
+                    iconBackground: Colors.black,
+                    title: AppLocalizations.of(context)!.checklist_details_data,
+                    iconSize: 16,
                   ),
                 ),
                 // name
@@ -223,32 +203,13 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                 // checkpoints
                 Padding(
                   padding: const EdgeInsets.only(left: 4),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.black,
-                        ),
-                        child: Icon(
-                          Icons.check,
-                          size: 20,
-                          color: Colors.grey.shade300,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!
-                            .checklist_add_checkpoints_title,
-                        style: TextStyle(
-                          color: Colors.grey.shade200,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
+                  child: IconTitleRow(
+                    icon: Icons.check,
+                    iconColor: Colors.white,
+                    iconBackground: Colors.black,
+                    title: AppLocalizations.of(context)!
+                        .checklist_add_checkpoints_title,
+                    iconSize: 16,
                   ),
                 ),
                 const SizedBox(

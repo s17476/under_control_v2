@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/icon_title_row.dart';
 
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../../domain/entities/group.dart';
@@ -43,27 +44,13 @@ class _GroupLocationsState extends State<GroupLocations> {
             ),
             child: Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.black,
-                  ),
-                  child: const Icon(
-                    Icons.location_on,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
                 Expanded(
-                  child: Text(
-                    '${AppLocalizations.of(context)!.group_management_add_card_selected_locations}: ${widget.group.locations.length}',
-                    style: TextStyle(
-                      color: Colors.grey.shade300,
-                      fontSize: 16,
-                    ),
+                  child: IconTitleRow(
+                    icon: Icons.location_on,
+                    iconColor: Colors.white,
+                    iconBackground: Colors.black,
+                    title:
+                        '${AppLocalizations.of(context)!.group_management_add_card_selected_locations}: ${widget.group.locations.length}',
                   ),
                 ),
                 Icon(

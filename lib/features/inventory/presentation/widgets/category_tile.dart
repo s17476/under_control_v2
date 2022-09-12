@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../data/models/item_category/item_category_model.dart';
 import '../../domain/entities/item_category/item_category.dart';
-import 'show_add_category_modal_bottom_sheet.dart';
-import 'show_category_delete_dialog.dart';
+import '../../utils/show_add_category_modal_bottom_sheet.dart';
+import '../../utils/show_category_delete_dialog.dart';
 
 class CategoryTile extends StatelessWidget {
   final bool isAdministrator;

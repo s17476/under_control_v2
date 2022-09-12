@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/item_details_page.dart';
+import 'package:under_control_v2/features/inventory/presentation/pages/item_details_page.dart';
 
 import '../../domain/entities/item.dart';
 

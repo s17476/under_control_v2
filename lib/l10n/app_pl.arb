@@ -2,6 +2,8 @@
     "yes": "Tak",
     "no": "Nie",
     "add": "Dodaj",
+    "subtract": "Odejmij",
+    "move": "Przenieś",
     "well_done": "Dobra robota!",
     "search": "Szukaj...",
     "password_reset_text_button": "Nie pamiętam hasła",
@@ -36,6 +38,7 @@
     "new_account": "Zarejestruj nowe konto",
     "take_photo": "Aparat",
     "choose_image": "Galeria",
+    "actions": "Akcje",
     "validation_min_two_characters": "Przynajmniej 2 znaki",
     "account_exist": "Mam już konto",
     "passwords_validation_message": "Pola hasło i powtórzenie hasła muszą być identyczne",
@@ -238,5 +241,9 @@
     "item_msg_updated": "Przedmiot został zaktualizowany",
     "item_msg_not_updated": "Przedmiot NIE został zaktualizowany",
     "item_msg_deleted": "Przedmiot został usunięty",
-    "item_msg_not_deleted": "Przedmiot NIE został usunięty"
+    "item_msg_not_deleted": "Przedmiot NIE został usunięty",
+    "item_total_amount": "Ilość całkowita:",
+    "item_in_selected_amount": "Wybrane lokacje:",
+    "item_add_to_location": "Dodaj do lokacji",
+    "item_subtract_from_location": "Odejmij z lokacji"
 }

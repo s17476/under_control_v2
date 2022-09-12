@@ -9,7 +9,7 @@ import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.
 import '../blocs/item_category/item_category_bloc.dart';
 import '../blocs/item_category_management/item_category_management_bloc.dart';
 import '../widgets/category_tile.dart';
-import '../widgets/show_add_category_modal_bottom_sheet.dart';
+import '../../utils/show_add_category_modal_bottom_sheet.dart';
 
 class ItemCategoryManagementPage extends StatefulWidget {
   const ItemCategoryManagementPage({Key? key}) : super(key: key);

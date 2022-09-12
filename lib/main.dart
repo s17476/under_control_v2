@@ -31,13 +31,16 @@ import 'features/groups/presentation/blocs/group/group_bloc.dart';
 import 'features/groups/presentation/pages/add_group_page.dart';
 import 'features/groups/presentation/pages/group_details.dart';
 import 'features/groups/presentation/pages/group_management_page.dart';
+import 'features/inventory/presentation/blocs/item_action/item_action_bloc.dart';
+import 'features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart';
 import 'features/inventory/presentation/blocs/item_category/item_category_bloc.dart';
 import 'features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart';
 import 'features/inventory/presentation/blocs/items/items_bloc.dart';
 import 'features/inventory/presentation/blocs/items_management/items_management_bloc.dart';
 import 'features/inventory/presentation/pages/add_item_page.dart';
+import 'features/inventory/presentation/pages/add_to_item_page.dart';
 import 'features/inventory/presentation/pages/item_category_management_page.dart';
-import 'features/inventory/presentation/widgets/item_details_page.dart';
+import 'features/inventory/presentation/pages/item_details_page.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
@@ -115,6 +118,13 @@ class App extends StatelessWidget
           create: (context) => getIt<ItemsManagementBloc>(),
           lazy: false,
         ),
+        BlocProvider(
+          create: (context) => getIt<ItemActionBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<ItemActionManagementBloc>(),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -176,6 +186,7 @@ class App extends StatelessWidget
           ItemCategoryManagementPage.routeName: (context) =>
               const ItemCategoryManagementPage(),
           AddItemPage.routeName: (context) => const AddItemPage(),
+          AddToItemPage.routeName: (context) => const AddToItemPage(),
           ItemDetailsPage.routeName: (context) => const ItemDetailsPage(),
         },
         localizationsDelegates: const [

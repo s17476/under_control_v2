@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/icon_title_row.dart';
 
 import '../../../core/presentation/widgets/add_members_card.dart';
 import '../../../core/presentation/widgets/user_info_card.dart';
@@ -281,32 +282,12 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                           // data
                           Padding(
                             padding: const EdgeInsets.only(left: 4, top: 8),
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.black,
-                                  ),
-                                  child: Icon(
-                                    Icons.group,
-                                    size: 20,
-                                    color: Colors.grey.shade300,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!.group_data,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                    color: Colors.grey.shade200,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
+                            child: IconTitleRow(
+                              icon: Icons.group,
+                              iconColor: Colors.white,
+                              iconBackground: Colors.black,
+                              title: AppLocalizations.of(context)!.group_data,
+                              titleFontSize: 16,
                             ),
                           ),
                           // name
@@ -349,32 +330,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                           // features
                           Padding(
                             padding: const EdgeInsets.only(left: 4),
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.black,
-                                  ),
-                                  child: Icon(
-                                    Icons.error,
-                                    size: 20,
-                                    color: Colors.grey.shade300,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!
-                                      .group_management_add_card_permissions,
-                                  style: TextStyle(
-                                    color: Colors.grey.shade200,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
+                            child: IconTitleRow(
+                              icon: Icons.error,
+                              iconColor: Colors.white,
+                              iconBackground: Colors.black,
+                              title: AppLocalizations.of(context)!
+                                  .group_management_add_card_permissions,
+                              titleFontSize: 16,
                             ),
                           ),
                           const SizedBox(

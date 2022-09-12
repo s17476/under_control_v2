@@ -8,7 +8,7 @@ import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../domain/entities/item.dart';
 import '../../blocs/item_category/item_category_bloc.dart';
-import '../get_localized_unit_name.dart';
+import '../../../utils/get_localized_unit_name.dart';
 
 class AddItemSummaryCard extends StatelessWidget {
   const AddItemSummaryCard({

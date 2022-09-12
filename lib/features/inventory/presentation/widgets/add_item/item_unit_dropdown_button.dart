@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/presentation/widgets/custom_dropdown_button.dart';
 import '../../../domain/entities/item.dart';
-import '../get_localized_unit_name.dart';
+import '../../../utils/get_localized_unit_name.dart';
 
 class ItemUnitDropdownButton extends StatelessWidget {
   const ItemUnitDropdownButton({

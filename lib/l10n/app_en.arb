@@ -11,6 +11,14 @@
     "@add": {
       "description": "Add"
     },
+    "subtract": "Subtract",
+    "@subtract": {
+      "description": "Subtract"
+    },
+    "move": "Move",
+    "@move": {
+      "description": "Move"
+    },
     "well_done": "Well done!", 
     "@well_done": {
       "description": "Well done"
@@ -146,6 +154,10 @@
     "choose_image": "Gallery",
     "@choose_image": {
       "description": "Authentication page - chooose an image"
+    },
+    "actions": "Actions",
+    "@actions": {
+      "description": "Actions"
     },
     "validation_min_two_characters": "At least 2 characters",
     "@validation_min_two_characters": {
@@ -1018,5 +1030,21 @@
     "item_msg_not_deleted": "Item NOT deleted",
     "@item_msg_not_deleted": {
       "description": "item - NOT deleted msg"
+    },
+    "item_total_amount": "Total amount:",
+    "@item_total_amount": {
+      "description": "Item total amount"
+    },
+    "item_in_selected_amount": "Selected locations:",
+    "@item_in_selected_amount": {
+      "description": "Item amount in selected locations"
+    },
+    "item_add_to_location": "Add to location",
+    "@item_add_to_location": {
+      "description": "Add item to location"
+    },
+    "item_subtract_from_location": "Subtract from location",
+    "@item_subtract_from_location": {
+      "description": "Subtract from location location"
     }
 }
