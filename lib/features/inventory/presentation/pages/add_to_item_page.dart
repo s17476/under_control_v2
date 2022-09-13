@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_quantity_card.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_to_item_summary_card.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_to_location_card.dart';
+import 'package:under_control_v2/features/inventory/utils/get_localized_unit_name.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -13,11 +15,6 @@ import '../../../core/utils/show_snack_bar.dart';
 import '../../data/models/item_model.dart';
 import '../../domain/entities/item.dart';
 import '../blocs/items/items_bloc.dart';
-import '../blocs/items_management/items_management_bloc.dart';
-import '../widgets/add_item/add_item_card.dart';
-import '../widgets/add_item/add_item_photo_card.dart';
-import '../widgets/add_item/add_item_spare_part_card.dart';
-import '../widgets/add_item/add_item_summary_card.dart';
 
 class AddToItemPage extends StatefulWidget {
   const AddToItemPage({
@@ -39,27 +36,13 @@ class _AddItemPageState extends State<AddToItemPage> {
 
   final pageController = PageController();
 
-  final amountEditingController = TextEditingController();
+  final amountTextEditingController = TextEditingController(text: '0');
 
   String selectedLocation = '';
 
   void setLocation(String location) {
     setState(() {
       selectedLocation = location;
-    });
-  }
-
-  void increaseAmount() {
-    setState(() {
-      final increasedValue = double.parse(amountEditingController.text) + 1;
-      amountEditingController.text = increasedValue.toString();
-    });
-  }
-
-  void decreaseAmount() {
-    setState(() {
-      final decreasedValue = double.parse(amountEditingController.text) - 1;
-      amountEditingController.text = decreasedValue.toString();
     });
   }
 
@@ -73,75 +56,92 @@ class _AddItemPageState extends State<AddToItemPage> {
     super.didChangeDependencies();
   }
 
-  // void addNewItem(BuildContext context) {
-  //   String errorMessage = '';
-  //   // item name validation
-  //   if (!_formKey.currentState!.validate()) {
-  //     errorMessage = AppLocalizations.of(context)!.item_add_error_name_to_short;
-  //   } else {
-  //     // category selection validation
-  //     if (category.isEmpty) {
-  //       errorMessage =
-  //           AppLocalizations.of(context)!.item_add_error_category_not_selected;
-  //     } else {
-  //       // item unit selection validation
+  void addToItem(BuildContext context) {
+    String errorMessage = '';
+    double amount = 0;
+    // amount validation
+    try {
+      amount = double.parse(amountTextEditingController.text);
+      if (amount <= 0) {
+        errorMessage = AppLocalizations.of(context)!.incorrect_number_to_small;
+      }
+    } catch (e) {
+      errorMessage = AppLocalizations.of(context)!.incorrect_number_format;
+    }
+    // item name validation
+    if (!_formKey.currentState!.validate()) {}
+    // } else {
+    //   // category selection validation
+    //   if (category.isEmpty) {
+    //     errorMessage =
+    //         AppLocalizations.of(context)!.item_add_error_category_not_selected;
+    //   } else {
+    //     // item unit selection validation
 
-  //       if (itemUnit.isEmpty) {
-  //         errorMessage =
-  //             AppLocalizations.of(context)!.item_add_error_unit_not_selected;
-  //       } else if (item == null) {
-  //         final currentState = context.read<ItemsBloc>().state;
-  //         if (currentState is ItemsLoadedState) {
-  //           final tmpItems = currentState.allItems.allItems
-  //               .where((i) => i.name == nameTexEditingController.text.trim());
-  //           if (tmpItems.isNotEmpty) {
-  //             errorMessage = AppLocalizations.of(context)!
-  //                 .group_management_add_error_name_exists;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
+    //     if (itemUnit.isEmpty) {
+    //       errorMessage =
+    //           AppLocalizations.of(context)!.item_add_error_unit_not_selected;
+    //     } else if (item == null) {
+    //       final currentState = context.read<ItemsBloc>().state;
+    //       if (currentState is ItemsLoadedState) {
+    //         final tmpItems = currentState.allItems.allItems
+    //             .where((i) => i.name == nameTexEditingController.text.trim());
+    //         if (tmpItems.isNotEmpty) {
+    //           errorMessage = AppLocalizations.of(context)!
+    //               .group_management_add_error_name_exists;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
 
-  //   // shows SnackBar if validation error occures
-  //   if (errorMessage.isNotEmpty) {
-  //     showSnackBar(
-  //       context: context,
-  //       message: errorMessage,
-  //       isErrorMessage: true,
-  //     );
-  //     // saves group to DB if no error
-  //   } else {
-  //     final newItem = ItemModel(
-  //       id: item != null ? item!.id : '',
-  //       name: nameTexEditingController.text,
-  //       description: descriptionTexEditingController.text,
-  //       category: category,
-  //       itemCode: itemCodeTexEditingController.text,
-  //       itemPhoto: item != null ? item!.itemPhoto : '',
-  //       itemUnit: ItemUnit.fromString(itemUnit),
-  //       amountInLocations: const [],
-  //       locations: const [],
-  //       sparePartFor: sparePartFor,
-  //     );
+    //   // shows SnackBar if validation error occures
+    if (errorMessage.isNotEmpty) {
+      showSnackBar(
+        context: context,
+        message: errorMessage,
+        isErrorMessage: true,
+      );
+      // saves group to DB if no error
+    }
+    //else {
+    //     final newItem = ItemModel(
+    //       id: item != null ? item!.id : '',
+    //       name: nameTexEditingController.text,
+    //       description: descriptionTexEditingController.text,
+    //       category: category,
+    //       itemCode: itemCodeTexEditingController.text,
+    //       itemPhoto: item != null ? item!.itemPhoto : '',
+    //       itemUnit: ItemUnit.fromString(itemUnit),
+    //       amountInLocations: const [],
+    //       locations: const [],
+    //       sparePartFor: sparePartFor,
+    //     );
 
-  //     if (item != null) {
-  //       context.read<ItemsManagementBloc>().add(UpdateItemEvent(
-  //             item: newItem,
-  //             itemPhoto: itemImage,
-  //           ));
-  //     } else {
-  //       context.read<ItemsManagementBloc>().add(
-  //             AddItemEvent(
-  //               item: newItem,
-  //               itemPhoto: itemImage,
-  //             ),
-  //           );
-  //     }
+    //     if (item != null) {
+    //       context.read<ItemsManagementBloc>().add(UpdateItemEvent(
+    //             item: newItem,
+    //             itemPhoto: itemImage,
+    //           ));
+    //     } else {
+    //       context.read<ItemsManagementBloc>().add(
+    //             AddItemEvent(
+    //               item: newItem,
+    //               itemPhoto: itemImage,
+    //             ),
+    //           );
+    //     }
 
-  //     Navigator.pop(context);
-  //   }
-  // }
+    //     Navigator.pop(context);
+    //   }
+  }
+
+  @override
+  void dispose() {
+    amountTextEditingController.dispose();
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,33 +155,20 @@ class _AddItemPageState extends State<AddToItemPage> {
           item: item!,
         ),
       ),
-      // KeepAlivePage(
-      //   child: AddItemPhotoCard(
-      //     pageController: pageController,
-      //     setImage: setImage,
-      //     deleteImage: deleteImage,
-      //     image: itemImage,
-      //     imageUrl: item?.itemPhoto,
-      //   ),
-      // ),
-      // KeepAlivePage(
-      //   child: AddItemSparePartCard(
-      //     pageController: pageController,
-      //     setIsSparePart: setIsSparePart,
-      //     isSparePart: isSparePart,
-      //   ),
-      // ),
-      // AddItemSummaryCard(
-      //   pageController: pageController,
-      //   titleTexEditingController: nameTexEditingController,
-      //   descriptionTexEditingController: descriptionTexEditingController,
-      //   sparePartFor: sparePartFor,
-      //   addNewItem: addNewItem,
-      //   category: category,
-      //   itemUnit: itemUnit,
-      //   isSparePart: isSparePart,
-      //   itemImage: itemImage,
-      // ),
+      KeepAlivePage(
+        child: AddQuantityCard(
+          pageController: pageController,
+          quantityTextEditingController: amountTextEditingController,
+          itemUnit: item!.itemUnit,
+        ),
+      ),
+      AddToItemSummaryCard(
+        pageController: pageController,
+        quantityTextEditingController: amountTextEditingController,
+        selectedLocation: selectedLocation,
+        itemUnit: getLocalizedUnitName(context, item!.itemUnit),
+        addNewItem: addToItem,
+      ),
     ];
 
     return Scaffold(body: BlocBuilder<ItemsBloc, ItemsState>(

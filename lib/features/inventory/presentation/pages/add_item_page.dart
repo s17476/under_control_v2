@@ -183,6 +183,15 @@ class _AddItemPageState extends State<AddItemPage> {
   }
 
   @override
+  void dispose() {
+    nameTexEditingController.dispose();
+    descriptionTexEditingController.dispose();
+    itemCodeTexEditingController.dispose();
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     pages = [
       KeepAlivePage(

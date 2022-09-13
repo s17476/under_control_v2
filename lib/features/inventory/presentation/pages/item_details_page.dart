@@ -7,7 +7,7 @@ import 'package:under_control_v2/features/core/presentation/widgets/rounded_butt
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 import 'package:under_control_v2/features/inventory/presentation/pages/add_item_page.dart';
 import 'package:under_control_v2/features/inventory/presentation/pages/add_to_item_page.dart';
-import 'package:under_control_v2/features/inventory/utils/get_item_total_amount.dart';
+import 'package:under_control_v2/features/inventory/utils/get_item_total_quantity.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/square_item_image.dart';
 import 'package:under_control_v2/features/inventory/utils/item_management_bloc_listener.dart';
 
@@ -121,28 +121,28 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // item photo and amounts
+                    // item photo and quantity
                     Stack(
                       children: [
                         SquareItemImage(item: item!),
-                        // amount info boxes
+                        // quantity info boxes
                         Row(
                           children: [
-                            OverlayAmountInfoBox(
+                            OverlayQuantityInfoBox(
                               item: item,
-                              amount: getItemTotalAmount(item!),
+                              quantity: getItemTotalQuantity(item!),
                               title: AppLocalizations.of(context)!
-                                  .item_total_amount,
+                                  .item_total_quantity,
                             ),
                             const Expanded(
                               child: SizedBox(),
                             ),
-                            OverlayAmountInfoBox(
+                            OverlayQuantityInfoBox(
                               item: item,
-                              amount: getItemTotalAmount(item!),
+                              quantity: getItemTotalQuantity(item!),
                               title: AppLocalizations.of(context)!
-                                  .item_in_selected_amount,
-                              amountStyle: TextStyle(
+                                  .item_in_selected_quantity,
+                              quantityStyle: TextStyle(
                                 fontSize: 24,
                                 color: Theme.of(context).primaryColor,
                               ),

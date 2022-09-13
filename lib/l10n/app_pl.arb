@@ -39,6 +39,7 @@
     "take_photo": "Aparat",
     "choose_image": "Galeria",
     "actions": "Akcje",
+    "quantity": "Ilość",
     "validation_min_two_characters": "Przynajmniej 2 znaki",
     "account_exist": "Mam już konto",
     "passwords_validation_message": "Pola hasło i powtórzenie hasła muszą być identyczne",
@@ -242,8 +243,10 @@
     "item_msg_not_updated": "Przedmiot NIE został zaktualizowany",
     "item_msg_deleted": "Przedmiot został usunięty",
     "item_msg_not_deleted": "Przedmiot NIE został usunięty",
-    "item_total_amount": "Ilość całkowita:",
-    "item_in_selected_amount": "Wybrane lokacje:",
+    "item_total_quantity": "Ilość całkowita:",
+    "item_in_selected_quantity": "Wybrane lokacje:",
     "item_add_to_location": "Dodaj do lokacji",
-    "item_subtract_from_location": "Odejmij z lokacji"
+    "item_subtract_from_location": "Odejmij z lokacji",
+    "incorrect_number_format": "Niepoprawny format liczby",
+    "incorrect_number_to_small": "Ilość musi być większa niż 0"
 }

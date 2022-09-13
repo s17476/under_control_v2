@@ -159,6 +159,10 @@
     "@actions": {
       "description": "Actions"
     },
+    "quantity": "Quantity",
+    "@quantity": {
+      "description": "quantity"
+    },
     "validation_min_two_characters": "At least 2 characters",
     "@validation_min_two_characters": {
       "description": "Validation - min two characters"
@@ -1031,13 +1035,13 @@
     "@item_msg_not_deleted": {
       "description": "item - NOT deleted msg"
     },
-    "item_total_amount": "Total amount:",
-    "@item_total_amount": {
-      "description": "Item total amount"
+    "item_total_quantity": "Total quantity:",
+    "@item_total_quantity": {
+      "description": "Item total quantity"
     },
-    "item_in_selected_amount": "Selected locations:",
-    "@item_in_selected_amount": {
-      "description": "Item amount in selected locations"
+    "item_in_selected_quantity": "Selected locations:",
+    "@item_in_selected_quantity": {
+      "description": "Item quantity in selected locations"
     },
     "item_add_to_location": "Add to location",
     "@item_add_to_location": {
@@ -1046,5 +1050,13 @@
     "item_subtract_from_location": "Subtract from location",
     "@item_subtract_from_location": {
       "description": "Subtract from location location"
+    },
+    "incorrect_number_format": "Incorrect number format",
+    "@incorrect_number_format": {
+      "description": "Incorrect number format"
+    },
+    "incorrect_number_to_small": "The number of items must be greater than 0",
+    "@incorrect_number_to_small": {
+      "description": "The number of items must be greater than zero"
     }
 }

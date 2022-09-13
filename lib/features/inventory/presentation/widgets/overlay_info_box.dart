@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../domain/entities/item.dart';
 
-class OverlayAmountInfoBox extends StatelessWidget {
-  const OverlayAmountInfoBox({
+class OverlayQuantityInfoBox extends StatelessWidget {
+  const OverlayQuantityInfoBox({
     Key? key,
     required this.item,
     required this.title,
     this.titleStyle = const TextStyle(
       fontSize: 16,
     ),
-    required this.amount,
-    this.amountStyle = const TextStyle(
+    required this.quantity,
+    this.quantityStyle = const TextStyle(
       fontSize: 24,
       color: Colors.amber,
     ),
@@ -21,8 +21,8 @@ class OverlayAmountInfoBox extends StatelessWidget {
   final Item? item;
   final String title;
   final TextStyle titleStyle;
-  final double amount;
-  final TextStyle amountStyle;
+  final double quantity;
+  final TextStyle quantityStyle;
   final Color backgroundColor;
 
   @override
@@ -45,8 +45,8 @@ class OverlayAmountInfoBox extends StatelessWidget {
               style: titleStyle,
             ),
             Text(
-              amount.toString(),
-              style: amountStyle,
+              quantity.toString(),
+              style: quantityStyle,
             ),
           ],
         ),

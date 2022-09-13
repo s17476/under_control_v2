@@ -46,9 +46,10 @@ class SelectableLocationslistTile extends StatelessWidget {
       child: Column(
         children: [
           InkWell(
+            borderRadius: BorderRadius.circular(5),
             onTap: () => setLocation(location.id),
             child: Container(
-              height: 40,
+              height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 color: Theme.of(context).cardColor,
@@ -57,13 +58,12 @@ class SelectableLocationslistTile extends StatelessWidget {
                 children: [
                   Container(
                     width: 25,
-                    height: 40,
+                    height: 50,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(5),
                         bottomLeft: Radius.circular(5),
                       ),
-                      // color: widget.color,
                     ),
                     child: children.isNotEmpty
                         ? const Icon(
