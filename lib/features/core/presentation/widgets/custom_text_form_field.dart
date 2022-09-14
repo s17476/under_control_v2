@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
     required this.labelText,
     this.validator,
+    this.autovalidateMode,
     this.onSaved,
     this.onChanged,
     this.enabled = true,
@@ -35,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
   final EdgeInsets scrollPadding;
   final int? maxLines;
   final TextAlign textAlign;
+  final AutovalidateMode? autovalidateMode;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,7 @@ class CustomTextFormField extends StatelessWidget {
         filled: true,
       ),
       validator: validator,
+      autovalidateMode: autovalidateMode,
       onSaved: onSaved,
     );
   }

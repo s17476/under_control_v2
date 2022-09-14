@@ -4,11 +4,9 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_actions_stream.dart';
 import 'package:under_control_v2/features/inventory/domain/repositories/item_action_repository.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/get_item_actions_stream.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/item_action/update_item_action.dart';
 
 class MockItemActionRepository extends Mock implements ItemActionRepository {}
 
@@ -31,7 +29,7 @@ void main() {
       locations: [],
       amountInLocations: [],
     ),
-    companyId: 'companyId',
+    companyId: companyId,
   );
 
   setUpAll(() {

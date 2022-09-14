@@ -10,7 +10,6 @@ import 'package:under_control_v2/features/inventory/data/models/item_amount_in_l
 import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_amount_in_location.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/add_item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/delete_item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/move_item_action.dart';
@@ -79,11 +78,6 @@ void main() {
     updatedItem: item,
     moveFromItemAction: itemAction,
     moveToItemAction: itemAction,
-    companyId: companyId,
-  );
-
-  const tItemParams = ItemParams(
-    item: item,
     companyId: companyId,
   );
 

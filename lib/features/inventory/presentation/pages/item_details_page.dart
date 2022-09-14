@@ -1,8 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/image_viewer.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/rounded_button.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 import 'package:under_control_v2/features/inventory/presentation/pages/add_item_page.dart';
@@ -15,9 +13,10 @@ import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/responsive_size.dart';
-import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../utils/item_action_management_bloc_listener.dart';
+import '../blocs/item_action_management/item_action_management_bloc.dart';
 import '../blocs/items/items_bloc.dart';
 import '../blocs/items_management/items_management_bloc.dart';
 import '../widgets/item_category_row.dart';
@@ -115,9 +114,18 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
       ),
       body: item == null
           ? const LoadingWidget()
-          : BlocListener<ItemsManagementBloc, ItemsManagementState>(
-              listener: (context, state) =>
-                  itemManagementBlocListener(context, state),
+          : MultiBlocListener(
+              listeners: [
+                BlocListener<ItemsManagementBloc, ItemsManagementState>(
+                  listener: (context, state) =>
+                      itemManagementBlocListener(context, state),
+                ),
+                BlocListener<ItemActionManagementBloc,
+                    ItemActionManagementState>(
+                  listener: (context, state) =>
+                      itemActionManagementBlocListener(context, state),
+                ),
+              ],
               child: SingleChildScrollView(
                 child: Column(
                   children: [

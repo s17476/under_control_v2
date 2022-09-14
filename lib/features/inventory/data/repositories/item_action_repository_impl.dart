@@ -32,7 +32,7 @@ class ItemActionRepositoryImpl extends ItemActionRepository {
       final actionsReference = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('items');
+          .collection('actions');
       final actionMap = (params.itemAction as ItemActionModel).toMap();
 
       // get action reference
@@ -77,7 +77,7 @@ class ItemActionRepositoryImpl extends ItemActionRepository {
       final actionReference = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('items')
+          .collection('actions')
           .doc(params.itemAction.id);
 
       // batch

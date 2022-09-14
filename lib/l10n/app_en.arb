@@ -163,6 +163,30 @@
     "@quantity": {
       "description": "quantity"
     },
+    "location": "Location",
+    "@location": {
+      "description": "location"
+    },
+    "description": "Description",
+    "@description": {
+      "description": "description"
+    },
+    "selected_date": "Selected date",
+    "@selected_date": {
+      "description": "selected date"
+    },
+    "date_and_description": "Date and description",
+    "@date_and_description": {
+      "description": "date and description"
+    },
+    "validation_location_not_selected": "Location NOT selected",
+    "@validation_location_not_selected": {
+      "description": "Validation - location not selected"
+    },
+    "validation_no_description": "Add description",
+    "@validation_no_description": {
+      "description": "Validation - no description"
+    },
     "validation_min_two_characters": "At least 2 characters",
     "@validation_min_two_characters": {
       "description": "Validation - min two characters"
@@ -1058,5 +1082,33 @@
     "incorrect_number_to_small": "The number of items must be greater than 0",
     "@incorrect_number_to_small": {
       "description": "The number of items must be greater than zero"
+    },
+    "item_action_msg_updated": "Action updated",
+    "@item_action_msg_updated": {
+      "description": "item action - updated msg"
+    },
+    "item_action_msg_not_updated": "Action NOT updated",
+    "@item_action_msg_not_updated": {
+      "description": "item action - NOT updated msg"
+    },
+    "item_action_msg_added": "Action added",
+    "@item_action_msg_added": {
+      "description": "item action - added msg"
+    },
+    "item_action_msg_not_added": "Action NOT added",
+    "@item_action_msg_not_added": {
+      "description": "item action - NOT added msg"
+    },
+    "item_action_msg_deleted": "Action deleted",
+    "@item_action_msg_deleted": {
+      "description": "item action - deleted msg"
+    },
+    "item_action_msg_not_deleted": "Action NOT deleted",
+    "@item_action_msg_not_deleted": {
+      "description": "item action - NOT deleted msg"
+    },
+    "item_details_quantities_in_locations": "Quantities in locations",
+    "@item_details_quantities_in_locations": {
+      "description": "Quantities in locations"
     }
 }

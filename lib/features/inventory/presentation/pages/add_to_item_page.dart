@@ -1,9 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
+import 'package:under_control_v2/features/inventory/presentation/blocs/item_action/item_action_bloc.dart';
+import 'package:under_control_v2/features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_date_and_description_card.dart';
+import '../../../core/utils/double_apis.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_quantity_card.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_to_item_summary_card.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_to_location_card.dart';
@@ -28,7 +32,7 @@ class AddToItemPage extends StatefulWidget {
 }
 
 class _AddItemPageState extends State<AddToItemPage> {
-  Item? item;
+  ItemModel? item;
 
   List<Widget> pages = [];
 
@@ -38,7 +42,11 @@ class _AddItemPageState extends State<AddToItemPage> {
 
   final quantityTextEditingController = TextEditingController(text: '0');
 
+  final descriptionTextEditingController = TextEditingController();
+
   String selectedLocation = '';
+
+  DateTime dateTime = DateTime.now();
 
   void setLocation(String location) async {
     setState(() {
@@ -54,6 +62,12 @@ class _AddItemPageState extends State<AddToItemPage> {
     );
   }
 
+  void setDate(DateTime date) {
+    setState(() {
+      dateTime = date;
+    });
+  }
+
   @override
   void didChangeDependencies() {
     final arguments = ModalRoute.of(context)!.settings.arguments;
@@ -66,42 +80,59 @@ class _AddItemPageState extends State<AddToItemPage> {
 
   void addToItem(BuildContext context) {
     String errorMessage = '';
-    double amount = 0;
-    // amount validation
-    try {
-      amount = double.parse(quantityTextEditingController.text);
-      if (amount <= 0) {
-        errorMessage = AppLocalizations.of(context)!.incorrect_number_to_small;
-      }
-    } catch (e) {
-      errorMessage = AppLocalizations.of(context)!.incorrect_number_format;
-    }
-    // item name validation
-    if (!_formKey.currentState!.validate()) {}
-    // } else {
-    //   // category selection validation
-    //   if (category.isEmpty) {
-    //     errorMessage =
-    //         AppLocalizations.of(context)!.item_add_error_category_not_selected;
-    //   } else {
-    //     // item unit selection validation
+    double quantity = 0;
 
-    //     if (itemUnit.isEmpty) {
-    //       errorMessage =
-    //           AppLocalizations.of(context)!.item_add_error_unit_not_selected;
-    //     } else if (item == null) {
-    //       final currentState = context.read<ItemsBloc>().state;
-    //       if (currentState is ItemsLoadedState) {
-    //         final tmpItems = currentState.allItems.allItems
-    //             .where((i) => i.name == nameTexEditingController.text.trim());
-    //         if (tmpItems.isNotEmpty) {
-    //           errorMessage = AppLocalizations.of(context)!
-    //               .group_management_add_error_name_exists;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+    // location validation
+    if (selectedLocation.isEmpty) {
+      errorMessage =
+          AppLocalizations.of(context)!.validation_location_not_selected;
+    } else {
+      // description validation
+
+      // quantity validation
+      try {
+        quantity = double.parse(quantityTextEditingController.text);
+        if (quantity <= 0) {
+          errorMessage =
+              AppLocalizations.of(context)!.incorrect_number_to_small;
+        }
+      } catch (e) {
+        errorMessage = AppLocalizations.of(context)!.incorrect_number_format;
+      }
+      if (errorMessage.isEmpty) {
+        // text fields validation
+        if (_formKey.currentState!.validate()) {
+          print('OK');
+          // save new item action
+          final newItemAction = ItemActionModel(
+            id: '',
+            type: ItemActionType.add,
+            description: descriptionTextEditingController.text.trim(),
+            ammount: double.parse(quantity.toStringWithFixedDecimal()),
+            itemUnit: item!.itemUnit,
+            locationId: selectedLocation,
+            date: dateTime,
+            itemId: item!.id,
+          );
+
+          context.read<ItemActionManagementBloc>().add(
+                AddItemActionEvent(
+                  item: item!,
+                  itemAction: newItemAction,
+                ),
+              );
+
+          Navigator.pop(context);
+        } else {
+          // no description added
+          if (descriptionTextEditingController.text.trim().length < 2) {
+            errorMessage =
+                AppLocalizations.of(context)!.validation_no_description;
+            // description to short
+          }
+        }
+      }
+    }
 
     //   // shows SnackBar if validation error occures
     if (errorMessage.isNotEmpty) {
@@ -110,7 +141,6 @@ class _AddItemPageState extends State<AddToItemPage> {
         message: errorMessage,
         isErrorMessage: true,
       );
-      // saves group to DB if no error
     }
     //else {
     //     final newItem = ItemModel(
@@ -147,6 +177,7 @@ class _AddItemPageState extends State<AddToItemPage> {
   @override
   void dispose() {
     quantityTextEditingController.dispose();
+    descriptionTextEditingController.dispose();
     pageController.dispose();
     super.dispose();
   }
@@ -170,12 +201,22 @@ class _AddItemPageState extends State<AddToItemPage> {
           itemUnit: item!.itemUnit,
         ),
       ),
+      KeepAlivePage(
+        child: AddDateAndDescriptionCard(
+          pageController: pageController,
+          descriptionTextEditingController: descriptionTextEditingController,
+          dateTime: dateTime,
+          setDate: setDate,
+        ),
+      ),
       AddToItemSummaryCard(
         pageController: pageController,
         quantityTextEditingController: quantityTextEditingController,
         selectedLocation: selectedLocation,
         itemUnit: getLocalizedUnitName(context, item!.itemUnit),
         addNewItem: addToItem,
+        dateTime: dateTime,
+        descriptionTextEditingController: descriptionTextEditingController,
       ),
     ];
 

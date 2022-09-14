@@ -134,8 +134,8 @@ class NotApprovedPage extends StatelessWidget with ResponsiveSize {
                               ),
                             ),
                           ElevatedButton(
-                            style:
-                                ElevatedButton.styleFrom(primary: Colors.black),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black),
                             onPressed: () {
                               showDialog(
                                 context: context,

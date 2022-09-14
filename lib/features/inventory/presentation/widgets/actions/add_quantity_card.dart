@@ -30,6 +30,8 @@ class AddQuantityCard extends StatefulWidget {
 }
 
 class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
+  String? errorMessage;
+
   void _increaseQuantity() {
     try {
       FocusScope.of(context).unfocus();
@@ -65,14 +67,6 @@ class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
       isErrorMessage: true,
     );
   }
-
-  // @override
-  // void initState() {
-  //   widget.quantityTextEditingController.addListener(() {
-  //     setState(() {});
-  //   });
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +140,29 @@ class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
                         controller: widget.quantityTextEditingController,
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
+                        validator: (val) {
+                          double? quantity;
+                          try {
+                            quantity = double.parse(val!);
+                            if (quantity <= 0) {
+                              setState(() {
+                                errorMessage = AppLocalizations.of(context)!
+                                    .incorrect_number_to_small;
+                              });
+                            } else {
+                              setState(() {
+                                errorMessage = null;
+                              });
+                            }
+                          } catch (e) {
+                            setState(() {
+                              errorMessage = AppLocalizations.of(context)!
+                                  .incorrect_number_format;
+                            });
+                          }
+
+                          return null;
+                        },
                       ),
                     ),
                     // increase button
@@ -168,6 +185,16 @@ class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
                     ),
                   ],
                 ),
+                if (errorMessage != null)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      errorMessage!,
+                      style: TextStyle(
+                        color: Theme.of(context).errorColor,
+                      ),
+                    ),
+                  ),
                 const Expanded(child: SizedBox()),
               ],
             ),

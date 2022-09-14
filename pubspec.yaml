@@ -55,6 +55,7 @@ dependencies:
   cached_network_image: ^3.2.1
   url_launcher: ^6.1.5
   photo_view: ^0.14.0
+  flutter_datetime_picker: ^1.5.1
   
 
 

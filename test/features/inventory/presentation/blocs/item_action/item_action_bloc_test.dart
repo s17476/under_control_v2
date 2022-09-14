@@ -4,16 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_category/item_category_model.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_actions_stream.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_category/items_categories_stream.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/get_item_actions_stream.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/item_category/get_items_categories_stream.dart';
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action/item_action_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_category/item_category_bloc.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 class MockGetItemsActionsStream extends Mock implements GetItemsActionsStream {}
 

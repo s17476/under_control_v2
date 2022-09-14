@@ -8,7 +8,6 @@ import 'package:under_control_v2/features/inventory/data/models/item_action/item
 import 'package:under_control_v2/features/inventory/data/models/item_amount_in_location_model.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_amount_in_location.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/add_item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/delete_item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/move_item_action.dart';
@@ -86,9 +85,11 @@ class ItemActionManagementBloc
         );
       }
       final amountInLocations = [...event.item.amountInLocations];
+
       final itemLocations = [...event.item.locations];
       if (index >= 0) {
-        amountInLocations.insert(index, itemAmountInLocation);
+        amountInLocations.removeAt(index);
+        amountInLocations.add(itemAmountInLocation);
       } else {
         amountInLocations.add(itemAmountInLocation);
         itemLocations.add(itemAmountInLocation.locationId);
@@ -162,7 +163,8 @@ class ItemActionManagementBloc
       final amountInLocations = [...event.item.amountInLocations];
       final itemLocations = [...event.item.locations];
 
-      amountInLocations.insert(index, itemAmountInLocation);
+      amountInLocations.removeAt(index);
+      amountInLocations.add(itemAmountInLocation);
 
       ItemModel updatedItem = event.item.copyWith(
         amountInLocations: amountInLocations,
@@ -223,7 +225,8 @@ class ItemActionManagementBloc
       final amountInLocations = [...event.item.amountInLocations];
       final itemLocations = [...event.item.locations];
 
-      amountInLocations.insert(index, itemAmountInLocation);
+      amountInLocations.removeAt(index);
+      amountInLocations.add(itemAmountInLocation);
 
       ItemModel updatedItem = event.item.copyWith(
         amountInLocations: amountInLocations,
