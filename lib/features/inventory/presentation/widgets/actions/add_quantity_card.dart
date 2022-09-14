@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/custom_text_form_field.dart';
-
-import 'package:under_control_v2/features/core/presentation/widgets/rounded_button.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
-import 'package:under_control_v2/features/inventory/utils/get_localized_unit_name.dart';
-import 'package:under_control_v2/features/core/utils/double_apis.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
+import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
+import '../../../../core/presentation/widgets/rounded_button.dart';
+import '../../../../core/utils/double_apis.dart';
 import '../../../../core/utils/responsive_size.dart';
+import '../../../../core/utils/show_snack_bar.dart';
+import '../../../domain/entities/item.dart';
+import '../../../utils/get_localized_unit_name.dart';
 
 class AddQuantityCard extends StatefulWidget {
   const AddQuantityCard({

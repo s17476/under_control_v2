@@ -10,6 +10,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.labelText,
     this.validator,
     this.onSaved,
+    this.onChanged,
     this.enabled = true,
     this.autofocus = false,
     this.initialValue,
@@ -26,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
   final String labelText;
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
+  final void Function(String?)? onChanged;
   final bool enabled;
   final bool autofocus;
   final String? initialValue;
@@ -47,6 +49,7 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       textCapitalization: textCapitalization,
       maxLines: maxLines,
+      onChanged: onChanged,
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         floatingLabelStyle: TextStyle(

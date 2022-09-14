@@ -36,14 +36,22 @@ class _AddItemPageState extends State<AddToItemPage> {
 
   final pageController = PageController();
 
-  final amountTextEditingController = TextEditingController(text: '0');
+  final quantityTextEditingController = TextEditingController(text: '0');
 
   String selectedLocation = '';
 
-  void setLocation(String location) {
+  void setLocation(String location) async {
     setState(() {
       selectedLocation = location;
     });
+    await Future.delayed(
+      const Duration(milliseconds: 500),
+    );
+    pageController.animateToPage(
+      1,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeIn,
+    );
   }
 
   @override
@@ -61,7 +69,7 @@ class _AddItemPageState extends State<AddToItemPage> {
     double amount = 0;
     // amount validation
     try {
-      amount = double.parse(amountTextEditingController.text);
+      amount = double.parse(quantityTextEditingController.text);
       if (amount <= 0) {
         errorMessage = AppLocalizations.of(context)!.incorrect_number_to_small;
       }
@@ -138,7 +146,7 @@ class _AddItemPageState extends State<AddToItemPage> {
 
   @override
   void dispose() {
-    amountTextEditingController.dispose();
+    quantityTextEditingController.dispose();
     pageController.dispose();
     super.dispose();
   }
@@ -158,13 +166,13 @@ class _AddItemPageState extends State<AddToItemPage> {
       KeepAlivePage(
         child: AddQuantityCard(
           pageController: pageController,
-          quantityTextEditingController: amountTextEditingController,
+          quantityTextEditingController: quantityTextEditingController,
           itemUnit: item!.itemUnit,
         ),
       ),
       AddToItemSummaryCard(
         pageController: pageController,
-        quantityTextEditingController: amountTextEditingController,
+        quantityTextEditingController: quantityTextEditingController,
         selectedLocation: selectedLocation,
         itemUnit: getLocalizedUnitName(context, item!.itemUnit),
         addNewItem: addToItem,
