@@ -1110,5 +1110,9 @@
     "item_details_quantities_in_locations": "Quantities in locations",
     "@item_details_quantities_in_locations": {
       "description": "Quantities in locations"
+    },
+    "item_details_latest_actions": "Latest actions",
+    "@item_details_latest_actions": {
+      "description": "Latest actions"
     }
 }

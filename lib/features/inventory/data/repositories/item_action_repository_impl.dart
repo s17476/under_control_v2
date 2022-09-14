@@ -222,4 +222,28 @@ class ItemActionRepositoryImpl extends ItemActionRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, ItemActionsStream>> getLastFiveItemActionsStream(
+      ItemParams params) async {
+    try {
+      final Stream<QuerySnapshot> querySnapshot;
+      querySnapshot = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('actions')
+          .where('itemId', isEqualTo: params.item.id)
+          .orderBy('date', descending: true)
+          .limit(5)
+          .snapshots();
+
+      return Right(ItemActionsStream(allItemActions: querySnapshot));
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
 }

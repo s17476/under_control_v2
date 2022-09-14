@@ -6,18 +6,24 @@ import 'package:equatable/equatable.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_action/item_actions_list_model.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/get_item_actions_stream.dart';
+import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/item_action/get_last_five_item_actions_stream.dart';
 
 import '../../../domain/entities/item.dart';
 
 part 'item_action_event.dart';
 part 'item_action_state.dart';
 
+@injectable
 class ItemActionBloc extends Bloc<ItemActionEvent, ItemActionState> {
   StreamSubscription? itemsActionsStreamSubscription;
   final GetItemsActionsStream getItemsActionsStream;
+  final GetLastFiveItemsActionsStream getLastFiveItemsActionsStream;
 
-  ItemActionBloc({required this.getItemsActionsStream})
-      : super(ItemActionEmptyState()) {
+  ItemActionBloc({
+    required this.getItemsActionsStream,
+    required this.getLastFiveItemsActionsStream,
+  }) : super(ItemActionEmptyState()) {
     on<GetItemActionsEvent>((event, emit) async {
       emit(ItemActionLoadingState());
 
@@ -26,6 +32,27 @@ class ItemActionBloc extends Bloc<ItemActionEvent, ItemActionState> {
 
       final failureOrItemActionsStream =
           await getItemsActionsStream(_itemParams);
+      await failureOrItemActionsStream.fold(
+        (failure) async => emit(ItemActionErrorState(message: failure.message)),
+        (actionsStream) async {
+          itemsActionsStreamSubscription =
+              actionsStream.allItemActions.listen((snapshot) {
+            add(
+              UpdateItemActionsListEvent(snapshot: snapshot),
+            );
+          });
+        },
+      );
+    });
+
+    on<GetLastFiveItemActionsEvent>((event, emit) async {
+      emit(ItemActionLoadingState());
+
+      final _itemParams =
+          ItemParams(item: event.item, companyId: event.companyId);
+
+      final failureOrItemActionsStream =
+          await getLastFiveItemsActionsStream(_itemParams);
       await failureOrItemActionsStream.fold(
         (failure) async => emit(ItemActionErrorState(message: failure.message)),
         (actionsStream) async {

@@ -20,6 +20,16 @@ class GetItemActionsEvent extends ItemActionEvent {
   }) : super(properties: [item, companyId]);
 }
 
+class GetLastFiveItemActionsEvent extends ItemActionEvent {
+  final Item item;
+  final String companyId;
+
+  GetLastFiveItemActionsEvent({
+    required this.item,
+    required this.companyId,
+  }) : super(properties: [item, companyId]);
+}
+
 class UpdateItemActionsListEvent extends ItemActionEvent {
   final QuerySnapshot<Object?> snapshot;
 

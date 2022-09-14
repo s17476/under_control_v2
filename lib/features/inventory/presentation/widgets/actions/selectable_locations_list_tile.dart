@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../locations/domain/entities/location.dart';
 import '../../../domain/entities/item.dart';
+import '../../../../core/utils/double_apis.dart';
 
 class SelectableLocationslistTile extends StatelessWidget {
   const SelectableLocationslistTile({
@@ -83,7 +84,7 @@ class SelectableLocationslistTile extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    amountInLocation.toString(),
+                    amountInLocation.toStringWithFixedDecimal(),
                     style: const TextStyle(fontSize: 18),
                   ),
                   // radio button

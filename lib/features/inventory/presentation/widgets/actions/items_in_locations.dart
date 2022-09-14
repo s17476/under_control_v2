@@ -48,6 +48,7 @@ class _ItemsInLocationsState extends State<ItemsInLocations> {
                     iconBackground: Colors.black,
                     title: AppLocalizations.of(context)!
                         .item_details_quantities_in_locations,
+                    titleFontSize: 16,
                   ),
                 ),
                 Icon(
