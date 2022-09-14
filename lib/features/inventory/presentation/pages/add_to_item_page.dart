@@ -102,7 +102,6 @@ class _AddItemPageState extends State<AddToItemPage> {
       if (errorMessage.isEmpty) {
         // text fields validation
         if (_formKey.currentState!.validate()) {
-          print('OK');
           // save new item action
           final newItemAction = ItemActionModel(
             id: '',
@@ -142,36 +141,6 @@ class _AddItemPageState extends State<AddToItemPage> {
         isErrorMessage: true,
       );
     }
-    //else {
-    //     final newItem = ItemModel(
-    //       id: item != null ? item!.id : '',
-    //       name: nameTexEditingController.text,
-    //       description: descriptionTexEditingController.text,
-    //       category: category,
-    //       itemCode: itemCodeTexEditingController.text,
-    //       itemPhoto: item != null ? item!.itemPhoto : '',
-    //       itemUnit: ItemUnit.fromString(itemUnit),
-    //       amountInLocations: const [],
-    //       locations: const [],
-    //       sparePartFor: sparePartFor,
-    //     );
-
-    //     if (item != null) {
-    //       context.read<ItemsManagementBloc>().add(UpdateItemEvent(
-    //             item: newItem,
-    //             itemPhoto: itemImage,
-    //           ));
-    //     } else {
-    //       context.read<ItemsManagementBloc>().add(
-    //             AddItemEvent(
-    //               item: newItem,
-    //               itemPhoto: itemImage,
-    //             ),
-    //           );
-    //     }
-
-    //     Navigator.pop(context);
-    //   }
   }
 
   @override

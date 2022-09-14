@@ -5,6 +5,7 @@ import 'package:under_control_v2/features/core/presentation/widgets/rounded_butt
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 import 'package:under_control_v2/features/inventory/presentation/pages/add_item_page.dart';
 import 'package:under_control_v2/features/inventory/presentation/pages/add_to_item_page.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/actions/items_in_locations.dart';
 import 'package:under_control_v2/features/inventory/utils/get_item_total_quantity.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/square_item_image.dart';
 import 'package:under_control_v2/features/inventory/utils/item_management_bloc_listener.dart';
@@ -347,8 +348,18 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                               ],
                             ),
                           ),
+                          const Divider(
+                            thickness: 1.5,
+                          ),
+                          ItemsInLocations(item: item!),
+                          const Divider(
+                            thickness: 1.5,
+                          ),
                         ],
                       ),
+                    ),
+                    const SizedBox(
+                      height: 36,
                     ),
                   ],
                 ),
