@@ -3,17 +3,17 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_amount_in_location_model.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/item_action/add_item_action.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/item_action/delete_item_action.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/item_action/move_item_action.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/item_action/update_item_action.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../../data/models/item_action/item_action_model.dart';
+import '../../../data/models/item_amount_in_location_model.dart';
+import '../../../data/models/item_model.dart';
+import '../../../domain/entities/item_action/item_action.dart';
+import '../../../domain/usecases/item_action/add_item_action.dart';
+import '../../../domain/usecases/item_action/delete_item_action.dart';
+import '../../../domain/usecases/item_action/move_item_action.dart';
+import '../../../domain/usecases/item_action/update_item_action.dart';
 
 part 'item_action_management_event.dart';
 part 'item_action_management_state.dart';

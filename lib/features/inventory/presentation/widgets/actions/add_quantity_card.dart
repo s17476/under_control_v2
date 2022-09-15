@@ -17,6 +17,7 @@ class AddQuantityCard extends StatefulWidget {
     required this.pageController,
     required this.quantityTextEditingController,
     required this.itemUnit,
+    this.maxQuantity = 0,
   }) : super(key: key);
 
   final PageController pageController;
@@ -24,6 +25,8 @@ class AddQuantityCard extends StatefulWidget {
   final TextEditingController quantityTextEditingController;
 
   final ItemUnit itemUnit;
+
+  final double maxQuantity;
 
   @override
   State<AddQuantityCard> createState() => _AddQuantityCardState();
@@ -112,7 +115,6 @@ class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
                           doubleQuantity <= 1 ? () {} : _decreaseQuantity,
                       icon: Icons.remove,
                       iconSize: 40,
-                      // title: AppLocalizations.of(context)!.subtract,
                       titleSize: 16,
                       foregroundColor: Colors.grey.shade200,
                       padding: const EdgeInsets.all(16),
@@ -149,6 +151,12 @@ class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
                                 errorMessage = AppLocalizations.of(context)!
                                     .incorrect_number_to_small;
                               });
+                            } else if (widget.maxQuantity != 0 &&
+                                quantity > widget.maxQuantity) {
+                              setState(() {
+                                errorMessage = AppLocalizations.of(context)!
+                                    .incorrect_number_to_big;
+                              });
                             } else {
                               setState(() {
                                 errorMessage = null;
@@ -167,18 +175,26 @@ class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
                     ),
                     // increase button
                     RoundedButton(
-                      onPressed: _increaseQuantity,
+                      onPressed: (widget.maxQuantity != 0 &&
+                              doubleQuantity > widget.maxQuantity - 1)
+                          ? () {}
+                          : _increaseQuantity,
                       icon: Icons.add,
                       iconSize: 40,
-                      // title: AppLocalizations.of(context)!.add,
                       titleSize: 16,
                       foregroundColor: Colors.grey.shade200,
                       padding: const EdgeInsets.all(16),
                       gradient: LinearGradient(
-                        colors: [
-                          Theme.of(context).primaryColor,
-                          Theme.of(context).primaryColor.withAlpha(60),
-                        ],
+                        colors: (widget.maxQuantity != 0 &&
+                                doubleQuantity > widget.maxQuantity - 1)
+                            ? [
+                                Colors.grey,
+                                Colors.grey.withAlpha(60),
+                              ]
+                            : [
+                                Theme.of(context).primaryColor,
+                                Theme.of(context).primaryColor.withAlpha(60),
+                              ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),

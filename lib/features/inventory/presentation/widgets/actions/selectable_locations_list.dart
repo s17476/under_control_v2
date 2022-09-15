@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/selectable_locations_list_tile.dart';
-
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../../domain/entities/item.dart';
+import 'selectable_locations_list_tile.dart';
 
 class SelectableLocationsList extends StatelessWidget {
   const SelectableLocationsList({
     Key? key,
     required this.item,
     required this.selectedLocation,
+    this.isSubtract = false,
     required this.setLocation,
   }) : super(key: key);
 
   final Item item;
 
   final String selectedLocation;
+
+  final bool isSubtract;
 
   final Function(String) setLocation;
 
@@ -35,11 +37,13 @@ class SelectableLocationsList extends StatelessWidget {
             itemCount: topLevelItems.length,
             itemBuilder: (context, index) {
               return SelectableLocationslistTile(
+                key: ValueKey(topLevelItems[index].id),
                 location: topLevelItems[index],
                 selectedLocation: selectedLocation,
                 allLocations: state.allLocations.allLocations,
                 setLocation: setLocation,
                 item: item,
+                isSubtract: isSubtract,
               );
             },
           );

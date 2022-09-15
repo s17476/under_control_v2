@@ -10,6 +10,7 @@ class SelectableLocationslistTile extends StatelessWidget {
     required this.location,
     required this.selectedLocation,
     required this.allLocations,
+    this.isSubtract = false,
     required this.setLocation,
     required this.item,
   }) : super(key: key);
@@ -20,6 +21,8 @@ class SelectableLocationslistTile extends StatelessWidget {
   final String selectedLocation;
 
   final List<Location> allLocations;
+
+  final bool isSubtract;
 
   final Function(String) setLocation;
 
@@ -48,7 +51,9 @@ class SelectableLocationslistTile extends StatelessWidget {
         children: [
           InkWell(
             borderRadius: BorderRadius.circular(5),
-            onTap: () => setLocation(location.id),
+            onTap: !isSubtract || (isSubtract && amountInLocation > 0)
+                ? () => setLocation(location.id)
+                : () {},
             child: Container(
               height: 50,
               decoration: BoxDecoration(
@@ -91,13 +96,17 @@ class SelectableLocationslistTile extends StatelessWidget {
                   Radio<String>(
                     value: location.id,
                     groupValue: selectedLocation,
-                    onChanged: (value) => setLocation(value as String),
+                    onChanged:
+                        !isSubtract || (isSubtract && amountInLocation > 0)
+                            ? (value) => setLocation(value as String)
+                            : (_) {},
                     activeColor: Theme.of(context).primaryColor,
                   ),
                 ],
               ),
             ),
           ),
+          // sublocations
           if (children.isNotEmpty)
             Container(
               width: double.infinity,
@@ -105,13 +114,14 @@ class SelectableLocationslistTile extends StatelessWidget {
               child: Column(
                 children: [
                   for (var child in children)
-                    // location card
                     SelectableLocationslistTile(
+                      key: ValueKey(child.id),
                       location: child,
                       selectedLocation: selectedLocation,
                       allLocations: allLocations,
                       setLocation: setLocation,
                       item: item,
+                      isSubtract: isSubtract,
                     ),
                 ],
               ),

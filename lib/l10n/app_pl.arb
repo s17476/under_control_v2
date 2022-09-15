@@ -42,6 +42,7 @@
     "quantity": "Ilość",
     "location": "Lokacja",
     "description": "Opis",
+    "show_all": "Pokaż wszystko",
     "selected_date": "Wybrana data",
     "date_and_description": "Data i opis",
     "validation_location_not_selected": "Nie wybrano lokacji",
@@ -101,6 +102,7 @@
     "drawer_item_groups": "Grupy",
     "drawer_item_users": "Użytkownicy",
     "location_management_title": "Lokacje",
+    "location_unknown": "Lokacja nieznana",
     "location_management_add_card": "Dodaj lokację",
     "location_management_add_sub_card": "Dodaj sublokację do ",
     "location_management_add_location": "Dodaj nową lokację",
@@ -255,6 +257,7 @@
     "item_subtract_from_location": "Odejmij z lokacji",
     "incorrect_number_format": "Niepoprawny format liczby",
     "incorrect_number_to_small": "Ilość musi być większa niż 0",
+    "incorrect_number_to_big": "Ilość przedmiotów musi być mniejsza lub równa ilości dostępnej w wybranej lokacji.",
     "item_action_msg_updated": "Akcja zaktualizowana",
     "item_action_msg_not_updated": "Akcja NIE została zaktualizowana",
     "item_action_msg_added": "Akcja dodana",
@@ -262,5 +265,8 @@
     "item_action_msg_deleted": "Akcja usunięta",
     "item_action_msg_not_deleted": "Akcja NIE została usunięta",
     "item_details_quantities_in_locations": "Ilości w lokacjach",
-    "item_details_latest_actions": "Ostatnie akcje"
+    "item_details_latest_actions": "Ostatnie akcje",
+    "item_details_no_actions": "Brak akcji",
+    "item_details_loading_actions": "Ładowanie akcji...",
+    "item_actions_history": "Historia akcji"
 }

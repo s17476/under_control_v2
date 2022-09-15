@@ -6,7 +6,8 @@ import '../presentation/blocs/items_management/items_management_bloc.dart';
 
 void itemManagementBlocListener(
     BuildContext context, ItemsManagementState state) {
-  if (state is ItemsManagementSuccessState) {
+  if (state is ItemsManagementSuccessState ||
+      state is ItemsManagementErrorState) {
     String message = '';
     switch (state.message) {
       case ItemsMessage.itemUpdated:

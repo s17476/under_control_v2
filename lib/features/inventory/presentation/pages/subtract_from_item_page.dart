@@ -2,36 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_action/item_action_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_date_and_description_card.dart';
-import '../../../core/utils/double_apis.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_quantity_card.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_to_item_summary_card.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_to_location_card.dart';
-import 'package:under_control_v2/features/inventory/utils/get_localized_unit_name.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
+import '../../../core/utils/double_apis.dart';
 import '../../../core/utils/show_snack_bar.dart';
+import '../../data/models/item_action/item_action_model.dart';
 import '../../data/models/item_model.dart';
-import '../../domain/entities/item.dart';
+import '../../domain/entities/item_action/item_action.dart';
+import '../../utils/get_localized_unit_name.dart';
+import '../blocs/item_action_management/item_action_management_bloc.dart';
 import '../blocs/items/items_bloc.dart';
+import '../widgets/actions/add_date_and_description_card.dart';
+import '../widgets/actions/add_quantity_card.dart';
+import '../widgets/actions/add_to_item_summary_card.dart';
+import '../widgets/actions/add_to_location_card.dart';
 
-class AddToItemPage extends StatefulWidget {
-  const AddToItemPage({
+class SubtractFromItemPage extends StatefulWidget {
+  const SubtractFromItemPage({
     Key? key,
   }) : super(key: key);
 
-  static const routeName = '/inventory/add-to-item';
+  static const routeName = '/inventory/subtract-from-item';
 
   @override
-  State<AddToItemPage> createState() => _AddItemPageState();
+  State<SubtractFromItemPage> createState() => _SubtractFromPageState();
 }
 
-class _AddItemPageState extends State<AddToItemPage> {
+class _SubtractFromPageState extends State<SubtractFromItemPage> {
   ItemModel? item;
 
   List<Widget> pages = [];
@@ -46,11 +44,16 @@ class _AddItemPageState extends State<AddToItemPage> {
 
   String selectedLocation = '';
 
+  double maxQuantity = 0;
+
   DateTime dateTime = DateTime.now();
 
   void setLocation(String location) async {
     setState(() {
       selectedLocation = location;
+      final amountInLocation = item!.amountInLocations
+          .firstWhere((element) => element.locationId == location);
+      maxQuantity = amountInLocation.amount;
     });
     await Future.delayed(
       const Duration(milliseconds: 500),
@@ -78,7 +81,7 @@ class _AddItemPageState extends State<AddToItemPage> {
     super.didChangeDependencies();
   }
 
-  void addToItem(BuildContext context) {
+  void subtractFromItem(BuildContext context) {
     String errorMessage = '';
     double quantity = 0;
 
@@ -87,14 +90,14 @@ class _AddItemPageState extends State<AddToItemPage> {
       errorMessage =
           AppLocalizations.of(context)!.validation_location_not_selected;
     } else {
-      // description validation
-
       // quantity validation
       try {
         quantity = double.parse(quantityTextEditingController.text);
         if (quantity <= 0) {
           errorMessage =
               AppLocalizations.of(context)!.incorrect_number_to_small;
+        } else if (maxQuantity != 0 && quantity > maxQuantity) {
+          errorMessage = AppLocalizations.of(context)!.incorrect_number_to_big;
         }
       } catch (e) {
         errorMessage = AppLocalizations.of(context)!.incorrect_number_format;
@@ -105,7 +108,7 @@ class _AddItemPageState extends State<AddToItemPage> {
           // save new item action
           final newItemAction = ItemActionModel(
             id: '',
-            type: ItemActionType.add,
+            type: ItemActionType.remove,
             description: descriptionTextEditingController.text.trim(),
             ammount: double.parse(quantity.toStringWithFixedDecimal()),
             itemUnit: item!.itemUnit,
@@ -123,13 +126,12 @@ class _AddItemPageState extends State<AddToItemPage> {
 
           Navigator.pop(context);
         }
+        // description validation
       } else {
-        // no description added
         if (errorMessage.isEmpty &&
             descriptionTextEditingController.text.trim().length < 2) {
           errorMessage =
               AppLocalizations.of(context)!.validation_no_description;
-          // description to short
         }
       }
     }
@@ -160,8 +162,9 @@ class _AddItemPageState extends State<AddToItemPage> {
           pageController: pageController,
           selectedLocation: selectedLocation,
           setLocation: setLocation,
-          title: AppLocalizations.of(context)!.item_add_to_location,
+          title: AppLocalizations.of(context)!.item_subtract_from_location,
           item: item!,
+          isSubtract: true,
         ),
       ),
       KeepAlivePage(
@@ -169,6 +172,7 @@ class _AddItemPageState extends State<AddToItemPage> {
           pageController: pageController,
           quantityTextEditingController: quantityTextEditingController,
           itemUnit: item!.itemUnit,
+          maxQuantity: maxQuantity,
         ),
       ),
       KeepAlivePage(
@@ -184,7 +188,8 @@ class _AddItemPageState extends State<AddToItemPage> {
         quantityTextEditingController: quantityTextEditingController,
         selectedLocation: selectedLocation,
         itemUnit: getLocalizedUnitName(context, item!.itemUnit),
-        addNewItem: addToItem,
+        maxQuantity: maxQuantity,
+        addNewItem: subtractFromItem,
         dateTime: dateTime,
         descriptionTextEditingController: descriptionTextEditingController,
       ),

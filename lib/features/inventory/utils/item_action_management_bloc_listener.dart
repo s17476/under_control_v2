@@ -6,7 +6,8 @@ import '../presentation/blocs/item_action_management/item_action_management_bloc
 
 void itemActionManagementBlocListener(
     BuildContext context, ItemActionManagementState state) {
-  if (state is ItemActionManagementSuccessState) {
+  if (state is ItemActionManagementSuccessState ||
+      state is ItemActionManagementErrorState) {
     String message = '';
     switch (state.message) {
       case ItemActionMessage.added:

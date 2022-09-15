@@ -17,6 +17,7 @@ class AddToItemSummaryCard extends StatefulWidget {
     required this.dateTime,
     required this.selectedLocation,
     required this.itemUnit,
+    this.maxQuantity = 0,
     required this.addNewItem,
   }) : super(key: key);
 
@@ -31,6 +32,8 @@ class AddToItemSummaryCard extends StatefulWidget {
   final String selectedLocation;
 
   final String itemUnit;
+
+  final double maxQuantity;
 
   final Function(BuildContext context) addNewItem;
 
@@ -180,6 +183,11 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
                                         } else if (_doubleQuantity! <= 0) {
                                           return AppLocalizations.of(context)!
                                               .incorrect_number_to_small;
+                                        } else if (widget.maxQuantity != 0 &&
+                                            _doubleQuantity! >
+                                                widget.maxQuantity) {
+                                          return AppLocalizations.of(context)!
+                                              .incorrect_number_to_big;
                                         }
                                         return null;
                                       },
@@ -194,7 +202,11 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
                                         labelStyle: TextStyle(
                                           color: (_doubleQuantity == null) ||
                                                   (_doubleQuantity != null &&
-                                                      _doubleQuantity! <= 0)
+                                                      _doubleQuantity! <= 0) ||
+                                                  (_doubleQuantity != null &&
+                                                      widget.maxQuantity != 0 &&
+                                                      _doubleQuantity! >
+                                                          widget.maxQuantity)
                                               ? Colors.red
                                               : Colors.grey,
                                         ),
@@ -203,7 +215,11 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
                                   ),
                                   (_doubleQuantity == null) ||
                                           (_doubleQuantity != null &&
-                                              _doubleQuantity! <= 0)
+                                              _doubleQuantity! <= 0) ||
+                                          (_doubleQuantity != null &&
+                                              widget.maxQuantity != 0 &&
+                                              _doubleQuantity! >
+                                                  widget.maxQuantity)
                                       ? const Icon(
                                           Icons.clear,
                                           color: Colors.red,
@@ -310,7 +326,6 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
                       ],
                     ),
                   ),
-
                   const SizedBox(
                     height: 4,
                   ),

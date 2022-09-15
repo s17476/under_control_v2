@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/rounded_button.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_action/item_action_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/pages/add_item_page.dart';
-import 'package:under_control_v2/features/inventory/presentation/pages/add_to_item_page.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/items_in_locations.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/last_five_item_actions.dart';
-import 'package:under_control_v2/features/inventory/utils/get_item_total_quantity.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/square_item_image.dart';
-import 'package:under_control_v2/features/inventory/utils/item_management_bloc_listener.dart';
 
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
+import '../../../core/presentation/widgets/rounded_button.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../domain/entities/item.dart';
+import '../../utils/get_item_total_quantity.dart';
 import '../../utils/item_action_management_bloc_listener.dart';
+import '../../utils/item_management_bloc_listener.dart';
+import '../blocs/item_action/item_action_bloc.dart';
 import '../blocs/item_action_management/item_action_management_bloc.dart';
 import '../blocs/items/items_bloc.dart';
 import '../blocs/items_management/items_management_bloc.dart';
+import '../widgets/actions/items_in_locations.dart';
+import '../widgets/actions/last_five_item_actions.dart';
 import '../widgets/item_category_row.dart';
 import '../widgets/item_unit_row.dart';
 import '../widgets/overlay_info_box.dart';
+import '../widgets/square_item_image.dart';
+import 'add_item_page.dart';
+import 'add_to_item_page.dart';
+import 'subtract_from_item_page.dart';
 
 class ItemDetailsPage extends StatefulWidget {
   const ItemDetailsPage({Key? key}) : super(key: key);
@@ -71,7 +72,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
             ),
           ),
         ];
-        // gets last actions
+        // gets last actions for selected item
         context.read<ItemActionBloc>().add(
               GetLastFiveItemActionsEvent(
                 item: item!,
@@ -92,6 +93,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
     return Scaffold(
       appBar: AppBar(
         title: Text(appBarTitle),
+        centerTitle: true,
         actions: [
           // popup menu
           if (_currentUser.administrator)
@@ -334,7 +336,13 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                                     // subtract button
                                     Expanded(
                                       child: RoundedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            SubtractFromItemPage.routeName,
+                                            arguments: item,
+                                          );
+                                        },
                                         icon: Icons.remove,
                                         iconSize: 40,
                                         title: AppLocalizations.of(context)!
@@ -360,7 +368,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                           const Divider(
                             thickness: 1.5,
                           ),
-                          const LastFiveItemActions(),
+                          LastFiveItemActions(item: item!),
                           const Divider(
                             thickness: 1.5,
                           ),

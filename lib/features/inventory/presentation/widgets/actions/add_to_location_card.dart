@@ -13,6 +13,7 @@ class AddToLocationCard extends StatelessWidget {
     required this.item,
     required this.title,
     required this.selectedLocation,
+    this.isSubtract = false,
     required this.setLocation,
   }) : super(key: key);
 
@@ -23,6 +24,8 @@ class AddToLocationCard extends StatelessWidget {
   final String title;
 
   final String selectedLocation;
+
+  final bool isSubtract;
 
   final Function(String) setLocation;
 
@@ -56,6 +59,7 @@ class AddToLocationCard extends StatelessWidget {
                     selectedLocation: selectedLocation,
                     setLocation: setLocation,
                     item: item,
+                    isSubtract: isSubtract,
                   ),
                 ],
               ),

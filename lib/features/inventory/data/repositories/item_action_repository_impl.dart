@@ -114,6 +114,7 @@ class ItemActionRepositoryImpl extends ItemActionRepository {
           .doc(params.companyId)
           .collection('actions')
           .where('itemId', isEqualTo: params.item.id)
+          .orderBy('date', descending: true)
           .snapshots();
 
       return Right(ItemActionsStream(allItemActions: querySnapshot));

@@ -171,6 +171,10 @@
     "@description": {
       "description": "description"
     },
+    "show_all": "Show all",
+    "@show_all": {
+      "description": "Show all"
+    },
     "selected_date": "Selected date",
     "@selected_date": {
       "description": "selected date"
@@ -412,6 +416,10 @@
     "location_management_title": "Locations",
     "@location_management_title": {
       "description": "Location management page - title"
+    },
+    "location_unknown": "Location unknown",
+    "@location_unknown": {
+      "description": "Location unknown"
     },
     "location_management_add_card": "Add location",
     "@location_management_add_card": {
@@ -1083,6 +1091,10 @@
     "@incorrect_number_to_small": {
       "description": "The number of items must be greater than zero"
     },
+    "incorrect_number_to_big": "The number of items must be less than or equal to the amount available in the selected location",
+    "@incorrect_number_to_big": {
+      "description": "The number of items must be less than or equal to the amount available in the selected location"
+    },
     "item_action_msg_updated": "Action updated",
     "@item_action_msg_updated": {
       "description": "item action - updated msg"
@@ -1114,5 +1126,17 @@
     "item_details_latest_actions": "Latest actions",
     "@item_details_latest_actions": {
       "description": "Latest actions"
+    },
+    "item_details_no_actions": "No actions",
+    "@item_details_no_actions": {
+      "description": "No actions"
+    },
+    "item_details_loading_actions": "Loading actions...",
+    "@item_details_loading_actions": {
+      "description": "Loading actions"
+    },
+    "item_actions_history": "Actions history",
+    "@item_actions_history": {
+      "description": "Actions history"
     }
 }

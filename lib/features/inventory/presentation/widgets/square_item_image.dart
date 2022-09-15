@@ -18,18 +18,20 @@ class SquareItemImage extends StatelessWidget with ResponsiveSize {
   Widget build(BuildContext context) {
     SizeConfig.init(context);
     return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ImageViewer(
-              imageProvider: CachedNetworkImageProvider(item.itemPhoto),
-              heroTag: item.id,
-              title: item.name,
-            ),
-          ),
-        );
-      },
+      onTap: item.itemPhoto.isNotEmpty
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ImageViewer(
+                    imageProvider: CachedNetworkImageProvider(item.itemPhoto),
+                    heroTag: item.id,
+                    title: item.name,
+                  ),
+                ),
+              );
+            }
+          : () {},
       child: SizedBox(
         width: responsiveSizePct(small: 100),
         height: responsiveSizePct(small: item.itemPhoto.isNotEmpty ? 100 : 60),

@@ -37,10 +37,12 @@ import 'features/inventory/presentation/blocs/item_category/item_category_bloc.d
 import 'features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart';
 import 'features/inventory/presentation/blocs/items/items_bloc.dart';
 import 'features/inventory/presentation/blocs/items_management/items_management_bloc.dart';
+import 'features/inventory/presentation/pages/actions_list_page.dart';
 import 'features/inventory/presentation/pages/add_item_page.dart';
 import 'features/inventory/presentation/pages/add_to_item_page.dart';
 import 'features/inventory/presentation/pages/item_category_management_page.dart';
 import 'features/inventory/presentation/pages/item_details_page.dart';
+import 'features/inventory/presentation/pages/subtract_from_item_page.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
@@ -62,11 +64,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await configureInjection();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    systemNavigationBarColor: Colors.black,
-    systemNavigationBarIconBrightness: Brightness.dark,
-  ));
+  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  //   statusBarColor: Colors.transparent,
+  //   systemNavigationBarColor: Colors.black,
+  //   systemNavigationBarIconBrightness: Brightness.dark,
+  // ));
   runApp(const App());
 }
 
@@ -162,6 +164,7 @@ class App extends StatelessWidget
             }
           },
         ),
+        // pages
         routes: {
           HomePage.routeName: (context) => const HomePage(),
           AuthenticationPage.routeName: (context) => const AuthenticationPage(),
@@ -187,14 +190,19 @@ class App extends StatelessWidget
               const ItemCategoryManagementPage(),
           AddItemPage.routeName: (context) => const AddItemPage(),
           AddToItemPage.routeName: (context) => const AddToItemPage(),
+          SubtractFromItemPage.routeName: (context) =>
+              const SubtractFromItemPage(),
           ItemDetailsPage.routeName: (context) => const ItemDetailsPage(),
+          ActionsListPage.routeName: (context) => const ActionsListPage(),
         },
+        // localization
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+        // locales
         supportedLocales: const [
           Locale('en', ''),
           Locale('pl', ''),

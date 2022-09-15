@@ -68,6 +68,14 @@ class LocationLoadedState extends LocationState {
       error: error ?? this.error,
     );
   }
+
+  Location? getLocationById(String id) {
+    final index = allLocations.allLocations.indexWhere((loc) => loc.id == id);
+    if (index >= 0) {
+      return allLocations.allLocations[index];
+    }
+    return null;
+  }
 }
 
 class LocationErrorState extends LocationState {

@@ -8,12 +8,17 @@ import 'package:under_control_v2/features/inventory/data/models/item_model.dart'
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_actions_stream.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/get_item_actions_stream.dart';
+import 'package:under_control_v2/features/inventory/domain/usecases/item_action/get_last_five_item_actions_stream.dart';
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action/item_action_bloc.dart';
 
 class MockGetItemsActionsStream extends Mock implements GetItemsActionsStream {}
 
+class MockGetLastFiveItemsActionsStream extends Mock
+    implements GetLastFiveItemsActionsStream {}
+
 void main() {
   late MockGetItemsActionsStream mockGetItemActionsStream;
+  late MockGetLastFiveItemsActionsStream mockGetLastFiveItemActionsStream;
   late ItemActionBloc itemActionBloc;
 
   const companyId = 'companyId';
@@ -39,9 +44,11 @@ void main() {
   setUp(
     () {
       mockGetItemActionsStream = MockGetItemsActionsStream();
+      mockGetLastFiveItemActionsStream = MockGetLastFiveItemsActionsStream();
 
       itemActionBloc = ItemActionBloc(
         getItemsActionsStream: mockGetItemActionsStream,
+        getLastFiveItemsActionsStream: mockGetLastFiveItemActionsStream,
       );
     },
   );
