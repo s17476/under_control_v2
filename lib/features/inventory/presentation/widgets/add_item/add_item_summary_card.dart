@@ -6,16 +6,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
+import '../../../../core/presentation/widgets/summary_card.dart';
+import '../../../../core/utils/responsive_size.dart';
 import '../../../domain/entities/item.dart';
-import '../../blocs/item_category/item_category_bloc.dart';
 import '../../../utils/get_localized_unit_name.dart';
+import '../../blocs/item_category/item_category_bloc.dart';
 
-class AddItemSummaryCard extends StatelessWidget {
+class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
   const AddItemSummaryCard({
     Key? key,
     required this.pageController,
     required this.titleTexEditingController,
-    required this.descriptionTexEditingController,
+    required this.descriptionTextEditingController,
     required this.sparePartFor,
     required this.addNewItem,
     required this.category,
@@ -27,7 +29,7 @@ class AddItemSummaryCard extends StatelessWidget {
   final PageController pageController;
 
   final TextEditingController titleTexEditingController;
-  final TextEditingController descriptionTexEditingController;
+  final TextEditingController descriptionTextEditingController;
 
   final String category;
   final String itemUnit;
@@ -83,176 +85,95 @@ class AddItemSummaryCard extends StatelessWidget {
                       thickness: 1.5,
                     ),
                     // item name
-                    InkWell(
-                      onTap: () async => pageController.animateToPage(
-                        0,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  enabled: false,
-                                  validator: (val) {
-                                    if (val!.length < 2) {
-                                      return AppLocalizations.of(context)!
-                                          .validation_min_two_characters;
-                                    }
-                                    return null;
-                                  },
-                                  controller: titleTexEditingController,
-                                  decoration: InputDecoration(
-                                    errorStyle:
-                                        const TextStyle(color: Colors.red),
-                                    labelText:
-                                        AppLocalizations.of(context)!.item_name,
-                                    border: InputBorder.none,
-                                    labelStyle: TextStyle(
-                                      color: titleTexEditingController
-                                                  .text.length <
-                                              2
-                                          ? Colors.red
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              titleTexEditingController.text.length < 2
-                                  ? const Icon(
-                                      Icons.clear,
-                                      color: Colors.red,
-                                    )
-                                  : Icon(
-                                      Icons.done,
-                                      color: Colors.grey.shade100,
-                                    ),
-                            ],
-                          ),
-                          // description
-                          if (descriptionTexEditingController.text.isNotEmpty)
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextFormField(
-                                    enabled: false,
-                                    controller: descriptionTexEditingController,
-                                    decoration: InputDecoration(
-                                      labelText: AppLocalizations.of(context)!
-                                          .item_description,
-                                      border: InputBorder.none,
-                                      labelStyle:
-                                          const TextStyle(color: Colors.grey),
-                                    ),
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.done,
-                                  color: Colors.grey.shade100,
-                                ),
-                              ],
-                            ),
-                          // category
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  enabled: false,
-                                  controller:
-                                      TextEditingController(text: categoryName),
-                                  decoration: InputDecoration(
-                                    errorStyle:
-                                        const TextStyle(color: Colors.red),
-                                    labelText: AppLocalizations.of(context)!
-                                        .item_category,
-                                    border: InputBorder.none,
-                                    labelStyle: TextStyle(
-                                      color: category.isEmpty
-                                          ? Colors.red
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              category.isEmpty
-                                  ? const Icon(
-                                      Icons.clear,
-                                      color: Colors.red,
-                                    )
-                                  : Icon(
-                                      Icons.done,
-                                      color: Colors.grey.shade100,
-                                    ),
-                            ],
-                          ),
-                          // item unit
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  enabled: false,
-                                  controller: TextEditingController(
-                                    text: getLocalizedUnitName(
-                                      context,
-                                      ItemUnit.fromString(
-                                        itemUnit,
-                                      ),
-                                    ),
-                                  ),
-                                  decoration: InputDecoration(
-                                    errorStyle:
-                                        const TextStyle(color: Colors.red),
-                                    labelText:
-                                        AppLocalizations.of(context)!.item_unit,
-                                    border: InputBorder.none,
-                                    labelStyle: TextStyle(
-                                      color: itemUnit.isEmpty
-                                          ? Colors.red
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              itemUnit.isEmpty
-                                  ? const Icon(
-                                      Icons.clear,
-                                      color: Colors.red,
-                                    )
-                                  : Icon(
-                                      Icons.done,
-                                      color: Colors.grey.shade100,
-                                    ),
-                            ],
-                          ),
-                        ],
-                      ),
+                    SummaryCard(
+                      title: AppLocalizations.of(context)!.item_name,
+                      validator: () =>
+                          titleTexEditingController.text.trim().length < 2
+                              ? AppLocalizations.of(context)!
+                                  .validation_min_two_characters
+                              : null,
+                      child: Text(titleTexEditingController.text.trim()),
+                      pageController: pageController,
+                      onTapAnimateToPage: 0,
                     ),
+
+                    const SizedBox(
+                      height: 8,
+                    ),
+
+                    // description
+                    if (descriptionTextEditingController.text.isNotEmpty)
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!.item_description,
+                        validator: () => null,
+                        child:
+                            Text(descriptionTextEditingController.text.trim()),
+                        pageController: pageController,
+                        onTapAnimateToPage: 0,
+                      ),
+
+                    const SizedBox(
+                      height: 8,
+                    ),
+
+                    // category
+                    SummaryCard(
+                      title: AppLocalizations.of(context)!.item_category,
+                      validator: () => category.isEmpty
+                          ? AppLocalizations.of(context)!
+                              .item_add_error_category_not_selected
+                          : null,
+                      child: Text(categoryName),
+                      pageController: pageController,
+                      onTapAnimateToPage: 0,
+                    ),
+
+                    const SizedBox(
+                      height: 8,
+                    ),
+
+                    //item unit
+                    SummaryCard(
+                      title: AppLocalizations.of(context)!.item_unit,
+                      validator: () => itemUnit.isEmpty
+                          ? AppLocalizations.of(context)!
+                              .item_add_error_unit_not_selected
+                          : null,
+                      child: Text(
+                        getLocalizedUnitName(
+                          context,
+                          ItemUnit.fromString(
+                            itemUnit,
+                          ),
+                        ),
+                      ),
+                      pageController: pageController,
+                      onTapAnimateToPage: 0,
+                    ),
+
+                    const SizedBox(
+                      height: 8,
+                    ),
+
                     // item photo
                     if (itemImage != null)
-                      InkWell(
-                        onTap: () async => pageController.animateToPage(
-                          1,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!.item_photo,
+                        validator: () => null,
+                        child: SizedBox(
+                          width: responsiveSizePct(small: 100),
+                          height: responsiveSizePct(small: 100),
+                          child: Image.file(
+                            itemImage!,
+                            fit: BoxFit.fitWidth,
+                          ),
                         ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: Text(
-                              AppLocalizations.of(context)!.item_photo,
-                              style: const TextStyle(fontSize: 16),
-                            )),
-                            Icon(
-                              Icons.done,
-                              color: Colors.grey.shade100,
-                            ),
-                          ],
-                        ),
+                        pageController: pageController,
+                        onTapAnimateToPage: 1,
                       ),
+
                     const SizedBox(
-                      height: 16,
+                      height: 8,
                     ),
                     // not a spare part
                     if (!isSparePart)

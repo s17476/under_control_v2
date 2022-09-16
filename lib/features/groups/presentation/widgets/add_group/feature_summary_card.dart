@@ -28,8 +28,7 @@ class FeatureSummaryCard extends StatelessWidget {
                 // icon
                 Icon(
                   getIcon(feature),
-                  size: 20,
-                  color: Colors.grey.shade400,
+                  size: 24,
                 ),
                 const SizedBox(
                   width: 8,
@@ -37,9 +36,7 @@ class FeatureSummaryCard extends StatelessWidget {
                 // title
                 Text(
                   getTitle(context, feature),
-                  style: TextStyle(
-                    color: Colors.grey.shade400,
-                  ),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),
@@ -51,35 +48,19 @@ class FeatureSummaryCard extends StatelessWidget {
               children: [
                 Text(
                   AppLocalizations.of(context)!.read,
-                  style: TextStyle(
-                    color: feature.read
-                        ? Colors.grey.shade100
-                        : Colors.grey.shade700,
-                  ),
+                  style: getActiveStyle(feature.read),
                 ),
                 Text(
                   AppLocalizations.of(context)!.create,
-                  style: TextStyle(
-                    color: feature.create
-                        ? Colors.grey.shade100
-                        : Colors.grey.shade700,
-                  ),
+                  style: getActiveStyle(feature.create),
                 ),
                 Text(
                   AppLocalizations.of(context)!.edit,
-                  style: TextStyle(
-                    color: feature.edit
-                        ? Colors.grey.shade100
-                        : Colors.grey.shade700,
-                  ),
+                  style: getActiveStyle(feature.edit),
                 ),
                 Text(
                   AppLocalizations.of(context)!.delete,
-                  style: TextStyle(
-                    color: feature.delete
-                        ? Colors.grey.shade100
-                        : Colors.grey.shade700,
-                  ),
+                  style: getActiveStyle(feature.delete),
                 ),
               ],
             ),

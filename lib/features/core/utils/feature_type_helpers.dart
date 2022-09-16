@@ -33,6 +33,11 @@ Color getColor(Feature feature) {
   }
 }
 
+TextStyle getActiveStyle(bool isActive) => TextStyle(
+      color: isActive ? Colors.white : Colors.black38,
+      fontWeight: FontWeight.w600,
+    );
+
 String getTitle(BuildContext context, Feature feature) {
   switch (feature.type) {
     case FeatureType.tasks:

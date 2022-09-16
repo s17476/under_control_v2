@@ -144,6 +144,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                     // item photo and quantity
                     Stack(
                       children: [
+                        // item photo
                         SquareItemImage(item: item!),
                         // quantity info boxes
                         Row(

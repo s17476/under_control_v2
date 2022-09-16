@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
 
 import '../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../core/presentation/widgets/forward_text_button.dart';
+import '../../../core/presentation/widgets/summary_card.dart';
+import '../../data/models/checkpoint_model.dart';
 
 class AddChecklistSummaryCard extends StatelessWidget {
   const AddChecklistSummaryCard({
@@ -59,147 +60,74 @@ class AddChecklistSummaryCard extends StatelessWidget {
                     const Divider(
                       thickness: 1.5,
                     ),
-                    // title
-                    InkWell(
-                      onTap: () async => pageController.animateToPage(
-                        0,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              enabled: false,
-                              validator: (val) {
-                                if (val!.length < 2) {
-                                  return AppLocalizations.of(context)!
-                                      .validation_min_two_characters;
-                                }
-                                return null;
-                              },
-                              controller: titleTexEditingController,
-                              decoration: InputDecoration(
-                                errorStyle: const TextStyle(color: Colors.red),
-                                labelText: AppLocalizations.of(context)!
-                                    .checklist_name,
-                                border: InputBorder.none,
-                                labelStyle: TextStyle(
-                                  color:
-                                      titleTexEditingController.text.length < 2
-                                          ? Colors.red
-                                          : Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ),
-                          titleTexEditingController.text.length < 2
-                              ? const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
-                                )
-                              : Icon(
-                                  Icons.done,
-                                  color: Colors.grey.shade100,
-                                ),
-                        ],
-                      ),
+                    // checklist name
+                    SummaryCard(
+                      title: AppLocalizations.of(context)!.checklist_name,
+                      validator: () =>
+                          titleTexEditingController.text.trim().length < 2
+                              ? AppLocalizations.of(context)!
+                                  .validation_min_two_characters
+                              : null,
+                      child: Text(titleTexEditingController.text.trim()),
+                      pageController: pageController,
+                      onTapAnimateToPage: 0,
                     ),
+
+                    const SizedBox(
+                      height: 8,
+                    ),
+
                     // optional description
                     if (descriptionTexEditingController.text.isNotEmpty)
-                      InkWell(
-                        onTap: () async => pageController.animateToPage(
-                          0,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                enabled: false,
-                                controller: descriptionTexEditingController,
-                                decoration: InputDecoration(
-                                  labelText: AppLocalizations.of(context)!
-                                      .checklist_description,
-                                  border: InputBorder.none,
-                                  labelStyle:
-                                      const TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                            ),
-                            Icon(
-                              Icons.done,
-                              color: Colors.grey.shade100,
-                            ),
-                          ],
-                        ),
+                      SummaryCard(
+                        title:
+                            AppLocalizations.of(context)!.checklist_description,
+                        validator: () => null,
+                        child:
+                            Text(descriptionTexEditingController.text.trim()),
+                        pageController: pageController,
+                        onTapAnimateToPage: 0,
                       ),
 
                     const SizedBox(
                       height: 8,
                     ),
+
                     // checkpoints
-                    InkWell(
-                      onTap: () => pageController.animateToPage(
-                        1,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              '${AppLocalizations.of(context)!.checklist_add_checkpoints_title}: ${checkpoints.length}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium!
-                                  .copyWith(
-                                    color: checkpoints.isEmpty
-                                        ? Colors.red
-                                        : Colors.grey,
+                    SummaryCard(
+                      title:
+                          '${AppLocalizations.of(context)!.checklist_add_checkpoints_title}: ${checkpoints.length}',
+                      validator: () => checkpoints.isEmpty
+                          ? AppLocalizations.of(context)!
+                              .checklist_add_checkpoints_empty
+                          : null,
+                      child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: checkpoints.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.check_circle_outline),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    checkpoints[index].title,
+                                    maxLines: 4,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
+                                ),
+                              ],
                             ),
-                          ),
-                          checkpoints.isEmpty
-                              ? const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
-                                )
-                              : Icon(
-                                  Icons.done,
-                                  color: Colors.grey.shade100,
-                                ),
-                        ],
+                          );
+                        },
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: checkpoints.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(
-                            children: [
-                              const Icon(Icons.check_circle_outline),
-                              const SizedBox(
-                                width: 4,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  checkpoints[index].title,
-                                  maxLines: 4,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                      pageController: pageController,
+                      onTapAnimateToPage: 1,
                     ),
                   ],
                 ),

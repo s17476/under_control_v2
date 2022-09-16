@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
+import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/double_apis.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 
@@ -46,7 +47,7 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
   String _selectedLocation = '';
   String _dateTime = '';
 
-  final _quantityTextEditingController = TextEditingController();
+  String _quantityString = '';
 
   @override
   void initState() {
@@ -55,12 +56,10 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
     try {
       _doubleQuantity = double.parse(widget.quantityTextEditingController.text);
       setState(() {
-        _quantityTextEditingController.text =
-            _doubleQuantity!.toStringWithFixedDecimal();
+        _quantityString = _doubleQuantity!.toStringWithFixedDecimal();
       });
     } catch (e) {
-      _quantityTextEditingController.text =
-          widget.quantityTextEditingController.text;
+      _quantityString = widget.quantityTextEditingController.text;
       _doubleQuantity = null;
     }
     try {
@@ -75,12 +74,6 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
       _selectedLocation = '';
     }
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _quantityTextEditingController.dispose();
-    super.dispose();
   }
 
   @override
@@ -116,212 +109,75 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
                     thickness: 1.5,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Column(
                       children: [
                         // location
-                        InkWell(
-                          onTap: () async =>
-                              widget.pageController.animateToPage(
-                            0,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  enabled: false,
-                                  controller: TextEditingController(
-                                    text: _selectedLocation,
-                                  ),
-                                  decoration: InputDecoration(
-                                    errorStyle:
-                                        const TextStyle(color: Colors.red),
-                                    labelText:
-                                        AppLocalizations.of(context)!.location,
-                                    border: InputBorder.none,
-                                    labelStyle: TextStyle(
-                                      color: _selectedLocation.isEmpty
-                                          ? Colors.red
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              _selectedLocation.isEmpty
-                                  ? const Icon(
-                                      Icons.clear,
-                                      color: Colors.red,
-                                    )
-                                  : Icon(
-                                      Icons.done,
-                                      color: Colors.grey.shade100,
-                                    ),
-                            ],
-                          ),
+                        SummaryCard(
+                          title: AppLocalizations.of(context)!.location,
+                          validator: () => _selectedLocation.isEmpty
+                              ? AppLocalizations.of(context)!
+                                  .validation_location_not_selected
+                              : null,
+                          child: Text(_selectedLocation),
+                          pageController: widget.pageController,
+                          onTapAnimateToPage: 0,
                         ),
+
+                        const SizedBox(
+                          height: 8,
+                        ),
+
                         // quanity
-                        InkWell(
-                          onTap: () async =>
-                              widget.pageController.animateToPage(
-                            1,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: TextFormField(
-                                      enabled: false,
-                                      validator: (val) {
-                                        if (_doubleQuantity == null) {
-                                          return AppLocalizations.of(context)!
-                                              .incorrect_number_format;
-                                        } else if (_doubleQuantity! <= 0) {
-                                          return AppLocalizations.of(context)!
-                                              .incorrect_number_to_small;
-                                        } else if (widget.maxQuantity != 0 &&
-                                            _doubleQuantity! >
-                                                widget.maxQuantity) {
-                                          return AppLocalizations.of(context)!
-                                              .incorrect_number_to_big;
-                                        }
-                                        return null;
-                                      },
-                                      controller:
-                                          _quantityTextEditingController,
-                                      decoration: InputDecoration(
-                                        errorStyle:
-                                            const TextStyle(color: Colors.red),
-                                        labelText: AppLocalizations.of(context)!
-                                            .quantity,
-                                        border: InputBorder.none,
-                                        labelStyle: TextStyle(
-                                          color: (_doubleQuantity == null) ||
-                                                  (_doubleQuantity != null &&
-                                                      _doubleQuantity! <= 0) ||
-                                                  (_doubleQuantity != null &&
-                                                      widget.maxQuantity != 0 &&
-                                                      _doubleQuantity! >
-                                                          widget.maxQuantity)
-                                              ? Colors.red
-                                              : Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  (_doubleQuantity == null) ||
-                                          (_doubleQuantity != null &&
-                                              _doubleQuantity! <= 0) ||
-                                          (_doubleQuantity != null &&
-                                              widget.maxQuantity != 0 &&
-                                              _doubleQuantity! >
-                                                  widget.maxQuantity)
-                                      ? const Icon(
-                                          Icons.clear,
-                                          color: Colors.red,
-                                        )
-                                      : Icon(
-                                          Icons.done,
-                                          color: Colors.grey.shade100,
-                                        ),
-                                ],
-                              ),
-                            ],
-                          ),
+                        SummaryCard(
+                          title:
+                              '${AppLocalizations.of(context)!.quantity} [${widget.itemUnit}]',
+                          validator: () {
+                            if (_doubleQuantity == null) {
+                              return AppLocalizations.of(context)!
+                                  .incorrect_number_format;
+                            } else if (_doubleQuantity! <= 0) {
+                              return AppLocalizations.of(context)!
+                                  .incorrect_number_to_small;
+                            } else if (widget.maxQuantity != 0 &&
+                                _doubleQuantity! > widget.maxQuantity) {
+                              return AppLocalizations.of(context)!
+                                  .incorrect_number_to_big;
+                            }
+                            return null;
+                          },
+                          child: Text(_quantityString),
+                          pageController: widget.pageController,
+                          onTapAnimateToPage: 1,
                         ),
+
+                        const SizedBox(
+                          height: 8,
+                        ),
+
                         // date time
-                        InkWell(
-                          onTap: () async =>
-                              widget.pageController.animateToPage(
-                            2,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  enabled: false,
-                                  controller: TextEditingController(
-                                    text: _dateTime,
-                                  ),
-                                  decoration: InputDecoration(
-                                    errorStyle:
-                                        const TextStyle(color: Colors.red),
-                                    labelText: AppLocalizations.of(context)!
-                                        .selected_date,
-                                    border: InputBorder.none,
-                                    labelStyle: TextStyle(
-                                      color: _dateTime.isEmpty
-                                          ? Colors.red
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              _dateTime.isEmpty
-                                  ? const Icon(
-                                      Icons.clear,
-                                      color: Colors.red,
-                                    )
-                                  : Icon(
-                                      Icons.done,
-                                      color: Colors.grey.shade100,
-                                    ),
-                            ],
-                          ),
+                        SummaryCard(
+                          title: AppLocalizations.of(context)!.selected_date,
+                          validator: () => _dateTime.isEmpty ? '' : null,
+                          child: Text(_dateTime),
+                          pageController: widget.pageController,
+                          onTapAnimateToPage: 2,
                         ),
+
+                        const SizedBox(
+                          height: 8,
+                        ),
+
                         // description
-                        InkWell(
-                          onTap: () async =>
-                              widget.pageController.animateToPage(
-                            2,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  enabled: false,
-                                  controller:
-                                      widget.descriptionTextEditingController,
-                                  decoration: InputDecoration(
-                                    errorStyle:
-                                        const TextStyle(color: Colors.red),
-                                    labelText: AppLocalizations.of(context)!
-                                        .description,
-                                    border: InputBorder.none,
-                                    labelStyle: TextStyle(
-                                      color: description.length < 2
-                                          ? Colors.red
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value!.trim().length < 2) {
-                                      return AppLocalizations.of(context)!
-                                          .validation_min_two_characters;
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                              description.length < 2
-                                  ? const Icon(
-                                      Icons.clear,
-                                      color: Colors.red,
-                                    )
-                                  : Icon(
-                                      Icons.done,
-                                      color: Colors.grey.shade100,
-                                    ),
-                            ],
-                          ),
+                        SummaryCard(
+                          title: AppLocalizations.of(context)!.description,
+                          validator: () => description.length < 2
+                              ? AppLocalizations.of(context)!
+                                  .validation_min_two_characters
+                              : null,
+                          child: Text(description),
+                          pageController: widget.pageController,
+                          onTapAnimateToPage: 2,
                         ),
                       ],
                     ),

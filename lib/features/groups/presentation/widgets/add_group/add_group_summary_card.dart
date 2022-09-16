@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/summary_card.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
@@ -66,186 +67,79 @@ class AddGroupSummaryCard extends StatelessWidget {
                       thickness: 1.5,
                     ),
                     // name
-                    InkWell(
-                      onTap: () async => pageController.animateToPage(
-                        0,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              enabled: false,
-                              validator: (val) {
-                                if (val!.length < 2) {
-                                  return AppLocalizations.of(context)!
-                                      .validation_min_two_characters;
-                                }
-                                return null;
-                              },
-                              controller: nameTexEditingController,
-                              decoration: InputDecoration(
-                                errorStyle: const TextStyle(color: Colors.red),
-                                labelText: AppLocalizations.of(context)!
-                                    .group_management_add_card_name,
-                                border: InputBorder.none,
-                                labelStyle: TextStyle(
-                                  color:
-                                      nameTexEditingController.text.length < 2
-                                          ? Colors.red
-                                          : Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ),
-                          nameTexEditingController.text.length < 2
-                              ? const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
-                                )
-                              : Icon(
-                                  Icons.done,
-                                  color: Colors.grey.shade100,
-                                ),
-                        ],
-                      ),
+                    SummaryCard(
+                      title: AppLocalizations.of(context)!
+                          .group_management_add_card_name,
+                      validator: () =>
+                          nameTexEditingController.text.trim().length < 2
+                              ? AppLocalizations.of(context)!
+                                  .validation_min_two_characters
+                              : null,
+                      child: Text(nameTexEditingController.text.trim()),
+                      pageController: pageController,
+                      onTapAnimateToPage: 0,
                     ),
-                    // optional description
-                    if (descriptionTexEditingController.text.isNotEmpty)
-                      InkWell(
-                        onTap: () async => pageController.animateToPage(
-                          0,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                enabled: false,
-                                controller: descriptionTexEditingController,
-                                decoration: InputDecoration(
-                                  labelText: AppLocalizations.of(context)!
-                                      .group_management_add_card_description,
-                                  border: InputBorder.none,
-                                  labelStyle:
-                                      const TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                            ),
-                            Icon(
-                              Icons.done,
-                              color: Colors.grey.shade100,
-                            ),
-                          ],
-                        ),
-                      ),
+
                     const SizedBox(
                       height: 8,
                     ),
-                    // locations
-                    InkWell(
-                      onTap: () => pageController.animateToPage(
-                        1,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
+
+                    // optional description
+                    if (descriptionTexEditingController.text.isNotEmpty)
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!
+                            .group_management_add_card_description,
+                        validator: () => null,
+                        child:
+                            Text(descriptionTexEditingController.text.trim()),
+                        pageController: pageController,
+                        onTapAnimateToPage: 0,
                       ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              AppLocalizations.of(context)!
-                                  .group_management_add_card_selected_locations,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium!
-                                  .copyWith(
-                                    color: totalSelectedLocations.isEmpty
-                                        ? Colors.red
-                                        : Colors.grey,
-                                  ),
-                            ),
-                          ),
-                          totalSelectedLocations.isEmpty
-                              ? const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
-                                )
-                              : Icon(
-                                  Icons.done,
-                                  color: Colors.grey.shade100,
-                                ),
-                        ],
-                      ),
-                    ),
+
                     const SizedBox(
-                      height: 4,
+                      height: 8,
                     ),
-                    InkWell(
-                      onTap: () => pageController.animateToPage(
-                        1,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      ),
+
+                    // locations
+                    SummaryCard(
+                      title: AppLocalizations.of(context)!
+                          .group_management_add_card_selected_locations,
+                      validator: () => totalSelectedLocations.isEmpty
+                          ? AppLocalizations.of(context)!
+                              .group_management_add_error_no_location_selected
+                          : null,
                       child: Text(
                         totalSelectedLocations.length.toString(),
                         style: const TextStyle(
                           fontSize: 18,
                         ),
                       ),
+                      pageController: pageController,
+                      onTapAnimateToPage: 1,
                     ),
+
                     const SizedBox(
                       height: 8,
                     ),
-                    // premissions
-                    InkWell(
-                      onTap: () => pageController.animateToPage(
-                        2,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              AppLocalizations.of(context)!
-                                  .group_management_add_card_permissions,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium!
-                                  .copyWith(
-                                    color: !isAtLeastOneFeatureSelected
-                                        ? Colors.red
-                                        : Colors.grey,
-                                  ),
-                            ),
-                          ),
-                          !isAtLeastOneFeatureSelected
-                              ? const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
-                                )
-                              : Icon(
-                                  Icons.done,
-                                  color: Colors.grey.shade100,
-                                ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
 
-                    for (var feature in features)
-                      InkWell(
-                        onTap: () => pageController.animateToPage(
-                          2,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                        child: FeatureSummaryCard(feature: feature),
-                      )
+                    // premissions
+                    SummaryCard(
+                      title: AppLocalizations.of(context)!
+                          .group_management_add_card_permissions,
+                      validator: () => !isAtLeastOneFeatureSelected
+                          ? AppLocalizations.of(context)!
+                              .group_management_add_error_no_premission_selected
+                          : null,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: features.length,
+                        itemBuilder: (context, index) =>
+                            FeatureSummaryCard(feature: features[index]),
+                      ),
+                      pageController: pageController,
+                      onTapAnimateToPage: 2,
+                    ),
                   ],
                 ),
               ),

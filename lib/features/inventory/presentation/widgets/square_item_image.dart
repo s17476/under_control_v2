@@ -35,20 +35,27 @@ class SquareItemImage extends StatelessWidget with ResponsiveSize {
       child: SizedBox(
         width: responsiveSizePct(small: 100),
         height: responsiveSizePct(small: item.itemPhoto.isNotEmpty ? 100 : 60),
-        child: CachedNetworkImage(
-          imageUrl: item.itemPhoto,
-          placeholder: (context, url) => const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CircularProgressIndicator(),
-          ),
-          errorWidget: (context, url, error) => Center(
-            child: Icon(
-              Icons.api,
-              size: responsiveSizePct(small: 30),
-            ),
-          ),
-          fit: BoxFit.cover,
-        ),
+        child: item.itemPhoto.isNotEmpty
+            ? CachedNetworkImage(
+                imageUrl: item.itemPhoto,
+                placeholder: (context, url) => const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(),
+                ),
+                errorWidget: (context, url, error) => Center(
+                  child: Icon(
+                    Icons.api,
+                    size: responsiveSizePct(small: 30),
+                  ),
+                ),
+                fit: BoxFit.cover,
+              )
+            : Center(
+                child: Icon(
+                  Icons.api,
+                  size: responsiveSizePct(small: 30),
+                ),
+              ),
       ),
     );
   }

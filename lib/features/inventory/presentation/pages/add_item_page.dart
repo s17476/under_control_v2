@@ -225,7 +225,7 @@ class _AddItemPageState extends State<AddItemPage> {
       AddItemSummaryCard(
         pageController: pageController,
         titleTexEditingController: nameTexEditingController,
-        descriptionTexEditingController: descriptionTexEditingController,
+        descriptionTextEditingController: descriptionTexEditingController,
         sparePartFor: sparePartFor,
         addNewItem: addNewItem,
         category: category,

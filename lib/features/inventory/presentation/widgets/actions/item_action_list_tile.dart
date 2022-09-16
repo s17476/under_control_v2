@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/user_list_tile.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../domain/entities/item_action/item_action.dart';
@@ -81,12 +80,23 @@ class ItemActionListTile extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 6,
                         ),
-                        UserListTile(
-                          user: user!,
-                          onTap: (_) {},
-                          avatarSize: 20,
-                          nameSize: 12,
-                          showAdmin: false,
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 4,
+                                right: 4,
+                              ),
+                              child: CachedUserAvatar(
+                                size: 20,
+                                imageUrl: user!.avatarUrl,
+                              ),
+                            ),
+                            Text(
+                              '${user.firstName} ${user.lastName}',
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                          ],
                         ),
                       ],
                     ),
