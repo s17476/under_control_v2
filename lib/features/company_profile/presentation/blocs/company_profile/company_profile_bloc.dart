@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/utils/input_validator.dart';
+import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/company_users_list_model.dart';
 import '../../../domain/entities/company.dart';

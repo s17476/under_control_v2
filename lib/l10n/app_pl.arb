@@ -268,5 +268,6 @@
     "item_details_latest_actions": "Ostatnie akcje",
     "item_details_no_actions": "Brak akcji",
     "item_details_loading_actions": "Ładowanie akcji...",
-    "item_actions_history": "Historia akcji"
+    "item_actions_history": "Historia akcji",
+    "item_no_items": "Nie dodano jeszcze żadnych przedmiotów"
 }

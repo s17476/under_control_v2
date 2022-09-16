@@ -10,6 +10,9 @@ class UserListTile extends StatelessWidget {
     this.isSelectionTile = false,
     this.isGroupAdministrator = false,
     this.isGroupMember = false,
+    this.avatarSize = 60,
+    this.nameSize = 18,
+    this.showAdmin = true,
     required this.user,
     required this.onTap,
   }) : super(key: key);
@@ -17,6 +20,10 @@ class UserListTile extends StatelessWidget {
   final bool isSelectionTile;
   final bool isGroupAdministrator;
   final bool isGroupMember;
+  final bool showAdmin;
+
+  final double avatarSize;
+  final double nameSize;
 
   final UserProfile user;
 
@@ -31,7 +38,7 @@ class UserListTile extends StatelessWidget {
         child: Row(
           children: [
             CachedUserAvatar(
-              size: 60,
+              size: avatarSize,
               imageUrl: user.avatarUrl,
             ),
             const SizedBox(
@@ -46,7 +53,7 @@ class UserListTile extends StatelessWidget {
                       Text(
                         user.firstName,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: nameSize,
                           color: Colors.grey.shade200,
                         ),
                       ),
@@ -56,13 +63,13 @@ class UserListTile extends StatelessWidget {
                       Text(
                         user.lastName,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: nameSize,
                           color: Colors.grey.shade200,
                         ),
                       ),
                     ],
                   ),
-                  if (user.administrator)
+                  if (showAdmin && user.administrator)
                     Text(
                       AppLocalizations.of(context)!.user_details_admin,
                       style: Theme.of(context).textTheme.caption,

@@ -35,6 +35,14 @@ class CompanyProfileLoaded extends CompanyProfileState {
   }) : super(
           properties: [companyUsers, company],
         );
+
+  UserProfile? getUserById(String id) {
+    final index = companyUsers.allUsers.indexWhere((usr) => usr.id == id);
+    if (index >= 0) {
+      return companyUsers.allUsers[index];
+    }
+    return null;
+  }
 }
 
 class CompanyProfileLoading extends CompanyProfileState {}

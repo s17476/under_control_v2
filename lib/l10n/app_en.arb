@@ -1138,5 +1138,9 @@
     "item_actions_history": "Actions history",
     "@item_actions_history": {
       "description": "Actions history"
+    },
+    "item_no_items": "No added items yet",
+    "@item_no_items": {
+      "description": "No added items yet"
     }
 }

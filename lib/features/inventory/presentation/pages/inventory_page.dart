@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/item_tile.dart';
 
 import '../../../core/utils/show_snack_bar.dart';
 import '../blocs/items/items_bloc.dart';
 import '../blocs/items_management/items_management_bloc.dart';
 
-class InventoryPage extends StatelessWidget {
+class InventoryPage extends StatelessWidget with ResponsiveSize {
   const InventoryPage({Key? key}) : super(key: key);
 
   @override
@@ -52,8 +53,13 @@ class InventoryPage extends StatelessWidget {
                 builder: (context, state) {
                   if (state is ItemsLoadedState) {
                     if (state.allItems.allItems.isEmpty) {
-                      return const Center(
-                        child: Text('No added items yet'),
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: responsiveSizeVerticalPct(small: 40),
+                          ),
+                          Text(AppLocalizations.of(context)!.item_no_items),
+                        ],
                       );
                     }
                     final filteredItems = state.allItems.allItems;
@@ -67,7 +73,14 @@ class InventoryPage extends StatelessWidget {
                       },
                     );
                   } else {
-                    return const CircularProgressIndicator();
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: responsiveSizeVerticalPct(small: 40),
+                        ),
+                        const CircularProgressIndicator(),
+                      ],
+                    );
                   }
                 },
               )

@@ -33,6 +33,7 @@ class ItemAction extends Equatable {
   final DateTime date;
   final String taskId;
   final String itemId;
+  final String userId;
 
   const ItemAction({
     required this.id,
@@ -44,6 +45,7 @@ class ItemAction extends Equatable {
     required this.date,
     this.taskId = '',
     required this.itemId,
+    required this.userId,
   });
 
   @override
@@ -58,11 +60,12 @@ class ItemAction extends Equatable {
       date,
       taskId,
       itemId,
+      userId,
     ];
   }
 
   @override
   String toString() {
-    return 'ItemAction(id: $id, type: $type, description: $description, ammount: $ammount, itemUnit: $itemUnit, locationId: $locationId, date: $date, taskId: $taskId, itemId: $itemId)';
+    return 'ItemAction(id: $id, type: $type, description: $description, ammount: $ammount, itemUnit: $itemUnit, locationId: $locationId, date: $date, taskId: $taskId, itemId: $itemId, userId: $userId)';
   }
 }

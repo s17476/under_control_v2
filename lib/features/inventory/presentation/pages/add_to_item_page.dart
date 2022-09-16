@@ -6,6 +6,7 @@ import 'package:under_control_v2/features/inventory/data/models/item_action/item
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action/item_action_bloc.dart';
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_date_and_description_card.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../core/utils/double_apis.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_quantity_card.dart';
@@ -112,6 +113,9 @@ class _AddItemPageState extends State<AddToItemPage> {
             locationId: selectedLocation,
             date: dateTime,
             itemId: item!.id,
+            userId: (context.read<UserProfileBloc>().state as Approved)
+                .userProfile
+                .id,
           );
 
           context.read<ItemActionManagementBloc>().add(

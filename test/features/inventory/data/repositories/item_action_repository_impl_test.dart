@@ -70,6 +70,7 @@ void main() {
       locationId: 'locationId',
       date: DateTime.now(),
       itemId: itemReference.id,
+      userId: 'userId',
     );
 
     final actionReference =

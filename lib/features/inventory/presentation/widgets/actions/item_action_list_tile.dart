@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/user_list_tile.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
+import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../domain/entities/item_action/item_action.dart';
 import '../../../../core/utils/double_apis.dart';
 
@@ -20,9 +24,16 @@ class ItemActionListTile extends StatelessWidget {
     final dateFormat = DateFormat('dd-MM-yyyy  HH:mm');
     String? location;
 
+    UserProfile? user;
+
     final locationsState = context.read<LocationBloc>().state;
     if (locationsState is LocationLoadedState) {
       location = locationsState.getLocationById(action.locationId)?.name;
+    }
+
+    final userState = context.read<CompanyProfileBloc>().state;
+    if (userState is CompanyProfileLoaded) {
+      user = userState.getUserById(action.userId);
     }
 
     return Container(
@@ -47,29 +58,38 @@ class ItemActionListTile extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // date time
-                      Text(
-                        dateFormat.format(action.date),
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                      // location
-                      Text(
-                        location ??
-                            AppLocalizations.of(context)!.location_unknown,
-                        style: const TextStyle(fontSize: 18),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      // description
-                      Text(
-                        action.description,
-                        style: Theme.of(context).textTheme.caption,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 6,
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // date time
+                        Text(
+                          dateFormat.format(action.date),
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        // location
+                        Text(
+                          location ??
+                              AppLocalizations.of(context)!.location_unknown,
+                          style: const TextStyle(fontSize: 18),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        // description
+                        Text(
+                          action.description,
+                          style: Theme.of(context).textTheme.caption,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 6,
+                        ),
+                        UserListTile(
+                          user: user!,
+                          onTap: (_) {},
+                          avatarSize: 20,
+                          nameSize: 12,
+                          showAdmin: false,
+                        ),
+                      ],
+                    ),
                   ),
                   Text(
                     action.ammount.toStringWithFixedDecimal(),

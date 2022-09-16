@@ -16,6 +16,7 @@ void main() {
     date: date,
     taskId: 'taskId',
     itemId: 'itemId',
+    userId: 'userId',
   );
 
   final tItemActionModelMap = {
@@ -27,6 +28,7 @@ void main() {
     'date': date.toIso8601String(),
     'taskId': 'taskId',
     'itemId': 'itemId',
+    'userId': 'userId',
   };
 
   group('ItemActionModel', () {

@@ -7,6 +7,7 @@ import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/double_apis.dart';
 import '../../../core/utils/show_snack_bar.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/item_action/item_action_model.dart';
 import '../../data/models/item_model.dart';
 import '../../domain/entities/item_action/item_action.dart';
@@ -115,6 +116,9 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
             locationId: selectedLocation,
             date: dateTime,
             itemId: item!.id,
+            userId: (context.read<UserProfileBloc>().state as Approved)
+                .userProfile
+                .id,
           );
 
           context.read<ItemActionManagementBloc>().add(

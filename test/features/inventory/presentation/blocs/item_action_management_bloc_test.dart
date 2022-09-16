@@ -66,6 +66,7 @@ void main() {
     locationId: 'locationId',
     date: DateTime.now(),
     itemId: 'itemId',
+    userId: 'userId',
   );
 
   final tItemActionParams = ItemActionParams(

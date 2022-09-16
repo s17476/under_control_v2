@@ -1,6 +1,5 @@
-import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
-
 import '../../../domain/entities/item.dart';
+import '../../../domain/entities/item_action/item_action.dart';
 
 class ItemActionModel extends ItemAction {
   const ItemActionModel({
@@ -13,6 +12,7 @@ class ItemActionModel extends ItemAction {
     required super.date,
     required super.itemId,
     super.taskId,
+    required super.userId,
   });
 
   ItemActionModel copyWith({
@@ -25,6 +25,7 @@ class ItemActionModel extends ItemAction {
     DateTime? date,
     String? taskId,
     String? itemId,
+    String? userId,
   }) {
     return ItemActionModel(
       id: id ?? this.id,
@@ -36,6 +37,7 @@ class ItemActionModel extends ItemAction {
       date: date ?? this.date,
       taskId: taskId ?? this.taskId,
       itemId: itemId ?? this.itemId,
+      userId: userId ?? this.userId,
     );
   }
 
@@ -50,6 +52,7 @@ class ItemActionModel extends ItemAction {
     result.addAll({'date': date.toIso8601String()});
     result.addAll({'taskId': taskId});
     result.addAll({'itemId': itemId});
+    result.addAll({'userId': userId});
 
     return result;
   }
@@ -68,6 +71,7 @@ class ItemActionModel extends ItemAction {
       date: DateTime.parse(map['date']),
       taskId: map['taskId'] ?? '',
       itemId: map['itemId'] ?? '',
+      userId: map['userId'] ?? '',
     );
   }
 }
