@@ -1083,6 +1083,14 @@
     "@item_subtract_from_location": {
       "description": "Subtract from location location"
     },
+    "item_subtract_no_items_in_location": "No items in this location",
+    "@item_subtract_no_items_in_location": {
+      "description": "Subtract - No items in this location"
+    },
+    "item_move_same_location": "Item cannot be moved to the same location",
+    "@item_move_same_location": {
+      "description": "Cannot be moved to the same location"
+    },
     "incorrect_number_format": "Incorrect number format",
     "@incorrect_number_format": {
       "description": "Incorrect number format"

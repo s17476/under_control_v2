@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../locations/domain/entities/location.dart';
 import '../../../domain/entities/item.dart';
@@ -9,6 +11,7 @@ class SelectableLocationslistTile extends StatelessWidget {
     Key? key,
     required this.location,
     required this.selectedLocation,
+    this.selectedFromLocation = '',
     required this.allLocations,
     this.isSubtract = false,
     required this.setLocation,
@@ -19,6 +22,8 @@ class SelectableLocationslistTile extends StatelessWidget {
   final Item item;
 
   final String selectedLocation;
+
+  final String selectedFromLocation;
 
   final List<Location> allLocations;
 
@@ -52,8 +57,30 @@ class SelectableLocationslistTile extends StatelessWidget {
           InkWell(
             borderRadius: BorderRadius.circular(5),
             onTap: !isSubtract || (isSubtract && amountInLocation > 0)
-                ? () => setLocation(location.id)
-                : () {},
+                ? selectedFromLocation != location.id
+                    ? () {
+                        print('selectedFromLocation');
+                        print(selectedFromLocation);
+                        print('location.id');
+                        print(location.id);
+                        setLocation(location.id);
+                      }
+                    : () {
+                        showSnackBar(
+                          context: context,
+                          message: AppLocalizations.of(context)!
+                              .item_move_same_location,
+                          isErrorMessage: true,
+                        );
+                      }
+                : () {
+                    showSnackBar(
+                      context: context,
+                      message: AppLocalizations.of(context)!
+                          .item_subtract_no_items_in_location,
+                      isErrorMessage: true,
+                    );
+                  },
             child: Container(
               height: 50,
               decoration: BoxDecoration(
@@ -118,6 +145,7 @@ class SelectableLocationslistTile extends StatelessWidget {
                       key: ValueKey(child.id),
                       location: child,
                       selectedLocation: selectedLocation,
+                      selectedFromLocation: selectedFromLocation,
                       allLocations: allLocations,
                       setLocation: setLocation,
                       item: item,

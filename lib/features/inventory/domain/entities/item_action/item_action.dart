@@ -5,6 +5,8 @@ import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 enum ItemActionType {
   add('add'),
   remove('remove'),
+  moveAdd('moveAdd'),
+  moveRemove('moveRemove'),
   unknown('');
 
   final String name;
@@ -17,6 +19,10 @@ enum ItemActionType {
         return ItemActionType.add;
       case 'remove':
         return ItemActionType.remove;
+      case 'moveAdd':
+        return ItemActionType.moveAdd;
+      case 'moveRemove':
+        return ItemActionType.moveRemove;
       default:
         return ItemActionType.unknown;
     }

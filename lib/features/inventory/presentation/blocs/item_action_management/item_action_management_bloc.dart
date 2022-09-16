@@ -303,14 +303,18 @@ class ItemActionManagementBloc
       final updatedAmountInLocations = [...event.item.amountInLocations];
       final itemLocations = [...event.item.locations];
 
+      //
+      //
+      //
+
       // update old location
-      updatedAmountInLocations.insert(
-          indexOfOldLocation, itemAmountInOldLocation);
+      updatedAmountInLocations.removeAt(indexOfOldLocation);
+      updatedAmountInLocations.add(itemAmountInOldLocation);
 
       // item exists in new location
       if (indexOfNewLocation >= 0) {
-        updatedAmountInLocations.insert(
-            indexOfNewLocation, itemAmountInNewLocation);
+        updatedAmountInLocations.removeAt(indexOfNewLocation);
+        updatedAmountInLocations.add(itemAmountInNewLocation);
         // there is no item in new location
       } else {
         updatedAmountInLocations.add(itemAmountInNewLocation);

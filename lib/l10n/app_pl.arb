@@ -255,6 +255,8 @@
     "item_in_selected_quantity": "Wybrane lokacje:",
     "item_add_to_location": "Dodaj do lokacji",
     "item_subtract_from_location": "Odejmij z lokacji",
+    "item_subtract_no_items_in_location": "Brak przedmiotów w tej lokacji",
+    "item_move_same_location": "Nie można przenieść do tej samej lokacji",
     "incorrect_number_format": "Niepoprawny format liczby",
     "incorrect_number_to_small": "Ilość musi być większa niż 0",
     "incorrect_number_to_big": "Ilość przedmiotów musi być mniejsza lub równa ilości dostępnej w wybranej lokacji.",

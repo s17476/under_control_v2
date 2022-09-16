@@ -12,8 +12,10 @@ class AddToLocationCard extends StatelessWidget {
     required this.pageController,
     required this.item,
     required this.title,
+    this.selectedFromLocation = '',
     required this.selectedLocation,
     this.isSubtract = false,
+    this.isFirstPage = true,
     required this.setLocation,
   }) : super(key: key);
 
@@ -23,9 +25,13 @@ class AddToLocationCard extends StatelessWidget {
 
   final String title;
 
+  final String selectedFromLocation;
+
   final String selectedLocation;
 
   final bool isSubtract;
+
+  final bool isFirstPage;
 
   final Function(String) setLocation;
 
@@ -57,6 +63,7 @@ class AddToLocationCard extends StatelessWidget {
                   ),
                   SelectableLocationsList(
                     selectedLocation: selectedLocation,
+                    selectedFromLocation: selectedFromLocation,
                     setLocation: setLocation,
                     item: item,
                     isSubtract: isSubtract,
@@ -71,12 +78,24 @@ class AddToLocationCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                BackwardTextButton(
-                  icon: Icons.cancel,
-                  color: Theme.of(context).textTheme.headline4!.color!,
-                  label: AppLocalizations.of(context)!.cancel,
-                  function: () => Navigator.pop(context),
-                ),
+                if (isFirstPage)
+                  BackwardTextButton(
+                    icon: Icons.cancel,
+                    color: Theme.of(context).textTheme.headline4!.color!,
+                    label: AppLocalizations.of(context)!.cancel,
+                    function: () => Navigator.pop(context),
+                  ),
+                if (!isFirstPage)
+                  BackwardTextButton(
+                    icon: Icons.arrow_back_ios_new,
+                    color: Theme.of(context).textTheme.headline5!.color!,
+                    label: AppLocalizations.of(context)!
+                        .user_profile_add_user_personal_data_back,
+                    function: () => pageController.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    ),
+                  ),
                 ForwardTextButton(
                   color: Theme.of(context).textTheme.headline5!.color!,
                   label:

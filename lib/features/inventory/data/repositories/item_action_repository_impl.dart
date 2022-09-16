@@ -187,7 +187,7 @@ class ItemActionRepositoryImpl extends ItemActionRepository {
       final actionsReference = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('items');
+          .collection('actions');
 
       final moveFromActionMap =
           (params.moveFromItemAction as ItemActionModel).toMap();

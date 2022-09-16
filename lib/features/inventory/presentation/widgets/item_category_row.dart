@@ -9,11 +9,10 @@ import '../blocs/item_category/item_category_bloc.dart';
 class ItemCategoryRow extends StatelessWidget {
   const ItemCategoryRow({
     Key? key,
-    required Item? item,
-  })  : _item = item,
-        super(key: key);
+    required this.item,
+  }) : super(key: key);
 
-  final Item? _item;
+  final Item? item;
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +27,18 @@ class ItemCategoryRow extends StatelessWidget {
             titleFontSize: 16,
           ),
         ),
+        const SizedBox(
+          width: 4,
+        ),
         BlocBuilder<ItemCategoryBloc, ItemCategoryState>(
           builder: (context, state) {
             if (state is ItemCategoryLoadedState) {
-              final categoryIdex = state.allItemsCategories.allItemsCategories
-                  .indexWhere((element) => element.id == _item!.category);
-              if (categoryIdex >= 0) {
+              final categoryName =
+                  state.getItemCategoryById(item!.category)?.name;
+
+              if (categoryName != null) {
                 return Text(
-                  state
-                      .allItemsCategories.allItemsCategories[categoryIdex].name,
+                  categoryName,
                   style: const TextStyle(fontSize: 16),
                 );
               } else {

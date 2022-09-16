@@ -31,4 +31,13 @@ class ItemCategoryLoadedState extends ItemCategoryState {
   ItemCategoryLoadedState({
     required this.allItemsCategories,
   }) : super(properties: [allItemsCategories]);
+
+  ItemCategory? getItemCategoryById(String id) {
+    final categoryIdex =
+        allItemsCategories.allItemsCategories.indexWhere((cat) => cat.id == id);
+    if (categoryIdex >= 0) {
+      return allItemsCategories.allItemsCategories[categoryIdex];
+    }
+    return null;
+  }
 }

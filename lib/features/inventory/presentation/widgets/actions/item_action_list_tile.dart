@@ -18,6 +18,93 @@ class ItemActionListTile extends StatelessWidget {
 
   final ItemAction action;
 
+  List<Color> getGradient(BuildContext context, ItemActionType itemActionType) {
+    print(itemActionType);
+    if (itemActionType == ItemActionType.add) {
+      return [
+        Theme.of(context).primaryColor,
+        Theme.of(context).primaryColor.withAlpha(60),
+      ];
+    } else if (itemActionType == ItemActionType.remove) {
+      return [
+        Colors.red,
+        Colors.red.withAlpha(60),
+      ];
+    }
+    return [
+      Colors.blue.shade700,
+      Colors.blue.shade700.withAlpha(60),
+    ];
+  }
+
+  Widget getIcon(BuildContext context, ItemActionType itemActionType) {
+    const iconSize = 30.0;
+    switch (itemActionType) {
+      case ItemActionType.add:
+        return const Icon(
+          Icons.add,
+          size: iconSize,
+        );
+      case ItemActionType.remove:
+        return const Icon(
+          Icons.remove,
+          size: iconSize,
+        );
+      case ItemActionType.moveAdd:
+        return SizedBox(
+          width: iconSize,
+          height: iconSize,
+          child: Stack(
+            children: const [
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: Icon(
+                  Icons.compare_arrows,
+                  size: 22,
+                ),
+              ),
+              Positioned(
+                left: 0,
+                top: 0,
+                child: Icon(
+                  Icons.add,
+                  size: 22,
+                ),
+              ),
+            ],
+          ),
+        );
+      case ItemActionType.moveRemove:
+        return SizedBox(
+          width: iconSize,
+          height: iconSize,
+          child: Stack(
+            children: const [
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: Icon(
+                  Icons.compare_arrows,
+                  size: 22,
+                ),
+              ),
+              Positioned(
+                left: 0,
+                top: 0,
+                child: Icon(
+                  Icons.remove,
+                  size: 22,
+                ),
+              ),
+            ],
+          ),
+        );
+      default:
+        return const SizedBox();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('dd-MM-yyyy  HH:mm');
@@ -111,23 +198,11 @@ class ItemActionListTile extends StatelessWidget {
             // icon box
             Container(
               decoration: BoxDecoration(
-                gradient: action.type == ItemActionType.add
-                    ? LinearGradient(
-                        colors: [
-                          Theme.of(context).primaryColor,
-                          Theme.of(context).primaryColor.withAlpha(60),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      )
-                    : LinearGradient(
-                        colors: [
-                          Colors.red,
-                          Colors.red.withAlpha(60),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
+                gradient: LinearGradient(
+                  colors: getGradient(context, action.type),
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 // color: Theme.of(context).primaryColor.withAlpha(80),
                 borderRadius: BorderRadius.circular(5),
                 boxShadow: const [
@@ -138,10 +213,7 @@ class ItemActionListTile extends StatelessWidget {
                   )
                 ],
               ),
-              child: Icon(
-                action.type == ItemActionType.add ? Icons.add : Icons.remove,
-                size: 30,
-              ),
+              child: getIcon(context, action.type),
             ),
           ],
         )

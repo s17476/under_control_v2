@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/item.dart';
+import '../../../core/utils/double_apis.dart';
 
 class OverlayQuantityInfoBox extends StatelessWidget {
   const OverlayQuantityInfoBox({
@@ -45,7 +46,7 @@ class OverlayQuantityInfoBox extends StatelessWidget {
               style: titleStyle,
             ),
             Text(
-              quantity.toString(),
+              quantity.toStringWithFixedDecimal(),
               style: quantityStyle,
             ),
           ],

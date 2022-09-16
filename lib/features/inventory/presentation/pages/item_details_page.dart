@@ -25,6 +25,7 @@ import '../widgets/overlay_info_box.dart';
 import '../widgets/square_item_image.dart';
 import 'add_item_page.dart';
 import 'add_to_item_page.dart';
+import 'move_inside_item_page.dart';
 import 'subtract_from_item_page.dart';
 
 class ItemDetailsPage extends StatefulWidget {
@@ -225,9 +226,9 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                                 ),
                                 // description
                                 Text(
-                                  item!.name,
+                                  item!.description,
                                   style: const TextStyle(fontSize: 16),
-                                  maxLines: 4,
+                                  maxLines: 6,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ],
@@ -312,7 +313,16 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                                     // move button
                                     Expanded(
                                       child: RoundedButton(
-                                        onPressed: () {},
+                                        onPressed: getItemTotalQuantity(item!) >
+                                                0
+                                            ? () {
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  MoveInsideItemPage.routeName,
+                                                  arguments: item,
+                                                );
+                                              }
+                                            : () {},
                                         icon: Icons.compare_arrows_outlined,
                                         iconSize: 40,
                                         title:
@@ -321,10 +331,17 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                                         foregroundColor: Colors.grey.shade200,
                                         padding: const EdgeInsets.all(16),
                                         gradient: LinearGradient(
-                                          colors: [
-                                            Colors.blue.shade700,
-                                            Colors.blue.shade700.withAlpha(60),
-                                          ],
+                                          colors:
+                                              getItemTotalQuantity(item!) > 0
+                                                  ? [
+                                                      Colors.blue.shade700,
+                                                      Colors.blue.shade700
+                                                          .withAlpha(60),
+                                                    ]
+                                                  : [
+                                                      Colors.grey,
+                                                      Colors.grey.withAlpha(60),
+                                                    ],
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                         ),
@@ -337,13 +354,17 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                                     // subtract button
                                     Expanded(
                                       child: RoundedButton(
-                                        onPressed: () {
-                                          Navigator.pushNamed(
-                                            context,
-                                            SubtractFromItemPage.routeName,
-                                            arguments: item,
-                                          );
-                                        },
+                                        onPressed:
+                                            getItemTotalQuantity(item!) > 0
+                                                ? () {
+                                                    Navigator.pushNamed(
+                                                      context,
+                                                      SubtractFromItemPage
+                                                          .routeName,
+                                                      arguments: item,
+                                                    );
+                                                  }
+                                                : () {},
                                         icon: Icons.remove,
                                         iconSize: 40,
                                         title: AppLocalizations.of(context)!
@@ -352,10 +373,17 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                                         foregroundColor: Colors.grey.shade200,
                                         padding: const EdgeInsets.all(16),
                                         gradient: LinearGradient(
-                                          colors: [
-                                            Colors.red.shade600,
-                                            Colors.red.shade600.withAlpha(60),
-                                          ],
+                                          colors:
+                                              getItemTotalQuantity(item!) > 0
+                                                  ? [
+                                                      Colors.red.shade600,
+                                                      Colors.red.shade600
+                                                          .withAlpha(60),
+                                                    ]
+                                                  : [
+                                                      Colors.grey,
+                                                      Colors.grey.withAlpha(60),
+                                                    ],
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                         ),

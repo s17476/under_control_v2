@@ -10,6 +10,7 @@ class SelectableLocationsList extends StatelessWidget {
     Key? key,
     required this.item,
     required this.selectedLocation,
+    this.selectedFromLocation = '',
     this.isSubtract = false,
     required this.setLocation,
   }) : super(key: key);
@@ -17,6 +18,7 @@ class SelectableLocationsList extends StatelessWidget {
   final Item item;
 
   final String selectedLocation;
+  final String selectedFromLocation;
 
   final bool isSubtract;
 
@@ -40,6 +42,7 @@ class SelectableLocationsList extends StatelessWidget {
                 key: ValueKey(topLevelItems[index].id),
                 location: topLevelItems[index],
                 selectedLocation: selectedLocation,
+                selectedFromLocation: selectedFromLocation,
                 allLocations: state.allLocations.allLocations,
                 setLocation: setLocation,
                 item: item,

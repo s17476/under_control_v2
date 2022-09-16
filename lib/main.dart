@@ -42,6 +42,7 @@ import 'features/inventory/presentation/pages/add_item_page.dart';
 import 'features/inventory/presentation/pages/add_to_item_page.dart';
 import 'features/inventory/presentation/pages/item_category_management_page.dart';
 import 'features/inventory/presentation/pages/item_details_page.dart';
+import 'features/inventory/presentation/pages/move_inside_item_page.dart';
 import 'features/inventory/presentation/pages/subtract_from_item_page.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
@@ -192,6 +193,7 @@ class App extends StatelessWidget
           AddToItemPage.routeName: (context) => const AddToItemPage(),
           SubtractFromItemPage.routeName: (context) =>
               const SubtractFromItemPage(),
+          MoveInsideItemPage.routeName: (context) => const MoveInsideItemPage(),
           ItemDetailsPage.routeName: (context) => const ItemDetailsPage(),
           ActionsListPage.routeName: (context) => const ActionsListPage(),
         },
