@@ -7,8 +7,10 @@ class ItemModel extends Item {
     required super.name,
     required super.description,
     required super.category,
+    required super.price,
     required super.itemPhoto,
     required super.itemCode,
+    required super.itemBarCode,
     required super.sparePartFor,
     required super.itemUnit,
     required super.locations,
@@ -20,8 +22,10 @@ class ItemModel extends Item {
     String? name,
     String? description,
     String? category,
+    double? price,
     String? itemPhoto,
     String? itemCode,
+    String? itemBarCode,
     List<String>? sparePartFor,
     ItemUnit? itemUnit,
     List<String>? locations,
@@ -32,8 +36,10 @@ class ItemModel extends Item {
       name: name ?? this.name,
       description: description ?? this.description,
       category: category ?? this.category,
+      price: price ?? this.price,
       itemPhoto: itemPhoto ?? this.itemPhoto,
       itemCode: itemCode ?? this.itemCode,
+      itemBarCode: itemBarCode ?? this.itemBarCode,
       sparePartFor: sparePartFor ?? this.sparePartFor,
       itemUnit: itemUnit ?? this.itemUnit,
       locations: locations ?? this.locations,
@@ -47,8 +53,10 @@ class ItemModel extends Item {
     result.addAll({'name': name});
     result.addAll({'description': description});
     result.addAll({'category': category});
+    result.addAll({'price': price});
     result.addAll({'itemPhoto': itemPhoto});
     result.addAll({'itemCode': itemCode});
+    result.addAll({'itemBarCode': itemBarCode});
     result.addAll({'sparePartFor': sparePartFor});
     result.addAll({'itemUnit': itemUnit.name});
     result.addAll({'locations': locations});
@@ -65,8 +73,10 @@ class ItemModel extends Item {
       name: map['name'] ?? '',
       description: map['description'] ?? '',
       category: map['category'] ?? '',
+      price: map['price'] ?? '',
       itemPhoto: map['itemPhoto'] ?? '',
       itemCode: map['itemCode'] ?? '',
+      itemBarCode: map['itemBarCode'] ?? '',
       sparePartFor: List<String>.from(map['sparePartFor']),
       itemUnit: ItemUnit.fromString(map['itemUnit']),
       locations: List<String>.from(map['locations']),

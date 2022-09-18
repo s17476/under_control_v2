@@ -31,6 +31,27 @@ class SelectableLocationslistTile extends StatelessWidget {
 
   final Function(String) setLocation;
 
+  void _onSelect(BuildContext context, double amountInLocation) {
+    if (!isSubtract || (isSubtract && amountInLocation > 0)) {
+      if (selectedFromLocation != location.id) {
+        setLocation(location.id);
+      } else {
+        showSnackBar(
+          context: context,
+          message: AppLocalizations.of(context)!.item_move_same_location,
+          isErrorMessage: true,
+        );
+      }
+    } else {
+      showSnackBar(
+        context: context,
+        message:
+            AppLocalizations.of(context)!.item_subtract_no_items_in_location,
+        isErrorMessage: true,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final children = allLocations
@@ -56,31 +77,7 @@ class SelectableLocationslistTile extends StatelessWidget {
         children: [
           InkWell(
             borderRadius: BorderRadius.circular(5),
-            onTap: !isSubtract || (isSubtract && amountInLocation > 0)
-                ? selectedFromLocation != location.id
-                    ? () {
-                        print('selectedFromLocation');
-                        print(selectedFromLocation);
-                        print('location.id');
-                        print(location.id);
-                        setLocation(location.id);
-                      }
-                    : () {
-                        showSnackBar(
-                          context: context,
-                          message: AppLocalizations.of(context)!
-                              .item_move_same_location,
-                          isErrorMessage: true,
-                        );
-                      }
-                : () {
-                    showSnackBar(
-                      context: context,
-                      message: AppLocalizations.of(context)!
-                          .item_subtract_no_items_in_location,
-                      isErrorMessage: true,
-                    );
-                  },
+            onTap: () => _onSelect(context, amountInLocation),
             child: Container(
               height: 50,
               decoration: BoxDecoration(
@@ -123,10 +120,7 @@ class SelectableLocationslistTile extends StatelessWidget {
                   Radio<String>(
                     value: location.id,
                     groupValue: selectedLocation,
-                    onChanged:
-                        !isSubtract || (isSubtract && amountInLocation > 0)
-                            ? (value) => setLocation(value as String)
-                            : (_) {},
+                    onChanged: (_) => _onSelect(context, amountInLocation),
                     activeColor: Theme.of(context).primaryColor,
                   ),
                 ],

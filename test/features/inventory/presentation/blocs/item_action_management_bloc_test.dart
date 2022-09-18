@@ -41,11 +41,13 @@ void main() {
 
   const item = ItemModel(
     category: 'category',
+    price: 0,
     id: 'id',
     name: 'name',
     description: 'description',
     itemPhoto: 'itemPhoto',
     itemCode: 'itemCode',
+    itemBarCode: 'itemBarCode',
     sparePartFor: [],
     itemUnit: ItemUnit.pcs,
     locations: [],

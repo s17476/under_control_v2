@@ -31,8 +31,10 @@ class Item extends Equatable {
   final String name;
   final String description;
   final String category;
+  final double price;
   final String itemPhoto;
   final String itemCode;
+  final String itemBarCode;
   final List<String> sparePartFor;
   final ItemUnit itemUnit;
   final List<String> locations;
@@ -40,11 +42,13 @@ class Item extends Equatable {
 
   const Item({
     required this.category,
+    required this.price,
     required this.id,
     required this.name,
     required this.description,
     required this.itemPhoto,
     required this.itemCode,
+    required this.itemBarCode,
     required this.sparePartFor,
     required this.itemUnit,
     required this.locations,
@@ -58,8 +62,10 @@ class Item extends Equatable {
       name,
       description,
       category,
+      price,
       itemPhoto,
       itemCode,
+      itemBarCode,
       sparePartFor,
       itemUnit,
       locations,
@@ -69,6 +75,6 @@ class Item extends Equatable {
 
   @override
   String toString() {
-    return 'Item(id: $id, name: $name, description: $description, category: $category, itemPhoto: $itemPhoto, itemCode: $itemCode, sparePartFor: $sparePartFor, itemUnit: $itemUnit, locations: $locations, amountInLocations: $amountInLocations)';
+    return 'Item(id: $id, name: $name, description: $description, category: $category, price: $price, itemPhoto: $itemPhoto, itemCode: $itemCode, itemBarCode: $itemBarCode, sparePartFor: $sparePartFor, itemUnit: $itemUnit, locations: $locations, amountInLocations: $amountInLocations)';
   }
 }

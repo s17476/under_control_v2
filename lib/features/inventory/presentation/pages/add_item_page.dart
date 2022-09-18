@@ -41,6 +41,7 @@ class _AddItemPageState extends State<AddItemPage> {
   final nameTexEditingController = TextEditingController();
   final descriptionTexEditingController = TextEditingController();
   final itemCodeTexEditingController = TextEditingController();
+  final itemBarCodeTexEditingController = TextEditingController();
   String category = '';
   String itemUnit = '';
   bool isSparePart = false;
@@ -94,6 +95,7 @@ class _AddItemPageState extends State<AddItemPage> {
       nameTexEditingController.text = item!.name;
       descriptionTexEditingController.text = item!.description;
       itemCodeTexEditingController.text = item!.itemCode;
+      itemBarCodeTexEditingController.text = item!.itemBarCode;
       category = item!.category;
       itemUnit = item!.itemUnit.name;
     }
@@ -144,7 +146,9 @@ class _AddItemPageState extends State<AddItemPage> {
         name: nameTexEditingController.text,
         description: descriptionTexEditingController.text,
         category: category,
+        price: 0,
         itemCode: itemCodeTexEditingController.text,
+        itemBarCode: itemBarCodeTexEditingController.text,
         itemPhoto: item != null ? item!.itemPhoto : '',
         itemUnit: ItemUnit.fromString(itemUnit),
         amountInLocations: const [],
@@ -187,6 +191,7 @@ class _AddItemPageState extends State<AddItemPage> {
     nameTexEditingController.dispose();
     descriptionTexEditingController.dispose();
     itemCodeTexEditingController.dispose();
+    itemBarCodeTexEditingController.dispose();
     pageController.dispose();
     super.dispose();
   }
