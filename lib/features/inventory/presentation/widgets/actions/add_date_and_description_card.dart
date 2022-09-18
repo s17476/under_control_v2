@@ -81,6 +81,12 @@ class _AddDateAndDescriptionCardState extends State<AddDateAndDescriptionCard>
   }
 
   @override
+  void dispose() {
+    _dateTextEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(

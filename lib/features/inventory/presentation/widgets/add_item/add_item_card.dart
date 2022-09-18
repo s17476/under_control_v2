@@ -4,8 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
-import 'category_dropdown_button.dart';
-import 'item_unit_dropdown_button.dart';
 
 class AddItemCard extends StatelessWidget {
   const AddItemCard({
@@ -14,20 +12,12 @@ class AddItemCard extends StatelessWidget {
     required this.pageController,
     required this.nameTexEditingController,
     required this.descriptionTexEditingController,
-    required this.setCategory,
-    required this.setItemUnit,
-    required this.category,
-    required this.itemUnit,
   }) : super(key: key);
 
   final bool isEditMode;
   final PageController pageController;
   final TextEditingController nameTexEditingController;
   final TextEditingController descriptionTexEditingController;
-  final Function(String category) setCategory;
-  final Function(String category) setItemUnit;
-  final String category;
-  final String itemUnit;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +59,7 @@ class AddItemCard extends StatelessWidget {
                       ),
                       // name text field
                       CustomTextFormField(
-                        scrollPadding: const EdgeInsets.all(100),
+                        scrollPadding: const EdgeInsets.all(170),
                         validator: (val) {
                           if (val!.length < 2) {
                             return AppLocalizations.of(context)!
@@ -91,28 +81,13 @@ class AddItemCard extends StatelessWidget {
                         fieldKey: 'description',
                         controller: descriptionTexEditingController,
                         keyboardType: TextInputType.multiline,
-                        maxLines: 3,
+                        maxLines: 4,
                         textCapitalization: TextCapitalization.sentences,
                         labelText:
                             AppLocalizations.of(context)!.item_description,
-                      ),
-                      const SizedBox(
-                        height: 12,
+                        scrollPadding: const EdgeInsets.only(bottom: 100),
                       ),
 
-                      // category selection
-                      CategoryDropdownButton(
-                        selectedValue: category,
-                        onSelected: setCategory,
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      // unit selection
-                      ItemUnitDropdownButton(
-                        selectedUnit: itemUnit,
-                        onSelected: setItemUnit,
-                      ),
                       const SizedBox(
                         height: 16,
                       ),

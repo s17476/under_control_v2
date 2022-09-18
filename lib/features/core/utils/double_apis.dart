@@ -1,6 +1,6 @@
 extension NumberParsing on double {
-  String toStringWithFixedDecimal() {
-    final string = toStringAsFixed(3);
+  String toStringWithFixedDecimal({int decimalPlaces = 3}) {
+    final string = toStringAsFixed(decimalPlaces);
 
     if (string.contains('.') && !string.endsWith('.')) {
       int charactersToRemoveCount = 0;

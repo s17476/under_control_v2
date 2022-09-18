@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_action/item_action_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_date_and_description_card.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
-import '../../../core/utils/double_apis.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_quantity_card.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_to_item_summary_card.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/add_to_location_card.dart';
-import 'package:under_control_v2/features/inventory/utils/get_localized_unit_name.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
+import '../../../core/utils/double_apis.dart';
 import '../../../core/utils/show_snack_bar.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../data/models/item_action/item_action_model.dart';
 import '../../data/models/item_model.dart';
-import '../../domain/entities/item.dart';
+import '../../domain/entities/item_action/item_action.dart';
+import '../../utils/get_localized_unit_name.dart';
+import '../blocs/item_action_management/item_action_management_bloc.dart';
 import '../blocs/items/items_bloc.dart';
+import '../widgets/actions/add_date_and_description_card.dart';
+import '../widgets/actions/add_quantity_card.dart';
+import '../widgets/actions/add_to_item_summary_card.dart';
+import '../widgets/actions/add_to_location_card.dart';
 
 class AddToItemPage extends StatefulWidget {
   const AddToItemPage({

@@ -14,6 +14,7 @@ import '../../domain/entities/item.dart';
 import '../blocs/items/items_bloc.dart';
 import '../blocs/items_management/items_management_bloc.dart';
 import '../widgets/add_item/add_item_card.dart';
+import '../widgets/add_item/add_item_data_card.dart';
 import '../widgets/add_item/add_item_photo_card.dart';
 import '../widgets/add_item/add_item_spare_part_card.dart';
 import '../widgets/add_item/add_item_summary_card.dart';
@@ -40,8 +41,10 @@ class _AddItemPageState extends State<AddItemPage> {
 
   final nameTexEditingController = TextEditingController();
   final descriptionTexEditingController = TextEditingController();
-  final itemCodeTexEditingController = TextEditingController();
-  final itemBarCodeTexEditingController = TextEditingController();
+  final codeTextEditingController = TextEditingController();
+  final barCodeTextEditingController = TextEditingController();
+  final priceTextEditingController = TextEditingController();
+
   String category = '';
   String itemUnit = '';
   bool isSparePart = false;
@@ -94,8 +97,9 @@ class _AddItemPageState extends State<AddItemPage> {
 
       nameTexEditingController.text = item!.name;
       descriptionTexEditingController.text = item!.description;
-      itemCodeTexEditingController.text = item!.itemCode;
-      itemBarCodeTexEditingController.text = item!.itemBarCode;
+      codeTextEditingController.text = item!.itemCode;
+      barCodeTextEditingController.text = item!.itemBarCode;
+      priceTextEditingController.text = item!.price.toString();
       category = item!.category;
       itemUnit = item!.itemUnit.name;
     }
@@ -104,10 +108,20 @@ class _AddItemPageState extends State<AddItemPage> {
 
   void addNewItem(BuildContext context) {
     String errorMessage = '';
+    double price = 0;
     // item name validation
     if (!_formKey.currentState!.validate()) {
       errorMessage = AppLocalizations.of(context)!.item_add_error_name_to_short;
     } else {
+      // price validation
+      try {
+        price = double.parse(priceTextEditingController.text);
+        if (price < 0) {
+          errorMessage = AppLocalizations.of(context)!.incorrect_price_to_small;
+        }
+      } catch (e) {
+        errorMessage = AppLocalizations.of(context)!.incorrect_price_format;
+      }
       // category selection validation
       if (category.isEmpty) {
         errorMessage =
@@ -147,8 +161,8 @@ class _AddItemPageState extends State<AddItemPage> {
         description: descriptionTexEditingController.text,
         category: category,
         price: 0,
-        itemCode: itemCodeTexEditingController.text,
-        itemBarCode: itemBarCodeTexEditingController.text,
+        itemCode: codeTextEditingController.text,
+        itemBarCode: barCodeTextEditingController.text,
         itemPhoto: item != null ? item!.itemPhoto : '',
         itemUnit: ItemUnit.fromString(itemUnit),
         amountInLocations: const [],
@@ -190,8 +204,9 @@ class _AddItemPageState extends State<AddItemPage> {
   void dispose() {
     nameTexEditingController.dispose();
     descriptionTexEditingController.dispose();
-    itemCodeTexEditingController.dispose();
-    itemBarCodeTexEditingController.dispose();
+    codeTextEditingController.dispose();
+    barCodeTextEditingController.dispose();
+    priceTextEditingController.dispose();
     pageController.dispose();
     super.dispose();
   }
@@ -205,6 +220,15 @@ class _AddItemPageState extends State<AddItemPage> {
           pageController: pageController,
           nameTexEditingController: nameTexEditingController,
           descriptionTexEditingController: descriptionTexEditingController,
+        ),
+      ),
+      KeepAlivePage(
+        child: AddItemDataCard(
+          isEditMode: item != null,
+          pageController: pageController,
+          priceTextEditingController: priceTextEditingController,
+          codeTextEditingController: codeTextEditingController,
+          barCodeTextEditingController: barCodeTextEditingController,
           category: category,
           itemUnit: itemUnit,
           setCategory: setCategory,
@@ -231,6 +255,9 @@ class _AddItemPageState extends State<AddItemPage> {
         pageController: pageController,
         titleTexEditingController: nameTexEditingController,
         descriptionTextEditingController: descriptionTexEditingController,
+        barCodeTextEditingController: barCodeTextEditingController,
+        codeTextEditingController: codeTextEditingController,
+        priceTextEditingController: priceTextEditingController,
         sparePartFor: sparePartFor,
         addNewItem: addNewItem,
         category: category,

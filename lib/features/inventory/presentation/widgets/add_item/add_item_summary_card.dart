@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
+import '../../../../core/utils/double_apis.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -18,18 +19,24 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.pageController,
     required this.titleTexEditingController,
     required this.descriptionTextEditingController,
-    required this.sparePartFor,
-    required this.addNewItem,
+    required this.barCodeTextEditingController,
+    required this.codeTextEditingController,
+    required this.priceTextEditingController,
     required this.category,
     required this.itemUnit,
     required this.isSparePart,
+    required this.sparePartFor,
     required this.itemImage,
+    required this.addNewItem,
   }) : super(key: key);
 
   final PageController pageController;
 
   final TextEditingController titleTexEditingController;
   final TextEditingController descriptionTextEditingController;
+  final TextEditingController barCodeTextEditingController;
+  final TextEditingController codeTextEditingController;
+  final TextEditingController priceTextEditingController;
 
   final String category;
   final String itemUnit;
@@ -45,11 +52,19 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
   Widget build(BuildContext context) {
     // category name
     String categoryName = '';
+    String priceString = '';
     final itemCategoryState = context.read<ItemCategoryBloc>().state;
     if (category.isNotEmpty && itemCategoryState is ItemCategoryLoadedState) {
       categoryName = itemCategoryState.allItemsCategories.allItemsCategories
           .firstWhere((cat) => cat.id == category)
           .name;
+    }
+    try {
+      final price = double.parse(priceTextEditingController.text);
+
+      priceString = price.toStringWithFixedDecimal();
+    } catch (e) {
+      priceString = priceTextEditingController.text;
     }
     return SafeArea(
       child: Padding(
@@ -111,10 +126,10 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                         pageController: pageController,
                         onTapAnimateToPage: 0,
                       ),
-
-                    const SizedBox(
-                      height: 8,
-                    ),
+                    if (descriptionTextEditingController.text.isNotEmpty)
+                      const SizedBox(
+                        height: 8,
+                      ),
 
                     // category
                     SummaryCard(
@@ -125,7 +140,7 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                           : null,
                       child: Text(categoryName),
                       pageController: pageController,
-                      onTapAnimateToPage: 0,
+                      onTapAnimateToPage: 1,
                     ),
 
                     const SizedBox(
@@ -148,12 +163,73 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                         ),
                       ),
                       pageController: pageController,
-                      onTapAnimateToPage: 0,
+                      onTapAnimateToPage: 1,
                     ),
 
                     const SizedBox(
                       height: 8,
                     ),
+
+                    //item price
+                    if (priceString.isNotEmpty && priceString != '0')
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!
+                            .item_unit_price_optional,
+                        validator: () {
+                          try {
+                            final price =
+                                double.parse(priceTextEditingController.text);
+                            if (price < 0) {
+                              return AppLocalizations.of(context)!
+                                  .incorrect_price_to_small;
+                            }
+                          } catch (e) {
+                            return AppLocalizations.of(context)!
+                                .incorrect_price_format;
+                          }
+                          return null;
+                        },
+                        child: Text(priceString),
+                        pageController: pageController,
+                        onTapAnimateToPage: 1,
+                      ),
+
+                    if (priceString.isNotEmpty && priceString != '0')
+                      const SizedBox(
+                        height: 8,
+                      ),
+
+                    //item internal code
+                    if (codeTextEditingController.text.trim().isNotEmpty)
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!
+                            .item_internal_code_optional,
+                        validator: () => null,
+                        child: Text(codeTextEditingController.text.trim()),
+                        pageController: pageController,
+                        onTapAnimateToPage: 1,
+                      ),
+
+                    if (codeTextEditingController.text.trim().isNotEmpty)
+                      const SizedBox(
+                        height: 8,
+                      ),
+
+                    //item bar/QR code
+                    if (barCodeTextEditingController.text.trim().isNotEmpty)
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!
+                            .item_bar_code_optional,
+                        validator: () => null,
+                        child: Text(barCodeTextEditingController.text.trim()),
+                        pageController: pageController,
+                        onTapAnimateToPage: 1,
+                      ),
+
+                    if (barCodeTextEditingController.text.trim().isNotEmpty)
+                      const SizedBox(
+                        height: 8,
+                      ),
 
                     // item photo
                     if (itemImage != null)
@@ -169,7 +245,7 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                           ),
                         ),
                         pageController: pageController,
-                        onTapAnimateToPage: 1,
+                        onTapAnimateToPage: 2,
                       ),
 
                     const SizedBox(

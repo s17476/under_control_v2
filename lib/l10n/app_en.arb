@@ -983,6 +983,30 @@
     "@item_select_category": {
       "description": "Item's category selection"
     },
+    "item_unit_price": "Unit price",
+    "@item_unit_price": {
+      "description": "Unit price"
+    },
+    "item_unit_price_optional": "Unit price (optional)",
+    "@item_unit_price_optional": {
+      "description": "Unit price"
+    },
+    "item_internal_code_optional": "Internal code (optional)",
+    "@item_internal_code_optional": {
+      "description": "Internal code"
+    },
+    "item_internal_code": "Internal code",
+    "@item_internal_code": {
+      "description": "Internal code"
+    },
+    "item_bar_code_optional": "Bar or QR code (optional)",
+    "@item_bar_code_optional": {
+      "description": "Bar code"
+    },
+    "item_bar_code": "Bar or QR code",
+    "@item_bar_code": {
+      "description": "Bar code"
+    },
     "item_unit_kg": "Kilogram",
     "@item_unit_kg": {
       "description": "Kg - unit"
@@ -1095,9 +1119,17 @@
     "@incorrect_number_format": {
       "description": "Incorrect number format"
     },
+    "incorrect_price_format": "Incorrect price format",
+    "@incorrect_price_format": {
+      "description": "Incorrect price format"
+    },
     "incorrect_number_to_small": "The number of items must be greater than 0",
     "@incorrect_number_to_small": {
       "description": "The number of items must be greater than zero"
+    },
+    "incorrect_price_to_small": "The price must be greater than, or equal to 0",
+    "@incorrect_price_to_small": {
+      "description": "The price must be greater than zero"
     },
     "incorrect_number_to_big": "The number of items must be less than or equal to the amount available in the selected location",
     "@incorrect_number_to_big": {
