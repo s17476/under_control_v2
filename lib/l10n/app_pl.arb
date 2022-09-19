@@ -234,8 +234,8 @@
     "item_unit_price_optional": "Cena jednostki (opcjonalna)",
     "item_internal_code_optional": "Kod wewnętrzny (opcjonalny)",
     "item_internal_code": "Kod wewnętrzny",
-    "item_bar_code_optional": "Kod kreskowy / kod QR (opcjonalny)",
-    "item_bar_code": "Kod kreskowy / kod QR",
+    "item_bar_code_optional": "Kod kreskowy/QR (opcjonalny)",
+    "item_bar_code": "Kod kreskowy/QR",
     "item_unit_kg": "Kilogram",
     "item_unit_pcs": "Sztuka",
     "item_unit_ltr": "Litr",
@@ -279,5 +279,6 @@
     "item_details_no_actions": "Brak akcji",
     "item_details_loading_actions": "Ładowanie akcji...",
     "item_actions_history": "Historia akcji",
-    "item_no_items": "Nie dodano jeszcze żadnych przedmiotów"
+    "item_no_items": "Nie dodano jeszcze żadnych przedmiotów",
+    "item_no_barcode": "Zeskanowany kod jest niepoprawny. Spróbuj ponownie!"
 }

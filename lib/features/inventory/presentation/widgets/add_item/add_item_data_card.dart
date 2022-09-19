@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/pages/qr_scanner.dart';
 import 'package:under_control_v2/features/core/utils/responsive_size.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
@@ -9,7 +11,7 @@ import '../../../../core/presentation/widgets/rounded_button.dart';
 import 'category_dropdown_button.dart';
 import 'item_unit_dropdown_button.dart';
 
-class AddItemDataCard extends StatelessWidget with ResponsiveSize {
+class AddItemDataCard extends StatefulWidget {
   const AddItemDataCard({
     Key? key,
     required this.isEditMode,
@@ -33,8 +35,28 @@ class AddItemDataCard extends StatelessWidget with ResponsiveSize {
   final String category;
   final String itemUnit;
 
-  void _pickCode() {
-    barCodeTextEditingController.text = 'codery';
+  @override
+  State<AddItemDataCard> createState() => _AddItemDataCardState();
+}
+
+class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
+  bool hasBarCode = false;
+
+  void _pickCode(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    try {
+      final code = await Navigator.pushNamed(context, QrScanner.routeName);
+      if (code is String) {
+        widget.barCodeTextEditingController.text = code;
+        setState(() {
+          hasBarCode = true;
+        });
+      }
+    } catch (e) {
+      showSnackBar(
+          context: context,
+          message: AppLocalizations.of(context)!.item_no_barcode);
+    }
   }
 
   @override
@@ -72,16 +94,16 @@ class AddItemDataCard extends StatelessWidget with ResponsiveSize {
 
                     // category selection
                     CategoryDropdownButton(
-                      selectedValue: category,
-                      onSelected: setCategory,
+                      selectedValue: widget.category,
+                      onSelected: widget.setCategory,
                     ),
                     const SizedBox(
                       height: 8,
                     ),
                     // unit selection
                     ItemUnitDropdownButton(
-                      selectedUnit: itemUnit,
-                      onSelected: setItemUnit,
+                      selectedUnit: widget.itemUnit,
+                      onSelected: widget.setItemUnit,
                     ),
                     const SizedBox(
                       height: 16,
@@ -89,21 +111,8 @@ class AddItemDataCard extends StatelessWidget with ResponsiveSize {
                     // price text field
                     CustomTextFormField(
                       scrollPadding: const EdgeInsets.all(170),
-                      validator: (val) {
-                        try {
-                          final price = double.parse(val!);
-                          if (price < 0) {
-                            return AppLocalizations.of(context)!
-                                .incorrect_price_to_small;
-                          }
-                        } catch (e) {
-                          return AppLocalizations.of(context)!
-                              .incorrect_price_format;
-                        }
-                        return null;
-                      },
                       fieldKey: 'price',
-                      controller: priceTextEditingController,
+                      controller: widget.priceTextEditingController,
                       keyboardType: TextInputType.number,
                       labelText: AppLocalizations.of(context)!
                           .item_unit_price_optional,
@@ -115,7 +124,7 @@ class AddItemDataCard extends StatelessWidget with ResponsiveSize {
                     CustomTextFormField(
                       scrollPadding: const EdgeInsets.all(170),
                       fieldKey: 'code',
-                      controller: codeTextEditingController,
+                      controller: widget.codeTextEditingController,
                       keyboardType: TextInputType.name,
                       labelText: AppLocalizations.of(context)!
                           .item_internal_code_optional,
@@ -130,10 +139,9 @@ class AddItemDataCard extends StatelessWidget with ResponsiveSize {
                           child: CustomTextFormField(
                             scrollPadding: const EdgeInsets.all(170),
                             fieldKey: 'barCode',
-                            controller: barCodeTextEditingController,
+                            controller: widget.barCodeTextEditingController,
                             labelText: AppLocalizations.of(context)!
                                 .item_bar_code_optional,
-                            enabled: false,
                           ),
                         ),
                         const SizedBox(
@@ -142,7 +150,7 @@ class AddItemDataCard extends StatelessWidget with ResponsiveSize {
                         RoundedButton(
                           iconSize: 30,
                           padding: const EdgeInsets.all(9),
-                          onPressed: _pickCode,
+                          onPressed: () => _pickCode(context),
                           icon: Icons.qr_code_scanner,
                           gradient: LinearGradient(colors: [
                             Theme.of(context).primaryColor,
@@ -170,7 +178,7 @@ class AddItemDataCard extends StatelessWidget with ResponsiveSize {
                   color: Theme.of(context).textTheme.headline5!.color!,
                   label: AppLocalizations.of(context)!
                       .user_profile_add_user_personal_data_back,
-                  function: () => pageController.previousPage(
+                  function: () => widget.pageController.previousPage(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                   ),
@@ -179,7 +187,7 @@ class AddItemDataCard extends StatelessWidget with ResponsiveSize {
                   color: Theme.of(context).textTheme.headline5!.color!,
                   label:
                       AppLocalizations.of(context)!.user_profile_add_user_next,
-                  function: () => pageController.nextPage(
+                  function: () => widget.pageController.nextPage(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut),
                   icon: Icons.arrow_forward_ios_outlined,

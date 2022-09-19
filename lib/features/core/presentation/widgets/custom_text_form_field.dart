@@ -16,6 +16,7 @@ class CustomTextFormField extends StatelessWidget {
     this.autofocus = false,
     this.initialValue,
     this.prefixIcon,
+    this.suffixIcon,
     this.scrollPadding = const EdgeInsets.all(20),
     this.maxLines,
     this.textAlign = TextAlign.start,
@@ -33,6 +34,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool autofocus;
   final String? initialValue;
   final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final EdgeInsets scrollPadding;
   final int? maxLines;
   final TextAlign textAlign;
@@ -54,6 +56,7 @@ class CustomTextFormField extends StatelessWidget {
       onChanged: onChanged,
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
+        suffix: suffixIcon,
         floatingLabelStyle: TextStyle(
           color: Theme.of(context).textTheme.headline1!.color,
         ),

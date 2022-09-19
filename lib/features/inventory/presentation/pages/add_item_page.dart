@@ -114,13 +114,16 @@ class _AddItemPageState extends State<AddItemPage> {
       errorMessage = AppLocalizations.of(context)!.item_add_error_name_to_short;
     } else {
       // price validation
-      try {
-        price = double.parse(priceTextEditingController.text);
-        if (price < 0) {
-          errorMessage = AppLocalizations.of(context)!.incorrect_price_to_small;
+      if (priceTextEditingController.text.trim().isNotEmpty) {
+        try {
+          price = double.parse(priceTextEditingController.text.trim());
+          if (price < 0) {
+            errorMessage =
+                AppLocalizations.of(context)!.incorrect_price_to_small;
+          }
+        } catch (e) {
+          errorMessage = AppLocalizations.of(context)!.incorrect_price_format;
         }
-      } catch (e) {
-        errorMessage = AppLocalizations.of(context)!.incorrect_price_format;
       }
       // category selection validation
       if (category.isEmpty) {
@@ -157,12 +160,12 @@ class _AddItemPageState extends State<AddItemPage> {
     } else {
       final newItem = ItemModel(
         id: item != null ? item!.id : '',
-        name: nameTexEditingController.text,
-        description: descriptionTexEditingController.text,
+        name: nameTexEditingController.text.trim(),
+        description: descriptionTexEditingController.text.trim(),
         category: category,
         price: 0,
-        itemCode: codeTextEditingController.text,
-        itemBarCode: barCodeTextEditingController.text,
+        itemCode: codeTextEditingController.text.trim(),
+        itemBarCode: barCodeTextEditingController.text.trim(),
         itemPhoto: item != null ? item!.itemPhoto : '',
         itemUnit: ItemUnit.fromString(itemUnit),
         amountInLocations: const [],

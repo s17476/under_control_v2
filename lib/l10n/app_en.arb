@@ -999,11 +999,11 @@
     "@item_internal_code": {
       "description": "Internal code"
     },
-    "item_bar_code_optional": "Bar or QR code (optional)",
+    "item_bar_code_optional": "Bar/QR code (optional)",
     "@item_bar_code_optional": {
       "description": "Bar code"
     },
-    "item_bar_code": "Bar or QR code",
+    "item_bar_code": "Bar/QR code",
     "@item_bar_code": {
       "description": "Bar code"
     },
@@ -1182,5 +1182,9 @@
     "item_no_items": "No added items yet",
     "@item_no_items": {
       "description": "No added items yet"
+    },
+    "item_no_barcode": "Incorrect code. Please try again!",
+    "@item_no_barcode": {
+      "description": "Incorrect code. Please try again!"
     }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/qr_code_row.dart';
 
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -256,6 +257,11 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                                 const SizedBox(height: 16),
                                 // unit
                                 ItemUnitRow(item: item),
+                                // qr code
+                                if (item!.itemBarCode.isNotEmpty)
+                                  const SizedBox(height: 16),
+                                if (item!.itemBarCode.isNotEmpty)
+                                  QrCodeRow(item: item)
                               ],
                             ),
                           ),

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/pages/qr_scanner.dart';
 
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
@@ -196,6 +197,7 @@ class App extends StatelessWidget
           MoveInsideItemPage.routeName: (context) => const MoveInsideItemPage(),
           ItemDetailsPage.routeName: (context) => const ItemDetailsPage(),
           ActionsListPage.routeName: (context) => const ActionsListPage(),
+          QrScanner.routeName: (context) => const QrScanner(),
         },
         // localization
         localizationsDelegates: const [
