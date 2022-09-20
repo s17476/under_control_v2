@@ -412,6 +412,28 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                   ],
                                 ),
                               ),
+                              // currency
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.attach_money,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        AppLocalizations.of(context)!.currency,
+                                      ),
+                                    ),
+                                    Text(company.currency),
+                                  ],
+                                ),
+                              ),
                               // join date
                               Padding(
                                 padding:

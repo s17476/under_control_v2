@@ -8,6 +8,7 @@ class CompanyModel extends Company {
     required super.postCode,
     required super.city,
     required super.country,
+    required super.currency,
     required super.vatNumber,
     required super.phoneNumber,
     required super.email,
@@ -23,6 +24,7 @@ class CompanyModel extends Company {
         postCode: '',
         city: '',
         country: '',
+        currency: '',
         vatNumber: '',
         phoneNumber: '',
         email: '',
@@ -38,6 +40,7 @@ class CompanyModel extends Company {
     String? postCode,
     String? city,
     String? country,
+    String? currency,
     String? vatNumber,
     String? phoneNumber,
     String? email,
@@ -52,6 +55,7 @@ class CompanyModel extends Company {
       postCode: postCode ?? this.postCode,
       city: city ?? this.city,
       country: country ?? this.country,
+      currency: currency ?? this.currency,
       vatNumber: vatNumber ?? this.vatNumber,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       email: email ?? this.email,
@@ -69,6 +73,7 @@ class CompanyModel extends Company {
     result.addAll({'postCode': postCode});
     result.addAll({'city': city});
     result.addAll({'country': country});
+    result.addAll({'currency': currency});
     result.addAll({'vatNumber': vatNumber});
     result.addAll({'phoneNumber': phoneNumber});
     result.addAll({'email': email});
@@ -87,6 +92,7 @@ class CompanyModel extends Company {
       postCode: map['postCode'] ?? '',
       city: map['city'] ?? '',
       country: map['country'] ?? '',
+      currency: map['currency'] ?? '',
       vatNumber: map['vatNumber'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
       email: map['email'] ?? '',

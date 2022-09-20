@@ -7,6 +7,7 @@ class Company extends Equatable {
   final String postCode;
   final String city;
   final String country;
+  final String currency;
   final String vatNumber;
   final String phoneNumber;
   final String email;
@@ -21,6 +22,7 @@ class Company extends Equatable {
     required this.postCode,
     required this.city,
     required this.country,
+    required this.currency,
     required this.vatNumber,
     required this.phoneNumber,
     required this.email,
@@ -38,6 +40,7 @@ class Company extends Equatable {
       postCode,
       city,
       country,
+      currency,
       vatNumber,
       phoneNumber,
       email,
@@ -49,6 +52,6 @@ class Company extends Equatable {
 
   @override
   String toString() {
-    return 'Company(id: $id, name: $name, address: $address, postCode: $postCode, city: $city, country: $country, vatNumber: $vatNumber, phoneNumber: $phoneNumber, email: $email, homepage: $homepage, joinDate: $joinDate)';
+    return 'Company(id: $id, name: $name, address: $address, postCode: $postCode, city: $city, country: $country, currency: $currency, vatNumber: $vatNumber, phoneNumber: $phoneNumber, email: $email, homepage: $homepage, logo: $logo, joinDate: $joinDate)';
   }
 }

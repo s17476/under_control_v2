@@ -27,6 +27,10 @@
     "@search": {
       "description": "Search..."
     },
+    "currency": "Currency",
+    "@currency": {
+      "description": "Currency"
+    },
     "password_reset_text_button": "I don't remember my password",
     "@password_reset_text_button": {
       "description": "Password reset - I don't remember my password"

@@ -20,9 +20,11 @@ import '../blocs/items/items_bloc.dart';
 import '../blocs/items_management/items_management_bloc.dart';
 import '../widgets/actions/items_in_locations.dart';
 import '../widgets/actions/last_five_item_actions.dart';
+import '../widgets/internal_code_row.dart';
 import '../widgets/item_category_row.dart';
 import '../widgets/item_unit_row.dart';
 import '../widgets/overlay_info_box.dart';
+import '../widgets/price_row.dart';
 import '../widgets/square_item_image.dart';
 import 'add_item_page.dart';
 import 'add_to_item_page.dart';
@@ -201,17 +203,6 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                IconTitleRow(
-                                  icon: Icons.api,
-                                  iconColor: Colors.grey.shade300,
-                                  iconBackground: Colors.black,
-                                  title: AppLocalizations.of(context)!
-                                      .item_details_data,
-                                  titleFontSize: 16,
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
                                 // name
                                 Text(
                                   item!.name,
@@ -252,6 +243,17 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                IconTitleRow(
+                                  icon: Icons.api,
+                                  iconColor: Colors.grey.shade300,
+                                  iconBackground: Colors.black,
+                                  title: AppLocalizations.of(context)!
+                                      .item_details_data,
+                                  titleFontSize: 16,
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
                                 // category
                                 ItemCategoryRow(item: item),
                                 const SizedBox(height: 16),
@@ -261,7 +263,15 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                                 if (item!.itemBarCode.isNotEmpty)
                                   const SizedBox(height: 16),
                                 if (item!.itemBarCode.isNotEmpty)
-                                  QrCodeRow(item: item)
+                                  QrCodeRow(item: item),
+                                // internal code
+                                if (item!.itemCode.isNotEmpty)
+                                  const SizedBox(height: 16),
+                                if (item!.itemCode.isNotEmpty)
+                                  InternalCodeRow(item: item),
+                                // price
+                                if (item!.price > 0) const SizedBox(height: 16),
+                                if (item!.price > 0) PriceRow(item: item)
                               ],
                             ),
                           ),

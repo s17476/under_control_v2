@@ -163,7 +163,7 @@ class _AddItemPageState extends State<AddItemPage> {
         name: nameTexEditingController.text.trim(),
         description: descriptionTexEditingController.text.trim(),
         category: category,
-        price: 0,
+        price: price,
         itemCode: codeTextEditingController.text.trim(),
         itemBarCode: barCodeTextEditingController.text.trim(),
         itemPhoto: item != null ? item!.itemPhoto : '',

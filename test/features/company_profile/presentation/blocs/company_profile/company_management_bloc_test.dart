@@ -69,6 +69,7 @@ void main() {
         postCode: 'postCode',
         city: 'city',
         country: 'country',
+        currency: 'currency',
         vatNumber: 'vatNumber',
         phoneNumber: 'phoneNumber',
         email: 'email',

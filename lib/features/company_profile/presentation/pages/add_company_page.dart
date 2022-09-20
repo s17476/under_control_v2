@@ -28,6 +28,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
   final postCodeTexEditingController = TextEditingController();
   final cityTexEditingController = TextEditingController();
   final countryTexEditingController = TextEditingController();
+  final currencyTexEditingController = TextEditingController();
   final vatNumberTexEditingController = TextEditingController();
   final phoneNumberTexEditingController = TextEditingController();
   final emailTexEditingController = TextEditingController();
@@ -45,6 +46,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
           postCode: postCodeTexEditingController.text.trim(),
           city: cityTexEditingController.text.trim(),
           country: countryTexEditingController.text.trim(),
+          currency: currencyTexEditingController.text.trim(),
           vatNumber: vatNumberTexEditingController.text.trim(),
           phoneNumber: phoneNumberTexEditingController.text.trim(),
           email: emailTexEditingController.text.trim(),
@@ -67,6 +69,22 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
   }
 
   @override
+  void dispose() {
+    pageController.dispose();
+    nameTexEditingController.dispose();
+    addressTexEditingController.dispose();
+    postCodeTexEditingController.dispose();
+    cityTexEditingController.dispose();
+    countryTexEditingController.dispose();
+    currencyTexEditingController.dispose();
+    vatNumberTexEditingController.dispose();
+    phoneNumberTexEditingController.dispose();
+    emailTexEditingController.dispose();
+    homepageTexEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     pages = [
       AddCompanyCard(
@@ -74,6 +92,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
         addressTexEditingController: addressTexEditingController,
         cityTexEditingController: cityTexEditingController,
         countryTexEditingController: countryTexEditingController,
+        currencyTexEditingController: currencyTexEditingController,
         postCodeTexEditingController: postCodeTexEditingController,
         homepageTexEditingController: homepageTexEditingController,
         emailTexEditingController: emailTexEditingController,

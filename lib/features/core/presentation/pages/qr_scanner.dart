@@ -15,6 +15,8 @@ class _QrScannerState extends State<QrScanner> {
 
   bool codeFound = false;
 
+  String firstTryCode = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,8 +66,13 @@ class _QrScannerState extends State<QrScanner> {
             debugPrint('Failed to scan Barcode');
           } else if (!codeFound) {
             final String code = barcode.rawValue!;
-            Navigator.pop(context, code);
-            codeFound = true;
+            // double code check
+            if (code == firstTryCode) {
+              Navigator.pop(context, code);
+              codeFound = true;
+            } else {
+              firstTryCode = code;
+            }
           }
         },
       ),

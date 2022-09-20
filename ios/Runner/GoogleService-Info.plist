@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>925807927046-1hl3lmdqm4mch0sflrtnv8cu11d5lhgj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.925807927046-1hl3lmdqm4mch0sflrtnv8cu11d5lhgj</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBnGJVSkuVikh_D5r1HhHOu0ItXPdtaUNA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>925807927046</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.lnasoftware.underControlV2</string>
+	<key>PROJECT_ID</key>
+	<string>undercontrol-v2</string>
+	<key>STORAGE_BUCKET</key>
+	<string>undercontrol-v2.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:925807927046:ios:96a89234e141d2c380c887</string>
+</dict>
+</plist>

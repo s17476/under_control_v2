@@ -57,6 +57,8 @@ dependencies:
   photo_view: ^0.14.0
   flutter_datetime_picker: ^1.5.1
   mobile_scanner: ^2.0.0
+  country_picker: ^2.0.16
+  currency_picker: ^2.0.12
   
 
 

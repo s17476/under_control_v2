@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "925807927046",
+    "project_id": "undercontrol-v2",
+    "storage_bucket": "undercontrol-v2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925807927046:android:e315678f48b9f9c780c887",
+        "android_client_info": {
+          "package_name": "com.example.under_control_v2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925807927046-jal6ttc4bclt1l2s5ed33brvdjmo4m5b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUQxotNZbFzU8JjV231qkWxROa3Kh_msQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925807927046-jal6ttc4bclt1l2s5ed33brvdjmo4m5b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925807927046:android:7a5102b3e2cf279680c887",
+        "android_client_info": {
+          "package_name": "com.lnasoftware.under_control_v2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925807927046-jal6ttc4bclt1l2s5ed33brvdjmo4m5b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUQxotNZbFzU8JjV231qkWxROa3Kh_msQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925807927046-jal6ttc4bclt1l2s5ed33brvdjmo4m5b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
