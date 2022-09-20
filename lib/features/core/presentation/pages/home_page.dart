@@ -164,12 +164,15 @@ class _HomePageState extends State<HomePage>
           physics: const NeverScrollableScrollPhysics(),
           // AppBar
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            HomeSliverAppBar(
-              pageIndex: pageIndex,
-              isFilterExpanded: isFilterExpanded,
-              toggleIsFilterExpanded: toggleIsFilterExpanded,
-              isMenuVisible: isMenuVisible,
-              toggleIsMenuVisible: toggleIsMenuVisible,
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: HomeSliverAppBar(
+                pageIndex: pageIndex,
+                isFilterExpanded: isFilterExpanded,
+                toggleIsFilterExpanded: toggleIsFilterExpanded,
+                isMenuVisible: isMenuVisible,
+                toggleIsMenuVisible: toggleIsMenuVisible,
+              ),
             )
           ],
           // body
@@ -184,16 +187,12 @@ class _HomePageState extends State<HomePage>
                 PageView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: pageController,
-                  children: [
-                    const TasksPage(),
-                    KeepAlivePage(
-                        child: InventoryPage(
-                      inventorySearchTextEditingController:
-                          inventorySearchTextEditingController,
-                    )),
-                    const DashboardPage(),
-                    const AssetsPage(),
-                    const KnowledgeBasePage(),
+                  children: const [
+                    TasksPage(),
+                    InventoryPage(),
+                    DashboardPage(),
+                    AssetsPage(),
+                    KnowledgeBasePage(),
                   ],
                 ),
                 // bottom navigation bar

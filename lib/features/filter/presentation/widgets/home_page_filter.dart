@@ -52,6 +52,9 @@ class _HomePageFilterState extends State<HomePageFilter> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(
+                        height: AppBar().preferredSize.height,
+                      ),
                       // locations title
                       Padding(
                         padding: const EdgeInsets.symmetric(
