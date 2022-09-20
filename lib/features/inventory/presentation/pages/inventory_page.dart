@@ -10,7 +10,12 @@ import '../blocs/items/items_bloc.dart';
 import '../blocs/items_management/items_management_bloc.dart';
 
 class InventoryPage extends StatelessWidget with ResponsiveSize {
-  const InventoryPage({Key? key}) : super(key: key);
+  const InventoryPage({
+    Key? key,
+    required this.inventorySearchTextEditingController,
+  }) : super(key: key);
+
+  final TextEditingController inventorySearchTextEditingController;
 
   @override
   Widget build(BuildContext context) {

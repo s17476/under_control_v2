@@ -7,12 +7,15 @@ class SearchTextField extends StatelessWidget {
     required this.searchController,
     required this.onChanged,
     required this.onCancel,
+    this.fontSize = 22,
   }) : super(key: key);
 
   final TextEditingController searchController;
 
   final VoidCallback onChanged;
   final VoidCallback onCancel;
+
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +39,8 @@ class SearchTextField extends StatelessWidget {
           ),
         ),
       ),
-      style: const TextStyle(
-        fontSize: 22,
+      style: TextStyle(
+        fontSize: fontSize,
       ),
       cursorColor: Colors.grey.shade200,
     );

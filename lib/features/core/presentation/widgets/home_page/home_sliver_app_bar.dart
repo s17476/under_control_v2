@@ -69,6 +69,18 @@ class HomeSliverAppBar extends StatelessWidget {
       ),
       title: Text(appBarTitles[pageIndex]),
       actions: [
+        // search button
+        if (pageIndex == 1)
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.search,
+              color: isFilterExpanded
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).iconTheme.color,
+            ),
+          ),
+        // filter
         IconButton(
           onPressed: () {
             if (isMenuVisible) {

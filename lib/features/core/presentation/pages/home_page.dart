@@ -40,6 +40,10 @@ class _HomePageState extends State<HomePage>
 
   final ScrollController scrollController = ScrollController();
 
+  // inventory search
+  final TextEditingController inventorySearchTextEditingController =
+      TextEditingController();
+
   double currentOffset = 0;
 
   // bottom navigation show/hide animation
@@ -68,8 +72,10 @@ class _HomePageState extends State<HomePage>
 
   @override
   void dispose() {
+    animationController?.dispose();
+    pageController.dispose();
+    inventorySearchTextEditingController.dispose();
     super.dispose();
-    animationController!.dispose();
   }
 
   // set page index
@@ -178,12 +184,16 @@ class _HomePageState extends State<HomePage>
                 PageView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: pageController,
-                  children: const [
-                    TasksPage(),
-                    KeepAlivePage(child: InventoryPage()),
-                    DashboardPage(),
-                    AssetsPage(),
-                    KnowledgeBasePage(),
+                  children: [
+                    const TasksPage(),
+                    KeepAlivePage(
+                        child: InventoryPage(
+                      inventorySearchTextEditingController:
+                          inventorySearchTextEditingController,
+                    )),
+                    const DashboardPage(),
+                    const AssetsPage(),
+                    const KnowledgeBasePage(),
                   ],
                 ),
                 // bottom navigation bar
