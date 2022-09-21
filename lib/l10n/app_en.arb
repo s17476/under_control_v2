@@ -31,6 +31,10 @@
     "@currency": {
       "description": "Currency"
     },
+    "filter": "Filter",
+    "@filter": {
+      "description": "filter"
+    },
     "password_reset_text_button": "I don't remember my password",
     "@password_reset_text_button": {
       "description": "Password reset - I don't remember my password"

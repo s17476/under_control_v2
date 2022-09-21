@@ -4,20 +4,24 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeSliverAppBar extends StatelessWidget {
-  final int pageIndex;
-  final bool isFilterExpanded;
-  final VoidCallback toggleIsFilterExpanded;
-  final bool isMenuVisible;
-  final VoidCallback toggleIsMenuVisible;
-
   const HomeSliverAppBar({
     Key? key,
     required this.pageIndex,
     required this.isFilterExpanded,
     required this.toggleIsFilterExpanded,
+    required this.isSearchBarExpanded,
+    required this.toggleIsSearchBarExpanded,
     required this.isMenuVisible,
     required this.toggleIsMenuVisible,
   }) : super(key: key);
+
+  final int pageIndex;
+  final bool isFilterExpanded;
+  final VoidCallback toggleIsFilterExpanded;
+  final bool isSearchBarExpanded;
+  final VoidCallback toggleIsSearchBarExpanded;
+  final bool isMenuVisible;
+  final VoidCallback toggleIsMenuVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +72,29 @@ class HomeSliverAppBar extends StatelessWidget {
           );
         },
       ),
-      title: Text(appBarTitles[pageIndex]),
+      title: Text(
+        isSearchBarExpanded
+            ? AppLocalizations.of(context)!.search
+            : isFilterExpanded
+                ? AppLocalizations.of(context)!.filter
+                : appBarTitles[pageIndex],
+      ),
       actions: [
         // search button
         if (pageIndex == 1)
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              if (isMenuVisible) {
+                toggleIsMenuVisible();
+              }
+              if (isFilterExpanded) {
+                toggleIsFilterExpanded();
+              }
+              toggleIsSearchBarExpanded();
+            },
             icon: Icon(
               Icons.search,
-              color: isFilterExpanded
+              color: isSearchBarExpanded
                   ? Theme.of(context).primaryColor
                   : Theme.of(context).iconTheme.color,
             ),
@@ -86,6 +104,9 @@ class HomeSliverAppBar extends StatelessWidget {
           onPressed: () {
             if (isMenuVisible) {
               toggleIsMenuVisible();
+            }
+            if (isSearchBarExpanded) {
+              toggleIsSearchBarExpanded();
             }
             toggleIsFilterExpanded();
           },

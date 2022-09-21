@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/item_tile.dart';
 import 'package:under_control_v2/features/inventory/utils/item_management_bloc_listener.dart';
@@ -13,7 +13,12 @@ import '../blocs/items_management/items_management_bloc.dart';
 class InventoryPage extends StatelessWidget with ResponsiveSize {
   const InventoryPage({
     Key? key,
+    required this.searchBoxHeight,
+    required this.isSearchBoxExpanded,
   }) : super(key: key);
+
+  final double searchBoxHeight;
+  final bool isSearchBoxExpanded;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +32,10 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
           SliverToBoxAdapter(
             child: Column(
               children: [
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  height: isSearchBoxExpanded ? searchBoxHeight : 0,
+                ),
                 BlocBuilder<ItemsBloc, ItemsState>(
                   builder: (context, state) {
                     if (state is ItemsLoadedState) {
