@@ -1095,6 +1095,14 @@
     "@item_details_cannot_delete": {
       "description": "The item cannot be removed because the quantity is greater than zero."
     },
+    "item_msg_added": "New item added",
+    "@item_msg_added": {
+      "description": "item - added msg"
+    },
+    "item_msg_not_added": "Item NOT added",
+    "@item_msg_not_added": {
+      "description": "item - NOT added msg"
+    },
     "item_msg_updated": "Item updated",
     "@item_msg_updated": {
       "description": "item - updated msg"

@@ -258,6 +258,8 @@
     "item_details_category": "Kategoria",
     "item_details_category_not_found": "Kategoria nie znaleziona",
     "item_details_cannot_delete": "Nie można usunąć przedmiotu, ponieważlość jest większa niż zero.",
+    "item_msg_added": "Przedmiot został dodany",
+    "item_msg_not_added": "Przedmiot NIE został dodany",
     "item_msg_updated": "Przedmiot został zaktualizowany",
     "item_msg_not_updated": "Przedmiot NIE został zaktualizowany",
     "item_msg_deleted": "Przedmiot został usunięty",

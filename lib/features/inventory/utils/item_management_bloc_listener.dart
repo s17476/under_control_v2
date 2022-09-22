@@ -18,21 +18,17 @@ void itemManagementBlocListener(
         message = AppLocalizations.of(context)!.item_msg_not_updated;
         break;
       case ItemsMessage.itemAdded:
-        message = AppLocalizations.of(context)!.item_category_msg_added;
+        message = AppLocalizations.of(context)!.item_msg_added;
         break;
       case ItemsMessage.itemNotAdded:
-        message = AppLocalizations.of(context)!.item_category_msg_not_added;
+        message = AppLocalizations.of(context)!.item_msg_not_added;
         break;
       case ItemsMessage.itemDeleted:
-        message = AppLocalizations.of(context)!.item_category_msg_deleted;
+        message = AppLocalizations.of(context)!.item_msg_deleted;
         break;
       case ItemsMessage.itemNotDeleted:
-        message = AppLocalizations.of(context)!.item_category_msg_not_deleted;
+        message = AppLocalizations.of(context)!.item_msg_not_deleted;
         break;
-      case ItemsMessage.itemInUse:
-        message = AppLocalizations.of(context)!.item_category_msg_not_empty;
-        break;
-
       default:
         message = '';
         break;
