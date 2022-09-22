@@ -1091,6 +1091,10 @@
     "@item_details_category_not_found": {
       "description": "Item details category not found"
     },
+     "item_details_cannot_delete": "The item cannot be removed because the quantity is greater than zero.",
+    "@item_details_cannot_delete": {
+      "description": "The item cannot be removed because the quantity is greater than zero."
+    },
     "item_msg_updated": "Item updated",
     "@item_msg_updated": {
       "description": "item - updated msg"
@@ -1202,5 +1206,15 @@
     "item_no_barcode": "Incorrect code. Please try again!",
     "@item_no_barcode": {
       "description": "Incorrect code. Please try again!"
+    },
+    "item_delete_question": "Are you sure you want to delete {item}?",
+    "@item_delete_question": {
+      "description": "Delete question",
+      "placeholders": {
+        "item": {
+          "type": "String",
+          "example": "Main"
+        }
+      }
     }
 }

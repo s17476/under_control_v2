@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/qr_code_row.dart';
+import 'package:under_control_v2/features/inventory/utils/show_item_delete_dialog.dart';
 
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -75,6 +77,27 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
               arguments: item,
             ),
           ),
+          if (_currentUser.administrator)
+            Choice(
+              title: AppLocalizations.of(context)!.delete,
+              icon: Icons.delete,
+              onTap: () async {
+                if (getItemTotalQuantity(item!) > 0) {
+                  showSnackBar(
+                    context: context,
+                    message: AppLocalizations.of(context)!
+                        .item_details_cannot_delete,
+                    isErrorMessage: true,
+                  );
+                } else {
+                  final result =
+                      await showItemDeleteDialog(context: context, item: item!);
+                  if (result != null && result) {
+                    Navigator.pop(context);
+                  }
+                }
+              },
+            ),
         ];
         // gets last actions for selected item
         context.read<ItemActionBloc>().add(
