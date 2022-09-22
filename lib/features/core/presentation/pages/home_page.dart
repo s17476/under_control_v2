@@ -57,6 +57,9 @@ class _HomePageState extends State<HomePage>
 
   double currentOffset = 0;
 
+  String inventoryQuery = '';
+  String assetsQuery = '';
+
   // bottom navigation show/hide animation
   AnimationController? animationController;
   // Animation<Offset>? downSlideAnimation;
@@ -73,21 +76,69 @@ class _HomePageState extends State<HomePage>
       if (isControlsVisible && scrollController.offset > currentOffset) {
         _hideControls();
       }
-      if (!isControlsVisible && scrollController.offset < currentOffset) {
+      if (MediaQuery.of(context).viewInsets.bottom == 0 &&
+          !isControlsVisible &&
+          scrollController.offset < currentOffset) {
         _showControls();
       }
       currentOffset = scrollController.offset;
     });
+
+    pageController.addListener(() {
+      // closes search bar when page changes
+      if (isInventorySearchBarExpanded || isAssetsSearchBarExpanded) {
+        _toggleIsSearchBarExpanded();
+      }
+      // update page index and bottom menu on swipe
+      // if (pageController.page == pageController.page!.truncate()) {
+      //   final newPageIndex = pageController.page!.toInt();
+      //   navigationController.value = newPageIndex;
+      //   // scrolls up
+      //   scrollController.animateTo(
+      //     0,
+      //     duration: const Duration(milliseconds: 200),
+      //     curve: Curves.easeInOut,
+      //   );
+      // }
+    });
+
     super.initState();
   }
 
   @override
+  void didChangeDependencies() {
+    if (MediaQuery.of(context).viewInsets.bottom == 0 && !isControlsVisible) {
+      _showControls();
+    } else if (MediaQuery.of(context).viewInsets.bottom != 0 &&
+        isControlsVisible) {
+      _hideControls();
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
+    navigationController.dispose();
+    scrollController.dispose();
     animationController?.dispose();
     pageController.dispose();
     inventorySearchTextEditingController.dispose();
     assetsSearchTextEditingController.dispose();
     super.dispose();
+  }
+
+  // search in inventory
+  void _searchInInventory() {
+    setState(() {
+      inventoryQuery = inventorySearchTextEditingController.text;
+    });
+  }
+
+  // search in assets
+  void _searchInAssets() {
+    setState(() {
+      assetsQuery = assetsSearchTextEditingController.text;
+    });
   }
 
   // set page index
@@ -127,10 +178,30 @@ class _HomePageState extends State<HomePage>
   // show/hide search bar widget
   void _toggleIsSearchBarExpanded() {
     setState(() {
-      if (pageIndex == 1) {
-        isInventorySearchBarExpanded = !isInventorySearchBarExpanded;
-      } else if (pageIndex == 3) {
-        isAssetsSearchBarExpanded = !isAssetsSearchBarExpanded;
+      // closes menu and filter
+      if (isMenuVisible) {
+        _toggleIsMenuVisible();
+      }
+      if (isFilterExpanded) {
+        _toggleIsFilterExpanded();
+      }
+
+      // toggle inventory search
+      if (isInventorySearchBarExpanded) {
+        inventorySearchTextEditingController.text = '';
+        _searchInInventory();
+        isInventorySearchBarExpanded = false;
+      } else if (!isInventorySearchBarExpanded && pageIndex == 1) {
+        isInventorySearchBarExpanded = true;
+      }
+
+      // toggle assets search
+      if (isAssetsSearchBarExpanded) {
+        assetsSearchTextEditingController.text = '';
+        _searchInAssets();
+        isAssetsSearchBarExpanded = false;
+      } else if (!isAssetsSearchBarExpanded && pageIndex == 3) {
+        isAssetsSearchBarExpanded = true;
       }
     });
   }
@@ -222,6 +293,8 @@ class _HomePageState extends State<HomePage>
                     InventoryPage(
                       searchBoxHeight: searchBoxHeight,
                       isSearchBoxExpanded: isInventorySearchBarExpanded,
+                      searchQuery: inventoryQuery,
+                      isSortedByCategory: false,
                     ),
                     const DashboardPage(),
                     const AssetsPage(),
@@ -248,11 +321,21 @@ class _HomePageState extends State<HomePage>
                 ),
                 // inventory search box
                 AppBarSearchBox(
+                  title: AppLocalizations.of(context)!.search_item,
                   searchBoxHeight: searchBoxHeight,
                   isSearchBoxExpanded: isInventorySearchBarExpanded,
-                  onChanged: () {},
+                  onChanged: _searchInInventory,
                   searchTextEditingController:
                       inventorySearchTextEditingController,
+                ),
+                // assets search box
+                AppBarSearchBox(
+                  title: AppLocalizations.of(context)!.search,
+                  searchBoxHeight: searchBoxHeight,
+                  isSearchBoxExpanded: isAssetsSearchBarExpanded,
+                  onChanged: _searchInAssets,
+                  searchTextEditingController:
+                      assetsSearchTextEditingController,
                 ),
               ],
             ),

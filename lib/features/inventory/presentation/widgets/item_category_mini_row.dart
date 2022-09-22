@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/icon_title_mini_row.dart';
 
 import '../blocs/item_category/item_category_bloc.dart';
 
@@ -14,30 +15,18 @@ class ItemCategoryMiniRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Icon(
-          Icons.category,
-          size: 16,
-        ),
-        const SizedBox(
-          width: 4,
-        ),
-        BlocBuilder<ItemCategoryBloc, ItemCategoryState>(
-          builder: (context, state) {
-            if (state is ItemCategoryLoadedState) {
-              final categoryName = state.getItemCategoryById(categoryId)?.name;
-              return Text(
-                categoryName ??
-                    AppLocalizations.of(context)!
-                        .item_details_category_not_found,
-                style: Theme.of(context).textTheme.caption,
-              );
-            }
-            return const CircularProgressIndicator();
-          },
-        ),
-      ],
+    return BlocBuilder<ItemCategoryBloc, ItemCategoryState>(
+      builder: (context, state) {
+        if (state is ItemCategoryLoadedState) {
+          final categoryName = state.getItemCategoryById(categoryId)?.name;
+          return IconTitleMiniRow(
+            title: categoryName ??
+                AppLocalizations.of(context)!.item_details_category_not_found,
+            icon: Icons.category,
+          );
+        }
+        return const CircularProgressIndicator();
+      },
     );
   }
 }

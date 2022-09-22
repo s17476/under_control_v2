@@ -9,10 +9,12 @@ class HomePageFilterGroupTile extends StatefulWidget {
     Key? key,
     required this.group,
     required this.color,
+    required this.isAdmin,
   }) : super(key: key);
 
   final Group group;
   final Color color;
+  final bool isAdmin;
   @override
   State<HomePageFilterGroupTile> createState() =>
       _HomePageFilterGroupTileState();
@@ -23,12 +25,14 @@ class _HomePageFilterGroupTileState extends State<HomePageFilterGroupTile> {
 
   @override
   void didChangeDependencies() {
-    final state = context.watch<GroupBloc>().state as GroupLoadedState;
+    if (widget.isAdmin) {
+      final state = context.watch<GroupBloc>().state as GroupLoadedState;
 
-    if (state.selectedGroups.contains(widget.group)) {
-      isSelected = true;
-    } else {
-      isSelected = false;
+      if (state.selectedGroups.contains(widget.group)) {
+        isSelected = true;
+      } else {
+        isSelected = false;
+      }
     }
 
     super.didChangeDependencies();
@@ -60,25 +64,33 @@ class _HomePageFilterGroupTileState extends State<HomePageFilterGroupTile> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Checkbox(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
+            // selectable if current user is administrator
+            if (widget.isAdmin)
+              Checkbox(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                activeColor: Theme.of(context).primaryColor,
+                value: isSelected,
+                onChanged: (bool? value) {
+                  isSelected
+                      ? context
+                          .read<GroupBloc>()
+                          .add(UnselectGroupEvent(group: widget.group))
+                      : context
+                          .read<GroupBloc>()
+                          .add(SelectGroupEvent(group: widget.group));
+                  setState(() {
+                    isSelected = value!;
+                  });
+                },
               ),
-              activeColor: Theme.of(context).primaryColor,
-              value: isSelected,
-              onChanged: (bool? value) {
-                isSelected
-                    ? context
-                        .read<GroupBloc>()
-                        .add(UnselectGroupEvent(group: widget.group))
-                    : context
-                        .read<GroupBloc>()
-                        .add(SelectGroupEvent(group: widget.group));
-                setState(() {
-                  isSelected = value!;
-                });
-              },
-            )
+            // check icon if user is not an administrator
+            if (!widget.isAdmin)
+              const Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: Icon(Icons.done),
+              ),
           ],
         ),
       ),

@@ -14,12 +14,14 @@ class AppBarSearchBox extends StatelessWidget {
     required this.onChanged,
     required this.searchTextEditingController,
     required this.searchBoxHeight,
+    required this.title,
   }) : super(key: key);
 
   final bool isSearchBoxExpanded;
   final VoidCallback onChanged;
   final TextEditingController? searchTextEditingController;
   final double searchBoxHeight;
+  final String title;
 
   void _clearSearchBox() {
     searchTextEditingController?.text = '';
@@ -59,6 +61,13 @@ class AppBarSearchBox extends StatelessWidget {
               child: Container(
                 height: searchBoxHeight,
                 decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      offset: const Offset(0, 0.5),
+                      color: Colors.grey.shade700,
+                      blurRadius: 3,
+                    )
+                  ],
                   color: Theme.of(context).appBarTheme.backgroundColor,
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(25),
@@ -73,8 +82,9 @@ class AppBarSearchBox extends StatelessWidget {
                         child: CustomTextFormField(
                           controller: searchTextEditingController,
                           fieldKey: 'search',
-                          labelText: AppLocalizations.of(context)!.search,
+                          labelText: title,
                           autofocus: true,
+                          onChanged: (_) => onChanged(),
                           suffixIcon: InkWell(
                             onTap: () => _clearSearchBox(),
                             child: const Padding(

@@ -35,5 +35,6 @@ class Themes with MaterialColorGenerator {
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Color.fromARGB(255, 28, 154, 97),
         ),
+        highlightColor: Colors.amber,
       );
 }

@@ -43,6 +43,13 @@ class _HomePageFilterState extends State<HomePageFilter> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Theme.of(context).appBarTheme.backgroundColor,
+                    boxShadow: [
+                      BoxShadow(
+                        offset: const Offset(0, 0.5),
+                        color: Colors.grey.shade700,
+                        blurRadius: 3,
+                      )
+                    ],
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(25),
                       bottomRight: Radius.circular(25),
@@ -76,20 +83,7 @@ class _HomePageFilterState extends State<HomePageFilter> {
                           thickness: 1.5,
                         ),
                       ),
-                      // groups title
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 4,
-                        ),
-                        child: IconTitleRow(
-                          icon: Icons.group,
-                          iconColor: Colors.grey.shade200,
-                          iconBackground: Theme.of(context).primaryColor,
-                          title: AppLocalizations.of(context)!
-                              .home_screen_filter_select_group,
-                        ),
-                      ),
+
                       // groups list
                       const FilterGroupsList(),
                       const SizedBox(

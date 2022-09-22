@@ -6,7 +6,8 @@ import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/item_tile.dart';
 import 'package:under_control_v2/features/inventory/utils/item_management_bloc_listener.dart';
 
-import '../../../core/utils/show_snack_bar.dart';
+import '../../domain/entities/item.dart';
+import '../blocs/item_category/item_category_bloc.dart';
 import '../blocs/items/items_bloc.dart';
 import '../blocs/items_management/items_management_bloc.dart';
 
@@ -15,10 +16,48 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
     Key? key,
     required this.searchBoxHeight,
     required this.isSearchBoxExpanded,
+    required this.searchQuery,
+    required this.isSortedByCategory,
   }) : super(key: key);
 
   final double searchBoxHeight;
   final bool isSearchBoxExpanded;
+  final String searchQuery;
+  final bool isSortedByCategory;
+
+  // filters item list according to given query string
+  List<Item> _filterItems(List<Item> items, String searchQuery) {
+    if (searchQuery.trim().isEmpty) {
+      return items;
+    }
+    return items
+        .where(
+          (item) =>
+              item.name
+                  .toLowerCase()
+                  .contains(searchQuery.trim().toLowerCase()) ||
+              item.itemCode
+                  .toLowerCase()
+                  .contains(searchQuery.trim().toLowerCase()) ||
+              item.itemBarCode
+                  .toLowerCase()
+                  .contains(searchQuery.trim().toLowerCase()),
+        )
+        .toList();
+  }
+
+  List<Item> _sortItems(
+      BuildContext context, List<Item> items, bool isSortedByCategory) {
+    if (!isSortedByCategory) {
+      return items
+        ..sort(
+          (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+        );
+    } else {
+      // TODO
+      return items..sort();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +88,53 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
                           ],
                         );
                       }
-                      final filteredItems = state.allItems.allItems;
-                      return ListView.builder(
-                        padding: const EdgeInsets.only(top: 2),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: filteredItems.length,
-                        itemBuilder: (context, index) {
-                          return ItemTile(item: filteredItems[index]);
+                      List<Item> filteredItems = _filterItems(
+                        state.allItems.allItems,
+                        searchQuery,
+                      );
+
+                      return BlocBuilder<ItemCategoryBloc, ItemCategoryState>(
+                        builder: (context, state) {
+                          if (isSortedByCategory &&
+                              state is ItemCategoryLoadedState) {
+                            // sort by category
+                            final sortedItems = _sortItems(
+                              context,
+                              filteredItems,
+                              isSortedByCategory,
+                            );
+
+                            return ListView.builder(
+                              padding: const EdgeInsets.only(top: 2),
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: sortedItems.length,
+                              itemBuilder: (context, index) {
+                                return ItemTile(
+                                  item: sortedItems[index],
+                                  searchQuery: searchQuery,
+                                );
+                              },
+                            );
+                          } else {
+                            final sortedItems = _sortItems(
+                              context,
+                              filteredItems,
+                              isSortedByCategory,
+                            );
+                            return ListView.builder(
+                              padding: const EdgeInsets.only(top: 2),
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: sortedItems.length,
+                              itemBuilder: (context, index) {
+                                return ItemTile(
+                                  item: sortedItems[index],
+                                  searchQuery: searchQuery,
+                                );
+                              },
+                            );
+                          }
                         },
                       );
                     } else {

@@ -27,6 +27,10 @@
     "@search": {
       "description": "Search..."
     },
+    "search_item": "Name, internal code or Bar/Qr code",
+    "@search": {
+      "description": "Search item"
+    },
     "currency": "Currency",
     "@currency": {
       "description": "Currency"
@@ -502,6 +506,10 @@
     "home_screen_filter_select_group": "Select group",
     "@home_screen_filter_select_group": {
       "description": "Home screen filter - select group label"
+    },
+    "home_screen_filter_your_group": "Your groups in selected locations",
+    "@home_screen_filter_your_group": {
+      "description": "Home screen filter - Your groups in selected locations"
     },
     "home_screen_filter_no_groups": "No available groups in selected locations.",
     "@home_screen_filter_no_groups": {

@@ -24,6 +24,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
   late StreamSubscription userProfileStreamSubscription;
 
   String companyId = '';
+  bool isAdmin = false;
 
   FilterBloc({
     required this.locationBloc,
@@ -49,6 +50,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
       if (state is Approved) {
         companyId = state.userProfile.companyId;
+        isAdmin = state.userProfile.administrator;
       }
     });
 
@@ -72,6 +74,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
           // print(event.locations.map((e) => e.name).toList());
           emit(
             FilterLoadedState(
+              isAdmin: isAdmin,
               companyId: companyId,
               locations: event.locations,
               groups: updatedGroups,
@@ -81,6 +84,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
         } else {
           emit(
             FilterLoadedState(
+              isAdmin: isAdmin,
               companyId: companyId,
               locations: event.locations,
               groups: updatedGroups,
@@ -110,6 +114,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       // print(locations.map((e) => e.name).toList());
       emit(
         FilterLoadedState(
+          isAdmin: isAdmin,
           companyId: companyId,
           locations: locations,
           groups: updatedGroups,
@@ -139,7 +144,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
       // gets groups where current user is a member
       List<Group> groupsForUser = [];
-      if (userProfileState.userProfile.administrator) {
+      if (isAdmin) {
         groupsForUser = groupsInSelectedLocations;
       } else {
         for (var group in groupsInSelectedLocations) {

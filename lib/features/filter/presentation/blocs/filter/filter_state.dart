@@ -1,12 +1,14 @@
 part of 'filter_bloc.dart';
 
 abstract class FilterState extends Equatable {
+  final bool isAdmin;
   final String companyId;
   final List<Location> locations;
   final List<Group> groups;
   final List<Group> allPossibleGroups;
 
   const FilterState({
+    this.isAdmin = false,
     this.companyId = '',
     this.locations = const [],
     this.groups = const [],
@@ -14,11 +16,15 @@ abstract class FilterState extends Equatable {
   });
 
   @override
-  List<Object> get props => [
-        locations,
-        groups,
-        allPossibleGroups,
-      ];
+  List<Object> get props {
+    return [
+      isAdmin,
+      companyId,
+      locations,
+      groups,
+      allPossibleGroups,
+    ];
+  }
 }
 
 class FilterEmptyState extends FilterState {}
@@ -30,6 +36,7 @@ class FilterLoadingState extends FilterState {}
 class FilterLoadedState extends FilterState {
   const FilterLoadedState({
     super.companyId,
+    super.isAdmin,
     super.locations,
     super.groups,
     super.allPossibleGroups,
@@ -43,6 +50,7 @@ class FilterLoadedState extends FilterState {
   ) {
     return FilterLoadedState(
       companyId: companyId ?? this.companyId,
+      isAdmin: isAdmin,
       locations: locations ?? this.locations,
       groups: groups ?? this.groups,
       allPossibleGroups: allPossibleGroups ?? this.allPossibleGroups,

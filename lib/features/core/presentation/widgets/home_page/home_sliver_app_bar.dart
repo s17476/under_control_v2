@@ -81,15 +81,9 @@ class HomeSliverAppBar extends StatelessWidget {
       ),
       actions: [
         // search button
-        if (pageIndex == 1)
+        if (pageIndex == 1 || pageIndex == 3)
           IconButton(
             onPressed: () {
-              if (isMenuVisible) {
-                toggleIsMenuVisible();
-              }
-              if (isFilterExpanded) {
-                toggleIsFilterExpanded();
-              }
               toggleIsSearchBarExpanded();
             },
             icon: Icon(

@@ -1,32 +1,35 @@
-import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/icon_title_mini_row.dart';
+import 'package:under_control_v2/features/core/utils/highlighted_text.dart';
 
 import '../../../core/utils/double_apis.dart';
 import '../../domain/entities/item.dart';
 import '../../utils/get_item_total_quantity.dart';
+import '../../utils/get_localized_unit_name.dart';
 import '../pages/item_details_page.dart';
 import 'item_category_mini_row.dart';
-import 'item_unit_mini_row.dart';
 
 class ItemTile extends StatelessWidget {
   const ItemTile({
     Key? key,
     required this.item,
     this.borderRadius = 15,
-    this.color = Colors.orange,
+    this.color = Colors.black,
     this.margin = const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+    required this.searchQuery,
   }) : super(key: key);
 
   final Item item;
   final double borderRadius;
   final Color color;
   final EdgeInsetsGeometry margin;
+  final String searchQuery;
 
   @override
   Widget build(BuildContext context) {
+    final highlightColor = Theme.of(context).highlightColor;
     return InkWell(
       onTap: () => Navigator.pushNamed(
         context,
@@ -40,6 +43,7 @@ class ItemTile extends StatelessWidget {
           color: Theme.of(context).cardColor,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,8 +114,10 @@ class ItemTile extends StatelessWidget {
                           ),
                           // item name
                           Expanded(
-                            child: Text(
-                              item.name,
+                            child: HighlightedText(
+                              text: item.name,
+                              query: searchQuery,
+                              highlightColor: highlightColor,
                               style: const TextStyle(fontSize: 18),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -174,16 +180,34 @@ class ItemTile extends StatelessWidget {
                 )
               ],
             ),
-            // category and unit
             Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
+              padding: const EdgeInsets.all(8.0),
+              child: Wrap(
+                direction: Axis.horizontal,
+                spacing: 8,
+                runSpacing: 4,
                 children: [
+                  // category
                   ItemCategoryMiniRow(categoryId: item.category),
-                  const SizedBox(
-                    width: 8,
+                  // unit
+                  IconTitleMiniRow(
+                    title: getLocalizedUnitName(context, item.itemUnit),
+                    icon: Icons.balance,
                   ),
-                  ItemUnitMiniRow(itemUnit: item.itemUnit),
+                  // qr/bar code
+                  if (item.itemBarCode.isNotEmpty)
+                    IconTitleMiniRow(
+                      title: item.itemBarCode,
+                      icon: Icons.qr_code,
+                      searchQuery: searchQuery,
+                    ),
+                  // internal code
+                  if (item.itemCode.isNotEmpty)
+                    IconTitleMiniRow(
+                      title: item.itemCode,
+                      icon: Icons.numbers,
+                      searchQuery: searchQuery,
+                    ),
                 ],
               ),
             ),
