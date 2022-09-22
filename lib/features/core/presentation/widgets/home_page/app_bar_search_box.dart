@@ -85,6 +85,7 @@ class AppBarSearchBox extends StatelessWidget {
                           labelText: title,
                           autofocus: true,
                           onChanged: (_) => onChanged(),
+                          keyboardType: TextInputType.name,
                           suffixIcon: InkWell(
                             onTap: () => _clearSearchBox(),
                             child: const Padding(

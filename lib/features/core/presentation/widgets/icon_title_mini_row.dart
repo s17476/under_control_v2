@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/core/utils/highlighted_text.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/highlighted_text.dart';
 
 class IconTitleMiniRow extends StatelessWidget {
   const IconTitleMiniRow({

@@ -27,7 +27,7 @@
     "@search": {
       "description": "Search..."
     },
-    "search_item": "Name, internal code or Bar/Qr code",
+    "search_item": "Name, category, internal/Bar/Qr code",
     "@search": {
       "description": "Search item"
     },

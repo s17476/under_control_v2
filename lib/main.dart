@@ -133,6 +133,7 @@ class App extends StatelessWidget
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'UnderControl',
+
         theme: Themes().darkTheme(),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {

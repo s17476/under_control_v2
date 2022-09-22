@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/icon_title_mini_row.dart';
-import 'package:under_control_v2/features/core/utils/highlighted_text.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/highlighted_text.dart';
 
 import '../../../core/utils/double_apis.dart';
 import '../../domain/entities/item.dart';
@@ -188,7 +188,10 @@ class ItemTile extends StatelessWidget {
                 runSpacing: 4,
                 children: [
                   // category
-                  ItemCategoryMiniRow(categoryId: item.category),
+                  ItemCategoryMiniRow(
+                    categoryId: item.category,
+                    searchQuery: searchQuery,
+                  ),
                   // unit
                   IconTitleMiniRow(
                     title: getLocalizedUnitName(context, item.itemUnit),

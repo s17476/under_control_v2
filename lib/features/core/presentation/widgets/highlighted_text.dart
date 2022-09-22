@@ -38,7 +38,8 @@ class HighlightedText extends StatelessWidget {
                             highlightColor ?? Theme.of(context).highlightColor)
                     : TextStyle(
                         color:
-                            highlightColor ?? Theme.of(context).highlightColor),
+                            highlightColor ?? Theme.of(context).highlightColor,
+                      ),
               ),
               TextSpan(
                 text: text.substring(startIndex + query.length),
@@ -52,9 +53,13 @@ class HighlightedText extends StatelessWidget {
       }
     }
     // search query is empty
-    return Text(
-      text,
-      style: style,
+    return RichText(
+      text: TextSpan(
+        text: text,
+        style: style,
+      ),
+      overflow: overflow ?? TextOverflow.ellipsis,
+      maxLines: maxLines,
     );
   }
 }
