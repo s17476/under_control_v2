@@ -59,6 +59,7 @@ dependencies:
   mobile_scanner: ^2.0.0
   country_picker: ^2.0.16
   currency_picker: ^2.0.12
+  bloc_concurrency: ^0.2.0
   
 
 

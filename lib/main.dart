@@ -32,6 +32,7 @@ import 'features/groups/presentation/blocs/group/group_bloc.dart';
 import 'features/groups/presentation/pages/add_group_page.dart';
 import 'features/groups/presentation/pages/group_details.dart';
 import 'features/groups/presentation/pages/group_management_page.dart';
+import 'features/inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
 import 'features/inventory/presentation/blocs/item_action/item_action_bloc.dart';
 import 'features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart';
 import 'features/inventory/presentation/blocs/item_category/item_category_bloc.dart';
@@ -127,6 +128,10 @@ class App extends StatelessWidget
         ),
         BlocProvider(
           create: (context) => getIt<ItemActionManagementBloc>(),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (context) => getIt<DashboardItemActionBloc>(),
           lazy: false,
         ),
       ],
