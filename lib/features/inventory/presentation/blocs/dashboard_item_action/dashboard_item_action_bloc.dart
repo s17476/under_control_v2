@@ -1,15 +1,14 @@
 import 'dart:async';
 
-import 'package:injectable/injectable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_action/item_actions_list_model.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
+import 'package:injectable/injectable.dart';
 
+import '../../../../core/usecases/usecase.dart';
+import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
+import '../../../data/models/item_action/item_actions_list_model.dart';
+import '../../../domain/entities/item_action/item_action.dart';
 import '../../../domain/usecases/item_action/get_dashboard_item_actions_stream.dart';
 import '../../../domain/usecases/item_action/get_dashboard_last_five_item_actions_stream.dart';
 
@@ -123,12 +122,6 @@ class DashboardItemActionBloc
           ),
         );
       }
-      chunkedLocations.forEach(
-        (element) {
-          print('chunk');
-          element.forEach((el) => print(el));
-        },
-      );
       for (int j = 0; j < chunkedLocations.length; j++) {
         var chunk = chunkedLocations[j];
         final params =

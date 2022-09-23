@@ -191,6 +191,10 @@
     "@selected_date": {
       "description": "selected date"
     },
+    "latest_actions": "latest actions",
+    "@latest_actions": {
+      "description": "latestActions"
+    },
     "date_and_description": "Date and description",
     "@date_and_description": {
       "description": "date and description"

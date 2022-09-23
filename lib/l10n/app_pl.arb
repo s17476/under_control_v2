@@ -47,6 +47,7 @@
     "description": "Opis",
     "show_all": "Pokaż wszystko",
     "selected_date": "Wybrana data",
+    "latest_actions": "ostatnie akcje",
     "date_and_description": "Data i opis",
     "validation_location_not_selected": "Nie wybrano lokacji",
     "validation_no_description": "Dodaj opis",

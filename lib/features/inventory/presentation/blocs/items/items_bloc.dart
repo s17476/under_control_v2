@@ -11,6 +11,7 @@ import '../../../../groups/domain/entities/feature.dart';
 import '../../../../groups/domain/entities/group.dart';
 import '../../../../locations/domain/entities/location.dart';
 import '../../../data/models/items_list_model.dart';
+import '../../../domain/entities/item.dart';
 import '../../../domain/usecases/get_items_stream.dart';
 
 part 'items_event.dart';

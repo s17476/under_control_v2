@@ -31,4 +31,12 @@ class ItemsLoadedState extends ItemsState {
   ItemsLoadedState({
     required this.allItems,
   }) : super(properties: [allItems]);
+
+  Item? getItemById(String id) {
+    final index = allItems.allItems.indexWhere((item) => item.id == id);
+    if (index >= 0) {
+      return allItems.allItems[index];
+    }
+    return null;
+  }
 }

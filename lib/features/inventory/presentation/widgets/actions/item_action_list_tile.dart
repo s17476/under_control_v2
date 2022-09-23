@@ -2,115 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/inventory/presentation/blocs/item_action/item_action_bloc.dart';
+import 'package:under_control_v2/features/inventory/presentation/blocs/items/items_bloc.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/cached_user_avatar.dart';
+import '../../../../core/utils/double_apis.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
+import '../../../domain/entities/item.dart';
 import '../../../domain/entities/item_action/item_action.dart';
-import '../../../../core/utils/double_apis.dart';
+import '../../../utils/get_action_gradient.dart';
+import '../../../utils/get_action_icon.dart';
 
 class ItemActionListTile extends StatelessWidget {
   const ItemActionListTile({
     Key? key,
     required this.action,
+    this.isDashboardTile = false,
   }) : super(key: key);
 
   final ItemAction action;
-
-  List<Color> getGradient(BuildContext context, ItemActionType itemActionType) {
-    print(itemActionType);
-    if (itemActionType == ItemActionType.add) {
-      return [
-        Theme.of(context).primaryColor,
-        Theme.of(context).primaryColor.withAlpha(60),
-      ];
-    } else if (itemActionType == ItemActionType.remove) {
-      return [
-        Colors.red,
-        Colors.red.withAlpha(60),
-      ];
-    }
-    return [
-      Colors.blue.shade700,
-      Colors.blue.shade700.withAlpha(60),
-    ];
-  }
-
-  Widget getIcon(BuildContext context, ItemActionType itemActionType) {
-    const iconSize = 30.0;
-    switch (itemActionType) {
-      case ItemActionType.add:
-        return const Icon(
-          Icons.add,
-          size: iconSize,
-        );
-      case ItemActionType.remove:
-        return const Icon(
-          Icons.remove,
-          size: iconSize,
-        );
-      case ItemActionType.moveAdd:
-        return SizedBox(
-          width: iconSize,
-          height: iconSize,
-          child: Stack(
-            children: const [
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: Icon(
-                  Icons.compare_arrows,
-                  size: 22,
-                ),
-              ),
-              Positioned(
-                left: 0,
-                top: 0,
-                child: Icon(
-                  Icons.add,
-                  size: 22,
-                ),
-              ),
-            ],
-          ),
-        );
-      case ItemActionType.moveRemove:
-        return SizedBox(
-          width: iconSize,
-          height: iconSize,
-          child: Stack(
-            children: const [
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: Icon(
-                  Icons.compare_arrows,
-                  size: 22,
-                ),
-              ),
-              Positioned(
-                left: 0,
-                top: 0,
-                child: Icon(
-                  Icons.remove,
-                  size: 22,
-                ),
-              ),
-            ],
-          ),
-        );
-      default:
-        return const SizedBox();
-    }
-  }
+  final bool isDashboardTile;
 
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('dd-MM-yyyy  HH:mm');
     String? location;
-
+    Item? item;
     UserProfile? user;
+
+    if (isDashboardTile) {
+      final itemsState = context.read<ItemsBloc>().state;
+      if (itemsState is ItemsLoadedState) {
+        item = itemsState.getItemById(action.itemId);
+      }
+    }
 
     final locationsState = context.read<LocationBloc>().state;
     if (locationsState is LocationLoadedState) {
@@ -153,11 +80,18 @@ class ItemActionListTile extends StatelessWidget {
                           dateFormat.format(action.date),
                           style: Theme.of(context).textTheme.caption,
                         ),
+                        // item
+                        if (item != null)
+                          Text(
+                            item.name,
+                            style: const TextStyle(fontSize: 18),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         // location
                         Text(
                           location ??
                               AppLocalizations.of(context)!.location_unknown,
-                          style: const TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: isDashboardTile ? 14 : 18),
                           overflow: TextOverflow.ellipsis,
                         ),
                         // description
@@ -213,27 +147,9 @@ class ItemActionListTile extends StatelessWidget {
                   )
                 ],
               ),
-              child: getIcon(context, action.type),
+              child: getActionIcon(context, action.type),
             ),
           ],
-        )
-        // Row(
-        //   children: [
-        //     // action list tile
-        //     Expanded(
-        //       child: IconTitleRow(
-        //         icon:
-        //             action.type == ItemActionType.add ? Icons.add : Icons.remove,
-        //         iconColor: Colors.white,
-        //         iconBackground: action.type == ItemActionType.add
-        //             ? Theme.of(context).primaryColor
-        //             : Colors.red,
-        //         title: action.description,
-        //       ),
-        //     ),
-        //     Text(action.ammount.toString()),
-        //   ],
-        // ),
-        );
+        ));
   }
 }
