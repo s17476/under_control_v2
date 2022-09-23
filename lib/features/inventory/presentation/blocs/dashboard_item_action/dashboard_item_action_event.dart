@@ -18,13 +18,12 @@ class GetDashboardLastFiveItemActionsEvent extends DashboardItemActionEvent {}
 class UpdateDashboardItemActionsListEvent extends DashboardItemActionEvent {
   final QuerySnapshot<Object?> snapshot;
   final int limit;
-  final bool isLastChunk;
 
-  UpdateDashboardItemActionsListEvent(
-      {required this.snapshot, required this.limit, required this.isLastChunk})
-      : super(properties: [
+  UpdateDashboardItemActionsListEvent({
+    required this.snapshot,
+    required this.limit,
+  }) : super(properties: [
           snapshot,
           limit,
-          isLastChunk,
         ]);
 }

@@ -27,6 +27,7 @@ import 'features/core/themes/themes.dart';
 import 'features/core/utils/custom_page_transition.dart';
 import 'features/core/utils/error_message_handler.dart';
 import 'features/core/utils/material_color_generator.dart';
+import 'features/dashboard/presentation/pages/all_actions_list_page.dart';
 import 'features/filter/presentation/blocs/filter/filter_bloc.dart';
 import 'features/groups/presentation/blocs/group/group_bloc.dart';
 import 'features/groups/presentation/pages/add_group_page.dart';
@@ -203,6 +204,7 @@ class App extends StatelessWidget
           MoveInsideItemPage.routeName: (context) => const MoveInsideItemPage(),
           ItemDetailsPage.routeName: (context) => const ItemDetailsPage(),
           ActionsListPage.routeName: (context) => const ActionsListPage(),
+          AllActionsListPage.routeName: (context) => const AllActionsListPage(),
           QrScanner.routeName: (context) => const QrScanner(),
         },
         // localization

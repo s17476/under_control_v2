@@ -17,7 +17,10 @@ class ItemActionsListModel extends ItemActionsList {
             doc.id,
           ),
         )
-        .toList();
+        .toList()
+      ..sort(
+        (a, b) => a.date.compareTo(b.date),
+      );
     return ItemActionsListModel(allItemActions: itemActionsList);
   }
 }

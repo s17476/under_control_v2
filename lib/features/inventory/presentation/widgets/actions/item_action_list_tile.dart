@@ -84,7 +84,10 @@ class ItemActionListTile extends StatelessWidget {
                         if (item != null)
                           Text(
                             item.name,
-                            style: const TextStyle(fontSize: 18),
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).highlightColor,
+                            ),
                             overflow: TextOverflow.ellipsis,
                           ),
                         // location

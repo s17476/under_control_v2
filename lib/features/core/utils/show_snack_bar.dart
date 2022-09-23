@@ -22,6 +22,7 @@ void showSnackBar({
         backgroundColor: isErrorMessage
             ? Theme.of(context).errorColor
             : const Color.fromARGB(255, 28, 154, 97),
+        duration: const Duration(seconds: 3),
       ),
     );
 }

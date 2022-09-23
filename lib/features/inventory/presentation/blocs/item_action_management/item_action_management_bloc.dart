@@ -89,10 +89,16 @@ class ItemActionManagementBloc
       final itemLocations = [...event.item.locations];
       if (index >= 0) {
         amountInLocations.removeAt(index);
-        amountInLocations.add(itemAmountInLocation);
+        if (itemAmountInLocation.amount > 0) {
+          amountInLocations.add(itemAmountInLocation);
+        } else {
+          itemLocations.remove(itemAmountInLocation.locationId);
+        }
       } else {
         amountInLocations.add(itemAmountInLocation);
-        itemLocations.add(itemAmountInLocation.locationId);
+        if (!itemLocations.contains(itemAmountInLocation.locationId)) {
+          itemLocations.add(itemAmountInLocation.locationId);
+        }
       }
       ItemModel updatedItem = event.item.copyWith(
         amountInLocations: amountInLocations,
@@ -164,7 +170,7 @@ class ItemActionManagementBloc
       final itemLocations = [...event.item.locations];
 
       amountInLocations.removeAt(index);
-      amountInLocations.add(itemAmountInLocation);
+      amountInLocations.insert(index, itemAmountInLocation);
 
       ItemModel updatedItem = event.item.copyWith(
         amountInLocations: amountInLocations,
@@ -226,7 +232,9 @@ class ItemActionManagementBloc
       final itemLocations = [...event.item.locations];
 
       amountInLocations.removeAt(index);
-      amountInLocations.add(itemAmountInLocation);
+      if (itemAmountInLocation.amount > 0) {
+        amountInLocations.insert(index, itemAmountInLocation);
+      }
 
       ItemModel updatedItem = event.item.copyWith(
         amountInLocations: amountInLocations,
@@ -294,8 +302,9 @@ class ItemActionManagementBloc
 
       // updates items amounts in locations
       itemAmountInOldLocation = itemAmountInOldLocation.copyWith(
-        amount: itemAmountInOldLocation.amount - event.oldItemAction!.ammount,
+        amount: itemAmountInOldLocation.amount - event.itemAction.ammount,
       );
+
       itemAmountInNewLocation = itemAmountInNewLocation.copyWith(
         amount: itemAmountInNewLocation.amount + event.itemAction.ammount,
       );
@@ -309,15 +318,22 @@ class ItemActionManagementBloc
 
       // update old location
       updatedAmountInLocations.removeAt(indexOfOldLocation);
-      updatedAmountInLocations.add(itemAmountInOldLocation);
-
+      if (itemAmountInOldLocation.amount > 0) {
+        updatedAmountInLocations.insert(
+            indexOfOldLocation, itemAmountInOldLocation);
+      } else {
+        itemLocations.remove(itemAmountInOldLocation.locationId);
+        indexOfNewLocation = updatedAmountInLocations.indexWhere(
+          (element) => element.locationId == event.itemAction.locationId,
+        );
+      }
       // item exists in new location
       if (indexOfNewLocation >= 0) {
         updatedAmountInLocations.removeAt(indexOfNewLocation);
-        updatedAmountInLocations.add(itemAmountInNewLocation);
-        // there is no item in new location
-      } else {
-        updatedAmountInLocations.add(itemAmountInNewLocation);
+      }
+      updatedAmountInLocations.add(itemAmountInNewLocation);
+      if (!itemLocations.contains(itemAmountInNewLocation.locationId)) {
+        itemLocations.add(itemAmountInNewLocation.locationId);
       }
 
       ItemModel updatedItem = event.item.copyWith(

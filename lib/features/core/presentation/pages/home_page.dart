@@ -89,17 +89,6 @@ class _HomePageState extends State<HomePage>
       if (isInventorySearchBarExpanded || isAssetsSearchBarExpanded) {
         _toggleIsSearchBarExpanded();
       }
-      // update page index and bottom menu on swipe
-      // if (pageController.page == pageController.page!.truncate()) {
-      //   final newPageIndex = pageController.page!.toInt();
-      //   navigationController.value = newPageIndex;
-      //   // scrolls up
-      //   scrollController.animateTo(
-      //     0,
-      //     duration: const Duration(milliseconds: 200),
-      //     curve: Curves.easeInOut,
-      //   );
-      // }
     });
 
     super.initState();
