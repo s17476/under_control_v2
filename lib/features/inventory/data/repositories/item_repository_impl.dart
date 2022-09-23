@@ -43,12 +43,40 @@ class ItemRepositoryImpl extends ItemRepository {
   @override
   Future<Either<Failure, VoidResult>> deleteItem(ItemParams params) async {
     try {
-      firebaseFirestore
+      final List<String> itemActionsToDelete = [];
+
+      // item
+      final itemReference = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
           .collection('items')
-          .doc(params.item.id)
-          .delete();
+          .doc(params.item.id);
+
+      // actions
+      final actionsReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('actions');
+
+      final itemActions = await actionsReference
+          .where('itemId', isEqualTo: params.item.id)
+          .get();
+
+      itemActionsToDelete.addAll(itemActions.docs.map((e) => e.id));
+
+      // batch
+      final batch = firebaseFirestore.batch();
+
+      // deletes item actions
+      for (var actionId in itemActionsToDelete) {
+        batch.delete(actionsReference.doc(actionId));
+      }
+
+      // deletes item
+      batch.delete(itemReference);
+
+      // commit batch
+      batch.commit();
 
       return Right(VoidResult());
     } on FirebaseException catch (e) {

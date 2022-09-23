@@ -10,6 +10,7 @@ import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
+import '../../../utils/show_add_category_modal_bottom_sheet.dart';
 import 'category_dropdown_button.dart';
 import 'item_unit_dropdown_button.dart';
 
@@ -105,12 +106,32 @@ class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
                     ),
 
                     // category selection
-                    CategoryDropdownButton(
-                      selectedValue: widget.category,
-                      onSelected: widget.setCategory,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CategoryDropdownButton(
+                            selectedValue: widget.category,
+                            onSelected: widget.setCategory,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        RoundedButton(
+                          iconSize: 30,
+                          padding: const EdgeInsets.all(9),
+                          onPressed: () =>
+                              showAddCategoryModalBottomSheet(context: context),
+                          icon: Icons.add_location_alt_outlined,
+                          gradient: LinearGradient(colors: [
+                            Theme.of(context).primaryColor,
+                            Theme.of(context).primaryColor.withAlpha(60),
+                          ]),
+                        ),
+                      ],
                     ),
                     const SizedBox(
-                      height: 8,
+                      height: 16,
                     ),
                     // unit selection
                     ItemUnitDropdownButton(

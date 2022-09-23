@@ -1215,7 +1215,7 @@
     "@item_no_barcode": {
       "description": "Incorrect code. Please try again!"
     },
-    "item_delete_question": "Are you sure you want to delete {item}?",
+    "item_delete_question": "Are you sure you want to delete {item}? This operation will also delete all actions history and cannot be undone.",
     "@item_delete_question": {
       "description": "Delete question",
       "placeholders": {

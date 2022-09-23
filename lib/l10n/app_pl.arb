@@ -257,7 +257,7 @@
     "item_details_data": "Dane przedmiotu",
     "item_details_category": "Kategoria",
     "item_details_category_not_found": "Kategoria nie znaleziona",
-    "item_details_cannot_delete": "Nie można usunąć przedmiotu, ponieważlość jest większa niż zero.",
+    "item_details_cannot_delete": "Nie można usunąć przedmiotu, ponieważ lość jest większa niż zero.",
     "item_msg_added": "Przedmiot został dodany",
     "item_msg_not_added": "Przedmiot NIE został dodany",
     "item_msg_updated": "Przedmiot został zaktualizowany",
@@ -288,5 +288,5 @@
     "item_actions_history": "Historia akcji",
     "item_no_items": "Nie dodano jeszcze żadnych przedmiotów",
     "item_no_barcode": "Zeskanowany kod jest niepoprawny. Spróbuj ponownie!",
-    "item_delete_question": "Czy na pewno chcesz usunąć {item}?"
+    "item_delete_question": "Czy na pewno chcesz usunąć {item}? Ta operacja usunie również historię wszystkich akcji i nie może zostać cofnięta."
 }
