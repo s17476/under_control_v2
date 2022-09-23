@@ -45,12 +45,16 @@ void main() {
 
   group('Inventory Actions', () {
     test(
-      'should return [ItemActionsStream] from repository when UpdateItemAction is called',
+      'should return [ItemActionsStream] from repository when GetItemActionStream is called',
       () async {
         // arrange
         when(() => repository.getItemActionsStream(any())).thenAnswer(
-            (_) async => Right(
-                ItemActionsStream(allItemActions: Stream.fromIterable([]))));
+          (_) async => Right(
+            ItemActionsStream(
+              allItemActions: Stream.fromIterable([]),
+            ),
+          ),
+        );
         // act
         final result = await usecase(tItemParams);
         // assert
