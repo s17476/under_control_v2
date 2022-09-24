@@ -1035,6 +1035,14 @@
     "@item_unit_kg": {
       "description": "Kg - unit"
     },
+    "item_unit_pound": "Pound",
+    "@item_unit_pound": {
+      "description": "Pound - unit"
+    },
+    "item_unit_gallon": "Gallon",
+    "@item_unit_gallon": {
+      "description": "Gallon - unit"
+    },
     "item_unit_pcs": "Piece",
     "@item_unit_pcs": {
       "description": "Pcs - unit"

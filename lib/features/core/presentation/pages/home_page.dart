@@ -1,12 +1,15 @@
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/home_page/app_bar_search_box.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/overlay_menu/overlay_menu.dart';
 
 import '../../../assets/presentation/pages/assets_page.dart';
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
+import '../../../inventory/presentation/blocs/items_management/items_management_bloc.dart';
 import '../../../inventory/presentation/pages/inventory_page.dart';
+import '../../../inventory/utils/item_management_bloc_listener.dart';
 import '../../../knowledge_base/presentation/pages/knowledge_base_page.dart';
 import '../../../tasks/presentation/pages/tasks_page.dart';
 import '../../utils/size_config.dart';
@@ -248,85 +251,93 @@ class _HomePageState extends State<HomePage>
           return true;
         }
       },
-      child: Scaffold(
-        drawer: const MainDrawer(),
-        body: SafeArea(
-          child: NestedScrollView(
-            controller: scrollController,
-            physics: const NeverScrollableScrollPhysics(),
-            // AppBar
-            headerSliverBuilder: (context, innerBoxIsScrolled) => [
-              SliverOverlapAbsorber(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                sliver: HomeSliverAppBar(
-                  pageIndex: pageIndex,
-                  isFilterExpanded: isFilterExpanded,
-                  toggleIsFilterExpanded: _toggleIsFilterExpanded,
-                  isMenuVisible: isMenuVisible,
-                  toggleIsMenuVisible: _toggleIsMenuVisible,
-                  isSearchBarExpanded: _getFlagForPageIndex(pageIndex),
-                  toggleIsSearchBarExpanded: _toggleIsSearchBarExpanded,
-                ),
-              )
-            ],
-            // body
-            body: Stack(
-              children: [
-                // tabs
-                PageView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: pageController,
-                  children: [
-                    const TasksPage(),
-                    InventoryPage(
-                      searchBoxHeight: searchBoxHeight,
-                      isSearchBoxExpanded: isInventorySearchBarExpanded,
-                      searchQuery: inventoryQuery,
-                      isSortedByCategory: false,
-                    ),
-                    const DashboardPage(),
-                    const AssetsPage(),
-                    const KnowledgeBasePage(),
-                  ],
-                ),
-                // bottom navigation bar
-                HomeBottomNavigationBar(
-                  animationController: animationController!,
-                  navigationController: navigationController,
-                  pageController: pageController,
-                  setPageIndex: _setPageIndex,
-                  toggleShowMenu: _toggleIsMenuVisible,
-                ),
-                // location and group selection filter
-                HomePageFilter(
-                  isFilterExpanded: isFilterExpanded,
-                  onDismiss: _toggleIsFilterExpanded,
-                ),
-                OverlayMenu(
-                  isVisible: isMenuVisible,
-                  onDismiss: _toggleIsMenuVisible,
-                  pageIndex: pageIndex,
-                ),
-                // inventory search box
-                AppBarSearchBox(
-                  title: AppLocalizations.of(context)!.search_item,
-                  searchBoxHeight: searchBoxHeight,
-                  isSearchBoxExpanded: isInventorySearchBarExpanded,
-                  onChanged: _searchInInventory,
-                  searchTextEditingController:
-                      inventorySearchTextEditingController,
-                ),
-                // assets search box
-                AppBarSearchBox(
-                  title: AppLocalizations.of(context)!.search,
-                  searchBoxHeight: searchBoxHeight,
-                  isSearchBoxExpanded: isAssetsSearchBarExpanded,
-                  onChanged: _searchInAssets,
-                  searchTextEditingController:
-                      assetsSearchTextEditingController,
-                ),
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<ItemsManagementBloc, ItemsManagementState>(
+            listener: (context, state) =>
+                itemManagementBlocListener(context, state),
+          ),
+        ],
+        child: Scaffold(
+          drawer: const MainDrawer(),
+          body: SafeArea(
+            child: NestedScrollView(
+              controller: scrollController,
+              physics: const NeverScrollableScrollPhysics(),
+              // AppBar
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: HomeSliverAppBar(
+                    pageIndex: pageIndex,
+                    isFilterExpanded: isFilterExpanded,
+                    toggleIsFilterExpanded: _toggleIsFilterExpanded,
+                    isMenuVisible: isMenuVisible,
+                    toggleIsMenuVisible: _toggleIsMenuVisible,
+                    isSearchBarExpanded: _getFlagForPageIndex(pageIndex),
+                    toggleIsSearchBarExpanded: _toggleIsSearchBarExpanded,
+                  ),
+                )
               ],
+              // body
+              body: Stack(
+                children: [
+                  // tabs
+                  PageView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: pageController,
+                    children: [
+                      const TasksPage(),
+                      InventoryPage(
+                        searchBoxHeight: searchBoxHeight,
+                        isSearchBoxExpanded: isInventorySearchBarExpanded,
+                        searchQuery: inventoryQuery,
+                        isSortedByCategory: false,
+                      ),
+                      const DashboardPage(),
+                      const AssetsPage(),
+                      const KnowledgeBasePage(),
+                    ],
+                  ),
+                  // bottom navigation bar
+                  HomeBottomNavigationBar(
+                    animationController: animationController!,
+                    navigationController: navigationController,
+                    pageController: pageController,
+                    setPageIndex: _setPageIndex,
+                    toggleShowMenu: _toggleIsMenuVisible,
+                  ),
+                  // location and group selection filter
+                  HomePageFilter(
+                    isFilterExpanded: isFilterExpanded,
+                    onDismiss: _toggleIsFilterExpanded,
+                  ),
+                  OverlayMenu(
+                    isVisible: isMenuVisible,
+                    onDismiss: _toggleIsMenuVisible,
+                    pageIndex: pageIndex,
+                  ),
+                  // inventory search box
+                  AppBarSearchBox(
+                    title: AppLocalizations.of(context)!.search_item,
+                    searchBoxHeight: searchBoxHeight,
+                    isSearchBoxExpanded: isInventorySearchBarExpanded,
+                    onChanged: _searchInInventory,
+                    searchTextEditingController:
+                        inventorySearchTextEditingController,
+                  ),
+                  // assets search box
+                  AppBarSearchBox(
+                    title: AppLocalizations.of(context)!.search,
+                    searchBoxHeight: searchBoxHeight,
+                    isSearchBoxExpanded: isAssetsSearchBarExpanded,
+                    onChanged: _searchInAssets,
+                    searchTextEditingController:
+                        assetsSearchTextEditingController,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

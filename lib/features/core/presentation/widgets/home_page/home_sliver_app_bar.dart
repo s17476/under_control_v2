@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 
 class HomeSliverAppBar extends StatelessWidget {
   const HomeSliverAppBar({
@@ -68,7 +69,9 @@ class HomeSliverAppBar extends StatelessWidget {
               }
               Scaffold.of(context).openDrawer();
             },
-            child: Image.asset('assets/under_control_menu_icon.png'),
+            child: const AppBarAnimatedIcon(),
+            // child: Image.asset('assets/under_control_menu_icon.png'),
+            // child: Image.asset('assets/uc-loading.gif'),
           );
         },
       ),

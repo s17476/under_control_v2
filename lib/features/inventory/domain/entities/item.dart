@@ -5,7 +5,9 @@ import '../../data/models/item_amount_in_location_model.dart';
 enum ItemUnit {
   pcs('pcs'),
   kg('kg'),
+  pound('pound'),
   liter('liter'),
+  gallon('gallon'),
   unknown('');
 
   final String name;
@@ -18,8 +20,12 @@ enum ItemUnit {
         return ItemUnit.pcs;
       case 'kg':
         return ItemUnit.kg;
+      case 'pound':
+        return ItemUnit.pound;
       case 'liter':
         return ItemUnit.liter;
+      case 'gallon':
+        return ItemUnit.gallon;
       default:
         return ItemUnit.unknown;
     }

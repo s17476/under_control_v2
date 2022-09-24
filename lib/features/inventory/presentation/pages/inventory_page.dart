@@ -58,67 +58,64 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ItemsManagementBloc, ItemsManagementState>(
-      listener: (context, state) => itemManagementBlocListener(context, state),
-      child: CustomScrollView(
-        slivers: [
-          SliverOverlapInjector(
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  height: isSearchBoxExpanded ? searchBoxHeight : 0,
-                ),
-                BlocBuilder<ItemsBloc, ItemsState>(
-                  builder: (context, state) {
-                    if (state is ItemsLoadedState) {
-                      if (state.allItems.allItems.isEmpty) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: responsiveSizeVerticalPct(small: 40),
-                            ),
-                            Text(AppLocalizations.of(context)!.item_no_items),
-                          ],
-                        );
-                      }
-                      final filteredItems = _searchItems(
-                        context,
-                        state.allItems.allItems,
-                        searchQuery,
-                      );
-                      return ListView.builder(
-                        padding: const EdgeInsets.only(top: 2),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: filteredItems.length,
-                        itemBuilder: (context, index) {
-                          return ItemTile(
-                            item: filteredItems[index],
-                            searchQuery: searchQuery,
-                          );
-                        },
-                      );
-                    } else {
+    return CustomScrollView(
+      slivers: [
+        SliverOverlapInjector(
+          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+        ),
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: isSearchBoxExpanded ? searchBoxHeight : 0,
+              ),
+              BlocBuilder<ItemsBloc, ItemsState>(
+                builder: (context, state) {
+                  if (state is ItemsLoadedState) {
+                    if (state.allItems.allItems.isEmpty) {
                       return Column(
                         children: [
                           SizedBox(
                             height: responsiveSizeVerticalPct(small: 40),
                           ),
-                          const CircularProgressIndicator(),
+                          Text(AppLocalizations.of(context)!.item_no_items),
                         ],
                       );
                     }
-                  },
-                )
-              ],
-            ),
+                    final filteredItems = _searchItems(
+                      context,
+                      state.allItems.allItems,
+                      searchQuery,
+                    );
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(top: 2),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: filteredItems.length,
+                      itemBuilder: (context, index) {
+                        return ItemTile(
+                          item: filteredItems[index],
+                          searchQuery: searchQuery,
+                        );
+                      },
+                    );
+                  } else {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: responsiveSizeVerticalPct(small: 40),
+                        ),
+                        const CircularProgressIndicator(),
+                      ],
+                    );
+                  }
+                },
+              )
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

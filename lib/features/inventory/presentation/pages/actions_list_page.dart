@@ -169,7 +169,6 @@ class _ActionsListPageState extends State<ActionsListPage> with ResponsiveSize {
                     itemCount: filteredActions!.length,
                     itemBuilder: (context, index) => ItemActionListTile(
                       action: filteredActions![index],
-                      isDashboardTile: true,
                     ),
                   ),
                 if (filteredActions != null && filteredActions!.isEmpty)

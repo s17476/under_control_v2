@@ -115,24 +115,25 @@ class ItemActionListTile extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               maxLines: 6,
                             ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 4,
-                                    right: 4,
+                            if (user != null)
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 4,
+                                      right: 4,
+                                    ),
+                                    child: CachedUserAvatar(
+                                      size: 20,
+                                      imageUrl: user.avatarUrl,
+                                    ),
                                   ),
-                                  child: CachedUserAvatar(
-                                    size: 20,
-                                    imageUrl: user!.avatarUrl,
+                                  Text(
+                                    '${user.firstName} ${user.lastName}',
+                                    style: Theme.of(context).textTheme.caption,
                                   ),
-                                ),
-                                Text(
-                                  '${user.firstName} ${user.lastName}',
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
                           ],
                         ),
                       ),

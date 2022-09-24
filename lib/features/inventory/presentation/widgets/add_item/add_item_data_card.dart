@@ -117,21 +117,25 @@ class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
                         const SizedBox(
                           width: 16,
                         ),
-                        RoundedButton(
-                          iconSize: 30,
-                          padding: const EdgeInsets.all(9),
-                          onPressed: () =>
-                              showAddCategoryModalBottomSheet(context: context),
-                          icon: Icons.add_location_alt_outlined,
-                          gradient: LinearGradient(colors: [
-                            Theme.of(context).primaryColor,
-                            Theme.of(context).primaryColor.withAlpha(60),
-                          ]),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: RoundedButton(
+                            iconSize: 30,
+                            padding: const EdgeInsets.all(9),
+                            onPressed: () => showAddCategoryModalBottomSheet(
+                              context: context,
+                            ),
+                            icon: Icons.add_location_alt_outlined,
+                            gradient: LinearGradient(colors: [
+                              Theme.of(context).primaryColor,
+                              Theme.of(context).primaryColor.withAlpha(60),
+                            ]),
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: 8,
                     ),
                     // unit selection
                     ItemUnitDropdownButton(
@@ -173,6 +177,7 @@ class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
                             scrollPadding: const EdgeInsets.all(170),
                             fieldKey: 'barCode',
                             controller: widget.barCodeTextEditingController,
+                            keyboardType: TextInputType.name,
                             labelText: AppLocalizations.of(context)!
                                 .item_bar_code_optional,
                           ),

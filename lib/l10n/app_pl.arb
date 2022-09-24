@@ -243,6 +243,8 @@
     "item_bar_code_optional": "Kod kreskowy/QR (opcjonalny)",
     "item_bar_code": "Kod kreskowy/QR",
     "item_unit_kg": "Kilogram",
+    "item_unit_pound": "Funt",
+    "item_unit_gallon": "Galon",
     "item_unit_pcs": "Sztuka",
     "item_unit_ltr": "Litr",
     "item_select_unit": "Wybierz jednostkę",
