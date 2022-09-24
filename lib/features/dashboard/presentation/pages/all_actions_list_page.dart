@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 
 import '../../../inventory/domain/entities/item_action/item_action.dart';
 import '../../../inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
@@ -15,7 +16,8 @@ class AllActionsListPage extends StatefulWidget {
   State<AllActionsListPage> createState() => _AllActionsListPageState();
 }
 
-class _AllActionsListPageState extends State<AllActionsListPage> {
+class _AllActionsListPageState extends State<AllActionsListPage>
+    with ResponsiveSize {
   List<ItemAction>? actions;
   List<ItemAction>? filteredActions;
   bool isFilterExpanded = false;
@@ -32,9 +34,10 @@ class _AllActionsListPageState extends State<AllActionsListPage> {
   @override
   void didChangeDependencies() {
     final actionsState = context.watch<DashboardItemActionBloc>().state;
-    if (actionsState is DashboardItemActionLoadedState) {
+    if (actionsState is DashboardItemActionLoadedState &&
+        actionsState.isAllItems) {
       actions = actionsState.allActions.allItemActions.toList();
-      filteredActions ??= actions;
+      filteredActions = actions;
     }
     super.didChangeDependencies();
   }
@@ -149,11 +152,17 @@ class _AllActionsListPageState extends State<AllActionsListPage> {
                 if (filteredActions != null && filteredActions!.isEmpty)
                   Container(
                     alignment: Alignment.center,
-                    height: 50,
+                    height: responsiveSizeVerticalPct(small: 90),
                     child: Text(
                       AppLocalizations.of(context)!
                           .no_actions_in_selected_locations,
                     ),
+                  ),
+                if (filteredActions == null)
+                  Container(
+                    alignment: Alignment.center,
+                    height: responsiveSizeVerticalPct(small: 90),
+                    child: const CircularProgressIndicator(),
                   ),
               ],
             ),

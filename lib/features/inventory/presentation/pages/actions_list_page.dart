@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -19,7 +20,7 @@ class ActionsListPage extends StatefulWidget {
   State<ActionsListPage> createState() => _ActionsListPageState();
 }
 
-class _ActionsListPageState extends State<ActionsListPage> {
+class _ActionsListPageState extends State<ActionsListPage> with ResponsiveSize {
   Item? item;
   late UserProfile _currentUser;
   List<ItemAction>? actions;
@@ -47,21 +48,22 @@ class _ActionsListPageState extends State<ActionsListPage> {
         setState(() {
           item = itemsState.allItems.allItems[index];
         });
-
-        // gets item actions
-        context.read<ItemActionBloc>().add(
-              GetItemActionsEvent(
-                item: item!,
-                companyId: _currentUser.companyId,
-              ),
-            );
+        if (filteredActions == null) {
+          // gets item actions
+          context.read<ItemActionBloc>().add(
+                GetItemActionsEvent(
+                  item: item!,
+                  companyId: _currentUser.companyId,
+                ),
+              );
+        }
       }
     }
     //
     final actionsState = context.watch<ItemActionBloc>().state;
-    if (actionsState is ItemActionLoadedState) {
+    if (actionsState is ItemActionLoadedState && actionsState.isAllItems) {
       actions = actionsState.allActions.allItemActions.toList();
-      filteredActions ??= actions;
+      filteredActions = actions;
     }
     super.didChangeDependencies();
   }
@@ -153,17 +155,40 @@ class _ActionsListPageState extends State<ActionsListPage> {
         ),
         body: AnimatedSize(
           duration: const Duration(milliseconds: 300),
-          child: ListView.builder(
-            padding: const EdgeInsets.only(
-              top: 4,
-              bottom: 16,
-              left: 8,
-              right: 8,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                if (filteredActions != null && filteredActions!.isNotEmpty)
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    itemCount: filteredActions!.length,
+                    itemBuilder: (context, index) => ItemActionListTile(
+                      action: filteredActions![index],
+                      isDashboardTile: true,
+                    ),
+                  ),
+                if (filteredActions != null && filteredActions!.isEmpty)
+                  Container(
+                    alignment: Alignment.center,
+                    height: responsiveSizeVerticalPct(small: 90),
+                    child: Text(
+                      AppLocalizations.of(context)!
+                          .no_actions_in_selected_locations,
+                    ),
+                  ),
+                if (filteredActions == null)
+                  Container(
+                    alignment: Alignment.center,
+                    height: responsiveSizeVerticalPct(small: 90),
+                    child: const CircularProgressIndicator(),
+                  ),
+              ],
             ),
-            itemCount: filteredActions!.length,
-            itemBuilder: (context, index) {
-              return ItemActionListTile(action: filteredActions![index]);
-            },
           ),
         ),
       ),

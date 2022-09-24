@@ -19,7 +19,7 @@ class ItemActionsListModel extends ItemActionsList {
         )
         .toList()
       ..sort(
-        (a, b) => a.date.compareTo(b.date),
+        (a, b) => b.date.compareTo(a.date),
       );
     return ItemActionsListModel(allItemActions: itemActionsList);
   }

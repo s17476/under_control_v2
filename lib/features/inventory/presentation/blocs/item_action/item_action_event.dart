@@ -32,7 +32,13 @@ class GetLastFiveItemActionsEvent extends ItemActionEvent {
 
 class UpdateItemActionsListEvent extends ItemActionEvent {
   final QuerySnapshot<Object?> snapshot;
+  final int limit;
 
-  UpdateItemActionsListEvent({required this.snapshot})
-      : super(properties: [snapshot]);
+  UpdateItemActionsListEvent({
+    required this.snapshot,
+    required this.limit,
+  }) : super(properties: [
+          snapshot,
+          limit,
+        ]);
 }

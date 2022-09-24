@@ -28,8 +28,10 @@ class ItemActionErrorState extends ItemActionState {
 
 class ItemActionLoadedState extends ItemActionState {
   final ItemActionsListModel allActions;
+  final bool isAllItems;
 
   ItemActionLoadedState({
     required this.allActions,
-  }) : super(properties: [allActions]);
+    this.isAllItems = false,
+  }) : super(properties: [allActions, isAllItems]);
 }

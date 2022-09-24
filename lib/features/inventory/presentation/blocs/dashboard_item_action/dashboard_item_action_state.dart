@@ -28,7 +28,10 @@ class DashboardItemActionErrorState extends DashboardItemActionState {
 
 class DashboardItemActionLoadedState extends DashboardItemActionState {
   final ItemActionsListModel allActions;
+  final bool isAllItems;
 
-  DashboardItemActionLoadedState({required this.allActions})
-      : super(properties: [allActions]);
+  DashboardItemActionLoadedState({
+    required this.allActions,
+    this.isAllItems = false,
+  }) : super(properties: [allActions, isAllItems]);
 }

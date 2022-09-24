@@ -219,7 +219,10 @@ class DashboardItemActionBloc
             allItemActions: tmpList,
           );
         }
-        emit(DashboardItemActionLoadedState(allActions: itemActionsList));
+        emit(DashboardItemActionLoadedState(
+          allActions: itemActionsList,
+          isAllItems: event.limit == 0,
+        ));
       },
     );
   }

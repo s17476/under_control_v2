@@ -38,7 +38,7 @@ class ItemActionBloc extends Bloc<ItemActionEvent, ItemActionState> {
           itemsActionsStreamSubscription =
               actionsStream.allItemActions.listen((snapshot) {
             add(
-              UpdateItemActionsListEvent(snapshot: snapshot),
+              UpdateItemActionsListEvent(snapshot: snapshot, limit: 0),
             );
           });
         },
@@ -59,7 +59,7 @@ class ItemActionBloc extends Bloc<ItemActionEvent, ItemActionState> {
           itemsActionsStreamSubscription =
               actionsStream.allItemActions.listen((snapshot) {
             add(
-              UpdateItemActionsListEvent(snapshot: snapshot),
+              UpdateItemActionsListEvent(snapshot: snapshot, limit: 5),
             );
           });
         },
@@ -71,7 +71,12 @@ class ItemActionBloc extends Bloc<ItemActionEvent, ItemActionState> {
         emit(ItemActionLoadingState());
         final itemActionsList = ItemActionsListModel.fromSnapshot(
             event.snapshot as QuerySnapshot<Map<String, dynamic>>);
-        emit(ItemActionLoadedState(allActions: itemActionsList));
+        emit(
+          ItemActionLoadedState(
+            allActions: itemActionsList,
+            isAllItems: event.limit == 0,
+          ),
+        );
       },
     );
   }

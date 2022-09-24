@@ -25,10 +25,9 @@ class LastFiveItemActions extends StatelessWidget {
       child: BlocBuilder<ItemActionBloc, ItemActionState>(
         builder: (context, state) {
           if (state is ItemActionLoadedState) {
-            List<ItemAction> actions =
-                state.allActions.allItemActions.reversed.toList();
+            List<ItemAction> actions = state.allActions.allItemActions.toList();
             if (actions.length > 5) {
-              actions = actions.sublist(0, 4);
+              actions = actions.sublist(0, 5);
             }
             return Column(
               children: [
