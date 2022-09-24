@@ -84,20 +84,16 @@ class ItemsManagementBloc
           ),
         );
         await failureOrString.fold(
-          (failure) async {
-            emit(
-              ItemsManagementErrorState(
-                message: ItemsMessage.itemNotAdded,
-              ),
-            );
-          },
-          (_) async {
-            emit(
-              ItemsManagementSuccessState(
-                message: ItemsMessage.itemAdded,
-              ),
-            );
-          },
+          (failure) async => emit(
+            ItemsManagementErrorState(
+              message: ItemsMessage.itemNotAdded,
+            ),
+          ),
+          (_) async => emit(
+            ItemsManagementSuccessState(
+              message: ItemsMessage.itemAdded,
+            ),
+          ),
         );
       },
     );

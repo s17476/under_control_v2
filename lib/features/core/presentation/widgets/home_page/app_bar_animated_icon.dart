@@ -45,7 +45,6 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
   void _stopAnimation() {
     if (animationController.isAnimating) {
       animationController.animateTo(0);
-      animationController.stop();
     }
   }
 
