@@ -54,58 +54,72 @@ class DashboardItemActionBloc
     );
 
     on<GetDashboardItemActionsEvent>((event, emit) async {
-      if (locations.isEmpty) {
-        emit(
-          DashboardItemActionLoadedState(
-            allActions: const ItemActionsListModel(
-              allItemActions: [],
-            ),
-          ),
-        );
+      // avoids loading same data multiple times
+      if (filterBloc.state is FilterLoadedState &&
+          locations !=
+              filterBloc.state.locations.map((loc) => loc.id).toList() &&
+          state is DashboardItemActionLoadedState &&
+          (state as DashboardItemActionLoadedState)
+                  .allActions
+                  .allItemActions
+                  .length >
+              5) {
+        return;
+        // gets updated data
       } else {
-        emit(DashboardItemActionLoadingState());
-        if (actionStreamSubscriptions.isNotEmpty) {
-          // cancel old subscriptions
-          for (var actionSubscription in actionStreamSubscriptions) {
-            actionSubscription?.cancel();
-          }
-          // clear subscriptions list
-          actionStreamSubscriptions.clear();
-        }
-
-        final List<List<String>> chunkedLocations = [];
-        // chunks list size, because of DB limitations
-        int chunkSize = 10;
-        for (var i = 0; i < locations.length; i += chunkSize) {
-          chunkedLocations.add(
-            locations.sublist(
-              i,
-              i + chunkSize > locations.length
-                  ? locations.length
-                  : i + chunkSize,
+        if (locations.isEmpty) {
+          emit(
+            DashboardItemActionLoadedState(
+              allActions: const ItemActionsListModel(
+                allItemActions: [],
+              ),
             ),
           );
-        }
-        for (int j = 0; j < chunkedLocations.length; j++) {
-          var chunk = chunkedLocations[j];
-          final params =
-              ItemsInLocationsParams(locations: chunk, companyId: companyId);
-          final failureOrItemActionsStream =
-              await getDashboardItemsActionsStream(params);
-          await failureOrItemActionsStream.fold(
-            (failure) async =>
-                emit(DashboardItemActionErrorState(message: failure.message)),
-            (actionsStream) async {
-              final streamSubscription =
-                  actionsStream.allItemActions.listen((snapshot) {
-                add(UpdateDashboardItemActionsListEvent(
-                  snapshot: snapshot,
-                  limit: 0,
-                ));
-              });
-              actionStreamSubscriptions.add(streamSubscription);
-            },
-          );
+        } else {
+          emit(DashboardItemActionLoadingState());
+          if (actionStreamSubscriptions.isNotEmpty) {
+            // cancel old subscriptions
+            for (var actionSubscription in actionStreamSubscriptions) {
+              actionSubscription?.cancel();
+            }
+            // clear subscriptions list
+            actionStreamSubscriptions.clear();
+          }
+
+          final List<List<String>> chunkedLocations = [];
+          // chunks list size, because of DB limitations
+          int chunkSize = 10;
+          for (var i = 0; i < locations.length; i += chunkSize) {
+            chunkedLocations.add(
+              locations.sublist(
+                i,
+                i + chunkSize > locations.length
+                    ? locations.length
+                    : i + chunkSize,
+              ),
+            );
+          }
+          for (int j = 0; j < chunkedLocations.length; j++) {
+            var chunk = chunkedLocations[j];
+            final params =
+                ItemsInLocationsParams(locations: chunk, companyId: companyId);
+            final failureOrItemActionsStream =
+                await getDashboardItemsActionsStream(params);
+            await failureOrItemActionsStream.fold(
+              (failure) async =>
+                  emit(DashboardItemActionErrorState(message: failure.message)),
+              (actionsStream) async {
+                final streamSubscription =
+                    actionsStream.allItemActions.listen((snapshot) {
+                  add(UpdateDashboardItemActionsListEvent(
+                    snapshot: snapshot,
+                    limit: 0,
+                  ));
+                });
+                actionStreamSubscriptions.add(streamSubscription);
+              },
+            );
+          }
         }
       }
     });

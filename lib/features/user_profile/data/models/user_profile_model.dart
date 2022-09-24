@@ -89,7 +89,7 @@ class UserProfileModel extends UserProfile {
       rejected: map['rejected'] ?? false,
       suspended: map['suspended'] ?? false,
       administrator: map['administrator'] ?? false,
-      joinDate: DateTime.parse(map['joinDate']),
+      joinDate: DateTime.parse(map['joinDate'] ?? DateTime.now()),
     );
   }
 

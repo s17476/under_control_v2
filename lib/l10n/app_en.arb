@@ -7,6 +7,10 @@
     "@no": {
       "description": "No"
     },
+    "all": "All",
+    "@all": {
+      "description": "All"
+    },
     "add": "Add",
     "@add": {
       "description": "Add"
