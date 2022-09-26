@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_category/item_category_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/item_tile.dart';
-import 'package:under_control_v2/features/inventory/utils/item_management_bloc_listener.dart';
+import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
+import 'package:under_control_v2/features/core/utils/premission.dart';
 
+import '../../../core/utils/responsive_size.dart';
+import '../../../groups/domain/entities/feature.dart';
 import '../../domain/entities/item.dart';
+import '../blocs/item_category/item_category_bloc.dart';
 import '../blocs/items/items_bloc.dart';
-import '../blocs/items_management/items_management_bloc.dart';
+import '../widgets/item_tile.dart';
 
 class InventoryPage extends StatelessWidget with ResponsiveSize {
   const InventoryPage({
@@ -58,62 +59,81 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
 
   @override
   Widget build(BuildContext context) {
+    final premission = getUserPremission(
+      context: context,
+      featureType: FeatureType.inventory,
+      premissionType: PremissionType.read,
+    );
     return CustomScrollView(
       slivers: [
         SliverOverlapInjector(
           handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
         ),
         SliverToBoxAdapter(
-          child: Column(
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: isSearchBoxExpanded ? searchBoxHeight : 0,
-              ),
-              BlocBuilder<ItemsBloc, ItemsState>(
-                builder: (context, state) {
-                  if (state is ItemsLoadedState) {
-                    if (state.allItems.allItems.isEmpty) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: responsiveSizeVerticalPct(small: 40),
-                          ),
-                          Text(AppLocalizations.of(context)!.item_no_items),
-                        ],
-                      );
-                    }
-                    final filteredItems = _searchItems(
-                      context,
-                      state.allItems.allItems,
-                      searchQuery,
-                    );
-                    return ListView.builder(
-                      padding: const EdgeInsets.only(top: 2),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: filteredItems.length,
-                      itemBuilder: (context, index) {
-                        return ItemTile(
-                          item: filteredItems[index],
-                          searchQuery: searchQuery,
-                        );
+          child: !premission
+              ? Column(
+                  children: [
+                    SizedBox(
+                      height: responsiveSizeVerticalPct(small: 40),
+                    ),
+                    SizedBox(
+                      child: Text(
+                        AppLocalizations.of(context)!.premission_no_premission,
+                      ),
+                    ),
+                  ],
+                )
+              : Column(
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      height: isSearchBoxExpanded ? searchBoxHeight : 0,
+                    ),
+                    BlocBuilder<ItemsBloc, ItemsState>(
+                      builder: (context, state) {
+                        if (state is ItemsLoadedState) {
+                          if (state.allItems.allItems.isEmpty) {
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  height: responsiveSizeVerticalPct(small: 40),
+                                ),
+                                Text(AppLocalizations.of(context)!
+                                    .item_no_items),
+                              ],
+                            );
+                          }
+                          final filteredItems = _searchItems(
+                            context,
+                            state.allItems.allItems,
+                            searchQuery,
+                          );
+                          return ListView.builder(
+                            padding: const EdgeInsets.only(top: 2),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: filteredItems.length,
+                            itemBuilder: (context, index) {
+                              return ItemTile(
+                                item: filteredItems[index],
+                                searchQuery: searchQuery,
+                              );
+                            },
+                          );
+                        } else {
+                          return Column(
+                            children: [
+                              SizedBox(
+                                height: responsiveSizeVerticalPct(small: 40),
+                              ),
+                              const CircularProgressIndicator(),
+                            ],
+                          );
+                        }
                       },
-                    );
-                  } else {
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: responsiveSizeVerticalPct(small: 40),
-                        ),
-                        const CircularProgressIndicator(),
-                      ],
-                    );
-                  }
-                },
-              )
-            ],
-          ),
+                    )
+                  ],
+                ),
         ),
       ],
     );

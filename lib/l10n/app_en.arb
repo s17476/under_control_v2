@@ -1244,5 +1244,9 @@
     "no_actions_in_selected_locations": "There is no actions in selected locations",
     "@no_actions_in_selected_locations": {
       "description": "No actions in locations"
+    },
+    "premission_no_premission": "You are not authorized to access these resources",
+    "@no_actions_in_selected_locations": {
+      "description": "You are not authorized to access these resources"
     }
 }

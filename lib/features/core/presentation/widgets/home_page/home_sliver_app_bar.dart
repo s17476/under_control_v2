@@ -4,6 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 
+import '../../../../groups/domain/entities/feature.dart';
+import '../../../utils/get_user_premission.dart';
+import '../../../utils/premission.dart';
+
 class HomeSliverAppBar extends StatelessWidget {
   const HomeSliverAppBar({
     Key? key,
@@ -70,8 +74,6 @@ class HomeSliverAppBar extends StatelessWidget {
               Scaffold.of(context).openDrawer();
             },
             child: const AppBarAnimatedIcon(),
-            // child: Image.asset('assets/under_control_menu_icon.png'),
-            // child: Image.asset('assets/uc-loading.gif'),
           );
         },
       ),
@@ -84,7 +86,18 @@ class HomeSliverAppBar extends StatelessWidget {
       ),
       actions: [
         // search button
-        if (pageIndex == 1 || pageIndex == 3)
+        if ((pageIndex == 1 &&
+                getUserPremission(
+                  context: context,
+                  featureType: FeatureType.inventory,
+                  premissionType: PremissionType.read,
+                )) ||
+            (pageIndex == 3 &&
+                getUserPremission(
+                  context: context,
+                  featureType: FeatureType.assets,
+                  premissionType: PremissionType.read,
+                )))
           IconButton(
             onPressed: () {
               toggleIsSearchBarExpanded();

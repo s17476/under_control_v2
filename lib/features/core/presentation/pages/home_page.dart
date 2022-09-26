@@ -2,22 +2,25 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/home_page/app_bar_search_box.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/overlay_menu/overlay_menu.dart';
 
 import '../../../assets/presentation/pages/assets_page.dart';
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
+import '../../../filter/presentation/widgets/home_page_filter.dart';
+import '../../../groups/domain/entities/feature.dart';
 import '../../../inventory/presentation/blocs/items_management/items_management_bloc.dart';
 import '../../../inventory/presentation/pages/inventory_page.dart';
 import '../../../inventory/utils/item_management_bloc_listener.dart';
 import '../../../knowledge_base/presentation/pages/knowledge_base_page.dart';
 import '../../../tasks/presentation/pages/tasks_page.dart';
+import '../../utils/get_user_premission.dart';
+import '../../utils/premission.dart';
+import '../../utils/show_snack_bar.dart';
 import '../../utils/size_config.dart';
+import '../widgets/home_page/app_bar_search_box.dart';
 import '../widgets/home_page/home_bottom_navigation_bar.dart';
-import '../../../filter/presentation/widgets/home_page_filter.dart';
-
 import '../widgets/home_page/home_sliver_app_bar.dart';
 import '../widgets/home_page/main_drawer.dart';
+import '../widgets/overlay_menu/overlay_menu.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -208,9 +211,48 @@ class _HomePageState extends State<HomePage>
 
   // show overlay menu
   void _toggleIsMenuVisible() {
-    setState(() {
-      isMenuVisible = !isMenuVisible;
-    });
+    bool premision = true;
+    // no inventory read premission
+    if (pageIndex == 0 &&
+        !getUserPremission(
+          context: context,
+          featureType: FeatureType.tasks,
+          premissionType: PremissionType.read,
+        )) {
+      premision = false;
+    } else if (pageIndex == 1 &&
+        !getUserPremission(
+          context: context,
+          featureType: FeatureType.inventory,
+          premissionType: PremissionType.read,
+        )) {
+      premision = false;
+    } else if (pageIndex == 3 &&
+        !getUserPremission(
+          context: context,
+          featureType: FeatureType.assets,
+          premissionType: PremissionType.read,
+        )) {
+      premision = false;
+    } else if (pageIndex == 4 &&
+        !getUserPremission(
+          context: context,
+          featureType: FeatureType.knowledgeBase,
+          premissionType: PremissionType.read,
+        )) {
+      premision = false;
+    }
+    if (premision) {
+      setState(() {
+        isMenuVisible = !isMenuVisible;
+      });
+    } else {
+      showSnackBar(
+        context: context,
+        message: AppLocalizations.of(context)!.premission_no_premission,
+        isErrorMessage: true,
+      );
+    }
   }
 
   @override

@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/icon_title_row.dart';
+import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/premission.dart';
+import '../../../groups/domain/entities/feature.dart';
 import '../../../inventory/domain/entities/item_action/item_action.dart';
 import '../../../inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
 import '../../../inventory/presentation/widgets/actions/item_action_list_tile.dart';
@@ -32,96 +35,103 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 16,
-          ),
-          decoration: BoxDecoration(
-              color: Theme.of(context).appBarTheme.backgroundColor,
-              boxShadow: const [
-                BoxShadow(
-                  offset: Offset(0, 0),
-                  blurRadius: 4,
-                )
-              ]),
-          child: Row(
+    final premission = getUserPremission(
+      context: context,
+      featureType: FeatureType.inventory,
+      premissionType: PremissionType.read,
+    );
+    return !premission
+        ? const SizedBox()
+        : Column(
             children: [
-              Expanded(
-                child: IconTitleRow(
-                  icon: Icons.apps,
-                  iconColor: Colors.white,
-                  iconBackground: Theme.of(context).primaryColor,
-                  title:
-                      '${AppLocalizations.of(context)!.bottom_bar_title_inventory} - ${AppLocalizations.of(context)!.latest_actions}',
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 16,
+                ),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).appBarTheme.backgroundColor,
+                    boxShadow: const [
+                      BoxShadow(
+                        offset: Offset(0, 0),
+                        blurRadius: 4,
+                      )
+                    ]),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: IconTitleRow(
+                        icon: Icons.apps,
+                        iconColor: Colors.white,
+                        iconBackground: Theme.of(context).primaryColor,
+                        title:
+                            '${AppLocalizations.of(context)!.bottom_bar_title_inventory} - ${AppLocalizations.of(context)!.latest_actions}',
+                      ),
+                    ),
+                    if (actions != null && actions!.isNotEmpty)
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            AllActionsListPage.routeName,
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Row(
+                            children: [
+                              Text(AppLocalizations.of(context)!.show_all),
+                              const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    if (actions == null)
+                      const SizedBox(
+                        width: 25,
+                        height: 25,
+                        child: CircularProgressIndicator(),
+                      ),
+                  ],
                 ),
               ),
-              if (actions != null && actions!.isNotEmpty)
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      AllActionsListPage.routeName,
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Row(
-                      children: [
-                        Text(AppLocalizations.of(context)!.show_all),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                        )
-                      ],
-                    ),
+              AnimatedSize(
+                duration: const Duration(milliseconds: 400),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      if (actions != null && actions!.isNotEmpty)
+                        ListView.builder(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: actions!.length,
+                          itemBuilder: (context, index) => ItemActionListTile(
+                            action: actions![index],
+                            isDashboardTile: true,
+                          ),
+                        ),
+                      if (actions != null && actions!.isEmpty)
+                        Container(
+                          alignment: Alignment.center,
+                          height: 50,
+                          child: Text(
+                            AppLocalizations.of(context)!
+                                .no_actions_in_selected_locations,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
-              if (actions == null)
-                const SizedBox(
-                  width: 25,
-                  height: 25,
-                  child: CircularProgressIndicator(),
-                ),
+              ),
             ],
-          ),
-        ),
-        AnimatedSize(
-          duration: const Duration(milliseconds: 400),
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              children: [
-                if (actions != null && actions!.isNotEmpty)
-                  ListView.builder(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: actions!.length,
-                    itemBuilder: (context, index) => ItemActionListTile(
-                      action: actions![index],
-                      isDashboardTile: true,
-                    ),
-                  ),
-                if (actions != null && actions!.isEmpty)
-                  Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    child: Text(
-                      AppLocalizations.of(context)!
-                          .no_actions_in_selected_locations,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
+          );
   }
 }
