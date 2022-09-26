@@ -1,9 +1,9 @@
 import '../../locations/domain/entities/location.dart';
 
-///Gets all sublocations of given location
+///Gets all sublocations id of given location
 ///
 ///Returns a list containing all sublocations ids.
-List<String> getSelectedLocationChildren(
+List<String> getSelectedLocationsChildrenId(
   Location selectedLocation,
   List<Location> allLocations,
 ) {
@@ -18,6 +18,27 @@ List<String> getSelectedLocationChildren(
     tmpLocations.remove(tmpLocation);
   }
   updatedChildren.remove(selectedLocation.id);
+  return updatedChildren;
+}
+
+///Gets all sublocations of given location
+///
+///Returns a list containing all sublocations ids.
+List<Location> getSelectedLocationsChildren(
+  Location selectedLocation,
+  List<Location> allLocations,
+) {
+  List<Location> updatedChildren = [];
+  List<Location> tmpLocations = [selectedLocation];
+  while (tmpLocations.isNotEmpty) {
+    Location tmpLocation = tmpLocations[0];
+    final tmpList =
+        allLocations.where((location) => location.parentId == tmpLocation.id);
+    tmpLocations.addAll(tmpList);
+    updatedChildren.add(tmpLocation);
+    tmpLocations.remove(tmpLocation);
+  }
+  updatedChildren.remove(selectedLocation);
   return updatedChildren;
 }
 

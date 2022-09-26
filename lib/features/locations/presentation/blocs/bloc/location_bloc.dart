@@ -180,7 +180,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       (event, emit) async {
         final currentState = state as LocationLoadedState;
 
-        List<String> tmpChildren = getSelectedLocationChildren(
+        List<String> tmpChildren = getSelectedLocationsChildrenId(
           event.location,
           currentState.allLocations.allLocations,
         );
@@ -263,7 +263,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         final currentState = state as LocationLoadedState;
         emit(LocationLoadingState());
         // updates children
-        List<String> tmpChildren = getSelectedLocationChildren(
+        List<String> tmpChildren = getSelectedLocationsChildrenId(
           event.location,
           currentState.allLocations.allLocations,
         );

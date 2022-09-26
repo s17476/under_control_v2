@@ -25,7 +25,7 @@ class LocationTile extends StatefulWidget {
 
 class _LocationTileState extends State<LocationTile> {
   _LocationTileState();
-  bool expanded = false;
+  bool isExpanded = false;
   bool locationContainAddress = false;
 
   @override
@@ -49,7 +49,7 @@ class _LocationTileState extends State<LocationTile> {
           child: InkWell(
             onTap: () {
               setState(() {
-                expanded = !expanded;
+                isExpanded = !isExpanded;
               });
             },
             customBorder: RoundedRectangleBorder(
@@ -59,7 +59,7 @@ class _LocationTileState extends State<LocationTile> {
             child: AnimatedSize(
               duration: const Duration(milliseconds: 300),
               child: Container(
-                height: (expanded && locationContainAddress) ? 80 : 60,
+                height: (isExpanded && locationContainAddress) ? 80 : 60,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Theme.of(context).cardColor,
@@ -69,7 +69,7 @@ class _LocationTileState extends State<LocationTile> {
                     // container with arrow icon on the left
                     Container(
                       width: 32,
-                      height: (expanded && locationContainAddress) ? 80 : 60,
+                      height: (isExpanded && locationContainAddress) ? 80 : 60,
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10),
@@ -79,7 +79,7 @@ class _LocationTileState extends State<LocationTile> {
                       ),
                       child: (children.isNotEmpty || widget.isAdministrator)
                           ? Icon(
-                              expanded
+                              isExpanded
                                   ? Icons.keyboard_arrow_up_rounded
                                   : Icons.keyboard_arrow_down_rounded,
                             )
@@ -143,7 +143,7 @@ class _LocationTileState extends State<LocationTile> {
                             ),
                           ),
                           // location address
-                          if (expanded && locationContainAddress)
+                          if (isExpanded && locationContainAddress)
                             AddressRow(location: widget.location),
                         ],
                       ),
@@ -160,7 +160,7 @@ class _LocationTileState extends State<LocationTile> {
           duration: const Duration(milliseconds: 500),
           child: Container(
             width: double.infinity,
-            height: expanded ? null : 0,
+            height: isExpanded ? null : 0,
             padding: const EdgeInsets.only(left: 10),
             child: Column(
               children: [

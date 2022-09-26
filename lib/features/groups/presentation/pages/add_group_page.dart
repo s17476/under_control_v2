@@ -92,7 +92,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
     // gets selected location children
     // if is selected
     if (!isSelected) {
-      List<String> tmpChildren = getSelectedLocationChildren(
+      List<String> tmpChildren = getSelectedLocationsChildrenId(
         location,
         allLocations,
       );
@@ -148,7 +148,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
       // if is unselected
     } else {
       // updates children
-      List<String> tmpChildren = getSelectedLocationChildren(
+      List<String> tmpChildren = getSelectedLocationsChildrenId(
         location,
         allLocations,
       );
