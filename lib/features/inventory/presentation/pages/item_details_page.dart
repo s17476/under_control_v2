@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
+import 'package:under_control_v2/features/core/utils/premission.dart';
 import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_actions_tab.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_info_tab.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_locations_tab.dart';
@@ -59,16 +62,25 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
         // popup menu items
         _choices = [
           // edit item
-          Choice(
-            title: AppLocalizations.of(context)!.edit,
-            icon: Icons.edit,
-            onTap: () => Navigator.pushNamed(
-              context,
-              AddItemPage.routeName,
-              arguments: item,
+          if (getUserPremission(
+            context: context,
+            featureType: FeatureType.inventory,
+            premissionType: PremissionType.edit,
+          ))
+            Choice(
+              title: AppLocalizations.of(context)!.edit,
+              icon: Icons.edit,
+              onTap: () => Navigator.pushNamed(
+                context,
+                AddItemPage.routeName,
+                arguments: item,
+              ),
             ),
-          ),
-          if (_currentUser.administrator)
+          if (getUserPremission(
+            context: context,
+            featureType: FeatureType.inventory,
+            premissionType: PremissionType.delete,
+          ))
             Choice(
               title: AppLocalizations.of(context)!.delete,
               icon: Icons.delete,
@@ -118,7 +130,11 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
           centerTitle: true,
           actions: [
             // popup menu
-            if (_currentUser.administrator)
+            if (getUserPremission(
+              context: context,
+              featureType: FeatureType.inventory,
+              premissionType: PremissionType.edit,
+            ))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {
                   choice.onTap();

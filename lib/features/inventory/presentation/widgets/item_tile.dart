@@ -6,6 +6,7 @@ import '../../../core/presentation/widgets/highlighted_text.dart';
 import '../../../core/presentation/widgets/icon_title_mini_row.dart';
 import '../../../core/utils/double_apis.dart';
 import '../../domain/entities/item.dart';
+import '../../utils/get_item_quantity_in_locations.dart';
 import '../../utils/get_item_total_quantity.dart';
 import '../../utils/get_localized_unit_name.dart';
 import '../pages/item_details_page.dart';
@@ -169,7 +170,8 @@ class ItemTile extends StatelessWidget {
                         style: Theme.of(context).textTheme.caption,
                       ),
                       Text(
-                        getItemTotalQuantity(item).toStringWithFixedDecimal(),
+                        getItemQuantityInLocations(context, item)
+                            .toStringWithFixedDecimal(),
                         style: const TextStyle(
                           fontSize: 22,
                           color: Colors.amber,

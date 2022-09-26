@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
+import 'package:under_control_v2/features/core/utils/premission.dart';
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/show_snack_bar.dart';
@@ -125,7 +128,11 @@ class _ItemCategoryManagementPageState
           },
         ),
       ),
-      floatingActionButton: isAdministrator
+      floatingActionButton: getUserPremission(
+        context: context,
+        featureType: FeatureType.inventory,
+        premissionType: PremissionType.create,
+      )
           ? context.watch<ItemCategoryBloc>().state is ItemCategoryLoadedState
               ? FloatingActionButton.extended(
                   heroTag: null,

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
+import 'package:under_control_v2/features/core/utils/premission.dart';
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../data/models/item_category/item_category_model.dart';
 import '../../domain/entities/item_category/item_category.dart';
@@ -43,10 +46,14 @@ class CategoryTile extends StatelessWidget {
                 ),
               ),
               // action buttons
-              if (isAdministrator)
-                Row(
-                  children: [
-                    // edit button
+              Row(
+                children: [
+                  // edit button
+                  if (getUserPremission(
+                    context: context,
+                    featureType: FeatureType.inventory,
+                    premissionType: PremissionType.edit,
+                  ))
                     IconButton(
                       onPressed: () {
                         showAddCategoryModalBottomSheet(
@@ -59,7 +66,12 @@ class CategoryTile extends StatelessWidget {
                         color: Colors.grey.shade200,
                       ),
                     ),
-                    // delete button
+                  // delete button
+                  if (getUserPremission(
+                    context: context,
+                    featureType: FeatureType.inventory,
+                    premissionType: PremissionType.delete,
+                  ))
                     IconButton(
                       onPressed: () {
                         showCategoryDeleteDialog(
@@ -72,8 +84,8 @@ class CategoryTile extends StatelessWidget {
                         color: Colors.grey.shade200,
                       ),
                     )
-                  ],
-                ),
+                ],
+              ),
             ],
           ),
         ),
