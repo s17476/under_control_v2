@@ -49,6 +49,10 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<key>NSCameraUsageDescription</key>
+	<string>Requires access to the camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Requires access to the gallery</string>
 	<false/>
 </dict>
 </plist>
