@@ -168,8 +168,8 @@ class _AddItemPageState extends State<AddItemPage> {
         itemBarCode: barCodeTextEditingController.text.trim(),
         itemPhoto: item != null ? item!.itemPhoto : '',
         itemUnit: ItemUnit.fromString(itemUnit),
-        amountInLocations: const [],
-        locations: const [],
+        amountInLocations: item != null ? item!.amountInLocations : const [],
+        locations: item != null ? item!.locations : const [],
         sparePartFor: sparePartFor,
       );
 
