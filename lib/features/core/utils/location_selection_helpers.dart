@@ -42,6 +42,25 @@ List<Location> getSelectedLocationsChildren(
   return updatedChildren;
 }
 
+///Gets breadcrumbs style location string
+///
+///Main location > sub > subsub
+String getBreadcrumbsForLocation(String locationId, List<Location> locations) {
+  final nameIndex = locations.indexWhere((loc) => loc.id == locationId);
+  int index = nameIndex;
+  if (index >= 0) {
+    String result = locations[index].name;
+    index = locations.indexWhere((loc) => loc.id == locations[index].parentId);
+    while (index >= 0) {
+      result = locations[index].name + ' > ' + result;
+      index =
+          locations.indexWhere((loc) => loc.id == locations[index].parentId);
+    }
+    return result;
+  }
+  return 'Error';
+}
+
 ///Gets locations context in location tree.
 ///
 ///Returns a list containing locations ids.

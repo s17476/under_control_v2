@@ -7,6 +7,7 @@ import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/double_apis.dart';
+import '../../../../core/utils/location_selection_helpers.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 
 class AddToItemSummaryCard extends StatefulWidget {
@@ -66,9 +67,10 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
       final locationState = context.read<LocationBloc>().state;
       if (widget.selectedLocation.isNotEmpty &&
           locationState is LocationLoadedState) {
-        _selectedLocation = locationState.allLocations.allLocations
-            .firstWhere((loc) => loc.id == widget.selectedLocation)
-            .name;
+        _selectedLocation = getBreadcrumbsForLocation(
+          widget.selectedLocation,
+          locationState.allLocations.allLocations,
+        );
       }
     } catch (e) {
       _selectedLocation = '';

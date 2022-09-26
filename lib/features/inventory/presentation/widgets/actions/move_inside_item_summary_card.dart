@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/core/utils/location_selection_helpers.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
@@ -72,9 +73,10 @@ class _MoveInsideItemSummaryCardState extends State<MoveInsideItemSummaryCard> {
     try {
       if (widget.selectedFromLocation.isNotEmpty &&
           locationState is LocationLoadedState) {
-        _selectedFromLocation = locationState.allLocations.allLocations
-            .firstWhere((loc) => loc.id == widget.selectedFromLocation)
-            .name;
+        _selectedFromLocation = getBreadcrumbsForLocation(
+          widget.selectedFromLocation,
+          locationState.allLocations.allLocations,
+        );
       }
     } catch (e) {
       _selectedFromLocation = '';
@@ -84,9 +86,10 @@ class _MoveInsideItemSummaryCardState extends State<MoveInsideItemSummaryCard> {
     try {
       if (widget.selectedToLocation.isNotEmpty &&
           locationState is LocationLoadedState) {
-        _selectedToLocation = locationState.allLocations.allLocations
-            .firstWhere((loc) => loc.id == widget.selectedToLocation)
-            .name;
+        _selectedToLocation = getBreadcrumbsForLocation(
+          widget.selectedToLocation,
+          locationState.allLocations.allLocations,
+        );
       }
     } catch (e) {
       _selectedToLocation = '';
