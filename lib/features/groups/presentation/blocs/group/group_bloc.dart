@@ -89,7 +89,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
       // cheks for group members
       final companyMembers = (companyProfileBloc.state as CompanyProfileLoaded)
           .companyUsers
-          .allUsers;
+          .activeUsers;
       final groupMembers = companyMembers
           .where((member) => member.userGroups.contains(event.group.id));
       if (groupMembers.isNotEmpty) {

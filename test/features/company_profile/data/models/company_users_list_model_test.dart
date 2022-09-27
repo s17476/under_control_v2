@@ -9,7 +9,10 @@ void main() {
     lastName: 'lastName',
     phoneNumber: 'phoneNumber',
   );
-  final tCompanyUsers = CompanyUsersListModel(allUsers: [tUserProfile]);
+  final tCompanyUsers = CompanyUsersListModel(
+    activeUsers: [tUserProfile],
+    passiveUsers: const [],
+  );
 
   test(
     'Company Profile should be a subclass of [CompanyUserList] entity',

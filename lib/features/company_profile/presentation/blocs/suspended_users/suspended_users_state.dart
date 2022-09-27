@@ -30,4 +30,9 @@ class SuspendedUsersLoadedState extends SuspendedUsersState {
   SuspendedUsersLoadedState({
     required this.suspendedUsers,
   }) : super(properties: [suspendedUsers]);
+
+  List<UserProfile> get allUsers => [
+        ...suspendedUsers.activeUsers,
+        ...suspendedUsers.passiveUsers,
+      ];
 }

@@ -5,6 +5,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../core/presentation/widgets/forward_text_button.dart';
+import '../../../core/presentation/widgets/summary_card.dart';
+import '../../../core/utils/input_validator.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
 
@@ -32,154 +34,150 @@ class DataCheckCard extends StatelessWidget with ResponsiveSize {
   Widget build(BuildContext context) {
     SizeConfig.init(context);
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ClipRRect(
-          clipBehavior: Clip.antiAlias,
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            color: Theme.of(context).cardColor,
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              SizedBox(
-                                height: responsiveSizeVerticalPct(
-                                    small: 12, medium: 5),
-                              ),
-                              // avatar
-                              SizedBox(
-                                height:
-                                    responsiveSizePct(small: 70, medium: 20),
-                                width: responsiveSizePct(small: 70, medium: 20),
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    // shows avatar background only in portrait mode
-                                    if (MediaQuery.of(context).orientation ==
-                                        Orientation.portrait)
-                                      Image.asset(
-                                        'assets/undercontrol-without-frame.png',
-                                        fit: BoxFit.fill,
-                                      ),
-                                    CircleAvatar(
-                                      radius: responsiveSizePct(small: 22.5),
-                                      backgroundColor: Theme.of(context)
-                                          .scaffoldBackgroundColor,
-                                    ),
-                                    CircleAvatar(
-                                      radius: responsiveSizePct(
-                                          small: 22, medium: 15),
-                                      backgroundColor:
-                                          Theme.of(context).errorColor,
-                                      backgroundImage: image != null
-                                          ? FileImage(image!)
-                                          : null,
-                                      child: image == null
-                                          ? Text(
-                                              '?',
-                                              style: TextStyle(
-                                                fontSize: responsiveSizePct(
-                                                    small: 20, medium: 10),
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white,
-                                              ),
-                                            )
-                                          : null,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: responsiveSizePct(small: 15, medium: 3),
-                              ),
-                              // first name
-                              const Divider(),
-                              SizedBox(
-                                width: double.infinity,
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .user_profile_add_user_personal_data_first_name,
-                                  style: Theme.of(context).textTheme.caption,
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                              Text(firstNameTexEditingController.text),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              // last name
-                              const Divider(),
-                              SizedBox(
-                                width: double.infinity,
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .user_profile_add_user_personal_data_last_name,
-                                  style: Theme.of(context).textTheme.caption,
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                              Text(lastNameTexEditingController.text),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              // phone number
-                              const Divider(),
-                              SizedBox(
-                                width: double.infinity,
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .user_profile_add_user_personal_data_phone_number,
-                                  style: Theme.of(context).textTheme.caption,
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                              Text(phoneNumberTexEditingController.text),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              const Divider(),
-                            ]),
-                      ),
+      child: Container(
+        color: Theme.of(context).cardColor,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          // avatar
+                          SummaryCard(
+                            title: AppLocalizations.of(context)!
+                                .user_details_avatar_updated,
+                            validator: () {
+                              if (image == null) {
+                                return AppLocalizations.of(context)!
+                                    .input_validation_no_avatar;
+                              }
+                              return null;
+                            },
+                            child: image != null
+                                ? CircleAvatar(
+                                    radius: responsiveSizePct(small: 45),
+                                    backgroundImage: FileImage(image!),
+                                  )
+                                : const SizedBox(),
+                            pageController: pageController,
+                            onTapAnimateToPage: 2,
+                          ),
+
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          // first name
+                          SummaryCard(
+                            title: AppLocalizations.of(context)!
+                                .user_profile_add_user_personal_data_first_name,
+                            validator: () {
+                              if (firstNameTexEditingController.text
+                                      .trim()
+                                      .length <=
+                                  2) {
+                                return AppLocalizations.of(context)!
+                                    .validation_min_two_characters;
+                              } else {
+                                return null;
+                              }
+                            },
+                            child:
+                                Text(firstNameTexEditingController.text.trim()),
+                            pageController: pageController,
+                            onTapAnimateToPage: 1,
+                          ),
+
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          // last name
+                          SummaryCard(
+                            title: AppLocalizations.of(context)!
+                                .user_profile_add_user_personal_data_last_name,
+                            validator: () {
+                              if (lastNameTexEditingController.text
+                                      .trim()
+                                      .length <=
+                                  2) {
+                                return AppLocalizations.of(context)!
+                                    .validation_min_two_characters;
+                              } else {
+                                return null;
+                              }
+                            },
+                            child:
+                                Text(lastNameTexEditingController.text.trim()),
+                            pageController: pageController,
+                            onTapAnimateToPage: 1,
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+
+                          // phone number
+                          SummaryCard(
+                            title: AppLocalizations.of(context)!
+                                .user_profile_add_user_personal_data_phone_number,
+                            validator: () {
+                              final result =
+                                  InputValidator().phoneNumberFieldValidator(
+                                phoneNumberTexEditingController.text.trim(),
+                              );
+                              if (result != null) {
+                                return AppLocalizations.of(context)!
+                                    .input_validation_phone_number;
+                              }
+                              return null;
+                            },
+                            child: Text(
+                              phoneNumberTexEditingController.text.trim(),
+                            ),
+                            pageController: pageController,
+                            onTapAnimateToPage: 1,
+                          ),
+
+                          const SizedBox(
+                            height: 16,
+                          ),
+                        ]),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BackwardTextButton(
+                    icon: Icons.arrow_back_ios,
+                    color: Theme.of(context).textTheme.headline4!.color!,
+                    label: AppLocalizations.of(context)!
+                        .user_profile_add_user_personal_data_back,
+                    function: () => pageController.previousPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
                     ),
                   ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      BackwardTextButton(
-                        icon: Icons.arrow_back_ios,
-                        color: Theme.of(context).textTheme.headline4!.color!,
-                        label: AppLocalizations.of(context)!
-                            .user_profile_add_user_personal_data_back,
-                        function: () => pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeIn,
-                        ),
-                      ),
-                      ForwardTextButton(
-                        color: Theme.of(context).textTheme.headline6!.color!,
-                        label: AppLocalizations.of(context)!
-                            .user_profile_add_user_personal_data_save,
-                        function: addUser,
-                        icon: Icons.check,
-                      ),
-                    ],
+                  ForwardTextButton(
+                    color: Theme.of(context).textTheme.headline6!.color!,
+                    label: AppLocalizations.of(context)!
+                        .user_profile_add_user_personal_data_save,
+                    function: addUser,
+                    icon: Icons.check,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

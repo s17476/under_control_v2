@@ -19,6 +19,8 @@ abstract class UserProfileRepository {
 
   Future<Either<Failure, VoidResult>> approveUser(String userId);
 
+  Future<Either<Failure, VoidResult>> approvePassiveUser(String userId);
+
   Future<Either<Failure, VoidResult>> makeUserAdministrator(String userId);
 
   Future<Either<Failure, VoidResult>> unmakeUserAdministrator(String userId);

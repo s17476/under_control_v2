@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../data/models/company_users_list_model.dart';
 import '../../../domain/entities/company_users_list.dart';
 import '../../../domain/usecases/fetch_suspended_users.dart';
@@ -48,7 +49,10 @@ class SuspendedUsersBloc
           });
           emit(
             SuspendedUsersLoadedState(
-              suspendedUsers: const CompanyUsersList(allUsers: []),
+              suspendedUsers: const CompanyUsersList(
+                activeUsers: [],
+                passiveUsers: [],
+              ),
             ),
           );
         },

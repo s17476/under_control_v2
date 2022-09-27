@@ -39,7 +39,7 @@ class _GroupMembersState extends State<GroupMembers> {
     final companyState = context.watch<CompanyProfileBloc>().state;
     if (companyState is CompanyProfileLoaded) {
       // gets group members
-      final companyMembers = companyState.companyUsers.allUsers;
+      final companyMembers = companyState.companyUsers.activeUsers;
       List<UserProfile> groupMembers = companyMembers
           .where((element) => element.userGroups.contains(widget.group.id))
           .toList();

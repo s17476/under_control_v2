@@ -46,7 +46,10 @@ class NewUsersBloc extends Bloc<NewUsersEvent, NewUsersState> {
           });
           emit(
             NewUsersLoadedState(
-              newUsers: const CompanyUsersList(allUsers: []),
+              newUsers: const CompanyUsersList(
+                activeUsers: [],
+                passiveUsers: [],
+              ),
             ),
           );
         },

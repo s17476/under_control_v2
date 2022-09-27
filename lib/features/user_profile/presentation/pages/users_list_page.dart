@@ -60,11 +60,13 @@ class _UsersListPageState extends State<UsersListPage> {
     }
     final newUsersState = context.watch<NewUsersBloc>().state;
     if (newUsersState is NewUsersLoadedState) {
-      newUsersCount = newUsersState.newUsers.allUsers.length;
+      newUsersCount = newUsersState.newUsers.activeUsers.length;
+      newUsersCount =
+          newUsersCount! + newUsersState.newUsers.passiveUsers.length;
     }
     final suspendedUsersState = context.watch<SuspendedUsersBloc>().state;
     if (suspendedUsersState is SuspendedUsersLoadedState) {
-      suspendedUsersCount = suspendedUsersState.suspendedUsers.allUsers.length;
+      suspendedUsersCount = suspendedUsersState.allUsers.length;
     }
     super.didChangeDependencies();
   }
@@ -116,7 +118,7 @@ class _UsersListPageState extends State<UsersListPage> {
                 ),
                 child: Column(
                   children: [
-                    // new users
+                    // suspended users
                     InkWell(
                       onTap: suspendedUsersCount == null
                           ? null
@@ -233,7 +235,7 @@ class _UsersListPageState extends State<UsersListPage> {
             BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
               builder: (context, state) {
                 if (state is CompanyProfileLoaded) {
-                  List<UserProfile> filteredUsers = state.companyUsers.allUsers
+                  List<UserProfile> activeUsers = state.companyUsers.activeUsers
                       .where(
                         (user) =>
                             user.firstName
@@ -247,26 +249,94 @@ class _UsersListPageState extends State<UsersListPage> {
                     ..sort(
                       (a, b) => a.firstName.compareTo(b.firstName),
                     );
-                  return ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: filteredUsers.length,
-                    itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 2.0,
+                  List<UserProfile> passiveUsers =
+                      state.companyUsers.passiveUsers
+                          .where(
+                            (user) =>
+                                user.firstName
+                                    .toLowerCase()
+                                    .contains(searchQuery.toLowerCase()) ||
+                                user.lastName
+                                    .toLowerCase()
+                                    .contains(searchQuery.toLowerCase()),
+                          )
+                          .toList()
+                        ..sort(
+                          (a, b) => a.firstName.compareTo(b.firstName),
+                        );
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // active users
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          AppLocalizations.of(context)!.active_users,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium!
+                              .copyWith(fontSize: 20),
+                        ),
                       ),
-                      child: UserListTile(
-                        user: filteredUsers[index],
-                        onTap: ((userProfile) {
-                          Navigator.pushNamed(
-                            context,
-                            UserDetailsPage.routeName,
-                            arguments: userProfile,
-                          );
-                        }),
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: activeUsers.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 2.0,
+                          ),
+                          child: UserListTile(
+                            user: activeUsers[index],
+                            onTap: ((userProfile) {
+                              Navigator.pushNamed(
+                                context,
+                                UserDetailsPage.routeName,
+                                arguments: userProfile,
+                              );
+                            }),
+                          ),
+                        ),
                       ),
-                    ),
+                      const Divider(
+                        thickness: 1.5,
+                        indent: 8,
+                        endIndent: 8,
+                      ),
+                      // passive users
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          AppLocalizations.of(context)!.passive_users,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium!
+                              .copyWith(fontSize: 20),
+                        ),
+                      ),
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: passiveUsers.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 2.0,
+                          ),
+                          child: UserListTile(
+                            user: passiveUsers[index],
+                            onTap: (userProfile) {
+                              Navigator.pushNamed(
+                                context,
+                                UserDetailsPage.routeName,
+                                arguments: userProfile,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 } else {
                   return const LoadingWidget();

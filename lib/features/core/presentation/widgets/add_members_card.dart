@@ -39,7 +39,7 @@ class _AddMembersCardState extends State<AddMembersCard> with ResponsiveSize {
   void didChangeDependencies() {
     final companyState = context.watch<CompanyProfileBloc>().state;
     if (companyState is CompanyProfileLoaded) {
-      allUsers = companyState.companyUsers.allUsers;
+      allUsers = companyState.companyUsers.activeUsers;
     }
     currentUser =
         (context.read<UserProfileBloc>().state as Approved).userProfile;

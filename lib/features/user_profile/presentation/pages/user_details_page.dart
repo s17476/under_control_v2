@@ -100,11 +100,12 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
         (ModalRoute.of(context)?.settings.arguments as UserProfile).id;
     final companyState = context.watch<CompanyProfileBloc>().state;
     if (companyState is CompanyProfileLoaded) {
-      final index = companyState.companyUsers.allUsers
-          .indexWhere((element) => element.id == userId);
+      final index =
+          companyState.allUsers.indexWhere((element) => element.id == userId);
+
       if (index >= 0) {
         setState(() {
-          user = companyState.companyUsers.allUsers[index];
+          user = companyState.allUsers[index];
         });
         // popup menu items
         choices = [
@@ -124,7 +125,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
             onTap: () => showAvatarEditor(),
           ),
           // manage groups
-          if (currentUser.administrator)
+          if (currentUser.administrator && user!.isActive)
             Choice(
               title: AppLocalizations.of(context)!.group_manage_user_groups,
               icon: Icons.group,
@@ -146,7 +147,8 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
           // make admin
           if (user!.id != currentUser.id &&
               !user!.administrator &&
-              currentUser.administrator)
+              currentUser.administrator &&
+              user!.isActive)
             Choice(
               title: AppLocalizations.of(context)!.user_make_admin,
               icon: Icons.gpp_good,
@@ -160,6 +162,32 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
               title: AppLocalizations.of(context)!.user_unmake_admin,
               icon: Icons.gpp_bad,
               onTap: () => showUnmakeAdminDialog(context: context, user: user!),
+            ),
+          // activate
+          if (user!.id != currentUser.id &&
+              currentUser.administrator &&
+              !user!.isActive)
+            Choice(
+              title: AppLocalizations.of(context)!.activate_user,
+              icon: Icons.done,
+              onTap: () => showUserApproveDialog(
+                context: context,
+                user: user!,
+                isActive: true,
+              ),
+            ),
+          // deactivate
+          if (user!.id != currentUser.id &&
+              currentUser.administrator &&
+              user!.isActive)
+            Choice(
+              title: AppLocalizations.of(context)!.deactivate_user,
+              icon: Icons.clear,
+              onTap: () => showUserApproveDialog(
+                context: context,
+                user: user!,
+                isActive: false,
+              ),
             ),
         ];
       }
@@ -192,7 +220,9 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor.withAlpha(50),
+          backgroundColor: user!.isActive
+              ? Theme.of(context).primaryColor.withAlpha(50)
+              : Colors.grey.shade800,
           title: Text(appBarTitle),
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarIconBrightness: Brightness.light,
@@ -290,15 +320,21 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                 gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: const Alignment(0, 1),
-                                  colors: [
-                                    Theme.of(context)
-                                        .primaryColor
-                                        .withAlpha(50),
-                                    Theme.of(context).primaryColor,
-                                    Theme.of(context)
-                                        .primaryColor
-                                        .withAlpha(50),
-                                  ],
+                                  colors: user!.isActive
+                                      ? [
+                                          Theme.of(context)
+                                              .primaryColor
+                                              .withAlpha(50),
+                                          Theme.of(context).primaryColor,
+                                          Theme.of(context)
+                                              .primaryColor
+                                              .withAlpha(50),
+                                        ]
+                                      : [
+                                          Colors.grey.shade800,
+                                          Colors.grey.shade600,
+                                          Colors.grey.shade800,
+                                        ],
                                 ),
                               ),
                               child: Column(
@@ -493,6 +529,38 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                   ),
                                   const SizedBox(
                                     height: 8,
+                                  ),
+                                  // is active users
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 8.0,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          user!.isActive
+                                              ? Icons.done
+                                              : Icons.clear,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .active_user,
+                                          ),
+                                        ),
+                                        Text(
+                                          user!.isActive
+                                              ? AppLocalizations.of(context)!
+                                                  .yes
+                                              : AppLocalizations.of(context)!
+                                                  .no,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   // administrator
                                   Padding(

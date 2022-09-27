@@ -39,9 +39,32 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
     try {
       final userReference = firebaseFirestore.collection('users').doc(userId);
       await userReference.update({
+        'isActive': true,
         'approved': true,
         'rejected': false,
         'suspended': false,
+      });
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return Left(
+        UnsuspectedFailure(message: e.toString()),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, VoidResult>> approvePassiveUser(String userId) async {
+    try {
+      final userReference = firebaseFirestore.collection('users').doc(userId);
+      await userReference.update({
+        'isActive': false,
+        'approved': true,
+        'rejected': false,
+        'suspended': false,
+        'administrator': false,
+        'userGroups': [],
       });
       return Right(VoidResult());
     } on FirebaseException catch (e) {
@@ -96,6 +119,7 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
       final userReference = firebaseFirestore.collection('users').doc(userId);
       await userReference.update({
         'approved': true,
+        'isActive': true,
         'administrator': true,
         'rejected': false,
         'suspended': false,
@@ -185,9 +209,12 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
     try {
       final userReference = firebaseFirestore.collection('users').doc(userId);
       await userReference.update({
+        'administrator': false,
+        'isActive': false,
         'approved': false,
         'rejected': true,
         'suspended': false,
+        'userGroups': [],
       });
       return Right(VoidResult());
     } on FirebaseException catch (e) {
@@ -205,6 +232,9 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
       final userReference = firebaseFirestore.collection('users').doc(userId);
       await userReference.update({
         'suspended': true,
+        'isActive': false,
+        'administrator': false,
+        'userGroups': [],
       });
       return Right(VoidResult());
     } on FirebaseException catch (e) {
@@ -222,6 +252,8 @@ class UserProfileRepositoryImpl extends UserProfileRepository {
       final userReference = firebaseFirestore.collection('users').doc(userId);
       await userReference.update({
         'suspended': false,
+        'isActive': false,
+        'administrator': false,
       });
       return Right(VoidResult());
     } on FirebaseException catch (e) {

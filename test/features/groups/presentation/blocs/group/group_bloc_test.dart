@@ -149,7 +149,10 @@ void main() {
           bloc.add(DeleteGroupEvent(group: tGroup));
           when(() => mockCompanyProfileBloc.state).thenAnswer(
             (_) => CompanyProfileLoaded(
-              companyUsers: const CompanyUsersList(allUsers: []),
+              companyUsers: const CompanyUsersList(
+                activeUsers: [],
+                passiveUsers: [],
+              ),
               company: Company(
                 id: 'id',
                 name: 'name',
@@ -183,7 +186,10 @@ void main() {
           bloc.add(DeleteGroupEvent(group: tGroup));
           when(() => mockCompanyProfileBloc.state).thenAnswer(
             (_) => CompanyProfileLoaded(
-              companyUsers: const CompanyUsersList(allUsers: []),
+              companyUsers: const CompanyUsersList(
+                activeUsers: [],
+                passiveUsers: [],
+              ),
               company: Company(
                 id: 'id',
                 name: 'name',

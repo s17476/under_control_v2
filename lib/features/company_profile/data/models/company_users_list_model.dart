@@ -5,10 +5,11 @@ import '../../../user_profile/domain/entities/user_profile.dart';
 
 class CompanyUsersListModel extends CompanyUsersList {
   const CompanyUsersListModel({
-    required super.allUsers,
+    required super.activeUsers,
+    required super.passiveUsers,
   });
 
-  Future<int> get allUsersCount async => allUsers.length;
+  Future<int> get activeUsersCount async => activeUsers.length;
 
   factory CompanyUsersListModel.fromSnapshot(
       QuerySnapshot<Map<String, dynamic>> snapshot) {
@@ -22,6 +23,9 @@ class CompanyUsersListModel extends CompanyUsersList {
         )
         .toList();
 
-    return CompanyUsersListModel(allUsers: usersList);
+    return CompanyUsersListModel(
+      activeUsers: usersList.where((user) => user.isActive).toList(),
+      passiveUsers: usersList.where((user) => !user.isActive).toList(),
+    );
   }
 }

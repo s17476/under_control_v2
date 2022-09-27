@@ -42,8 +42,7 @@ class SuspendedUsersListPage extends StatelessWidget {
             BlocBuilder<SuspendedUsersBloc, SuspendedUsersState>(
               builder: (context, state) {
                 if (state is SuspendedUsersLoadedState) {
-                  List<UserProfile> users = [...state.suspendedUsers.allUsers]
-                    ..sort(
+                  List<UserProfile> users = [...state.allUsers]..sort(
                       (a, b) => a.firstName.compareTo(b.firstName),
                     );
                   return ListView.builder(

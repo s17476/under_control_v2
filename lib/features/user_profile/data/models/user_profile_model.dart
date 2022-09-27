@@ -16,6 +16,7 @@ class UserProfileModel extends UserProfile {
     required super.approved,
     required super.rejected,
     required super.suspended,
+    required super.isActive,
     required super.administrator,
     required super.joinDate,
   });
@@ -33,6 +34,7 @@ class UserProfileModel extends UserProfile {
     bool? approved,
     bool? rejected,
     bool? suspended,
+    bool? isActive,
     bool? administrator,
     DateTime? joinDate,
   }) {
@@ -49,6 +51,7 @@ class UserProfileModel extends UserProfile {
       approved: approved ?? this.approved,
       rejected: rejected ?? this.rejected,
       suspended: suspended ?? this.suspended,
+      isActive: isActive ?? this.isActive,
       administrator: administrator ?? this.administrator,
       joinDate: joinDate ?? this.joinDate,
     );
@@ -68,6 +71,7 @@ class UserProfileModel extends UserProfile {
     result.addAll({'approved': approved});
     result.addAll({'rejected': rejected});
     result.addAll({'suspended': suspended});
+    result.addAll({'isActive': isActive});
     result.addAll({'administrator': administrator});
     result.addAll({'joinDate': joinDate.toIso8601String()});
 
@@ -88,6 +92,7 @@ class UserProfileModel extends UserProfile {
       approved: map['approved'] ?? false,
       rejected: map['rejected'] ?? false,
       suspended: map['suspended'] ?? false,
+      isActive: map['isActive'] ?? false,
       administrator: map['administrator'] ?? false,
       joinDate: DateTime.parse(map['joinDate'] ?? DateTime.now()),
     );
@@ -116,6 +121,7 @@ class UserProfileModel extends UserProfile {
       approved: false,
       rejected: false,
       suspended: false,
+      isActive: false,
       administrator: false,
       joinDate: DateTime.now(),
     );

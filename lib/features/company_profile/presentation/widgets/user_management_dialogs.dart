@@ -8,6 +8,7 @@ import '../../../user_profile/presentation/blocs/user_management/user_management
 Future<bool?> showUserApproveDialog({
   required BuildContext context,
   required UserProfile user,
+  required bool isActive,
 }) {
   return showDialog(
     context: context,
@@ -35,15 +36,23 @@ Future<bool?> showUserApproveDialog({
         ),
         TextButton(
           child: Text(
-            AppLocalizations.of(context)!.approve,
+            isActive
+                ? AppLocalizations.of(context)!.approve
+                : AppLocalizations.of(context)!.approve_passive,
             style: const TextStyle(
               color: Colors.amber,
             ),
           ),
           onPressed: () {
-            context
-                .read<UserManagementBloc>()
-                .add(ApproveUserEvent(userId: user.id));
+            if (isActive) {
+              context
+                  .read<UserManagementBloc>()
+                  .add(ApproveUserEvent(userId: user.id));
+            } else {
+              context
+                  .read<UserManagementBloc>()
+                  .add(ApprovePassiveUserEvent(userId: user.id));
+            }
             Navigator.pop(context, true);
           },
         ),

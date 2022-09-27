@@ -74,9 +74,9 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
     currentUser = userState.userProfile;
     final companyState =
         (context.watch<CompanyProfileBloc>().state as CompanyProfileLoaded);
-    final index = companyState.companyUsers.allUsers
+    final index = companyState.companyUsers.activeUsers
         .indexWhere((element) => element.id == widget.user.id);
-    selectedUser = companyState.companyUsers.allUsers[index];
+    selectedUser = companyState.companyUsers.activeUsers[index];
     super.didChangeDependencies();
   }
 

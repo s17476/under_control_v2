@@ -13,6 +13,7 @@ class UserProfile extends Equatable {
   final bool approved;
   final bool rejected;
   final bool suspended;
+  final bool isActive;
   final bool administrator;
   final DateTime joinDate;
 
@@ -29,6 +30,7 @@ class UserProfile extends Equatable {
     required this.approved,
     required this.rejected,
     required this.suspended,
+    required this.isActive,
     required this.administrator,
     required this.joinDate,
   });
@@ -48,6 +50,7 @@ class UserProfile extends Equatable {
       approved,
       rejected,
       suspended,
+      isActive,
       administrator,
       joinDate,
     ];
@@ -55,6 +58,6 @@ class UserProfile extends Equatable {
 
   @override
   String toString() {
-    return 'UserProfile(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phoneNumber: $phoneNumber, avatarUrl: $avatarUrl, userGroups: $userGroups, locations: $locations, companyId: $companyId, approved: $approved, rejected: $rejected, suspended: $suspended, administrator: $administrator, joinDate: $joinDate)';
+    return 'UserProfile(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phoneNumber: $phoneNumber, avatarUrl: $avatarUrl, userGroups: $userGroups, locations: $locations, companyId: $companyId, approved: $approved, rejected: $rejected, suspended: $suspended, isActive: $isActive, administrator: $administrator, joinDate: $joinDate)';
   }
 }

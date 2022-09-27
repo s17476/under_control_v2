@@ -8,6 +8,7 @@ import '../../../../core/usecases/usecase.dart';
 import '../../../data/models/user_profile_model.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../../domain/usecases/add_user_avatar.dart';
+import '../../../domain/usecases/approve_passive_user.dart';
 import '../../../domain/usecases/approve_user.dart';
 import '../../../domain/usecases/approve_user_and_make_admin.dart';
 import '../../../domain/usecases/assign_group_admin.dart';
@@ -40,6 +41,7 @@ const avatarUpdated = 'avatarUpdated';
 class UserManagementBloc
     extends Bloc<UserManagementEvent, UserManagementState> {
   final ApproveUser approveUser;
+  final ApprovePassiveUser approvePassiveUser;
   final MakeUserAdministrator makeUserAdministrator;
   final UnmakeUserAdministrator unmakeUserAdministrator;
   final ApproveUserAndMakeAdmin approveUserAndMakeAdmin;
@@ -55,6 +57,7 @@ class UserManagementBloc
 
   UserManagementBloc({
     required this.approveUser,
+    required this.approvePassiveUser,
     required this.makeUserAdministrator,
     required this.unmakeUserAdministrator,
     required this.approveUserAndMakeAdmin,
@@ -71,6 +74,17 @@ class UserManagementBloc
     on<ApproveUserEvent>((event, emit) async {
       emit(UserManagementLoading());
       final failureOrVoidResult = await approveUser(event.userId);
+      failureOrVoidResult.fold(
+        (failure) async => emit(UserManagementError(message: failure.message)),
+        (voidResult) async => emit(const UserManagementSuccessful(
+          message: userApproved,
+        )),
+      );
+    });
+
+    on<ApprovePassiveUserEvent>((event, emit) async {
+      emit(UserManagementLoading());
+      final failureOrVoidResult = await approvePassiveUser(event.userId);
       failureOrVoidResult.fold(
         (failure) async => emit(UserManagementError(message: failure.message)),
         (voidResult) async => emit(const UserManagementSuccessful(

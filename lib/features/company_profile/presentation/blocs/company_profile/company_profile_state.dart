@@ -37,12 +37,15 @@ class CompanyProfileLoaded extends CompanyProfileState {
         );
 
   UserProfile? getUserById(String id) {
-    final index = companyUsers.allUsers.indexWhere((usr) => usr.id == id);
+    final index = companyUsers.activeUsers.indexWhere((usr) => usr.id == id);
     if (index >= 0) {
-      return companyUsers.allUsers[index];
+      return companyUsers.activeUsers[index];
     }
     return null;
   }
+
+  List<UserProfile> get allUsers =>
+      [...companyUsers.activeUsers, ...companyUsers.passiveUsers];
 }
 
 class CompanyProfileLoading extends CompanyProfileState {}

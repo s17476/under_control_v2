@@ -118,68 +118,87 @@ class InactiveUserListTile extends StatelessWidget {
               const SizedBox(
                 height: 4,
               ),
+              const Divider(
+                thickness: 1.5,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   // reject button
                   Expanded(
-                    child: Container(
-                      color: Theme.of(context).errorColor,
-                      child: TextButton(
-                        onPressed: () => showUserRejectDialog(
-                          context: context,
-                          user: user,
-                        ),
-                        child: Text(
-                          AppLocalizations.of(context)!.reject,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            color: Colors.white,
-                          ),
+                    child: TextButton(
+                      onPressed: () => showUserRejectDialog(
+                        context: context,
+                        user: user,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.reject,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).textTheme.caption!.color,
                         ),
                       ),
                     ),
                   ),
+                  // accept passive
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => showUserApproveDialog(
+                        context: context,
+                        user: user,
+                        isActive: false,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.approve_passive,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
                   // unsuspend button
-                  if (!isNewUser)
-                    Expanded(
-                      child: Container(
-                        color: Theme.of(context).primaryColor,
-                        child: TextButton(
-                          onPressed: () => showUserUnsuspendDialog(
-                            context: context,
-                            user: user,
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!.unsuspend,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                  // if (!isNewUser)
+                  //   Expanded(
+                  //     child: Container(
+                  //       color: Theme.of(context).primaryColor,
+                  //       child: TextButton(
+                  //         onPressed: () => showUserUnsuspendDialog(
+                  //           context: context,
+                  //           user: user,
+                  //         ),
+                  //         child: Text(
+                  //           AppLocalizations.of(context)!.unsuspend,
+                  //           style: const TextStyle(
+                  //             fontSize: 22,
+                  //             color: Colors.white,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
                   // approve button
-                  if (isNewUser)
-                    Expanded(
-                      child: Container(
-                        color: Theme.of(context).primaryColor,
-                        child: TextButton(
-                          onPressed: () => showUserApproveDialog(
-                            context: context,
-                            user: user,
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!.approve,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                            ),
-                          ),
+
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => showUserApproveDialog(
+                        context: context,
+                        user: user,
+                        isActive: true,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.approve,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.amber,
                         ),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
                       ),
                     ),
+                  ),
                 ],
               ),
             ],

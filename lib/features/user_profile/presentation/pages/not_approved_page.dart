@@ -67,7 +67,7 @@ class NotApprovedPage extends StatelessWidget with ResponsiveSize {
                     // check if there are other users
                     bool isAdministrator = false;
                     if (state is CompanyProfileLoaded &&
-                        state.companyUsers.allUsers.isEmpty) {
+                        state.companyUsers.activeUsers.isEmpty) {
                       isAdministrator = true;
                     }
                     return SizedBox(

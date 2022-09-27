@@ -17,6 +17,7 @@ void main() {
     approved: false,
     rejected: false,
     suspended: false,
+    isActive: false,
     administrator: false,
     joinDate: date,
   );
@@ -32,6 +33,7 @@ void main() {
     'approved': false,
     'rejected': false,
     'suspended': false,
+    'isActive': false,
     'administrator': false,
     'joinDate': date.toIso8601String(),
   };

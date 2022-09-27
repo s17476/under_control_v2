@@ -51,8 +51,10 @@ class NewUsersListPage extends StatelessWidget {
             BlocBuilder<NewUsersBloc, NewUsersState>(
               builder: (context, state) {
                 if (state is NewUsersLoadedState) {
-                  List<UserProfile> users = state.newUsers.allUsers
-                    ..sort(
+                  List<UserProfile> users = [
+                    ...state.newUsers.activeUsers,
+                    ...state.newUsers.passiveUsers,
+                  ]..sort(
                       (a, b) => a.firstName.compareTo(b.firstName),
                     );
                   return ListView.builder(

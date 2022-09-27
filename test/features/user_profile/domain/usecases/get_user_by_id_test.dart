@@ -34,6 +34,7 @@ void main() {
     approved: false,
     rejected: false,
     suspended: false,
+    isActive: false,
     administrator: false,
     joinDate: DateTime.now(),
   );

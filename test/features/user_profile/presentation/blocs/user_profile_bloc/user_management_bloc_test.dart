@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/add_user_avatar.dart';
+import 'package:under_control_v2/features/user_profile/domain/usecases/approve_passive_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/approve_user.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/approve_user_and_make_admin.dart';
 import 'package:under_control_v2/features/user_profile/domain/usecases/assign_group_admin.dart';
@@ -20,6 +21,8 @@ import 'package:under_control_v2/features/user_profile/domain/usecases/update_us
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 
 class MockApproveUser extends Mock implements ApproveUser {}
+
+class MockApprovePassiveUser extends Mock implements ApprovePassiveUser {}
 
 class MockMakeUserAdministrator extends Mock implements MakeUserAdministrator {}
 
@@ -49,6 +52,7 @@ class MockAddUserAvatar extends Mock implements AddUserAvatar {}
 
 void main() {
   late MockApproveUser mockApproveUser;
+  late MockApprovePassiveUser mockApprovePassiveUser;
   late MockMakeUserAdministrator mockMakeUserAdministrator;
   late MockUnmakeUserAdministrator mockUnmakeUserAdministrator;
   late MockApproveUserAndMakeAdmin mockApproveUserAndMakeAdmin;
@@ -65,6 +69,7 @@ void main() {
 
   setUp(() {
     mockApproveUser = MockApproveUser();
+    mockApprovePassiveUser = MockApprovePassiveUser();
     mockMakeUserAdministrator = MockMakeUserAdministrator();
     mockUnmakeUserAdministrator = MockUnmakeUserAdministrator();
     mockApproveUserAndMakeAdmin = MockApproveUserAndMakeAdmin();
@@ -80,6 +85,7 @@ void main() {
 
     userManagementBloc = UserManagementBloc(
       approveUser: mockApproveUser,
+      approvePassiveUser: mockApprovePassiveUser,
       makeUserAdministrator: mockMakeUserAdministrator,
       unmakeUserAdministrator: mockUnmakeUserAdministrator,
       approveUserAndMakeAdmin: mockApproveUserAndMakeAdmin,
@@ -169,6 +175,47 @@ void main() {
         },
         skip: 1,
         verify: (_) => verify(() => mockApproveUser('')).called(1),
+        expect: () => [isA<UserManagementSuccessful>()],
+      );
+    });
+
+    group('ApprovePassiveUser', () {
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [UnsuspectedFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const ApprovePassiveUserEvent(userId: ''));
+          when(() => mockApprovePassiveUser(any()))
+              .thenAnswer((_) async => const Left(UnsuspectedFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockApprovePassiveUser('')).called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementError] when usecase returns [DatabaseFailure]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const ApprovePassiveUserEvent(userId: ''));
+          when(() => mockApprovePassiveUser(any()))
+              .thenAnswer((_) async => const Left(DatabaseFailure()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockApprovePassiveUser('')).called(1),
+        expect: () => [isA<UserManagementError>()],
+      );
+
+      blocTest(
+        'should emit [UserManagementSuccess] when usecase returns [VoidResult]',
+        build: () => userManagementBloc,
+        act: (UserManagementBloc bloc) async {
+          bloc.add(const ApprovePassiveUserEvent(userId: ''));
+          when(() => mockApprovePassiveUser(any()))
+              .thenAnswer((invocation) async => Right(VoidResult()));
+        },
+        skip: 1,
+        verify: (_) => verify(() => mockApprovePassiveUser('')).called(1),
         expect: () => [isA<UserManagementSuccessful>()],
       );
     });
