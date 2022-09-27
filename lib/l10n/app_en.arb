@@ -1246,7 +1246,15 @@
       "description": "No actions in locations"
     },
     "premission_no_premission": "You are not authorized to access these resources",
-    "@no_actions_in_selected_locations": {
+    "@premission_no_premission": {
       "description": "You are not authorized to access these resources"
+    },
+    "premission_no_action": "You are not authorized to perform this action",
+    "@premission_no_action": {
+      "description": "You are not authorized to perform this action"
+    },
+    "premission_no_write_in_location": "You are not authorized to modify the data at this location",
+    "@premission_no_write_in_location": {
+      "description": "You are not authorized to modify the data at this location"
     }
 }

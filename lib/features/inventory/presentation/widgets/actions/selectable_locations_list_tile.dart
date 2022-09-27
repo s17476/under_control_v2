@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
 import 'package:under_control_v2/features/core/utils/location_selection_helpers.dart';
+import 'package:under_control_v2/features/core/utils/premission.dart';
 import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../../locations/domain/entities/location.dart';
 import '../../../domain/entities/item.dart';
@@ -41,6 +44,7 @@ class _SelectableLocationslistTileState
     extends State<SelectableLocationslistTile> {
   bool isExpanded = false;
   bool isChildSelected = false;
+  bool isAvailable = false;
 
   late List<Location> directChildren;
 
@@ -92,13 +96,13 @@ class _SelectableLocationslistTileState
         totalAmount += widget.item.amountInLocations[index].amount;
       }
     }
-
+    isAvailable = getUserPremission(
+      context: context,
+      featureType: FeatureType.inventory,
+      premissionType: PremissionType.create,
+      locationId: widget.location.id,
+    );
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
   }
 
   @override
@@ -125,12 +129,19 @@ class _SelectableLocationslistTileState
           InkWell(
             borderRadius: BorderRadius.circular(5),
             onTap: () {
-              if (directChildren.isEmpty) {
+              if (isAvailable && directChildren.isEmpty) {
                 _onSelect(context, amountInLocation);
-              } else {
+              } else if (directChildren.isNotEmpty) {
                 setState(() {
                   isExpanded = !isExpanded;
                 });
+              } else {
+                showSnackBar(
+                  context: context,
+                  message: AppLocalizations.of(context)!
+                      .premission_no_write_in_location,
+                  isErrorMessage: true,
+                );
               }
             },
             child: Container(
@@ -163,10 +174,12 @@ class _SelectableLocationslistTileState
                     child: Text(
                       widget.location.name,
                       style: TextStyle(
-                        color: isChildSelected
-                            ? Colors.amber
-                            // ? Theme.of(context).primaryColor
-                            : Colors.grey.shade100,
+                        color: !isAvailable
+                            ? Colors.grey
+                            : isChildSelected
+                                ? Colors.amber
+                                // ? Theme.of(context).primaryColor
+                                : Theme.of(context).textTheme.bodyLarge!.color,
                         fontSize: 16,
                       ),
                       overflow: TextOverflow.ellipsis,
@@ -194,7 +207,16 @@ class _SelectableLocationslistTileState
                   Radio<String>(
                     value: widget.location.id,
                     groupValue: widget.selectedLocation,
-                    onChanged: (_) => _onSelect(context, amountInLocation),
+                    onChanged: !isAvailable
+                        ? (_) {
+                            showSnackBar(
+                              context: context,
+                              message: AppLocalizations.of(context)!
+                                  .premission_no_write_in_location,
+                              isErrorMessage: true,
+                            );
+                          }
+                        : (_) => _onSelect(context, amountInLocation),
                     // activeColor: Theme.of(context).primaryColor,
                     activeColor: Colors.amber,
                   ),
@@ -203,7 +225,6 @@ class _SelectableLocationslistTileState
             ),
           ),
           // sublocations
-
           AnimatedSize(
             curve: Curves.fastOutSlowIn,
             duration: const Duration(milliseconds: 500),

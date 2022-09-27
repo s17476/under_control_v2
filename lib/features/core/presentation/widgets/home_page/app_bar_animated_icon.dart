@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
 import 'package:under_control_v2/features/inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
 
 import '../../../../inventory/presentation/blocs/items_management/items_management_bloc.dart';
@@ -70,6 +71,15 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
         BlocListener<DashboardItemActionBloc, DashboardItemActionState>(
           listener: (context, state) {
             if (state is DashboardItemActionLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<FilterBloc, FilterState>(
+          listener: (context, state) {
+            if (state is FilterLoadedState) {
               _startAnimation();
             } else {
               _stopAnimation();

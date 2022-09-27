@@ -352,13 +352,13 @@ class ItemActionManagementBloc
       await failureOrVoidResult.fold(
         (failure) async => emit(
           ItemActionManagementErrorState(
-            message: ItemActionMessage.notUpdated,
+            message: ItemActionMessage.notAdded,
           ),
         ),
         (_) async {
           emit(
             ItemActionManagementSuccessState(
-              message: ItemActionMessage.updated,
+              message: ItemActionMessage.added,
             ),
           );
         },

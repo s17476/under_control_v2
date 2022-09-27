@@ -294,5 +294,7 @@
     "item_no_barcode": "Zeskanowany kod jest niepoprawny. Spróbuj ponownie!",
     "item_delete_question": "Czy na pewno chcesz usunąć {item}? Ta operacja usunie również historię wszystkich akcji i nie może zostać cofnięta.",
     "no_actions_in_selected_locations": "Brak akcji w wybranych lokalizacjach",
-    "premission_no_premission": "Nie posiadasz uprawnień dostępu do tych zasobów"
+    "premission_no_premission": "Nie posiadasz uprawnień dostępu do tych zasobów",
+    "premission_no_action": "Nie posiadasz uprawnień do wykonania tej akcji",
+    "premission_no_write_in_location": "Nie jestes uprawniony do modyfikacji danych w tej lokalizacji"
 }

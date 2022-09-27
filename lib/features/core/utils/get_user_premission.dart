@@ -19,13 +19,7 @@ bool getUserPremission({
     List<Group> groups = [];
     bool premission = false;
     // user is an admin and all possible groups are selected
-    // or user is an admin and no groups are selected
-    if (state.isAdmin &&
-        (state.groups.isEmpty ||
-            state.groups
-                    .where((group) => state.allPossibleGroups.contains(group))
-                    .length ==
-                state.allPossibleGroups.length)) {
+    if (state.isAdmin && state.groups.isEmpty) {
       premission = true;
       // user is not an admin
     } else {
@@ -50,6 +44,8 @@ bool getUserPremission({
         // depending on location
       } else {
         for (var group in groups) {
+          // print('group');
+          // print(group.name);
           features.addAll(
             group.features
                 .where((feature) =>

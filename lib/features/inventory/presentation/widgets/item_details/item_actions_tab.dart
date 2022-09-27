@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
 import 'package:under_control_v2/features/core/utils/premission.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
 
@@ -28,6 +29,10 @@ class ItemActionsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final inactiveColors = [
+      Colors.grey,
+      Colors.grey.withAlpha(60),
+    ];
     return BlocBuilder<ItemActionBloc, ItemActionState>(
       builder: (context, state) {
         if (state is ItemActionLoadedState) {
@@ -37,122 +42,168 @@ class ItemActionsTab extends StatelessWidget {
           }
           return Column(
             children: [
-              if (getUserPremission(
-                context: context,
-                featureType: FeatureType.inventory,
-                premissionType: PremissionType.create,
-              ))
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 16,
-                    bottom: 8,
-                    left: 8,
-                    right: 8,
-                  ),
-                  child: Row(
-                    children: [
-                      // add button
-                      Expanded(
-                        child: RoundedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              AddToItemPage.routeName,
-                              arguments: item,
-                            );
-                          },
-                          icon: Icons.add,
-                          iconSize: 40,
-                          title: AppLocalizations.of(context)!.add,
-                          titleSize: 16,
-                          foregroundColor: Colors.grey.shade200,
-                          padding: const EdgeInsets.all(16),
-                          gradient: LinearGradient(
-                            colors: [
-                              Theme.of(context).primaryColor,
-                              Theme.of(context).primaryColor.withAlpha(60),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      // move button
-                      Expanded(
-                        child: RoundedButton(
-                          onPressed: getItemTotalQuantity(item) > 0
-                              ? () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    MoveInsideItemPage.routeName,
-                                    arguments: item,
-                                  );
-                                }
-                              : () {},
-                          icon: Icons.compare_arrows_outlined,
-                          iconSize: 40,
-                          title: AppLocalizations.of(context)!.move,
-                          titleSize: 16,
-                          foregroundColor: Colors.grey.shade200,
-                          padding: const EdgeInsets.all(16),
-                          gradient: LinearGradient(
-                            colors: getItemTotalQuantity(item) > 0
-                                ? [
-                                    Colors.blue.shade700,
-                                    Colors.blue.shade700.withAlpha(60),
-                                  ]
-                                : [
-                                    Colors.grey,
-                                    Colors.grey.withAlpha(60),
-                                  ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      // subtract button
-                      Expanded(
-                        child: RoundedButton(
-                          onPressed: getItemTotalQuantity(item) > 0
-                              ? () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    SubtractFromItemPage.routeName,
-                                    arguments: item,
-                                  );
-                                }
-                              : () {},
-                          icon: Icons.remove,
-                          iconSize: 40,
-                          title: AppLocalizations.of(context)!.subtract,
-                          titleSize: 16,
-                          foregroundColor: Colors.grey.shade200,
-                          padding: const EdgeInsets.all(16),
-                          gradient: LinearGradient(
-                            colors: getItemTotalQuantity(item) > 0
-                                ? [
-                                    Colors.red.shade600,
-                                    Colors.red.shade600.withAlpha(60),
-                                  ]
-                                : [
-                                    Colors.grey,
-                                    Colors.grey.withAlpha(60),
-                                  ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 16,
+                  bottom: 8,
+                  left: 8,
+                  right: 8,
                 ),
+                child: Row(
+                  children: [
+                    // add button
+                    Expanded(
+                      child: RoundedButton(
+                        onPressed: !getUserPremission(
+                          context: context,
+                          featureType: FeatureType.inventory,
+                          premissionType: PremissionType.create,
+                        )
+                            ? () {
+                                showSnackBar(
+                                  context: context,
+                                  message: AppLocalizations.of(context)!
+                                      .premission_no_action,
+                                  isErrorMessage: true,
+                                );
+                              }
+                            : () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AddToItemPage.routeName,
+                                  arguments: item,
+                                );
+                              },
+                        icon: Icons.add,
+                        iconSize: 40,
+                        title: AppLocalizations.of(context)!.add,
+                        titleSize: 16,
+                        foregroundColor: Colors.grey.shade200,
+                        padding: const EdgeInsets.all(16),
+                        gradient: LinearGradient(
+                          colors: !getUserPremission(
+                            context: context,
+                            featureType: FeatureType.inventory,
+                            premissionType: PremissionType.create,
+                          )
+                              ? inactiveColors
+                              : [
+                                  Theme.of(context).primaryColor,
+                                  Theme.of(context).primaryColor.withAlpha(60),
+                                ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    // move button
+                    Expanded(
+                      child: RoundedButton(
+                        onPressed: !getUserPremission(
+                          context: context,
+                          featureType: FeatureType.inventory,
+                          premissionType: PremissionType.create,
+                        )
+                            ? () {
+                                showSnackBar(
+                                  context: context,
+                                  message: AppLocalizations.of(context)!
+                                      .premission_no_action,
+                                  isErrorMessage: true,
+                                );
+                              }
+                            : getItemTotalQuantity(item) > 0
+                                ? () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      MoveInsideItemPage.routeName,
+                                      arguments: item,
+                                    );
+                                  }
+                                : () {},
+                        icon: Icons.compare_arrows_outlined,
+                        iconSize: 40,
+                        title: AppLocalizations.of(context)!.move,
+                        titleSize: 16,
+                        foregroundColor: Colors.grey.shade200,
+                        padding: const EdgeInsets.all(16),
+                        gradient: LinearGradient(
+                          colors: !getUserPremission(
+                            context: context,
+                            featureType: FeatureType.inventory,
+                            premissionType: PremissionType.create,
+                          )
+                              ? inactiveColors
+                              : getItemTotalQuantity(item) > 0
+                                  ? [
+                                      Colors.blue.shade700,
+                                      Colors.blue.shade700.withAlpha(60),
+                                    ]
+                                  : inactiveColors,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    // subtract button
+                    Expanded(
+                      child: RoundedButton(
+                        onPressed: !getUserPremission(
+                          context: context,
+                          featureType: FeatureType.inventory,
+                          premissionType: PremissionType.create,
+                        )
+                            ? () {
+                                showSnackBar(
+                                  context: context,
+                                  message: AppLocalizations.of(context)!
+                                      .premission_no_action,
+                                  isErrorMessage: true,
+                                );
+                              }
+                            : getItemTotalQuantity(item) > 0
+                                ? () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      SubtractFromItemPage.routeName,
+                                      arguments: item,
+                                    );
+                                  }
+                                : () {},
+                        icon: Icons.remove,
+                        iconSize: 40,
+                        title: AppLocalizations.of(context)!.subtract,
+                        titleSize: 16,
+                        foregroundColor: Colors.grey.shade200,
+                        padding: const EdgeInsets.all(16),
+                        gradient: LinearGradient(
+                          colors: !getUserPremission(
+                            context: context,
+                            featureType: FeatureType.inventory,
+                            premissionType: PremissionType.create,
+                          )
+                              ? inactiveColors
+                              : getItemTotalQuantity(item) > 0
+                                  ? [
+                                      Colors.red.shade600,
+                                      Colors.red.shade600.withAlpha(60),
+                                    ]
+                                  : inactiveColors,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const Divider(
                 thickness: 1.5,
                 indent: 8,
