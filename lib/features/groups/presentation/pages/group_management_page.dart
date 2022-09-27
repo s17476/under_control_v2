@@ -148,6 +148,7 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
                           arguments: group,
                         ),
                         user: currentUser,
+                        searchQuery: searchQuery,
                       ),
                     ),
                   );
@@ -160,7 +161,7 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
         },
       ),
       // floating action button visible only if:
-      // user is administrator
+      // user is administrator or has 'inventory create' premission
       // and GroupBloc state is GroupLoadedState
       floatingActionButton: isAdministrator
           ? context.watch<GroupBloc>().state is GroupLoadedState

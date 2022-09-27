@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/highlighted_text.dart';
 
 import '../../../user_profile/domain/entities/user_profile.dart';
 import 'cached_user_avatar.dart';
@@ -15,6 +16,7 @@ class UserListTile extends StatelessWidget {
     this.showAdmin = true,
     required this.user,
     required this.onTap,
+    this.searchQuery = '',
   }) : super(key: key);
 
   final bool isSelectionTile;
@@ -24,6 +26,8 @@ class UserListTile extends StatelessWidget {
 
   final double avatarSize;
   final double nameSize;
+
+  final String searchQuery;
 
   final UserProfile user;
 
@@ -50,21 +54,21 @@ class UserListTile extends StatelessWidget {
                 children: [
                   Wrap(
                     children: [
-                      Text(
-                        user.firstName,
+                      HighlightedText(
+                        text: user.firstName,
+                        query: searchQuery,
                         style: TextStyle(
                           fontSize: nameSize,
-                          color: Colors.grey.shade200,
                         ),
                       ),
                       const SizedBox(
                         width: 8,
                       ),
-                      Text(
-                        user.lastName,
+                      HighlightedText(
+                        text: user.lastName,
+                        query: searchQuery,
                         style: TextStyle(
                           fontSize: nameSize,
-                          color: Colors.grey.shade200,
                         ),
                       ),
                     ],

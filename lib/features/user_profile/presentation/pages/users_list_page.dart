@@ -289,13 +289,14 @@ class _UsersListPageState extends State<UsersListPage> {
                           ),
                           child: UserListTile(
                             user: activeUsers[index],
-                            onTap: ((userProfile) {
+                            onTap: (userProfile) {
                               Navigator.pushNamed(
                                 context,
                                 UserDetailsPage.routeName,
                                 arguments: userProfile,
                               );
-                            }),
+                            },
+                            searchQuery: searchQuery,
                           ),
                         ),
                       ),
@@ -333,6 +334,7 @@ class _UsersListPageState extends State<UsersListPage> {
                                 arguments: userProfile,
                               );
                             },
+                            searchQuery: searchQuery,
                           ),
                         ),
                       ),

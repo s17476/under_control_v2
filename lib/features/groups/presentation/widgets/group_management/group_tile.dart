@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/highlighted_text.dart';
 
 import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
@@ -13,12 +14,15 @@ class GroupTile extends StatelessWidget {
     this.isGroupMember = false,
     this.user,
     this.isSelectionTile = false,
+    this.searchQuery = '',
   }) : super(key: key);
 
   final Group group;
   final UserProfile? user;
   final bool isSelectionTile;
   final bool isGroupMember;
+
+  final String searchQuery;
 
   final Function(Group group) onTap;
 
@@ -84,17 +88,16 @@ class GroupTile extends StatelessWidget {
                         width: 12,
                       ),
                       Expanded(
-                        child: Text(
-                          group.name,
-                          style:
-                              Theme.of(context).textTheme.headline6!.copyWith(
-                                    color: Colors.grey.shade200,
-                                    fontSize: 18,
-                                  ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                          child: HighlightedText(
+                        text: group.name,
+                        query: searchQuery,
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                              color: Colors.grey.shade200,
+                              fontSize: 18,
+                            ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )),
                     ],
                   ),
 
