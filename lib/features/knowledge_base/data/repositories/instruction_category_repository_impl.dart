@@ -4,30 +4,31 @@ import 'package:injectable/injectable.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../../domain/entities/item_category/items_categories_stream.dart';
-import '../../domain/repositories/item_category_repository.dart';
-import '../models/item_category/item_category_model.dart';
+import '../../domain/entities/instruction_category/instructions_categories_stream.dart';
+import '../../domain/repositories/instruction_category_repository.dart';
+import '../models/item_category/instruction_category_model.dart';
 
-@LazySingleton(as: ItemCategoryRepository)
-class ItemCategoryRepositoryImpl extends ItemCategoryRepository {
+@LazySingleton(as: InstructionCategoryRepository)
+class InstructionCategoryRepositoryImpl extends InstructionCategoryRepository {
   final FirebaseFirestore firebaseFirestore;
 
-  ItemCategoryRepositoryImpl({
+  InstructionCategoryRepositoryImpl({
     required this.firebaseFirestore,
   });
   @override
-  Future<Either<Failure, String>> addItemCategory(
-      ItemCategoryParams params) async {
+  Future<Either<Failure, String>> addInstructionCategory(
+      InstructionCategoryParams params) async {
     try {
       final categoryReference = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('itemsCategories');
-      final itemCategoryMap =
-          (params.itemCategory as ItemCategoryModel).toMap();
-      final documentReferance = await categoryReference.add(itemCategoryMap);
-      final String generatedItemCategoryId = documentReferance.id;
-      return Right(generatedItemCategoryId);
+          .collection('instructionsCategories');
+      final instructionsCategoryMap =
+          (params.instructionCategory as InstructionCategoryModel).toMap();
+      final documentReferance =
+          await categoryReference.add(instructionsCategoryMap);
+      final String generatedInstructionCategoryId = documentReferance.id;
+      return Right(generatedInstructionCategoryId);
     } on FirebaseException catch (e) {
       return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
     } catch (e) {
@@ -38,23 +39,23 @@ class ItemCategoryRepositoryImpl extends ItemCategoryRepository {
   }
 
   @override
-  Future<Either<Failure, VoidResult>> deleteItemCategory(
-      ItemCategoryParams params) async {
+  Future<Either<Failure, VoidResult>> deleteInstructionCategory(
+      InstructionCategoryParams params) async {
     try {
-      // checks if there is no items in given category
-      final itemsInCategory = await firebaseFirestore
+      // checks if there is no instructions in given category
+      final instructionsInCategory = await firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('items')
-          .where('category', isEqualTo: params.itemCategory.id)
+          .collection('instructions')
+          .where('category', isEqualTo: params.instructionCategory.id)
           .get();
 
-      if (itemsInCategory.docs.isEmpty) {
+      if (instructionsInCategory.docs.isEmpty) {
         firebaseFirestore
             .collection('companies')
             .doc(params.companyId)
-            .collection('itemsCategories')
-            .doc(params.itemCategory.id)
+            .collection('instructionsCategories')
+            .doc(params.instructionCategory.id)
             .delete();
       } else {
         return const Left(
@@ -73,17 +74,21 @@ class ItemCategoryRepositoryImpl extends ItemCategoryRepository {
   }
 
   @override
-  Future<Either<Failure, ItemsCategoriesStream>> getItemsCategoriesStream(
-      String params) async {
+  Future<Either<Failure, InstructionsCategoriesStream>>
+      getInstructionsCategoriesStream(String params) async {
     try {
       final Stream<QuerySnapshot> querySnapshot;
       querySnapshot = firebaseFirestore
           .collection('companies')
           .doc(params)
-          .collection('itemsCategories')
+          .collection('instructionsCategories')
           .snapshots();
 
-      return Right(ItemsCategoriesStream(allItemsCategories: querySnapshot));
+      return Right(
+        InstructionsCategoriesStream(
+          allInstructionsCategories: querySnapshot,
+        ),
+      );
     } on FirebaseException catch (e) {
       return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
     } catch (e) {
@@ -94,15 +99,16 @@ class ItemCategoryRepositoryImpl extends ItemCategoryRepository {
   }
 
   @override
-  Future<Either<Failure, VoidResult>> updateItemCategory(
-      ItemCategoryParams params) async {
+  Future<Either<Failure, VoidResult>> updateInstructionCategory(
+      InstructionCategoryParams params) async {
     try {
       final categoryReference = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('itemsCategories')
-          .doc(params.itemCategory.id);
-      final categoryMap = (params.itemCategory as ItemCategoryModel).toMap();
+          .collection('instructionsCategories')
+          .doc(params.instructionCategory.id);
+      final categoryMap =
+          (params.instructionCategory as InstructionCategoryModel).toMap();
       await categoryReference.update(categoryMap);
       return Right(VoidResult());
     } on FirebaseException catch (e) {

@@ -7,7 +7,7 @@ import '../../repositories/instruction_category_repository.dart';
 
 @lazySingleton
 class DeleteInstructionCategory
-    extends FutureUseCase<VoidResult, CategoryParams> {
+    extends FutureUseCase<VoidResult, InstructionCategoryParams> {
   final InstructionCategoryRepository repository;
 
   DeleteInstructionCategory({
@@ -15,6 +15,7 @@ class DeleteInstructionCategory
   });
 
   @override
-  Future<Either<Failure, VoidResult>> call(CategoryParams params) async =>
+  Future<Either<Failure, VoidResult>> call(
+          InstructionCategoryParams params) async =>
       repository.deleteInstructionCategory(params);
 }

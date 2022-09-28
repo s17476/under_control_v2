@@ -36,8 +36,8 @@ void main() {
     name: 'name',
   );
 
-  CategoryParams tItemCategoryParams = CategoryParams(
-    category: tItemCategoryModel,
+  ItemCategoryParams tItemCategoryParams = ItemCategoryParams(
+    itemCategory: tItemCategoryModel,
     companyId: companyId,
   );
 

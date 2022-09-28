@@ -25,8 +25,8 @@ void main() {
 
   const tItemCategoryModel = ItemCategoryModel(id: 'id', name: 'name');
 
-  const tItemcategoryParams = CategoryParams(
-    category: tItemCategoryModel,
+  const tItemcategoryParams = ItemCategoryParams(
+    itemCategory: tItemCategoryModel,
     companyId: companyId,
   );
 

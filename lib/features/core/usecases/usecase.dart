@@ -8,6 +8,7 @@ import '../../groups/domain/entities/group.dart';
 import '../../inventory/domain/entities/item.dart';
 import '../../inventory/domain/entities/item_action/item_action.dart';
 import '../../inventory/domain/entities/item_category/item_category.dart';
+import '../../knowledge_base/domain/entities/instruction_category/instruction_category.dart';
 import '../../locations/domain/entities/location.dart';
 import '../error/failures.dart';
 
@@ -230,21 +231,38 @@ class ItemsInLocationsParams extends Equatable {
   List<Object> get props => [locations, companyId];
 }
 
-class CategoryParams extends Equatable {
-  final ItemCategory category;
+class ItemCategoryParams extends Equatable {
+  final ItemCategory itemCategory;
   final String companyId;
 
-  const CategoryParams({
-    required this.category,
+  const ItemCategoryParams({
+    required this.itemCategory,
     required this.companyId,
   });
 
   @override
-  List<Object> get props => [category, companyId];
+  List<Object> get props => [itemCategory, companyId];
 
   @override
   String toString() =>
-      'ItemsCategoriesParams(itemCategory: $category, companyId: $companyId)';
+      'ItemsCategoriesParams(itemCategory: $itemCategory, companyId: $companyId)';
+}
+
+class InstructionCategoryParams extends Equatable {
+  final InstructionCategory instructionCategory;
+  final String companyId;
+
+  const InstructionCategoryParams({
+    required this.instructionCategory,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [instructionCategory, companyId];
+
+  @override
+  String toString() =>
+      'InstructionCategoryParams(instructionCategory: $instructionCategory, companyId: $companyId)';
 }
 
 class SelectedGroupsParams extends Equatable {
