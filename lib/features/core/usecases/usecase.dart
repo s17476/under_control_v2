@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
+import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
+
 import '../../checklists/domain/entities/checklist.dart';
 import '../../groups/domain/entities/group.dart';
 import '../../inventory/domain/entities/item.dart';
@@ -263,6 +265,23 @@ class InstructionCategoryParams extends Equatable {
   @override
   String toString() =>
       'InstructionCategoryParams(instructionCategory: $instructionCategory, companyId: $companyId)';
+}
+
+class InstructionParams extends Equatable {
+  final Instruction instruction;
+  final String companyId;
+
+  const InstructionParams({
+    required this.instruction,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [instruction, companyId];
+
+  @override
+  String toString() =>
+      'InstructionParams(instruction: $instruction, companyId: $companyId)';
 }
 
 class SelectedGroupsParams extends Equatable {

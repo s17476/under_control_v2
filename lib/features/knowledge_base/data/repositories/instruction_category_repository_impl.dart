@@ -6,7 +6,7 @@ import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../domain/entities/instruction_category/instructions_categories_stream.dart';
 import '../../domain/repositories/instruction_category_repository.dart';
-import '../models/item_category/instruction_category_model.dart';
+import '../models/inventory_category/instruction_category_model.dart';
 
 @LazySingleton(as: InstructionCategoryRepository)
 class InstructionCategoryRepositoryImpl extends InstructionCategoryRepository {

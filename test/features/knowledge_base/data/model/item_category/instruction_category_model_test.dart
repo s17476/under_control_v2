@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/item_category/instruction_category_model.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/inventory_category/instruction_category_model.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction_category/instruction_category.dart';
 
 void main() {

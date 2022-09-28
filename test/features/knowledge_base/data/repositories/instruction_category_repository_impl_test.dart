@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/item_category/instruction_category_model.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/inventory_category/instruction_category_model.dart';
 import 'package:under_control_v2/features/knowledge_base/data/repositories/instruction_category_repository_impl.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction_category/instructions_categories_stream.dart';
 
