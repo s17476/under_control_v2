@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
-import 'package:under_control_v2/features/checklists/presentation/widgets/add_checkpoint_bottom_modal_sheet.dart';
-import 'package:under_control_v2/features/checklists/presentation/widgets/add_checkpoint_button.dart';
-import 'package:under_control_v2/features/checklists/presentation/widgets/checkpoint_tile.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../core/presentation/widgets/forward_text_button.dart';
+import '../../../core/utils/show_snack_bar.dart';
+import '../../data/models/checkpoint_model.dart';
+import '../../utils/show_add_checkpoint_bottom_modal_sheet.dart';
+import 'add_checkpoint_button.dart';
+import 'checkpoint_tile.dart';
 
 class AddCheckpointsCard extends StatefulWidget {
   const AddCheckpointsCard({
@@ -26,17 +25,11 @@ class AddCheckpointsCard extends StatefulWidget {
 }
 
 class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
-  List<CheckpointModel> checkpoints = [];
+  List<CheckpointModel> _checkpoints = [];
 
-  @override
-  void initState() {
-    checkpoints = widget.checkpoints;
-    super.initState();
-  }
-
-  void saveCheckpoint(
+  void _saveCheckpoint(
       CheckpointModel? oldCheckpoint, CheckpointModel newCheckpoint) {
-    if (checkpoints
+    if (_checkpoints
         .map((e) => e.title.toLowerCase())
         .contains(newCheckpoint.title.trim().toLowerCase())) {
       showSnackBar(
@@ -48,30 +41,36 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
       // edit checkpoint
       if (oldCheckpoint != null) {
         setState(() {
-          checkpoints.remove(oldCheckpoint);
-          checkpoints.add(newCheckpoint);
+          _checkpoints.remove(oldCheckpoint);
+          _checkpoints.add(newCheckpoint);
         });
         // add checkpoint
       } else {
         setState(() {
-          checkpoints.add(newCheckpoint);
+          _checkpoints.add(newCheckpoint);
         });
       }
     }
   }
 
-  void editCheckpoint(CheckpointModel checkpoint) {
+  void _editCheckpoint(CheckpointModel checkpoint) {
     showAddCheckpointModalBottomSheet(
       context: context,
-      onSave: saveCheckpoint,
+      onSave: _saveCheckpoint,
       currentCheckpoint: checkpoint,
     );
   }
 
-  void deleteCheckpoint(CheckpointModel checkpoint) {
+  void _deleteCheckpoint(CheckpointModel checkpoint) {
     setState(() {
-      checkpoints.remove(checkpoint);
+      _checkpoints.remove(checkpoint);
     });
+  }
+
+  @override
+  void initState() {
+    _checkpoints = widget.checkpoints;
+    super.initState();
   }
 
   @override
@@ -110,9 +109,9 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
                         itemBuilder: (context, index) {
                           return CheckpointTile(
                             key: ValueKey('$index'),
-                            checkpoint: checkpoints[index],
-                            editCheckpoint: editCheckpoint,
-                            deleteCheckpoint: deleteCheckpoint,
+                            checkpoint: _checkpoints[index],
+                            editCheckpoint: _editCheckpoint,
+                            deleteCheckpoint: _deleteCheckpoint,
                             trailing: ReorderableDragStartListener(
                               index: index,
                               child: const Icon(
@@ -123,15 +122,15 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
                             index: index,
                           );
                         },
-                        itemCount: checkpoints.length,
+                        itemCount: _checkpoints.length,
                         onReorder: (int oldIndex, int newIndex) {
                           setState(() {
                             if (oldIndex < newIndex) {
                               newIndex -= 1;
                             }
                             final CheckpointModel item =
-                                checkpoints.removeAt(oldIndex);
-                            checkpoints.insert(newIndex, item);
+                                _checkpoints.removeAt(oldIndex);
+                            _checkpoints.insert(newIndex, item);
                           });
                         },
                       ),
@@ -178,7 +177,7 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
             bottom: 60,
             right: 10,
             child: AddCheckpointButton(
-              addCheckpoint: saveCheckpoint,
+              addCheckpoint: _saveCheckpoint,
             ),
           ),
         ],

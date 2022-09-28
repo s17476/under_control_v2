@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
-import 'package:under_control_v2/features/company_profile/presentation/widgets/edit_company_modal_bottom_sheet.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/icon_title_row.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/loading_widget.dart';
-import 'package:under_control_v2/features/core/utils/choice.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
-import 'package:under_control_v2/features/core/utils/size_config.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 import '../../../core/presentation/widgets/cached_user_avatar.dart';
-import '../../../core/presentation/widgets/url_launcher_helpers.dart';
+import '../../../core/presentation/widgets/icon_title_row.dart';
+import '../../../core/presentation/widgets/loading_widget.dart';
+import '../../../core/utils/url_launcher_helpers.dart';
+import '../../../core/utils/choice.dart';
+import '../../../core/utils/responsive_size.dart';
+import '../../../core/utils/size_config.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../domain/entities/company.dart';
+import '../blocs/company_profile/company_profile_bloc.dart';
+import '../../utils/show_edit_company_modal_bottom_sheet.dart';
 
 class CompanyDetailsPage extends StatefulWidget {
   const CompanyDetailsPage({Key? key}) : super(key: key);
@@ -27,40 +27,40 @@ class CompanyDetailsPage extends StatefulWidget {
 
 class _CompanyDetailsState extends State<CompanyDetailsPage>
     with ResponsiveSize {
-  late CompanyProfileState companyState;
-  late UserProfile currentUser;
-  late Company company;
+  late CompanyProfileState _companyState;
+  late UserProfile _currentUser;
+  late Company _company;
 
-  bool isLogoEditorVisible = false;
+  bool _isLogoEditorVisible = false;
 
-  List<Choice> choices = [];
+  List<Choice> _choices = [];
 
-  void showLogoEditor() {
+  void _showLogoEditor() {
     setState(() {
-      isLogoEditorVisible = true;
+      _isLogoEditorVisible = true;
     });
   }
 
-  void hideLogoEditor() {
+  void _hideLogoEditor() {
     setState(() {
-      isLogoEditorVisible = false;
+      _isLogoEditorVisible = false;
     });
   }
 
   @override
   void didChangeDependencies() {
-    currentUser =
+    _currentUser =
         (context.read<UserProfileBloc>().state as Approved).userProfile;
-    companyState = context.watch<CompanyProfileBloc>().state;
-    company = (companyState as CompanyProfileLoaded).company;
+    _companyState = context.watch<CompanyProfileBloc>().state;
+    _company = (_companyState as CompanyProfileLoaded).company;
 
-    choices = [
+    _choices = [
       Choice(
         title: AppLocalizations.of(context)!.user_details_edit_data,
         icon: Icons.edit,
         onTap: () => showEditCompanyModalBottomSheet(
           context: context,
-          company: company,
+          company: _company,
         ),
       ),
       Choice(
@@ -77,11 +77,11 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    if (companyState is CompanyProfileLoaded) {
+    if (_companyState is CompanyProfileLoaded) {
       return WillPopScope(
         onWillPop: () async {
-          if (isLogoEditorVisible) {
-            hideLogoEditor();
+          if (_isLogoEditorVisible) {
+            _hideLogoEditor();
             return false;
           }
           return true;
@@ -93,16 +93,16 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
             ),
             centerTitle: true,
             actions: [
-              if (currentUser.administrator)
+              if (_currentUser.administrator)
                 PopupMenuButton(
                   onSelected: (Choice choice) {
-                    if (isLogoEditorVisible) {
-                      hideLogoEditor();
+                    if (_isLogoEditorVisible) {
+                      _hideLogoEditor();
                     }
                     choice.onTap();
                   },
                   itemBuilder: (BuildContext context) {
-                    return choices.map((Choice choice) {
+                    return _choices.map((Choice choice) {
                       return PopupMenuItem<Choice>(
                         value: choice,
                         child: Row(
@@ -141,7 +141,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                           children: [
                             CachedUserAvatar(
                               size: responsiveSizePct(small: 30),
-                              imageUrl: company.logo,
+                              imageUrl: _company.logo,
                               isCircular: false,
                             ),
                             const SizedBox(
@@ -149,7 +149,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                             ),
                             Expanded(
                               child: Text(
-                                company.name,
+                                _company.name,
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline4!
@@ -188,7 +188,8 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                               ),
                               // phone number
                               InkWell(
-                                onTap: () => makePhoneCall(company.phoneNumber),
+                                onTap: () =>
+                                    makePhoneCall(_company.phoneNumber),
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8.0),
@@ -207,14 +208,14 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                               .add_company_intro_card_phone_number,
                                         ),
                                       ),
-                                      Text(company.phoneNumber),
+                                      Text(_company.phoneNumber),
                                     ],
                                   ),
                                 ),
                               ),
                               // mail
                               InkWell(
-                                onTap: () => mailTo(company.email),
+                                onTap: () => mailTo(_company.email),
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8.0),
@@ -234,7 +235,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                         ),
                                       ),
                                       Text(
-                                        company.email,
+                                        _company.email,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
@@ -244,7 +245,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
 
                               // homepage
                               InkWell(
-                                onTap: () => openInBrowser(company.homepage),
+                                onTap: () => openInBrowser(_company.homepage),
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8.0),
@@ -264,7 +265,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                         ),
                                       ),
                                       Text(
-                                        company.homepage,
+                                        _company.homepage,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
@@ -316,7 +317,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                             .add_company_intro_card_vat_number,
                                       ),
                                     ),
-                                    Text(company.vatNumber),
+                                    Text(_company.vatNumber),
                                   ],
                                 ),
                               ),
@@ -339,7 +340,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                             .add_company_intro_card_address,
                                       ),
                                     ),
-                                    Text(company.address),
+                                    Text(_company.address),
                                   ],
                                 ),
                               ),
@@ -362,7 +363,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                             .add_company_intro_card_postcode,
                                       ),
                                     ),
-                                    Text(company.postCode),
+                                    Text(_company.postCode),
                                   ],
                                 ),
                               ),
@@ -385,7 +386,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                             .add_company_intro_card_city,
                                       ),
                                     ),
-                                    Text(company.city),
+                                    Text(_company.city),
                                   ],
                                 ),
                               ),
@@ -408,7 +409,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                             .add_company_intro_card_country,
                                       ),
                                     ),
-                                    Text(company.country),
+                                    Text(_company.country),
                                   ],
                                 ),
                               ),
@@ -430,7 +431,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                         AppLocalizations.of(context)!.currency,
                                       ),
                                     ),
-                                    Text(company.currency),
+                                    Text(_company.currency),
                                   ],
                                 ),
                               ),
@@ -455,7 +456,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                     ),
                                     Text(
                                       DateFormat('dd/MM/yyyy')
-                                          .format(company.joinDate),
+                                          .format(_company.joinDate),
                                     ),
                                   ],
                                 ),

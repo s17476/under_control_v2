@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../data/models/user_profile_model.dart';
-import '../../domain/entities/user_profile.dart';
-import '../blocs/user_management/user_management_bloc.dart';
+import '../../core/presentation/widgets/custom_text_form_field.dart';
+import '../data/models/checkpoint_model.dart';
 
-Future<void> showEditUserModalBottomSheet({
+Future<void> showAddCheckpointModalBottomSheet({
   required BuildContext context,
-  required UserProfile user,
+  CheckpointModel? currentCheckpoint,
+  required Function(
+          CheckpointModel? oldCheckpoint, CheckpointModel newCheckpoint)
+      onSave,
 }) {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  UserProfileModel updatedUser = user as UserProfileModel;
+  CheckpointModel checkpoint = currentCheckpoint ??
+      const CheckpointModel(
+        title: '',
+        isChecked: false,
+      );
 
   return showModalBottomSheet<void>(
     isScrollControlled: true,
@@ -26,7 +30,7 @@ Future<void> showEditUserModalBottomSheet({
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          height: 350,
+          height: 200,
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: const BorderRadius.only(
@@ -43,7 +47,9 @@ Future<void> showEditUserModalBottomSheet({
                   bottom: 4,
                 ),
                 child: Text(
-                  AppLocalizations.of(context)!.user_details_edit_data,
+                  //
+                  //
+                  AppLocalizations.of(context)!.checklist_add_checkpoint,
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
@@ -57,82 +63,39 @@ Future<void> showEditUserModalBottomSheet({
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        const SizedBox(
-                          height: 8,
-                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
+                            horizontal: 8,
                             vertical: 8,
                           ),
                           child: Column(
                             children: [
                               // parent name
                               CustomTextFormField(
-                                fieldKey: 'userName',
+                                autofocus: true,
+                                fieldKey: 'title',
                                 labelText: AppLocalizations.of(context)!
-                                    .user_profile_add_user_personal_data_first_name,
-                                textCapitalization: TextCapitalization.words,
-                                initialValue: user.firstName,
-                                prefixIcon: const Icon(Icons.person),
+                                    .checklist_checkpoint_title,
+                                initialValue: checkpoint.title,
+                                prefixIcon:
+                                    const Icon(Icons.check_circle_outline),
                                 validator: (value) {
-                                  if (value!.isEmpty || value.length < 2) {
+                                  if (value!.trim().isEmpty ||
+                                      value.length < 2) {
                                     return AppLocalizations.of(context)!
                                         .validation_min_two_characters;
                                   }
                                   return null;
                                 },
                                 onSaved: (value) {
-                                  updatedUser = updatedUser.copyWith(
-                                      firstName: value?.trim());
+                                  checkpoint = CheckpointModel(
+                                    title: value!.trim(),
+                                    isChecked: false,
+                                  );
                                 },
                               ),
                               const SizedBox(
                                 height: 20,
-                              ),
-                              // location name
-                              CustomTextFormField(
-                                fieldKey: 'lastName',
-                                keyboardType: TextInputType.name,
-                                initialValue: user.lastName,
-                                prefixIcon: const Icon(Icons.person_outline),
-                                labelText: AppLocalizations.of(context)!
-                                    .user_profile_add_user_personal_data_last_name,
-                                textCapitalization: TextCapitalization.words,
-                                onSaved: (value) {
-                                  updatedUser = updatedUser.copyWith(
-                                      lastName: value?.trim());
-                                },
-                                validator: (value) {
-                                  if (value!.isEmpty || value.length < 2) {
-                                    return AppLocalizations.of(context)!
-                                        .validation_min_two_characters;
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              // phone number
-                              CustomTextFormField(
-                                fieldKey: 'phoneNumber',
-                                keyboardType: TextInputType.phone,
-                                initialValue: user.phoneNumber,
-                                prefixIcon: const Icon(Icons.phone),
-                                labelText: AppLocalizations.of(context)!
-                                    .user_profile_add_user_personal_data_phone_number,
-                                onSaved: (value) {
-                                  updatedUser = updatedUser.copyWith(
-                                      phoneNumber: value?.trim());
-                                },
-                                validator: (value) {
-                                  if (value!.isEmpty || value.length < 8) {
-                                    return AppLocalizations.of(context)!
-                                        .input_validation_phone_number;
-                                  }
-                                  return null;
-                                },
                               ),
                             ],
                           ),
@@ -164,8 +127,9 @@ Future<void> showEditUserModalBottomSheet({
                     Expanded(
                       child: TextButton(
                         child: Text(
-                          AppLocalizations.of(context)!
-                              .user_profile_add_user_personal_data_save,
+                          currentCheckpoint != null
+                              ? AppLocalizations.of(context)!.update
+                              : AppLocalizations.of(context)!.add,
                         ),
                         onPressed: () {
                           FocusScope.of(context).unfocus();
@@ -174,9 +138,7 @@ Future<void> showEditUserModalBottomSheet({
                           }
                           _formKey.currentState!.save();
 
-                          context.read<UserManagementBloc>().add(
-                                UpdateUserDataEvent(userProfile: updatedUser),
-                              );
+                          onSave(currentCheckpoint, checkpoint);
 
                           Navigator.pop(context);
                         },

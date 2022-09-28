@@ -3,12 +3,11 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
-import 'package:under_control_v2/features/groups/domain/entities/group.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_category/item_category.dart';
-
+import '../../checklists/domain/entities/checklist.dart';
+import '../../groups/domain/entities/group.dart';
 import '../../inventory/domain/entities/item.dart';
+import '../../inventory/domain/entities/item_action/item_action.dart';
+import '../../inventory/domain/entities/item_category/item_category.dart';
 import '../../locations/domain/entities/location.dart';
 import '../error/failures.dart';
 

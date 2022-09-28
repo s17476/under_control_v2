@@ -4,10 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_category/item_category.dart';
 
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/item_category/items_categories_list_model.dart';
+import '../../../domain/entities/item_category/item_category.dart';
 import '../../../domain/usecases/item_category/get_items_categories_stream.dart';
 
 part 'item_category_event.dart';
@@ -15,20 +15,21 @@ part 'item_category_state.dart';
 
 @lazySingleton
 class ItemCategoryBloc extends Bloc<ItemCategoryEvent, ItemCategoryState> {
-  late StreamSubscription userProfileStreamSubscription;
-  StreamSubscription? itemsCategoriesStreamSubscription;
   final UserProfileBloc userProfileBloc;
   final GetItemsCategoriesStream getItemsCategoriesStream;
 
-  String companyId = '';
+  late StreamSubscription _userProfileStreamSubscription;
+  StreamSubscription? _itemsCategoriesStreamSubscription;
+
+  String _companyId = '';
 
   ItemCategoryBloc({
     required this.userProfileBloc,
     required this.getItemsCategoriesStream,
   }) : super(ItemCategoryEmptyState()) {
-    userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
+    _userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
       if (state is Approved) {
-        companyId = state.userProfile.companyId;
+        _companyId = state.userProfile.companyId;
         add(GetAllItemsCategoriesEvent());
       }
     });
@@ -37,13 +38,13 @@ class ItemCategoryBloc extends Bloc<ItemCategoryEvent, ItemCategoryState> {
       emit(ItemCategoryLoadingState());
 
       final failureIrItemCategoriesStream =
-          await getItemsCategoriesStream(companyId);
+          await getItemsCategoriesStream(_companyId);
       await failureIrItemCategoriesStream.fold(
         (failure) async => emit(
           ItemCategoryErrorState(message: failure.message),
         ),
         (categoriesStream) async {
-          itemsCategoriesStreamSubscription =
+          _itemsCategoriesStreamSubscription =
               categoriesStream.allItemsCategories.listen((snapshot) {
             add(UpdateItemsCategoriesListEvent(snapshot: snapshot));
           });
@@ -64,8 +65,8 @@ class ItemCategoryBloc extends Bloc<ItemCategoryEvent, ItemCategoryState> {
 
   @override
   Future<void> close() {
-    userProfileStreamSubscription.cancel();
-    itemsCategoriesStreamSubscription?.cancel();
+    _userProfileStreamSubscription.cancel();
+    _itemsCategoriesStreamSubscription?.cancel();
     return super.close();
   }
 }

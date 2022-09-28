@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 
+import '../../../core/utils/responsive_size.dart';
 import '../../../inventory/domain/entities/item_action/item_action.dart';
 import '../../../inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
 import '../../../inventory/presentation/widgets/actions/item_action_list_tile.dart';
@@ -19,8 +19,43 @@ class AllActionsListPage extends StatefulWidget {
 class _AllActionsListPageState extends State<AllActionsListPage>
     with ResponsiveSize {
   List<ItemAction>? actions;
-  List<ItemAction>? filteredActions;
-  bool isFilterExpanded = false;
+  List<ItemAction>? _filteredActions;
+
+  _filterActions(int index) {
+    switch (index) {
+      case 0:
+        setState(() {
+          _filteredActions = actions;
+        });
+        break;
+      case 1:
+        setState(() {
+          _filteredActions = actions
+              ?.where((action) => action.type == ItemActionType.add)
+              .toList();
+        });
+        break;
+      case 2:
+        setState(() {
+          _filteredActions = actions
+              ?.where((action) => action.type == ItemActionType.remove)
+              .toList();
+        });
+        break;
+      case 3:
+        setState(() {
+          _filteredActions = actions
+              ?.where((action) =>
+                  action.type == ItemActionType.moveAdd ||
+                  action.type == ItemActionType.moveRemove)
+              .toList();
+        });
+        break;
+      default:
+        _filteredActions = actions;
+        break;
+    }
+  }
 
   @override
   void initState() {
@@ -37,45 +72,9 @@ class _AllActionsListPageState extends State<AllActionsListPage>
     if (actionsState is DashboardItemActionLoadedState &&
         actionsState.isAllItems) {
       actions = actionsState.allActions.allItemActions.toList();
-      filteredActions = actions;
+      _filteredActions = actions;
     }
     super.didChangeDependencies();
-  }
-
-  _filterActions(int index) {
-    switch (index) {
-      case 0:
-        setState(() {
-          filteredActions = actions;
-        });
-        break;
-      case 1:
-        setState(() {
-          filteredActions = actions
-              ?.where((action) => action.type == ItemActionType.add)
-              .toList();
-        });
-        break;
-      case 2:
-        setState(() {
-          filteredActions = actions
-              ?.where((action) => action.type == ItemActionType.remove)
-              .toList();
-        });
-        break;
-      case 3:
-        setState(() {
-          filteredActions = actions
-              ?.where((action) =>
-                  action.type == ItemActionType.moveAdd ||
-                  action.type == ItemActionType.moveRemove)
-              .toList();
-        });
-        break;
-      default:
-        filteredActions = actions;
-        break;
-    }
   }
 
   // TODO
@@ -135,7 +134,7 @@ class _AllActionsListPageState extends State<AllActionsListPage>
           child: SingleChildScrollView(
             child: Column(
               children: [
-                if (filteredActions != null && filteredActions!.isNotEmpty)
+                if (_filteredActions != null && _filteredActions!.isNotEmpty)
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -143,13 +142,13 @@ class _AllActionsListPageState extends State<AllActionsListPage>
                       horizontal: 8,
                       vertical: 4,
                     ),
-                    itemCount: filteredActions!.length,
+                    itemCount: _filteredActions!.length,
                     itemBuilder: (context, index) => ItemActionListTile(
-                      action: filteredActions![index],
+                      action: _filteredActions![index],
                       isDashboardTile: true,
                     ),
                   ),
-                if (filteredActions != null && filteredActions!.isEmpty)
+                if (_filteredActions != null && _filteredActions!.isEmpty)
                   Container(
                     alignment: Alignment.center,
                     height: responsiveSizeVerticalPct(small: 90),
@@ -158,7 +157,7 @@ class _AllActionsListPageState extends State<AllActionsListPage>
                           .no_actions_in_selected_locations,
                     ),
                   ),
-                if (filteredActions == null)
+                if (_filteredActions == null)
                   Container(
                     alignment: Alignment.center,
                     height: responsiveSizeVerticalPct(small: 90),

@@ -22,31 +22,32 @@ class DashboardItemActionBloc
   final GetDashboardItemsActionsStream getDashboardItemsActionsStream;
   final GetDashboardLastFiveItemsActionsStream
       getDashboardLastFiveItemsActionsStream;
-  late StreamSubscription filterStreamSubscription;
-  List<StreamSubscription?> actionStreamSubscriptions = [];
 
-  String companyId = '';
-  List<String> locations = [];
+  late StreamSubscription _filterStreamSubscription;
+  final List<StreamSubscription?> _actionStreamSubscriptions = [];
+
+  String _companyId = '';
+  List<String> _locations = [];
 
   DashboardItemActionBloc({
     required this.filterBloc,
     required this.getDashboardItemsActionsStream,
     required this.getDashboardLastFiveItemsActionsStream,
   }) : super(DashboardItemActionEmptyState()) {
-    filterStreamSubscription = filterBloc.stream.listen(
+    _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
-          if (actionStreamSubscriptions.isNotEmpty) {
+          if (_actionStreamSubscriptions.isNotEmpty) {
             // cancel old subscriptions
-            for (var actionSubscription in actionStreamSubscriptions) {
+            for (var actionSubscription in _actionStreamSubscriptions) {
               actionSubscription?.cancel();
             }
             // clear subscriptions list
-            actionStreamSubscriptions.clear();
+            _actionStreamSubscriptions.clear();
           }
 
-          companyId = state.companyId;
-          locations = state.locations.map((loc) => loc.id).toList();
+          _companyId = state.companyId;
+          _locations = state.locations.map((loc) => loc.id).toList();
           // gets latest five actions
           add(GetDashboardLastFiveItemActionsEvent());
         }
@@ -56,7 +57,7 @@ class DashboardItemActionBloc
     on<GetDashboardItemActionsEvent>((event, emit) async {
       // avoids loading same data multiple times
       if (filterBloc.state is FilterLoadedState &&
-          locations !=
+          _locations !=
               filterBloc.state.locations.map((loc) => loc.id).toList() &&
           state is DashboardItemActionLoadedState &&
           (state as DashboardItemActionLoadedState)
@@ -67,7 +68,7 @@ class DashboardItemActionBloc
         return;
         // gets updated data
       } else {
-        if (locations.isEmpty) {
+        if (_locations.isEmpty) {
           emit(
             DashboardItemActionLoadedState(
               allActions: const ItemActionsListModel(
@@ -77,24 +78,24 @@ class DashboardItemActionBloc
           );
         } else {
           emit(DashboardItemActionLoadingState());
-          if (actionStreamSubscriptions.isNotEmpty) {
+          if (_actionStreamSubscriptions.isNotEmpty) {
             // cancel old subscriptions
-            for (var actionSubscription in actionStreamSubscriptions) {
+            for (var actionSubscription in _actionStreamSubscriptions) {
               actionSubscription?.cancel();
             }
             // clear subscriptions list
-            actionStreamSubscriptions.clear();
+            _actionStreamSubscriptions.clear();
           }
 
           final List<List<String>> chunkedLocations = [];
           // chunks list size, because of DB limitations
           int chunkSize = 10;
-          for (var i = 0; i < locations.length; i += chunkSize) {
+          for (var i = 0; i < _locations.length; i += chunkSize) {
             chunkedLocations.add(
-              locations.sublist(
+              _locations.sublist(
                 i,
-                i + chunkSize > locations.length
-                    ? locations.length
+                i + chunkSize > _locations.length
+                    ? _locations.length
                     : i + chunkSize,
               ),
             );
@@ -102,7 +103,7 @@ class DashboardItemActionBloc
           for (int j = 0; j < chunkedLocations.length; j++) {
             var chunk = chunkedLocations[j];
             final params =
-                ItemsInLocationsParams(locations: chunk, companyId: companyId);
+                ItemsInLocationsParams(locations: chunk, companyId: _companyId);
             final failureOrItemActionsStream =
                 await getDashboardItemsActionsStream(params);
             await failureOrItemActionsStream.fold(
@@ -116,7 +117,7 @@ class DashboardItemActionBloc
                     limit: 0,
                   ));
                 });
-                actionStreamSubscriptions.add(streamSubscription);
+                _actionStreamSubscriptions.add(streamSubscription);
               },
             );
           }
@@ -125,7 +126,7 @@ class DashboardItemActionBloc
     });
 
     on<GetDashboardLastFiveItemActionsEvent>((event, emit) async {
-      if (locations.isEmpty) {
+      if (_locations.isEmpty) {
         emit(
           DashboardItemActionLoadedState(
             allActions: const ItemActionsListModel(
@@ -135,24 +136,24 @@ class DashboardItemActionBloc
         );
       } else {
         emit(DashboardItemActionLoadingState());
-        if (actionStreamSubscriptions.isNotEmpty) {
+        if (_actionStreamSubscriptions.isNotEmpty) {
           // cancel old subscriptions
-          for (var actionSubscription in actionStreamSubscriptions) {
+          for (var actionSubscription in _actionStreamSubscriptions) {
             actionSubscription?.cancel();
           }
           // clear subscriptions list
-          actionStreamSubscriptions.clear();
+          _actionStreamSubscriptions.clear();
         }
 
         final List<List<String>> chunkedLocations = [];
         // chunks list size, because of DB limitations
         int chunkSize = 10;
-        for (var i = 0; i < locations.length; i += chunkSize) {
+        for (var i = 0; i < _locations.length; i += chunkSize) {
           chunkedLocations.add(
-            locations.sublist(
+            _locations.sublist(
               i,
-              i + chunkSize > locations.length
-                  ? locations.length
+              i + chunkSize > _locations.length
+                  ? _locations.length
                   : i + chunkSize,
             ),
           );
@@ -160,7 +161,7 @@ class DashboardItemActionBloc
         for (int j = 0; j < chunkedLocations.length; j++) {
           var chunk = chunkedLocations[j];
           final params =
-              ItemsInLocationsParams(locations: chunk, companyId: companyId);
+              ItemsInLocationsParams(locations: chunk, companyId: _companyId);
           final failureOrItemActionsStream =
               await getDashboardLastFiveItemsActionsStream(params);
           await failureOrItemActionsStream.fold(
@@ -176,7 +177,7 @@ class DashboardItemActionBloc
                   ),
                 );
               });
-              actionStreamSubscriptions.add(streamSubscription);
+              _actionStreamSubscriptions.add(streamSubscription);
             },
           );
         }
@@ -229,9 +230,9 @@ class DashboardItemActionBloc
 
   @override
   Future<void> close() {
-    filterStreamSubscription.cancel();
-    if (actionStreamSubscriptions.isNotEmpty) {
-      for (var actionSubscription in actionStreamSubscriptions) {
+    _filterStreamSubscription.cancel();
+    if (_actionStreamSubscriptions.isNotEmpty) {
+      for (var actionSubscription in _actionStreamSubscriptions) {
         actionSubscription?.cancel();
       }
     }

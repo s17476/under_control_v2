@@ -19,6 +19,12 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   });
 
   @override
+  Stream<User?> get user => firebaseAuth.userChanges();
+
+  @override
+  bool get isEmailVerified => firebaseAuth.currentUser!.emailVerified;
+
+  @override
   Future<Either<Failure, VoidResult>> signin(
       {required String email, required String password}) async {
     if (await networkInfo.isConnected) {
@@ -71,12 +77,6 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       return const Left(NetworkFailure());
     }
   }
-
-  @override
-  Stream<User?> get user => firebaseAuth.userChanges();
-
-  @override
-  bool get isEmailVerified => firebaseAuth.currentUser!.emailVerified;
 
   @override
   Future<Either<Failure, VoidResult>> sendVerificationEmail() async {

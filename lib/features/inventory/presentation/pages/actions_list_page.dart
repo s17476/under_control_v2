@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 
+import '../../../core/utils/responsive_size.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/item.dart';
@@ -23,8 +23,44 @@ class ActionsListPage extends StatefulWidget {
 class _ActionsListPageState extends State<ActionsListPage> with ResponsiveSize {
   Item? item;
   late UserProfile _currentUser;
-  List<ItemAction>? actions;
-  List<ItemAction>? filteredActions;
+  List<ItemAction>? _actions;
+  List<ItemAction>? _filteredActions;
+
+  _filterActions(int index) {
+    switch (index) {
+      case 0:
+        setState(() {
+          _filteredActions = _actions;
+        });
+        break;
+      case 1:
+        setState(() {
+          _filteredActions = _actions
+              ?.where((action) => action.type == ItemActionType.add)
+              .toList();
+        });
+        break;
+      case 2:
+        setState(() {
+          _filteredActions = _actions
+              ?.where((action) => action.type == ItemActionType.remove)
+              .toList();
+        });
+        break;
+      case 3:
+        setState(() {
+          _filteredActions = _actions
+              ?.where((action) =>
+                  action.type == ItemActionType.moveAdd ||
+                  action.type == ItemActionType.moveRemove)
+              .toList();
+        });
+        break;
+      default:
+        _filteredActions = _actions;
+        break;
+    }
+  }
 
   @override
   void initState() {
@@ -48,7 +84,7 @@ class _ActionsListPageState extends State<ActionsListPage> with ResponsiveSize {
         setState(() {
           item = itemsState.allItems.allItems[index];
         });
-        if (filteredActions == null) {
+        if (_filteredActions == null) {
           // gets item actions
           context.read<ItemActionBloc>().add(
                 GetItemActionsEvent(
@@ -62,46 +98,10 @@ class _ActionsListPageState extends State<ActionsListPage> with ResponsiveSize {
     //
     final actionsState = context.watch<ItemActionBloc>().state;
     if (actionsState is ItemActionLoadedState && actionsState.isAllItems) {
-      actions = actionsState.allActions.allItemActions.toList();
-      filteredActions = actions;
+      _actions = actionsState.allActions.allItemActions.toList();
+      _filteredActions = _actions;
     }
     super.didChangeDependencies();
-  }
-
-  _filterActions(int index) {
-    switch (index) {
-      case 0:
-        setState(() {
-          filteredActions = actions;
-        });
-        break;
-      case 1:
-        setState(() {
-          filteredActions = actions
-              ?.where((action) => action.type == ItemActionType.add)
-              .toList();
-        });
-        break;
-      case 2:
-        setState(() {
-          filteredActions = actions
-              ?.where((action) => action.type == ItemActionType.remove)
-              .toList();
-        });
-        break;
-      case 3:
-        setState(() {
-          filteredActions = actions
-              ?.where((action) =>
-                  action.type == ItemActionType.moveAdd ||
-                  action.type == ItemActionType.moveRemove)
-              .toList();
-        });
-        break;
-      default:
-        filteredActions = actions;
-        break;
-    }
   }
 
   @override
@@ -158,7 +158,7 @@ class _ActionsListPageState extends State<ActionsListPage> with ResponsiveSize {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                if (filteredActions != null && filteredActions!.isNotEmpty)
+                if (_filteredActions != null && _filteredActions!.isNotEmpty)
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -166,12 +166,12 @@ class _ActionsListPageState extends State<ActionsListPage> with ResponsiveSize {
                       horizontal: 8,
                       vertical: 4,
                     ),
-                    itemCount: filteredActions!.length,
+                    itemCount: _filteredActions!.length,
                     itemBuilder: (context, index) => ItemActionListTile(
-                      action: filteredActions![index],
+                      action: _filteredActions![index],
                     ),
                   ),
-                if (filteredActions != null && filteredActions!.isEmpty)
+                if (_filteredActions != null && _filteredActions!.isEmpty)
                   Container(
                     alignment: Alignment.center,
                     height: responsiveSizeVerticalPct(small: 90),
@@ -180,7 +180,7 @@ class _ActionsListPageState extends State<ActionsListPage> with ResponsiveSize {
                           .no_actions_in_selected_locations,
                     ),
                   ),
-                if (filteredActions == null)
+                if (_filteredActions == null)
                   Container(
                     alignment: Alignment.center,
                     height: responsiveSizeVerticalPct(small: 90),

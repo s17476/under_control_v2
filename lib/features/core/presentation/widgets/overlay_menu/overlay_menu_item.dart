@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/core/utils/choice.dart';
+
+import '../../../utils/choice.dart';
 
 class OverlayMenuItem extends StatelessWidget {
   const OverlayMenuItem({

@@ -35,14 +35,14 @@ enum ItemActionMessage {
 @injectable
 class ItemActionManagementBloc
     extends Bloc<ItemActionManagementEvent, ItemActionManagementState> {
-  late StreamSubscription companyProfileStreamSubscription;
   final CompanyProfileBloc companyProfileBloc;
   final AddItemAction addItemAction;
   final UpdateItemAction updateItemAction;
   final DeleteItemAction deleteItemAction;
   final MoveItemAction moveItemAction;
 
-  String companyId = '';
+  late StreamSubscription _companyProfileStreamSubscription;
+  String _companyId = '';
 
   ItemActionManagementBloc({
     required this.companyProfileBloc,
@@ -51,10 +51,10 @@ class ItemActionManagementBloc
     required this.deleteItemAction,
     required this.moveItemAction,
   }) : super(ItemActionManagementEmptyState()) {
-    companyProfileStreamSubscription =
+    _companyProfileStreamSubscription =
         companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && companyId.isEmpty) {
-        companyId = state.company.id;
+      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
+        _companyId = state.company.id;
       }
     });
 
@@ -109,7 +109,7 @@ class ItemActionManagementBloc
         ItemActionParams(
           updatedItem: updatedItem,
           itemAction: event.itemAction,
-          companyId: companyId,
+          companyId: _companyId,
         ),
       );
       await failureOrString.fold(
@@ -181,7 +181,7 @@ class ItemActionManagementBloc
         ItemActionParams(
           updatedItem: updatedItem,
           itemAction: event.itemAction,
-          companyId: companyId,
+          companyId: _companyId,
         ),
       );
       await failureOrVoidResult.fold(
@@ -245,7 +245,7 @@ class ItemActionManagementBloc
         ItemActionParams(
           updatedItem: updatedItem,
           itemAction: event.itemAction,
-          companyId: companyId,
+          companyId: _companyId,
         ),
       );
       await failureOrVoidResult.fold(
@@ -346,7 +346,7 @@ class ItemActionManagementBloc
           updatedItem: updatedItem,
           moveFromItemAction: event.oldItemAction!,
           moveToItemAction: event.itemAction,
-          companyId: companyId,
+          companyId: _companyId,
         ),
       );
       await failureOrVoidResult.fold(
@@ -368,7 +368,7 @@ class ItemActionManagementBloc
 
   @override
   Future<void> close() {
-    companyProfileStreamSubscription.cancel();
+    _companyProfileStreamSubscription.cancel();
     return super.close();
   }
 }

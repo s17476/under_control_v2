@@ -29,13 +29,13 @@ enum ItemCategoryMessage {
 @injectable
 class ItemCategoryManagementBloc
     extends Bloc<ItemCategoryManagementEvent, ItemCategoryManagementState> {
-  late StreamSubscription companyProfileStreamSubscription;
   final CompanyProfileBloc companyProfileBloc;
   final AddItemCategory addItemCategory;
   final UpdateItemCategory updateItemCategory;
   final DeleteItemCategory deleteItemCategory;
 
-  String companyId = '';
+  late StreamSubscription _companyProfileStreamSubscription;
+  String _companyId = '';
 
   ItemCategoryManagementBloc({
     required this.companyProfileBloc,
@@ -43,10 +43,10 @@ class ItemCategoryManagementBloc
     required this.updateItemCategory,
     required this.deleteItemCategory,
   }) : super(ItemCategoryManagementEmptyState()) {
-    companyProfileStreamSubscription =
+    _companyProfileStreamSubscription =
         companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && companyId.isEmpty) {
-        companyId = state.company.id;
+      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
+        _companyId = state.company.id;
       }
     });
 
@@ -55,7 +55,7 @@ class ItemCategoryManagementBloc
       final failureOrString = await addItemCategory(
         ItemCategoryParams(
           itemCategory: event.itemCategory,
-          companyId: companyId,
+          companyId: _companyId,
         ),
       );
       await failureOrString.fold(
@@ -77,7 +77,7 @@ class ItemCategoryManagementBloc
       final failureOrVoidResult = await updateItemCategory(
         ItemCategoryParams(
           itemCategory: event.itemCategory,
-          companyId: companyId,
+          companyId: _companyId,
         ),
       );
       await failureOrVoidResult.fold(
@@ -99,7 +99,7 @@ class ItemCategoryManagementBloc
       final failureOrVoidResult = await deleteItemCategory(
         ItemCategoryParams(
           itemCategory: event.itemCategory,
-          companyId: companyId,
+          companyId: _companyId,
         ),
       );
       await failureOrVoidResult.fold(
@@ -129,7 +129,7 @@ class ItemCategoryManagementBloc
 
   @override
   Future<void> close() {
-    companyProfileStreamSubscription.cancel();
+    _companyProfileStreamSubscription.cancel();
     return super.close();
   }
 }

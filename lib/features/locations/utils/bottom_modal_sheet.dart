@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../../data/models/location_model.dart';
-import '../../../domain/entities/location.dart';
-import '../../blocs/bloc/location_bloc.dart';
+import '../../core/presentation/widgets/custom_text_form_field.dart';
+import '../data/models/location_model.dart';
+import '../domain/entities/location.dart';
+import '../presentation/blocs/bloc/location_bloc.dart';
 
 Future<void> showAddLocationModalBottomSheet({
   required BuildContext context,

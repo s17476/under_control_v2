@@ -31,39 +31,39 @@ class AddToItemPage extends StatefulWidget {
 }
 
 class _AddItemPageState extends State<AddToItemPage> {
-  ItemModel? item;
+  ItemModel? _item;
 
-  List<Widget> pages = [];
+  List<Widget> _pages = [];
 
   final _formKey = GlobalKey<FormState>();
 
-  final pageController = PageController();
+  final _pageController = PageController();
 
-  final quantityTextEditingController = TextEditingController(text: '0');
+  final _quantityTextEditingController = TextEditingController(text: '0');
 
-  final descriptionTextEditingController = TextEditingController();
+  final _descriptionTextEditingController = TextEditingController();
 
-  String selectedLocation = '';
+  String _selectedLocation = '';
 
-  DateTime dateTime = DateTime.now();
+  DateTime _dateTime = DateTime.now();
 
-  void setLocation(String location) async {
+  void _setLocation(String location) async {
     setState(() {
-      selectedLocation = location;
+      _selectedLocation = location;
     });
     await Future.delayed(
       const Duration(milliseconds: 500),
     );
-    pageController.animateToPage(
+    _pageController.animateToPage(
       1,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeIn,
     );
   }
 
-  void setDate(DateTime date) {
+  void _setDate(DateTime date) {
     setState(() {
-      dateTime = date;
+      _dateTime = date;
     });
   }
 
@@ -72,7 +72,7 @@ class _AddItemPageState extends State<AddToItemPage> {
     final arguments = ModalRoute.of(context)!.settings.arguments;
 
     if (arguments != null && arguments is ItemModel) {
-      item = arguments.deepCopy();
+      _item = arguments.deepCopy();
     }
     super.didChangeDependencies();
   }
@@ -82,7 +82,7 @@ class _AddItemPageState extends State<AddToItemPage> {
     double quantity = 0;
 
     // location validation
-    if (selectedLocation.isEmpty) {
+    if (_selectedLocation.isEmpty) {
       errorMessage =
           AppLocalizations.of(context)!.validation_location_not_selected;
     } else {
@@ -90,7 +90,7 @@ class _AddItemPageState extends State<AddToItemPage> {
 
       // quantity validation
       try {
-        quantity = double.parse(quantityTextEditingController.text);
+        quantity = double.parse(_quantityTextEditingController.text);
         if (quantity <= 0) {
           errorMessage =
               AppLocalizations.of(context)!.incorrect_number_to_small;
@@ -105,12 +105,12 @@ class _AddItemPageState extends State<AddToItemPage> {
           final newItemAction = ItemActionModel(
             id: '',
             type: ItemActionType.add,
-            description: descriptionTextEditingController.text.trim(),
+            description: _descriptionTextEditingController.text.trim(),
             ammount: double.parse(quantity.toStringWithFixedDecimal()),
-            itemUnit: item!.itemUnit,
-            locationId: selectedLocation,
-            date: dateTime,
-            itemId: item!.id,
+            itemUnit: _item!.itemUnit,
+            locationId: _selectedLocation,
+            date: _dateTime,
+            itemId: _item!.id,
             userId: (context.read<UserProfileBloc>().state as Approved)
                 .userProfile
                 .id,
@@ -118,7 +118,7 @@ class _AddItemPageState extends State<AddToItemPage> {
 
           context.read<ItemActionManagementBloc>().add(
                 AddItemActionEvent(
-                  item: item!,
+                  item: _item!,
                   itemAction: newItemAction,
                 ),
               );
@@ -128,7 +128,7 @@ class _AddItemPageState extends State<AddToItemPage> {
       } else {
         // no description added
         if (errorMessage.isEmpty &&
-            descriptionTextEditingController.text.trim().length < 2) {
+            _descriptionTextEditingController.text.trim().length < 2) {
           errorMessage =
               AppLocalizations.of(context)!.validation_no_description;
           // description to short
@@ -148,47 +148,47 @@ class _AddItemPageState extends State<AddToItemPage> {
 
   @override
   void dispose() {
-    quantityTextEditingController.dispose();
-    descriptionTextEditingController.dispose();
-    pageController.dispose();
+    _quantityTextEditingController.dispose();
+    _descriptionTextEditingController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    pages = [
+    _pages = [
       KeepAlivePage(
         child: AddToLocationCard(
-          pageController: pageController,
-          selectedLocation: selectedLocation,
-          setLocation: setLocation,
+          pageController: _pageController,
+          selectedLocation: _selectedLocation,
+          setLocation: _setLocation,
           title: AppLocalizations.of(context)!.item_add_to_location,
-          item: item!,
+          item: _item!,
         ),
       ),
       KeepAlivePage(
         child: AddQuantityCard(
-          pageController: pageController,
-          quantityTextEditingController: quantityTextEditingController,
-          itemUnit: item!.itemUnit,
+          pageController: _pageController,
+          quantityTextEditingController: _quantityTextEditingController,
+          itemUnit: _item!.itemUnit,
         ),
       ),
       KeepAlivePage(
         child: AddDateAndDescriptionCard(
-          pageController: pageController,
-          descriptionTextEditingController: descriptionTextEditingController,
-          dateTime: dateTime,
-          setDate: setDate,
+          pageController: _pageController,
+          descriptionTextEditingController: _descriptionTextEditingController,
+          dateTime: _dateTime,
+          setDate: _setDate,
         ),
       ),
       AddToItemSummaryCard(
-        pageController: pageController,
-        quantityTextEditingController: quantityTextEditingController,
-        selectedLocation: selectedLocation,
-        itemUnit: getLocalizedUnitName(context, item!.itemUnit),
+        pageController: _pageController,
+        quantityTextEditingController: _quantityTextEditingController,
+        selectedLocation: _selectedLocation,
+        itemUnit: getLocalizedUnitName(context, _item!.itemUnit),
         addNewItem: addToItem,
-        dateTime: dateTime,
-        descriptionTextEditingController: descriptionTextEditingController,
+        dateTime: _dateTime,
+        descriptionTextEditingController: _descriptionTextEditingController,
       ),
     ];
 
@@ -203,15 +203,15 @@ class _AddItemPageState extends State<AddToItemPage> {
               Form(
                 key: _formKey,
                 child: PageView(
-                  controller: pageController,
-                  children: pages,
+                  controller: _pageController,
+                  children: _pages,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
                 child: SmoothPageIndicator(
-                  controller: pageController,
-                  count: pages.length,
+                  controller: _pageController,
+                  count: _pages.length,
                   effect: JumpingDotEffect(
                     dotHeight: 10,
                     dotWidth: 10,

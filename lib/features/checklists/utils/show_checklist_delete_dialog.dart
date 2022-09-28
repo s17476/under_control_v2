@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart';
 
-import '../../domain/entities/checklist.dart';
+import '../domain/entities/checklist.dart';
+import '../presentation/blocs/checklist_management/checklist_management_bloc.dart';
 
 Future<bool?> showChecklistDeleteDialog({
   required BuildContext context,

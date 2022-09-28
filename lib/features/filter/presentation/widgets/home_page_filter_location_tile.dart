@@ -22,34 +22,26 @@ class HomePageFilterLocationTile extends StatefulWidget {
 class _HomePageFilterLocationTileState
     extends State<HomePageFilterLocationTile> {
   _HomePageFilterLocationTileState();
-  bool isExpanded = false;
-  bool isSelected = false;
-  bool isContext = false;
+  bool _isExpanded = false;
+  bool _isSelected = false;
+  bool _isContext = false;
 
-  late Color color;
+  late Color _color;
 
   @override
   void didChangeDependencies() {
-    color = Theme.of(context).cardColor;
+    _color = Theme.of(context).cardColor;
     final state = context.watch<LocationBloc>().state as LocationLoadedState;
 
     if (state.selectedLocations.contains(widget.location) ||
         state.children.contains(widget.location.id)) {
-      isSelected = true;
+      _isSelected = true;
     } else {
-      isSelected = false;
+      _isSelected = false;
     }
-    isContext = state.context.contains(widget.location.id);
+    _isContext = state.context.contains(widget.location.id);
 
     super.didChangeDependencies();
-  }
-
-  void toggleColor(BuildContext context) {
-    if (color == Theme.of(context).cardColor) {
-      color = const Color.fromRGBO(0, 240, 130, 100);
-    } else {
-      color = Theme.of(context).cardColor;
-    }
   }
 
   @override
@@ -64,7 +56,7 @@ class _HomePageFilterLocationTileState
           child: InkWell(
             onTap: () {
               setState(() {
-                isExpanded = !isExpanded;
+                _isExpanded = !_isExpanded;
               });
             },
             customBorder: RoundedRectangleBorder(
@@ -77,7 +69,7 @@ class _HomePageFilterLocationTileState
                 height: 40,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: color,
+                  color: _color,
                 ),
                 child: Row(
                   children: [
@@ -87,7 +79,7 @@ class _HomePageFilterLocationTileState
                       height: 40,
                       child: children.isNotEmpty
                           ? Icon(
-                              isExpanded
+                              _isExpanded
                                   ? Icons.keyboard_arrow_up_rounded
                                   : Icons.keyboard_arrow_down_rounded,
                             )
@@ -117,16 +109,16 @@ class _HomePageFilterLocationTileState
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    activeColor: isContext
-                                        ? isSelected
+                                    activeColor: _isContext
+                                        ? _isSelected
                                             ? Theme.of(context)
                                                 .primaryColor
                                                 .withOpacity(0.2)
                                             : Colors.grey.shade700
                                         : Theme.of(context).primaryColor,
-                                    value: isSelected || isContext,
+                                    value: _isSelected || _isContext,
                                     onChanged: (bool? value) {
-                                      isSelected
+                                      _isSelected
                                           ? context.read<LocationBloc>().add(
                                                 UnselectLocationEvent(
                                                   location: widget.location,
@@ -138,7 +130,7 @@ class _HomePageFilterLocationTileState
                                                 ),
                                               );
                                       setState(() {
-                                        isSelected = value!;
+                                        _isSelected = value!;
                                       });
                                     }),
                               ],
@@ -160,7 +152,7 @@ class _HomePageFilterLocationTileState
           duration: const Duration(milliseconds: 500),
           child: Container(
             width: double.infinity,
-            height: isExpanded ? null : 0,
+            height: _isExpanded ? null : 0,
             padding: const EdgeInsets.only(left: 10),
             child: Column(
               children: [

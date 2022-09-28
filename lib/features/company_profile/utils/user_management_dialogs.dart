@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../user_profile/domain/entities/user_profile.dart';
-import '../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
+import '../../user_profile/domain/entities/user_profile.dart';
+import '../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 
 Future<bool?> showUserApproveDialog({
   required BuildContext context,

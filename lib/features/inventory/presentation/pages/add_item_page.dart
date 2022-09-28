@@ -31,34 +31,34 @@ class AddItemPage extends StatefulWidget {
 }
 
 class _AddItemPageState extends State<AddItemPage> {
-  Item? item;
+  Item? _item;
 
-  List<Widget> pages = [];
+  List<Widget> _pages = [];
 
   final _formKey = GlobalKey<FormState>();
 
-  final pageController = PageController();
+  final _pageController = PageController();
 
-  final nameTexEditingController = TextEditingController();
-  final descriptionTexEditingController = TextEditingController();
-  final codeTextEditingController = TextEditingController();
-  final barCodeTextEditingController = TextEditingController();
-  final priceTextEditingController = TextEditingController();
+  final _nameTexEditingController = TextEditingController();
+  final _descriptionTexEditingController = TextEditingController();
+  final _codeTextEditingController = TextEditingController();
+  final _barCodeTextEditingController = TextEditingController();
+  final _priceTextEditingController = TextEditingController();
 
-  String category = '';
-  String itemUnit = '';
-  bool isSparePart = false;
-  List<String> sparePartFor = [];
+  String _category = '';
+  String _itemUnit = '';
+  bool _isSparePart = false;
+  final List<String> _sparePartFor = [];
 
-  File? itemImage;
+  File? _itemImage;
 
-  void setIsSparePart(bool value) {
+  void _setIsSparePart(bool value) {
     setState(() {
-      isSparePart = value;
+      _isSparePart = value;
     });
   }
 
-  void setImage(ImageSource souruce) async {
+  void _setImage(ImageSource souruce) async {
     final picker = ImagePicker();
 
     try {
@@ -70,7 +70,7 @@ class _AddItemPageState extends State<AddItemPage> {
       );
       if (pickedFile != null) {
         setState(() {
-          itemImage = File(pickedFile.path);
+          _itemImage = File(pickedFile.path);
         });
       }
     } catch (e) {
@@ -82,31 +82,13 @@ class _AddItemPageState extends State<AddItemPage> {
     }
   }
 
-  void deleteImage() {
+  void _deleteImage() {
     setState(() {
-      itemImage = null;
+      _itemImage = null;
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    final arguments = ModalRoute.of(context)!.settings.arguments;
-
-    if (arguments != null && arguments is ItemModel) {
-      item = arguments.deepCopy();
-
-      nameTexEditingController.text = item!.name;
-      descriptionTexEditingController.text = item!.description;
-      codeTextEditingController.text = item!.itemCode;
-      barCodeTextEditingController.text = item!.itemBarCode;
-      priceTextEditingController.text = item!.price.toString();
-      category = item!.category;
-      itemUnit = item!.itemUnit.name;
-    }
-    super.didChangeDependencies();
-  }
-
-  void addNewItem(BuildContext context) {
+  void _addNewItem(BuildContext context) {
     String errorMessage = '';
     double price = 0;
     // item name validation
@@ -114,9 +96,9 @@ class _AddItemPageState extends State<AddItemPage> {
       errorMessage = AppLocalizations.of(context)!.item_add_error_name_to_short;
     } else {
       // price validation
-      if (priceTextEditingController.text.trim().isNotEmpty) {
+      if (_priceTextEditingController.text.trim().isNotEmpty) {
         try {
-          price = double.parse(priceTextEditingController.text.trim());
+          price = double.parse(_priceTextEditingController.text.trim());
           if (price < 0) {
             errorMessage =
                 AppLocalizations.of(context)!.incorrect_price_to_small;
@@ -126,20 +108,20 @@ class _AddItemPageState extends State<AddItemPage> {
         }
       }
       // category selection validation
-      if (category.isEmpty) {
+      if (_category.isEmpty) {
         errorMessage =
             AppLocalizations.of(context)!.item_add_error_category_not_selected;
       } else {
         // item unit selection validation
 
-        if (itemUnit.isEmpty) {
+        if (_itemUnit.isEmpty) {
           errorMessage =
               AppLocalizations.of(context)!.item_add_error_unit_not_selected;
-        } else if (item == null) {
+        } else if (_item == null) {
           final currentState = context.read<ItemsBloc>().state;
           if (currentState is ItemsLoadedState) {
             final tmpItems = currentState.allItems.allItems
-                .where((i) => i.name == nameTexEditingController.text.trim());
+                .where((i) => i.name == _nameTexEditingController.text.trim());
             if (tmpItems.isNotEmpty) {
               errorMessage = AppLocalizations.of(context)!
                   .group_management_add_error_name_exists;
@@ -159,30 +141,30 @@ class _AddItemPageState extends State<AddItemPage> {
       // saves group to DB if no error
     } else {
       final newItem = ItemModel(
-        id: item != null ? item!.id : '',
-        name: nameTexEditingController.text.trim(),
-        description: descriptionTexEditingController.text.trim(),
-        category: category,
+        id: _item != null ? _item!.id : '',
+        name: _nameTexEditingController.text.trim(),
+        description: _descriptionTexEditingController.text.trim(),
+        category: _category,
         price: price,
-        itemCode: codeTextEditingController.text.trim(),
-        itemBarCode: barCodeTextEditingController.text.trim(),
-        itemPhoto: item != null ? item!.itemPhoto : '',
-        itemUnit: ItemUnit.fromString(itemUnit),
-        amountInLocations: item != null ? item!.amountInLocations : const [],
-        locations: item != null ? item!.locations : const [],
-        sparePartFor: sparePartFor,
+        itemCode: _codeTextEditingController.text.trim(),
+        itemBarCode: _barCodeTextEditingController.text.trim(),
+        itemPhoto: _item != null ? _item!.itemPhoto : '',
+        itemUnit: ItemUnit.fromString(_itemUnit),
+        amountInLocations: _item != null ? _item!.amountInLocations : const [],
+        locations: _item != null ? _item!.locations : const [],
+        sparePartFor: _sparePartFor,
       );
 
-      if (item != null) {
+      if (_item != null) {
         context.read<ItemsManagementBloc>().add(UpdateItemEvent(
               item: newItem,
-              itemPhoto: itemImage,
+              itemPhoto: _itemImage,
             ));
       } else {
         context.read<ItemsManagementBloc>().add(
               AddItemEvent(
                 item: newItem,
-                itemPhoto: itemImage,
+                itemPhoto: _itemImage,
               ),
             );
       }
@@ -191,82 +173,100 @@ class _AddItemPageState extends State<AddItemPage> {
     }
   }
 
-  void setCategory(String value) {
+  void _setCategory(String value) {
     setState(() {
-      category = value;
+      _category = value;
     });
   }
 
-  void setItemUnit(String value) {
+  void _setItemUnit(String value) {
     setState(() {
-      itemUnit = value;
+      _itemUnit = value;
     });
   }
 
   @override
+  void didChangeDependencies() {
+    final arguments = ModalRoute.of(context)!.settings.arguments;
+
+    if (arguments != null && arguments is ItemModel) {
+      _item = arguments.deepCopy();
+
+      _nameTexEditingController.text = _item!.name;
+      _descriptionTexEditingController.text = _item!.description;
+      _codeTextEditingController.text = _item!.itemCode;
+      _barCodeTextEditingController.text = _item!.itemBarCode;
+      _priceTextEditingController.text = _item!.price.toString();
+      _category = _item!.category;
+      _itemUnit = _item!.itemUnit.name;
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
-    nameTexEditingController.dispose();
-    descriptionTexEditingController.dispose();
-    codeTextEditingController.dispose();
-    barCodeTextEditingController.dispose();
-    priceTextEditingController.dispose();
-    pageController.dispose();
+    _nameTexEditingController.dispose();
+    _descriptionTexEditingController.dispose();
+    _codeTextEditingController.dispose();
+    _barCodeTextEditingController.dispose();
+    _priceTextEditingController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    pages = [
+    _pages = [
       KeepAlivePage(
         child: AddItemCard(
-          isEditMode: item != null,
-          pageController: pageController,
-          nameTexEditingController: nameTexEditingController,
-          descriptionTexEditingController: descriptionTexEditingController,
+          isEditMode: _item != null,
+          pageController: _pageController,
+          nameTexEditingController: _nameTexEditingController,
+          descriptionTexEditingController: _descriptionTexEditingController,
         ),
       ),
       KeepAlivePage(
         child: AddItemDataCard(
-          isEditMode: item != null,
-          pageController: pageController,
-          priceTextEditingController: priceTextEditingController,
-          codeTextEditingController: codeTextEditingController,
-          barCodeTextEditingController: barCodeTextEditingController,
-          category: category,
-          itemUnit: itemUnit,
-          setCategory: setCategory,
-          setItemUnit: setItemUnit,
+          isEditMode: _item != null,
+          pageController: _pageController,
+          priceTextEditingController: _priceTextEditingController,
+          codeTextEditingController: _codeTextEditingController,
+          barCodeTextEditingController: _barCodeTextEditingController,
+          category: _category,
+          itemUnit: _itemUnit,
+          setCategory: _setCategory,
+          setItemUnit: _setItemUnit,
         ),
       ),
       KeepAlivePage(
         child: AddItemPhotoCard(
-          pageController: pageController,
-          setImage: setImage,
-          deleteImage: deleteImage,
-          image: itemImage,
-          imageUrl: item?.itemPhoto,
+          pageController: _pageController,
+          setImage: _setImage,
+          deleteImage: _deleteImage,
+          image: _itemImage,
+          imageUrl: _item?.itemPhoto,
         ),
       ),
       KeepAlivePage(
         child: AddItemSparePartCard(
-          pageController: pageController,
-          setIsSparePart: setIsSparePart,
-          isSparePart: isSparePart,
+          pageController: _pageController,
+          setIsSparePart: _setIsSparePart,
+          isSparePart: _isSparePart,
         ),
       ),
       AddItemSummaryCard(
-        pageController: pageController,
-        titleTexEditingController: nameTexEditingController,
-        descriptionTextEditingController: descriptionTexEditingController,
-        barCodeTextEditingController: barCodeTextEditingController,
-        codeTextEditingController: codeTextEditingController,
-        priceTextEditingController: priceTextEditingController,
-        sparePartFor: sparePartFor,
-        addNewItem: addNewItem,
-        category: category,
-        itemUnit: itemUnit,
-        isSparePart: isSparePart,
-        itemImage: itemImage,
+        pageController: _pageController,
+        titleTexEditingController: _nameTexEditingController,
+        descriptionTextEditingController: _descriptionTexEditingController,
+        barCodeTextEditingController: _barCodeTextEditingController,
+        codeTextEditingController: _codeTextEditingController,
+        priceTextEditingController: _priceTextEditingController,
+        sparePartFor: _sparePartFor,
+        addNewItem: _addNewItem,
+        category: _category,
+        itemUnit: _itemUnit,
+        isSparePart: _isSparePart,
+        itemImage: _itemImage,
       ),
     ];
 
@@ -281,15 +281,15 @@ class _AddItemPageState extends State<AddItemPage> {
               Form(
                 key: _formKey,
                 child: PageView(
-                  controller: pageController,
-                  children: pages,
+                  controller: _pageController,
+                  children: _pages,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
                 child: SmoothPageIndicator(
-                  controller: pageController,
-                  count: pages.length,
+                  controller: _pageController,
+                  count: _pages.length,
                   effect: JumpingDotEffect(
                     dotHeight: 10,
                     dotWidth: 10,

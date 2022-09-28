@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
+import '../domain/entities/company.dart';
 
-import '../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../data/models/company_model.dart';
-import '../blocs/company_management/company_management_bloc.dart';
+import '../../core/presentation/widgets/custom_text_form_field.dart';
+import '../data/models/company_model.dart';
+import '../presentation/blocs/company_management/company_management_bloc.dart';
 
 Future<void> showEditCompanyModalBottomSheet({
   required BuildContext context,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
-import 'package:under_control_v2/features/core/utils/premission.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
+import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/premission.dart';
+import '../../../groups/domain/entities/feature.dart';
 import '../../data/models/item_category/item_category_model.dart';
 import '../../domain/entities/item_category/item_category.dart';
 import '../../utils/show_add_category_modal_bottom_sheet.dart';

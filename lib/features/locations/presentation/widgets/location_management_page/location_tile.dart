@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../domain/entities/location.dart';
 import 'add_location_card.dart';
 import 'address_row.dart';
-import 'bottom_modal_sheet.dart';
-import 'show_delete_dialog.dart';
+import '../../../utils/bottom_modal_sheet.dart';
+import '../../../utils/show_delete_dialog.dart';
 
 class LocationTile extends StatefulWidget {
   final bool isAdministrator;
@@ -25,12 +25,12 @@ class LocationTile extends StatefulWidget {
 
 class _LocationTileState extends State<LocationTile> {
   _LocationTileState();
-  bool isExpanded = false;
-  bool locationContainAddress = false;
+  bool _isExpanded = false;
+  bool _locationContainAddress = false;
 
   @override
   void initState() {
-    locationContainAddress = (widget.location.address!.isNotEmpty ||
+    _locationContainAddress = (widget.location.address!.isNotEmpty ||
         widget.location.city!.isNotEmpty ||
         widget.location.postCode!.isNotEmpty ||
         widget.location.country!.isNotEmpty);
@@ -49,7 +49,7 @@ class _LocationTileState extends State<LocationTile> {
           child: InkWell(
             onTap: () {
               setState(() {
-                isExpanded = !isExpanded;
+                _isExpanded = !_isExpanded;
               });
             },
             customBorder: RoundedRectangleBorder(
@@ -59,7 +59,7 @@ class _LocationTileState extends State<LocationTile> {
             child: AnimatedSize(
               duration: const Duration(milliseconds: 300),
               child: Container(
-                height: (isExpanded && locationContainAddress) ? 80 : 60,
+                height: (_isExpanded && _locationContainAddress) ? 80 : 60,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Theme.of(context).cardColor,
@@ -69,7 +69,8 @@ class _LocationTileState extends State<LocationTile> {
                     // container with arrow icon on the left
                     Container(
                       width: 32,
-                      height: (isExpanded && locationContainAddress) ? 80 : 60,
+                      height:
+                          (_isExpanded && _locationContainAddress) ? 80 : 60,
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10),
@@ -79,7 +80,7 @@ class _LocationTileState extends State<LocationTile> {
                       ),
                       child: (children.isNotEmpty || widget.isAdministrator)
                           ? Icon(
-                              isExpanded
+                              _isExpanded
                                   ? Icons.keyboard_arrow_up_rounded
                                   : Icons.keyboard_arrow_down_rounded,
                             )
@@ -143,7 +144,7 @@ class _LocationTileState extends State<LocationTile> {
                             ),
                           ),
                           // location address
-                          if (isExpanded && locationContainAddress)
+                          if (_isExpanded && _locationContainAddress)
                             AddressRow(location: widget.location),
                         ],
                       ),
@@ -160,7 +161,7 @@ class _LocationTileState extends State<LocationTile> {
           duration: const Duration(milliseconds: 500),
           child: Container(
             width: double.infinity,
-            height: isExpanded ? null : 0,
+            height: _isExpanded ? null : 0,
             padding: const EdgeInsets.only(left: 10),
             child: Column(
               children: [

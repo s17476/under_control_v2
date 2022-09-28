@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
-import 'package:under_control_v2/features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart';
-import 'package:under_control_v2/features/checklists/presentation/pages/add_checklist_page.dart';
-import 'package:under_control_v2/features/checklists/presentation/pages/checklist_details_page.dart';
-import 'package:under_control_v2/features/checklists/presentation/widgets/checklist_tile.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/presentation/widgets/search_text_field.dart';
+import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../domain/entities/checklist.dart';
 import '../blocs/checklist/checklist_bloc.dart';
+import '../blocs/checklist_management/checklist_management_bloc.dart';
+import '../widgets/checklist_tile.dart';
+import 'add_checklist_page.dart';
+import 'checklist_details_page.dart';
 
 class ChecklistManagementPage extends StatefulWidget {
   const ChecklistManagementPage({Key? key}) : super(key: key);
@@ -25,63 +25,69 @@ class ChecklistManagementPage extends StatefulWidget {
 }
 
 class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
-  bool isSearchFieldExpanded = false;
-  bool isAdministrator = false;
-  late UserProfile currentUser;
+  bool _isSearchFieldExpanded = false;
+  bool _isAdministrator = false;
+  late UserProfile _currentUser;
 
-  TextEditingController searchController = TextEditingController();
+  final _searchController = TextEditingController();
 
-  String searchQuery = '';
+  String _searchQuery = '';
 
   void _hideSearchField() {
     FocusScope.of(context).unfocus();
     setState(() {
-      isSearchFieldExpanded = false;
-      searchController.text = '';
+      _isSearchFieldExpanded = false;
+      _searchController.text = '';
     });
     _search();
   }
 
   void _search() {
     setState(() {
-      searchQuery = searchController.text;
+      _searchQuery = _searchController.text;
     });
   }
 
   @override
   void didChangeDependencies() {
-    currentUser =
+    _currentUser =
         (context.read<UserProfileBloc>().state as Approved).userProfile;
-    isAdministrator = currentUser.administrator;
+    _isAdministrator = _currentUser.administrator;
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: !isSearchFieldExpanded
+        leading: !_isSearchFieldExpanded
             ? null
             : Container(
                 width: 0,
                 color: Colors.amber,
               ),
-        leadingWidth: isSearchFieldExpanded ? 0 : null,
-        title: isSearchFieldExpanded
+        leadingWidth: _isSearchFieldExpanded ? 0 : null,
+        title: _isSearchFieldExpanded
             ? SearchTextField(
-                searchController: searchController,
+                searchController: _searchController,
                 onChanged: _search,
                 onCancel: _hideSearchField,
               )
             : Text(AppLocalizations.of(context)!.checklist_drawer_title),
         centerTitle: true,
         actions: [
-          if (!isSearchFieldExpanded)
+          if (!_isSearchFieldExpanded)
             Padding(
               padding: const EdgeInsets.only(right: 16),
               child: IconButton(
                 onPressed: () => setState(() {
-                  isSearchFieldExpanded = true;
+                  _isSearchFieldExpanded = true;
                 }),
                 icon: const Icon(Icons.search),
               ),
@@ -127,7 +133,7 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
               List<Checklist> filteredChecklists = state
                   .allChecklists.allChecklists
                   .where((checklist) => checklist.title.toLowerCase().contains(
-                        searchQuery.toLowerCase(),
+                        _searchQuery.toLowerCase(),
                       ))
                   .toList();
               return ListView.builder(
@@ -144,7 +150,7 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: ChecklistTile(
                           checklist: filteredChecklists[index],
-                          user: currentUser,
+                          user: _currentUser,
                           onTap: (checklist) => Navigator.pushNamed(
                             context,
                             ChecklistDetailsPage.routeName,
@@ -162,7 +168,7 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
           },
         ),
       ),
-      floatingActionButton: isAdministrator
+      floatingActionButton: _isAdministrator
           ? context.watch<ChecklistBloc>().state is ChecklistLoadedState
               ? FloatingActionButton.extended(
                   heroTag: null,

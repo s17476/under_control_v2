@@ -13,18 +13,22 @@ class AssignCompanyPage extends StatefulWidget {
 }
 
 class _AssignCompanyPageState extends State<AssignCompanyPage> {
-  List<Widget> pages = [];
+  List<Widget> _pages = [];
 
-  final pageController = PageController();
+  final _pageController = PageController();
 
-  void addNewCompany(BuildContext context) {}
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     DateTime preBackpress = DateTime.now();
-    pages = [
-      IntroCard(pageController: pageController),
-      CompaniesList(pageController: pageController),
+    _pages = [
+      IntroCard(pageController: _pageController),
+      CompaniesList(pageController: _pageController),
     ];
 
     return WillPopScope(
@@ -56,14 +60,14 @@ class _AssignCompanyPageState extends State<AssignCompanyPage> {
           alignment: Alignment.bottomCenter,
           children: [
             PageView(
-              controller: pageController,
-              children: pages,
+              controller: _pageController,
+              children: _pages,
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 40),
               child: SmoothPageIndicator(
-                controller: pageController,
-                count: pages.length,
+                controller: _pageController,
+                count: _pages.length,
                 effect: JumpingDotEffect(
                   dotHeight: 10,
                   dotWidth: 10,

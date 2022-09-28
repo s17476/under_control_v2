@@ -19,15 +19,15 @@ class AuthenticationPage extends StatefulWidget {
 
 class _AuthenticationPageState extends State<AuthenticationPage>
     with ResponsiveSize, SingleTickerProviderStateMixin {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final repeatPasswordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _repeatPasswordController = TextEditingController();
 
-  bool passwordIsVisible = false;
+  bool _passwordIsVisible = false;
 
-  bool isInLoginMode = true;
+  bool _isInLoginMode = true;
 
-  int failureCounter = 0;
+  int _failureCounter = 0;
 
   AnimationController? _animationController;
   Animation<Offset>? _slideAnimation;
@@ -58,21 +58,24 @@ class _AuthenticationPageState extends State<AuthenticationPage>
 
   @override
   void dispose() {
-    super.dispose();
     _animationController!.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _repeatPasswordController.dispose();
+    super.dispose();
   }
 
   void _togglePasswordVisibility() {
     setState(() {
-      passwordIsVisible = !passwordIsVisible;
+      _passwordIsVisible = !_passwordIsVisible;
     });
   }
 
   void _toggleLoginMode() {
     setState(() {
-      isInLoginMode = !isInLoginMode;
+      _isInLoginMode = !_isInLoginMode;
     });
-    if (!isInLoginMode) {
+    if (!_isInLoginMode) {
       _animationController!.forward();
     } else {
       _animationController!.reverse();
@@ -81,8 +84,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>
 
   void _tryToSubmit() {
     FocusScope.of(context).unfocus();
-    if (!isInLoginMode) {
-      if (passwordController.text != repeatPasswordController.text) {
+    if (!_isInLoginMode) {
+      if (_passwordController.text != _repeatPasswordController.text) {
         ScaffoldMessenger.of(context)
           ..clearSnackBars()
           ..showSnackBar(SnackBar(
@@ -97,16 +100,16 @@ class _AuthenticationPageState extends State<AuthenticationPage>
       } else {
         context.read<AuthenticationBloc>().add(
               SignupEvent(
-                email: emailController.text,
-                password: passwordController.text,
+                email: _emailController.text,
+                password: _passwordController.text,
               ),
             );
       }
     } else {
       context.read<AuthenticationBloc>().add(
             SigninEvent(
-              email: emailController.text,
-              password: passwordController.text,
+              email: _emailController.text,
+              password: _passwordController.text,
             ),
           );
     }
@@ -144,7 +147,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                   horizontal: 32,
                 ),
                 child: TextFormField(
-                  controller: emailController,
+                  controller: _emailController,
                   key: const ValueKey('email'),
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
@@ -174,15 +177,15 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                   horizontal: 32,
                 ),
                 child: TextFormField(
-                  controller: passwordController,
+                  controller: _passwordController,
                   key: const ValueKey('password'),
-                  obscureText: !passwordIsVisible,
+                  obscureText: !_passwordIsVisible,
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
                       onPressed: _togglePasswordVisibility,
-                      icon: passwordIsVisible
+                      icon: _passwordIsVisible
                           ? const Icon(Icons.visibility_off)
                           : const Icon(Icons.visibility),
                     ),
@@ -218,15 +221,15 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                           horizontal: 32,
                         ),
                         child: TextFormField(
-                          controller: repeatPasswordController,
+                          controller: _repeatPasswordController,
                           key: const ValueKey('password'),
-                          obscureText: !passwordIsVisible,
+                          obscureText: !_passwordIsVisible,
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
                               onPressed: _togglePasswordVisibility,
-                              icon: passwordIsVisible
+                              icon: _passwordIsVisible
                                   ? const Icon(Icons.visibility_off)
                                   : const Icon(Icons.visibility),
                             ),
@@ -282,9 +285,9 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                             backgroundColor: Theme.of(context).errorColor,
                           ),
                         );
-                      if (isInLoginMode) {
+                      if (_isInLoginMode) {
                         setState(() {
-                          failureCounter++;
+                          _failureCounter++;
                         });
                       }
                     }
@@ -309,7 +312,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                                   ),
                                 ),
                               )
-                            : isInLoginMode
+                            : _isInLoginMode
                                 ? Text(
                                     AppLocalizations.of(context)!.signin,
                                     style: TextStyle(
@@ -340,13 +343,13 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                 position: _slideAnimation!,
                 child: TextButton(
                   onPressed: _toggleLoginMode,
-                  child: isInLoginMode
+                  child: _isInLoginMode
                       ? Text(AppLocalizations.of(context)!.new_account)
                       : Text(AppLocalizations.of(context)!.account_exist),
                 ),
               ),
 
-              if (failureCounter > 2)
+              if (_failureCounter > 2)
                 ResetPasswordTextButton(slideAnimation: _slideAnimation),
             ],
           ),

@@ -4,17 +4,17 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/add_item_photo.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/delete_item_photo.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/update_item_photo.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../../../data/models/item_model.dart';
 import '../../../domain/entities/item.dart';
 import '../../../domain/usecases/add_item.dart';
+import '../../../domain/usecases/add_item_photo.dart';
 import '../../../domain/usecases/delete_item.dart';
+import '../../../domain/usecases/delete_item_photo.dart';
 import '../../../domain/usecases/update_item.dart';
+import '../../../domain/usecases/update_item_photo.dart';
 
 part 'items_management_event.dart';
 part 'items_management_state.dart';
@@ -33,7 +33,6 @@ enum ItemsMessage {
 @injectable
 class ItemsManagementBloc
     extends Bloc<ItemsManagementEvent, ItemsManagementState> {
-  late StreamSubscription companyProfileStreamSubscription;
   final CompanyProfileBloc companyProfileBloc;
   final AddItem addItem;
   final DeleteItem deleteItem;
@@ -42,7 +41,8 @@ class ItemsManagementBloc
   final DeleteItemPhoto deleteItemPhoto;
   final UpdateItemPhoto updateItemPhoto;
 
-  String companyId = '';
+  late StreamSubscription _companyProfileStreamSubscription;
+  String _companyId = '';
 
   ItemsManagementBloc({
     required this.addItemPhoto,
@@ -53,10 +53,10 @@ class ItemsManagementBloc
     required this.deleteItem,
     required this.updateItem,
   }) : super(ItemsManagementEmptyState()) {
-    companyProfileStreamSubscription =
+    _companyProfileStreamSubscription =
         companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && companyId.isEmpty) {
-        companyId = state.company.id;
+      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
+        _companyId = state.company.id;
       }
     });
 
@@ -67,7 +67,7 @@ class ItemsManagementBloc
         final failureOrImageUrl = await addItemPhoto(
           ItemParams(
             item: event.item,
-            companyId: companyId,
+            companyId: _companyId,
             photo: event.itemPhoto,
           ),
         );
@@ -80,7 +80,7 @@ class ItemsManagementBloc
         final failureOrString = await addItem(
           ItemParams(
             item: item,
-            companyId: companyId,
+            companyId: _companyId,
           ),
         );
         await failureOrString.fold(
@@ -104,7 +104,7 @@ class ItemsManagementBloc
         final failureOrVoidResult = await deleteItem(
           ItemParams(
             item: event.item,
-            companyId: companyId,
+            companyId: _companyId,
           ),
         );
         await failureOrVoidResult.fold(
@@ -129,7 +129,7 @@ class ItemsManagementBloc
         final failureOrImageUrl = await addItemPhoto(
           ItemParams(
             item: event.item,
-            companyId: companyId,
+            companyId: _companyId,
             photo: event.itemPhoto,
           ),
         );
@@ -142,7 +142,7 @@ class ItemsManagementBloc
         final failureOrVoidResult = await updateItem(
           ItemParams(
             item: item,
-            companyId: companyId,
+            companyId: _companyId,
           ),
         );
         await failureOrVoidResult.fold(
@@ -159,5 +159,10 @@ class ItemsManagementBloc
         );
       },
     );
+  }
+  @override
+  Future<void> close() {
+    _companyProfileStreamSubscription.cancel();
+    return super.close();
   }
 }

@@ -16,7 +16,7 @@ class GroupDetailsLocationTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final children = allLocations
+    final _children = allLocations
         .where((element) => element.parentId == location.id)
         .toList();
 
@@ -45,7 +45,7 @@ class GroupDetailsLocationTile extends StatelessWidget {
                     ),
                     // color: widget.color,
                   ),
-                  child: children.isNotEmpty
+                  child: _children.isNotEmpty
                       ? const Icon(
                           Icons.keyboard_arrow_up,
                         )
@@ -81,13 +81,13 @@ class GroupDetailsLocationTile extends StatelessWidget {
               ],
             ),
           ),
-          if (children.isNotEmpty)
+          if (_children.isNotEmpty)
             Container(
               width: double.infinity,
               padding: const EdgeInsets.only(left: 10),
               child: Column(
                 children: [
-                  for (var child in children)
+                  for (var child in _children)
                     // location card
                     GroupDetailsLocationTile(
                       selectedLocations: selectedLocations,

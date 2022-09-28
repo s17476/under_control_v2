@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 
 import '../../../../groups/domain/entities/feature.dart';
 import '../../../utils/get_user_premission.dart';
 import '../../../utils/premission.dart';
+import 'app_bar_animated_icon.dart';
 
 class HomeSliverAppBar extends StatelessWidget {
   const HomeSliverAppBar({
@@ -30,7 +29,7 @@ class HomeSliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> appBarTitles = [
+    final List<String> _appBarTitles = [
       AppLocalizations.of(context)!.bottom_bar_title_tasks,
       AppLocalizations.of(context)!.bottom_bar_title_inventory,
       AppLocalizations.of(context)!.bottom_bar_title_dashboard,
@@ -82,7 +81,7 @@ class HomeSliverAppBar extends StatelessWidget {
             ? AppLocalizations.of(context)!.search
             : isFilterExpanded
                 ? AppLocalizations.of(context)!.filter
-                : appBarTitles[pageIndex],
+                : _appBarTitles[pageIndex],
       ),
       actions: [
         // search button

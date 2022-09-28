@@ -17,8 +17,8 @@ part 'suspended_users_state.dart';
 @injectable
 class SuspendedUsersBloc
     extends Bloc<SuspendedUsersEvent, SuspendedUsersState> {
-  late StreamSubscription companyProfileSubscription;
-  StreamSubscription? suspendedUsersStreamSubscription;
+  late StreamSubscription _companyProfileSubscription;
+  StreamSubscription? _suspendedUsersStreamSubscription;
   final CompanyProfileBloc companyProfileBloc;
   final FetchSuspendedUsers fetchSuspendedUsers;
 
@@ -26,7 +26,7 @@ class SuspendedUsersBloc
     this.companyProfileBloc,
     this.fetchSuspendedUsers,
   ) : super(SuspendedUsersEmptyState()) {
-    companyProfileSubscription = companyProfileBloc.stream.listen(
+    _companyProfileSubscription = companyProfileBloc.stream.listen(
       (state) {
         if (state is CompanyProfileLoaded) {
           add(
@@ -43,7 +43,7 @@ class SuspendedUsersBloc
       failureOrNewUsers.fold(
         (failure) async => emit(const SuspendedUsersErrorState()),
         (suspendedUsers) async {
-          suspendedUsersStreamSubscription =
+          _suspendedUsersStreamSubscription =
               suspendedUsers.allUsers.listen((snapshot) {
             add(UpdateSuspendedUsersEvent(snapshot: snapshot));
           });
@@ -74,8 +74,8 @@ class SuspendedUsersBloc
 
   @override
   Future<void> close() {
-    companyProfileSubscription.cancel();
-    suspendedUsersStreamSubscription?.cancel();
+    _companyProfileSubscription.cancel();
+    _suspendedUsersStreamSubscription?.cancel();
     return super.close();
   }
 }

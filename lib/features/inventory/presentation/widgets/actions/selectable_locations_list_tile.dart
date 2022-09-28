@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
-import 'package:under_control_v2/features/core/utils/location_selection_helpers.dart';
-import 'package:under_control_v2/features/core/utils/premission.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
+import '../../../../core/utils/double_apis.dart';
+import '../../../../core/utils/get_user_premission.dart';
+import '../../../../core/utils/location_selection_helpers.dart';
+import '../../../../core/utils/premission.dart';
+import '../../../../core/utils/show_snack_bar.dart';
+import '../../../../groups/domain/entities/feature.dart';
 import '../../../../locations/domain/entities/location.dart';
 import '../../../domain/entities/item.dart';
-import '../../../../core/utils/double_apis.dart';
 
 class SelectableLocationslistTile extends StatefulWidget {
   const SelectableLocationslistTile({
@@ -42,14 +42,14 @@ class SelectableLocationslistTile extends StatefulWidget {
 
 class _SelectableLocationslistTileState
     extends State<SelectableLocationslistTile> {
-  bool isExpanded = false;
-  bool isChildSelected = false;
-  bool isAvailable = false;
+  bool _isExpanded = false;
+  bool _isChildSelected = false;
+  bool _isAvailable = false;
 
-  late List<Location> directChildren;
+  late List<Location> _directChildren;
 
-  double amountInLocation = 0;
-  double totalAmount = 0;
+  double _amountInLocation = 0;
+  double _totalAmount = 0;
 
   void _onSelect(BuildContext context, double amountInLocation) {
     if (!widget.isSubtract || (widget.isSubtract && amountInLocation > 0)) {
@@ -74,7 +74,7 @@ class _SelectableLocationslistTileState
 
   @override
   void initState() {
-    directChildren = widget.childrenLocations
+    _directChildren = widget.childrenLocations
         .where((element) => element.parentId == widget.location.id)
         .toList();
 
@@ -83,20 +83,20 @@ class _SelectableLocationslistTileState
     );
 
     if (index >= 0) {
-      amountInLocation = widget.item.amountInLocations[index].amount;
+      _amountInLocation = widget.item.amountInLocations[index].amount;
     }
 
-    totalAmount = amountInLocation;
+    _totalAmount = _amountInLocation;
     for (var child in widget.childrenLocations) {
       final index = widget.item.amountInLocations.indexWhere(
         (element) => element.locationId == child.id,
       );
 
       if (index >= 0) {
-        totalAmount += widget.item.amountInLocations[index].amount;
+        _totalAmount += widget.item.amountInLocations[index].amount;
       }
     }
-    isAvailable = getUserPremission(
+    _isAvailable = getUserPremission(
       context: context,
       featureType: FeatureType.inventory,
       premissionType: PremissionType.create,
@@ -112,11 +112,11 @@ class _SelectableLocationslistTileState
             0) ||
         widget.location.id == widget.selectedLocation) {
       setState(() {
-        isChildSelected = true;
+        _isChildSelected = true;
       });
     } else {
       setState(() {
-        isChildSelected = false;
+        _isChildSelected = false;
       });
     }
     return Padding(
@@ -129,11 +129,11 @@ class _SelectableLocationslistTileState
           InkWell(
             borderRadius: BorderRadius.circular(5),
             onTap: () {
-              if (isAvailable && directChildren.isEmpty) {
-                _onSelect(context, amountInLocation);
-              } else if (directChildren.isNotEmpty) {
+              if (_isAvailable && _directChildren.isEmpty) {
+                _onSelect(context, _amountInLocation);
+              } else if (_directChildren.isNotEmpty) {
                 setState(() {
-                  isExpanded = !isExpanded;
+                  _isExpanded = !_isExpanded;
                 });
               } else {
                 showSnackBar(
@@ -161,9 +161,9 @@ class _SelectableLocationslistTileState
                         bottomLeft: Radius.circular(5),
                       ),
                     ),
-                    child: directChildren.isNotEmpty
+                    child: _directChildren.isNotEmpty
                         ? Icon(
-                            isExpanded
+                            _isExpanded
                                 ? Icons.keyboard_arrow_up
                                 : Icons.keyboard_arrow_down,
                           )
@@ -174,9 +174,9 @@ class _SelectableLocationslistTileState
                     child: Text(
                       widget.location.name,
                       style: TextStyle(
-                        color: !isAvailable
+                        color: !_isAvailable
                             ? Colors.grey
-                            : isChildSelected
+                            : _isChildSelected
                                 ? Colors.amber
                                 // ? Theme.of(context).primaryColor
                                 : Theme.of(context).textTheme.bodyLarge!.color,
@@ -189,16 +189,16 @@ class _SelectableLocationslistTileState
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (directChildren.isNotEmpty)
+                      if (_directChildren.isNotEmpty)
                         Text(
-                          totalAmount.toStringWithFixedDecimal(),
+                          _totalAmount.toStringWithFixedDecimal(),
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).highlightColor,
                           ),
                         ),
                       Text(
-                        amountInLocation.toStringWithFixedDecimal(),
+                        _amountInLocation.toStringWithFixedDecimal(),
                         style: const TextStyle(fontSize: 18),
                       ),
                     ],
@@ -207,7 +207,7 @@ class _SelectableLocationslistTileState
                   Radio<String>(
                     value: widget.location.id,
                     groupValue: widget.selectedLocation,
-                    onChanged: !isAvailable
+                    onChanged: !_isAvailable
                         ? (_) {
                             showSnackBar(
                               context: context,
@@ -216,7 +216,7 @@ class _SelectableLocationslistTileState
                               isErrorMessage: true,
                             );
                           }
-                        : (_) => _onSelect(context, amountInLocation),
+                        : (_) => _onSelect(context, _amountInLocation),
                     // activeColor: Theme.of(context).primaryColor,
                     activeColor: Colors.amber,
                   ),
@@ -229,12 +229,12 @@ class _SelectableLocationslistTileState
             curve: Curves.fastOutSlowIn,
             duration: const Duration(milliseconds: 500),
             child: Container(
-              height: isExpanded ? null : 0,
+              height: _isExpanded ? null : 0,
               width: double.infinity,
               padding: const EdgeInsets.only(left: 10),
               child: Column(
                 children: [
-                  for (var child in directChildren)
+                  for (var child in _directChildren)
                     SelectableLocationslistTile(
                       key: ValueKey(child.id),
                       location: child,

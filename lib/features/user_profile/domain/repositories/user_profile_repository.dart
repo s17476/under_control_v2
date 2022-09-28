@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_stream.dart';
 
+import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../entities/user_profile.dart';
-import '../../../core/error/failures.dart';
+import '../entities/user_stream.dart';
 
 abstract class UserProfileRepository {
   Future<Either<Failure, UserProfile>> getUserById(String userId);

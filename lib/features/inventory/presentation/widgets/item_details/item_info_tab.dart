@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/inventory/utils/get_item_quantity_in_locations.dart';
 
 import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/size_config.dart';
 import '../../../domain/entities/item.dart';
+import '../../../utils/get_item_quantity_in_locations.dart';
 import '../../../utils/get_item_total_quantity.dart';
 import '../internal_code_row.dart';
 import '../item_category_row.dart';

@@ -20,8 +20,8 @@ part 'company_profile_state.dart';
 @injectable
 class CompanyProfileBloc
     extends Bloc<CompanyProfileEvent, CompanyProfileState> {
-  late StreamSubscription userProfileStreamSubscription;
-  StreamSubscription? companyUsersStreamSubscription;
+  late StreamSubscription _userProfileStreamSubscription;
+  StreamSubscription? _companyUsersStreamSubscription;
   final UserProfileBloc userProfileBloc;
   final FetchAllCompanyUsers fetchAllCompanyUsers;
   final GetCompanyById getCompanyById;
@@ -33,7 +33,7 @@ class CompanyProfileBloc
     required this.getCompanyById,
     required this.inputValidator,
   }) : super(CompanyProfileEmpty()) {
-    userProfileStreamSubscription = userProfileBloc.stream.listen(
+    _userProfileStreamSubscription = userProfileBloc.stream.listen(
       (state) {
         if (state is Approved) {
           add(GetCompanyByIdEvent(id: state.userProfile.companyId));
@@ -58,7 +58,7 @@ class CompanyProfileBloc
               CompanyProfileError(message: failure.message, error: true),
             ),
             (companyUsers) async {
-              companyUsersStreamSubscription = companyUsers.allUsers.listen(
+              _companyUsersStreamSubscription = companyUsers.allUsers.listen(
                 (snapshot) {
                   add(
                     UpdateCompanyUsersEvent(
@@ -94,8 +94,8 @@ class CompanyProfileBloc
 
   @override
   Future<void> close() {
-    userProfileStreamSubscription.cancel();
-    companyUsersStreamSubscription?.cancel();
+    _userProfileStreamSubscription.cancel();
+    _companyUsersStreamSubscription?.cancel();
     return super.close();
   }
 }

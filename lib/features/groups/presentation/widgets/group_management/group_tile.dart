@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/highlighted_text.dart';
 
+import '../../../../core/presentation/widgets/highlighted_text.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
-import '../../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import '../../../domain/entities/group.dart';
 
 class GroupTile extends StatelessWidget {
@@ -25,25 +23,6 @@ class GroupTile extends StatelessWidget {
   final String searchQuery;
 
   final Function(Group group) onTap;
-
-  // assign / unassign member
-  void toggleUser(
-    BuildContext context,
-    Group group,
-    UserProfile user,
-  ) {
-    // user is aleraedy a member
-    if (user.userGroups.contains(group.id)) {
-      context.read<UserManagementBloc>().add(
-            UnassignUserFromGroupEvent(groupId: group.id, userId: user.id),
-          );
-      // user is not a member
-    } else {
-      context.read<UserManagementBloc>().add(
-            AssignUserToGroupEvent(groupId: group.id, userId: user.id),
-          );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

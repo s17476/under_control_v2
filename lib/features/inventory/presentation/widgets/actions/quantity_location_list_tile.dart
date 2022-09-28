@@ -25,18 +25,18 @@ class QuantityLocationslistTile extends StatefulWidget {
 }
 
 class _QuantityLocationslistTileState extends State<QuantityLocationslistTile> {
-  final tileHeight = 50.0;
+  final _tileHeight = 50.0;
 
-  bool isExpanded = false;
+  bool _isExpanded = false;
 
-  late List<Location> directChildren;
+  late List<Location> _directChildren;
 
-  double amountInLocation = 0;
-  double totalAmount = 0;
+  double _amountInLocation = 0;
+  double _totalAmount = 0;
 
   @override
   void initState() {
-    directChildren = widget.childrenLocations
+    _directChildren = widget.childrenLocations
         .where((element) => element.parentId == widget.location.id)
         .toList();
 
@@ -45,17 +45,17 @@ class _QuantityLocationslistTileState extends State<QuantityLocationslistTile> {
     );
 
     if (index >= 0) {
-      amountInLocation = widget.item.amountInLocations[index].amount;
+      _amountInLocation = widget.item.amountInLocations[index].amount;
     }
 
-    totalAmount = amountInLocation;
+    _totalAmount = _amountInLocation;
     for (var child in widget.childrenLocations) {
       final index = widget.item.amountInLocations.indexWhere(
         (element) => element.locationId == child.id,
       );
 
       if (index >= 0) {
-        totalAmount += widget.item.amountInLocations[index].amount;
+        _totalAmount += widget.item.amountInLocations[index].amount;
       }
     }
     super.initState();
@@ -73,14 +73,14 @@ class _QuantityLocationslistTileState extends State<QuantityLocationslistTile> {
           InkWell(
             onTap: () {
               setState(() {
-                isExpanded = !isExpanded;
+                _isExpanded = !_isExpanded;
               });
             },
             customBorder: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
             ),
             child: Container(
-              height: tileHeight,
+              height: _tileHeight,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 color: Theme.of(context).cardColor,
@@ -89,16 +89,16 @@ class _QuantityLocationslistTileState extends State<QuantityLocationslistTile> {
                 children: [
                   Container(
                     width: 25,
-                    height: tileHeight,
+                    height: _tileHeight,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(5),
                         bottomLeft: Radius.circular(5),
                       ),
                     ),
-                    child: directChildren.isNotEmpty
+                    child: _directChildren.isNotEmpty
                         ? Icon(
-                            isExpanded
+                            _isExpanded
                                 ? Icons.keyboard_arrow_up
                                 : Icons.keyboard_arrow_down,
                           )
@@ -117,7 +117,7 @@ class _QuantityLocationslistTileState extends State<QuantityLocationslistTile> {
                   ),
                   Container(
                     alignment: Alignment.centerRight,
-                    height: tileHeight,
+                    height: _tileHeight,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(5),
@@ -127,16 +127,16 @@ class _QuantityLocationslistTileState extends State<QuantityLocationslistTile> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (directChildren.isNotEmpty)
+                        if (_directChildren.isNotEmpty)
                           Text(
-                            totalAmount.toStringWithFixedDecimal(),
+                            _totalAmount.toStringWithFixedDecimal(),
                             style: TextStyle(
                               fontSize: 12,
                               color: Theme.of(context).highlightColor,
                             ),
                           ),
                         Text(
-                          amountInLocation.toStringWithFixedDecimal(),
+                          _amountInLocation.toStringWithFixedDecimal(),
                           style: const TextStyle(fontSize: 18),
                         ),
                       ],
@@ -156,11 +156,11 @@ class _QuantityLocationslistTileState extends State<QuantityLocationslistTile> {
             duration: const Duration(milliseconds: 500),
             child: Container(
               width: double.infinity,
-              height: isExpanded ? null : 0,
+              height: _isExpanded ? null : 0,
               padding: const EdgeInsets.only(left: 10),
               child: Column(
                 children: [
-                  for (var child in directChildren)
+                  for (var child in _directChildren)
                     // location card
                     QuantityLocationslistTile(
                       location: child,

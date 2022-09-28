@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
 import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
 import '../entities/item_action/item_actions_stream.dart';
 
 abstract class ItemActionRepository {

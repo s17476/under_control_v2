@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
+import '../../data/models/checkpoint_model.dart';
 
 class CheckpointTile extends StatelessWidget {
   const CheckpointTile({

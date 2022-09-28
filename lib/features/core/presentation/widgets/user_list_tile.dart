@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/highlighted_text.dart';
 
 import '../../../user_profile/domain/entities/user_profile.dart';
 import 'cached_user_avatar.dart';
+import 'highlighted_text.dart';
 
 class UserListTile extends StatelessWidget {
   const UserListTile({

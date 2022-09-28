@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_actions_stream.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'package:under_control_v2/features/inventory/domain/repositories/dashboard_item_action_repository.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
+import '../../domain/entities/item_action/item_actions_stream.dart';
+import '../../domain/repositories/dashboard_item_action_repository.dart';
 
 @LazySingleton(as: DashboardItemActionRepository)
 class DashboardItemActionRepositoryImpl extends DashboardItemActionRepository {

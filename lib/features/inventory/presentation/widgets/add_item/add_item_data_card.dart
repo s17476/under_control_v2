@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/pages/qr_scanner.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/presentation/pages/qr_scanner.dart';
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
+import '../../../../core/utils/responsive_size.dart';
+import '../../../../core/utils/show_snack_bar.dart';
 import '../../../utils/show_add_category_modal_bottom_sheet.dart';
 import 'category_dropdown_button.dart';
 import 'item_unit_dropdown_button.dart';
@@ -43,17 +43,8 @@ class AddItemDataCard extends StatefulWidget {
 }
 
 class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
-  bool hasBarCode = false;
-  String currency = '';
-
-  @override
-  void didChangeDependencies() {
-    final companyState = context.read<CompanyProfileBloc>().state;
-    if (companyState is CompanyProfileLoaded) {
-      currency = companyState.company.currency;
-    }
-    super.didChangeDependencies();
-  }
+  // bool _hasBarCode = false;
+  String _currency = '';
 
   void _pickCode(BuildContext context) async {
     FocusScope.of(context).unfocus();
@@ -61,15 +52,24 @@ class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
       final code = await Navigator.pushNamed(context, QrScanner.routeName);
       if (code is String) {
         widget.barCodeTextEditingController.text = code;
-        setState(() {
-          hasBarCode = true;
-        });
+        // setState(() {
+        //   _hasBarCode = true;
+        // });
       }
     } catch (e) {
       showSnackBar(
           context: context,
           message: AppLocalizations.of(context)!.item_no_barcode);
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    final companyState = context.read<CompanyProfileBloc>().state;
+    if (companyState is CompanyProfileLoaded) {
+      _currency = companyState.company.currency;
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -152,7 +152,7 @@ class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
                       controller: widget.priceTextEditingController,
                       keyboardType: TextInputType.number,
                       labelText:
-                          '${AppLocalizations.of(context)!.item_unit_price_optional} [$currency]',
+                          '${AppLocalizations.of(context)!.item_unit_price_optional} [$_currency]',
                     ),
                     const SizedBox(
                       height: 16,

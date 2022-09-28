@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
-import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/presentation/widgets/search_text_field.dart';
+import '../../../core/utils/show_snack_bar.dart';
+import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/group.dart';
 import '../blocs/group/group_bloc.dart';
 import '../widgets/group_management/group_tile.dart';
 import 'add_group_page.dart';
+import 'group_details.dart';
 
 class GroupManagementPage extends StatefulWidget {
   const GroupManagementPage({Key? key}) : super(key: key);
@@ -23,63 +23,69 @@ class GroupManagementPage extends StatefulWidget {
 }
 
 class _GroupManagementPageState extends State<GroupManagementPage> {
-  bool isSearchFieldExpanded = false;
-  bool isAdministrator = false;
-  late UserProfile currentUser;
+  bool _isSearchFieldExpanded = false;
+  bool _isAdministrator = false;
+  late UserProfile _currentUser;
 
-  TextEditingController searchController = TextEditingController();
+  final _searchController = TextEditingController();
 
-  String searchQuery = '';
+  String _searchQuery = '';
 
   void _hideSearchField() {
     FocusScope.of(context).unfocus();
     setState(() {
-      isSearchFieldExpanded = false;
-      searchController.text = '';
+      _isSearchFieldExpanded = false;
+      _searchController.text = '';
     });
     _search();
   }
 
   void _search() {
     setState(() {
-      searchQuery = searchController.text;
+      _searchQuery = _searchController.text;
     });
   }
 
   @override
   void didChangeDependencies() {
-    currentUser =
+    _currentUser =
         (context.read<UserProfileBloc>().state as Approved).userProfile;
-    isAdministrator = currentUser.administrator;
+    _isAdministrator = _currentUser.administrator;
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: !isSearchFieldExpanded
+        leading: !_isSearchFieldExpanded
             ? null
             : Container(
                 width: 0,
                 color: Colors.amber,
               ),
-        leadingWidth: isSearchFieldExpanded ? 0 : null,
-        title: isSearchFieldExpanded
+        leadingWidth: _isSearchFieldExpanded ? 0 : null,
+        title: _isSearchFieldExpanded
             ? SearchTextField(
-                searchController: searchController,
+                searchController: _searchController,
                 onChanged: _search,
                 onCancel: _hideSearchField,
               )
             : Text(AppLocalizations.of(context)!.group_management_title),
         centerTitle: true,
         actions: [
-          if (!isSearchFieldExpanded)
+          if (!_isSearchFieldExpanded)
             Padding(
               padding: const EdgeInsets.only(right: 16),
               child: IconButton(
                 onPressed: () => setState(() {
-                  isSearchFieldExpanded = true;
+                  _isSearchFieldExpanded = true;
                 }),
                 icon: const Icon(Icons.search),
               ),
@@ -124,7 +130,7 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
           if (state is GroupLoadedState) {
             List<Group> filteredGroups = state.allGroups.allGroups
                 .where((group) => group.name.toLowerCase().contains(
-                      searchQuery.toLowerCase(),
+                      _searchQuery.toLowerCase(),
                     ))
                 .toList();
             return ListView.builder(
@@ -147,8 +153,8 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
                           GroupDetailsPage.routeName,
                           arguments: group,
                         ),
-                        user: currentUser,
-                        searchQuery: searchQuery,
+                        user: _currentUser,
+                        searchQuery: _searchQuery,
                       ),
                     ),
                   );
@@ -163,7 +169,7 @@ class _GroupManagementPageState extends State<GroupManagementPage> {
       // floating action button visible only if:
       // user is administrator or has 'inventory create' premission
       // and GroupBloc state is GroupLoadedState
-      floatingActionButton: isAdministrator
+      floatingActionButton: _isAdministrator
           ? context.watch<GroupBloc>().state is GroupLoadedState
               ? FloatingActionButton.extended(
                   heroTag: null,

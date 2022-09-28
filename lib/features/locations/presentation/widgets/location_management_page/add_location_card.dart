@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../domain/entities/location.dart';
-import 'bottom_modal_sheet.dart';
+import '../../../utils/bottom_modal_sheet.dart';
 
 class AddLocationCard extends StatelessWidget {
   final Color color;

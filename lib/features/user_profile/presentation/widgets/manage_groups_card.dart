@@ -25,9 +25,9 @@ class ManageGroupsCard extends StatefulWidget {
 }
 
 class _ManageGroupsCardState extends State<ManageGroupsCard> {
-  List<Group> allGroups = [];
+  List<Group> _allGroups = [];
 
-  void toggleGroup(Group group) {
+  void _toggleGroup(Group group) {
     widget.onToggleGroupSelection(context, group, widget.user);
   }
 
@@ -35,7 +35,7 @@ class _ManageGroupsCardState extends State<ManageGroupsCard> {
   void didChangeDependencies() {
     final groupState = context.watch<GroupBloc>().state;
     if (groupState is GroupLoadedState) {
-      allGroups = groupState.allGroups.allGroups;
+      _allGroups = groupState.allGroups.allGroups;
     }
     super.didChangeDependencies();
   }
@@ -56,15 +56,15 @@ class _ManageGroupsCardState extends State<ManageGroupsCard> {
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: allGroups.length,
+                    itemCount: _allGroups.length,
                     itemBuilder: (context, index) {
                       return GroupTile(
-                        group: allGroups[index],
+                        group: _allGroups[index],
                         isSelectionTile: true,
                         isGroupMember: widget.user.userGroups.contains(
-                          allGroups[index].id,
+                          _allGroups[index].id,
                         ),
-                        onTap: toggleGroup,
+                        onTap: _toggleGroup,
                       );
                     },
                   ),

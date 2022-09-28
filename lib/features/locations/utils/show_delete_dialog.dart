@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../domain/entities/group.dart';
-import '../../blocs/group/group_bloc.dart';
+import '../domain/entities/location.dart';
+import '../presentation/blocs/bloc/location_bloc.dart';
 
-Future<bool?> showGroupDeleteDialog({
+Future<dynamic> showDeleteDialog({
   required BuildContext context,
-  required Group group,
+  required Location location,
 }) {
   return showDialog(
     context: context,
@@ -16,11 +16,15 @@ Future<bool?> showGroupDeleteDialog({
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-      title:
-          Text(AppLocalizations.of(context)!.group_management_delete_confirm),
+      title: Text(
+        AppLocalizations.of(context)!
+            .location_management_add_location_message_delete_confirm,
+      ),
       content: Text(
         AppLocalizations.of(context)!
-            .group_management_delete_question(group.name),
+            .location_management_add_location_message_delete_question(
+          location.name,
+        ),
       ),
       actions: [
         TextButton(
@@ -31,7 +35,7 @@ Future<bool?> showGroupDeleteDialog({
             ),
           ),
           onPressed: () {
-            Navigator.pop(context, false);
+            Navigator.pop(context);
           },
         ),
         TextButton(
@@ -42,8 +46,12 @@ Future<bool?> showGroupDeleteDialog({
             ),
           ),
           onPressed: () {
-            context.read<GroupBloc>().add(DeleteGroupEvent(group: group));
-            Navigator.pop(context, true);
+            context.read<LocationBloc>().add(
+                  DeleteLocationEvent(
+                    location: location,
+                  ),
+                );
+            Navigator.pop(context);
           },
         ),
       ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/models/checkpoint_model.dart';
-import 'add_checkpoint_bottom_modal_sheet.dart';
+import '../../utils/show_add_checkpoint_bottom_modal_sheet.dart';
 
 class AddCheckpointButton extends StatelessWidget {
   final Color color;

@@ -25,11 +25,11 @@ class GroupMembers extends StatefulWidget {
 }
 
 class _GroupMembersState extends State<GroupMembers> {
-  bool isExpanded = false;
+  bool _isExpanded = false;
 
   void toggleIsExpanded() {
     setState(() {
-      isExpanded = !isExpanded;
+      _isExpanded = !_isExpanded;
     });
   }
 
@@ -75,7 +75,7 @@ class _GroupMembersState extends State<GroupMembers> {
                     ),
                   ),
                   Icon(
-                    isExpanded
+                    _isExpanded
                         ? Icons.keyboard_arrow_up
                         : Icons.keyboard_arrow_down,
                   ),
@@ -87,7 +87,7 @@ class _GroupMembersState extends State<GroupMembers> {
           AnimatedSize(
             duration: const Duration(milliseconds: 300),
             child: Container(
-              height: isExpanded ? null : 0,
+              height: _isExpanded ? null : 0,
               padding: const EdgeInsets.all(8),
               child: ListView.builder(
                 shrinkWrap: true,

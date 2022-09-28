@@ -34,131 +34,73 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   // search box height
-  final double searchBoxHeight = 70;
+  final double _searchBoxHeight = 70;
+
+  final _scrollController = ScrollController();
 
   // bottom navigation controls
-  final PageController pageController = PageController(initialPage: 2);
-  int pageIndex = 2;
-  late CircularBottomNavigationController navigationController;
+  final _pageController = PageController(initialPage: 2);
+  int _pageIndex = 2;
+  late CircularBottomNavigationController _navigationController;
 
-  bool isFilterExpanded = false;
-
-  bool isInventorySearchBarExpanded = false;
-
-  bool isAssetsSearchBarExpanded = false;
-
-  bool isControlsVisible = true;
-
-  bool isMenuVisible = false;
-
-  final ScrollController scrollController = ScrollController();
+  bool _isFilterExpanded = false;
+  bool _isInventorySearchBarExpanded = false;
+  bool _isAssetsSearchBarExpanded = false;
+  bool _isControlsVisible = true;
+  bool _isMenuVisible = false;
 
   // inventory search
-  final TextEditingController inventorySearchTextEditingController =
-      TextEditingController();
+  final _inventorySearchTextEditingController = TextEditingController();
 
   // assets search
-  final TextEditingController assetsSearchTextEditingController =
-      TextEditingController();
+  final _assetsSearchTextEditingController = TextEditingController();
 
-  double currentOffset = 0;
+  double _currentOffset = 0;
 
-  String inventoryQuery = '';
-  String assetsQuery = '';
+  String _inventoryQuery = '';
+  String _assetsQuery = '';
 
   // bottom navigation show/hide animation
-  AnimationController? animationController;
+  AnimationController? _animationController;
   // Animation<Offset>? downSlideAnimation;
-
-  @override
-  void initState() {
-    animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
-
-    navigationController = CircularBottomNavigationController(pageIndex);
-    scrollController.addListener(() {
-      if (isControlsVisible && scrollController.offset > currentOffset) {
-        _hideControls();
-      }
-      if (MediaQuery.of(context).viewInsets.bottom == 0 &&
-          !isControlsVisible &&
-          scrollController.offset < currentOffset) {
-        _showControls();
-      }
-      currentOffset = scrollController.offset;
-    });
-
-    pageController.addListener(() {
-      // closes search bar when page changes
-      if (isInventorySearchBarExpanded || isAssetsSearchBarExpanded) {
-        _toggleIsSearchBarExpanded();
-      }
-    });
-
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (MediaQuery.of(context).viewInsets.bottom == 0 && !isControlsVisible) {
-      _showControls();
-    } else if (MediaQuery.of(context).viewInsets.bottom != 0 &&
-        isControlsVisible) {
-      _hideControls();
-    }
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    navigationController.dispose();
-    scrollController.dispose();
-    animationController?.dispose();
-    pageController.dispose();
-    inventorySearchTextEditingController.dispose();
-    assetsSearchTextEditingController.dispose();
-    super.dispose();
-  }
 
   // search in inventory
   void _searchInInventory() {
     setState(() {
-      inventoryQuery = inventorySearchTextEditingController.text;
+      _inventoryQuery = _inventorySearchTextEditingController.text;
     });
   }
 
   // search in assets
   void _searchInAssets() {
     setState(() {
-      assetsQuery = assetsSearchTextEditingController.text;
+      _assetsQuery = _assetsSearchTextEditingController.text;
     });
   }
 
   // set page index
   void _setPageIndex(int index) {
     setState(() {
-      pageIndex = index;
+      _pageIndex = index;
     });
   }
 
   // show BottomNavigationTabBar
   void _showControls() {
-    if (!isControlsVisible) {
-      animationController!.reverse();
+    if (!_isControlsVisible) {
+      _animationController!.reverse();
       setState(() {
-        isControlsVisible = true;
+        _isControlsVisible = true;
       });
     }
   }
 
   // hide BottomNavigationTabBar
   void _hideControls() {
-    if (isControlsVisible) {
-      animationController!.forward();
+    if (_isControlsVisible) {
+      _animationController!.forward();
       setState(() {
-        isControlsVisible = false;
+        _isControlsVisible = false;
       });
     }
   }
@@ -166,7 +108,7 @@ class _HomePageState extends State<HomePage>
   // show/hide filter widget
   void _toggleIsFilterExpanded() {
     setState(() {
-      isFilterExpanded = !isFilterExpanded;
+      _isFilterExpanded = !_isFilterExpanded;
     });
   }
 
@@ -174,38 +116,38 @@ class _HomePageState extends State<HomePage>
   void _toggleIsSearchBarExpanded() {
     setState(() {
       // closes menu and filter
-      if (isMenuVisible) {
+      if (_isMenuVisible) {
         _toggleIsMenuVisible();
       }
-      if (isFilterExpanded) {
+      if (_isFilterExpanded) {
         _toggleIsFilterExpanded();
       }
 
       // toggle inventory search
-      if (isInventorySearchBarExpanded) {
-        inventorySearchTextEditingController.text = '';
+      if (_isInventorySearchBarExpanded) {
+        _inventorySearchTextEditingController.text = '';
         _searchInInventory();
-        isInventorySearchBarExpanded = false;
-      } else if (!isInventorySearchBarExpanded && pageIndex == 1) {
-        isInventorySearchBarExpanded = true;
+        _isInventorySearchBarExpanded = false;
+      } else if (!_isInventorySearchBarExpanded && _pageIndex == 1) {
+        _isInventorySearchBarExpanded = true;
       }
 
       // toggle assets search
-      if (isAssetsSearchBarExpanded) {
-        assetsSearchTextEditingController.text = '';
+      if (_isAssetsSearchBarExpanded) {
+        _assetsSearchTextEditingController.text = '';
         _searchInAssets();
-        isAssetsSearchBarExpanded = false;
-      } else if (!isAssetsSearchBarExpanded && pageIndex == 3) {
-        isAssetsSearchBarExpanded = true;
+        _isAssetsSearchBarExpanded = false;
+      } else if (!_isAssetsSearchBarExpanded && _pageIndex == 3) {
+        _isAssetsSearchBarExpanded = true;
       }
     });
   }
 
   bool _getFlagForPageIndex(int index) {
-    if (pageIndex == 1) {
-      return isInventorySearchBarExpanded;
+    if (_pageIndex == 1) {
+      return _isInventorySearchBarExpanded;
     } else {
-      return isAssetsSearchBarExpanded;
+      return _isAssetsSearchBarExpanded;
     }
   }
 
@@ -213,28 +155,28 @@ class _HomePageState extends State<HomePage>
   void _toggleIsMenuVisible() {
     bool premision = true;
     // no inventory read premission
-    if (pageIndex == 0 &&
+    if (_pageIndex == 0 &&
         !getUserPremission(
           context: context,
           featureType: FeatureType.tasks,
           premissionType: PremissionType.read,
         )) {
       premision = false;
-    } else if (pageIndex == 1 &&
+    } else if (_pageIndex == 1 &&
         !getUserPremission(
           context: context,
           featureType: FeatureType.inventory,
           premissionType: PremissionType.read,
         )) {
       premision = false;
-    } else if (pageIndex == 3 &&
+    } else if (_pageIndex == 3 &&
         !getUserPremission(
           context: context,
           featureType: FeatureType.assets,
           premissionType: PremissionType.read,
         )) {
       premision = false;
-    } else if (pageIndex == 4 &&
+    } else if (_pageIndex == 4 &&
         !getUserPremission(
           context: context,
           featureType: FeatureType.knowledgeBase,
@@ -244,7 +186,7 @@ class _HomePageState extends State<HomePage>
     }
     if (premision) {
       setState(() {
-        isMenuVisible = !isMenuVisible;
+        _isMenuVisible = !_isMenuVisible;
       });
     } else {
       showSnackBar(
@@ -256,6 +198,58 @@ class _HomePageState extends State<HomePage>
   }
 
   @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+
+    _navigationController = CircularBottomNavigationController(_pageIndex);
+    _scrollController.addListener(() {
+      if (_isControlsVisible && _scrollController.offset > _currentOffset) {
+        _hideControls();
+      }
+      if (MediaQuery.of(context).viewInsets.bottom == 0 &&
+          !_isControlsVisible &&
+          _scrollController.offset < _currentOffset) {
+        _showControls();
+      }
+      _currentOffset = _scrollController.offset;
+    });
+
+    _pageController.addListener(() {
+      // closes search bar when page changes
+      if (_isInventorySearchBarExpanded || _isAssetsSearchBarExpanded) {
+        _toggleIsSearchBarExpanded();
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (MediaQuery.of(context).viewInsets.bottom == 0 && !_isControlsVisible) {
+      _showControls();
+    } else if (MediaQuery.of(context).viewInsets.bottom != 0 &&
+        _isControlsVisible) {
+      _hideControls();
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _navigationController.dispose();
+    _scrollController.dispose();
+    _animationController?.dispose();
+    _pageController.dispose();
+    _inventorySearchTextEditingController.dispose();
+    _assetsSearchTextEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
     DateTime preBackpress = DateTime.now();
@@ -263,11 +257,11 @@ class _HomePageState extends State<HomePage>
     return WillPopScope(
       onWillPop: () async {
         // hide filter widget if expanded
-        if (isFilterExpanded) {
+        if (_isFilterExpanded) {
           _toggleIsFilterExpanded();
           return false;
         }
-        if (isMenuVisible) {
+        if (_isMenuVisible) {
           _toggleIsMenuVisible();
           return false;
         }
@@ -304,7 +298,7 @@ class _HomePageState extends State<HomePage>
           drawer: const MainDrawer(),
           body: SafeArea(
             child: NestedScrollView(
-              controller: scrollController,
+              controller: _scrollController,
               physics: const NeverScrollableScrollPhysics(),
               // AppBar
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -312,12 +306,12 @@ class _HomePageState extends State<HomePage>
                   handle:
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                   sliver: HomeSliverAppBar(
-                    pageIndex: pageIndex,
-                    isFilterExpanded: isFilterExpanded,
+                    pageIndex: _pageIndex,
+                    isFilterExpanded: _isFilterExpanded,
                     toggleIsFilterExpanded: _toggleIsFilterExpanded,
-                    isMenuVisible: isMenuVisible,
+                    isMenuVisible: _isMenuVisible,
                     toggleIsMenuVisible: _toggleIsMenuVisible,
-                    isSearchBarExpanded: _getFlagForPageIndex(pageIndex),
+                    isSearchBarExpanded: _getFlagForPageIndex(_pageIndex),
                     toggleIsSearchBarExpanded: _toggleIsSearchBarExpanded,
                   ),
                 )
@@ -328,13 +322,13 @@ class _HomePageState extends State<HomePage>
                   // tabs
                   PageView(
                     physics: const NeverScrollableScrollPhysics(),
-                    controller: pageController,
+                    controller: _pageController,
                     children: [
                       const TasksPage(),
                       InventoryPage(
-                        searchBoxHeight: searchBoxHeight,
-                        isSearchBoxExpanded: isInventorySearchBarExpanded,
-                        searchQuery: inventoryQuery,
+                        searchBoxHeight: _searchBoxHeight,
+                        isSearchBoxExpanded: _isInventorySearchBarExpanded,
+                        searchQuery: _inventoryQuery,
                         isSortedByCategory: false,
                       ),
                       const DashboardPage(),
@@ -344,39 +338,39 @@ class _HomePageState extends State<HomePage>
                   ),
                   // bottom navigation bar
                   HomeBottomNavigationBar(
-                    animationController: animationController!,
-                    navigationController: navigationController,
-                    pageController: pageController,
+                    animationController: _animationController!,
+                    navigationController: _navigationController,
+                    pageController: _pageController,
                     setPageIndex: _setPageIndex,
                     toggleShowMenu: _toggleIsMenuVisible,
                   ),
                   // location and group selection filter
                   HomePageFilter(
-                    isFilterExpanded: isFilterExpanded,
+                    isFilterExpanded: _isFilterExpanded,
                     onDismiss: _toggleIsFilterExpanded,
                   ),
                   OverlayMenu(
-                    isVisible: isMenuVisible,
+                    isVisible: _isMenuVisible,
                     onDismiss: _toggleIsMenuVisible,
-                    pageIndex: pageIndex,
+                    pageIndex: _pageIndex,
                   ),
                   // inventory search box
                   AppBarSearchBox(
                     title: AppLocalizations.of(context)!.search_item,
-                    searchBoxHeight: searchBoxHeight,
-                    isSearchBoxExpanded: isInventorySearchBarExpanded,
+                    searchBoxHeight: _searchBoxHeight,
+                    isSearchBoxExpanded: _isInventorySearchBarExpanded,
                     onChanged: _searchInInventory,
                     searchTextEditingController:
-                        inventorySearchTextEditingController,
+                        _inventorySearchTextEditingController,
                   ),
                   // assets search box
                   AppBarSearchBox(
                     title: AppLocalizations.of(context)!.search,
-                    searchBoxHeight: searchBoxHeight,
-                    isSearchBoxExpanded: isAssetsSearchBarExpanded,
+                    searchBoxHeight: _searchBoxHeight,
+                    isSearchBoxExpanded: _isAssetsSearchBarExpanded,
                     onChanged: _searchInAssets,
                     searchTextEditingController:
-                        assetsSearchTextEditingController,
+                        _assetsSearchTextEditingController,
                   ),
                 ],
               ),

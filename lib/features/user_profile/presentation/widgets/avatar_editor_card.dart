@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/glass_layer.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/overlay_icon_button.dart';
 
 import '../../../core/presentation/widgets/cached_user_avatar.dart';
+import '../../../core/presentation/widgets/glass_layer.dart';
+import '../../../core/presentation/widgets/overlay_icon_button.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
 import '../../domain/entities/user_profile.dart';
@@ -29,9 +29,9 @@ class AvatarEditorCard extends StatefulWidget {
 
 class _AvatarEditorCardState extends State<AvatarEditorCard>
     with ResponsiveSize {
-  File? userAvatar;
+  File? _userAvatar;
 
-  void setAvatar(ImageSource souruce) async {
+  void _setAvatar(ImageSource souruce) async {
     final picker = ImagePicker();
 
     try {
@@ -43,7 +43,7 @@ class _AvatarEditorCardState extends State<AvatarEditorCard>
       );
       if (pickedFile != null) {
         setState(() {
-          userAvatar = File(pickedFile.path);
+          _userAvatar = File(pickedFile.path);
         });
       }
     } catch (e) {
@@ -77,7 +77,7 @@ class _AvatarEditorCardState extends State<AvatarEditorCard>
 
                 // indexed stack
                 child: IndexedStack(
-                  index: userAvatar == null ? 0 : 1,
+                  index: _userAvatar == null ? 0 : 1,
                   children: [
                     // original avatar
                     CachedUserAvatar(
@@ -92,7 +92,7 @@ class _AvatarEditorCardState extends State<AvatarEditorCard>
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
                       backgroundImage:
-                          userAvatar != null ? FileImage(userAvatar!) : null,
+                          _userAvatar != null ? FileImage(_userAvatar!) : null,
                     ),
                   ],
                 ),
@@ -105,14 +105,14 @@ class _AvatarEditorCardState extends State<AvatarEditorCard>
                 children: [
                   // camera button
                   OverlayIconButton(
-                    onPressed: () => setAvatar(ImageSource.camera),
+                    onPressed: () => _setAvatar(ImageSource.camera),
                     icon: Icons.camera,
                     title: AppLocalizations.of(context)!
                         .user_profile_add_user_personal_data_take_photo_btn,
                   ),
                   // gallery button
                   OverlayIconButton(
-                    onPressed: () => setAvatar(ImageSource.gallery),
+                    onPressed: () => _setAvatar(ImageSource.gallery),
                     icon: Icons.photo_size_select_actual_rounded,
                     title: AppLocalizations.of(context)!
                         .user_profile_add_user_personal_data_gallery,
@@ -148,7 +148,7 @@ class _AvatarEditorCardState extends State<AvatarEditorCard>
                       context.read<UserManagementBloc>().add(
                             UpdateUserAvatarEvent(
                               userProfile: widget.user,
-                              avatar: userAvatar,
+                              avatar: _userAvatar,
                             ),
                           );
                       widget.onDismiss();

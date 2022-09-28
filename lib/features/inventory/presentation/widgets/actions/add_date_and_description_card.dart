@@ -36,7 +36,7 @@ class _AddDateAndDescriptionCardState extends State<AddDateAndDescriptionCard>
     with ResponsiveSize {
   final _dateTextEditingController = TextEditingController();
 
-  final dateFormat = DateFormat('dd-MM-yyyy  HH:mm');
+  final _dateFormat = DateFormat('dd-MM-yyyy  HH:mm');
 
   void _pickDate() async {
     FocusScope.of(context).unfocus();
@@ -56,10 +56,10 @@ class _AddDateAndDescriptionCardState extends State<AddDateAndDescriptionCard>
       onConfirm: (date) {
         widget.setDate(date);
         setState(() {
-          _dateTextEditingController.text = dateFormat.format(date);
+          _dateTextEditingController.text = _dateFormat.format(date);
         });
       },
-      currentTime: dateFormat.parse(_dateTextEditingController.text),
+      currentTime: _dateFormat.parse(_dateTextEditingController.text),
       locale: getLocaleType(context),
       theme: DatePickerTheme(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -76,7 +76,7 @@ class _AddDateAndDescriptionCardState extends State<AddDateAndDescriptionCard>
 
   @override
   void initState() {
-    _dateTextEditingController.text = dateFormat.format(widget.dateTime);
+    _dateTextEditingController.text = _dateFormat.format(widget.dateTime);
     super.initState();
   }
 

@@ -36,20 +36,15 @@ class ChecklistModel extends Checklist {
 
   factory ChecklistModel.fromMap(Map<String, dynamic> map, String id) {
     return ChecklistModel(
-        id: id,
-        title: map['title'] ?? '',
-        description: map['description'] ?? '',
-        allCheckpoints: List<CheckpointModel>.from(
-          map['allCheckpoints']?.map(
-            (x) => CheckpointModel.fromMap(x),
-          ),
-        )
-        // ..sort(
-        //     (a, b) => a.title.toLowerCase().compareTo(
-        //           b.title.toLowerCase(),
-        //         ),
-        //   ),
-        );
+      id: id,
+      title: map['title'] ?? '',
+      description: map['description'] ?? '',
+      allCheckpoints: List<CheckpointModel>.from(
+        map['allCheckpoints']?.map(
+          (x) => CheckpointModel.fromMap(x),
+        ),
+      ),
+    );
   }
 
   ChecklistModel deepCopy() {

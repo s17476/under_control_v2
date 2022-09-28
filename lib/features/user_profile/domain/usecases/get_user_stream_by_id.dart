@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/core/error/failures.dart';
 
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_stream.dart';
-import 'package:under_control_v2/features/user_profile/domain/repositories/user_profile_repository.dart';
+import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
+import '../entities/user_stream.dart';
+import '../repositories/user_profile_repository.dart';
 
 @lazySingleton
 class GetUserStreamById extends FutureUseCase<UserStream, String> {

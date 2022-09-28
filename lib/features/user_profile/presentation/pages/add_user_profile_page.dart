@@ -22,31 +22,31 @@ class AddUserProfilePage extends StatefulWidget {
 }
 
 class _AddUserProfilePageState extends State<AddUserProfilePage> {
-  final firstNameTexEditingController = TextEditingController();
-  final lastNameTexEditingController = TextEditingController();
-  final phoneNumberTexEditingController = TextEditingController();
-  final pageController = PageController();
+  final _firstNameTexEditingController = TextEditingController();
+  final _lastNameTexEditingController = TextEditingController();
+  final _phoneNumberTexEditingController = TextEditingController();
+  final _pageController = PageController();
 
-  File? userAvatar;
+  File? _userAvatar;
 
-  List<Widget> pages = [];
+  List<Widget> _pages = [];
 
-  void addUser() {
+  void _addUser() {
     final userProfile = UserProfileModel.newUser(
-      firstName: firstNameTexEditingController.text.trim(),
-      lastName: lastNameTexEditingController.text.trim(),
-      phoneNumber: phoneNumberTexEditingController.text.trim(),
+      firstName: _firstNameTexEditingController.text.trim(),
+      lastName: _lastNameTexEditingController.text.trim(),
+      phoneNumber: _phoneNumberTexEditingController.text.trim(),
     );
 
     context.read<UserProfileBloc>().add(
           AddUserEvent(
             userProfile: userProfile,
-            avatar: userAvatar,
+            avatar: _userAvatar,
           ),
         );
   }
 
-  void setAvatar(ImageSource souruce) async {
+  void _setAvatar(ImageSource souruce) async {
     final picker = ImagePicker();
 
     try {
@@ -58,7 +58,7 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
       );
       if (pickedFile != null) {
         setState(() {
-          userAvatar = File(pickedFile.path);
+          _userAvatar = File(pickedFile.path);
         });
       }
     } catch (e) {
@@ -72,36 +72,36 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
 
   @override
   void dispose() {
-    firstNameTexEditingController.dispose();
-    lastNameTexEditingController.dispose();
-    phoneNumberTexEditingController.dispose();
-    pageController.dispose();
+    _firstNameTexEditingController.dispose();
+    _lastNameTexEditingController.dispose();
+    _phoneNumberTexEditingController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     DateTime preBackpress = DateTime.now();
-    pages = [
-      WelcomeCard(pageController: pageController),
+    _pages = [
+      WelcomeCard(pageController: _pageController),
       PersonalDataCard(
-        pageController: pageController,
-        firstNameTexEditingController: firstNameTexEditingController,
-        lastNameTexEditingController: lastNameTexEditingController,
-        phoneNumberTexEditingController: phoneNumberTexEditingController,
+        pageController: _pageController,
+        firstNameTexEditingController: _firstNameTexEditingController,
+        lastNameTexEditingController: _lastNameTexEditingController,
+        phoneNumberTexEditingController: _phoneNumberTexEditingController,
       ),
       AvatarCard(
-        pageController: pageController,
-        setAvatar: setAvatar,
-        image: userAvatar,
+        pageController: _pageController,
+        setAvatar: _setAvatar,
+        image: _userAvatar,
       ),
       DataCheckCard(
-        addUser: addUser,
-        pageController: pageController,
-        firstNameTexEditingController: firstNameTexEditingController,
-        lastNameTexEditingController: lastNameTexEditingController,
-        phoneNumberTexEditingController: phoneNumberTexEditingController,
-        image: userAvatar,
+        addUser: _addUser,
+        pageController: _pageController,
+        firstNameTexEditingController: _firstNameTexEditingController,
+        lastNameTexEditingController: _lastNameTexEditingController,
+        phoneNumberTexEditingController: _phoneNumberTexEditingController,
+        image: _userAvatar,
       )
     ];
     return WillPopScope(
@@ -133,14 +133,14 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
           alignment: Alignment.bottomCenter,
           children: [
             PageView(
-              controller: pageController,
-              children: pages,
+              controller: _pageController,
+              children: _pages,
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 40),
               child: SmoothPageIndicator(
-                controller: pageController,
-                count: pages.length,
+                controller: _pageController,
+                count: _pages.length,
                 effect: JumpingDotEffect(
                   dotHeight: 10,
                   dotWidth: 10,

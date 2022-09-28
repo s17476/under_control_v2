@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/company_profile/domain/usecases/update_company.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/input_validator.dart';
@@ -15,6 +14,7 @@ import '../../../domain/entities/company.dart';
 import '../../../domain/usecases/add_company.dart';
 import '../../../domain/usecases/add_company_logo.dart';
 import '../../../domain/usecases/fetch_all_companies.dart';
+import '../../../domain/usecases/update_company.dart';
 
 part 'company_management_event.dart';
 part 'company_management_state.dart';
@@ -25,7 +25,7 @@ const String companyLogoUpdated = 'companyLogoUpdated';
 @injectable
 class CompanyManagementBloc
     extends Bloc<CompanyManagementEvent, CompanyManagementState> {
-  late StreamSubscription userProfileStreamSubscription;
+  late StreamSubscription _userProfileStreamSubscription;
   final UserProfileBloc userProfileBloc;
   final InputValidator inputValidator;
   final AddCompany addCompany;
@@ -41,7 +41,7 @@ class CompanyManagementBloc
     required this.addCompanyLogo,
     required this.updateCompany,
   }) : super(CompanyManagementEmpty()) {
-    userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
+    _userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
       if (state is NoCompanyState) {
         add(FetchAllCompaniesEvent());
       }
@@ -145,7 +145,7 @@ class CompanyManagementBloc
 
   @override
   Future<void> close() {
-    userProfileStreamSubscription.cancel();
+    _userProfileStreamSubscription.cancel();
     return super.close();
   }
 }

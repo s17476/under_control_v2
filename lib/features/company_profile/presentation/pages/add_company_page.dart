@@ -18,39 +18,39 @@ class AddCompanyPage extends StatefulWidget {
 }
 
 class _AddCompanyPageState extends State<AddCompanyPage> {
-  List<Widget> pages = [];
+  List<Widget> _pages = [];
 
   final _formKey = GlobalKey<FormState>();
 
-  final pageController = PageController();
-  final nameTexEditingController = TextEditingController();
-  final addressTexEditingController = TextEditingController();
-  final postCodeTexEditingController = TextEditingController();
-  final cityTexEditingController = TextEditingController();
-  final countryTexEditingController = TextEditingController();
-  final currencyTexEditingController = TextEditingController();
-  final vatNumberTexEditingController = TextEditingController();
-  final phoneNumberTexEditingController = TextEditingController();
-  final emailTexEditingController = TextEditingController();
-  final homepageTexEditingController = TextEditingController();
+  final _pageController = PageController();
+  final _nameTexEditingController = TextEditingController();
+  final _addressTexEditingController = TextEditingController();
+  final _postCodeTexEditingController = TextEditingController();
+  final _cityTexEditingController = TextEditingController();
+  final _countryTexEditingController = TextEditingController();
+  final _currencyTexEditingController = TextEditingController();
+  final _vatNumberTexEditingController = TextEditingController();
+  final _phoneNumberTexEditingController = TextEditingController();
+  final _emailTexEditingController = TextEditingController();
+  final _homepageTexEditingController = TextEditingController();
 
-  void addNewCompany(BuildContext context) {
+  void _addNewCompany(BuildContext context) {
     if (_formKey.currentState != null) {
       final isValid = _formKey.currentState!.validate();
       FocusScope.of(context).unfocus();
       if (isValid) {
         final company = CompanyModel(
           id: '',
-          name: nameTexEditingController.text.trim(),
-          address: addressTexEditingController.text.trim(),
-          postCode: postCodeTexEditingController.text.trim(),
-          city: cityTexEditingController.text.trim(),
-          country: countryTexEditingController.text.trim(),
-          currency: currencyTexEditingController.text.trim(),
-          vatNumber: vatNumberTexEditingController.text.trim(),
-          phoneNumber: phoneNumberTexEditingController.text.trim(),
-          email: emailTexEditingController.text.trim(),
-          homepage: homepageTexEditingController.text.trim(),
+          name: _nameTexEditingController.text.trim(),
+          address: _addressTexEditingController.text.trim(),
+          postCode: _postCodeTexEditingController.text.trim(),
+          city: _cityTexEditingController.text.trim(),
+          country: _countryTexEditingController.text.trim(),
+          currency: _currencyTexEditingController.text.trim(),
+          vatNumber: _vatNumberTexEditingController.text.trim(),
+          phoneNumber: _phoneNumberTexEditingController.text.trim(),
+          email: _emailTexEditingController.text.trim(),
+          homepage: _homepageTexEditingController.text.trim(),
           logo: '',
           joinDate: DateTime.now(),
         );
@@ -70,36 +70,36 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
 
   @override
   void dispose() {
-    pageController.dispose();
-    nameTexEditingController.dispose();
-    addressTexEditingController.dispose();
-    postCodeTexEditingController.dispose();
-    cityTexEditingController.dispose();
-    countryTexEditingController.dispose();
-    currencyTexEditingController.dispose();
-    vatNumberTexEditingController.dispose();
-    phoneNumberTexEditingController.dispose();
-    emailTexEditingController.dispose();
-    homepageTexEditingController.dispose();
+    _pageController.dispose();
+    _nameTexEditingController.dispose();
+    _addressTexEditingController.dispose();
+    _postCodeTexEditingController.dispose();
+    _cityTexEditingController.dispose();
+    _countryTexEditingController.dispose();
+    _currencyTexEditingController.dispose();
+    _vatNumberTexEditingController.dispose();
+    _phoneNumberTexEditingController.dispose();
+    _emailTexEditingController.dispose();
+    _homepageTexEditingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    pages = [
+    _pages = [
       AddCompanyCard(
-        nameTexEditingController: nameTexEditingController,
-        addressTexEditingController: addressTexEditingController,
-        cityTexEditingController: cityTexEditingController,
-        countryTexEditingController: countryTexEditingController,
-        currencyTexEditingController: currencyTexEditingController,
-        postCodeTexEditingController: postCodeTexEditingController,
-        homepageTexEditingController: homepageTexEditingController,
-        emailTexEditingController: emailTexEditingController,
-        phoneNumberTexEditingController: phoneNumberTexEditingController,
-        vatNumberTexEditingController: vatNumberTexEditingController,
-        addNewCompany: addNewCompany,
-        pageController: pageController,
+        nameTexEditingController: _nameTexEditingController,
+        addressTexEditingController: _addressTexEditingController,
+        cityTexEditingController: _cityTexEditingController,
+        countryTexEditingController: _countryTexEditingController,
+        currencyTexEditingController: _currencyTexEditingController,
+        postCodeTexEditingController: _postCodeTexEditingController,
+        homepageTexEditingController: _homepageTexEditingController,
+        emailTexEditingController: _emailTexEditingController,
+        phoneNumberTexEditingController: _phoneNumberTexEditingController,
+        vatNumberTexEditingController: _vatNumberTexEditingController,
+        addNewCompany: _addNewCompany,
+        pageController: _pageController,
       ),
     ];
     return Scaffold(
@@ -142,15 +142,15 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                 Form(
                   key: _formKey,
                   child: PageView(
-                    controller: pageController,
-                    children: pages,
+                    controller: _pageController,
+                    children: _pages,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 24),
                   child: SmoothPageIndicator(
-                    controller: pageController,
-                    count: pages.length,
+                    controller: _pageController,
+                    count: _pages.length,
                     effect: JumpingDotEffect(
                       dotHeight: 10,
                       dotWidth: 10,

@@ -11,11 +11,17 @@ class QrScanner extends StatefulWidget {
 }
 
 class _QrScannerState extends State<QrScanner> {
-  final MobileScannerController cameraController = MobileScannerController();
+  final _cameraController = MobileScannerController();
 
-  bool codeFound = false;
+  bool _codeFound = false;
 
-  String firstTryCode = '';
+  String _firstTryCode = '';
+
+  @override
+  void dispose() {
+    _cameraController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,7 @@ class _QrScannerState extends State<QrScanner> {
           IconButton(
             color: Colors.white,
             icon: ValueListenableBuilder(
-              valueListenable: cameraController.torchState,
+              valueListenable: _cameraController.torchState,
               builder: (context, state, child) {
                 switch (state as TorchState) {
                   case TorchState.off:
@@ -38,12 +44,12 @@ class _QrScannerState extends State<QrScanner> {
               },
             ),
             iconSize: 32.0,
-            onPressed: () => cameraController.toggleTorch(),
+            onPressed: () => _cameraController.toggleTorch(),
           ),
           IconButton(
             color: Colors.white,
             icon: ValueListenableBuilder(
-              valueListenable: cameraController.cameraFacingState,
+              valueListenable: _cameraController.cameraFacingState,
               builder: (context, state, child) {
                 switch (state as CameraFacing) {
                   case CameraFacing.front:
@@ -54,24 +60,24 @@ class _QrScannerState extends State<QrScanner> {
               },
             ),
             iconSize: 32.0,
-            onPressed: () => cameraController.switchCamera(),
+            onPressed: () => _cameraController.switchCamera(),
           ),
         ],
       ),
       body: MobileScanner(
         allowDuplicates: true,
-        controller: cameraController,
+        controller: _cameraController,
         onDetect: (barcode, args) {
           if (barcode.rawValue == null) {
             debugPrint('Failed to scan Barcode');
-          } else if (!codeFound) {
+          } else if (!_codeFound) {
             final String code = barcode.rawValue!;
             // double code check
-            if (code == firstTryCode) {
+            if (code == _firstTryCode) {
               Navigator.pop(context, code);
-              codeFound = true;
+              _codeFound = true;
             } else {
-              firstTryCode = code;
+              _firstTryCode = code;
             }
           }
         },

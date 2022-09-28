@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/glass_layer.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/overlay_icon_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -13,8 +11,10 @@ import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.
 import '../../../user_profile/presentation/pages/user_details_page.dart';
 import '../../utils/responsive_size.dart';
 import '../../utils/size_config.dart';
+import '../../utils/url_launcher_helpers.dart';
 import 'cached_user_avatar.dart';
-import 'url_launcher_helpers.dart';
+import 'glass_layer.dart';
+import 'overlay_icon_button.dart';
 
 class UserInfoCard extends StatefulWidget {
   const UserInfoCard({
@@ -34,24 +34,24 @@ class UserInfoCard extends StatefulWidget {
 
 class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
   bool _hasCallSupport = false;
-  late UserProfile currentUser;
-  late UserProfile selectedUser;
+  late UserProfile _currentUser;
+  late UserProfile _selectedUser;
 
-  void toggleGroupAdmin(bool value) {
+  void _toggleGroupAdmin(bool value) {
     if (value) {
       context.read<UserManagementBloc>().add(
             AssignGroupAdminEvent(
               groupId: widget.group.id,
-              userId: selectedUser.id,
-              companyId: selectedUser.companyId,
+              userId: _selectedUser.id,
+              companyId: _selectedUser.companyId,
             ),
           );
     } else {
       context.read<UserManagementBloc>().add(
             UnassignGroupAdminEvent(
               groupId: widget.group.id,
-              userId: selectedUser.id,
-              companyId: selectedUser.companyId,
+              userId: _selectedUser.id,
+              companyId: _selectedUser.companyId,
             ),
           );
     }
@@ -71,12 +71,12 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
   @override
   void didChangeDependencies() {
     final userState = (context.read<UserProfileBloc>().state as Approved);
-    currentUser = userState.userProfile;
+    _currentUser = userState.userProfile;
     final companyState =
         (context.watch<CompanyProfileBloc>().state as CompanyProfileLoaded);
     final index = companyState.companyUsers.activeUsers
         .indexWhere((element) => element.id == widget.user.id);
-    selectedUser = companyState.companyUsers.activeUsers[index];
+    _selectedUser = companyState.companyUsers.activeUsers[index];
     super.didChangeDependencies();
   }
 
@@ -97,23 +97,23 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                   padding: const EdgeInsets.all(8.0),
                   child: CachedUserAvatar(
                     size: responsiveSizePct(small: 60),
-                    imageUrl: selectedUser.avatarUrl,
+                    imageUrl: _selectedUser.avatarUrl,
                   ),
                 ),
 
                 // first name
                 Text(
-                  selectedUser.firstName,
+                  _selectedUser.firstName,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 // last name
                 Text(
-                  selectedUser.lastName,
+                  _selectedUser.lastName,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 8),
                 // toggle group administrator
-                if (currentUser.administrator && !selectedUser.administrator)
+                if (_currentUser.administrator && !_selectedUser.administrator)
                   Column(
                     children: [
                       const Divider(thickness: 1.5),
@@ -137,8 +137,8 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                             ),
                             Switch(
                               value: widget.group.groupAdministrators
-                                  .contains(selectedUser.id),
-                              onChanged: toggleGroupAdmin,
+                                  .contains(_selectedUser.id),
+                              onChanged: _toggleGroupAdmin,
                               activeColor: Theme.of(context).primaryColor,
                               activeTrackColor:
                                   Theme.of(context).primaryColor.withAlpha(50),
@@ -161,13 +161,13 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                           // call
                           OverlayIconButton(
                             onPressed: () =>
-                                makePhoneCall(selectedUser.phoneNumber),
+                                makePhoneCall(_selectedUser.phoneNumber),
                             icon: Icons.call,
                             title: AppLocalizations.of(context)!.call,
                           ),
                           // send sms
                           OverlayIconButton(
-                            onPressed: () => sendSms(selectedUser.phoneNumber),
+                            onPressed: () => sendSms(_selectedUser.phoneNumber),
                             icon: Icons.message,
                             title: AppLocalizations.of(context)!.send_sms,
                           )
@@ -181,7 +181,7 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                       children: [
                         // send email
                         OverlayIconButton(
-                          onPressed: () => mailTo(selectedUser.email),
+                          onPressed: () => mailTo(_selectedUser.email),
                           icon: Icons.email,
                           title: AppLocalizations.of(context)!.send_email,
                         ),
@@ -191,7 +191,7 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                             context,
                             UserDetailsPage.routeName,
                             (route) => route.isFirst,
-                            arguments: selectedUser,
+                            arguments: _selectedUser,
                           ),
                           icon: Icons.person,
                           title:

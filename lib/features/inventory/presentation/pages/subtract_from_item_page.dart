@@ -31,73 +31,62 @@ class SubtractFromItemPage extends StatefulWidget {
 }
 
 class _SubtractFromPageState extends State<SubtractFromItemPage> {
-  ItemModel? item;
+  ItemModel? _item;
 
-  List<Widget> pages = [];
+  List<Widget> _pages = [];
 
   final _formKey = GlobalKey<FormState>();
 
-  final pageController = PageController();
+  final _pageController = PageController();
 
-  final quantityTextEditingController = TextEditingController(text: '0');
+  final _quantityTextEditingController = TextEditingController(text: '0');
+  final _descriptionTextEditingController = TextEditingController();
 
-  final descriptionTextEditingController = TextEditingController();
+  String _selectedLocation = '';
 
-  String selectedLocation = '';
+  double _maxQuantity = 0;
 
-  double maxQuantity = 0;
+  DateTime _dateTime = DateTime.now();
 
-  DateTime dateTime = DateTime.now();
-
-  void setLocation(String location) async {
+  void _setLocation(String location) async {
     setState(() {
-      selectedLocation = location;
-      final amountInLocation = item!.amountInLocations
+      _selectedLocation = location;
+      final amountInLocation = _item!.amountInLocations
           .firstWhere((element) => element.locationId == location);
-      maxQuantity = amountInLocation.amount;
+      _maxQuantity = amountInLocation.amount;
     });
     await Future.delayed(
       const Duration(milliseconds: 500),
     );
-    pageController.animateToPage(
+    _pageController.animateToPage(
       1,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeIn,
     );
   }
 
-  void setDate(DateTime date) {
+  void _setDate(DateTime date) {
     setState(() {
-      dateTime = date;
+      _dateTime = date;
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    final arguments = ModalRoute.of(context)!.settings.arguments;
-
-    if (arguments != null && arguments is ItemModel) {
-      item = arguments.deepCopy();
-    }
-    super.didChangeDependencies();
-  }
-
-  void subtractFromItem(BuildContext context) {
+  void _subtractFromItem(BuildContext context) {
     String errorMessage = '';
     double quantity = 0;
 
     // location validation
-    if (selectedLocation.isEmpty) {
+    if (_selectedLocation.isEmpty) {
       errorMessage =
           AppLocalizations.of(context)!.validation_location_not_selected;
     } else {
       // quantity validation
       try {
-        quantity = double.parse(quantityTextEditingController.text);
+        quantity = double.parse(_quantityTextEditingController.text);
         if (quantity <= 0) {
           errorMessage =
               AppLocalizations.of(context)!.incorrect_number_to_small;
-        } else if (maxQuantity != 0 && quantity > maxQuantity) {
+        } else if (_maxQuantity != 0 && quantity > _maxQuantity) {
           errorMessage = AppLocalizations.of(context)!.incorrect_number_to_big;
         }
       } catch (e) {
@@ -110,12 +99,12 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
           final newItemAction = ItemActionModel(
             id: '',
             type: ItemActionType.remove,
-            description: descriptionTextEditingController.text.trim(),
+            description: _descriptionTextEditingController.text.trim(),
             ammount: double.parse(quantity.toStringWithFixedDecimal()),
-            itemUnit: item!.itemUnit,
-            locationId: selectedLocation,
-            date: dateTime,
-            itemId: item!.id,
+            itemUnit: _item!.itemUnit,
+            locationId: _selectedLocation,
+            date: _dateTime,
+            itemId: _item!.id,
             userId: (context.read<UserProfileBloc>().state as Approved)
                 .userProfile
                 .id,
@@ -123,7 +112,7 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
 
           context.read<ItemActionManagementBloc>().add(
                 AddItemActionEvent(
-                  item: item!,
+                  item: _item!,
                   itemAction: newItemAction,
                 ),
               );
@@ -133,7 +122,7 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
         // description validation
       } else {
         if (errorMessage.isEmpty &&
-            descriptionTextEditingController.text.trim().length < 2) {
+            _descriptionTextEditingController.text.trim().length < 2) {
           errorMessage =
               AppLocalizations.of(context)!.validation_no_description;
         }
@@ -151,51 +140,61 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    final arguments = ModalRoute.of(context)!.settings.arguments;
+
+    if (arguments != null && arguments is ItemModel) {
+      _item = arguments.deepCopy();
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
-    quantityTextEditingController.dispose();
-    descriptionTextEditingController.dispose();
-    pageController.dispose();
+    _quantityTextEditingController.dispose();
+    _descriptionTextEditingController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    pages = [
+    _pages = [
       KeepAlivePage(
         child: AddToLocationCard(
-          pageController: pageController,
-          selectedLocation: selectedLocation,
-          setLocation: setLocation,
+          pageController: _pageController,
+          selectedLocation: _selectedLocation,
+          setLocation: _setLocation,
           title: AppLocalizations.of(context)!.item_subtract_from_location,
-          item: item!,
+          item: _item!,
           isSubtract: true,
         ),
       ),
       KeepAlivePage(
         child: AddQuantityCard(
-          pageController: pageController,
-          quantityTextEditingController: quantityTextEditingController,
-          itemUnit: item!.itemUnit,
-          maxQuantity: maxQuantity,
+          pageController: _pageController,
+          quantityTextEditingController: _quantityTextEditingController,
+          itemUnit: _item!.itemUnit,
+          maxQuantity: _maxQuantity,
         ),
       ),
       KeepAlivePage(
         child: AddDateAndDescriptionCard(
-          pageController: pageController,
-          descriptionTextEditingController: descriptionTextEditingController,
-          dateTime: dateTime,
-          setDate: setDate,
+          pageController: _pageController,
+          descriptionTextEditingController: _descriptionTextEditingController,
+          dateTime: _dateTime,
+          setDate: _setDate,
         ),
       ),
       AddToItemSummaryCard(
-        pageController: pageController,
-        quantityTextEditingController: quantityTextEditingController,
-        selectedLocation: selectedLocation,
-        itemUnit: getLocalizedUnitName(context, item!.itemUnit),
-        maxQuantity: maxQuantity,
-        addNewItem: subtractFromItem,
-        dateTime: dateTime,
-        descriptionTextEditingController: descriptionTextEditingController,
+        pageController: _pageController,
+        quantityTextEditingController: _quantityTextEditingController,
+        selectedLocation: _selectedLocation,
+        itemUnit: getLocalizedUnitName(context, _item!.itemUnit),
+        maxQuantity: _maxQuantity,
+        addNewItem: _subtractFromItem,
+        dateTime: _dateTime,
+        descriptionTextEditingController: _descriptionTextEditingController,
       ),
     ];
 
@@ -210,15 +209,15 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
               Form(
                 key: _formKey,
                 child: PageView(
-                  controller: pageController,
-                  children: pages,
+                  controller: _pageController,
+                  children: _pages,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
                 child: SmoothPageIndicator(
-                  controller: pageController,
-                  count: pages.length,
+                  controller: _pageController,
+                  count: _pages.length,
                   effect: JumpingDotEffect(
                     dotHeight: 10,
                     dotWidth: 10,

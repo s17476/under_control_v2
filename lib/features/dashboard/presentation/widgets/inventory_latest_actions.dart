@@ -19,15 +19,15 @@ class InventoryLatestActions extends StatefulWidget {
 }
 
 class _InventoryLatestActionsState extends State<InventoryLatestActions> {
-  List<ItemAction>? actions;
+  List<ItemAction>? _actions;
 
   @override
   void didChangeDependencies() {
     final actionsState = context.watch<DashboardItemActionBloc>().state;
     if (actionsState is DashboardItemActionLoadedState) {
-      actions = actionsState.allActions.allItemActions.toList();
-      if (actions != null && actions!.length > 5) {
-        actions = actions!.sublist(0, 5);
+      _actions = actionsState.allActions.allItemActions.toList();
+      if (_actions != null && _actions!.length > 5) {
+        _actions = _actions!.sublist(0, 5);
       }
     }
     super.didChangeDependencies();
@@ -68,7 +68,7 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
                             '${AppLocalizations.of(context)!.bottom_bar_title_inventory} - ${AppLocalizations.of(context)!.latest_actions}',
                       ),
                     ),
-                    if (actions != null && actions!.isNotEmpty)
+                    if (_actions != null && _actions!.isNotEmpty)
                       InkWell(
                         onTap: () {
                           Navigator.pushNamed(
@@ -89,7 +89,7 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
                           ),
                         ),
                       ),
-                    if (actions == null)
+                    if (_actions == null)
                       const SizedBox(
                         width: 25,
                         height: 25,
@@ -104,7 +104,7 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
                   width: double.infinity,
                   child: Column(
                     children: [
-                      if (actions != null && actions!.isNotEmpty)
+                      if (_actions != null && _actions!.isNotEmpty)
                         ListView.builder(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 8,
@@ -112,13 +112,13 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
                           ),
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: actions!.length,
+                          itemCount: _actions!.length,
                           itemBuilder: (context, index) => ItemActionListTile(
-                            action: actions![index],
+                            action: _actions![index],
                             isDashboardTile: true,
                           ),
                         ),
-                      if (actions != null && actions!.isEmpty)
+                      if (_actions != null && _actions!.isEmpty)
                         Container(
                           alignment: Alignment.center,
                           height: 50,

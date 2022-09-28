@@ -30,8 +30,6 @@ const String locationRemoved = 'locationRemoved';
 
 @lazySingleton
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
-  late StreamSubscription companyProfileStreamSubscription;
-  StreamSubscription? locationsStreamSubscription;
   final CompanyProfileBloc companyProfileBloc;
   final AddLocation addLocation;
   final CacheLocation cacheLocation;
@@ -39,7 +37,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final FetchAllLocations fetchAllLocations;
   final TryToGetCachedLocation tryToGetCachedLocation;
   final UpdateLocation updateLocation;
-  String companyId = '';
+
+  late StreamSubscription _companyProfileStreamSubscription;
+  StreamSubscription? _locationsStreamSubscription;
+  String _companyId = '';
 
   LocationBloc({
     required this.companyProfileBloc,
@@ -50,10 +51,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     required this.tryToGetCachedLocation,
     required this.updateLocation,
   }) : super(const LocationEmptyState()) {
-    companyProfileStreamSubscription = companyProfileBloc.stream.listen(
+    _companyProfileStreamSubscription = companyProfileBloc.stream.listen(
       (state) {
         if (state is CompanyProfileLoaded) {
-          companyId = state.company.id;
+          _companyId = state.company.id;
           add(FetchAllLocationsEvent());
         }
       },
@@ -61,7 +62,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
     on<AddLocationEvent>((event, emit) async {
       final failureOrString = await addLocation(
-        LocationParams(location: event.location, comapnyId: companyId),
+        LocationParams(location: event.location, comapnyId: _companyId),
       );
       await failureOrString.fold(
         (failure) async => emit(LocationErrorState(message: failure.message)),
@@ -77,7 +78,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
     on<UpdateLocationEvent>((event, emit) async {
       final failureOrVoidresult = await updateLocation(
-          LocationParams(location: event.location, comapnyId: companyId));
+          LocationParams(location: event.location, comapnyId: _companyId));
       await failureOrVoidresult.fold(
         (failure) async => emit(LocationErrorState(message: failure.message)),
         (_) async {
@@ -105,7 +106,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         final failureOrVoidresult = await deleteLocation(
           LocationParams(
             location: event.location,
-            comapnyId: companyId,
+            comapnyId: _companyId,
           ),
         );
         await failureOrVoidresult.fold(
@@ -119,11 +120,11 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
     on<FetchAllLocationsEvent>((event, emit) async {
       emit(LocationLoadingState());
-      final failureOrLocations = await fetchAllLocations(companyId);
+      final failureOrLocations = await fetchAllLocations(_companyId);
       await failureOrLocations.fold(
         (failure) async => emit(LocationErrorState(message: failure.message)),
         (locations) async {
-          locationsStreamSubscription =
+          _locationsStreamSubscription =
               locations.allLocations.listen((snapshot) {
             add(UpdateLocationsListEvent(snapshot: snapshot));
           });
@@ -320,8 +321,8 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   @override
   Future<void> close() {
-    companyProfileStreamSubscription.cancel();
-    locationsStreamSubscription?.cancel();
+    _companyProfileStreamSubscription.cancel();
+    _locationsStreamSubscription?.cancel();
     return super.close();
   }
 }

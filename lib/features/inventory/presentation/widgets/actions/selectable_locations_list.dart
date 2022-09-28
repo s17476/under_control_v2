@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:under_control_v2/features/core/utils/location_selection_helpers.dart';
 
+import '../../../../core/utils/location_selection_helpers.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../../domain/entities/item.dart';
 import 'selectable_locations_list_tile.dart';

@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/animated_floating_menu.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../utils/responsive_size.dart';
+import '../animated_floating_menu.dart';
 
 class HomeBottomNavigationBar extends StatefulWidget {
   final AnimationController animationController;
@@ -28,15 +29,14 @@ class HomeBottomNavigationBar extends StatefulWidget {
 
 class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
     with ResponsiveSize {
-  List<TabItem> tabItems = [];
+  List<TabItem> _tabItems = [];
   Animation<Offset>? _tabBarSlideAnimation;
   Animation<Offset>? _buttonSlideAnimation;
   Animation<double>? _fadeAnimation;
-  bool isFloatingButtonVisible = true;
-  Color floatingButtonBackgroundColor = const Color.fromRGBO(0, 240, 130, 100);
-  double floatingActionButtonPosition = 0;
-  double floatingActionButtonPositionTop = 85;
-  double floatingActionButtonPositionBottom = 55;
+  Color _floatingButtonBackgroundColor = const Color.fromRGBO(0, 240, 130, 100);
+  double _floatingActionButtonPosition = 0;
+  final double _floatingActionButtonPositionTop = 85;
+  final double _floatingActionButtonPositionBottom = 55;
 
   @override
   void initState() {
@@ -67,7 +67,7 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
         curve: Curves.bounceIn,
       ),
     );
-    floatingActionButtonPosition = floatingActionButtonPositionBottom;
+    _floatingActionButtonPosition = _floatingActionButtonPositionBottom;
     super.initState();
   }
 
@@ -76,7 +76,7 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
     const labelTextStyle = TextStyle(
       fontSize: 10,
     );
-    tabItems = [
+    _tabItems = [
       TabItem(
         Icons.task_alt,
         AppLocalizations.of(context)!.bottom_bar_title_tasks,
@@ -119,14 +119,14 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
         AnimatedPositioned(
           duration: const Duration(milliseconds: 200),
           curve: Curves.elasticInOut,
-          bottom: floatingActionButtonPosition,
+          bottom: _floatingActionButtonPosition,
           right: responsiveSizePct(small: 10) - 24,
           child: SlideTransition(
             position: _buttonSlideAnimation!,
             child: FadeTransition(
               opacity: _fadeAnimation!,
               child: AnimatedFloatingMenu(
-                backgroundColor: floatingButtonBackgroundColor,
+                backgroundColor: _floatingButtonBackgroundColor,
                 onPressed: widget.toggleShowMenu,
               ),
             ),
@@ -141,7 +141,7 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
               SlideTransition(
                 position: _tabBarSlideAnimation!,
                 child: CircularBottomNavigation(
-                  tabItems,
+                  _tabItems,
                   barBackgroundColor:
                       Theme.of(context).appBarTheme.backgroundColor!,
                   barHeight: 44,
@@ -151,15 +151,15 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
                   selectedCallback: (index) {
                     setState(() {
                       if (index == 4) {
-                        floatingActionButtonPosition =
-                            floatingActionButtonPositionTop;
-                      } else if (floatingActionButtonPosition ==
-                          floatingActionButtonPositionTop) {
-                        floatingActionButtonPosition =
-                            floatingActionButtonPositionBottom;
+                        _floatingActionButtonPosition =
+                            _floatingActionButtonPositionTop;
+                      } else if (_floatingActionButtonPosition ==
+                          _floatingActionButtonPositionTop) {
+                        _floatingActionButtonPosition =
+                            _floatingActionButtonPositionBottom;
                       }
-                      floatingButtonBackgroundColor =
-                          tabItems[index ?? 2].circleColor;
+                      _floatingButtonBackgroundColor =
+                          _tabItems[index ?? 2].circleColor;
                       widget.setPageIndex(index ?? 2);
                       widget.pageController.animateToPage(
                         index ?? 2,

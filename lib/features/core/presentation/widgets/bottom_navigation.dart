@@ -50,62 +50,62 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  PageController pageController = PageController();
-  bool isFirstPage = true;
-  bool isLastPage = false;
-  int currentPage = 0;
+  final _pageController = PageController();
+  bool _isFirstPage = true;
+  bool _isLastPage = false;
+  int _currentPage = 0;
 
-  void backward({bool isSwipe = false}) {
-    if (isFirstPage && !isSwipe) {
+  void _backward({bool isSwipe = false}) {
+    if (_isFirstPage && !isSwipe) {
       widget.firstPageBackwardButtonFunction();
-    } else if (!isFirstPage) {
+    } else if (!_isFirstPage) {
       if (widget.backwardButtonFunction != null) {
         widget.backwardButtonFunction!();
       } else {
-        pageController.previousPage(
+        _pageController.previousPage(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeIn,
         );
       }
-      currentPage--;
+      _currentPage--;
       setState(() {
-        if (currentPage == 0) {
-          isFirstPage = true;
+        if (_currentPage == 0) {
+          _isFirstPage = true;
         } else {
-          isFirstPage = false;
+          _isFirstPage = false;
         }
-        isLastPage = false;
+        _isLastPage = false;
       });
     }
   }
 
-  void forward({bool isSwipe = false}) {
-    if (isLastPage && !isSwipe) {
+  void _forward({bool isSwipe = false}) {
+    if (_isLastPage && !isSwipe) {
       widget.lastPageForwardButtonFunction();
-    } else if (!isLastPage) {
+    } else if (!_isLastPage) {
       if (widget.forwardButtonFunction != null) {
         widget.forwardButtonFunction!();
       } else {
-        pageController.nextPage(
+        _pageController.nextPage(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeIn,
         );
       }
-      currentPage++;
+      _currentPage++;
       setState(() {
-        if (currentPage == widget.pages.length - 1) {
-          isLastPage = true;
+        if (_currentPage == widget.pages.length - 1) {
+          _isLastPage = true;
         } else {
-          isLastPage = false;
+          _isLastPage = false;
         }
-        isFirstPage = false;
+        _isFirstPage = false;
       });
     }
   }
 
   @override
   void dispose() {
-    pageController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -118,13 +118,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
             alignment: Alignment.bottomCenter,
             children: [
               PageView(
-                controller: pageController,
+                controller: _pageController,
                 children: widget.pages,
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
                 child: SmoothPageIndicator(
-                  controller: pageController,
+                  controller: _pageController,
                   count: widget.pages.length,
                   effect: JumpingDotEffect(
                     dotHeight: 10,
@@ -149,16 +149,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
               // back button
               Expanded(
                 child: BackwardTextButton(
-                  function: backward,
-                  icon: isFirstPage
+                  function: _backward,
+                  icon: _isFirstPage
                       ? widget.firstPageBackwardButtonIconData
                       : widget.backwardButtonIconData ?? Icons.arrow_back_ios,
-                  label: isFirstPage
+                  label: _isFirstPage
                       ? widget.firstPageBackwardButtonLabel
                       : widget.backwardButtonLabel ??
                           AppLocalizations.of(context)!
                               .user_profile_add_user_personal_data_back,
-                  color: isFirstPage
+                  color: _isFirstPage
                       ? widget.firstPageBackwardButtonColor
                       : widget.backwardButtonColor ??
                           Theme.of(context).splashColor,
@@ -167,7 +167,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: AnimatedSmoothIndicator(
-                  activeIndex: currentPage,
+                  activeIndex: _currentPage,
                   count: widget.pages.length,
                   effect: JumpingDotEffect(
                     dotHeight: 10,
@@ -180,16 +180,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
               // forward button
               Expanded(
                 child: ForwardTextButton(
-                  function: forward,
-                  icon: isLastPage
+                  function: _forward,
+                  icon: _isLastPage
                       ? widget.lastPageForwardButtonIconData
                       : widget.forwardButtonIconData ?? Icons.arrow_forward_ios,
-                  label: isLastPage
+                  label: _isLastPage
                       ? widget.lastPageForwardButtonLabel
                       : widget.forwardButtonLabel ??
                           AppLocalizations.of(context)!
                               .user_profile_add_user_next,
-                  color: isLastPage
+                  color: _isLastPage
                       ? widget.lastPageForwardButtonColor
                       : widget.forwardButtonColor ??
                           Theme.of(context).splashColor,

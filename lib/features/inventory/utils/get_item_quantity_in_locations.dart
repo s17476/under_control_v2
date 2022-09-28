@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
 
+import '../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../domain/entities/item.dart';
 
 /// Calculates quantity of given item in selected locations.

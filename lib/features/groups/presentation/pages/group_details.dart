@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/icon_title_row.dart';
 
 import '../../../core/presentation/widgets/add_members_card.dart';
+import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/presentation/widgets/user_info_card.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/show_snack_bar.dart';
@@ -14,7 +14,7 @@ import '../../domain/entities/group.dart';
 import '../blocs/group/group_bloc.dart';
 import '../widgets/group_details/group_locations.dart';
 import '../widgets/group_details/group_members.dart';
-import '../widgets/group_details/show_group_delete_dialog.dart';
+import '../../utils/show_group_delete_dialog.dart';
 import '../widgets/group_management/group_management_feature_card.dart';
 import 'add_group_page.dart';
 
@@ -30,46 +30,45 @@ class GroupDetailsPage extends StatefulWidget {
 }
 
 class _GroupDetailsPageState extends State<GroupDetailsPage> {
-  UserProfile? userProfile;
+  UserProfile? _userProfile;
 
-  bool isUserInfoCardVisible = false;
-  bool isAddMembersCardVisible = false;
+  bool _isUserInfoCardVisible = false;
+  bool _isAddMembersCardVisible = false;
+  bool _isAdministrator = false;
+  bool _isGroupAdministrator = false;
 
-  bool isAdministrator = false;
-  bool isGroupAdministrator = false;
+  late Group _group;
 
-  late Group group;
+  List<Choice> _choices = [];
 
-  List<Choice> choices = [];
-
-  void showUserInfoCard(UserProfile userProfile) {
+  void _showUserInfoCard(UserProfile userProfile) {
     setState(() {
-      this.userProfile = userProfile;
-      isUserInfoCardVisible = true;
+      _userProfile = userProfile;
+      _isUserInfoCardVisible = true;
     });
   }
 
-  void hideUserInfoCard() {
+  void _hideUserInfoCard() {
     setState(() {
-      isUserInfoCardVisible = false;
-      userProfile = null;
+      _isUserInfoCardVisible = false;
+      _userProfile = null;
     });
   }
 
-  void showAddUsersCard() {
+  void _showAddUsersCard() {
     setState(() {
-      isAddMembersCardVisible = true;
+      _isAddMembersCardVisible = true;
     });
   }
 
-  void hideAddUsersCard() {
+  void _hideAddUsersCard() {
     setState(() {
-      isAddMembersCardVisible = false;
+      _isAddMembersCardVisible = false;
     });
   }
 
   // assign / unassign member
-  void toggleUser(
+  void _toggleUser(
     BuildContext context,
     Group group,
     UserProfile user,
@@ -97,46 +96,46 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           .indexWhere((element) => element.id == groupId);
       if (index >= 0) {
         setState(() {
-          group = groupState.allGroups.allGroups[index];
+          _group = groupState.allGroups.allGroups[index];
         });
       }
     }
     // gets current user
     final currentUserProfile =
         (context.read<UserProfileBloc>().state as Approved).userProfile;
-    isAdministrator = currentUserProfile.administrator;
-    isGroupAdministrator =
-        group.groupAdministrators.contains(currentUserProfile.id);
+    _isAdministrator = currentUserProfile.administrator;
+    _isGroupAdministrator =
+        _group.groupAdministrators.contains(currentUserProfile.id);
 
     // popup menu items list
     setState(() {
-      choices = [
+      _choices = [
         // manage group members
-        if (isAdministrator || isGroupAdministrator)
+        if (_isAdministrator || _isGroupAdministrator)
           Choice(
             title: AppLocalizations.of(context)!.group_members,
             icon: Icons.group,
-            onTap: () => showAddUsersCard(),
+            onTap: () => _showAddUsersCard(),
           ),
         // edit group
-        if (isAdministrator)
+        if (_isAdministrator)
           Choice(
             title: AppLocalizations.of(context)!.user_details_edit_data,
             icon: Icons.edit,
             onTap: () => Navigator.pushNamed(
               context,
               AddGroupPage.routeName,
-              arguments: group,
+              arguments: _group,
             ),
           ),
         // delete group
-        if (isAdministrator)
+        if (_isAdministrator)
           Choice(
             title: AppLocalizations.of(context)!.delete,
             icon: Icons.delete,
             onTap: () async {
               final result =
-                  await showGroupDeleteDialog(context: context, group: group);
+                  await showGroupDeleteDialog(context: context, group: _group);
               if (result != null && result) {
                 Navigator.pop(context);
               }
@@ -150,21 +149,21 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   @override
   Widget build(BuildContext context) {
     String appBarTitle = '';
-    if (isAddMembersCardVisible) {
+    if (_isAddMembersCardVisible) {
       appBarTitle = AppLocalizations.of(context)!.group_toggle_group_members;
-    } else if (isUserInfoCardVisible) {
+    } else if (_isUserInfoCardVisible) {
       appBarTitle = AppLocalizations.of(context)!.user_details_title;
     } else {
       appBarTitle = AppLocalizations.of(context)!.group_details;
     }
     return WillPopScope(
       onWillPop: () async {
-        if (isUserInfoCardVisible) {
-          hideUserInfoCard();
+        if (_isUserInfoCardVisible) {
+          _hideUserInfoCard();
           return false;
         }
-        if (isAddMembersCardVisible) {
-          hideAddUsersCard();
+        if (_isAddMembersCardVisible) {
+          _hideAddUsersCard();
           return false;
         }
         return true;
@@ -209,19 +208,19 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
             centerTitle: true,
             actions: [
               // popup menu
-              if (choices.isNotEmpty)
+              if (_choices.isNotEmpty)
                 PopupMenuButton<Choice>(
                   onSelected: (Choice choice) {
-                    if (isAddMembersCardVisible) {
-                      hideAddUsersCard();
+                    if (_isAddMembersCardVisible) {
+                      _hideAddUsersCard();
                     }
-                    if (isUserInfoCardVisible) {
-                      hideUserInfoCard();
+                    if (_isUserInfoCardVisible) {
+                      _hideUserInfoCard();
                     }
                     choice.onTap();
                   },
                   itemBuilder: (BuildContext context) {
-                    return choices.map((Choice choice) {
+                    return _choices.map((Choice choice) {
                       return PopupMenuItem<Choice>(
                         value: choice,
                         child: Row(
@@ -298,7 +297,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                               right: 8,
                             ),
                             child: Text(
-                              group.name,
+                              _group.name,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 20,
@@ -308,7 +307,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                             ),
                           ),
                           // description
-                          if (group.description.isNotEmpty)
+                          if (_group.description.isNotEmpty)
                             Padding(
                               padding: const EdgeInsets.only(
                                 top: 8,
@@ -316,7 +315,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                                 right: 8,
                               ),
                               child: Text(
-                                group.description,
+                                _group.description,
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -342,37 +341,37 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                           const SizedBox(
                             height: 8,
                           ),
-                          for (var feature in group.features)
+                          for (var feature in _group.features)
                             GroupManagementFeatureCard(feature: feature),
                           const Divider(thickness: 1.5),
                           // locations
-                          GroupLocations(group: group),
+                          GroupLocations(group: _group),
                           const Divider(
                             thickness: 1.5,
                             // height: 32,
                           ),
                           // group members
                           GroupMembers(
-                            group: group,
-                            onTap: showUserInfoCard,
+                            group: _group,
+                            onTap: _showUserInfoCard,
                           ),
                         ],
                       ),
                     ),
                   ),
                   // user info card
-                  if (isUserInfoCardVisible)
+                  if (_isUserInfoCardVisible)
                     UserInfoCard(
-                      onDismiss: hideUserInfoCard,
-                      user: userProfile!,
-                      group: group,
+                      onDismiss: _hideUserInfoCard,
+                      user: _userProfile!,
+                      group: _group,
                     ),
                   // add users to the group card
-                  if (isAddMembersCardVisible)
+                  if (_isAddMembersCardVisible)
                     AddMembersCard(
-                      onDismiss: hideAddUsersCard,
-                      onToggleUserSelection: toggleUser,
-                      group: group,
+                      onDismiss: _hideAddUsersCard,
+                      onToggleUserSelection: _toggleUser,
+                      group: _group,
                     ),
                 ],
               ),

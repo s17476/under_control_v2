@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
-import 'package:under_control_v2/features/core/utils/premission.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
+import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/premission.dart';
 import '../../../core/utils/show_snack_bar.dart';
+import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../utils/show_add_category_modal_bottom_sheet.dart';
 import '../blocs/item_category/item_category_bloc.dart';
 import '../blocs/item_category_management/item_category_management_bloc.dart';
 import '../widgets/category_tile.dart';
-import '../../utils/show_add_category_modal_bottom_sheet.dart';
 
 class ItemCategoryManagementPage extends StatefulWidget {
   const ItemCategoryManagementPage({Key? key}) : super(key: key);
@@ -26,14 +26,14 @@ class ItemCategoryManagementPage extends StatefulWidget {
 
 class _ItemCategoryManagementPageState
     extends State<ItemCategoryManagementPage> {
-  bool isAdministrator = false;
-  late UserProfile currentUser;
+  bool _isAdministrator = false;
+  late UserProfile _currentUser;
 
   @override
   void didChangeDependencies() {
-    currentUser =
+    _currentUser =
         (context.read<UserProfileBloc>().state as Approved).userProfile;
-    isAdministrator = currentUser.administrator;
+    _isAdministrator = _currentUser.administrator;
     super.didChangeDependencies();
   }
 
@@ -113,7 +113,7 @@ class _ItemCategoryManagementPageState
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: CategoryTile(
-                          isAdministrator: isAdministrator,
+                          isAdministrator: _isAdministrator,
                           itemCategory: state
                               .allItemsCategories.allItemsCategories[index],
                         ),

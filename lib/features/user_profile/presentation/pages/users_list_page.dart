@@ -25,30 +25,29 @@ class UsersListPage extends StatefulWidget {
 }
 
 class _UsersListPageState extends State<UsersListPage> {
-  bool isSearchFieldExpanded = false;
+  bool _isSearchFieldExpanded = false;
 
-  TextEditingController searchController = TextEditingController();
+  final _searchController = TextEditingController();
 
-  String searchQuery = '';
+  String _searchQuery = '';
 
-  late UserProfile currentUser;
+  late UserProfile _currentUser;
 
-  int? newUsersCount;
-
-  int? suspendedUsersCount;
+  int? _newUsersCount;
+  int? _suspendedUsersCount;
 
   void _hideSearchField() {
     FocusScope.of(context).unfocus();
     setState(() {
-      isSearchFieldExpanded = false;
-      searchController.text = '';
+      _isSearchFieldExpanded = false;
+      _searchController.text = '';
     });
     _search();
   }
 
   void _search() {
     setState(() {
-      searchQuery = searchController.text;
+      _searchQuery = _searchController.text;
     });
   }
 
@@ -56,17 +55,17 @@ class _UsersListPageState extends State<UsersListPage> {
   void didChangeDependencies() {
     final currentState = context.read<UserProfileBloc>().state;
     if (currentState is Approved) {
-      currentUser = currentState.userProfile;
+      _currentUser = currentState.userProfile;
     }
     final newUsersState = context.watch<NewUsersBloc>().state;
     if (newUsersState is NewUsersLoadedState) {
-      newUsersCount = newUsersState.newUsers.activeUsers.length;
-      newUsersCount =
-          newUsersCount! + newUsersState.newUsers.passiveUsers.length;
+      _newUsersCount = newUsersState.newUsers.activeUsers.length;
+      _newUsersCount =
+          _newUsersCount! + newUsersState.newUsers.passiveUsers.length;
     }
     final suspendedUsersState = context.watch<SuspendedUsersBloc>().state;
     if (suspendedUsersState is SuspendedUsersLoadedState) {
-      suspendedUsersCount = suspendedUsersState.allUsers.length;
+      _suspendedUsersCount = suspendedUsersState.allUsers.length;
     }
     super.didChangeDependencies();
   }
@@ -75,16 +74,16 @@ class _UsersListPageState extends State<UsersListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: !isSearchFieldExpanded
+        leading: !_isSearchFieldExpanded
             ? null
             : Container(
                 width: 0,
                 color: Colors.amber,
               ),
-        leadingWidth: isSearchFieldExpanded ? 0 : null,
-        title: isSearchFieldExpanded
+        leadingWidth: _isSearchFieldExpanded ? 0 : null,
+        title: _isSearchFieldExpanded
             ? SearchTextField(
-                searchController: searchController,
+                searchController: _searchController,
                 onChanged: _search,
                 onCancel: _hideSearchField,
               )
@@ -93,12 +92,12 @@ class _UsersListPageState extends State<UsersListPage> {
               ),
         centerTitle: true,
         actions: [
-          if (!isSearchFieldExpanded)
+          if (!_isSearchFieldExpanded)
             Padding(
               padding: const EdgeInsets.only(right: 16),
               child: IconButton(
                 onPressed: () => setState(() {
-                  isSearchFieldExpanded = true;
+                  _isSearchFieldExpanded = true;
                 }),
                 icon: const Icon(Icons.search),
               ),
@@ -109,7 +108,7 @@ class _UsersListPageState extends State<UsersListPage> {
         child: Column(
           children: [
             // suspended and new users
-            if (currentUser.administrator && !isSearchFieldExpanded)
+            if (_currentUser.administrator && !_isSearchFieldExpanded)
               Padding(
                 padding: const EdgeInsets.only(
                   top: 8,
@@ -120,9 +119,9 @@ class _UsersListPageState extends State<UsersListPage> {
                   children: [
                     // suspended users
                     InkWell(
-                      onTap: suspendedUsersCount == null
+                      onTap: _suspendedUsersCount == null
                           ? null
-                          : suspendedUsersCount == 0
+                          : _suspendedUsersCount == 0
                               ? () => showSnackBar(
                                     context: context,
                                     message: AppLocalizations.of(context)!
@@ -156,13 +155,13 @@ class _UsersListPageState extends State<UsersListPage> {
                               ),
                             ),
                             // suspended users loaded
-                            if (suspendedUsersCount != null)
+                            if (_suspendedUsersCount != null)
                               Text(
-                                suspendedUsersCount.toString(),
+                                _suspendedUsersCount.toString(),
                                 style: const TextStyle(fontSize: 16),
                               ),
                             // suspended users not loaded
-                            if (suspendedUsersCount == null)
+                            if (_suspendedUsersCount == null)
                               const FittedBox(
                                 child: CircularProgressIndicator(),
                               ),
@@ -175,9 +174,9 @@ class _UsersListPageState extends State<UsersListPage> {
                     ),
                     // suspended users
                     InkWell(
-                      onTap: newUsersCount == null
+                      onTap: _newUsersCount == null
                           ? null
-                          : newUsersCount == 0
+                          : _newUsersCount == 0
                               ? () => showSnackBar(
                                     context: context,
                                     message: AppLocalizations.of(context)!
@@ -211,13 +210,13 @@ class _UsersListPageState extends State<UsersListPage> {
                               ),
                             ),
                             // new users loaded
-                            if (newUsersCount != null)
+                            if (_newUsersCount != null)
                               Text(
-                                newUsersCount.toString(),
+                                _newUsersCount.toString(),
                                 style: const TextStyle(fontSize: 16),
                               ),
                             // new users not loaded
-                            if (newUsersCount == null)
+                            if (_newUsersCount == null)
                               const FittedBox(
                                 child: CircularProgressIndicator(),
                               ),
@@ -240,10 +239,10 @@ class _UsersListPageState extends State<UsersListPage> {
                         (user) =>
                             user.firstName
                                 .toLowerCase()
-                                .contains(searchQuery.toLowerCase()) ||
+                                .contains(_searchQuery.toLowerCase()) ||
                             user.lastName
                                 .toLowerCase()
-                                .contains(searchQuery.toLowerCase()),
+                                .contains(_searchQuery.toLowerCase()),
                       )
                       .toList()
                     ..sort(
@@ -255,10 +254,10 @@ class _UsersListPageState extends State<UsersListPage> {
                             (user) =>
                                 user.firstName
                                     .toLowerCase()
-                                    .contains(searchQuery.toLowerCase()) ||
+                                    .contains(_searchQuery.toLowerCase()) ||
                                 user.lastName
                                     .toLowerCase()
-                                    .contains(searchQuery.toLowerCase()),
+                                    .contains(_searchQuery.toLowerCase()),
                           )
                           .toList()
                         ..sort(
@@ -296,7 +295,7 @@ class _UsersListPageState extends State<UsersListPage> {
                                 arguments: userProfile,
                               );
                             },
-                            searchQuery: searchQuery,
+                            searchQuery: _searchQuery,
                           ),
                         ),
                       ),
@@ -334,7 +333,7 @@ class _UsersListPageState extends State<UsersListPage> {
                                 arguments: userProfile,
                               );
                             },
-                            searchQuery: searchQuery,
+                            searchQuery: _searchQuery,
                           ),
                         ),
                       ),

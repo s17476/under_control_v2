@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/company.dart';
 
-class CompaniesListTile extends StatefulWidget {
+class CompaniesListTile extends StatelessWidget {
   const CompaniesListTile({
     Key? key,
     required this.company,
@@ -13,11 +13,6 @@ class CompaniesListTile extends StatefulWidget {
 
   final Company company;
 
-  @override
-  State<CompaniesListTile> createState() => _CompaniesListTileState();
-}
-
-class _CompaniesListTileState extends State<CompaniesListTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -35,7 +30,7 @@ class _CompaniesListTileState extends State<CompaniesListTile> {
             ),
             content: Text(
               AppLocalizations.of(context)!
-                  .assign_company_list_confirm_dialog_text(widget.company.name),
+                  .assign_company_list_confirm_dialog_text(company.name),
             ),
             actions: [
               TextButton(
@@ -56,7 +51,7 @@ class _CompaniesListTileState extends State<CompaniesListTile> {
                     AssignToCompanyEvent(
                       userProfile:
                           (userProfileBloc.state as NoCompanyState).userProfile,
-                      companyId: widget.company.id,
+                      companyId: company.id,
                     ),
                   );
                   Navigator.pop(context);
@@ -94,12 +89,12 @@ class _CompaniesListTileState extends State<CompaniesListTile> {
                 child: SizedBox(
                   width: 120,
                   height: 120,
-                  child: widget.company.logo == ''
+                  child: company.logo == ''
                       ? Image.asset('assets/undercontrol-adaptive.png')
                       : FadeInImage.assetNetwork(
                           fit: BoxFit.cover,
                           placeholder: 'assets/uc-loading.gif',
-                          image: widget.company.logo,
+                          image: company.logo,
                         ),
                 ),
               ),
@@ -115,7 +110,7 @@ class _CompaniesListTileState extends State<CompaniesListTile> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(
-                        widget.company.name,
+                        company.name,
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w500,
@@ -144,7 +139,7 @@ class _CompaniesListTileState extends State<CompaniesListTile> {
                               color: Theme.of(context).hintColor,
                             ),
                             Text(
-                              widget.company.country,
+                              company.country,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: Theme.of(context).hintColor,
@@ -163,7 +158,7 @@ class _CompaniesListTileState extends State<CompaniesListTile> {
                               size: 16,
                             ),
                             Text(
-                              widget.company.city,
+                              company.city,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: Theme.of(context).hintColor,
@@ -182,7 +177,7 @@ class _CompaniesListTileState extends State<CompaniesListTile> {
                               size: 16,
                             ),
                             Text(
-                              widget.company.address,
+                              company.address,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: Theme.of(context).hintColor,

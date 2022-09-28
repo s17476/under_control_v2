@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/glass_layer.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../groups/domain/entities/group.dart';
@@ -8,6 +7,7 @@ import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../utils/responsive_size.dart';
 import '../../utils/size_config.dart';
+import 'glass_layer.dart';
 import 'user_list_tile.dart';
 
 class AddMembersCard extends StatefulWidget {
@@ -28,10 +28,10 @@ class AddMembersCard extends StatefulWidget {
 }
 
 class _AddMembersCardState extends State<AddMembersCard> with ResponsiveSize {
-  List<UserProfile> allUsers = [];
-  late UserProfile currentUser;
+  List<UserProfile> _allUsers = [];
+  late UserProfile _currentUser;
 
-  void toggleUser(UserProfile user) {
+  void _toggleUser(UserProfile user) {
     widget.onToggleUserSelection(context, widget.group, user);
   }
 
@@ -39,9 +39,9 @@ class _AddMembersCardState extends State<AddMembersCard> with ResponsiveSize {
   void didChangeDependencies() {
     final companyState = context.watch<CompanyProfileBloc>().state;
     if (companyState is CompanyProfileLoaded) {
-      allUsers = companyState.companyUsers.activeUsers;
+      _allUsers = companyState.companyUsers.activeUsers;
     }
-    currentUser =
+    _currentUser =
         (context.read<UserProfileBloc>().state as Approved).userProfile;
     super.didChangeDependencies();
   }
@@ -61,21 +61,21 @@ class _AddMembersCardState extends State<AddMembersCard> with ResponsiveSize {
             child: ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: allUsers.length,
+              itemCount: _allUsers.length,
               itemBuilder: (context, index) {
                 return UserListTile(
-                  user: allUsers[index],
-                  onTap: currentUser.administrator
-                      ? toggleUser
-                      : currentUser.id == allUsers[index].id
+                  user: _allUsers[index],
+                  onTap: _currentUser.administrator
+                      ? _toggleUser
+                      : _currentUser.id == _allUsers[index].id
                           ? (UserProfile _) {}
-                          : toggleUser,
-                  isSelectionTile: (allUsers[index].id != currentUser.id) ||
-                      currentUser.administrator,
+                          : _toggleUser,
+                  isSelectionTile: (_allUsers[index].id != _currentUser.id) ||
+                      _currentUser.administrator,
                   isGroupMember:
-                      allUsers[index].userGroups.contains(widget.group.id),
+                      _allUsers[index].userGroups.contains(widget.group.id),
                   isGroupAdministrator: widget.group.groupAdministrators
-                      .contains(allUsers[index].id),
+                      .contains(_allUsers[index].id),
                 );
               },
             ),

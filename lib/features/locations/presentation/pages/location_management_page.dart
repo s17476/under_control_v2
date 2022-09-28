@@ -6,7 +6,7 @@ import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.
 import '../blocs/bloc/location_bloc.dart';
 import '../widgets/location_management_page/add_location_card.dart';
 import '../widgets/location_management_page/location_tile.dart';
-import '../widgets/location_management_page/show_location_snack_bar.dart';
+import '../../utils/show_location_snack_bar.dart';
 
 class LocationManagementPage extends StatefulWidget {
   const LocationManagementPage({Key? key}) : super(key: key);
@@ -18,9 +18,7 @@ class LocationManagementPage extends StatefulWidget {
 }
 
 class _LocationManagementPageState extends State<LocationManagementPage> {
-  int colorIndex = 0;
-
-  final colors = [
+  final _colors = [
     const Color.fromARGB(156, 79, 79, 79),
     const Color.fromARGB(255, 0, 0, 0),
   ];
@@ -66,7 +64,7 @@ class _LocationManagementPageState extends State<LocationManagementPage> {
                       isAdministrator: isAdministrator,
                       allLocations: state.allLocations.allLocations,
                       location: topLevelItems[index],
-                      color: colors[index % (colors.length)],
+                      color: _colors[index % (_colors.length)],
                     );
                   }
                 },

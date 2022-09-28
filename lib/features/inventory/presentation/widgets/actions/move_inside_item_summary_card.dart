@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:under_control_v2/features/core/utils/location_selection_helpers.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/double_apis.dart';
+import '../../../../core/utils/location_selection_helpers.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 
 class MoveInsideItemSummaryCard extends StatefulWidget {

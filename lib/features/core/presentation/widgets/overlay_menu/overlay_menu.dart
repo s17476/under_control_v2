@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/glass_layer.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/overlay_menu/overlay_menu_item.dart';
-import 'package:under_control_v2/features/core/utils/choice.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/tasks_overlay_menu_items.dart';
 
 import '../../../../assets/presentation/widgets/assets_overlay_menu_items.dart';
 import '../../../../dashboard/presentation/widgets/dashboard_overlay_menu_items.dart';
-import '../../../../inventory/presentation/widgets/inventory_overlay_menu_items.dart';
+import '../../../../inventory/utils/inventory_overlay_menu_items.dart';
 import '../../../../knowledge_base/presentation/widgets/knowledge_base_overlay_menu_items.dart';
+import '../../../../tasks/presentation/utils/tasks_overlay_menu_items.dart';
+import '../../../utils/choice.dart';
+import '../glass_layer.dart';
+import 'overlay_menu_item.dart';
 
 class OverlayMenu extends StatelessWidget {
   const OverlayMenu({
@@ -23,25 +23,25 @@ class OverlayMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Choice> menuItems;
+    List<Choice> _menuItems;
     switch (pageIndex) {
       case 0:
-        menuItems = tasksOverlayMenuItems(context);
+        _menuItems = tasksOverlayMenuItems(context);
         break;
       case 1:
-        menuItems = inventoryOverlayMenuItems(context);
+        _menuItems = inventoryOverlayMenuItems(context);
         break;
       case 2:
-        menuItems = dashboardOverlayMenuItems(context);
+        _menuItems = dashboardOverlayMenuItems(context);
         break;
       case 3:
-        menuItems = assetsOverlayMenuItems(context);
+        _menuItems = assetsOverlayMenuItems(context);
         break;
       case 4:
-        menuItems = knowledgeBaseOverlayMenuItems(context);
+        _menuItems = knowledgeBaseOverlayMenuItems(context);
         break;
       default:
-        menuItems = dashboardOverlayMenuItems(context);
+        _menuItems = dashboardOverlayMenuItems(context);
         break;
     }
     if (!isVisible) {
@@ -53,7 +53,7 @@ class OverlayMenu extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ...menuItems
+              ..._menuItems
                   .map(
                     (chice) => OverlayMenuItem(
                       choice: chice,

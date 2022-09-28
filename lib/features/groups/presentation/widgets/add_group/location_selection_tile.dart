@@ -32,19 +32,19 @@ class LocationSelectionTile extends StatefulWidget {
 
 class _LocationFilterTileState extends State<LocationSelectionTile> {
   _LocationFilterTileState();
-  bool isExpanded = false;
-  bool isSelected = false;
-  bool isContext = false;
+  bool _isExpanded = false;
+  bool _isSelected = false;
+  bool _isContext = false;
 
   @override
   Widget build(BuildContext context) {
     if (widget.selectedLocations.contains(widget.location) ||
         widget.locationsChildren.contains(widget.location.id)) {
-      isSelected = true;
+      _isSelected = true;
     } else {
-      isSelected = false;
+      _isSelected = false;
     }
-    isContext = widget.locationsContext.contains(widget.location.id);
+    _isContext = widget.locationsContext.contains(widget.location.id);
     final children = widget.allLocations
         .where((location) => location.parentId == widget.location.id);
 
@@ -55,7 +55,7 @@ class _LocationFilterTileState extends State<LocationSelectionTile> {
           child: InkWell(
             onTap: () {
               setState(() {
-                isExpanded = !isExpanded;
+                _isExpanded = !_isExpanded;
               });
             },
             customBorder: RoundedRectangleBorder(
@@ -78,7 +78,7 @@ class _LocationFilterTileState extends State<LocationSelectionTile> {
                       height: 40,
                       child: children.isNotEmpty
                           ? Icon(
-                              isExpanded
+                              _isExpanded
                                   ? Icons.keyboard_arrow_up_rounded
                                   : Icons.keyboard_arrow_down_rounded,
                             )
@@ -108,22 +108,22 @@ class _LocationFilterTileState extends State<LocationSelectionTile> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    activeColor: isContext
-                                        ? isSelected
+                                    activeColor: _isContext
+                                        ? _isSelected
                                             ? Theme.of(context)
                                                 .primaryColor
                                                 .withOpacity(0.2)
                                             : Colors.grey.shade700
                                         : Theme.of(context).primaryColor,
-                                    value: isSelected || isContext,
+                                    value: _isSelected || _isContext,
                                     onChanged: (bool? value) {
                                       widget.toggleLocationSelection(
                                         context,
                                         widget.location,
-                                        isSelected,
+                                        _isSelected,
                                       );
                                       setState(() {
-                                        isSelected = value!;
+                                        _isSelected = value!;
                                       });
                                     }),
                               ],
@@ -144,7 +144,7 @@ class _LocationFilterTileState extends State<LocationSelectionTile> {
           duration: const Duration(milliseconds: 500),
           child: Container(
             width: double.infinity,
-            height: isExpanded ? null : 0,
+            height: _isExpanded ? null : 0,
             padding: const EdgeInsets.only(left: 10),
             child: Column(
               children: [

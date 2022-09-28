@@ -15,8 +15,8 @@ part 'new_users_state.dart';
 
 @injectable
 class NewUsersBloc extends Bloc<NewUsersEvent, NewUsersState> {
-  late StreamSubscription companyProfileSubscription;
-  StreamSubscription? newUsersStreamSubscription;
+  late StreamSubscription _companyProfileSubscription;
+  StreamSubscription? _newUsersStreamSubscription;
   final CompanyProfileBloc companyProfileBloc;
   final FetchNewUsers fetchNewUsers;
 
@@ -24,7 +24,7 @@ class NewUsersBloc extends Bloc<NewUsersEvent, NewUsersState> {
     this.companyProfileBloc,
     this.fetchNewUsers,
   ) : super(NewUsersEmptyState()) {
-    companyProfileSubscription = companyProfileBloc.stream.listen(
+    _companyProfileSubscription = companyProfileBloc.stream.listen(
       (state) {
         if (state is CompanyProfileLoaded) {
           add(
@@ -41,7 +41,7 @@ class NewUsersBloc extends Bloc<NewUsersEvent, NewUsersState> {
       failureOrNewUsers.fold(
         (failure) async => emit(const NewUsersErrorState()),
         (newUsers) async {
-          newUsersStreamSubscription = newUsers.allUsers.listen((snapshot) {
+          _newUsersStreamSubscription = newUsers.allUsers.listen((snapshot) {
             add(UpdateNewUsersEvent(snapshot: snapshot));
           });
           emit(
@@ -71,8 +71,8 @@ class NewUsersBloc extends Bloc<NewUsersEvent, NewUsersState> {
 
   @override
   Future<void> close() {
-    companyProfileSubscription.cancel();
-    newUsersStreamSubscription?.cancel();
+    _companyProfileSubscription.cancel();
+    _newUsersStreamSubscription?.cancel();
     return super.close();
   }
 }

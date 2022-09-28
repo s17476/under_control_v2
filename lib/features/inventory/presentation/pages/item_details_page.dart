@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
-import 'package:under_control_v2/features/core/utils/premission.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_actions_tab.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_info_tab.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_locations_tab.dart';
-import 'package:under_control_v2/features/inventory/utils/show_item_delete_dialog.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
+import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
+import '../../../core/utils/show_snack_bar.dart';
+import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/item.dart';
 import '../../utils/get_item_total_quantity.dart';
 import '../../utils/item_action_management_bloc_listener.dart';
 import '../../utils/item_management_bloc_listener.dart';
+import '../../utils/show_item_delete_dialog.dart';
 import '../blocs/item_action/item_action_bloc.dart';
 import '../blocs/item_action_management/item_action_management_bloc.dart';
 import '../blocs/items/items_bloc.dart';
 import '../blocs/items_management/items_management_bloc.dart';
+import '../widgets/item_details/item_actions_tab.dart';
+import '../widgets/item_details/item_info_tab.dart';
+import '../widgets/item_details/item_locations_tab.dart';
 import 'add_item_page.dart';
 
 class ItemDetailsPage extends StatefulWidget {
@@ -35,10 +35,8 @@ class ItemDetailsPage extends StatefulWidget {
 }
 
 class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
-  Item? item;
+  Item? _item;
   late UserProfile _currentUser;
-
-  late Widget locationsTab;
 
   List<Choice> _choices = [];
 
@@ -57,7 +55,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
           .indexWhere((element) => element.id == itemId);
       if (index >= 0) {
         setState(() {
-          item = itemsState.allItems.allItems[index];
+          _item = itemsState.allItems.allItems[index];
         });
         // popup menu items
         _choices = [
@@ -73,7 +71,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
               onTap: () => Navigator.pushNamed(
                 context,
                 AddItemPage.routeName,
-                arguments: item,
+                arguments: _item,
               ),
             ),
           if (getUserPremission(
@@ -85,7 +83,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
               title: AppLocalizations.of(context)!.delete,
               icon: Icons.delete,
               onTap: () async {
-                if (getItemTotalQuantity(item!) > 0) {
+                if (getItemTotalQuantity(_item!) > 0) {
                   showSnackBar(
                     context: context,
                     message: AppLocalizations.of(context)!
@@ -93,8 +91,8 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                     isErrorMessage: true,
                   );
                 } else {
-                  final result =
-                      await showItemDeleteDialog(context: context, item: item!);
+                  final result = await showItemDeleteDialog(
+                      context: context, item: _item!);
                   if (result != null && result) {
                     Navigator.pop(context);
                   }
@@ -105,7 +103,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
         // gets last actions for selected item
         context.read<ItemActionBloc>().add(
               GetLastFiveItemActionsEvent(
-                item: item!,
+                item: _item!,
                 companyId: _currentUser.companyId,
               ),
             );
@@ -188,7 +186,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
             indicatorColor: tabBarIconColor,
           ),
         ),
-        body: item == null
+        body: _item == null
             ? const LoadingWidget()
             : MultiBlocListener(
                 listeners: [
@@ -204,9 +202,9 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                 ],
                 child: TabBarView(
                   children: [
-                    ItemInfoTab(item: item!),
-                    ItemActionsTab(item: item!),
-                    ItemLocationsTab(item: item!),
+                    ItemInfoTab(item: _item!),
+                    ItemActionsTab(item: _item!),
+                    ItemLocationsTab(item: _item!),
                   ],
                 ),
               ),

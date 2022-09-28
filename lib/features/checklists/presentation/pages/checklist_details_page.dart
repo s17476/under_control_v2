@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:under_control_v2/features/checklists/domain/entities/checklist.dart';
-import 'package:under_control_v2/features/checklists/presentation/pages/add_checklist_page.dart';
-import 'package:under_control_v2/features/checklists/presentation/widgets/show_checklist_delete_dialog.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/icon_title_row.dart';
-import 'package:under_control_v2/features/core/utils/choice.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../core/presentation/widgets/icon_title_row.dart';
+import '../../../core/utils/choice.dart';
 import '../../../core/utils/show_snack_bar.dart';
-import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../domain/entities/checklist.dart';
 import '../blocs/checklist/checklist_bloc.dart';
 import '../blocs/checklist_management/checklist_management_bloc.dart';
+import '../../utils/show_checklist_delete_dialog.dart';
+import 'add_checklist_page.dart';
 
 class ChecklistDetailsPage extends StatefulWidget {
   const ChecklistDetailsPage({Key? key}) : super(key: key);
@@ -23,13 +21,10 @@ class ChecklistDetailsPage extends StatefulWidget {
 }
 
 class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
-  UserProfile? userProfile;
-
-  bool isAdministrator = false;
-
-  late Checklist checklist;
-
-  List<Choice> choices = [];
+  // current checklist
+  late Checklist _checklist;
+  // popup menu items
+  List<Choice> _choices = [];
 
   @override
   void didChangeDependencies() {
@@ -42,18 +37,14 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
           .indexWhere((element) => element.id == checklistId);
       if (index >= 0) {
         setState(() {
-          checklist = checklistState.allChecklists.allChecklists[index];
+          _checklist = checklistState.allChecklists.allChecklists[index];
         });
       }
     }
-    // gets current user
-    final currentUserProfile =
-        (context.read<UserProfileBloc>().state as Approved).userProfile;
-    isAdministrator = currentUserProfile.administrator;
 
     // popup menu items list
     setState(() {
-      choices = [
+      _choices = [
         // edit checklist
         Choice(
           title: AppLocalizations.of(context)!.edit,
@@ -61,7 +52,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
           onTap: () => Navigator.pushNamed(
             context,
             AddChecklistPage.routeName,
-            arguments: checklist,
+            arguments: _checklist,
           ),
         ),
         // delete checklist
@@ -71,7 +62,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
           onTap: () async {
             final result = await showChecklistDeleteDialog(
               context: context,
-              checklist: checklist,
+              checklist: _checklist,
             );
             if (result != null && result) {
               Navigator.pop(context);
@@ -116,13 +107,13 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
           centerTitle: true,
           actions: [
             // popup menu
-            if (choices.isNotEmpty)
+            if (_choices.isNotEmpty)
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {
                   choice.onTap();
                 },
                 itemBuilder: (BuildContext context) {
-                  return choices.map((Choice choice) {
+                  return _choices.map((Choice choice) {
                     return PopupMenuItem<Choice>(
                       value: choice,
                       child: Row(
@@ -170,7 +161,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                     right: 8,
                   ),
                   child: Text(
-                    checklist.title,
+                    _checklist.title,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -181,7 +172,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                   ),
                 ),
                 // description
-                if (checklist.description.isNotEmpty)
+                if (_checklist.description.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(
                       top: 8,
@@ -189,7 +180,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                       right: 8,
                     ),
                     child: Text(
-                      checklist.description,
+                      _checklist.description,
                       maxLines: 4,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -218,7 +209,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                 ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: checklist.allCheckpoints.length,
+                  itemCount: _checklist.allCheckpoints.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.only(
@@ -230,7 +221,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
                         icon: Icons.check_circle_outline_outlined,
                         iconColor: Colors.grey.shade200,
                         iconBackground: Theme.of(context).primaryColor,
-                        title: checklist.allCheckpoints[index].title,
+                        title: _checklist.allCheckpoints[index].title,
                       ),
                     );
                   },

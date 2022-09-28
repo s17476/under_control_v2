@@ -19,12 +19,12 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
   final GroupBloc groupBloc;
   final UserProfileBloc userProfileBloc;
 
-  late StreamSubscription locationStreamSubscription;
-  late StreamSubscription groupStreamSubscription;
-  late StreamSubscription userProfileStreamSubscription;
+  late StreamSubscription _locationStreamSubscription;
+  late StreamSubscription _groupStreamSubscription;
+  late StreamSubscription _userProfileStreamSubscription;
 
-  String companyId = '';
-  bool isAdmin = false;
+  String _companyId = '';
+  bool _isAdmin = false;
 
   FilterBloc({
     required this.locationBloc,
@@ -32,7 +32,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     required this.userProfileBloc,
   }) : super(FilterEmptyState()) {
     // location stream
-    locationStreamSubscription = locationBloc.stream.listen((state) {
+    _locationStreamSubscription = locationBloc.stream.listen((state) {
       if (state is LocationLoadedState) {
         // gets all selected locations
         final selectedLocations = state.allSelectedLocations;
@@ -41,16 +41,16 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     });
 
     // group stream
-    groupStreamSubscription = groupBloc.stream.listen((state) {
+    _groupStreamSubscription = groupBloc.stream.listen((state) {
       if (state is GroupLoadedState) {
         add(UpdateGroupsEvent(groups: state.selectedGroups));
       }
     });
 
-    userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
+    _userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
       if (state is Approved) {
-        companyId = state.userProfile.companyId;
-        isAdmin = state.userProfile.administrator;
+        _companyId = state.userProfile.companyId;
+        _isAdmin = state.userProfile.administrator;
       }
     });
 
@@ -68,14 +68,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
               }
             }
           }
-          // print('updatedGroups');
-          // print(updatedGroups.map((e) => e.name).toList());
-          // print('locations');
-          // print(event.locations.map((e) => e.name).toList());
           emit(
             FilterLoadedState(
-              isAdmin: isAdmin,
-              companyId: companyId,
+              isAdmin: _isAdmin,
+              companyId: _companyId,
               locations: event.locations,
               groups: updatedGroups,
               allPossibleGroups: getAllPossibleGroups(),
@@ -84,8 +80,8 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
         } else {
           emit(
             FilterLoadedState(
-              isAdmin: isAdmin,
-              companyId: companyId,
+              isAdmin: _isAdmin,
+              companyId: _companyId,
               locations: event.locations,
               groups: updatedGroups,
             ),
@@ -108,14 +104,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
           }
         }
       }
-      // print('updatedGroups');
-      // print(updatedGroups.map((e) => e.name).toList());
-      // print('locations');
-      // print(locations.map((e) => e.name).toList());
       emit(
         FilterLoadedState(
-          isAdmin: isAdmin,
-          companyId: companyId,
+          isAdmin: _isAdmin,
+          companyId: _companyId,
           locations: locations,
           groups: updatedGroups,
           allPossibleGroups: getAllPossibleGroups(),
@@ -144,7 +136,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
       // gets groups where current user is a member
       List<Group> groupsForUser = [];
-      if (isAdmin) {
+      if (_isAdmin) {
         groupsForUser = groupsInSelectedLocations;
       } else {
         for (var group in groupsInSelectedLocations) {
@@ -165,9 +157,9 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
   @override
   Future<void> close() {
-    locationStreamSubscription.cancel();
-    groupStreamSubscription.cancel();
-    userProfileStreamSubscription.cancel();
+    _locationStreamSubscription.cancel();
+    _groupStreamSubscription.cancel();
+    _userProfileStreamSubscription.cancel();
     return super.close();
   }
 }

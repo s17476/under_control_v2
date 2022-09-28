@@ -9,7 +9,7 @@ import '../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
 
-class AvatarCard extends StatefulWidget {
+class AvatarCard extends StatelessWidget with ResponsiveSize {
   const AvatarCard({
     Key? key,
     this.image,
@@ -24,11 +24,6 @@ class AvatarCard extends StatefulWidget {
     ImageSource souruce,
   ) setAvatar;
 
-  @override
-  State<AvatarCard> createState() => _AvatarCardState();
-}
-
-class _AvatarCardState extends State<AvatarCard> with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
@@ -57,26 +52,13 @@ class _AvatarCardState extends State<AvatarCard> with ResponsiveSize {
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
-                              // shows avatar background only in portrait mode
-                              // if (MediaQuery.of(context).orientation ==
-                              //     Orientation.portrait)
-                              //   Image.asset(
-                              //     'assets/undercontrol-without-frame.png',
-                              //     fit: BoxFit.fill,
-                              //   ),
-                              // CircleAvatar(
-                              //   radius: responsiveSizePct(small: 22.5),
-                              //   backgroundColor:
-                              //       Theme.of(context).scaffoldBackgroundColor,
-                              // ),
                               CircleAvatar(
                                 radius: responsiveSizePct(small: 40),
                                 backgroundColor:
                                     Theme.of(context).scaffoldBackgroundColor,
-                                backgroundImage: widget.image != null
-                                    ? FileImage(widget.image!)
-                                    : null,
-                                child: widget.image == null
+                                backgroundImage:
+                                    image != null ? FileImage(image!) : null,
+                                child: image == null
                                     ? Text(
                                         '?',
                                         style: TextStyle(
@@ -95,7 +77,7 @@ class _AvatarCardState extends State<AvatarCard> with ResponsiveSize {
                         ),
                         ElevatedButton.icon(
                           onPressed: () {
-                            widget.setAvatar(ImageSource.camera);
+                            setAvatar(ImageSource.camera);
                           },
                           icon: const Icon(Icons.camera),
                           label: Text(
@@ -112,7 +94,7 @@ class _AvatarCardState extends State<AvatarCard> with ResponsiveSize {
                         ),
                         ElevatedButton.icon(
                           onPressed: () {
-                            widget.setAvatar(ImageSource.gallery);
+                            setAvatar(ImageSource.gallery);
                           },
                           icon: const Icon(
                             Icons.photo_size_select_actual_rounded,
@@ -142,7 +124,7 @@ class _AvatarCardState extends State<AvatarCard> with ResponsiveSize {
                     color: Theme.of(context).textTheme.headline4!.color!,
                     label: AppLocalizations.of(context)!
                         .user_profile_add_user_personal_data_back,
-                    function: () => widget.pageController.previousPage(
+                    function: () => pageController.previousPage(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeIn,
                     ),
@@ -151,7 +133,7 @@ class _AvatarCardState extends State<AvatarCard> with ResponsiveSize {
                     color: Theme.of(context).textTheme.headline4!.color!,
                     label: AppLocalizations.of(context)!
                         .user_profile_add_user_next,
-                    function: () => widget.pageController.nextPage(
+                    function: () => pageController.nextPage(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeIn,
                     ),

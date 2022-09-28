@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/glass_layer.dart';
 
+import '../../../core/presentation/widgets/glass_layer.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import 'filter_groups_list.dart';
 import 'filter_locations_list.dart';
 
-class HomePageFilter extends StatefulWidget {
+class HomePageFilter extends StatelessWidget {
   const HomePageFilter({
     Key? key,
     required this.isFilterExpanded,
@@ -17,17 +17,12 @@ class HomePageFilter extends StatefulWidget {
   final Function onDismiss;
 
   @override
-  State<HomePageFilter> createState() => _HomePageFilterState();
-}
-
-class _HomePageFilterState extends State<HomePageFilter> {
-  @override
   Widget build(BuildContext context) {
-    if (!widget.isFilterExpanded) {
+    if (!isFilterExpanded) {
       return const SizedBox();
     } else {
       return GlassLayer(
-        onDismiss: widget.onDismiss,
+        onDismiss: onDismiss,
         child: TweenAnimationBuilder(
           duration: const Duration(milliseconds: 300),
           tween: Tween<Offset>(

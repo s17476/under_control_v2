@@ -21,7 +21,7 @@ part 'authentication_state.dart';
 @injectable
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  late StreamSubscription streamSubscription;
+  late StreamSubscription _streamSubscription;
   final Signin signin;
   final Signup signup;
   final Signout signout;
@@ -41,7 +41,7 @@ class AuthenticationBloc
     required this.sendPasswordResetEmail,
     required this.inputValidator,
   }) : super(EmptyAuthenticationState()) {
-    streamSubscription = autoSignin().listen((user) {
+    _streamSubscription = autoSignin().listen((user) {
       add(AutoSigninEvent(user: user));
     });
 
@@ -138,7 +138,7 @@ class AuthenticationBloc
 
   @override
   Future<void> close() {
-    streamSubscription.cancel();
+    _streamSubscription.cancel();
     return super.close();
   }
 }

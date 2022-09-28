@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
-import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
 
 import '../../../groups/domain/entities/group.dart';
 import '../../../groups/presentation/blocs/group/group_bloc.dart';
+import '../../../groups/presentation/pages/group_details.dart';
 
 class HomePageFilterGroupTile extends StatefulWidget {
   const HomePageFilterGroupTile({
@@ -23,7 +22,7 @@ class HomePageFilterGroupTile extends StatefulWidget {
 }
 
 class _HomePageFilterGroupTileState extends State<HomePageFilterGroupTile> {
-  bool isSelected = false;
+  bool _isSelected = false;
 
   @override
   void didChangeDependencies() {
@@ -31,9 +30,9 @@ class _HomePageFilterGroupTileState extends State<HomePageFilterGroupTile> {
       final state = context.watch<GroupBloc>().state as GroupLoadedState;
 
       if (state.selectedGroups.contains(widget.group)) {
-        isSelected = true;
+        _isSelected = true;
       } else {
-        isSelected = false;
+        _isSelected = false;
       }
     }
 
@@ -80,9 +79,9 @@ class _HomePageFilterGroupTileState extends State<HomePageFilterGroupTile> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   activeColor: Theme.of(context).primaryColor,
-                  value: isSelected,
+                  value: _isSelected,
                   onChanged: (bool? value) {
-                    isSelected
+                    _isSelected
                         ? context
                             .read<GroupBloc>()
                             .add(UnselectGroupEvent(group: widget.group))
@@ -90,7 +89,7 @@ class _HomePageFilterGroupTileState extends State<HomePageFilterGroupTile> {
                             .read<GroupBloc>()
                             .add(SelectGroupEvent(group: widget.group));
                     setState(() {
-                      isSelected = value!;
+                      _isSelected = value!;
                     });
                   },
                 ),

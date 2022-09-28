@@ -33,7 +33,7 @@ class AddQuantityCard extends StatefulWidget {
 }
 
 class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
-  String? errorMessage;
+  String? _errorMessage;
 
   void _increaseQuantity() {
     try {
@@ -148,23 +148,23 @@ class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
                             quantity = double.parse(val!);
                             if (quantity <= 0) {
                               setState(() {
-                                errorMessage = AppLocalizations.of(context)!
+                                _errorMessage = AppLocalizations.of(context)!
                                     .incorrect_number_to_small;
                               });
                             } else if (widget.maxQuantity != 0 &&
                                 quantity > widget.maxQuantity) {
                               setState(() {
-                                errorMessage = AppLocalizations.of(context)!
+                                _errorMessage = AppLocalizations.of(context)!
                                     .incorrect_number_to_big;
                               });
                             } else {
                               setState(() {
-                                errorMessage = null;
+                                _errorMessage = null;
                               });
                             }
                           } catch (e) {
                             setState(() {
-                              errorMessage = AppLocalizations.of(context)!
+                              _errorMessage = AppLocalizations.of(context)!
                                   .incorrect_number_format;
                             });
                           }
@@ -201,11 +201,11 @@ class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
                     ),
                   ],
                 ),
-                if (errorMessage != null)
+                if (_errorMessage != null)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      errorMessage!,
+                      _errorMessage!,
                       style: TextStyle(
                         color: Theme.of(context).errorColor,
                       ),

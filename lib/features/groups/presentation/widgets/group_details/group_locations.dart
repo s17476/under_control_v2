@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/icon_title_row.dart';
 
+import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../../domain/entities/group.dart';
 import 'group_details_location_tile.dart';
@@ -20,11 +20,11 @@ class GroupLocations extends StatefulWidget {
 }
 
 class _GroupLocationsState extends State<GroupLocations> {
-  bool isExpanded = false;
+  bool _isExpanded = false;
 
   void toggleExpanded() {
     setState(() {
-      isExpanded = !isExpanded;
+      _isExpanded = !_isExpanded;
     });
   }
 
@@ -54,7 +54,7 @@ class _GroupLocationsState extends State<GroupLocations> {
                   ),
                 ),
                 Icon(
-                  isExpanded
+                  _isExpanded
                       ? Icons.keyboard_arrow_up
                       : Icons.keyboard_arrow_down,
                 ),
@@ -67,7 +67,7 @@ class _GroupLocationsState extends State<GroupLocations> {
           duration: const Duration(milliseconds: 300),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 8),
-            height: isExpanded ? null : 0,
+            height: _isExpanded ? null : 0,
             child: BlocBuilder<LocationBloc, LocationState>(
               builder: (context, state) {
                 if (state is LocationLoadedState) {

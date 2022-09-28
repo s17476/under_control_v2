@@ -31,97 +31,85 @@ class MoveInsideItemPage extends StatefulWidget {
 }
 
 class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
-  ItemModel? item;
+  ItemModel? _item;
 
-  List<Widget> pages = [];
+  List<Widget> _pages = [];
 
   final _formKey = GlobalKey<FormState>();
 
-  final pageController = PageController();
+  final _pageController = PageController();
 
-  final quantityTextEditingController = TextEditingController(text: '0');
+  final _quantityTextEditingController = TextEditingController(text: '0');
+  final _descriptionTextEditingController = TextEditingController();
 
-  final descriptionTextEditingController = TextEditingController();
+  String _selectedFromLocation = '';
+  String _selectedToLocation = '';
 
-  String selectedFromLocation = '';
+  double _maxQuantity = 0;
 
-  String selectedToLocation = '';
+  DateTime _dateTime = DateTime.now();
 
-  double maxQuantity = 0;
-
-  DateTime dateTime = DateTime.now();
-
-  void setFromLocation(String location) async {
+  void _setFromLocation(String location) async {
     setState(() {
-      selectedFromLocation = location;
-      final amountInLocation = item!.amountInLocations
+      _selectedFromLocation = location;
+      final amountInLocation = _item!.amountInLocations
           .firstWhere((element) => element.locationId == location);
-      maxQuantity = amountInLocation.amount;
-      if (selectedToLocation == selectedFromLocation) {
-        selectedToLocation = '';
+      _maxQuantity = amountInLocation.amount;
+      if (_selectedToLocation == _selectedFromLocation) {
+        _selectedToLocation = '';
       }
     });
     await Future.delayed(
       const Duration(milliseconds: 500),
     );
-    pageController.animateToPage(
+    _pageController.animateToPage(
       1,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeIn,
     );
   }
 
-  void setToLocation(String location) async {
+  void _setToLocation(String location) async {
     setState(() {
-      selectedToLocation = location;
+      _selectedToLocation = location;
     });
     await Future.delayed(
       const Duration(milliseconds: 500),
     );
-    pageController.animateToPage(
+    _pageController.animateToPage(
       2,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeIn,
     );
   }
 
-  void setDate(DateTime date) {
+  void _setDate(DateTime date) {
     setState(() {
-      dateTime = date;
+      _dateTime = date;
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    final arguments = ModalRoute.of(context)!.settings.arguments;
-
-    if (arguments != null && arguments is ItemModel) {
-      item = arguments.deepCopy();
-    }
-    super.didChangeDependencies();
-  }
-
-  void moveInsideItem(BuildContext context) {
+  void _moveInsideItem(BuildContext context) {
     String errorMessage = '';
     double quantity = 0;
 
     // from location validation
-    if (selectedFromLocation.isEmpty) {
+    if (_selectedFromLocation.isEmpty) {
       errorMessage =
           AppLocalizations.of(context)!.validation_location_not_selected;
     } else {
       // to location validation
-      if (selectedToLocation.isEmpty) {
+      if (_selectedToLocation.isEmpty) {
         errorMessage =
             AppLocalizations.of(context)!.validation_location_not_selected;
       } else {
         // quantity validation
         try {
-          quantity = double.parse(quantityTextEditingController.text);
+          quantity = double.parse(_quantityTextEditingController.text);
           if (quantity <= 0) {
             errorMessage =
                 AppLocalizations.of(context)!.incorrect_number_to_small;
-          } else if (maxQuantity != 0 && quantity > maxQuantity) {
+          } else if (_maxQuantity != 0 && quantity > _maxQuantity) {
             errorMessage =
                 AppLocalizations.of(context)!.incorrect_number_to_big;
           }
@@ -139,12 +127,12 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
             final subtractItemAction = ItemActionModel(
               id: '',
               type: ItemActionType.moveRemove,
-              description: descriptionTextEditingController.text.trim(),
+              description: _descriptionTextEditingController.text.trim(),
               ammount: double.parse(quantity.toStringWithFixedDecimal()),
-              itemUnit: item!.itemUnit,
-              locationId: selectedFromLocation,
-              date: dateTime,
-              itemId: item!.id,
+              itemUnit: _item!.itemUnit,
+              locationId: _selectedFromLocation,
+              date: _dateTime,
+              itemId: _item!.id,
               userId: userId,
             );
 
@@ -152,25 +140,25 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
             final addItemAction = ItemActionModel(
               id: '',
               type: ItemActionType.moveAdd,
-              description: descriptionTextEditingController.text.trim(),
+              description: _descriptionTextEditingController.text.trim(),
               ammount: double.parse(quantity.toStringWithFixedDecimal()),
-              itemUnit: item!.itemUnit,
-              locationId: selectedToLocation,
+              itemUnit: _item!.itemUnit,
+              locationId: _selectedToLocation,
               date: DateTime(
-                dateTime.year,
-                dateTime.month,
-                dateTime.day,
-                dateTime.hour,
-                dateTime.minute,
-                dateTime.second + 1,
+                _dateTime.year,
+                _dateTime.month,
+                _dateTime.day,
+                _dateTime.hour,
+                _dateTime.minute,
+                _dateTime.second + 1,
               ),
-              itemId: item!.id,
+              itemId: _item!.id,
               userId: userId,
             );
 
             context.read<ItemActionManagementBloc>().add(
                   MoveItemActionEvent(
-                    item: item!,
+                    item: _item!,
                     oldItemAction: subtractItemAction,
                     itemAction: addItemAction,
                   ),
@@ -181,7 +169,7 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
           // description validation
         } else {
           if (errorMessage.isEmpty &&
-              descriptionTextEditingController.text.trim().length < 2) {
+              _descriptionTextEditingController.text.trim().length < 2) {
             errorMessage =
                 AppLocalizations.of(context)!.validation_no_description;
           }
@@ -200,63 +188,73 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    final arguments = ModalRoute.of(context)!.settings.arguments;
+
+    if (arguments != null && arguments is ItemModel) {
+      _item = arguments.deepCopy();
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
-    quantityTextEditingController.dispose();
-    descriptionTextEditingController.dispose();
-    pageController.dispose();
+    _quantityTextEditingController.dispose();
+    _descriptionTextEditingController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    pages = [
+    _pages = [
       KeepAlivePage(
         child: AddToLocationCard(
-          pageController: pageController,
-          selectedLocation: selectedFromLocation,
-          setLocation: setFromLocation,
+          pageController: _pageController,
+          selectedLocation: _selectedFromLocation,
+          setLocation: _setFromLocation,
           title: AppLocalizations.of(context)!.item_subtract_from_location,
-          item: item!,
+          item: _item!,
           isSubtract: true,
         ),
       ),
       KeepAlivePage(
         child: AddToLocationCard(
-          pageController: pageController,
-          selectedLocation: selectedToLocation,
-          selectedFromLocation: selectedFromLocation,
-          setLocation: setToLocation,
+          pageController: _pageController,
+          selectedLocation: _selectedToLocation,
+          selectedFromLocation: _selectedFromLocation,
+          setLocation: _setToLocation,
           title: AppLocalizations.of(context)!.item_add_to_location,
-          item: item!,
+          item: _item!,
           isFirstPage: false,
         ),
       ),
       KeepAlivePage(
         child: AddQuantityCard(
-          pageController: pageController,
-          quantityTextEditingController: quantityTextEditingController,
-          itemUnit: item!.itemUnit,
-          maxQuantity: maxQuantity,
+          pageController: _pageController,
+          quantityTextEditingController: _quantityTextEditingController,
+          itemUnit: _item!.itemUnit,
+          maxQuantity: _maxQuantity,
         ),
       ),
       KeepAlivePage(
         child: AddDateAndDescriptionCard(
-          pageController: pageController,
-          descriptionTextEditingController: descriptionTextEditingController,
-          dateTime: dateTime,
-          setDate: setDate,
+          pageController: _pageController,
+          descriptionTextEditingController: _descriptionTextEditingController,
+          dateTime: _dateTime,
+          setDate: _setDate,
         ),
       ),
       MoveInsideItemSummaryCard(
-        pageController: pageController,
-        quantityTextEditingController: quantityTextEditingController,
-        selectedFromLocation: selectedFromLocation,
-        selectedToLocation: selectedToLocation,
-        itemUnit: getLocalizedUnitName(context, item!.itemUnit),
-        maxQuantity: maxQuantity,
-        addNewItem: moveInsideItem,
-        dateTime: dateTime,
-        descriptionTextEditingController: descriptionTextEditingController,
+        pageController: _pageController,
+        quantityTextEditingController: _quantityTextEditingController,
+        selectedFromLocation: _selectedFromLocation,
+        selectedToLocation: _selectedToLocation,
+        itemUnit: getLocalizedUnitName(context, _item!.itemUnit),
+        maxQuantity: _maxQuantity,
+        addNewItem: _moveInsideItem,
+        dateTime: _dateTime,
+        descriptionTextEditingController: _descriptionTextEditingController,
       ),
     ];
 
@@ -271,15 +269,15 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
               Form(
                 key: _formKey,
                 child: PageView(
-                  controller: pageController,
-                  children: pages,
+                  controller: _pageController,
+                  children: _pages,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
                 child: SmoothPageIndicator(
-                  controller: pageController,
-                  count: pages.length,
+                  controller: _pageController,
+                  count: _pages.length,
                   effect: JumpingDotEffect(
                     dotHeight: 10,
                     dotWidth: 10,

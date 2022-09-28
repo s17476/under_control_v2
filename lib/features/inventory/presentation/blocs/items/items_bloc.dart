@@ -19,23 +19,23 @@ part 'items_state.dart';
 
 @injectable
 class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
-  late StreamSubscription filterStreamSubscription;
-  StreamSubscription? itemsStreamSubscription;
   final FilterBloc filterBloc;
   final GetItemsStream getChecklistsStream;
 
-  String companyId = '';
+  late StreamSubscription _filterStreamSubscription;
+  StreamSubscription? _itemsStreamSubscription;
+  String _companyId = '';
 
   ItemsBloc({
     required this.filterBloc,
     required this.getChecklistsStream,
   }) : super(ItemsEmptyState()) {
-    filterStreamSubscription = filterBloc.stream.listen((state) {
-      if (state is FilterLoadedState && companyId.isEmpty) {
-        companyId = state.companyId;
+    _filterStreamSubscription = filterBloc.stream.listen((state) {
+      if (state is FilterLoadedState && _companyId.isEmpty) {
+        _companyId = state.companyId;
         add(
           GetItemsEvent(
-            companyId: companyId,
+            companyId: _companyId,
             selectedGroups: state.groups,
             selectedLocations: state.locations,
           ),
@@ -55,7 +55,7 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
       await failureOrItemsStream
           .fold((failure) async => emit(const ItemsErrorState()),
               (itemsStream) async {
-        itemsStreamSubscription = itemsStream.allItems.listen((snapshot) {
+        _itemsStreamSubscription = itemsStream.allItems.listen((snapshot) {
           add(UpdateItemsListEvent(snapshot: snapshot));
         });
       });
@@ -80,8 +80,8 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
 
   @override
   Future<void> close() {
-    filterStreamSubscription.cancel();
-    itemsStreamSubscription?.cancel();
+    _filterStreamSubscription.cancel();
+    _itemsStreamSubscription?.cancel();
     return super.close();
   }
 

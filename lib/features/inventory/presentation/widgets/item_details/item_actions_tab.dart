@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
-import 'package:under_control_v2/features/core/utils/premission.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
-
-import 'package:under_control_v2/features/inventory/presentation/pages/actions_list_page.dart';
 
 import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
+import '../../../../core/utils/get_user_premission.dart';
+import '../../../../core/utils/premission.dart';
+import '../../../../core/utils/show_snack_bar.dart';
+import '../../../../groups/domain/entities/feature.dart';
 import '../../../domain/entities/item.dart';
+import '../../../domain/entities/item_action/item_action.dart';
 import '../../../utils/get_item_total_quantity.dart';
 import '../../blocs/item_action/item_action_bloc.dart';
+import '../../pages/actions_list_page.dart';
 import '../../pages/add_to_item_page.dart';
 import '../../pages/move_inside_item_page.dart';
 import '../../pages/subtract_from_item_page.dart';

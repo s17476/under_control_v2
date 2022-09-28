@@ -1,9 +1,10 @@
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/inventory/domain/repositories/item_files_repository.dart';
+
+import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
+import '../../domain/repositories/item_files_repository.dart';
 
 @LazySingleton(as: ItemFilesRepository)
 class ItemFilesRepositoryImpl extends ItemFilesRepository {

@@ -10,7 +10,7 @@ import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/overlay_icon_button.dart';
 import '../../../../core/utils/responsive_size.dart';
 
-class AddItemPhotoCard extends StatefulWidget {
+class AddItemPhotoCard extends StatelessWidget with ResponsiveSize {
   const AddItemPhotoCard({
     Key? key,
     required this.pageController,
@@ -32,12 +32,6 @@ class AddItemPhotoCard extends StatefulWidget {
 
   final Function() deleteImage;
 
-  @override
-  State<AddItemPhotoCard> createState() => _AddItemPhotoCardState();
-}
-
-class _AddItemPhotoCardState extends State<AddItemPhotoCard>
-    with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -74,12 +68,12 @@ class _AddItemPhotoCardState extends State<AddItemPhotoCard>
                           fit: BoxFit.fill,
                         ),
                       ),
-                      if (widget.imageUrl != null)
+                      if (imageUrl != null)
                         SizedBox(
                           width: responsiveSizePct(small: 100),
                           height: responsiveSizePct(small: 100),
                           child: CachedNetworkImage(
-                            imageUrl: widget.imageUrl!,
+                            imageUrl: imageUrl!,
                             placeholder: (context, url) => const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: CircularProgressIndicator(),
@@ -89,12 +83,12 @@ class _AddItemPhotoCardState extends State<AddItemPhotoCard>
                             fit: BoxFit.cover,
                           ),
                         ),
-                      if (widget.image != null)
+                      if (image != null)
                         SizedBox(
                           width: responsiveSizePct(small: 100),
                           height: responsiveSizePct(small: 100),
                           child: Image.file(
-                            widget.image!,
+                            image!,
                             fit: BoxFit.fitWidth,
                           ),
                         ),
@@ -108,21 +102,21 @@ class _AddItemPhotoCardState extends State<AddItemPhotoCard>
                     children: [
                       // camera button
                       OverlayIconButton(
-                        onPressed: () => widget.setImage(ImageSource.camera),
+                        onPressed: () => setImage(ImageSource.camera),
                         icon: Icons.camera,
                         title: AppLocalizations.of(context)!
                             .user_profile_add_user_personal_data_take_photo_btn,
                       ),
                       // reset image button
-                      if (widget.image != null)
+                      if (image != null)
                         OverlayIconButton(
-                          onPressed: () => widget.deleteImage(),
+                          onPressed: () => deleteImage(),
                           icon: Icons.cancel,
                           title: AppLocalizations.of(context)!.reset_image,
                         ),
                       // gallery button
                       OverlayIconButton(
-                        onPressed: () => widget.setImage(ImageSource.gallery),
+                        onPressed: () => setImage(ImageSource.gallery),
                         icon: Icons.photo_size_select_actual_rounded,
                         title: AppLocalizations.of(context)!
                             .user_profile_add_user_personal_data_gallery,
@@ -145,7 +139,7 @@ class _AddItemPhotoCardState extends State<AddItemPhotoCard>
                   color: Theme.of(context).textTheme.headline5!.color!,
                   label: AppLocalizations.of(context)!
                       .user_profile_add_user_personal_data_back,
-                  function: () => widget.pageController.previousPage(
+                  function: () => pageController.previousPage(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                   ),
@@ -154,7 +148,7 @@ class _AddItemPhotoCardState extends State<AddItemPhotoCard>
                   color: Theme.of(context).textTheme.headline5!.color!,
                   label:
                       AppLocalizations.of(context)!.user_profile_add_user_next,
-                  function: () => widget.pageController.nextPage(
+                  function: () => pageController.nextPage(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                   ),

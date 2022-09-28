@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../company_profile/presentation/blocs/new_users/new_users_bloc.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
+import '../../../core/utils/show_snack_bar.dart';
 import '../../domain/entities/user_profile.dart';
 import '../blocs/user_management/user_management_bloc.dart';
 import '../widgets/inactive_user_list_tile.dart';

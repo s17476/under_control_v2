@@ -28,8 +28,6 @@ const String groupContainsMembers = 'groupContainsMembers';
 
 @lazySingleton
 class GroupBloc extends Bloc<GroupEvent, GroupState> {
-  late StreamSubscription companyProfileStreamSubscription;
-  StreamSubscription? groupsStreamSubscription;
   final CompanyProfileBloc companyProfileBloc;
   final AddGroup addGroup;
   final UpdateGroup updateGroup;
@@ -37,7 +35,11 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   final GetGroupsStream getGroupsStream;
   final CacheGroups cacheGroups;
   final TryToGetCachedGroups tryToGetCachedGroups;
-  String companyId = '';
+
+  late StreamSubscription _companyProfileStreamSubscription;
+  StreamSubscription? _groupsStreamSubscription;
+
+  String _companyId = '';
 
   GroupBloc({
     required this.companyProfileBloc,
@@ -48,10 +50,10 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     required this.cacheGroups,
     required this.tryToGetCachedGroups,
   }) : super(GroupEmptyState()) {
-    companyProfileStreamSubscription = companyProfileBloc.stream.listen(
+    _companyProfileStreamSubscription = companyProfileBloc.stream.listen(
       (state) {
         if (state is CompanyProfileLoaded) {
-          companyId = state.company.id;
+          _companyId = state.company.id;
           add(FetchAllGroupsEvent());
         }
       },
@@ -59,7 +61,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
 
     on<AddGroupEvent>((event, emit) async {
       final failureOrString = await addGroup(
-        GroupParams(group: event.group, companyId: companyId),
+        GroupParams(group: event.group, companyId: _companyId),
       );
       await failureOrString.fold(
         (failure) async => emit(GroupErrorState(message: failure.message)),
@@ -73,7 +75,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
 
     on<UpdateGroupEvent>((event, emit) async {
       final failureOrVoidResult = await updateGroup(
-        GroupParams(group: event.group, companyId: companyId),
+        GroupParams(group: event.group, companyId: _companyId),
       );
       await failureOrVoidResult.fold(
         (failure) async => emit(GroupErrorState(message: failure.message)),
@@ -99,7 +101,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         ));
       } else {
         final failureOrVoidResult = await deleteGroup(
-          GroupParams(group: event.group, companyId: companyId),
+          GroupParams(group: event.group, companyId: _companyId),
         );
         await failureOrVoidResult.fold(
           (failure) async => emit(const GroupErrorState(message: deleteFailed)),
@@ -115,12 +117,12 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     on<FetchAllGroupsEvent>(
       (event, emit) async {
         emit(GroupLoadingState());
-        final failureOrGroupsStream = await getGroupsStream(companyId);
+        final failureOrGroupsStream = await getGroupsStream(_companyId);
         await failureOrGroupsStream.fold(
           (failure) async => emit(GroupErrorState(message: failure.message)),
           (groupsStream) async {
             // update groups list
-            groupsStreamSubscription =
+            _groupsStreamSubscription =
                 groupsStream.allGroups.listen((snapshot) {
               add(UpdateGroupsListEvent(snapshot: snapshot));
             });
@@ -226,8 +228,8 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
 
   @override
   Future<void> close() {
-    companyProfileStreamSubscription.cancel();
-    groupsStreamSubscription?.cancel();
+    _companyProfileStreamSubscription.cancel();
+    _groupsStreamSubscription?.cancel();
     return super.close();
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
-import 'package:under_control_v2/features/core/utils/premission.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
-import '../../../core/utils/choice.dart';
-import '../pages/add_item_page.dart';
-import '../pages/item_category_management_page.dart';
+import '../../core/utils/choice.dart';
+import '../../core/utils/get_user_premission.dart';
+import '../../core/utils/premission.dart';
+import '../../groups/domain/entities/feature.dart';
+import '../presentation/pages/add_item_page.dart';
+import '../presentation/pages/item_category_management_page.dart';
 
 List<Choice> inventoryOverlayMenuItems(BuildContext context) {
   final List<Choice> choices = [

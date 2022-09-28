@@ -3,26 +3,26 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:under_control_v2/features/groups/presentation/pages/group_details.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
-import '../../../company_profile/presentation/widgets/user_management_dialogs.dart';
+import '../../../company_profile/utils/user_management_dialogs.dart';
 import '../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
-import '../../../core/presentation/widgets/url_launcher_helpers.dart';
+import '../../../core/utils/url_launcher_helpers.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../core/utils/size_config.dart';
 import '../../../groups/domain/entities/group.dart';
 import '../../../groups/presentation/blocs/group/group_bloc.dart';
+import '../../../groups/presentation/pages/group_details.dart';
 import '../../../groups/presentation/widgets/group_management/group_tile.dart';
 import '../../domain/entities/user_profile.dart';
 import '../blocs/user_management/user_management_bloc.dart';
 import '../blocs/user_profile/user_profile_bloc.dart';
 import '../widgets/avatar_editor_card.dart';
-import '../widgets/edit_user_modal_bottom_sheet.dart';
+import '../../utils/show_edit_user_modal_bottom_sheet.dart';
 import '../widgets/manage_groups_card.dart';
 
 class UserDetailsPage extends StatefulWidget {
@@ -35,42 +35,41 @@ class UserDetailsPage extends StatefulWidget {
 }
 
 class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
-  UserProfile? user;
-  late UserProfile currentUser;
-  List<Choice> choices = [];
+  UserProfile? _user;
+  late UserProfile _currentUser;
+  List<Choice> _choices = [];
 
-  bool isAvatarEditorVisible = false;
+  bool _isAvatarEditorVisible = false;
+  bool _isGroupManagementVisible = false;
 
-  bool isGroupManagementVisible = false;
-
-  void showAvatarEditor() {
-    hideGroupManagement();
+  void _showAvatarEditor() {
+    _hideGroupManagement();
     setState(() {
-      isAvatarEditorVisible = true;
+      _isAvatarEditorVisible = true;
     });
   }
 
-  void hideAvatarEditor() {
+  void _hideAvatarEditor() {
     setState(() {
-      isAvatarEditorVisible = false;
+      _isAvatarEditorVisible = false;
     });
   }
 
-  void showGroupManagement() {
-    hideAvatarEditor();
+  void _showGroupManagement() {
+    _hideAvatarEditor();
     setState(() {
-      isGroupManagementVisible = true;
+      _isGroupManagementVisible = true;
     });
   }
 
-  void hideGroupManagement() {
+  void _hideGroupManagement() {
     setState(() {
-      isGroupManagementVisible = false;
+      _isGroupManagementVisible = false;
     });
   }
 
   // assign to / unassign from a group
-  void toggleGroup(
+  void _toggleGroup(
     BuildContext context,
     Group group,
     UserProfile user,
@@ -93,7 +92,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
     // gets current user
     final currentState = context.read<UserProfileBloc>().state;
     if (currentState is Approved) {
-      currentUser = currentState.userProfile;
+      _currentUser = currentState.userProfile;
     }
     // gets selected user
     final userId =
@@ -105,87 +104,88 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
 
       if (index >= 0) {
         setState(() {
-          user = companyState.allUsers[index];
+          _user = companyState.allUsers[index];
         });
         // popup menu items
-        choices = [
+        _choices = [
           // edit users data
           Choice(
             title: AppLocalizations.of(context)!.user_details_edit_data,
             icon: Icons.edit,
             onTap: () => showEditUserModalBottomSheet(
               context: context,
-              user: user!,
+              user: _user!,
             ),
           ),
           // edit users avatar image
           Choice(
             title: AppLocalizations.of(context)!.user_details_edit_avatar,
             icon: Icons.person,
-            onTap: () => showAvatarEditor(),
+            onTap: () => _showAvatarEditor(),
           ),
           // manage groups
-          if (currentUser.administrator && user!.isActive)
+          if (_currentUser.administrator && _user!.isActive)
             Choice(
               title: AppLocalizations.of(context)!.group_manage_user_groups,
               icon: Icons.group,
-              onTap: () => showGroupManagement(),
+              onTap: () => _showGroupManagement(),
             ),
           // suspend user
-          if (user!.id != currentUser.id && currentUser.administrator)
+          if (_user!.id != _currentUser.id && _currentUser.administrator)
             Choice(
               title: AppLocalizations.of(context)!.suspend,
               icon: Icons.person_off,
               onTap: () async {
                 final result =
-                    await showUserSuspendDialog(context: context, user: user!);
+                    await showUserSuspendDialog(context: context, user: _user!);
                 if (result != null && result) {
                   Navigator.pop(context);
                 }
               },
             ),
           // make admin
-          if (user!.id != currentUser.id &&
-              !user!.administrator &&
-              currentUser.administrator &&
-              user!.isActive)
+          if (_user!.id != _currentUser.id &&
+              !_user!.administrator &&
+              _currentUser.administrator &&
+              _user!.isActive)
             Choice(
               title: AppLocalizations.of(context)!.user_make_admin,
               icon: Icons.gpp_good,
-              onTap: () => showMakeAdminDialog(context: context, user: user!),
+              onTap: () => showMakeAdminDialog(context: context, user: _user!),
             ),
           // revoke admin
-          if (user!.id != currentUser.id &&
-              user!.administrator &&
-              currentUser.administrator)
+          if (_user!.id != _currentUser.id &&
+              _user!.administrator &&
+              _currentUser.administrator)
             Choice(
               title: AppLocalizations.of(context)!.user_unmake_admin,
               icon: Icons.gpp_bad,
-              onTap: () => showUnmakeAdminDialog(context: context, user: user!),
+              onTap: () =>
+                  showUnmakeAdminDialog(context: context, user: _user!),
             ),
           // activate
-          if (user!.id != currentUser.id &&
-              currentUser.administrator &&
-              !user!.isActive)
+          if (_user!.id != _currentUser.id &&
+              _currentUser.administrator &&
+              !_user!.isActive)
             Choice(
               title: AppLocalizations.of(context)!.activate_user,
               icon: Icons.done,
               onTap: () => showUserApproveDialog(
                 context: context,
-                user: user!,
+                user: _user!,
                 isActive: true,
               ),
             ),
           // deactivate
-          if (user!.id != currentUser.id &&
-              currentUser.administrator &&
-              user!.isActive)
+          if (_user!.id != _currentUser.id &&
+              _currentUser.administrator &&
+              _user!.isActive)
             Choice(
               title: AppLocalizations.of(context)!.deactivate_user,
               icon: Icons.clear,
               onTap: () => showUserApproveDialog(
                 context: context,
-                user: user!,
+                user: _user!,
                 isActive: false,
               ),
             ),
@@ -199,28 +199,28 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
   Widget build(BuildContext context) {
     SizeConfig.init(context);
     String appBarTitle = '';
-    if (isAvatarEditorVisible) {
+    if (_isAvatarEditorVisible) {
       appBarTitle = AppLocalizations.of(context)!.user_details_edit_avatar;
-    } else if (isGroupManagementVisible) {
+    } else if (_isGroupManagementVisible) {
       appBarTitle = AppLocalizations.of(context)!.group_manage_user_groups;
     } else {
       appBarTitle = AppLocalizations.of(context)!.user_details_title;
     }
     return WillPopScope(
       onWillPop: () async {
-        if (isGroupManagementVisible) {
-          hideGroupManagement();
+        if (_isGroupManagementVisible) {
+          _hideGroupManagement();
           return false;
         }
-        if (isAvatarEditorVisible) {
-          hideAvatarEditor();
+        if (_isAvatarEditorVisible) {
+          _hideAvatarEditor();
           return false;
         }
         return true;
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: user!.isActive
+          backgroundColor: _user!.isActive
               ? Theme.of(context).primaryColor.withAlpha(50)
               : Colors.grey.shade800,
           title: Text(appBarTitle),
@@ -230,20 +230,20 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
           actions: [
             // shows popup menu if current user is administrator
             // or current user is selected user
-            if (user != null &&
-                (currentUser.administrator || currentUser.id == user!.id))
+            if (_user != null &&
+                (_currentUser.administrator || _currentUser.id == _user!.id))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {
-                  if (isAvatarEditorVisible) {
-                    hideAvatarEditor();
+                  if (_isAvatarEditorVisible) {
+                    _hideAvatarEditor();
                   }
-                  if (isGroupManagementVisible) {
-                    hideGroupManagement();
+                  if (_isGroupManagementVisible) {
+                    _hideGroupManagement();
                   }
                   choice.onTap();
                 },
                 itemBuilder: (BuildContext context) {
-                  return choices.map((Choice choice) {
+                  return _choices.map((Choice choice) {
                     return PopupMenuItem<Choice>(
                       value: choice,
                       child: Row(
@@ -265,7 +265,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
               ),
           ],
         ),
-        body: user == null
+        body: _user == null
             ? const LoadingWidget()
             : BlocListener<UserManagementBloc, UserManagementState>(
                 listener: (context, state) {
@@ -320,7 +320,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                 gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: const Alignment(0, 1),
-                                  colors: user!.isActive
+                                  colors: _user!.isActive
                                       ? [
                                           Theme.of(context)
                                               .primaryColor
@@ -341,10 +341,10 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                 children: [
                                   CachedUserAvatar(
                                     size: responsiveSizePct(small: 70),
-                                    imageUrl: user!.avatarUrl,
+                                    imageUrl: _user!.avatarUrl,
                                   ),
                                   Text(
-                                    user!.firstName,
+                                    _user!.firstName,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline4!
@@ -355,7 +355,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
-                                    user!.lastName,
+                                    _user!.lastName,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline4!
@@ -392,7 +392,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                   // phone number
                                   InkWell(
                                     onTap: () =>
-                                        makePhoneCall(user!.phoneNumber),
+                                        makePhoneCall(_user!.phoneNumber),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8.0),
@@ -412,14 +412,14 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                                   .add_company_intro_card_phone_number,
                                             ),
                                           ),
-                                          Text(user!.phoneNumber),
+                                          Text(_user!.phoneNumber),
                                         ],
                                       ),
                                     ),
                                   ),
                                   // sms
                                   InkWell(
-                                    onTap: () => sendSms(user!.phoneNumber),
+                                    onTap: () => sendSms(_user!.phoneNumber),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8.0),
@@ -439,14 +439,14 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                                   .user_details_sms,
                                             ),
                                           ),
-                                          Text(user!.phoneNumber),
+                                          Text(_user!.phoneNumber),
                                         ],
                                       ),
                                     ),
                                   ),
                                   // email
                                   InkWell(
-                                    onTap: () => mailTo(user!.email),
+                                    onTap: () => mailTo(_user!.email),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8.0),
@@ -467,7 +467,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                             ),
                                           ),
                                           Text(
-                                            user!.email,
+                                            _user!.email,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ],
@@ -494,7 +494,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                         ),
                                         Text(
                                           DateFormat('dd/MM/yyyy')
-                                              .format(user!.joinDate),
+                                              .format(_user!.joinDate),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ],
@@ -538,7 +538,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                     child: Row(
                                       children: [
                                         Icon(
-                                          user!.isActive
+                                          _user!.isActive
                                               ? Icons.done
                                               : Icons.clear,
                                           color: Theme.of(context).primaryColor,
@@ -553,7 +553,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                           ),
                                         ),
                                         Text(
-                                          user!.isActive
+                                          _user!.isActive
                                               ? AppLocalizations.of(context)!
                                                   .yes
                                               : AppLocalizations.of(context)!
@@ -569,7 +569,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                     child: Row(
                                       children: [
                                         Icon(
-                                          user!.administrator
+                                          _user!.administrator
                                               ? Icons.gpp_good
                                               : Icons.gpp_bad,
                                           color: Theme.of(context).primaryColor,
@@ -584,7 +584,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                           ),
                                         ),
                                         Text(
-                                          user!.administrator
+                                          _user!.administrator
                                               ? AppLocalizations.of(context)!
                                                   .yes
                                               : AppLocalizations.of(context)!
@@ -630,7 +630,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                         List<Group> userGroups = [];
                                         for (var group
                                             in state.allGroups.allGroups) {
-                                          if (user!.userGroups
+                                          if (_user!.userGroups
                                               .contains(group.id)) {
                                             userGroups.add(group);
                                           }
@@ -655,7 +655,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                                 GroupDetailsPage.routeName,
                                                 arguments: group,
                                               ),
-                                              user: user,
+                                              user: _user,
                                             ),
                                           );
                                         }
@@ -675,16 +675,16 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                           ],
                         ),
                       ),
-                      if (isAvatarEditorVisible && user != null)
+                      if (_isAvatarEditorVisible && _user != null)
                         AvatarEditorCard(
-                          user: user!,
-                          onDismiss: hideAvatarEditor,
+                          user: _user!,
+                          onDismiss: _hideAvatarEditor,
                         ),
-                      if (isGroupManagementVisible)
+                      if (_isGroupManagementVisible)
                         ManageGroupsCard(
-                          user: user!,
-                          onToggleGroupSelection: toggleGroup,
-                          onDismiss: hideGroupManagement,
+                          user: _user!,
+                          onToggleGroupSelection: _toggleGroup,
+                          onDismiss: _hideGroupManagement,
                         ),
                     ],
                   ),

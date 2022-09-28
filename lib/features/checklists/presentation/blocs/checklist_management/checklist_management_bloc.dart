@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/checklists/domain/usecases/add_checklist.dart';
-import 'package:under_control_v2/features/checklists/domain/usecases/delete_checklist.dart';
-import 'package:under_control_v2/features/checklists/domain/usecases/update_checklist.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/usecases/usecase.dart';
 import '../../../domain/entities/checklist.dart';
+import '../../../domain/usecases/add_checklist.dart';
+import '../../../domain/usecases/delete_checklist.dart';
+import '../../../domain/usecases/update_checklist.dart';
 
 part 'checklist_management_event.dart';
 part 'checklist_management_state.dart';
@@ -27,7 +27,7 @@ enum ChecklistMessage {
 @injectable
 class ChecklistManagementBloc
     extends Bloc<ChecklistManagementEvent, ChecklistManagementState> {
-  late StreamSubscription companyProfileStreamSubscription;
+  late StreamSubscription _companyProfileStreamSubscription;
   final CompanyProfileBloc companyProfileBloc;
   final AddChecklist addChecklist;
   final UpdateChecklist updateChecklist;
@@ -41,7 +41,7 @@ class ChecklistManagementBloc
     required this.updateChecklist,
     required this.deleteChecklist,
   }) : super(ChecklistManagementEmptyState()) {
-    companyProfileStreamSubscription =
+    _companyProfileStreamSubscription =
         companyProfileBloc.stream.listen((state) {
       if (state is CompanyProfileLoaded && companyId.isEmpty) {
         companyId = state.company.id;
@@ -117,7 +117,7 @@ class ChecklistManagementBloc
 
   @override
   Future<void> close() {
-    companyProfileStreamSubscription.cancel();
+    _companyProfileStreamSubscription.cancel();
     return super.close();
   }
 }

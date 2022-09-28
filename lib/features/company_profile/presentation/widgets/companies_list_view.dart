@@ -24,22 +24,22 @@ class CompaniesListView extends StatefulWidget {
 }
 
 class _CompaniesListViewState extends State<CompaniesListView> {
-  final controller = TextEditingController();
+  final _searchController = TextEditingController();
 
-  String searchString = '';
-  List<Company> filteredCompanies = [];
+  String _searchString = '';
+  List<Company> _filteredCompanies = [];
 
   @override
   void dispose() {
-    controller.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    filteredCompanies = widget.companies
+    _filteredCompanies = widget.companies
         .where(
-          (company) => company.name.toLowerCase().contains(searchString),
+          (company) => company.name.toLowerCase().contains(_searchString),
         )
         .toList();
     return SafeArea(
@@ -56,20 +56,20 @@ class _CompaniesListViewState extends State<CompaniesListView> {
                 bottom: 10,
               ),
               child: TextFormField(
-                controller: controller,
+                controller: _searchController,
                 key: const ValueKey('search'),
                 keyboardType: TextInputType.name,
                 cursorColor: Theme.of(context).textTheme.headline5!.color,
                 decoration: InputDecoration(
-                  suffixIcon: controller.text.isEmpty
+                  suffixIcon: _searchController.text.isEmpty
                       ? const Icon(
                           Icons.search,
                         )
                       : IconButton(
                           onPressed: () {
                             setState(() {
-                              controller.text = '';
-                              searchString = '';
+                              _searchController.text = '';
+                              _searchString = '';
                             });
                           },
                           icon: const Icon(Icons.cancel),
@@ -91,19 +91,19 @@ class _CompaniesListViewState extends State<CompaniesListView> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    searchString = value.toLowerCase();
+                    _searchString = value.toLowerCase();
                   });
                 },
               ),
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: filteredCompanies.length,
+                itemCount: _filteredCompanies.length,
                 itemBuilder: (context, index) {
                   // list item
                   return CompaniesListTile(
-                    company: filteredCompanies[index],
-                    key: Key(filteredCompanies[index].id),
+                    company: _filteredCompanies[index],
+                    key: Key(_filteredCompanies[index].id),
                   );
                 },
               ),

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:under_control_v2/features/core/utils/get_user_premission.dart';
-import 'package:under_control_v2/features/core/utils/premission.dart';
-
+import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../domain/entities/item.dart';
@@ -53,7 +52,6 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
             .toList();
       }
     }
-
     return items;
   }
 

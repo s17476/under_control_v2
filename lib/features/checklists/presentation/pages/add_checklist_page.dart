@@ -25,36 +25,39 @@ class AddChecklistPage extends StatefulWidget {
 }
 
 class _AddChecklistPageState extends State<AddChecklistPage> {
-  Checklist? checklist;
+  Checklist? _checklist;
 
-  List<Widget> pages = [];
+  List<Widget> _pages = [];
 
   final _formKey = GlobalKey<FormState>();
 
-  final pageController = PageController();
+  final _pageController = PageController();
 
-  final titleTexEditingController = TextEditingController();
-  final descriptionTexEditingController = TextEditingController();
+  final _titleTexEditingController = TextEditingController();
+  final _descriptionTexEditingController = TextEditingController();
 
-  List<CheckpointModel> checkpoints = [];
+  List<CheckpointModel> _checkpoints = [];
 
   @override
   void didChangeDependencies() {
     final arguments = ModalRoute.of(context)!.settings.arguments;
 
     if (arguments != null && arguments is ChecklistModel) {
-      checklist = arguments.deepCopy();
-      // checklist = arguments.copyWith(
-      //   id: arguments.id,
-      //   description: arguments.description,
-      //   allCheckpoints: [...arguments.allCheckpoints],
-      // );
-      titleTexEditingController.text = checklist!.title;
-      descriptionTexEditingController.text = checklist!.description;
+      _checklist = arguments.deepCopy();
+      _titleTexEditingController.text = _checklist!.title;
+      _descriptionTexEditingController.text = _checklist!.description;
 
-      checkpoints = checklist!.allCheckpoints;
+      _checkpoints = _checklist!.allCheckpoints;
     }
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _titleTexEditingController.dispose();
+    _descriptionTexEditingController.dispose();
+    super.dispose();
   }
 
   // add new checklist
@@ -65,7 +68,7 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
       errorMessage = AppLocalizations.of(context)!.checklist_add_name_to_short;
       // checkpoints validation
     } else {
-      if (checkpoints.isEmpty) {
+      if (_checkpoints.isEmpty) {
         errorMessage =
             AppLocalizations.of(context)!.checklist_add_checkpoints_empty;
         // checklist name validation
@@ -75,7 +78,7 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
           final tmpChecklists = currentState.allChecklists.allChecklists.where(
               (checklist) =>
                   checklist.title.toLowerCase() ==
-                  titleTexEditingController.text.trim().toLowerCase());
+                  _titleTexEditingController.text.trim().toLowerCase());
 
           if (tmpChecklists.isNotEmpty) {
             errorMessage = AppLocalizations.of(context)!.checklist_add_exists;
@@ -93,14 +96,14 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
       // saves checklist to DB if no error occures
     } else {
       final newChecklist = ChecklistModel(
-        id: (checklist != null) ? checklist!.id : '',
-        title: titleTexEditingController.text,
-        description: descriptionTexEditingController.text,
-        allCheckpoints: checkpoints,
+        id: (_checklist != null) ? _checklist!.id : '',
+        title: _titleTexEditingController.text,
+        description: _descriptionTexEditingController.text,
+        allCheckpoints: _checkpoints,
       );
 
       // update
-      if (checklist != null) {
+      if (_checklist != null) {
         context.read<ChecklistManagementBloc>().add(
               UpdateChecklistEvent(checklist: newChecklist),
             );
@@ -117,26 +120,26 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
 
   @override
   Widget build(BuildContext context) {
-    pages = [
+    _pages = [
       KeepAlivePage(
         child: AddChecklistTitleCard(
-          isEditMode: checklist != null,
-          pageController: pageController,
-          titleTexEditingController: titleTexEditingController,
-          descriptionTexEditingController: descriptionTexEditingController,
+          isEditMode: _checklist != null,
+          pageController: _pageController,
+          titleTexEditingController: _titleTexEditingController,
+          descriptionTexEditingController: _descriptionTexEditingController,
         ),
       ),
       KeepAlivePage(
         child: AddCheckpointsCard(
-          pageController: pageController,
-          checkpoints: checkpoints,
+          pageController: _pageController,
+          checkpoints: _checkpoints,
         ),
       ),
       AddChecklistSummaryCard(
-        pageController: pageController,
-        titleTexEditingController: titleTexEditingController,
-        descriptionTexEditingController: descriptionTexEditingController,
-        checkpoints: checkpoints,
+        pageController: _pageController,
+        titleTexEditingController: _titleTexEditingController,
+        descriptionTexEditingController: _descriptionTexEditingController,
+        checkpoints: _checkpoints,
         addNewChecklist: addNewChecklist,
       ),
     ];
@@ -152,15 +155,15 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
                 Form(
                   key: _formKey,
                   child: PageView(
-                    controller: pageController,
-                    children: pages,
+                    controller: _pageController,
+                    children: _pages,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 24),
                   child: SmoothPageIndicator(
-                    controller: pageController,
-                    count: pages.length,
+                    controller: _pageController,
+                    count: _pages.length,
                     effect: JumpingDotEffect(
                       dotHeight: 10,
                       dotWidth: 10,

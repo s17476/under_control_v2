@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../company_profile/presentation/widgets/user_management_dialogs.dart';
+import '../../../company_profile/utils/user_management_dialogs.dart';
 import '../../../core/presentation/widgets/cached_user_avatar.dart';
-import '../../../core/presentation/widgets/url_launcher_helpers.dart';
+import '../../../core/utils/url_launcher_helpers.dart';
 import '../../domain/entities/user_profile.dart';
 
 class InactiveUserListTile extends StatelessWidget {

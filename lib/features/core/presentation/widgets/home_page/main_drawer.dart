@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/checklists/presentation/pages/checklist_management_page.dart';
 
 import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
+import '../../../../checklists/presentation/pages/checklist_management_page.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../company_profile/presentation/pages/company_details_page.dart';
 import '../../../../groups/presentation/pages/group_management_page.dart';
@@ -13,17 +13,11 @@ import '../../../../user_profile/presentation/pages/user_details_page.dart';
 import '../../../../user_profile/presentation/pages/users_list_page.dart';
 import '../../../utils/responsive_size.dart';
 import '../cached_user_avatar.dart';
-import 'custom_menu_item.dart';
 import '../logo_widget.dart';
+import 'custom_menu_item.dart';
 
 class MainDrawer extends StatelessWidget with ResponsiveSize {
   const MainDrawer({Key? key}) : super(key: key);
-
-  static const drawerItemTextDarkStyle = TextStyle(color: Colors.white);
-  static const drawerItemIconDarkColor = Colors.white;
-
-  static const drawerItemTextLightStyle = TextStyle(color: Colors.black);
-  static const drawerItemIconLightColor = Colors.black;
 
   @override
   Widget build(BuildContext context) {

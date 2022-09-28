@@ -25,8 +25,6 @@ part 'user_profile_state.dart';
 
 @injectable
 class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
-  late StreamSubscription streamSubscription;
-  StreamSubscription? userStreamSubscription;
   final AuthenticationBloc authenticationBloc;
   final AddUser addUser;
   final AssignUserToCompany assignUserToCompany;
@@ -36,6 +34,9 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   final UpdateUserData updateUserData;
   final AddUserAvatar addUserAvatar;
   final InputValidator inputValidator;
+
+  late StreamSubscription _streamSubscription;
+  StreamSubscription? _userStreamSubscription;
 
   UserProfileBloc({
     required this.authenticationBloc,
@@ -48,7 +49,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     required this.addUserAvatar,
     required this.inputValidator,
   }) : super(UserProfileEmpty()) {
-    streamSubscription = authenticationBloc.stream.listen(
+    _streamSubscription = authenticationBloc.stream.listen(
       (state) {
         if (state is Authenticated) {
           add(GetUserByIdEvent(userId: state.userId));
@@ -144,37 +145,6 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
 
     on<GetUserByIdEvent>((event, emit) async {
       emit(Loading());
-      // final failureOrUserProfile = await getUserById(event.userId);
-      // failureOrUserProfile.fold(
-      //   (failure) async {
-      //     if (failure is UnsuspectedFailure) {
-      //       emit(const NoUserProfileError());
-      //     } else {
-      //       emit(DatabaseErrorUserProfile(message: failure.message));
-      //     }
-      //   },
-      //   (userProfile) async {
-      //     // user is not assigned to any company
-      //     if (userProfile.companyId.isEmpty) {
-      //       emit(NoCompany(userProfile: userProfile));
-      //       // user assigned to a company
-      //     } else if (!userProfile.approved) {
-      //       // user rejected by administrator
-      //       if (userProfile.rejected) {
-      //         emit(Rejected(userProfile: userProfile));
-      //         // user suspended by administrator
-      //       } else if (userProfile.suspended) {
-      //         emit(Suspended(userProfile: userProfile));
-      //         // user awaiting approvement by administrator
-      //       } else {
-      //         emit(NotApproved(userProfile: userProfile));
-      //       }
-      //       // user approved by administrator
-      //     } else {
-      //       emit(Approved(userProfile: userProfile));
-      //     }
-      //   },
-      // );
       final failureOrUserStream = await getUserStreamById(event.userId);
       failureOrUserStream.fold(
         (failure) async {
@@ -185,7 +155,8 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
           }
         },
         (userStream) async {
-          userStreamSubscription = userStream.userStream.listen((userSnapshot) {
+          _userStreamSubscription =
+              userStream.userStream.listen((userSnapshot) {
             add(UpdateUserProfileEvent(snapshot: userSnapshot));
           });
         },
@@ -225,8 +196,8 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
 
   @override
   Future<void> close() {
-    streamSubscription.cancel();
-    userStreamSubscription?.cancel();
+    _streamSubscription.cancel();
+    _userStreamSubscription?.cancel();
     return super.close();
   }
 }

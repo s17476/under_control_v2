@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../data/models/checkpoint_model.dart';
+import '../../core/presentation/widgets/custom_text_form_field.dart';
+import '../data/models/user_profile_model.dart';
+import '../domain/entities/user_profile.dart';
+import '../presentation/blocs/user_management/user_management_bloc.dart';
 
-Future<void> showAddCheckpointModalBottomSheet({
+Future<void> showEditUserModalBottomSheet({
   required BuildContext context,
-  CheckpointModel? currentCheckpoint,
-  required Function(
-          CheckpointModel? oldCheckpoint, CheckpointModel newCheckpoint)
-      onSave,
+  required UserProfile user,
 }) {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  CheckpointModel checkpoint = currentCheckpoint ??
-      const CheckpointModel(
-        title: '',
-        isChecked: false,
-      );
+  UserProfileModel updatedUser = user as UserProfileModel;
 
   return showModalBottomSheet<void>(
     isScrollControlled: true,
@@ -30,7 +26,7 @@ Future<void> showAddCheckpointModalBottomSheet({
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          height: 200,
+          height: 350,
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: const BorderRadius.only(
@@ -47,9 +43,7 @@ Future<void> showAddCheckpointModalBottomSheet({
                   bottom: 4,
                 ),
                 child: Text(
-                  //
-                  //
-                  AppLocalizations.of(context)!.checklist_add_checkpoint,
+                  AppLocalizations.of(context)!.user_details_edit_data,
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
@@ -63,39 +57,82 @@ Future<void> showAddCheckpointModalBottomSheet({
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        const SizedBox(
+                          height: 8,
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
+                            horizontal: 16,
                             vertical: 8,
                           ),
                           child: Column(
                             children: [
                               // parent name
                               CustomTextFormField(
-                                autofocus: true,
-                                fieldKey: 'title',
+                                fieldKey: 'userName',
                                 labelText: AppLocalizations.of(context)!
-                                    .checklist_checkpoint_title,
-                                initialValue: checkpoint.title,
-                                prefixIcon:
-                                    const Icon(Icons.check_circle_outline),
+                                    .user_profile_add_user_personal_data_first_name,
+                                textCapitalization: TextCapitalization.words,
+                                initialValue: user.firstName,
+                                prefixIcon: const Icon(Icons.person),
                                 validator: (value) {
-                                  if (value!.trim().isEmpty ||
-                                      value.length < 2) {
+                                  if (value!.isEmpty || value.length < 2) {
                                     return AppLocalizations.of(context)!
                                         .validation_min_two_characters;
                                   }
                                   return null;
                                 },
                                 onSaved: (value) {
-                                  checkpoint = CheckpointModel(
-                                    title: value!.trim(),
-                                    isChecked: false,
-                                  );
+                                  updatedUser = updatedUser.copyWith(
+                                      firstName: value?.trim());
                                 },
                               ),
                               const SizedBox(
                                 height: 20,
+                              ),
+                              // location name
+                              CustomTextFormField(
+                                fieldKey: 'lastName',
+                                keyboardType: TextInputType.name,
+                                initialValue: user.lastName,
+                                prefixIcon: const Icon(Icons.person_outline),
+                                labelText: AppLocalizations.of(context)!
+                                    .user_profile_add_user_personal_data_last_name,
+                                textCapitalization: TextCapitalization.words,
+                                onSaved: (value) {
+                                  updatedUser = updatedUser.copyWith(
+                                      lastName: value?.trim());
+                                },
+                                validator: (value) {
+                                  if (value!.isEmpty || value.length < 2) {
+                                    return AppLocalizations.of(context)!
+                                        .validation_min_two_characters;
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              // phone number
+                              CustomTextFormField(
+                                fieldKey: 'phoneNumber',
+                                keyboardType: TextInputType.phone,
+                                initialValue: user.phoneNumber,
+                                prefixIcon: const Icon(Icons.phone),
+                                labelText: AppLocalizations.of(context)!
+                                    .user_profile_add_user_personal_data_phone_number,
+                                onSaved: (value) {
+                                  updatedUser = updatedUser.copyWith(
+                                      phoneNumber: value?.trim());
+                                },
+                                validator: (value) {
+                                  if (value!.isEmpty || value.length < 8) {
+                                    return AppLocalizations.of(context)!
+                                        .input_validation_phone_number;
+                                  }
+                                  return null;
+                                },
                               ),
                             ],
                           ),
@@ -127,9 +164,8 @@ Future<void> showAddCheckpointModalBottomSheet({
                     Expanded(
                       child: TextButton(
                         child: Text(
-                          currentCheckpoint != null
-                              ? AppLocalizations.of(context)!.update
-                              : AppLocalizations.of(context)!.add,
+                          AppLocalizations.of(context)!
+                              .user_profile_add_user_personal_data_save,
                         ),
                         onPressed: () {
                           FocusScope.of(context).unfocus();
@@ -138,7 +174,9 @@ Future<void> showAddCheckpointModalBottomSheet({
                           }
                           _formKey.currentState!.save();
 
-                          onSave(currentCheckpoint, checkpoint);
+                          context.read<UserManagementBloc>().add(
+                                UpdateUserDataEvent(userProfile: updatedUser),
+                              );
 
                           Navigator.pop(context);
                         },

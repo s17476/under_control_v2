@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
 
+import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
+import '../../../../inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
 import '../../../../inventory/presentation/blocs/items_management/items_management_bloc.dart';
 
 class AppBarAnimatedIcon extends StatefulWidget {
@@ -15,23 +15,35 @@ class AppBarAnimatedIcon extends StatefulWidget {
 
 class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
     with SingleTickerProviderStateMixin {
-  late AnimationController animationController;
-  late Animation<double> rotateY;
+  late AnimationController _animationController;
+  late Animation<double> _rotateY;
+
+  void _stopAnimation() {
+    if (_animationController.isAnimating) {
+      _animationController.animateTo(0);
+    }
+  }
+
+  void _startAnimation() {
+    if (!_animationController.isAnimating) {
+      _animationController.repeat();
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(
+    _animationController = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
     );
 
-    rotateY = Tween<double>(
+    _rotateY = Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(
       CurvedAnimation(
-        parent: animationController,
+        parent: _animationController,
         curve: Curves.linear,
       ),
     );
@@ -39,20 +51,8 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
 
   @override
   void dispose() {
-    animationController.dispose();
+    _animationController.dispose();
     super.dispose();
-  }
-
-  void _stopAnimation() {
-    if (animationController.isAnimating) {
-      animationController.animateTo(0);
-    }
-  }
-
-  void _startAnimation() {
-    if (!animationController.isAnimating) {
-      animationController.repeat();
-    }
   }
 
   @override
@@ -88,12 +88,12 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
         ),
       ],
       child: AnimatedBuilder(
-        animation: animationController,
+        animation: _animationController,
         builder: (context, child) {
           final child = Image.asset('assets/under_control_menu_icon.png');
 
           return Transform(
-            transform: Matrix4.rotationY(rotateY.value * 2 * math.pi),
+            transform: Matrix4.rotationY(_rotateY.value * 2 * math.pi),
             alignment: Alignment.center,
             child: child,
           );
