@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/highlighted_text.dart';
 
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../domain/entities/checklist.dart';
@@ -9,10 +10,12 @@ class ChecklistTile extends StatelessWidget {
     required this.checklist,
     this.onTap,
     this.user,
+    this.searchQuery = '',
   }) : super(key: key);
 
   final Checklist checklist;
   final UserProfile? user;
+  final String searchQuery;
 
   final Function(Checklist checklist)? onTap;
 
@@ -49,8 +52,9 @@ class ChecklistTile extends StatelessWidget {
                         width: 12,
                       ),
                       Expanded(
-                        child: Text(
-                          checklist.title,
+                        child: HighlightedText(
+                          text: checklist.title,
+                          query: searchQuery,
                           style:
                               Theme.of(context).textTheme.headline6!.copyWith(
                                     color: Colors.grey.shade200,

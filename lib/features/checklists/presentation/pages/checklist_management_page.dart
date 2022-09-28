@@ -4,12 +4,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/presentation/widgets/search_text_field.dart';
-import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/checklist.dart';
 import '../blocs/checklist/checklist_bloc.dart';
-import '../blocs/checklist_management/checklist_management_bloc.dart';
+import '../widgets/checklist_listener.dart';
 import '../widgets/checklist_tile.dart';
 import 'add_checklist_page.dart';
 import 'checklist_details_page.dart';
@@ -94,39 +93,7 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
             ),
         ],
       ),
-      body: BlocListener<ChecklistManagementBloc, ChecklistManagementState>(
-        listener: (context, state) {
-          if (state is ChecklistManagementSuccessState) {
-            String message = '';
-            bool error = false;
-            switch (state.message) {
-              case ChecklistMessage.checklistAdded:
-                message = AppLocalizations.of(context)!.checklist_msg_added;
-                break;
-              case ChecklistMessage.checklistNotAdded:
-                message = AppLocalizations.of(context)!.checklist_msg_not_added;
-                error = true;
-                break;
-              case ChecklistMessage.checklistDeleted:
-                message = AppLocalizations.of(context)!.checklist_msg_deleted;
-                break;
-              case ChecklistMessage.checklistNotDeleted:
-                message =
-                    AppLocalizations.of(context)!.checklist_msg_not_deleted;
-                error = true;
-                break;
-              default:
-                message = '';
-            }
-            if (message.isNotEmpty) {
-              showSnackBar(
-                context: context,
-                message: message,
-                isErrorMessage: error,
-              );
-            }
-          }
-        },
+      body: ChecklistListener(
         child: BlocBuilder<ChecklistBloc, ChecklistState>(
           builder: (context, state) {
             if (state is ChecklistLoadedState) {
@@ -156,6 +123,7 @@ class _ChecklistManagementPageState extends State<ChecklistManagementPage> {
                             ChecklistDetailsPage.routeName,
                             arguments: checklist,
                           ),
+                          searchQuery: _searchQuery,
                         ),
                       ),
                     );
