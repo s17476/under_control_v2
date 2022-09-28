@@ -24,8 +24,6 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.priceTextEditingController,
     required this.category,
     required this.itemUnit,
-    required this.isSparePart,
-    required this.sparePartFor,
     required this.itemImage,
     required this.addNewItem,
   }) : super(key: key);
@@ -40,9 +38,6 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
 
   final String category;
   final String itemUnit;
-
-  final bool isSparePart;
-  final List<String> sparePartFor;
 
   final File? itemImage;
 
@@ -247,60 +242,8 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                         pageController: pageController,
                         onTapAnimateToPage: 2,
                       ),
-
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    // not a spare part
-                    if (!isSparePart)
-                      InkWell(
-                        onTap: () async => pageController.animateToPage(
-                          2,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: Text(
-                              AppLocalizations.of(context)!.item_spare_part_not,
-                              style: const TextStyle(fontSize: 16),
-                            )),
-                            Icon(
-                              Icons.done,
-                              color: Colors.grey.shade100,
-                            ),
-                          ],
-                        ),
-                      ),
                     const SizedBox(
                       height: 16,
-                    ),
-                    // this is a spare part
-                    if (isSparePart)
-                      InkWell(
-                        onTap: () async => pageController.animateToPage(
-                          2,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: Text(
-                              AppLocalizations.of(context)!.item_spare_part_yes,
-                              style: const TextStyle(fontSize: 16),
-                            )),
-                            Icon(
-                              Icons.done,
-                              color: Colors.grey.shade100,
-                            ),
-                          ],
-                        ),
-                      ),
-
-                    const SizedBox(
-                      height: 4,
                     ),
                   ],
                 ),

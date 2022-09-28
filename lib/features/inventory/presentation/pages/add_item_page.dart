@@ -16,7 +16,6 @@ import '../blocs/items_management/items_management_bloc.dart';
 import '../widgets/add_item/add_item_card.dart';
 import '../widgets/add_item/add_item_data_card.dart';
 import '../widgets/add_item/add_item_photo_card.dart';
-import '../widgets/add_item/add_item_spare_part_card.dart';
 import '../widgets/add_item/add_item_summary_card.dart';
 
 class AddItemPage extends StatefulWidget {
@@ -47,16 +46,8 @@ class _AddItemPageState extends State<AddItemPage> {
 
   String _category = '';
   String _itemUnit = '';
-  bool _isSparePart = false;
-  final List<String> _sparePartFor = [];
 
   File? _itemImage;
-
-  void _setIsSparePart(bool value) {
-    setState(() {
-      _isSparePart = value;
-    });
-  }
 
   void _setImage(ImageSource souruce) async {
     final picker = ImagePicker();
@@ -152,7 +143,7 @@ class _AddItemPageState extends State<AddItemPage> {
         itemUnit: ItemUnit.fromString(_itemUnit),
         amountInLocations: _item != null ? _item!.amountInLocations : const [],
         locations: _item != null ? _item!.locations : const [],
-        sparePartFor: _sparePartFor,
+        sparePartFor: const [],
       );
 
       if (_item != null) {
@@ -247,13 +238,6 @@ class _AddItemPageState extends State<AddItemPage> {
           imageUrl: _item?.itemPhoto,
         ),
       ),
-      KeepAlivePage(
-        child: AddItemSparePartCard(
-          pageController: _pageController,
-          setIsSparePart: _setIsSparePart,
-          isSparePart: _isSparePart,
-        ),
-      ),
       AddItemSummaryCard(
         pageController: _pageController,
         titleTexEditingController: _nameTexEditingController,
@@ -261,11 +245,9 @@ class _AddItemPageState extends State<AddItemPage> {
         barCodeTextEditingController: _barCodeTextEditingController,
         codeTextEditingController: _codeTextEditingController,
         priceTextEditingController: _priceTextEditingController,
-        sparePartFor: _sparePartFor,
         addNewItem: _addNewItem,
         category: _category,
         itemUnit: _itemUnit,
-        isSparePart: _isSparePart,
         itemImage: _itemImage,
       ),
     ];

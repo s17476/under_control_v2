@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/home_page/filter_icon.dart';
 
 import '../../../../groups/domain/entities/feature.dart';
 import '../../../utils/get_user_premission.dart';
@@ -119,11 +120,8 @@ class HomeSliverAppBar extends StatelessWidget {
             }
             toggleIsFilterExpanded();
           },
-          icon: Icon(
-            Icons.tune,
-            color: isFilterExpanded
-                ? Theme.of(context).primaryColor
-                : Theme.of(context).iconTheme.color,
+          icon: FilterIcon(
+            isFilterExpanded: isFilterExpanded,
           ),
         ),
       ],
