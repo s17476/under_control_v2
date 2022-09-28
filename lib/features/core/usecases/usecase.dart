@@ -230,21 +230,21 @@ class ItemsInLocationsParams extends Equatable {
   List<Object> get props => [locations, companyId];
 }
 
-class ItemCategoryParams extends Equatable {
-  final ItemCategory itemCategory;
+class CategoryParams extends Equatable {
+  final ItemCategory category;
   final String companyId;
 
-  const ItemCategoryParams({
-    required this.itemCategory,
+  const CategoryParams({
+    required this.category,
     required this.companyId,
   });
 
   @override
-  List<Object> get props => [itemCategory, companyId];
+  List<Object> get props => [category, companyId];
 
   @override
   String toString() =>
-      'ItemsCategoriesParams(itemCategory: $itemCategory, companyId: $companyId)';
+      'ItemsCategoriesParams(itemCategory: $category, companyId: $companyId)';
 }
 
 class SelectedGroupsParams extends Equatable {

@@ -17,7 +17,7 @@ void main() {
   late CollectionReference mockCollectionReferance;
   late ItemCategoryRepositoryImpl repository;
   late ItemCategoryRepositoryImpl badRepository;
-  late ItemCategoryParams tParams;
+  late CategoryParams tParams;
 
   const String companyId = 'companyId';
 
@@ -43,8 +43,8 @@ void main() {
       tItemCategory.toMap(),
     );
 
-    tParams = ItemCategoryParams(
-      itemCategory: tItemCategory.copyWith(
+    tParams = CategoryParams(
+      category: tItemCategory.copyWith(
         id: documentReference.id,
       ),
       companyId: companyId,

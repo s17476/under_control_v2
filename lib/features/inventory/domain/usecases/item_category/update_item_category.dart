@@ -6,7 +6,7 @@ import '../../../../core/usecases/usecase.dart';
 import '../../repositories/item_category_repository.dart';
 
 @lazySingleton
-class UpdateItemCategory extends FutureUseCase<VoidResult, ItemCategoryParams> {
+class UpdateItemCategory extends FutureUseCase<VoidResult, CategoryParams> {
   final ItemCategoryRepository repository;
 
   UpdateItemCategory({
@@ -14,6 +14,6 @@ class UpdateItemCategory extends FutureUseCase<VoidResult, ItemCategoryParams> {
   });
 
   @override
-  Future<Either<Failure, VoidResult>> call(ItemCategoryParams params) async =>
+  Future<Either<Failure, VoidResult>> call(CategoryParams params) async =>
       repository.updateItemCategory(params);
 }

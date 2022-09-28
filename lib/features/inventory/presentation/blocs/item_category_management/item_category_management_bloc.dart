@@ -53,8 +53,8 @@ class ItemCategoryManagementBloc
     on<AddItemCategoryEvent>((event, emit) async {
       emit(ItemCategoryManagementLoadingState());
       final failureOrString = await addItemCategory(
-        ItemCategoryParams(
-          itemCategory: event.itemCategory,
+        CategoryParams(
+          category: event.itemCategory,
           companyId: _companyId,
         ),
       );
@@ -75,8 +75,8 @@ class ItemCategoryManagementBloc
     on<UpdateItemCategoryEvent>((event, emit) async {
       emit(ItemCategoryManagementLoadingState());
       final failureOrVoidResult = await updateItemCategory(
-        ItemCategoryParams(
-          itemCategory: event.itemCategory,
+        CategoryParams(
+          category: event.itemCategory,
           companyId: _companyId,
         ),
       );
@@ -97,8 +97,8 @@ class ItemCategoryManagementBloc
     on<DeleteItemCategoryEvent>((event, emit) async {
       emit(ItemCategoryManagementLoadingState());
       final failureOrVoidResult = await deleteItemCategory(
-        ItemCategoryParams(
-          itemCategory: event.itemCategory,
+        CategoryParams(
+          category: event.itemCategory,
           companyId: _companyId,
         ),
       );

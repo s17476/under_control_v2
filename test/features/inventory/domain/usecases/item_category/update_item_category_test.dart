@@ -14,8 +14,8 @@ void main() {
   late UpdateItemCategory usecase;
   late MockItemCategoryRepository repository;
 
-  const tItemCategoryParams = ItemCategoryParams(
-    itemCategory: ItemCategory(id: 'id', name: 'name'),
+  const tItemCategoryParams = CategoryParams(
+    category: ItemCategory(id: 'id', name: 'name'),
     companyId: 'companyId',
   );
 

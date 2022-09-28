@@ -16,15 +16,13 @@ class ItemCategoryRepositoryImpl extends ItemCategoryRepository {
     required this.firebaseFirestore,
   });
   @override
-  Future<Either<Failure, String>> addItemCategory(
-      ItemCategoryParams params) async {
+  Future<Either<Failure, String>> addItemCategory(CategoryParams params) async {
     try {
       final categoryReference = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
           .collection('itemsCategories');
-      final itemCategoryMap =
-          (params.itemCategory as ItemCategoryModel).toMap();
+      final itemCategoryMap = (params.category as ItemCategoryModel).toMap();
       final documentReferance = await categoryReference.add(itemCategoryMap);
       final String generatedItemCategoryId = documentReferance.id;
       return Right(generatedItemCategoryId);
@@ -39,14 +37,14 @@ class ItemCategoryRepositoryImpl extends ItemCategoryRepository {
 
   @override
   Future<Either<Failure, VoidResult>> deleteItemCategory(
-      ItemCategoryParams params) async {
+      CategoryParams params) async {
     try {
       // checks if there is no items in given category
       final itemsInCategory = await firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
           .collection('items')
-          .where('category', isEqualTo: params.itemCategory.id)
+          .where('category', isEqualTo: params.category.id)
           .get();
 
       if (itemsInCategory.docs.isEmpty) {
@@ -54,7 +52,7 @@ class ItemCategoryRepositoryImpl extends ItemCategoryRepository {
             .collection('companies')
             .doc(params.companyId)
             .collection('itemsCategories')
-            .doc(params.itemCategory.id)
+            .doc(params.category.id)
             .delete();
       } else {
         return const Left(
@@ -95,14 +93,14 @@ class ItemCategoryRepositoryImpl extends ItemCategoryRepository {
 
   @override
   Future<Either<Failure, VoidResult>> updateItemCategory(
-      ItemCategoryParams params) async {
+      CategoryParams params) async {
     try {
       final categoryReference = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
           .collection('itemsCategories')
-          .doc(params.itemCategory.id);
-      final categoryMap = (params.itemCategory as ItemCategoryModel).toMap();
+          .doc(params.category.id);
+      final categoryMap = (params.category as ItemCategoryModel).toMap();
       await categoryReference.update(categoryMap);
       return Right(VoidResult());
     } on FirebaseException catch (e) {

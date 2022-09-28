@@ -1,6 +1,6 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
+
+import 'content_type.dart';
 
 class Step extends Equatable {
   final int id;

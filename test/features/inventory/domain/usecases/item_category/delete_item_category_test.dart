@@ -14,8 +14,8 @@ void main() {
   late DeleteItemCategory usecase;
   late MockItemCategoryRepository repository;
 
-  const tItemCategoryParams = ItemCategoryParams(
-    itemCategory: ItemCategory(
+  const tItemCategoryParams = CategoryParams(
+    category: ItemCategory(
       id: 'id',
       name: 'name',
     ),
