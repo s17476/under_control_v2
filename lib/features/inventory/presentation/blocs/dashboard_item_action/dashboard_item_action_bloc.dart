@@ -56,6 +56,8 @@ class DashboardItemActionBloc
 
     on<GetDashboardItemActionsEvent>((event, emit) async {
       // avoids loading same data multiple times
+      // TODO
+      //  != ??
       if (filterBloc.state is FilterLoadedState &&
           _locations !=
               filterBloc.state.locations.map((loc) => loc.id).toList() &&
