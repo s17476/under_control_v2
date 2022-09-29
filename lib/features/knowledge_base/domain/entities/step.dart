@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 import 'content_type.dart';
@@ -5,14 +7,16 @@ import 'content_type.dart';
 class Step extends Equatable {
   final int id;
   final ContentType contentType;
-  final String? contentSource;
+  final File? file;
+  final String? contentUrl;
   final String? title;
   final String? description;
 
   const Step({
     required this.id,
     required this.contentType,
-    this.contentSource,
+    this.file,
+    this.contentUrl,
     this.title,
     this.description,
   });
@@ -22,7 +26,7 @@ class Step extends Equatable {
     return [
       id,
       contentType,
-      contentSource ?? '',
+      contentUrl ?? '',
       title ?? '',
       description ?? '',
     ];
@@ -30,6 +34,6 @@ class Step extends Equatable {
 
   @override
   String toString() {
-    return 'Step(id: $id, contentType: $contentType, contentSource: $contentSource, title: $title, description: $description)';
+    return 'Step(id: $id, contentType: $contentType, file: $file, contentUrl: $contentUrl, title: $title, description: $description)';
   }
 }

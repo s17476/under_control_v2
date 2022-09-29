@@ -7,7 +7,7 @@ void main() {
   const tStepModel = StepModel(
     id: 0,
     contentType: ContentType.image,
-    contentSource: 'contentSource',
+    contentUrl: 'contentUrl',
     description: 'description',
     title: 'title',
   );
@@ -15,7 +15,7 @@ void main() {
   final tStepMap = {
     'id': 0,
     'contentType': ContentType.image.name,
-    'contentSource': 'contentSource',
+    'contentUrl': 'contentUrl',
     'description': 'description',
     'title': 'title',
   };

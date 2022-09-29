@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../domain/entities/step.dart';
 import '../../domain/entities/content_type.dart';
 
@@ -5,7 +7,8 @@ class StepModel extends Step {
   const StepModel({
     required super.id,
     required super.contentType,
-    super.contentSource,
+    super.file,
+    super.contentUrl,
     super.title,
     super.description,
   });
@@ -13,14 +16,16 @@ class StepModel extends Step {
   StepModel copyWith({
     int? id,
     ContentType? contentType,
-    String? contentSource,
+    File? file,
+    String? contentUrl,
     String? title,
     String? description,
   }) {
     return StepModel(
       id: id ?? this.id,
       contentType: contentType ?? this.contentType,
-      contentSource: contentSource ?? this.contentSource,
+      file: file ?? this.file,
+      contentUrl: contentUrl ?? this.contentUrl,
       title: title ?? this.title,
       description: description ?? this.description,
     );
@@ -31,7 +36,7 @@ class StepModel extends Step {
 
     result.addAll({'id': id});
     result.addAll({'contentType': contentType.name});
-    result.addAll({'contentSource': contentSource ?? ''});
+    result.addAll({'contentUrl': contentUrl ?? ''});
     result.addAll({'title': title ?? ''});
     result.addAll({'description': description ?? ''});
 
@@ -42,7 +47,7 @@ class StepModel extends Step {
     return StepModel(
       id: map['id']?.toInt() ?? 0,
       contentType: ContentType.fromString(map['contentType']),
-      contentSource: map['contentSource'],
+      contentUrl: map['contentUrl'],
       title: map['title'],
       description: map['description'],
     );
