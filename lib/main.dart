@@ -47,6 +47,9 @@ import 'features/inventory/presentation/pages/item_category_management_page.dart
 import 'features/inventory/presentation/pages/item_details_page.dart';
 import 'features/inventory/presentation/pages/move_inside_item_page.dart';
 import 'features/inventory/presentation/pages/subtract_from_item_page.dart';
+import 'features/knowledge_base/presentation/blocs/instruction_category/instruction_category_bloc.dart';
+import 'features/knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart';
+import 'features/knowledge_base/presentation/pages/instruction_category_management_page.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
@@ -135,6 +138,11 @@ class App extends StatelessWidget
           create: (context) => getIt<DashboardItemActionBloc>(),
           lazy: false,
         ),
+        BlocProvider(create: (context) => getIt<InstructionCategoryBloc>()),
+        BlocProvider(
+          create: (context) => getIt<InstructionCategoryManagementBloc>(),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -206,6 +214,8 @@ class App extends StatelessWidget
           ActionsListPage.routeName: (context) => const ActionsListPage(),
           AllActionsListPage.routeName: (context) => const AllActionsListPage(),
           QrScanner.routeName: (context) => const QrScanner(),
+          InstructionCategoryManagementPage.routeName: (context) =>
+              const InstructionCategoryManagementPage(),
         },
         // localization
         localizationsDelegates: const [

@@ -7,7 +7,7 @@ import '../data/models/item_category/item_category_model.dart';
 import '../presentation/blocs/item_category/item_category_bloc.dart';
 import '../presentation/blocs/item_category_management/item_category_management_bloc.dart';
 
-Future<void> showAddCategoryModalBottomSheet({
+Future<void> showAddItemCategoryModalBottomSheet({
   required BuildContext context,
   ItemCategoryModel? itemCategory,
 }) {
@@ -73,8 +73,8 @@ Future<void> showAddCategoryModalBottomSheet({
                               CustomTextFormField(
                                 autofocus: true,
                                 fieldKey: 'name',
-                                labelText: AppLocalizations.of(context)!
-                                    .add_company_intro_card_name,
+                                labelText:
+                                    AppLocalizations.of(context)!.item_category,
                                 textCapitalization: TextCapitalization.words,
                                 initialValue: itemCategoryModel.name,
                                 prefixIcon: const Icon(Icons.category),

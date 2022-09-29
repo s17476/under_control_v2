@@ -1023,9 +1023,9 @@
     "@item_data": {
       "description": "Item's data"
     },
-    "item_category": "Item's category",
+    "item_category": "Item category",
     "@item_category": {
-      "description": "Item's category"
+      "description": "Item category"
     },
     "item_select_category": "Select item category",
     "@item_select_category": {
@@ -1280,5 +1280,13 @@
     "premission_no_write_in_location": "You are not authorized to modify the data at this location",
     "@premission_no_write_in_location": {
       "description": "You are not authorized to modify the data at this location"
+    },
+    "instruction_category": "Instruction category",
+    "@instruction_category": {
+      "description": "Instruction category"
+    },
+    "instruction_select_category": "Select instruction category",
+    "@instruction_select_category": {
+      "description": "Instruction category selection"
     }
 }

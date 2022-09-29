@@ -9,7 +9,7 @@ import '../../../core/utils/show_snack_bar.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
-import '../../utils/show_add_category_modal_bottom_sheet.dart';
+import '../../utils/show_add_item_category_modal_bottom_sheet.dart';
 import '../blocs/item_category/item_category_bloc.dart';
 import '../blocs/item_category_management/item_category_management_bloc.dart';
 import '../widgets/category_tile.dart';
@@ -137,7 +137,7 @@ class _ItemCategoryManagementPageState
               ? FloatingActionButton.extended(
                   heroTag: null,
                   onPressed: () {
-                    showAddCategoryModalBottomSheet(context: context);
+                    showAddItemCategoryModalBottomSheet(context: context);
                   },
                   icon: Icon(
                     Icons.add,

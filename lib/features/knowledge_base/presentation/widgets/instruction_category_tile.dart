@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../groups/domain/entities/feature.dart';
-import '../../data/models/item_category/item_category_model.dart';
-import '../../domain/entities/item_category/item_category.dart';
-import '../../utils/show_add_item_category_modal_bottom_sheet.dart';
-import '../../utils/show_category_delete_dialog.dart';
+import '../../data/models/inventory_category/instruction_category_model.dart';
+import '../../domain/entities/instruction_category/instruction_category.dart';
+import '../../utils/show_add_instruction_category_modal_bottom_sheet.dart';
+import '../../utils/show_instruction_category_delete_dialog.dart';
 
-class CategoryTile extends StatelessWidget {
+class InstructionCategoryTile extends StatelessWidget {
   final bool isAdministrator;
-  final ItemCategory itemCategory;
-  const CategoryTile({
+  final InstructionCategory instructionCategory;
+  const InstructionCategoryTile({
     Key? key,
     required this.isAdministrator,
-    required this.itemCategory,
+    required this.instructionCategory,
   }) : super(key: key);
 
   @override
@@ -37,7 +37,7 @@ class CategoryTile extends StatelessWidget {
               Expanded(
                 // location name
                 child: Text(
-                  itemCategory.name,
+                  instructionCategory.name,
                   style: TextStyle(
                     color: Colors.grey.shade200,
                     fontSize: 18,
@@ -56,9 +56,10 @@ class CategoryTile extends StatelessWidget {
                   ))
                     IconButton(
                       onPressed: () {
-                        showAddItemCategoryModalBottomSheet(
+                        showAddInstructionCategoryModalBottomSheet(
                           context: context,
-                          itemCategory: itemCategory as ItemCategoryModel,
+                          instructionCategory:
+                              instructionCategory as InstructionCategoryModel,
                         );
                       },
                       icon: Icon(
@@ -74,9 +75,9 @@ class CategoryTile extends StatelessWidget {
                   ))
                     IconButton(
                       onPressed: () {
-                        showCategoryDeleteDialog(
+                        showInstructionCategoryDeleteDialog(
                           context: context,
-                          itemCategory: itemCategory,
+                          instructionCategory: instructionCategory,
                         );
                       },
                       icon: Icon(
