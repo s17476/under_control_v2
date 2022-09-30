@@ -3,6 +3,8 @@ enum ContentType {
   image('image'),
   video('video'),
   youtube('youtube'),
+  pdf('pdf'),
+  text('text'),
   unknown('');
 
   final String name;
@@ -19,6 +21,10 @@ enum ContentType {
         return ContentType.video;
       case 'youtube':
         return ContentType.youtube;
+      case 'pdf':
+        return ContentType.pdf;
+      case 'text':
+        return ContentType.text;
       default:
         return ContentType.unknown;
     }

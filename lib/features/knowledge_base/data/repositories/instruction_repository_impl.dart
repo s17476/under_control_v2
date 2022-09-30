@@ -6,10 +6,10 @@ import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/step_model.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instructions_stream.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/step.dart';
+import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction_step.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/repositories/instruction_repository.dart';
 
 @LazySingleton(as: InstructionRepository)
@@ -26,7 +26,7 @@ class InstructionRepositoryImpl extends InstructionRepository {
   Future<Either<Failure, String>> addInstruction(
       InstructionParams params) async {
     try {
-      List<Step> steps = [];
+      List<InstructionStep> steps = [];
       // batch
       final batch = firebaseFirestore.batch();
 
@@ -57,7 +57,8 @@ class InstructionRepositoryImpl extends InstructionRepository {
               await fileReference.putFile(step.file!);
               // get file url
               final fileUrl = await fileReference.getDownloadURL();
-              steps.add((step as StepModel).copyWith(contentUrl: fileUrl));
+              steps.add(
+                  (step as InstructionStepModel).copyWith(contentUrl: fileUrl));
             }
             break;
           default:
@@ -171,7 +172,7 @@ class InstructionRepositoryImpl extends InstructionRepository {
   Future<Either<Failure, VoidResult>> updateInstruction(
       InstructionParams params) async {
     try {
-      List<Step> steps = [];
+      List<InstructionStep> steps = [];
       // batch
       final batch = firebaseFirestore.batch();
 
@@ -199,7 +200,8 @@ class InstructionRepositoryImpl extends InstructionRepository {
               await fileReference.putFile(step.file!);
               // get file url
               final fileUrl = await fileReference.getDownloadURL();
-              steps.add((step as StepModel).copyWith(contentUrl: fileUrl));
+              steps.add(
+                  (step as InstructionStepModel).copyWith(contentUrl: fileUrl));
             }
             break;
           default:

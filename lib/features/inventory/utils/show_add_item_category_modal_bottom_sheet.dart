@@ -15,7 +15,7 @@ Future<void> showAddItemCategoryModalBottomSheet({
 
   ItemCategoryModel itemCategoryModel =
       itemCategory ?? const ItemCategoryModel(id: '', name: '');
-
+  FocusScope.of(context).unfocus();
   return showModalBottomSheet<void>(
     isScrollControlled: true,
     shape: RoundedRectangleBorder(

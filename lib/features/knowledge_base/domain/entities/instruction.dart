@@ -1,14 +1,15 @@
 import 'package:equatable/equatable.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 
 import '../../../core/domain/entities/last_edit.dart';
-import 'step.dart';
+import 'instruction_step.dart';
 
 class Instruction extends Equatable {
   final String id;
   final String name;
   final String description;
   final String category;
-  final List<Step> steps;
+  final List<InstructionStep> steps;
   final List<String> locations;
   final String userId;
   final List<LastEdit> lastEdited;

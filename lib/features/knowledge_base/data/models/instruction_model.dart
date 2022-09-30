@@ -1,8 +1,8 @@
 import '../../../core/data/models/last_edit_model.dart';
 import '../../../core/domain/entities/last_edit.dart';
 import '../../domain/entities/instruction.dart';
-import '../../domain/entities/step.dart';
-import 'step_model.dart';
+import '../../domain/entities/instruction_step.dart';
+import 'instruction_step_model.dart';
 
 class InstructionModel extends Instruction {
   const InstructionModel({
@@ -22,7 +22,7 @@ class InstructionModel extends Instruction {
     String? name,
     String? description,
     String? category,
-    List<Step>? steps,
+    List<InstructionStep>? steps,
     List<String>? locations,
     String? userId,
     List<LastEdit>? lastEdited,
@@ -47,8 +47,9 @@ class InstructionModel extends Instruction {
     result.addAll({'name': name});
     result.addAll({'description': description});
     result.addAll({'category': category});
-    result
-        .addAll({'steps': steps.map((x) => (x as StepModel).toMap()).toList()});
+    result.addAll({
+      'steps': steps.map((x) => (x as InstructionStepModel).toMap()).toList()
+    });
     result.addAll({'locations': locations});
     result.addAll({'userId': userId});
     result.addAll({
@@ -65,9 +66,9 @@ class InstructionModel extends Instruction {
       name: map['name'] ?? '',
       description: map['description'] ?? '',
       category: map['category'] ?? '',
-      steps: List<Step>.from(
+      steps: List<InstructionStep>.from(
         map['steps']?.map(
-          (x) => StepModel.fromMap(x),
+          (x) => InstructionStepModel.fromMap(x),
         ),
       ),
       locations: List<String>.from(map['locations']),
@@ -78,6 +79,13 @@ class InstructionModel extends Instruction {
         ),
       ),
       isPublished: map['isPublished'] ?? false,
+    );
+  }
+
+  InstructionModel deepCopy() {
+    return copyWith(
+      locations: [...locations],
+      steps: steps.map((e) => (e as InstructionStepModel).copyWith()).toList(),
     );
   }
 }

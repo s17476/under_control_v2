@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/step_model.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/step.dart';
+import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction_step.dart';
 
 void main() {
-  const tStepModel = StepModel(
+  const tStepModel = InstructionStepModel(
     id: 0,
     contentType: ContentType.image,
     contentUrl: 'contentUrl',
@@ -24,7 +24,7 @@ void main() {
     'should be a subclass of [Step] entity',
     () async {
       // assert
-      expect(tStepModel, isA<Step>());
+      expect(tStepModel, isA<InstructionStep>());
     },
   );
 
@@ -42,7 +42,7 @@ void main() {
     'should return a model containing proper data',
     () async {
       // act
-      final result = StepModel.fromMap(tStepMap);
+      final result = InstructionStepModel.fromMap(tStepMap);
       // assert
       expect(result, tStepModel);
     },

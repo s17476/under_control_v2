@@ -60,6 +60,7 @@ dependencies:
   country_picker: ^2.0.16
   currency_picker: ^2.0.12
   bloc_concurrency: ^0.2.0
+  font_awesome_flutter: ^10.2.1
   
 
 
@@ -114,10 +115,10 @@ flutter:
     - assets/validation.png
     - assets/workgroup.png
     - assets/uc-loading.gif
-    - assets/locations-background.png
     - assets/check-list.png
     - assets/new_item.png
     - assets/photo.png
+    - assets/instruction.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

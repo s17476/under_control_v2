@@ -15,7 +15,7 @@ Future<void> showAddInstructionCategoryModalBottomSheet({
 
   InstructionCategoryModel instructionCategoryModel =
       instructionCategory ?? const InstructionCategoryModel(id: '', name: '');
-
+  FocusScope.of(context).unfocus();
   return showModalBottomSheet<void>(
     isScrollControlled: true,
     shape: RoundedRectangleBorder(
