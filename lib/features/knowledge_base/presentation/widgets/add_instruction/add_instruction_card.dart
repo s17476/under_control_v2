@@ -13,7 +13,7 @@ class AddInstructionCard extends StatelessWidget {
     Key? key,
     required this.isEditMode,
     required this.pageController,
-    required this.nameTexEditingController,
+    required this.titleTexEditingController,
     required this.descriptionTexEditingController,
     required this.setCategory,
     required this.category,
@@ -21,7 +21,7 @@ class AddInstructionCard extends StatelessWidget {
 
   final bool isEditMode;
   final PageController pageController;
-  final TextEditingController nameTexEditingController;
+  final TextEditingController titleTexEditingController;
   final TextEditingController descriptionTexEditingController;
   final Function(String category) setCategory;
   final String category;
@@ -74,7 +74,7 @@ class AddInstructionCard extends StatelessWidget {
                           return null;
                         },
                         fieldKey: 'name',
-                        controller: nameTexEditingController,
+                        controller: titleTexEditingController,
                         keyboardType: TextInputType.name,
                         textCapitalization: TextCapitalization.words,
                         labelText: AppLocalizations.of(context)!.title,
@@ -118,7 +118,7 @@ class AddInstructionCard extends StatelessWidget {
                                   showAddInstructionCategoryModalBottomSheet(
                                 context: context,
                               ),
-                              icon: Icons.add_location_alt_outlined,
+                              icon: Icons.add,
                               gradient: LinearGradient(colors: [
                                 Theme.of(context).primaryColor,
                                 Theme.of(context).primaryColor.withAlpha(60),

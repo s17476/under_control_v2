@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../../core/presentation/widgets/rounded_button.dart';
 
+import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../domain/entities/content_type.dart';
 import '../../../domain/entities/instruction_step.dart';
 

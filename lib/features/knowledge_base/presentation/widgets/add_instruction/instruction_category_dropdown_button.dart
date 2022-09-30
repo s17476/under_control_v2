@@ -34,7 +34,7 @@ class InstructionCategoryDropdownButton extends StatelessWidget {
             dropdownItems.add(
               DropdownMenuItem(
                 child: Text(
-                  AppLocalizations.of(context)!.item_select_category,
+                  AppLocalizations.of(context)!.category_select,
                 ),
                 value: '',
               ),
@@ -45,7 +45,7 @@ class InstructionCategoryDropdownButton extends StatelessWidget {
             items: dropdownItems,
             selectedValue: selectedValue,
             onSelected: onSelected,
-            label: AppLocalizations.of(context)!.item_category,
+            label: AppLocalizations.of(context)!.category,
           );
         } else {
           return const CircularProgressIndicator();

@@ -49,7 +49,9 @@ class _AddStepCardState extends State<AddStepCard> with ResponsiveSize {
                     right: 8,
                   ),
                   child: Text(
-                    '${AppLocalizations.of(context)!.instruction_step} ${widget.step.id + 1}',
+                    widget.step.contentType == ContentType.unknown
+                        ? AppLocalizations.of(context)!.instruction_step_add
+                        : '${AppLocalizations.of(context)!.instruction_step} ${widget.step.id + 1}',
                     style: TextStyle(
                       fontSize: Theme.of(context).textTheme.headline5!.fontSize,
                     ),

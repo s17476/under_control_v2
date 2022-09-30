@@ -126,7 +126,7 @@ class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
                                 showAddItemCategoryModalBottomSheet(
                               context: context,
                             ),
-                            icon: Icons.add_location_alt_outlined,
+                            icon: Icons.add,
                             gradient: LinearGradient(colors: [
                               Theme.of(context).primaryColor,
                               Theme.of(context).primaryColor.withAlpha(60),

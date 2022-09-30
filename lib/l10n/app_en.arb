@@ -19,6 +19,26 @@
     "@skip": {
       "description": "Skip"
     },
+    "category": "Category",
+    "@category": {
+      "description": "Category"
+    },
+    "category_select": "Select category",
+    "@category_select": {
+      "description": "select category"
+    },
+    "category_no_select": "Category NOT selected",
+    "@category_no_select": {
+      "description": "Category not selected"
+    },
+    "content_type": "Content type",
+    "@content_type": {
+      "description": "content type"
+    },
+    "content_not_added": "Content NOT added",
+    "@content_not_added": {
+      "description": "content not added"
+    },
     "content_url": "WWW",
     "@content_url": {
       "description": "url"
@@ -1337,8 +1357,24 @@
     "@instruction_edit": {
       "description": "Edit instruction"
     },
+    "instruction_step_add": "Add step",
+    "@instruction_step_add": {
+      "description": "instruction add step"
+    },
     "instruction_step": "Step",
     "@instruction_step": {
       "description": "instruction step"
+    },
+    "instruction_steps": "Steps",
+    "@instruction_steps": {
+      "description": "instruction steps"
+    },
+    "instruction_step_total": "Total steps",
+    "@instruction_step_total": {
+      "description": "instruction steps total"
+    },
+    "instruction_no_steps": "No steps added",
+    "@instruction_no_steps": {
+      "description": "instruction no steps"
     }
 }

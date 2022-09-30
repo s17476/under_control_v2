@@ -4,6 +4,11 @@
     "all": "Wszystko",
     "add": "Dodaj",
     "skip": "Pomiń",
+    "category": "Kategoria",
+    "category_select": "Wybierz kategorię",
+    "category_no_select": "Kategoria nie wybrana",
+    "content_type": "Typ treści",
+    "content_not_added": "Nie dodano treści",
     "content_url": "WWW",
     "content_image": "Obraz",
     "content_video": "Wideo",
@@ -317,5 +322,9 @@
     "instruction_add": "Dodaj instrukcję",
     "instruction_add_title": "Dodaj nową instrukcję",
     "instruction_edit": "Edytuj instrukcję",
-    "instruction_step": "Krok"
+    "instruction_step_add": "Dodaj krok",
+    "instruction_step": "Krok",
+    "instruction_steps": "Kroki",
+    "instruction_step_total": "Liczba kroków",
+    "instruction_no_steps": "Nie dodano kroków"
 }

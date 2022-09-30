@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/widgets/add_instruction/add_instruction_summary_card.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/widgets/add_instruction/add_step_card.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
@@ -38,14 +39,24 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
 
   final _pageController = PageController();
 
-  final _nameTexEditingController = TextEditingController();
-  final _descriptionTexEditingController = TextEditingController();
+  final _titleTexEditingController = TextEditingController();
+  final _descriptionTextEditingController = TextEditingController();
 
   String _category = '';
 
-  List<InstructionStep> steps = [
+  List<InstructionStep> _steps = [
     InstructionStepModel.initial(),
   ];
+
+  List<InstructionStep> _getFinalSteps() =>
+      _steps.where((stp) => stp.contentType != ContentType.unknown).toList()
+        ..sort(
+          (a, b) => a.id.compareTo(b.id),
+        );
+
+  void _addNewInstruction(BuildContext context) {
+    print('ADD');
+  }
 
   // void _addNewItem(BuildContext context) {
   //   String errorMessage = '';
@@ -141,25 +152,25 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
   // changes step contentType
   void _setStepContentType(
       InstructionStep instructionStep, ContentType contentType) {
-    var index = steps.indexWhere((stp) => stp.id == instructionStep.id);
+    var index = _steps.indexWhere((stp) => stp.id == instructionStep.id);
     if (index >= 0) {
-      if (index == steps.length - 1) {
+      if (index == _steps.length - 1) {
         setState(() {
-          steps[index] = (steps[index] as InstructionStepModel).copyWith(
+          _steps[index] = (_steps[index] as InstructionStepModel).copyWith(
             contentType: contentType,
             contentUrl: null,
             file: null,
           );
-          steps.add(
+          _steps.add(
             InstructionStepModel(
-              id: steps.length,
+              id: _steps.length,
               contentType: ContentType.unknown,
             ),
           );
         });
       } else {
         setState(() {
-          steps[index] = (steps[index] as InstructionStepModel).copyWith(
+          _steps[index] = (_steps[index] as InstructionStepModel).copyWith(
             contentType: contentType,
             contentUrl: null,
             file: null,
@@ -176,18 +187,18 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
     if (arguments != null && arguments is InstructionModel) {
       _instruction = arguments.deepCopy();
 
-      _nameTexEditingController.text = _instruction!.name;
-      _descriptionTexEditingController.text = _instruction!.description;
+      _titleTexEditingController.text = _instruction!.name;
+      _descriptionTextEditingController.text = _instruction!.description;
       _category = _instruction!.category;
-      steps = _instruction!.steps;
+      _steps = _instruction!.steps;
     }
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    _nameTexEditingController.dispose();
-    _descriptionTexEditingController.dispose();
+    _titleTexEditingController.dispose();
+    _descriptionTextEditingController.dispose();
     _pageController.dispose();
     super.dispose();
   }
@@ -199,53 +210,26 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         child: AddInstructionCard(
           isEditMode: _instruction != null,
           pageController: _pageController,
-          nameTexEditingController: _nameTexEditingController,
-          descriptionTexEditingController: _descriptionTexEditingController,
+          titleTexEditingController: _titleTexEditingController,
+          descriptionTexEditingController: _descriptionTextEditingController,
           category: _category,
           setCategory: _setCategory,
         ),
       ),
-      for (var step in steps)
+      for (var step in _steps)
         AddStepCard(
           pageController: _pageController,
           step: step,
           setContentType: _setStepContentType,
         ),
-
-      // KeepAlivePage(
-      //   child: AddItemDataCard(
-      //     isEditMode: _item != null,
-      //     pageController: _pageController,
-      //     priceTextEditingController: _priceTextEditingController,
-      //     codeTextEditingController: _codeTextEditingController,
-      //     barCodeTextEditingController: _barCodeTextEditingController,
-      //     category: _category,
-      //     itemUnit: _itemUnit,
-      //     setCategory: _setCategory,
-      //     setItemUnit: _setItemUnit,
-      //   ),
-      // ),
-      // KeepAlivePage(
-      //   child: AddItemPhotoCard(
-      //     pageController: _pageController,
-      //     setImage: _setImage,
-      //     deleteImage: _deleteImage,
-      //     image: _itemImage,
-      //     imageUrl: _item?.itemPhoto,
-      //   ),
-      // ),
-      // AddItemSummaryCard(
-      //   pageController: _pageController,
-      //   titleTexEditingController: _nameTexEditingController,
-      //   descriptionTextEditingController: _descriptionTexEditingController,
-      //   barCodeTextEditingController: _barCodeTextEditingController,
-      //   codeTextEditingController: _codeTextEditingController,
-      //   priceTextEditingController: _priceTextEditingController,
-      //   addNewItem: _addNewItem,
-      //   category: _category,
-      //   itemUnit: _itemUnit,
-      //   itemImage: _itemImage,
-      // ),
+      AddInstructionSummaryCard(
+        pageController: _pageController,
+        titleTexEditingController: _titleTexEditingController,
+        descriptionTextEditingController: _descriptionTextEditingController,
+        steps: _getFinalSteps(),
+        category: _category,
+        addNewInstruction: _addNewInstruction,
+      ),
     ];
 
     return Scaffold(body: BlocBuilder<InstructionBloc, InstructionState>(
