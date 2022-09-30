@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/shimmer_item_tile.dart';
 
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
@@ -96,8 +97,9 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
                                 SizedBox(
                                   height: responsiveSizeVerticalPct(small: 40),
                                 ),
-                                Text(AppLocalizations.of(context)!
-                                    .item_no_items),
+                                Text(
+                                  AppLocalizations.of(context)!.item_no_items,
+                                ),
                               ],
                             );
                           }
@@ -119,13 +121,15 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
                             },
                           );
                         } else {
-                          return Column(
-                            children: [
-                              SizedBox(
-                                height: responsiveSizeVerticalPct(small: 40),
-                              ),
-                              const CircularProgressIndicator(),
-                            ],
+                          // loading shimmer animation
+                          return ListView.builder(
+                            padding: const EdgeInsets.only(top: 2),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: 6,
+                            itemBuilder: (context, index) {
+                              return const ShimmerItemTile();
+                            },
                           );
                         }
                       },

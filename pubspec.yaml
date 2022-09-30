@@ -61,6 +61,7 @@ dependencies:
   currency_picker: ^2.0.12
   bloc_concurrency: ^0.2.0
   font_awesome_flutter: ^10.2.1
+  shimmer: ^2.0.0
   
 
 

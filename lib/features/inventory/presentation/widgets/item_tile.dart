@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../core/presentation/widgets/highlighted_text.dart';
 import '../../../core/presentation/widgets/icon_title_mini_row.dart';
@@ -89,10 +90,15 @@ class ItemTile extends StatelessWidget {
                                         child: CachedNetworkImage(
                                           imageUrl: item.itemPhoto,
                                           placeholder: (context, url) =>
-                                              const Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: CircularProgressIndicator(
-                                              color: Colors.white,
+                                              Shimmer.fromColors(
+                                            baseColor: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                            highlightColor:
+                                                Theme.of(context).cardColor,
+                                            child: Container(
+                                              color: Colors.black,
+                                              width: double.infinity,
+                                              height: 70,
                                             ),
                                           ),
                                           errorWidget: (context, url, error) =>
