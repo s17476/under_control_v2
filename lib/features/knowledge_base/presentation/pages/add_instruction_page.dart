@@ -149,6 +149,8 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
     });
   }
 
+  void _updateStep(InstructionStep step) {}
+
   // changes step contentType
   void _setStepContentType(
       InstructionStep instructionStep, ContentType contentType) {
@@ -221,6 +223,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
           pageController: _pageController,
           step: step,
           setContentType: _setStepContentType,
+          updateStep: _updateStep,
         ),
       AddInstructionSummaryCard(
         pageController: _pageController,

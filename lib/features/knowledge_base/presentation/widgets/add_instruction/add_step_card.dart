@@ -9,17 +9,19 @@ import 'package:under_control_v2/features/knowledge_base/data/models/instruction
 import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction_step.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/widgets/add_instruction/add_step_menu_grid.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/widgets/steps/text_step.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/utils/responsive_size.dart';
 
-class AddStepCard extends StatefulWidget {
+class AddStepCard extends StatelessWidget {
   const AddStepCard({
     Key? key,
     required this.pageController,
     required this.step,
     required this.setContentType,
+    required this.updateStep,
   }) : super(key: key);
 
   final PageController pageController;
@@ -28,11 +30,8 @@ class AddStepCard extends StatefulWidget {
 
   final Function(InstructionStep, ContentType) setContentType;
 
-  @override
-  State<AddStepCard> createState() => _AddStepCardState();
-}
+  final Function(InstructionStep) updateStep;
 
-class _AddStepCardState extends State<AddStepCard> with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -49,9 +48,9 @@ class _AddStepCardState extends State<AddStepCard> with ResponsiveSize {
                     right: 8,
                   ),
                   child: Text(
-                    widget.step.contentType == ContentType.unknown
+                    step.contentType == ContentType.unknown
                         ? AppLocalizations.of(context)!.instruction_step_add
-                        : '${AppLocalizations.of(context)!.instruction_step} ${widget.step.id + 1}',
+                        : '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1}',
                     style: TextStyle(
                       fontSize: Theme.of(context).textTheme.headline5!.fontSize,
                     ),
@@ -61,89 +60,38 @@ class _AddStepCardState extends State<AddStepCard> with ResponsiveSize {
                   thickness: 1.5,
                 ),
                 Expanded(
-                  child: Center(
-                    child: AddStepMenuGrid(
-                      step: widget.step,
-                      setContentType: widget.setContentType,
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // content type not selected
+                      if (step.contentType == ContentType.unknown)
+                        AddStepMenuGrid(
+                          step: step,
+                          setContentType: setContentType,
+                        ),
+                      // content type - text
+                      if (step.contentType == ContentType.text)
+                        TextStep(
+                          step: step,
+                          updateStep: updateStep,
+                        ),
+                    ],
                   ),
                 ),
-                if (widget.step.contentType == ContentType.image)
-                  Text(widget.step.contentType.name),
-                if (widget.step.contentType == ContentType.video)
-                  Text(widget.step.contentType.name),
-                if (widget.step.contentType == ContentType.youtube)
-                  Text(widget.step.contentType.name),
-                if (widget.step.contentType == ContentType.pdf)
-                  Text(widget.step.contentType.name),
-                if (widget.step.contentType == ContentType.url)
-                  Text(widget.step.contentType.name),
-                if (widget.step.contentType == ContentType.text)
-                  Text(widget.step.contentType.name),
-                // Stack(
-                //   children: [
-                //     Padding(
-                //       padding: const EdgeInsets.all(8.0),
-                //       child: Image.asset(
-                //         'assets/photo.png',
-                //         fit: BoxFit.fill,
-                //       ),
-                //     ),
-                //     if (imageUrl != null)
-                //       SizedBox(
-                //         width: responsiveSizePct(small: 100),
-                //         height: responsiveSizePct(small: 100),
-                //         child: CachedNetworkImage(
-                //           imageUrl: imageUrl!,
-                //           placeholder: (context, url) => const Padding(
-                //             padding: EdgeInsets.all(8.0),
-                //             child: CircularProgressIndicator(),
-                //           ),
-                //           errorWidget: (context, url, error) =>
-                //               const SizedBox(),
-                //           fit: BoxFit.cover,
-                //         ),
-                //       ),
-                //     if (image != null)
-                //       SizedBox(
-                //         width: responsiveSizePct(small: 100),
-                //         height: responsiveSizePct(small: 100),
-                //         child: Image.file(
-                //           image!,
-                //           fit: BoxFit.fitWidth,
-                //         ),
-                //       ),
-                //   ],
-                // ),
+                if (step.contentType == ContentType.image)
+                  Text(step.contentType.name),
+                if (step.contentType == ContentType.video)
+                  Text(step.contentType.name),
+                if (step.contentType == ContentType.youtube)
+                  Text(step.contentType.name),
+                if (step.contentType == ContentType.pdf)
+                  Text(step.contentType.name),
+                if (step.contentType == ContentType.url)
+                  Text(step.contentType.name),
+
                 const SizedBox(
                   height: 16,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //   children: [
-                //     // camera button
-                //     OverlayIconButton(
-                //       onPressed: () => setImage(ImageSource.camera),
-                //       icon: Icons.camera,
-                //       title: AppLocalizations.of(context)!
-                //           .user_profile_add_user_personal_data_take_photo_btn,
-                //     ),
-                //     // reset image button
-                //     if (image != null)
-                //       OverlayIconButton(
-                //         onPressed: () => deleteImage(),
-                //         icon: Icons.cancel,
-                //         title: AppLocalizations.of(context)!.reset_image,
-                //       ),
-                //     // gallery button
-                //     OverlayIconButton(
-                //       onPressed: () => setImage(ImageSource.gallery),
-                //       icon: Icons.photo_size_select_actual_rounded,
-                //       title: AppLocalizations.of(context)!
-                //           .user_profile_add_user_personal_data_gallery,
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),
@@ -159,18 +107,18 @@ class _AddStepCardState extends State<AddStepCard> with ResponsiveSize {
                   color: Theme.of(context).textTheme.headline5!.color!,
                   label: AppLocalizations.of(context)!
                       .user_profile_add_user_personal_data_back,
-                  function: () => widget.pageController.previousPage(
+                  function: () => pageController.previousPage(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                   ),
                 ),
                 ForwardTextButton(
                   color: Theme.of(context).textTheme.headline5!.color!,
-                  label: widget.step.contentType == ContentType.unknown
+                  label: step.contentType == ContentType.unknown
                       ? AppLocalizations.of(context)!.skip
                       : AppLocalizations.of(context)!
                           .user_profile_add_user_next,
-                  function: () => widget.pageController.nextPage(
+                  function: () => pageController.nextPage(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                   ),
