@@ -35,6 +35,10 @@
     "@content_type": {
       "description": "content type"
     },
+    "content_type_change": "Change content type",
+    "@content_type_change": {
+      "description": "content type change"
+    },
     "content_not_added": "Content NOT added",
     "@content_not_added": {
       "description": "content not added"
@@ -1364,6 +1368,10 @@
     "instruction_step_add": "Add step",
     "@instruction_step_add": {
       "description": "instruction add step"
+    },
+    "instruction_step_delete": "Delete step",
+    "@instruction_step_delete": {
+      "description": "instruction delete step"
     },
     "instruction_step": "Step",
     "@instruction_step": {

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 
 import '../../../core/domain/entities/last_edit.dart';
 import 'instruction_step.dart';

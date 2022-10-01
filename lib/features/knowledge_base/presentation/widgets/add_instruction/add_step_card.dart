@@ -13,16 +13,21 @@ import 'package:under_control_v2/features/knowledge_base/presentation/widgets/st
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
+import '../../../../core/utils/choice.dart';
 import '../../../../core/utils/responsive_size.dart';
 
 class AddStepCard extends StatelessWidget {
   const AddStepCard({
     Key? key,
+    required this.isLastStep,
     required this.pageController,
     required this.step,
     required this.setContentType,
     required this.updateStep,
+    required this.removeStep,
   }) : super(key: key);
+
+  final bool isLastStep;
 
   final PageController pageController;
 
@@ -31,36 +36,96 @@ class AddStepCard extends StatelessWidget {
   final Function(InstructionStep, ContentType) setContentType;
 
   final Function(InstructionStep) updateStep;
+  final Function(InstructionStep) removeStep;
 
   @override
   Widget build(BuildContext context) {
+    List<Choice> _choices = [
+      // reset content type
+      if (step.contentType != ContentType.unknown)
+        Choice(
+          title: AppLocalizations.of(context)!.content_type_change,
+          icon: Icons.edit,
+          onTap: () => setContentType(
+            step,
+            ContentType.unknown,
+          ),
+        ),
+      // remove step
+      Choice(
+        title: AppLocalizations.of(context)!.instruction_step_delete,
+        icon: Icons.delete,
+        onTap: () => removeStep(step),
+      ),
+    ];
     return SafeArea(
       child: Column(
         children: [
           Expanded(
-            child: Column(
-              children: [
-                // title
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 12,
-                    left: 8,
-                    right: 8,
-                  ),
-                  child: Text(
-                    step.contentType == ContentType.unknown
-                        ? AppLocalizations.of(context)!.instruction_step_add
-                        : '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1}',
-                    style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // title
+                  SizedBox(
+                    width: double.infinity,
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 12,
+                            ),
+                            child: Text(
+                              step.contentType == ContentType.unknown
+                                  ? AppLocalizations.of(context)!
+                                      .instruction_step_add
+                                  : '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1}',
+                              style: TextStyle(
+                                fontSize: Theme.of(context)
+                                    .textTheme
+                                    .headline5!
+                                    .fontSize,
+                              ),
+                            ),
+                          ),
+                        ),
+                        if (!isLastStep)
+                          Positioned(
+                            right: 0,
+                            top: 4,
+                            child: PopupMenuButton<Choice>(
+                              onSelected: (Choice choice) {
+                                choice.onTap();
+                              },
+                              itemBuilder: (BuildContext context) {
+                                return _choices.map((Choice choice) {
+                                  return PopupMenuItem<Choice>(
+                                    value: choice,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(choice.icon),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          choice.title,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList();
+                              },
+                            ),
+                          ),
+                      ],
                     ),
                   ),
-                ),
-                const Divider(
-                  thickness: 1.5,
-                ),
-                Expanded(
-                  child: Column(
+                  const Divider(
+                    thickness: 1.5,
+                  ),
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // content type not selected
@@ -77,22 +142,22 @@ class AddStepCard extends StatelessWidget {
                         ),
                     ],
                   ),
-                ),
-                if (step.contentType == ContentType.image)
-                  Text(step.contentType.name),
-                if (step.contentType == ContentType.video)
-                  Text(step.contentType.name),
-                if (step.contentType == ContentType.youtube)
-                  Text(step.contentType.name),
-                if (step.contentType == ContentType.pdf)
-                  Text(step.contentType.name),
-                if (step.contentType == ContentType.url)
-                  Text(step.contentType.name),
+                  if (step.contentType == ContentType.image)
+                    Text(step.contentType.name),
+                  if (step.contentType == ContentType.video)
+                    Text(step.contentType.name),
+                  if (step.contentType == ContentType.youtube)
+                    Text(step.contentType.name),
+                  if (step.contentType == ContentType.pdf)
+                    Text(step.contentType.name),
+                  if (step.contentType == ContentType.url)
+                    Text(step.contentType.name),
 
-                const SizedBox(
-                  height: 16,
-                ),
-              ],
+                  const SizedBox(
+                    height: 16,
+                  ),
+                ],
+              ),
             ),
           ),
 

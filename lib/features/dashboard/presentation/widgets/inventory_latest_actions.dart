@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/actions/shimmer_item_action_list_tile.dart';
 
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/utils/get_user_premission.dart';
@@ -98,38 +99,46 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
                   ],
                 ),
               ),
-              AnimatedSize(
-                duration: const Duration(milliseconds: 400),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                      if (_actions != null && _actions!.isNotEmpty)
-                        ListView.builder(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _actions!.length,
-                          itemBuilder: (context, index) => ItemActionListTile(
-                            action: _actions![index],
-                            isDashboardTile: true,
-                          ),
-                        ),
-                      if (_actions != null && _actions!.isEmpty)
-                        Container(
-                          alignment: Alignment.center,
-                          height: 50,
-                          child: Text(
-                            AppLocalizations.of(context)!
-                                .no_actions_in_selected_locations,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+              Column(
+                children: [
+                  if (_actions == null)
+                    ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      itemBuilder: (context, index) =>
+                          const ShimmerItemActionListTile(
+                        isDashboardTile: true,
+                      ),
+                    ),
+                  if (_actions != null && _actions!.isNotEmpty)
+                    ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: _actions!.length,
+                      itemBuilder: (context, index) => ItemActionListTile(
+                        action: _actions![index],
+                        isDashboardTile: true,
+                      ),
+                    ),
+                  if (_actions != null && _actions!.isEmpty)
+                    Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      child: Text(
+                        AppLocalizations.of(context)!
+                            .no_actions_in_selected_locations,
+                      ),
+                    ),
+                ],
               ),
             ],
           );

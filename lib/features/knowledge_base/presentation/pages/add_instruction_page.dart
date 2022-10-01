@@ -47,10 +47,11 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
   List<InstructionStep> _steps = [];
 
   List<InstructionStep> _getFinalSteps() =>
-      _steps.where((stp) => stp.contentType != ContentType.unknown).toList()
-        ..sort(
-          (a, b) => a.id.compareTo(b.id),
-        );
+      _steps.sublist(0, _steps.length - 1);
+  // _steps.where((stp) => stp.contentType != ContentType.unknown).toList()
+  //   ..sort(
+  //     (a, b) => a.id.compareTo(b.id),
+  //   );
 
   void _addNewInstruction(BuildContext context) {
     String errorMessage = '';
@@ -69,9 +70,11 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       for (var step in _steps) {
         // text content validation
         if (step.contentType == ContentType.text) {
+          // title
           if (step.title == null || step.title!.trim().length < 2) {
             errorMessage =
                 '${AppLocalizations.of(context)!.header} -  ${AppLocalizations.of(context)!.validation_min_two_characters}';
+            // description
           } else if (step.description == null ||
               step.description!.trim().length < 2) {
             errorMessage =
@@ -196,6 +199,25 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
     }
   }
 
+  void _removeStep(InstructionStep step) {
+    final index = _steps.indexWhere((stp) => stp.id == step.id);
+    if (index >= 0) {
+      setState(() {
+        for (int i = index + 1; i < _steps.length; i++) {
+          _steps[i] = InstructionStep(
+            id: _steps[i].id - 1,
+            contentType: _steps[i].contentType,
+            contentUrl: _steps[i].contentUrl,
+            description: _steps[i].description,
+            file: _steps[i].file,
+            title: _steps[i].title,
+          );
+        }
+        _steps.removeAt(index);
+      });
+    }
+  }
+
   // changes step contentType
   void _setStepContentType(
       InstructionStep instructionStep, ContentType contentType) {
@@ -217,12 +239,19 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         });
       } else {
         setState(() {
-          _steps[index] = (_steps[index] as InstructionStepModel).copyWith(
+          _steps[index] = InstructionStep(
+            id: instructionStep.id,
             contentType: contentType,
+            description: instructionStep.description,
+            title: instructionStep.title,
             contentUrl: null,
             file: null,
           );
         });
+      }
+      // remove last item
+      if (contentType == ContentType.unknown && index == _steps.length - 2) {
+        _steps.removeAt(index + 1);
       }
     }
   }
@@ -279,6 +308,8 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
           step: step,
           setContentType: _setStepContentType,
           updateStep: _updateStep,
+          removeStep: _removeStep,
+          isLastStep: step.id == _steps.length - 1,
         ),
       AddInstructionSummaryCard(
         pageController: _pageController,
