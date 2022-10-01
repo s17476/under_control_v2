@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/knowledge_base/utils/get_step_content_icon.dart';
 
 import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../domain/entities/content_type.dart';
@@ -36,7 +37,7 @@ class AddStepMenuGrid extends StatelessWidget {
           RoundedButton(
             padding: const EdgeInsets.all(9),
             onPressed: () => setContentType(step, ContentType.image),
-            icon: FontAwesomeIcons.image,
+            icon: getStepContentIcon(ContentType.image),
             iconSize: 80,
             title: AppLocalizations.of(context)!.content_image,
             titleSize: 20,
@@ -53,7 +54,7 @@ class AddStepMenuGrid extends StatelessWidget {
           RoundedButton(
             padding: const EdgeInsets.all(9),
             onPressed: () => setContentType(step, ContentType.video),
-            icon: FontAwesomeIcons.play,
+            icon: getStepContentIcon(ContentType.video),
             iconSize: 80,
             title: AppLocalizations.of(context)!.content_video,
             titleSize: 20,
@@ -70,7 +71,7 @@ class AddStepMenuGrid extends StatelessWidget {
           RoundedButton(
             padding: const EdgeInsets.all(9),
             onPressed: () => setContentType(step, ContentType.youtube),
-            icon: FontAwesomeIcons.youtube,
+            icon: getStepContentIcon(ContentType.youtube),
             iconSize: 80,
             title: AppLocalizations.of(context)!.content_youtube,
             titleSize: 20,
@@ -87,7 +88,7 @@ class AddStepMenuGrid extends StatelessWidget {
           RoundedButton(
             padding: const EdgeInsets.all(9),
             onPressed: () => setContentType(step, ContentType.pdf),
-            icon: FontAwesomeIcons.filePdf,
+            icon: getStepContentIcon(ContentType.pdf),
             iconSize: 80,
             title: AppLocalizations.of(context)!.content_pdf,
             titleSize: 20,
@@ -104,7 +105,7 @@ class AddStepMenuGrid extends StatelessWidget {
           RoundedButton(
             padding: const EdgeInsets.all(9),
             onPressed: () => setContentType(step, ContentType.url),
-            icon: Icons.web,
+            icon: getStepContentIcon(ContentType.url),
             iconSize: 80,
             title: AppLocalizations.of(context)!.content_url,
             titleSize: 20,
@@ -121,7 +122,7 @@ class AddStepMenuGrid extends StatelessWidget {
           RoundedButton(
             padding: const EdgeInsets.all(9),
             onPressed: () => setContentType(step, ContentType.text),
-            icon: Icons.text_snippet_outlined,
+            icon: getStepContentIcon(ContentType.text),
             iconSize: 80,
             title: AppLocalizations.of(context)!.content_text,
             titleSize: 20,

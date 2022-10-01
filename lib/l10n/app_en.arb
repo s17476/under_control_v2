@@ -179,6 +179,10 @@
     "@title": {
       "description": "Title"
     },
+    "header": "Header",
+    "@header": {
+      "description": "Header"
+    },
     "reset_image": "Reset image",
     "@reset_image": {
       "description": "Reset image"

@@ -44,9 +44,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
 
   String _category = '';
 
-  List<InstructionStep> _steps = [
-    InstructionStepModel.initial(),
-  ];
+  List<InstructionStep> _steps = [];
 
   List<InstructionStep> _getFinalSteps() =>
       _steps.where((stp) => stp.contentType != ContentType.unknown).toList()
@@ -55,11 +53,51 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         );
 
   void _addNewInstruction(BuildContext context) {
-    print('ADD');
+    String errorMessage = '';
+    // title validation
+    if (!_formKey.currentState!.validate()) {
+      errorMessage =
+          '${AppLocalizations.of(context)!.title} -  ${AppLocalizations.of(context)!.validation_min_two_characters}';
+      // category selection validation
+    } else if (_category.isEmpty) {
+      errorMessage = AppLocalizations.of(context)!.category_no_select;
+      // steps list validation
+    } else if (_getFinalSteps().isEmpty) {
+      errorMessage = AppLocalizations.of(context)!.instruction_no_steps;
+      // steps validation
+    } else {
+      for (var step in _steps) {
+        // text content validation
+        if (step.contentType == ContentType.text) {
+          if (step.title == null || step.title!.trim().length < 2) {
+            errorMessage =
+                '${AppLocalizations.of(context)!.header} -  ${AppLocalizations.of(context)!.validation_min_two_characters}';
+          } else if (step.description == null ||
+              step.description!.trim().length < 2) {
+            errorMessage =
+                '${AppLocalizations.of(context)!.description} -  ${AppLocalizations.of(context)!.validation_min_two_characters}';
+          }
+        }
+      }
+    }
+
+    // shows SnackBar if validation error occures
+    if (errorMessage.isNotEmpty) {
+      showSnackBar(
+        context: context,
+        message: errorMessage,
+        isErrorMessage: true,
+      );
+      // saves instruction to DB if no error
+    } else {
+      showSnackBar(
+        context: context,
+        message: 'OK',
+      );
+    }
   }
 
   // void _addNewItem(BuildContext context) {
-  //   String errorMessage = '';
   //   double price = 0;
   //   // item name validation
   //   if (!_formKey.currentState!.validate()) {
@@ -149,7 +187,14 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
     });
   }
 
-  void _updateStep(InstructionStep step) {}
+  void _updateStep(InstructionStep step) {
+    final index = _steps.indexWhere((stp) => stp.id == step.id);
+    if (index >= 0) {
+      setState(() {
+        _steps[index] = step;
+      });
+    }
+  }
 
   // changes step contentType
   void _setStepContentType(
@@ -180,6 +225,16 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         });
       }
     }
+  }
+
+  @override
+  void initState() {
+    if (_steps.isEmpty) {
+      _steps.add(
+        InstructionStepModel.initial(),
+      );
+    }
+    super.initState();
   }
 
   @override

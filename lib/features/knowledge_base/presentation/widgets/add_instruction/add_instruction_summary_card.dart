@@ -151,6 +151,13 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                                 '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1}',
                             validator: () {
                               if (step.contentType == ContentType.text) {
+                                if (step.title == null ||
+                                    step.title!.trim().length < 2) {
+                                  return '${AppLocalizations.of(context)!.header} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
+                                } else if (step.description == null ||
+                                    step.description!.trim().length < 2) {
+                                  return '${AppLocalizations.of(context)!.description} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
+                                }
                                 // title + description
                               } else if (step.contentType ==
                                       ContentType.image ||
@@ -161,10 +168,17 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                               }
                             },
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   '${AppLocalizations.of(context)!.content_type}: ${getStepContentLocalizedName(context, step.contentType)}',
-                                )
+                                ),
+                                Text(
+                                  '${AppLocalizations.of(context)!.header}: ${step.title ?? ''}',
+                                ),
+                                Text(
+                                  '${AppLocalizations.of(context)!.description}: ${step.description ?? ''}',
+                                ),
                               ],
                             ),
                             pageController: pageController,
