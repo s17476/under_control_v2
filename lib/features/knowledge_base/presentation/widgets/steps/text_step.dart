@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 
+import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../data/models/instruction_step_model.dart';
 import '../../../domain/entities/instruction_step.dart';
 
@@ -44,7 +44,12 @@ class TextStep extends StatelessWidget {
             onChanged: (val) {
               if (val!.trim().isNotEmpty) {
                 updateStep(
-                  (step as InstructionStepModel).copyWith(
+                  InstructionStep(
+                    id: step.id,
+                    contentType: step.contentType,
+                    contentUrl: step.contentUrl,
+                    description: step.description,
+                    file: step.file,
                     title: val.trim(),
                   ),
                 );
@@ -72,8 +77,13 @@ class TextStep extends StatelessWidget {
             onChanged: (val) {
               if (val!.trim().isNotEmpty) {
                 updateStep(
-                  (step as InstructionStepModel).copyWith(
+                  InstructionStep(
+                    id: step.id,
+                    contentType: step.contentType,
+                    contentUrl: step.contentUrl,
                     description: val.trim(),
+                    file: step.file,
+                    title: step.title,
                   ),
                 );
               }

@@ -25,6 +25,10 @@ class AddStepCard extends StatelessWidget {
     required this.setContentType,
     required this.updateStep,
     required this.removeStep,
+    required this.insertStepBefore,
+    required this.insertStepAfter,
+    required this.moveBack,
+    required this.moveForward,
   }) : super(key: key);
 
   final bool isLastStep;
@@ -37,10 +41,28 @@ class AddStepCard extends StatelessWidget {
 
   final Function(InstructionStep) updateStep;
   final Function(InstructionStep) removeStep;
+  final Function(InstructionStep) insertStepBefore;
+  final Function(InstructionStep) insertStepAfter;
+  final Function(InstructionStep) moveBack;
+  final Function(InstructionStep) moveForward;
 
   @override
   Widget build(BuildContext context) {
     List<Choice> _choices = [
+      // insert step before
+      if (step.contentType != ContentType.unknown)
+        Choice(
+          title: AppLocalizations.of(context)!.instruction_step_add_before,
+          icon: Icons.subdirectory_arrow_left,
+          onTap: () => insertStepBefore(step),
+        ),
+      // insert step after
+      if (step.contentType != ContentType.unknown)
+        Choice(
+          title: AppLocalizations.of(context)!.instruction_step_add_after,
+          icon: Icons.subdirectory_arrow_right,
+          onTap: () => insertStepAfter(step),
+        ),
       // reset content type
       if (step.contentType != ContentType.unknown)
         Choice(

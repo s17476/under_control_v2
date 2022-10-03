@@ -150,15 +150,22 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                             title:
                                 '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1}',
                             validator: () {
+                              // unknown content
+                              if (step.contentType == ContentType.unknown) {
+                                return AppLocalizations.of(context)!
+                                    .content_type_not_selected;
+                              }
+                              // text content
                               if (step.contentType == ContentType.text) {
+                                // title
                                 if (step.title == null ||
                                     step.title!.trim().length < 2) {
                                   return '${AppLocalizations.of(context)!.header} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
+                                  // description
                                 } else if (step.description == null ||
                                     step.description!.trim().length < 2) {
                                   return '${AppLocalizations.of(context)!.description} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
                                 }
-                                // title + description
                               } else if (step.contentType ==
                                       ContentType.image ||
                                   step.contentType == ContentType.video) {
@@ -167,20 +174,23 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                                 // source
                               }
                             },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${AppLocalizations.of(context)!.content_type}: ${getStepContentLocalizedName(context, step.contentType)}',
-                                ),
-                                Text(
-                                  '${AppLocalizations.of(context)!.header}: ${step.title ?? ''}',
-                                ),
-                                Text(
-                                  '${AppLocalizations.of(context)!.description}: ${step.description ?? ''}',
-                                ),
-                              ],
-                            ),
+                            child: step.contentType == ContentType.unknown
+                                ? const SizedBox()
+                                : Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${AppLocalizations.of(context)!.content_type}: ${getStepContentLocalizedName(context, step.contentType)}',
+                                      ),
+                                      Text(
+                                        '${AppLocalizations.of(context)!.header}: ${step.title ?? ''}',
+                                      ),
+                                      Text(
+                                        '${AppLocalizations.of(context)!.description}: ${step.description ?? ''}',
+                                      ),
+                                    ],
+                                  ),
                             pageController: pageController,
                             onTapAnimateToPage: step.id + 1,
                           ),

@@ -43,6 +43,10 @@
     "@content_not_added": {
       "description": "content not added"
     },
+    "content_type_not_selected": "Content type NOT selected",
+    "@content_type_not_selected": {
+      "description": "content type not selected"
+    },
     "content_url": "WWW",
     "@content_url": {
       "description": "url"
@@ -1368,6 +1372,14 @@
     "instruction_step_add": "Add step",
     "@instruction_step_add": {
       "description": "instruction add step"
+    },
+    "instruction_step_add_before": "Add step before",
+    "@instruction_step_add_before": {
+      "description": "instruction add step before"
+    },
+    "instruction_step_add_after": "Add step after",
+    "@instruction_step_add_after": {
+      "description": "instruction add step after"
     },
     "instruction_step_delete": "Delete step",
     "@instruction_step_delete": {
