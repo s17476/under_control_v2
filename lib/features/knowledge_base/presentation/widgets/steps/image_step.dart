@@ -4,12 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
-import 'package:under_control_v2/features/core/utils/size_config.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/overlay_icon_button.dart';
+import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/show_snack_bar.dart';
+import '../../../../core/utils/size_config.dart';
 import '../../../domain/entities/instruction_step.dart';
 
 class ImageStep extends StatelessWidget with ResponsiveSize {
@@ -111,14 +111,6 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
                 title: AppLocalizations.of(context)!
                     .user_profile_add_user_personal_data_take_photo_btn,
               ),
-              // // reset image button
-              // if (step.file != null)
-              //   OverlayIconButton(
-              //     onPressed: () => deleteImage(),
-              //     icon: Icons.cancel,
-              //     title: AppLocalizations.of(context)!.reset_image,
-              //   ),
-              // gallery button
               OverlayIconButton(
                 onPressed: () => _setImage(context, ImageSource.gallery),
                 icon: Icons.photo_size_select_actual_rounded,
