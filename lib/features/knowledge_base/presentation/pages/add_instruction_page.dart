@@ -1,23 +1,20 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/widgets/add_instruction/add_instruction_summary_card.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/widgets/add_instruction/add_step_card.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../data/models/instruction_model.dart';
+import '../../data/models/instruction_step_model.dart';
+import '../../domain/entities/content_type.dart';
 import '../../domain/entities/instruction.dart';
 import '../../domain/entities/instruction_step.dart';
 import '../blocs/instruction/instruction_bloc.dart';
 import '../widgets/add_instruction/add_instruction_card.dart';
+import '../widgets/add_instruction/add_instruction_summary_card.dart';
+import '../widgets/add_instruction/add_step_card.dart';
 
 class AddInstructionPage extends StatefulWidget {
   const AddInstructionPage({

@@ -47,6 +47,7 @@
     "edit": "Edycja",
     "title": "Tytuł",
     "header": "Nagłówek",
+    "header_optional": "Nagłówek (opcjonalny)",
     "reset_image": "Resetuj obraz",
     "summary": "Podsumowanie",
     "call": "Zadzwoń",

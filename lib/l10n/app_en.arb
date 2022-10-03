@@ -191,6 +191,10 @@
     "@header": {
       "description": "Header"
     },
+    "header_optional": "Header (optional)",
+    "@header_optional": {
+      "description": "Header optional"
+    },
     "reset_image": "Reset image",
     "@reset_image": {
       "description": "Reset image"

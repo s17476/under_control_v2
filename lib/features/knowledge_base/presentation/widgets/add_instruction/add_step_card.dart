@@ -9,6 +9,7 @@ import 'package:under_control_v2/features/knowledge_base/data/models/instruction
 import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction_step.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/widgets/add_instruction/add_step_menu_grid.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/widgets/steps/image_step.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/widgets/steps/text_step.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
@@ -48,6 +49,7 @@ class AddStepCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // popup menu elements
     List<Choice> _choices = [
       // insert step before
       if (step.contentType != ContentType.unknown)
@@ -176,10 +178,10 @@ class AddStepCard extends StatelessWidget {
                           step: step,
                           updateStep: updateStep,
                         ),
+                      if (step.contentType == ContentType.image)
+                        ImageStep(step: step, updateStep: updateStep),
                     ],
                   ),
-                  if (step.contentType == ContentType.image)
-                    Text(step.contentType.name),
                   if (step.contentType == ContentType.video)
                     Text(step.contentType.name),
                   if (step.contentType == ContentType.youtube)
