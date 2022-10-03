@@ -266,9 +266,69 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
     }
   }
 
-  void _moveBack(InstructionStep step) {}
+  void _moveBack(InstructionStep step) {
+    final index = _steps.indexWhere((stp) => stp.id == step.id);
+    if (index >= 1) {
+      setState(() {
+        _steps[index - 1] = InstructionStep(
+          id: _steps[index - 1].id + 1,
+          contentType: _steps[index - 1].contentType,
+          contentUrl: _steps[index - 1].contentUrl,
+          description: _steps[index - 1].description,
+          file: _steps[index - 1].file,
+          title: _steps[index - 1].title,
+        );
+        _steps.removeAt(index);
+        _steps.insert(
+          index - 1,
+          InstructionStep(
+            id: step.id - 1,
+            contentType: step.contentType,
+            contentUrl: step.contentUrl,
+            description: step.description,
+            file: step.file,
+            title: step.title,
+          ),
+        );
+      });
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
-  void _moveForward(InstructionStep step) {}
+  void _moveForward(InstructionStep step) {
+    final index = _steps.indexWhere((stp) => stp.id == step.id);
+    if (index < _steps.length - 2) {
+      setState(() {
+        _steps[index + 1] = InstructionStep(
+          id: _steps[index + 1].id - 1,
+          contentType: _steps[index + 1].contentType,
+          contentUrl: _steps[index + 1].contentUrl,
+          description: _steps[index + 1].description,
+          file: _steps[index + 1].file,
+          title: _steps[index + 1].title,
+        );
+        _steps.removeAt(index);
+        _steps.insert(
+          index + 1,
+          InstructionStep(
+            id: step.id + 1,
+            contentType: step.contentType,
+            contentUrl: step.contentUrl,
+            description: step.description,
+            file: step.file,
+            title: step.title,
+          ),
+        );
+      });
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   // changes step contentType
   void _setStepContentType(

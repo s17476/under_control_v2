@@ -1373,13 +1373,21 @@
     "@instruction_step_add": {
       "description": "instruction add step"
     },
-    "instruction_step_add_before": "Add step before",
+    "instruction_step_add_before": "Insert step before",
     "@instruction_step_add_before": {
       "description": "instruction add step before"
     },
-    "instruction_step_add_after": "Add step after",
+    "instruction_step_add_after": "Insert step after",
     "@instruction_step_add_after": {
       "description": "instruction add step after"
+    },
+    "instruction_step_move_back": "Move back",
+    "@instruction_step_move_bakc": {
+      "description": "Move step back"
+    },
+    "instruction_step_move_forward": "Move forward",
+    "@instruction_step_move_forward": {
+      "description": "Move step forward"
     },
     "instruction_step_delete": "Delete step",
     "@instruction_step_delete": {

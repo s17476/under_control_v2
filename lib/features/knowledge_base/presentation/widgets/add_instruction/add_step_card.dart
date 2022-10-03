@@ -63,6 +63,20 @@ class AddStepCard extends StatelessWidget {
           icon: Icons.subdirectory_arrow_right,
           onTap: () => insertStepAfter(step),
         ),
+      // move back
+      if (step.contentType != ContentType.unknown)
+        Choice(
+          title: AppLocalizations.of(context)!.instruction_step_move_back,
+          icon: Icons.arrow_back,
+          onTap: () => moveBack(step),
+        ),
+      // move forward
+      if (step.contentType != ContentType.unknown)
+        Choice(
+          title: AppLocalizations.of(context)!.instruction_step_move_forward,
+          icon: Icons.arrow_forward,
+          onTap: () => moveForward(step),
+        ),
       // reset content type
       if (step.contentType != ContentType.unknown)
         Choice(
