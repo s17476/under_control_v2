@@ -161,11 +161,6 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
                       _floatingButtonBackgroundColor =
                           _tabItems[index ?? 2].circleColor;
                       widget.setPageIndex(index ?? 2);
-                      widget.pageController.animateToPage(
-                        index ?? 2,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.decelerate,
-                      );
                     });
                   },
                 ),

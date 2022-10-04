@@ -39,7 +39,10 @@ class _HomePageState extends State<HomePage>
   final _scrollController = ScrollController();
 
   // bottom navigation controls
-  final _pageController = PageController(initialPage: 2);
+  final _pageController = PageController(
+    initialPage: 2,
+    keepPage: true,
+  );
   int _pageIndex = 2;
   late CircularBottomNavigationController _navigationController;
 
@@ -48,6 +51,7 @@ class _HomePageState extends State<HomePage>
   bool _isAssetsSearchBarExpanded = false;
   bool _isControlsVisible = true;
   bool _isMenuVisible = false;
+  bool _isBottomNavigationAnimating = false;
 
   // inventory search
   final _inventorySearchTextEditingController = TextEditingController();
@@ -79,10 +83,17 @@ class _HomePageState extends State<HomePage>
   }
 
   // set page index
-  void _setPageIndex(int index) {
+  void _setPageIndex(int index) async {
     setState(() {
       _pageIndex = index;
     });
+    _isBottomNavigationAnimating = true;
+    await _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.decelerate,
+    );
+    _isBottomNavigationAnimating = false;
   }
 
   // show BottomNavigationTabBar
@@ -321,8 +332,15 @@ class _HomePageState extends State<HomePage>
                 children: [
                   // tabs
                   PageView(
-                    physics: const NeverScrollableScrollPhysics(),
                     controller: _pageController,
+                    onPageChanged: (index) {
+                      if (!_isBottomNavigationAnimating) {
+                        setState(() {
+                          _pageIndex = index;
+                        });
+                        _navigationController.value = index;
+                      }
+                    },
                     children: [
                       const TasksPage(),
                       InventoryPage(
