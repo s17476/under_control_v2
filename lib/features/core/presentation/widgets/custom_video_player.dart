@@ -46,15 +46,17 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     }
     if (_videoPlayerController != null) {
       _videoPlayerController!.addListener(() {
-        if (_videoPlayerController!.value.duration ==
-            _videoPlayerController!.value.position) {
-          setState(() {
-            _finishedPlaying = true;
-          });
-        } else {
-          setState(() {
-            _finishedPlaying = false;
-          });
+        if (mounted) {
+          if (_videoPlayerController!.value.duration ==
+              _videoPlayerController!.value.position) {
+            setState(() {
+              _finishedPlaying = true;
+            });
+          } else {
+            setState(() {
+              _finishedPlaying = false;
+            });
+          }
         }
       });
     }

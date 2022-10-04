@@ -79,6 +79,10 @@
     "@content_youtube": {
       "description": "youtube"
     },
+    "content_youtube_paste_here": "Paste YouTube video link here",
+    "@content_youtube_paste_here": {
+      "description": "youtube link"
+    },
     "content_pdf": "PDF file",
     "@content_pdf": {
       "description": "pdf"

@@ -17,6 +17,7 @@ import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/utils/choice.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../steps/video_step.dart';
+import '../steps/youtube_step.dart';
 
 class AddStepCard extends StatelessWidget {
   const AddStepCard({
@@ -176,18 +177,15 @@ class AddStepCard extends StatelessWidget {
                         ),
                       // content type - text
                       if (step.contentType == ContentType.text)
-                        TextStep(
-                          step: step,
-                          updateStep: updateStep,
-                        ),
+                        TextStep(step: step, updateStep: updateStep),
                       if (step.contentType == ContentType.image)
                         ImageStep(step: step, updateStep: updateStep),
                       if (step.contentType == ContentType.video)
                         VideoStep(step: step, updateStep: updateStep),
+                      if (step.contentType == ContentType.youtube)
+                        YoutubeStep(step: step, updateStep: updateStep),
                     ],
                   ),
-                  if (step.contentType == ContentType.youtube)
-                    Text(step.contentType.name),
                   if (step.contentType == ContentType.pdf)
                     Text(step.contentType.name),
                   if (step.contentType == ContentType.url)
