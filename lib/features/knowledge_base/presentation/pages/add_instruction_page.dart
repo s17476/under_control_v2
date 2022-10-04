@@ -415,17 +415,19 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         ),
       ),
       for (var step in _steps)
-        AddStepCard(
-          pageController: _pageController,
-          step: step,
-          setContentType: _setStepContentType,
-          updateStep: _updateStep,
-          removeStep: _removeStep,
-          isLastStep: step.id == _steps.length - 1,
-          insertStepAfter: _insertStepAfter,
-          insertStepBefore: _insertStepBefore,
-          moveBack: _moveBack,
-          moveForward: _moveForward,
+        KeepAlivePage(
+          child: AddStepCard(
+            pageController: _pageController,
+            step: step,
+            setContentType: _setStepContentType,
+            updateStep: _updateStep,
+            removeStep: _removeStep,
+            isLastStep: step.id == _steps.length - 1,
+            insertStepAfter: _insertStepAfter,
+            insertStepBefore: _insertStepBefore,
+            moveBack: _moveBack,
+            moveForward: _moveForward,
+          ),
         ),
       AddInstructionSummaryCard(
         pageController: _pageController,

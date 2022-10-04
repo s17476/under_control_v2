@@ -199,6 +199,10 @@
     "@reset_image": {
       "description": "Reset image"
     },
+    "reset_video": "Reset video",
+    "@reset_video": {
+      "description": "Reset video"
+    },
     "summary": "Summary",
     "@summary": {
       "description": "Summary"
