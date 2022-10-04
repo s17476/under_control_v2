@@ -19,6 +19,14 @@
     "@skip": {
       "description": "Skip"
     },
+    "size": "Size",
+    "@size": {
+      "description": "Size"
+    },
+    "lenght": "Lenght",
+    "@lenght": {
+      "description": "Lenght"
+    },
     "category": "Category",
     "@category": {
       "description": "Category"
@@ -55,9 +63,17 @@
     "@content_image": {
       "description": "Image"
     },
+    "content_image_not_added": "Image NOT added",
+    "@content_image_not_added": {
+      "description": "Image not addded"
+    },
     "content_video": "Video",
     "@content_video": {
       "description": "Video"
+    },
+    "content_video_not_added": "Video NOT added",
+    "@content_video_not_added": {
+      "description": "Video not added"
     },
     "content_youtube": "YouTube",
     "@content_youtube": {

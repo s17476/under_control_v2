@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/presentation/widgets/custom_dropdown_button.dart';
+import '../../../../core/presentation/widgets/shimmer_custom_dropdown_button.dart';
 import '../../blocs/instruction_category/instruction_category_bloc.dart';
 
 class InstructionCategoryDropdownButton extends StatelessWidget {
@@ -40,15 +41,19 @@ class InstructionCategoryDropdownButton extends StatelessWidget {
               ),
             );
           }
-          return CustomDropdownButton(
-            initialValue: selectedValue,
-            items: dropdownItems,
-            selectedValue: selectedValue,
-            onSelected: onSelected,
-            label: AppLocalizations.of(context)!.category,
+          return Column(
+            children: [
+              CustomDropdownButton(
+                initialValue: selectedValue,
+                items: dropdownItems,
+                selectedValue: selectedValue,
+                onSelected: onSelected,
+                label: AppLocalizations.of(context)!.category,
+              ),
+            ],
           );
         } else {
-          return const CircularProgressIndicator();
+          return const ShimmerCustomDropdownButton();
         }
       },
     );

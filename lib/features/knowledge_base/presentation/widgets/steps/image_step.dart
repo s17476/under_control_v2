@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
+import '../../../../core/presentation/widgets/image_viewer.dart';
 import '../../../../core/presentation/widgets/overlay_icon_button.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/show_snack_bar.dart';
@@ -74,17 +75,32 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
                 ),
               ),
               if (step.contentUrl != null)
-                SizedBox(
-                  width: responsiveSizePct(small: 100),
-                  height: responsiveSizePct(small: 100),
-                  child: CachedNetworkImage(
-                    imageUrl: step.contentUrl!,
-                    placeholder: (context, url) => const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImageViewer(
+                          imageProvider:
+                              CachedNetworkImageProvider(step.contentUrl!),
+                          heroTag: step.contentUrl!,
+                          title: '',
+                        ),
+                      ),
+                    );
+                  },
+                  child: SizedBox(
+                    width: responsiveSizePct(small: 100),
+                    height: responsiveSizePct(small: 100),
+                    child: CachedNetworkImage(
+                      imageUrl: step.contentUrl!,
+                      placeholder: (context, url) => const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, error) => const SizedBox(),
+                      fit: BoxFit.cover,
                     ),
-                    errorWidget: (context, url, error) => const SizedBox(),
-                    fit: BoxFit.cover,
                   ),
                 ),
               if (step.file != null)
@@ -111,6 +127,21 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
                 title: AppLocalizations.of(context)!
                     .user_profile_add_user_personal_data_take_photo_btn,
               ),
+              if (step.file != null)
+                OverlayIconButton(
+                  onPressed: () => updateStep(
+                    InstructionStep(
+                      id: step.id,
+                      contentType: step.contentType,
+                      contentUrl: step.contentUrl,
+                      title: step.title,
+                      description: step.description,
+                      file: null,
+                    ),
+                  ),
+                  icon: Icons.clear,
+                  title: AppLocalizations.of(context)!.reset_image,
+                ),
               OverlayIconButton(
                 onPressed: () => _setImage(context, ImageSource.gallery),
                 icon: Icons.photo_size_select_actual_rounded,
@@ -126,7 +157,7 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
           CustomTextFormField(
             initialValue: step.title,
             fieldKey: 'header',
-            labelText: AppLocalizations.of(context)!.header_optional,
+            labelText: AppLocalizations.of(context)!.header,
             keyboardType: TextInputType.name,
             textCapitalization: TextCapitalization.sentences,
             validator: (val) {
@@ -162,13 +193,6 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
             keyboardType: TextInputType.name,
             textCapitalization: TextCapitalization.sentences,
             maxLines: 8,
-            validator: (val) {
-              if (val!.length < 2) {
-                return AppLocalizations.of(context)!
-                    .validation_min_two_characters;
-              }
-              return null;
-            },
             onChanged: (val) {
               if (val!.trim().isNotEmpty) {
                 updateStep(

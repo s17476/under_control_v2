@@ -134,6 +134,7 @@ class AddStepCard extends StatelessWidget {
                             top: 4,
                             child: PopupMenuButton<Choice>(
                               onSelected: (Choice choice) {
+                                FocusScope.of(context).unfocus();
                                 choice.onTap();
                               },
                               itemBuilder: (BuildContext context) {

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/responsive_size.dart';
+import '../../../domain/entities/content_type.dart';
 import '../../../domain/entities/instruction_step.dart';
 import '../../../utils/get_step_content_localized_name.dart';
+import '../../../utils/validate_step.dart';
 import '../../blocs/instruction_category/instruction_category_bloc.dart';
 
 class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
@@ -149,31 +150,7 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                           SummaryCard(
                             title:
                                 '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1}',
-                            validator: () {
-                              // unknown content
-                              if (step.contentType == ContentType.unknown) {
-                                return AppLocalizations.of(context)!
-                                    .content_type_not_selected;
-                              }
-                              // text content
-                              if (step.contentType == ContentType.text) {
-                                // title
-                                if (step.title == null ||
-                                    step.title!.trim().length < 2) {
-                                  return '${AppLocalizations.of(context)!.header} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
-                                  // description
-                                } else if (step.description == null ||
-                                    step.description!.trim().length < 2) {
-                                  return '${AppLocalizations.of(context)!.description} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
-                                }
-                              } else if (step.contentType ==
-                                      ContentType.image ||
-                                  step.contentType == ContentType.video) {
-                                // file
-                              } else {
-                                // source
-                              }
-                            },
+                            validator: () => validateStep(context, step),
                             child: step.contentType == ContentType.unknown
                                 ? const SizedBox()
                                 : Column(
@@ -186,9 +163,15 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                                       Text(
                                         '${AppLocalizations.of(context)!.header}: ${step.title ?? ''}',
                                       ),
-                                      Text(
-                                        '${AppLocalizations.of(context)!.description}: ${step.description ?? ''}',
-                                      ),
+                                      if (step.contentType ==
+                                              ContentType.text ||
+                                          (step.description != null &&
+                                              step.description!
+                                                  .trim()
+                                                  .isNotEmpty))
+                                        Text(
+                                          '${AppLocalizations.of(context)!.description}: ${step.description ?? ''}',
+                                        ),
                                     ],
                                   ),
                             pageController: pageController,

@@ -11,6 +11,7 @@ import '../../data/models/instruction_step_model.dart';
 import '../../domain/entities/content_type.dart';
 import '../../domain/entities/instruction.dart';
 import '../../domain/entities/instruction_step.dart';
+import '../../utils/validate_step.dart';
 import '../blocs/instruction/instruction_bloc.dart';
 import '../widgets/add_instruction/add_instruction_card.dart';
 import '../widgets/add_instruction/add_instruction_summary_card.dart';
@@ -53,9 +54,11 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
   void _addNewInstruction(BuildContext context) {
     String errorMessage = '';
     // title validation
-    if (!_formKey.currentState!.validate()) {
+    if (!_formKey.currentState!.validate() &&
+        _titleTexEditingController.text.trim().length < 2) {
       errorMessage =
           '${AppLocalizations.of(context)!.title} -  ${AppLocalizations.of(context)!.validation_min_two_characters}';
+
       // category selection validation
     } else if (_category.isEmpty) {
       errorMessage = AppLocalizations.of(context)!.category_no_select;
@@ -65,23 +68,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       // steps validation
     } else {
       for (var step in _getFinalSteps()) {
-        if (step.contentType == ContentType.unknown) {
-          errorMessage =
-              '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} - ${AppLocalizations.of(context)!.content_type_not_selected}';
-        }
-        // text content validation
-        else if (step.contentType == ContentType.text) {
-          // title
-          if (step.title == null || step.title!.trim().length < 2) {
-            errorMessage =
-                '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} - ${AppLocalizations.of(context)!.header} -  ${AppLocalizations.of(context)!.validation_min_two_characters}';
-            // description
-          } else if (step.description == null ||
-              step.description!.trim().length < 2) {
-            errorMessage =
-                '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} - ${AppLocalizations.of(context)!.description} -  ${AppLocalizations.of(context)!.validation_min_two_characters}';
-          }
-        }
+        errorMessage = validateStep(context, step) ?? '';
       }
     }
 
@@ -337,8 +324,8 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
           _steps[index] = InstructionStep(
             id: _steps[index].id,
             contentType: contentType,
-            description: _steps[index].description,
-            title: _steps[index].title,
+            description: null,
+            title: null,
             contentUrl: null,
             file: null,
           );

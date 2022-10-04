@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 class CustomVideoPlayer extends StatefulWidget {
@@ -8,10 +9,12 @@ class CustomVideoPlayer extends StatefulWidget {
     Key? key,
     this.videoFile,
     this.videoUrl,
+    this.videoPlayerController,
   }) : super(key: key);
 
   final File? videoFile;
   final String? videoUrl;
+  final VideoPlayerController? videoPlayerController;
 
   @override
   State<CustomVideoPlayer> createState() => _CustomVideoPlayerState();
@@ -23,7 +26,12 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   bool _finishedPlaying = false;
 
   Future<void> _initVideo() async {
-    if (widget.videoUrl != null && widget.videoUrl!.isNotEmpty) {
+    if (widget.videoPlayerController != null) {
+      _videoPlayerController = widget.videoPlayerController;
+      setState(() {
+        _isInitialized = true;
+      });
+    } else if (widget.videoUrl != null && widget.videoUrl!.isNotEmpty) {
       _videoPlayerController = VideoPlayerController.network(widget.videoUrl!);
       await _videoPlayerController!.initialize();
       setState(() {
@@ -52,15 +60,58 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     }
   }
 
+  void _togglePlay() {
+    setState(() {
+      // If the video is playing, pause it.
+      if (_videoPlayerController!.value.isPlaying) {
+        _videoPlayerController!.pause();
+      } else {
+        // If the video is paused, play it.
+        _videoPlayerController!.play();
+      }
+    });
+  }
+
+  void _toggleFullScreen() {
+    if (widget.videoPlayerController != null) {
+      Navigator.pop(context);
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CustomVideoPlayer(
+            videoFile: widget.videoFile,
+            videoUrl: widget.videoUrl,
+            videoPlayerController: _videoPlayerController,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   void initState() {
     _initVideo();
+    if (widget.videoPlayerController != null) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+      ]);
+    }
     super.initState();
   }
 
   @override
   void dispose() {
-    _videoPlayerController?.dispose();
+    if (widget.videoPlayerController == null) {
+      _videoPlayerController?.dispose();
+    }
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 
@@ -78,34 +129,16 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       return Stack(
         children: [
           // player
-          AspectRatio(
-            aspectRatio: _videoPlayerController!.value.aspectRatio,
-            child: VideoPlayer(_videoPlayerController!),
-          ),
-
-          // button
-          FloatingActionButton(
-            onPressed: () {
-              // Wrap the play or pause in a call to `setState`. This ensures the
-              // correct icon is shown.
-              setState(() {
-                // If the video is playing, pause it.
-                if (_videoPlayerController!.value.isPlaying) {
-                  _videoPlayerController!.pause();
-                } else {
-                  // If the video is paused, play it.
-                  _videoPlayerController!.play();
-                }
-              });
-            },
-            // Display the correct icon depending on the state of the player.
-            child: Icon(
-              _videoPlayerController!.value.isPlaying
-                  ? Icons.pause
-                  : Icons.play_arrow,
+          Center(
+            child: GestureDetector(
+              onTap: _togglePlay,
+              onDoubleTap: _toggleFullScreen,
+              child: AspectRatio(
+                aspectRatio: _videoPlayerController!.value.aspectRatio,
+                child: VideoPlayer(_videoPlayerController!),
+              ),
             ),
           ),
-
           // progress bar
           Positioned(
             bottom: 0,
@@ -114,19 +147,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  onPressed: () {
-                    // Wrap the play or pause in a call to `setState`. This ensures the
-                    // correct icon is shown.
-                    setState(() {
-                      // If the video is playing, pause it.
-                      if (_videoPlayerController!.value.isPlaying) {
-                        _videoPlayerController!.pause();
-                      } else {
-                        // If the video is paused, play it.
-                        _videoPlayerController!.play();
-                      }
-                    });
-                  },
+                  onPressed: _togglePlay,
                   icon: Icon(
                     _finishedPlaying
                         ? Icons.replay
@@ -137,8 +158,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.only(right: 40),
+                  child: SizedBox(
                     height: 15,
                     child: VideoProgressIndicator(
                       _videoPlayerController!,
@@ -151,13 +171,27 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                     ),
                   ),
                 ),
+                IconButton(
+                  onPressed: _toggleFullScreen,
+                  icon: Icon(
+                    widget.videoPlayerController == null
+                        ? Icons.fullscreen
+                        : Icons.fullscreen_exit,
+                    size: 40,
+                  ),
+                ),
               ],
             ),
           ),
         ],
       );
     } else {
-      return const CircularProgressIndicator();
+      return Container(
+        alignment: Alignment.center,
+        height: 200,
+        width: double.infinity,
+        child: const CircularProgressIndicator(),
+      );
     }
   }
 }

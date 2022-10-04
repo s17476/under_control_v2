@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/custom_video_player.dart';
+import 'package:under_control_v2/features/core/utils/get_file_size.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
+import '../../../../core/presentation/widgets/custom_video_player.dart';
 import '../../../../core/presentation/widgets/overlay_icon_button.dart';
 import '../../../../core/utils/show_snack_bar.dart';
 import '../../../domain/entities/instruction_step.dart';
@@ -21,14 +22,15 @@ class VideoStep extends StatelessWidget {
 
   final Function(InstructionStep) updateStep;
 
-  void _setVideo(BuildContext context, ImageSource souruce) async {
+  // picks video from camera or gallery
+  void _pickVideo(BuildContext context, ImageSource souruce) async {
     final picker = ImagePicker();
-
     try {
       final pickedFile = await picker.pickVideo(
         source: souruce,
         maxDuration: const Duration(minutes: 2),
       );
+      // updates current step
       if (pickedFile != null) {
         updateStep(
           InstructionStep(
@@ -54,6 +56,7 @@ class VideoStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // video player
         if (step.file != null || step.contentUrl != null)
           CustomVideoPlayer(
             videoFile: step.file,
@@ -65,6 +68,25 @@ class VideoStep extends StatelessWidget {
           ),
           child: Column(
             children: [
+              // placeholder image
+              if (step.file == null)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    'assets/video.png',
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              const SizedBox(
+                height: 16,
+              ),
+              if (step.file != null)
+                Row(
+                  children: [
+                    Expanded(child: Text(AppLocalizations.of(context)!.size)),
+                    Text(getFileSize(step.file!.path, 2)),
+                  ],
+                ),
               const SizedBox(
                 height: 16,
               ),
@@ -73,7 +95,7 @@ class VideoStep extends StatelessWidget {
                 children: [
                   // camera button
                   OverlayIconButton(
-                    onPressed: () => _setVideo(context, ImageSource.camera),
+                    onPressed: () => _pickVideo(context, ImageSource.camera),
                     icon: Icons.camera,
                     title: AppLocalizations.of(context)!
                         .user_profile_add_user_personal_data_take_photo_btn,
@@ -94,7 +116,7 @@ class VideoStep extends StatelessWidget {
                       title: AppLocalizations.of(context)!.reset_video,
                     ),
                   OverlayIconButton(
-                    onPressed: () => _setVideo(context, ImageSource.gallery),
+                    onPressed: () => _pickVideo(context, ImageSource.gallery),
                     icon: Icons.photo_size_select_actual_rounded,
                     title: AppLocalizations.of(context)!
                         .user_profile_add_user_personal_data_gallery,
@@ -108,7 +130,7 @@ class VideoStep extends StatelessWidget {
               CustomTextFormField(
                 initialValue: step.title,
                 fieldKey: 'header',
-                labelText: AppLocalizations.of(context)!.header_optional,
+                labelText: AppLocalizations.of(context)!.header,
                 keyboardType: TextInputType.name,
                 textCapitalization: TextCapitalization.sentences,
                 validator: (val) {
@@ -144,13 +166,6 @@ class VideoStep extends StatelessWidget {
                 keyboardType: TextInputType.name,
                 textCapitalization: TextCapitalization.sentences,
                 maxLines: 8,
-                validator: (val) {
-                  if (val!.length < 2) {
-                    return AppLocalizations.of(context)!
-                        .validation_min_two_characters;
-                  }
-                  return null;
-                },
                 onChanged: (val) {
                   if (val!.trim().isNotEmpty) {
                     updateStep(
