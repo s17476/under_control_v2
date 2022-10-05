@@ -173,6 +173,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                     ),
                   ),
                 ),
+                // fullscreen button
                 IconButton(
                   onPressed: _toggleFullScreen,
                   icon: Icon(

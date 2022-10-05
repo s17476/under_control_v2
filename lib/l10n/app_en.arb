@@ -223,6 +223,10 @@
     "@reset_image": {
       "description": "Reset image"
     },
+    "reset_pdf": "Reset PDF file",
+    "@reset_pdf": {
+      "description": "Reset PDF"
+    },
     "reset_video": "Reset video",
     "@reset_video": {
       "description": "Reset video"

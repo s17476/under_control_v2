@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/pdf_viewer.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/image_viewer.dart';
@@ -34,33 +35,30 @@ class PdfStep extends StatelessWidget with ResponsiveSize {
 
     if (result != null) {
       File file = File(result.files.single.path!);
+      if (step.file != null) {
+        updateStep(
+          InstructionStep(
+            id: step.id,
+            contentType: step.contentType,
+            contentUrl: step.contentUrl,
+            title: step.title,
+            description: step.description,
+            file: null,
+          ),
+        );
+        await Future.delayed(const Duration(milliseconds: 300));
+      }
+      updateStep(
+        InstructionStep(
+          id: step.id,
+          contentType: step.contentType,
+          contentUrl: step.contentUrl,
+          title: step.title,
+          description: step.description,
+          file: file,
+        ),
+      );
     }
-    // try {
-    //   final pickedFile = await picker.pickImage(
-    //     source: souruce,
-    //     imageQuality: 100,
-    //     maxHeight: 2000,
-    //     maxWidth: 2000,
-    //   );
-    //   if (pickedFile != null) {
-    //     updateStep(
-    //       InstructionStep(
-    //         id: step.id,
-    //         contentType: step.contentType,
-    //         contentUrl: step.contentUrl,
-    //         title: step.title,
-    //         description: step.description,
-    //         file: File(pickedFile.path),
-    //       ),
-    //     );
-    //   }
-    // } catch (e) {
-    //   showSnackBar(
-    //     context: context,
-    //     message: AppLocalizations.of(context)!
-    //         .user_profile_add_user_image_pisker_error,
-    //   );
-    // }
   }
 
   @override
@@ -71,54 +69,24 @@ class PdfStep extends StatelessWidget with ResponsiveSize {
         horizontal: 16,
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           // image
           Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                  'assets/pdf.png',
-                  fit: BoxFit.fill,
-                ),
-              ),
-              if (step.contentUrl != null)
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ImageViewer(
-                          imageProvider:
-                              CachedNetworkImageProvider(step.contentUrl!),
-                          heroTag: step.contentUrl!,
-                          title: '',
-                        ),
-                      ),
-                    );
-                  },
-                  child: SizedBox(
-                    width: responsiveSizePct(small: 100),
-                    height: responsiveSizePct(small: 100),
-                    child: CachedNetworkImage(
-                      imageUrl: step.contentUrl!,
-                      placeholder: (context, url) => const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(),
-                      ),
-                      errorWidget: (context, url, error) => const SizedBox(),
-                      fit: BoxFit.cover,
-                    ),
+              if (step.file == null)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    'assets/pdf.png',
+                    fit: BoxFit.fill,
                   ),
                 ),
               if (step.file != null)
                 SizedBox(
-                  width: responsiveSizePct(small: 100),
+                  width: responsiveSizePct(small: 75),
                   height: responsiveSizePct(small: 100),
-                  child: Image.file(
-                    step.file!,
-                    fit: BoxFit.fitWidth,
-                  ),
+                  child: PdfViewer(path: step.file!.path),
                 ),
             ],
           ),
@@ -141,7 +109,7 @@ class PdfStep extends StatelessWidget with ResponsiveSize {
                     ),
                   ),
                   icon: Icons.clear,
-                  title: AppLocalizations.of(context)!.reset_image,
+                  title: AppLocalizations.of(context)!.reset_pdf,
                 ),
               OverlayIconButton(
                 onPressed: () => _pickPdfFile(context),

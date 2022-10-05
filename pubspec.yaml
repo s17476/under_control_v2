@@ -65,6 +65,7 @@ dependencies:
   video_player: ^2.4.7
   youtube_player_iframe: ^3.1.0
   file_picker: ^5.2.0+1
+  flutter_pdfview: ^1.2.5
   
 
 
