@@ -26,7 +26,7 @@ class _CustomYoutubePlayerState extends State<CustomYoutubePlayer> {
       params: const YoutubePlayerParams(
         showControls: true,
         mute: false,
-        showFullscreenButton: true,
+        showFullscreenButton: false,
         loop: false,
       ),
     )..onInit = _initVideo;
@@ -36,23 +36,15 @@ class _CustomYoutubePlayerState extends State<CustomYoutubePlayer> {
 
   @override
   Widget build(BuildContext context) {
-    // _youtubeId = extractYoutubeId(widget.contentUrl);
     if (_controller.metadata.videoId != widget.contentUrl) {
       _initVideo();
-      print('_controller.metadata.videoId');
-      print(_controller.metadata.videoId);
     }
-    return YoutubePlayerScaffold(
+    return YoutubePlayerControllerProvider(
       controller: _controller,
-      aspectRatio: 16 / 9,
-      builder: (context, player) {
-        return Column(
-          children: [
-            player,
-            Text('Youtube Player'),
-          ],
-        );
-      },
+      child: YoutubePlayer(
+        aspectRatio: 16 / 9,
+        controller: _controller,
+      ),
     );
   }
 }

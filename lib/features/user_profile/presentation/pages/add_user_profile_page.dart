@@ -81,7 +81,6 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime preBackpress = DateTime.now();
     _pages = [
       WelcomeCard(pageController: _pageController),
       PersonalDataCard(
@@ -104,9 +103,12 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
         image: _userAvatar,
       )
     ];
+
+    DateTime preBackpress = DateTime.now();
+
     return WillPopScope(
-      // double click to exit the app
       onWillPop: () async {
+        // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);
         final cantExit = timegap >= const Duration(seconds: 2);
         preBackpress = DateTime.now();
@@ -115,13 +117,13 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
             ..removeCurrentSnackBar()
             ..showSnackBar(SnackBar(
               content: Text(
-                AppLocalizations.of(context)!.back_to_exit,
+                AppLocalizations.of(context)!.back_to_exit_creator,
                 style: const TextStyle(
                   color: Colors.white,
                 ),
               ),
               duration: const Duration(seconds: 2),
-              backgroundColor: Colors.black,
+              backgroundColor: Theme.of(context).errorColor,
             ));
           return false;
         } else {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/custom_youtube_player.dart';
-import 'package:under_control_v2/features/core/utils/extract_youtube_id.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
+import '../../../../core/presentation/widgets/custom_youtube_player.dart';
+import '../../../../core/utils/extract_youtube_id.dart';
 import '../../../domain/entities/instruction_step.dart';
 
 class YoutubeStep extends StatelessWidget {
@@ -16,19 +16,6 @@ class YoutubeStep extends StatelessWidget {
   final InstructionStep step;
 
   final Function(InstructionStep) updateStep;
-
-  void _updateVideoId(String videoId) {
-    updateStep(
-      InstructionStep(
-        id: step.id,
-        contentType: step.contentType,
-        contentUrl: videoId,
-        description: step.description,
-        file: step.file,
-        title: step.title,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

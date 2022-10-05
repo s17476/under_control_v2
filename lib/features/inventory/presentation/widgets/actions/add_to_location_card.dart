@@ -76,15 +76,10 @@ class AddToLocationCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: !isFirstPage
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.end,
               children: [
-                if (isFirstPage)
-                  BackwardTextButton(
-                    icon: Icons.cancel,
-                    color: Theme.of(context).textTheme.headline4!.color!,
-                    label: AppLocalizations.of(context)!.cancel,
-                    function: () => Navigator.pop(context),
-                  ),
                 if (!isFirstPage)
                   BackwardTextButton(
                     icon: Icons.arrow_back_ios_new,

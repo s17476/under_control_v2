@@ -426,38 +426,65 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       ),
     ];
 
-    return Scaffold(body: BlocBuilder<InstructionBloc, InstructionState>(
-      builder: (context, state) {
-        if (state is InstructionLoadingState) {
-          return const LoadingPage();
+    DateTime preBackpress = DateTime.now();
+
+    return WillPopScope(
+      onWillPop: () async {
+        // double click to exit the app
+        final timegap = DateTime.now().difference(preBackpress);
+        final cantExit = timegap >= const Duration(seconds: 2);
+        preBackpress = DateTime.now();
+        if (cantExit) {
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.back_to_exit_creator,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              duration: const Duration(seconds: 2),
+              backgroundColor: Theme.of(context).errorColor,
+            ));
+          return false;
         } else {
-          return Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Form(
-                key: _formKey,
-                child: PageView(
-                  controller: _pageController,
-                  children: _pages,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 32),
-                child: SmoothPageIndicator(
-                  controller: _pageController,
-                  count: _pages.length,
-                  effect: JumpingDotEffect(
-                    dotHeight: 10,
-                    dotWidth: 10,
-                    jumpScale: 2,
-                    activeDotColor: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-            ],
-          );
+          return true;
         }
       },
-    ));
+      child: Scaffold(body: BlocBuilder<InstructionBloc, InstructionState>(
+        builder: (context, state) {
+          if (state is InstructionLoadingState) {
+            return const LoadingPage();
+          } else {
+            return Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Form(
+                  key: _formKey,
+                  child: PageView(
+                    controller: _pageController,
+                    children: _pages,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 32),
+                  child: SmoothPageIndicator(
+                    controller: _pageController,
+                    count: _pages.length,
+                    effect: JumpingDotEffect(
+                      dotHeight: 10,
+                      dotWidth: 10,
+                      jumpScale: 2,
+                      activeDotColor: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+        },
+      )),
+    );
   }
 }

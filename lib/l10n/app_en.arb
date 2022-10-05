@@ -79,6 +79,10 @@
     "@content_youtube": {
       "description": "youtube"
     },
+    "content_youtube_not_added": "YouTube video id or link NOT added",
+    "@content_youtube_not_added": {
+      "description": "youtube_not_added"
+    },
     "content_youtube_paste_here": "Paste YouTube video ID or link here",
     "@content_youtube_paste_here": {
       "description": "youtube link"
@@ -249,6 +253,10 @@
     },
     "back_to_exit": "Press Back button again to Exit.",
     "@back_to_exit": {
+      "description": "Back button to exit - SnackBar"
+    },
+    "back_to_exit_creator": "Press Back button again to exit this creator. Warning! All data will be lost!",
+    "@back_to_exit_creator": {
       "description": "Back button to exit - SnackBar"
     },
     "password": "Password",

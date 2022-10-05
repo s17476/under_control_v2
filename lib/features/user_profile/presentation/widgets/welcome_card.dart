@@ -66,17 +66,8 @@ class WelcomeCard extends StatelessWidget with ResponsiveSize {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  BackwardTextButton(
-                    icon: Icons.logout,
-                    color: Colors.black,
-                    label: AppLocalizations.of(context)!
-                        .user_profile_add_user_signout,
-                    function: () => context.read<AuthenticationBloc>().add(
-                          SignoutEvent(),
-                        ),
-                  ),
                   ForwardTextButton(
                     color: Theme.of(context).textTheme.headline4!.color!,
                     label: AppLocalizations.of(context)!

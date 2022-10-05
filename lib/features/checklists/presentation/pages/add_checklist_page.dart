@@ -143,39 +143,67 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
         addNewChecklist: addNewChecklist,
       ),
     ];
-    return Scaffold(
-      body: BlocBuilder<ChecklistBloc, ChecklistState>(
-        builder: (context, state) {
-          if (state is ChecklistLoadingState) {
-            return const LoadingPage();
-          } else {
-            return Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Form(
-                  key: _formKey,
-                  child: PageView(
-                    controller: _pageController,
-                    children: _pages,
-                  ),
+
+    DateTime preBackpress = DateTime.now();
+
+    return WillPopScope(
+      onWillPop: () async {
+        // double click to exit the app
+        final timegap = DateTime.now().difference(preBackpress);
+        final cantExit = timegap >= const Duration(seconds: 2);
+        preBackpress = DateTime.now();
+        if (cantExit) {
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.back_to_exit_creator,
+                style: const TextStyle(
+                  color: Colors.white,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: SmoothPageIndicator(
-                    controller: _pageController,
-                    count: _pages.length,
-                    effect: JumpingDotEffect(
-                      dotHeight: 10,
-                      dotWidth: 10,
-                      jumpScale: 2,
-                      activeDotColor: Theme.of(context).primaryColor,
+              ),
+              duration: const Duration(seconds: 2),
+              backgroundColor: Theme.of(context).errorColor,
+            ));
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Scaffold(
+        body: BlocBuilder<ChecklistBloc, ChecklistState>(
+          builder: (context, state) {
+            if (state is ChecklistLoadingState) {
+              return const LoadingPage();
+            } else {
+              return Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Form(
+                    key: _formKey,
+                    child: PageView(
+                      controller: _pageController,
+                      children: _pages,
                     ),
                   ),
-                ),
-              ],
-            );
-          }
-        },
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: SmoothPageIndicator(
+                      controller: _pageController,
+                      count: _pages.length,
+                      effect: JumpingDotEffect(
+                        dotHeight: 10,
+                        dotWidth: 10,
+                        jumpScale: 2,
+                        activeDotColor: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+          },
+        ),
       ),
     );
   }

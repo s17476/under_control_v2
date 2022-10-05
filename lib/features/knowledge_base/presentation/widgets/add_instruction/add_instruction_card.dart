@@ -140,14 +140,8 @@ class AddInstructionCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                BackwardTextButton(
-                  icon: Icons.cancel,
-                  color: Theme.of(context).textTheme.headline4!.color!,
-                  label: AppLocalizations.of(context)!.cancel,
-                  function: () => Navigator.pop(context),
-                ),
                 ForwardTextButton(
                   color: Theme.of(context).textTheme.headline5!.color!,
                   label:
