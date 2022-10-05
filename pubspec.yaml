@@ -64,6 +64,7 @@ dependencies:
   shimmer: ^2.0.0
   video_player: ^2.4.7
   youtube_player_iframe: ^3.1.0
+  file_picker: ^5.2.0+1
   
 
 
@@ -124,6 +125,7 @@ flutter:
     - assets/instruction.png
     - assets/video.png
     - assets/youtube.png
+    - assets/pdf.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

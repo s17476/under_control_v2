@@ -16,6 +16,7 @@ import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/utils/choice.dart';
 import '../../../../core/utils/responsive_size.dart';
+import '../steps/pdf_step.dart';
 import '../steps/video_step.dart';
 import '../steps/youtube_step.dart';
 
@@ -184,10 +185,10 @@ class AddStepCard extends StatelessWidget {
                         VideoStep(step: step, updateStep: updateStep),
                       if (step.contentType == ContentType.youtube)
                         YoutubeStep(step: step, updateStep: updateStep),
+                      if (step.contentType == ContentType.pdf)
+                        PdfStep(step: step, updateStep: updateStep),
                     ],
                   ),
-                  if (step.contentType == ContentType.pdf)
-                    Text(step.contentType.name),
                   if (step.contentType == ContentType.url)
                     Text(step.contentType.name),
 
