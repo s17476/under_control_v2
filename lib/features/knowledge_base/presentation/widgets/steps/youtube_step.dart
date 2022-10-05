@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/custom_youtube_player.dart';
+import 'package:under_control_v2/features/core/utils/extract_youtube_id.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../domain/entities/instruction_step.dart';
@@ -16,12 +17,27 @@ class YoutubeStep extends StatelessWidget {
 
   final Function(InstructionStep) updateStep;
 
+  void _updateVideoId(String videoId) {
+    updateStep(
+      InstructionStep(
+        id: step.id,
+        contentType: step.contentType,
+        contentUrl: videoId,
+        description: step.description,
+        file: step.file,
+        title: step.title,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         if (step.contentUrl != null)
-          CustomYoutubePlayer(contentUrl: step.contentUrl!),
+          CustomYoutubePlayer(
+            contentUrl: step.contentUrl!,
+          ),
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
@@ -63,16 +79,19 @@ class YoutubeStep extends StatelessWidget {
                 },
                 onChanged: (val) {
                   if (val!.trim().isNotEmpty) {
-                    updateStep(
-                      InstructionStep(
-                        id: step.id,
-                        contentType: step.contentType,
-                        contentUrl: val.trim(),
-                        description: step.description,
-                        file: step.file,
-                        title: step.title,
-                      ),
-                    );
+                    final result = extractYoutubeId(val.trim());
+                    if (result.isNotEmpty) {
+                      updateStep(
+                        InstructionStep(
+                          id: step.id,
+                          contentType: step.contentType,
+                          contentUrl: result,
+                          description: step.description,
+                          file: step.file,
+                          title: step.title,
+                        ),
+                      );
+                    }
                   }
                 },
               ),

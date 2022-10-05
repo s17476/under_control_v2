@@ -15,32 +15,9 @@ class CustomYoutubePlayer extends StatefulWidget {
 
 class _CustomYoutubePlayerState extends State<CustomYoutubePlayer> {
   late YoutubePlayerController _controller;
-  String youtubeId = '';
-
-  String _extractYoutubeId() {
-    try {
-      if (widget.contentUrl.contains('youtu.be')) {
-        final index = widget.contentUrl.lastIndexOf('/');
-        return widget.contentUrl.substring(index + 1);
-      } else if (widget.contentUrl.contains('youtube.com/watch')) {
-        final beginIndex = widget.contentUrl.indexOf('=');
-        final endIndex = widget.contentUrl.indexOf('&');
-        if (endIndex >= 0) {
-          return widget.contentUrl.substring(beginIndex + 1, endIndex);
-        } else {
-          return widget.contentUrl.substring(beginIndex + 1);
-        }
-      } else {
-        return widget.contentUrl;
-      }
-    } catch (e) {
-      return '';
-    }
-  }
 
   void _initVideo() {
-    youtubeId = _extractYoutubeId();
-    _controller.cueVideoById(videoId: youtubeId);
+    _controller.cueVideoById(videoId: widget.contentUrl);
   }
 
   @override
@@ -59,9 +36,11 @@ class _CustomYoutubePlayerState extends State<CustomYoutubePlayer> {
 
   @override
   Widget build(BuildContext context) {
-    youtubeId = _extractYoutubeId();
-    if (_controller.metadata.videoId != youtubeId) {
+    // _youtubeId = extractYoutubeId(widget.contentUrl);
+    if (_controller.metadata.videoId != widget.contentUrl) {
       _initVideo();
+      print('_controller.metadata.videoId');
+      print(_controller.metadata.videoId);
     }
     return YoutubePlayerScaffold(
       controller: _controller,
