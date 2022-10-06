@@ -22,10 +22,10 @@ class InstructionModel extends Instruction {
     String? name,
     String? description,
     String? category,
-    List<InstructionStep>? steps,
+    List<InstructionStepModel>? steps,
     List<String>? locations,
     String? userId,
-    List<LastEdit>? lastEdited,
+    List<LastEditModel>? lastEdited,
     bool? isPublished,
   }) {
     return InstructionModel(
@@ -47,14 +47,10 @@ class InstructionModel extends Instruction {
     result.addAll({'name': name});
     result.addAll({'description': description});
     result.addAll({'category': category});
-    result.addAll({
-      'steps': steps.map((x) => (x as InstructionStepModel).toMap()).toList()
-    });
+    result.addAll({'steps': steps.map((x) => x.toMap()).toList()});
     result.addAll({'locations': locations});
     result.addAll({'userId': userId});
-    result.addAll({
-      'lastEdited': lastEdited.map((x) => (x as LastEditModel).toMap()).toList()
-    });
+    result.addAll({'lastEdited': lastEdited.map((x) => x.toMap()).toList()});
     result.addAll({'isPublished': isPublished});
 
     return result;
@@ -66,14 +62,14 @@ class InstructionModel extends Instruction {
       name: map['name'] ?? '',
       description: map['description'] ?? '',
       category: map['category'] ?? '',
-      steps: List<InstructionStep>.from(
+      steps: List<InstructionStepModel>.from(
         map['steps']?.map(
           (x) => InstructionStepModel.fromMap(x),
         ),
       ),
       locations: List<String>.from(map['locations']),
       userId: map['userId'] ?? '',
-      lastEdited: List<LastEdit>.from(
+      lastEdited: List<LastEditModel>.from(
         map['lastEdited']?.map(
           (x) => LastEditModel.fromMap(x),
         ),
@@ -85,7 +81,7 @@ class InstructionModel extends Instruction {
   InstructionModel deepCopy() {
     return copyWith(
       locations: [...locations],
-      steps: steps.map((e) => (e as InstructionStepModel).copyWith()).toList(),
+      steps: steps.map((e) => e.copyWith()).toList(),
     );
   }
 }

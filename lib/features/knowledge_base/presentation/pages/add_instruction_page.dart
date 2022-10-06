@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:under_control_v2/features/core/data/models/last_edit_model.dart';
+import 'package:under_control_v2/features/core/domain/entities/last_edit.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/widgets/add_instruction/add_instruction_publish_card.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
+import '../../../core/utils/location_selection_helpers.dart';
 import '../../../core/utils/show_snack_bar.dart';
+import '../../../groups/presentation/widgets/add_group/add_group_locations_card.dart';
+import '../../../locations/domain/entities/location.dart';
+import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../data/models/instruction_model.dart';
 import '../../data/models/instruction_step_model.dart';
 import '../../domain/entities/content_type.dart';
@@ -30,6 +39,7 @@ class AddInstructionPage extends StatefulWidget {
 
 class _AddInstructionPageState extends State<AddInstructionPage> {
   Instruction? _instruction;
+  late String _userId;
 
   List<Widget> _pages = [];
 
@@ -42,14 +52,127 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
 
   String _category = '';
 
-  List<InstructionStep> _steps = [];
+  bool _isPublished = false;
 
-  List<InstructionStep> _getFinalSteps() =>
+  List<InstructionStepModel> _steps = [];
+  List<Location> _selectedLocations = [];
+  List<String> _locationsChildren = [];
+  List<String> _locationsContext = [];
+  List<String> _totalSelectedLocations = [];
+
+  List<InstructionStepModel> _getFinalSteps() =>
       _steps.sublist(0, _steps.length - 1);
-  // _steps.where((stp) => stp.contentType != ContentType.unknown).toList()
-  //   ..sort(
-  //     (a, b) => a.id.compareTo(b.id),
-  //   );
+
+  void _setIsPublished(bool value) {
+    setState(() {
+      _isPublished = value;
+    });
+  }
+
+  // select / unselect location
+  void _toggleLocationSelection(
+    BuildContext context,
+    Location location,
+    bool isSelected,
+  ) {
+    // gets all locations
+    final allLocations =
+        (context.read<LocationBloc>().state as LocationLoadedState)
+            .allLocations
+            .allLocations;
+    // gets selected location children
+    // if is selected
+    if (!isSelected) {
+      List<String> tmpChildren = getSelectedLocationsChildrenId(
+        location,
+        allLocations,
+      );
+      List<Location> tmpLocations = [..._selectedLocations];
+
+      // finds parent location
+      if (location.parentId.isNotEmpty) {
+        if (_locationsChildren.contains(location.parentId) ||
+            _selectedLocations
+                .where((element) => element.id == location.parentId)
+                .toList()
+                .isNotEmpty) {
+          tmpChildren.add(location.id);
+          tmpChildren.addAll(_locationsChildren);
+        } else {
+          tmpLocations.add(location);
+          tmpChildren.addAll(_locationsChildren);
+        }
+        // top level location
+      } else {
+        // remove all children from selected locations
+        for (var loc in tmpChildren) {
+          final location = allLocations.firstWhere(
+            (element) => element.id == loc,
+          );
+          tmpLocations.remove(location);
+        }
+        // add selected location to selected locations list
+        tmpLocations.add(location);
+        // add selected location children to state children list
+        tmpChildren.addAll(_locationsChildren);
+      }
+      // remove duplicates
+      tmpChildren = tmpChildren.toSet().toList();
+      tmpLocations = tmpLocations.toSet().toList();
+      // update selected locations
+      List<Location> updatedLocations = [];
+      for (var location in tmpLocations) {
+        if (!tmpChildren.contains(location.id)) {
+          updatedLocations.add(location);
+        }
+      }
+      // update locations context
+      final updatedContext = getselectedLocationsContext(
+          updatedLocations, tmpChildren, allLocations);
+
+      setState(() {
+        _locationsChildren = tmpChildren;
+        _selectedLocations = updatedLocations;
+        _locationsContext = updatedContext;
+      });
+
+      // if is unselected
+    } else {
+      // updates children
+      List<String> tmpChildren = getSelectedLocationsChildrenId(
+        location,
+        allLocations,
+      );
+      tmpChildren.add(location.id);
+      final List<String> updatedChildren = [];
+      for (var child in _locationsChildren) {
+        if (!tmpChildren.contains(child)) {
+          updatedChildren.add(child);
+        }
+      }
+
+      // updates selected locations
+      List<Location> tmpLocations = _selectedLocations;
+      tmpLocations.remove(location);
+      final updatedContext = getselectedLocationsContext(
+        tmpLocations,
+        updatedChildren,
+        allLocations,
+      );
+
+      setState(() {
+        _locationsChildren = updatedChildren;
+        _selectedLocations = tmpLocations;
+        _locationsContext = updatedContext;
+      });
+    }
+    setState(() {
+      _totalSelectedLocations = [..._locationsChildren];
+      _totalSelectedLocations.addAll(
+        _selectedLocations.map((e) => e.id).toList(),
+      );
+    });
+  }
 
   void _addNewInstruction(BuildContext context) {
     String errorMessage = '';
@@ -62,6 +185,10 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       // category selection validation
     } else if (_category.isEmpty) {
       errorMessage = AppLocalizations.of(context)!.category_no_select;
+      // locations selection validation
+    } else if (_selectedLocations.isEmpty) {
+      errorMessage = AppLocalizations.of(context)!
+          .group_management_add_error_no_location_selected;
       // steps list validation
     } else if (_getFinalSteps().isEmpty) {
       errorMessage = AppLocalizations.of(context)!.instruction_no_steps;
@@ -88,92 +215,42 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         context: context,
         message: 'OK',
       );
+
+      final lastEdit = LastEditModel(userId: _userId, dateTime: DateTime.now());
+      List<LastEditModel> lastEdited = [];
+      if (_instruction != null) {
+        lastEdited.addAll([..._instruction!.lastEdited, lastEdit]);
+      } else {
+        lastEdited.add(lastEdit);
+      }
+
+      final newInstruction = InstructionModel(
+        id: _instruction != null ? _instruction!.id : '',
+        name: _titleTexEditingController.text.trim(),
+        description: _descriptionTextEditingController.text.trim(),
+        category: _category,
+        steps: _getFinalSteps(),
+        locations: _totalSelectedLocations,
+        userId: _instruction != null ? _instruction!.userId : _userId,
+        lastEdited: lastEdited,
+        isPublished: _isPublished,
+      );
+
+      if (_instruction != null) {
+        context.read<InstructionManagementBloc>().add(
+              UpdateInstructionEvent(
+                instruction: newInstruction,
+              ),
+            );
+      } else {
+        context.read<InstructionManagementBloc>().add(
+              AddInstructionEvent(
+                instruction: newInstruction,
+              ),
+            );
+      }
     }
   }
-
-  // void _addNewItem(BuildContext context) {
-  //   double price = 0;
-  //   // item name validation
-  //   if (!_formKey.currentState!.validate()) {
-  //     errorMessage = AppLocalizations.of(context)!.item_add_error_name_to_short;
-  //   } else {
-  //     // price validation
-  //     if (_priceTextEditingController.text.trim().isNotEmpty) {
-  //       try {
-  //         price = double.parse(_priceTextEditingController.text.trim());
-  //         if (price < 0) {
-  //           errorMessage =
-  //               AppLocalizations.of(context)!.incorrect_price_to_small;
-  //         }
-  //       } catch (e) {
-  //         errorMessage = AppLocalizations.of(context)!.incorrect_price_format;
-  //       }
-  //     }
-  //     // category selection validation
-  //     if (_category.isEmpty) {
-  //       errorMessage =
-  //           AppLocalizations.of(context)!.item_add_error_category_not_selected;
-  //     } else {
-  //       // item unit selection validation
-
-  //       if (_itemUnit.isEmpty) {
-  //         errorMessage =
-  //             AppLocalizations.of(context)!.item_add_error_unit_not_selected;
-  //       } else if (_item == null) {
-  //         final currentState = context.read<ItemsBloc>().state;
-  //         if (currentState is ItemsLoadedState) {
-  //           final tmpItems = currentState.allItems.allItems
-  //               .where((i) => i.name == _nameTexEditingController.text.trim());
-  //           if (tmpItems.isNotEmpty) {
-  //             errorMessage = AppLocalizations.of(context)!
-  //                 .group_management_add_error_name_exists;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   // shows SnackBar if validation error occures
-  //   if (errorMessage.isNotEmpty) {
-  //     showSnackBar(
-  //       context: context,
-  //       message: errorMessage,
-  //       isErrorMessage: true,
-  //     );
-  //     // saves group to DB if no error
-  //   } else {
-  //     final newItem = ItemModel(
-  //       id: _item != null ? _item!.id : '',
-  //       name: _nameTexEditingController.text.trim(),
-  //       description: _descriptionTexEditingController.text.trim(),
-  //       category: _category,
-  //       price: price,
-  //       itemCode: _codeTextEditingController.text.trim(),
-  //       itemBarCode: _barCodeTextEditingController.text.trim(),
-  //       itemPhoto: _item != null ? _item!.itemPhoto : '',
-  //       itemUnit: ItemUnit.fromString(_itemUnit),
-  //       amountInLocations: _item != null ? _item!.amountInLocations : const [],
-  //       locations: _item != null ? _item!.locations : const [],
-  //       sparePartFor: const [],
-  //     );
-
-  //     if (_item != null) {
-  //       context.read<ItemsManagementBloc>().add(UpdateItemEvent(
-  //             item: newItem,
-  //             itemPhoto: _itemImage,
-  //           ));
-  //     } else {
-  //       context.read<ItemsManagementBloc>().add(
-  //             AddItemEvent(
-  //               item: newItem,
-  //               itemPhoto: _itemImage,
-  //             ),
-  //           );
-  //     }
-
-  //     Navigator.pop(context);
-  //   }
-  // }
 
   void _setCategory(String value) {
     setState(() {
@@ -181,7 +258,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
     });
   }
 
-  void _updateStep(InstructionStep step) {
+  void _updateStep(InstructionStepModel step) {
     final index = _steps.indexWhere((stp) => stp.id == step.id);
     if (index >= 0) {
       setState(() {
@@ -195,7 +272,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
     if (index >= 0) {
       setState(() {
         for (int i = index + 1; i < _steps.length; i++) {
-          _steps[i] = InstructionStep(
+          _steps[i] = InstructionStepModel(
             id: _steps[i].id - 1,
             contentType: _steps[i].contentType,
             contentUrl: _steps[i].contentUrl,
@@ -215,10 +292,10 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       setState(() {
         _steps.insert(
           index,
-          InstructionStep(id: index, contentType: ContentType.unknown),
+          InstructionStepModel(id: index, contentType: ContentType.unknown),
         );
         for (int i = index + 1; i < _steps.length; i++) {
-          _steps[i] = InstructionStep(
+          _steps[i] = InstructionStepModel(
             id: _steps[i].id + 1,
             contentType: _steps[i].contentType,
             contentUrl: _steps[i].contentUrl,
@@ -237,10 +314,10 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       setState(() {
         _steps.insert(
           index + 1,
-          InstructionStep(id: index + 1, contentType: ContentType.unknown),
+          InstructionStepModel(id: index + 1, contentType: ContentType.unknown),
         );
         for (int i = index + 2; i < _steps.length; i++) {
-          _steps[i] = InstructionStep(
+          _steps[i] = InstructionStepModel(
             id: _steps[i].id + 1,
             contentType: _steps[i].contentType,
             contentUrl: _steps[i].contentUrl,
@@ -253,11 +330,11 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
     }
   }
 
-  void _moveBack(InstructionStep step) {
+  void _moveStepBack(InstructionStep step) {
     final index = _steps.indexWhere((stp) => stp.id == step.id);
     if (index >= 1) {
       setState(() {
-        _steps[index - 1] = InstructionStep(
+        _steps[index - 1] = InstructionStepModel(
           id: _steps[index - 1].id + 1,
           contentType: _steps[index - 1].contentType,
           contentUrl: _steps[index - 1].contentUrl,
@@ -268,7 +345,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         _steps.removeAt(index);
         _steps.insert(
           index - 1,
-          InstructionStep(
+          InstructionStepModel(
             id: step.id - 1,
             contentType: step.contentType,
             contentUrl: step.contentUrl,
@@ -285,11 +362,11 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
     }
   }
 
-  void _moveForward(InstructionStep step) {
+  void _moveStepForward(InstructionStep step) {
     final index = _steps.indexWhere((stp) => stp.id == step.id);
     if (index < _steps.length - 2) {
       setState(() {
-        _steps[index + 1] = InstructionStep(
+        _steps[index + 1] = InstructionStepModel(
           id: _steps[index + 1].id - 1,
           contentType: _steps[index + 1].contentType,
           contentUrl: _steps[index + 1].contentUrl,
@@ -300,7 +377,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         _steps.removeAt(index);
         _steps.insert(
           index + 1,
-          InstructionStep(
+          InstructionStepModel(
             id: step.id + 1,
             contentType: step.contentType,
             contentUrl: step.contentUrl,
@@ -324,7 +401,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
     if (index >= 0) {
       if (index == _steps.length - 1) {
         setState(() {
-          _steps[index] = InstructionStep(
+          _steps[index] = InstructionStepModel(
             id: _steps[index].id,
             contentType: contentType,
             description: null,
@@ -333,7 +410,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
             file: null,
           );
           _steps.add(
-            InstructionStep(
+            InstructionStepModel(
               id: _steps.length,
               contentType: ContentType.unknown,
             ),
@@ -341,7 +418,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         });
       } else {
         setState(() {
-          _steps[index] = InstructionStep(
+          _steps[index] = InstructionStepModel(
             id: instructionStep.id,
             contentType: contentType,
             description: instructionStep.description,
@@ -372,6 +449,11 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
   void didChangeDependencies() {
     final arguments = ModalRoute.of(context)!.settings.arguments;
 
+    final userState = context.watch<UserProfileBloc>().state;
+    if (userState is Approved) {
+      _userId = userState.userProfile.id;
+    }
+
     if (arguments != null && arguments is InstructionModel) {
       _instruction = arguments.deepCopy();
 
@@ -379,7 +461,24 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       _descriptionTextEditingController.text = _instruction!.description;
       _category = _instruction!.category;
       _steps = _instruction!.steps;
+      List<Location> tmpSelecedlocations = [];
+      final allLocations =
+          (context.read<LocationBloc>().state as LocationLoadedState)
+              .allLocations
+              .allLocations;
+      for (var locationId in _instruction!.locations) {
+        final tmp =
+            allLocations.where((element) => element.id == locationId).toList();
+        if (tmp.isNotEmpty) {
+          tmpSelecedlocations.addAll(tmp);
+        }
+      }
+      _selectedLocations = tmpSelecedlocations;
+      _totalSelectedLocations = _instruction!.locations;
+      _locationsContext =
+          getselectedLocationsContext(_selectedLocations, [], allLocations);
     }
+
     super.didChangeDependencies();
   }
 
@@ -404,6 +503,15 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
           setCategory: _setCategory,
         ),
       ),
+      KeepAlivePage(
+        child: AddGroupLocationsCard(
+          pageController: _pageController,
+          locationsChildren: _locationsChildren,
+          locationsContext: _locationsContext,
+          selectedLocations: _selectedLocations,
+          toggleLocationSelection: _toggleLocationSelection,
+        ),
+      ),
       for (var step in _steps)
         KeepAlivePage(
           child: AddStepCard(
@@ -415,17 +523,24 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
             isLastStep: step.id == _steps.length - 1,
             insertStepAfter: _insertStepAfter,
             insertStepBefore: _insertStepBefore,
-            moveBack: _moveBack,
-            moveForward: _moveForward,
+            moveBack: _moveStepBack,
+            moveForward: _moveStepForward,
           ),
         ),
+      AddInstructionPublishCard(
+        pageController: _pageController,
+        setIsPublished: _setIsPublished,
+        isPublished: _isPublished,
+      ),
       AddInstructionSummaryCard(
         pageController: _pageController,
         titleTexEditingController: _titleTexEditingController,
         descriptionTextEditingController: _descriptionTextEditingController,
         steps: _getFinalSteps(),
+        totalSelectedLocations: _totalSelectedLocations,
         category: _category,
         addNewInstruction: _addNewInstruction,
+        isPublished: _isPublished,
       ),
     ];
 

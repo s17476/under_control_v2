@@ -1,17 +1,18 @@
 import 'package:equatable/equatable.dart';
+import 'package:under_control_v2/features/core/data/models/last_edit_model.dart';
 
 import '../../../core/domain/entities/last_edit.dart';
-import 'instruction_step.dart';
+import '../../data/models/instruction_step_model.dart';
 
 class Instruction extends Equatable {
   final String id;
   final String name;
   final String description;
   final String category;
-  final List<InstructionStep> steps;
+  final List<InstructionStepModel> steps;
   final List<String> locations;
   final String userId;
-  final List<LastEdit> lastEdited;
+  final List<LastEditModel> lastEdited;
   final bool isPublished;
 
   const Instruction({

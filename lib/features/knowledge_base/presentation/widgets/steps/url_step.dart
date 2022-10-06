@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' show PreviewData;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_link_previewer/flutter_link_previewer.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/url_preview.dart';
@@ -15,14 +16,14 @@ class UrlStep extends StatelessWidget {
     required this.updateStep,
   }) : super(key: key);
 
-  final InstructionStep step;
+  final InstructionStepModel step;
 
-  final Function(InstructionStep) updateStep;
+  final Function(InstructionStepModel) updateStep;
 
   void _setUrl(String url) async {
     if (url != step.contentUrl && url.isNotEmpty) {
       updateStep(
-        InstructionStep(
+        InstructionStepModel(
           id: step.id,
           contentType: step.contentType,
           contentUrl: url,
@@ -33,7 +34,7 @@ class UrlStep extends StatelessWidget {
       );
     } else if (url.isEmpty) {
       updateStep(
-        InstructionStep(
+        InstructionStepModel(
           id: step.id,
           contentType: step.contentType,
           contentUrl: null,
@@ -174,7 +175,7 @@ class UrlStep extends StatelessWidget {
                 onChanged: (val) {
                   if (val!.trim().isNotEmpty) {
                     updateStep(
-                      InstructionStep(
+                      InstructionStepModel(
                         id: step.id,
                         contentType: step.contentType,
                         contentUrl: step.contentUrl,
@@ -200,7 +201,7 @@ class UrlStep extends StatelessWidget {
                 onChanged: (val) {
                   if (val!.trim().isNotEmpty) {
                     updateStep(
-                      InstructionStep(
+                      InstructionStepModel(
                         id: step.id,
                         contentType: step.contentType,
                         contentUrl: step.contentUrl,

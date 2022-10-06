@@ -20,7 +20,9 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.titleTexEditingController,
     required this.descriptionTextEditingController,
     required this.steps,
+    required this.totalSelectedLocations,
     required this.category,
+    required this.isPublished,
     required this.addNewInstruction,
   }) : super(key: key);
 
@@ -30,8 +32,11 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
   final TextEditingController descriptionTextEditingController;
 
   final List<InstructionStep> steps;
+  final List<String> totalSelectedLocations;
 
   final String category;
+
+  final bool isPublished;
 
   final Function(BuildContext context) addNewInstruction;
 
@@ -81,6 +86,22 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                     const Divider(
                       thickness: 1.5,
                     ),
+                    // save mode
+                    SummaryCard(
+                      title: AppLocalizations.of(context)!.save_mode,
+                      validator: () => isPublished ? null : '',
+                      child: Text(
+                        isPublished
+                            ? AppLocalizations.of(context)!.publish
+                            : AppLocalizations.of(context)!.draft,
+                      ),
+                      pageController: pageController,
+                      onTapAnimateToPage: steps.length + 3,
+                      errorColor: Colors.orange.withAlpha(210),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     // item name
                     SummaryCard(
                       title: AppLocalizations.of(context)!.title,
@@ -127,6 +148,27 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                     const SizedBox(
                       height: 8,
                     ),
+                    // locations
+                    SummaryCard(
+                      title: AppLocalizations.of(context)!
+                          .group_management_add_card_selected_locations,
+                      validator: () => totalSelectedLocations.isEmpty
+                          ? AppLocalizations.of(context)!
+                              .group_management_add_error_no_location_selected
+                          : null,
+                      child: Text(
+                        totalSelectedLocations.length.toString(),
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      pageController: pageController,
+                      onTapAnimateToPage: 1,
+                    ),
+
+                    const SizedBox(
+                      height: 8,
+                    ),
 
                     // no steps added
                     SummaryCard(
@@ -138,7 +180,7 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                         '${AppLocalizations.of(context)!.instruction_step_total}: ${steps.length}',
                       ),
                       pageController: pageController,
-                      onTapAnimateToPage: 1,
+                      onTapAnimateToPage: 2,
                     ),
                     const SizedBox(
                       height: 8,
@@ -195,7 +237,7 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                                     ],
                                   ),
                             pageController: pageController,
-                            onTapAnimateToPage: step.id + 1,
+                            onTapAnimateToPage: step.id + 2,
                           ),
                           const SizedBox(
                             height: 8,
@@ -228,12 +270,15 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                   ),
                   ForwardTextButton(
                     color: Theme.of(context).textTheme.headline5!.color!,
-                    label: AppLocalizations.of(context)!
-                        .user_profile_add_user_personal_data_save,
+                    label: isPublished
+                        ? AppLocalizations.of(context)!.publish
+                        : AppLocalizations.of(context)!.draft,
                     function: () {
                       addNewInstruction(context);
                     },
-                    icon: Icons.save,
+                    icon: isPublished
+                        ? Icons.cloud_upload
+                        : Icons.drive_file_rename_outline_rounded,
                   ),
                 ],
               ),

@@ -1,7 +1,7 @@
 part of 'instruction_management_bloc.dart';
 
 abstract class InstructionManagementEvent extends Equatable {
-  final Instruction instruction;
+  final InstructionModel instruction;
 
   const InstructionManagementEvent({
     required this.instruction,

@@ -49,7 +49,10 @@ class _AddGroupPageState extends State<AddGroupPage> {
 
   // select / unselect location
   void _toggleLocationSelection(
-      BuildContext context, Location location, bool isSelected) {
+    BuildContext context,
+    Location location,
+    bool isSelected,
+  ) {
     // gets all locations
     final allLocations =
         (context.read<LocationBloc>().state as LocationLoadedState)

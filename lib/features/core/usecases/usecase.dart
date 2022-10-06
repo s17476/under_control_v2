@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
 
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
 
@@ -281,7 +282,7 @@ class InstructionCategoryParams extends Equatable {
 }
 
 class InstructionParams extends Equatable {
-  final Instruction instruction;
+  final InstructionModel instruction;
   final String companyId;
 
   const InstructionParams({

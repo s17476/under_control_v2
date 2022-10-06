@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/usecases/add_instruction.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/usecases/delete_instruction.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/usecases/update_instruction.dart';

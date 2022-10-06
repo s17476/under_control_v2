@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:under_control_v2/features/core/presentation/pages/qr_scanner.dart';
 
+import 'bloc_providers.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
 import 'features/authentication/presentation/pages/email_confirmation_page.dart';
@@ -88,73 +89,7 @@ class App extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => getIt<AuthenticationBloc>()),
-        BlocProvider(create: (context) => getIt<UserProfileBloc>()),
-        BlocProvider(create: (context) => getIt<UserManagementBloc>()),
-        BlocProvider(
-          create: (context) => getIt<CompanyProfileBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(create: (context) => getIt<CompanyManagementBloc>()),
-        BlocProvider(
-          create: (context) => getIt<LocationBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<GroupBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(create: (context) => getIt<NewUsersBloc>()),
-        BlocProvider(create: (context) => getIt<SuspendedUsersBloc>()),
-        BlocProvider(
-          create: (context) => getIt<FilterBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(create: (context) => getIt<ChecklistBloc>()),
-        BlocProvider(
-          create: (context) => getIt<ChecklistManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(create: (context) => getIt<ItemCategoryBloc>()),
-        BlocProvider(
-          create: (context) => getIt<ItemCategoryManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<ItemsBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<ItemsManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<ItemActionBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<ItemActionManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<DashboardItemActionBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(create: (context) => getIt<InstructionCategoryBloc>()),
-        BlocProvider(
-          create: (context) => getIt<InstructionCategoryManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<InstructionBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<InstructionManagementBloc>(),
-          lazy: false,
-        ),
-      ],
+    return BlocProviders(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'UnderControl',

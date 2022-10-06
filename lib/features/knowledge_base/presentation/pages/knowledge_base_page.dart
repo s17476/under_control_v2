@@ -14,7 +14,6 @@ class KnowledgeBasePage extends StatelessWidget {
       child: SingleChildScrollView(
         child: BlocBuilder<InstructionBloc, InstructionState>(
           builder: (context, state) {
-            print(state);
             if (state is InstructionLoadedState) {
               return SizedBox(
                 width: double.infinity,
@@ -27,7 +26,7 @@ class KnowledgeBasePage extends StatelessWidget {
                 ),
               );
             } else {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
           },
         ),

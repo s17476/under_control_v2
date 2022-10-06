@@ -1,25 +1,19 @@
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:image_picker/image_picker.dart';
-
-import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction_step.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/widgets/add_instruction/add_step_menu_grid.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/widgets/steps/image_step.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/widgets/steps/text_step.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/widgets/steps/url_step.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/utils/choice.dart';
-import '../../../../core/utils/responsive_size.dart';
+import '../../../data/models/instruction_step_model.dart';
+import '../../../domain/entities/content_type.dart';
+import '../../../domain/entities/instruction_step.dart';
+import '../steps/image_step.dart';
 import '../steps/pdf_step.dart';
+import '../steps/text_step.dart';
+import '../steps/url_step.dart';
 import '../steps/video_step.dart';
 import '../steps/youtube_step.dart';
+import 'add_step_menu_grid.dart';
 
 class AddStepCard extends StatelessWidget {
   const AddStepCard({
@@ -40,16 +34,16 @@ class AddStepCard extends StatelessWidget {
 
   final PageController pageController;
 
-  final InstructionStep step;
+  final InstructionStepModel step;
 
   final Function(InstructionStep, ContentType) setContentType;
 
-  final Function(InstructionStep) updateStep;
-  final Function(InstructionStep) removeStep;
-  final Function(InstructionStep) insertStepBefore;
-  final Function(InstructionStep) insertStepAfter;
-  final Function(InstructionStep) moveBack;
-  final Function(InstructionStep) moveForward;
+  final Function(InstructionStepModel) updateStep;
+  final Function(InstructionStepModel) removeStep;
+  final Function(InstructionStepModel) insertStepBefore;
+  final Function(InstructionStepModel) insertStepAfter;
+  final Function(InstructionStepModel) moveBack;
+  final Function(InstructionStepModel) moveForward;
 
   @override
   Widget build(BuildContext context) {

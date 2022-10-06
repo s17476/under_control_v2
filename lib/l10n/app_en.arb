@@ -31,6 +31,18 @@
     "@category": {
       "description": "Category"
     },
+    "draft": "Save as draft",
+    "@draft": {
+      "description": "draft button"
+    },
+    "publish": "Publish",
+    "@publish": {
+      "description": "publish button"
+    },
+    "save_mode": "Save mode",
+    "@save_mode": {
+      "description": "save mode"
+    },
     "category_select": "Select category",
     "@category_select": {
       "description": "select category"

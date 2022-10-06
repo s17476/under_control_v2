@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:under_control_v2/features/core/utils/get_file_size.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/custom_video_player.dart';
@@ -18,9 +19,9 @@ class VideoStep extends StatelessWidget {
     required this.updateStep,
   }) : super(key: key);
 
-  final InstructionStep step;
+  final InstructionStepModel step;
 
-  final Function(InstructionStep) updateStep;
+  final Function(InstructionStepModel) updateStep;
 
   // picks video from camera or gallery
   void _pickVideo(BuildContext context, ImageSource souruce) async {
@@ -33,7 +34,7 @@ class VideoStep extends StatelessWidget {
       // updates current step
       if (pickedFile != null) {
         updateStep(
-          InstructionStep(
+          InstructionStepModel(
             id: step.id,
             contentType: step.contentType,
             contentUrl: step.contentUrl,
@@ -109,7 +110,7 @@ class VideoStep extends StatelessWidget {
                   if (step.file != null)
                     OverlayIconButton(
                       onPressed: () => updateStep(
-                        InstructionStep(
+                        InstructionStepModel(
                           id: step.id,
                           contentType: step.contentType,
                           contentUrl: step.contentUrl,
@@ -149,7 +150,7 @@ class VideoStep extends StatelessWidget {
                 onChanged: (val) {
                   if (val!.trim().isNotEmpty) {
                     updateStep(
-                      InstructionStep(
+                      InstructionStepModel(
                         id: step.id,
                         contentType: step.contentType,
                         contentUrl: step.contentUrl,
@@ -175,7 +176,7 @@ class VideoStep extends StatelessWidget {
                 onChanged: (val) {
                   if (val!.trim().isNotEmpty) {
                     updateStep(
-                      InstructionStep(
+                      InstructionStepModel(
                         id: step.id,
                         contentType: step.contentType,
                         contentUrl: step.contentUrl,

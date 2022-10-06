@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/custom_youtube_player.dart';
@@ -13,9 +14,9 @@ class YoutubeStep extends StatelessWidget {
     required this.updateStep,
   }) : super(key: key);
 
-  final InstructionStep step;
+  final InstructionStepModel step;
 
-  final Function(InstructionStep) updateStep;
+  final Function(InstructionStepModel) updateStep;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,7 @@ class YoutubeStep extends StatelessWidget {
                     final result = extractYoutubeId(val.trim());
                     if (result.isNotEmpty) {
                       updateStep(
-                        InstructionStep(
+                        InstructionStepModel(
                           id: step.id,
                           contentType: step.contentType,
                           contentUrl: result,
@@ -102,7 +103,7 @@ class YoutubeStep extends StatelessWidget {
                 onChanged: (val) {
                   if (val!.trim().isNotEmpty) {
                     updateStep(
-                      InstructionStep(
+                      InstructionStepModel(
                         id: step.id,
                         contentType: step.contentType,
                         contentUrl: step.contentUrl,
@@ -128,7 +129,7 @@ class YoutubeStep extends StatelessWidget {
                 onChanged: (val) {
                   if (val!.trim().isNotEmpty) {
                     updateStep(
-                      InstructionStep(
+                      InstructionStepModel(
                         id: step.id,
                         contentType: step.contentType,
                         contentUrl: step.contentUrl,

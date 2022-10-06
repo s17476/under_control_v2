@@ -8,6 +8,7 @@ class SummaryCard extends StatelessWidget {
     required this.child,
     required this.pageController,
     required this.onTapAnimateToPage,
+    this.errorColor,
   }) : super(key: key);
 
   final String title;
@@ -15,11 +16,16 @@ class SummaryCard extends StatelessWidget {
   final Widget child;
   final PageController pageController;
   final int onTapAnimateToPage;
+  final Color? errorColor;
 
-  Color getBackgroundColor(BuildContext context, String? errorMessage) =>
+  Color getBackgroundColor(
+    BuildContext context,
+    String? errorMessage, [
+    Color? errorColor,
+  ]) =>
       errorMessage == null
           ? Theme.of(context).primaryColor
-          : Theme.of(context).errorColor.withAlpha(220);
+          : errorColor ?? Theme.of(context).errorColor.withAlpha(220);
   IconData getIcon(BuildContext context, String? errorMessage) =>
       errorMessage == null ? Icons.done : Icons.clear;
 
@@ -39,7 +45,7 @@ class SummaryCard extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: getBackgroundColor(context, errorMessage),
+            color: getBackgroundColor(context, errorMessage, errorColor),
             boxShadow: const [
               BoxShadow(
                 color: Colors.black,

@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/image_viewer.dart';
@@ -21,9 +22,9 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
     required this.updateStep,
   }) : super(key: key);
 
-  final InstructionStep step;
+  final InstructionStepModel step;
 
-  final Function(InstructionStep) updateStep;
+  final Function(InstructionStepModel) updateStep;
 
   void _setImage(BuildContext context, ImageSource souruce) async {
     final picker = ImagePicker();
@@ -37,7 +38,7 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
       );
       if (pickedFile != null) {
         updateStep(
-          InstructionStep(
+          InstructionStepModel(
             id: step.id,
             contentType: step.contentType,
             contentUrl: step.contentUrl,
@@ -147,7 +148,7 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
               if (step.file != null)
                 OverlayIconButton(
                   onPressed: () => updateStep(
-                    InstructionStep(
+                    InstructionStepModel(
                       id: step.id,
                       contentType: step.contentType,
                       contentUrl: step.contentUrl,
@@ -187,7 +188,7 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
             onChanged: (val) {
               if (val!.trim().isNotEmpty) {
                 updateStep(
-                  InstructionStep(
+                  InstructionStepModel(
                     id: step.id,
                     contentType: step.contentType,
                     contentUrl: step.contentUrl,
@@ -213,7 +214,7 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
             onChanged: (val) {
               if (val!.trim().isNotEmpty) {
                 updateStep(
-                  InstructionStep(
+                  InstructionStepModel(
                     id: step.id,
                     contentType: step.contentType,
                     contentUrl: step.contentUrl,
