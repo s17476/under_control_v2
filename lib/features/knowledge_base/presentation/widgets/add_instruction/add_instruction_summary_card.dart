@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
+import '../../../../core/utils/get_file_size.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../domain/entities/content_type.dart';
 import '../../../domain/entities/instruction_step.dart';
@@ -171,6 +172,23 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                                                   .isNotEmpty))
                                         Text(
                                           '${AppLocalizations.of(context)!.description}: ${step.description ?? ''}',
+                                        ),
+                                      if (step.contentType ==
+                                          ContentType.youtube)
+                                        Text(
+                                          '${AppLocalizations.of(context)!.content_youtube_id}: ${step.contentUrl ?? ''}',
+                                        ),
+                                      if (step.contentType == ContentType.url)
+                                        Text(
+                                          '${AppLocalizations.of(context)!.content_url_link}: ${step.contentUrl ?? ''}',
+                                        ),
+                                      if (step.contentType ==
+                                              ContentType.image ||
+                                          step.contentType ==
+                                              ContentType.video ||
+                                          step.contentType == ContentType.pdf)
+                                        Text(
+                                          '${AppLocalizations.of(context)!.size}: ${getFileSize(step.file!.path, 2)}',
                                         ),
                                     ],
                                   ),

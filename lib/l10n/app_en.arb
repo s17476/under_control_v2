@@ -59,6 +59,10 @@
     "@content_url": {
       "description": "url"
     },
+    "content_url_link": "Link",
+    "@content_url_link": {
+      "description": "url link"
+    },
     "content_url_404": "Page not found",
     "@content_url_404": {
       "description": "url 404"
@@ -66,6 +70,10 @@
     "content_url_paste_here": "Type address or paste link here",
     "@content_url_paste_here": {
       "description": "url paste"
+    },
+    "content_url_not_added": "Link NOT added",
+    "@content_url_not_added": {
+      "description": "url not added"
     },
     "content_image": "Image",
     "@content_image": {
@@ -86,6 +94,10 @@
     "content_youtube": "YouTube",
     "@content_youtube": {
       "description": "youtube"
+    },
+    "content_youtube_id": "Video ID",
+    "@content_youtube_id": {
+      "description": "youtube id"
     },
     "content_youtube_not_added": "YouTube video id or link NOT added",
     "@content_youtube_not_added": {

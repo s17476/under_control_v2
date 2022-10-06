@@ -51,7 +51,7 @@ class YoutubeStep extends StatelessWidget {
               ),
               // youtube link
               CustomTextFormField(
-                initialValue: step.title,
+                initialValue: step.contentUrl,
                 fieldKey: 'youtube-link',
                 labelText:
                     AppLocalizations.of(context)!.content_youtube_paste_here,
