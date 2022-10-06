@@ -6,7 +6,7 @@ import 'package:flutter_link_previewer/flutter_link_previewer.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/url_preview.dart';
 import '../../../domain/entities/instruction_step.dart';
-import '../../../utils/validate_step.dart';
+import '../../../utils/steps_validation.dart';
 
 class UrlStep extends StatelessWidget {
   const UrlStep({

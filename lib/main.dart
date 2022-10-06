@@ -146,7 +146,10 @@ class App extends StatelessWidget
           create: (context) => getIt<InstructionCategoryManagementBloc>(),
           lazy: false,
         ),
-        BlocProvider(create: (context) => getIt<InstructionBloc>()),
+        BlocProvider(
+          create: (context) => getIt<InstructionBloc>(),
+          lazy: false,
+        ),
         BlocProvider(
           create: (context) => getIt<InstructionManagementBloc>(),
           lazy: false,

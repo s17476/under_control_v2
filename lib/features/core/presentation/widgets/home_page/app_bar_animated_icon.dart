@@ -1,10 +1,13 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
 
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../../inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
+import '../../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../../inventory/presentation/blocs/items_management/items_management_bloc.dart';
+import '../../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 
 class AppBarAnimatedIcon extends StatefulWidget {
   const AppBarAnimatedIcon({Key? key}) : super(key: key);
@@ -59,6 +62,15 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<ItemsBloc, ItemsState>(
+          listener: (context, state) {
+            if (state is ItemsLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
         BlocListener<ItemsManagementBloc, ItemsManagementState>(
           listener: (context, state) {
             if (state is ItemsManagementLoadingState) {
@@ -79,7 +91,25 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
         ),
         BlocListener<FilterBloc, FilterState>(
           listener: (context, state) {
-            if (state is FilterLoadedState) {
+            if (state is FilterLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<InstructionBloc, InstructionState>(
+          listener: (context, state) {
+            if (state is InstructionLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<InstructionManagementBloc, InstructionManagementState>(
+          listener: (context, state) {
+            if (state is InstructionManagementLoadingState) {
               _startAnimation();
             } else {
               _stopAnimation();

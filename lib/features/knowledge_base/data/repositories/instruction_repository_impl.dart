@@ -61,6 +61,32 @@ class InstructionRepositoryImpl extends InstructionRepository {
                   (step as InstructionStepModel).copyWith(contentUrl: fileUrl));
             }
             break;
+          case ContentType.video:
+            if (step.file != null) {
+              // filereference
+              final fileReference = storageReference
+                  .child('${instructionReference.id}-${step.id}.mp4');
+              // save file
+              await fileReference.putFile(step.file!);
+              // get file url
+              final fileUrl = await fileReference.getDownloadURL();
+              steps.add(
+                  (step as InstructionStepModel).copyWith(contentUrl: fileUrl));
+            }
+            break;
+          case ContentType.pdf:
+            if (step.file != null) {
+              // filereference
+              final fileReference = storageReference
+                  .child('${instructionReference.id}-${step.id}.pdf');
+              // save file
+              await fileReference.putFile(step.file!);
+              // get file url
+              final fileUrl = await fileReference.getDownloadURL();
+              steps.add(
+                  (step as InstructionStepModel).copyWith(contentUrl: fileUrl));
+            }
+            break;
           default:
             steps.add(step);
             break;

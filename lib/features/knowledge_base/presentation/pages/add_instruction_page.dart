@@ -11,7 +11,7 @@ import '../../data/models/instruction_step_model.dart';
 import '../../domain/entities/content_type.dart';
 import '../../domain/entities/instruction.dart';
 import '../../domain/entities/instruction_step.dart';
-import '../../utils/validate_step.dart';
+import '../../utils/steps_validation.dart';
 import '../blocs/instruction/instruction_bloc.dart';
 import '../widgets/add_instruction/add_instruction_card.dart';
 import '../widgets/add_instruction/add_instruction_summary_card.dart';
@@ -452,6 +452,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
             ));
           return false;
         } else {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
           return true;
         }
       },

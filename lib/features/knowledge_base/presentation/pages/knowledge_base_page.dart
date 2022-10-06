@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../blocs/instruction/instruction_bloc.dart';
 
 class KnowledgeBasePage extends StatelessWidget {
   const KnowledgeBasePage({Key? key}) : super(key: key);
@@ -9,17 +12,24 @@ class KnowledgeBasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SingleChildScrollView(
-        child: SizedBox(
-          width: double.infinity,
-          child: Column(
-            children: [
-              for (var i in Iterable<int>.generate(100).toList())
-                Text(
-                  AppLocalizations.of(context)!.bottom_bar_title_knowledge +
-                      i.toString(),
+        child: BlocBuilder<InstructionBloc, InstructionState>(
+          builder: (context, state) {
+            print(state);
+            if (state is InstructionLoadedState) {
+              return SizedBox(
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.bottom_bar_title_knowledge,
+                    ),
+                  ],
                 ),
-            ],
-          ),
+              );
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
         ),
       ),
     );

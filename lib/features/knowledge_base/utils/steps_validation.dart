@@ -16,9 +16,8 @@ String? validateStep(BuildContext context, InstructionStep step) {
   // unknown content
   if (step.contentType == ContentType.unknown) {
     return AppLocalizations.of(context)!.content_type_not_selected;
-  }
-  // text content
-  else if (step.contentType == ContentType.text) {
+    // text content
+  } else if (step.contentType == ContentType.text) {
     // title
     if (step.title == null || step.title!.trim().length < 2) {
       return '${AppLocalizations.of(context)!.header} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
@@ -67,9 +66,6 @@ String? validateStep(BuildContext context, InstructionStep step) {
     } else if (!urlValidation(step.contentUrl!)) {
       return '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} -  ${AppLocalizations.of(context)!.content_url_404}';
     }
-    // file
-  } else {
-    return null;
-    // source
   }
+  return null;
 }

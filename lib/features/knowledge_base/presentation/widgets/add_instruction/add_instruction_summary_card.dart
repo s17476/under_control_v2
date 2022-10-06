@@ -10,7 +10,7 @@ import '../../../../core/utils/responsive_size.dart';
 import '../../../domain/entities/content_type.dart';
 import '../../../domain/entities/instruction_step.dart';
 import '../../../utils/get_step_content_localized_name.dart';
-import '../../../utils/validate_step.dart';
+import '../../../utils/steps_validation.dart';
 import '../../blocs/instruction_category/instruction_category_bloc.dart';
 
 class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
@@ -182,11 +182,13 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                                         Text(
                                           '${AppLocalizations.of(context)!.content_url_link}: ${step.contentUrl ?? ''}',
                                         ),
-                                      if (step.contentType ==
-                                              ContentType.image ||
-                                          step.contentType ==
-                                              ContentType.video ||
-                                          step.contentType == ContentType.pdf)
+                                      if ((step.contentType ==
+                                                  ContentType.image ||
+                                              step.contentType ==
+                                                  ContentType.video ||
+                                              step.contentType ==
+                                                  ContentType.pdf) &&
+                                          step.file != null)
                                         Text(
                                           '${AppLocalizations.of(context)!.size}: ${getFileSize(step.file!.path, 2)}',
                                         ),
