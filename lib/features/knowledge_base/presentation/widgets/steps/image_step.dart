@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/image_viewer.dart';
 import '../../../../core/presentation/widgets/overlay_icon_button.dart';
+import '../../../../core/utils/get_file_size.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../core/utils/size_config.dart';
@@ -67,13 +68,14 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
           // image
           Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                  'assets/photo.png',
-                  fit: BoxFit.fill,
+              if (step.file == null)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    'assets/photo.png',
+                    fit: BoxFit.fill,
+                  ),
                 ),
-              ),
               if (step.contentUrl != null)
                 InkWell(
                   onTap: () {
@@ -117,6 +119,21 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
           const SizedBox(
             height: 16,
           ),
+          // file size
+          if (step.file != null)
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(child: Text(AppLocalizations.of(context)!.size)),
+                    Text(getFileSize(step.file!.path, 2)),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+              ],
+            ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

@@ -59,6 +59,14 @@
     "@content_url": {
       "description": "url"
     },
+    "content_url_404": "Page not found",
+    "@content_url_404": {
+      "description": "url 404"
+    },
+    "content_url_paste_here": "Type address or paste link here",
+    "@content_url_paste_here": {
+      "description": "url paste"
+    },
     "content_image": "Image",
     "@content_image": {
       "description": "Image"
@@ -90,6 +98,10 @@
     "content_pdf": "PDF file",
     "@content_pdf": {
       "description": "pdf"
+    },
+    "content_pdf_not_added": "PDF file NOT added",
+    "@content_pdf_not_added": {
+      "description": "pdf not added"
     },
     "content_text": "Text",
     "@content_text": {

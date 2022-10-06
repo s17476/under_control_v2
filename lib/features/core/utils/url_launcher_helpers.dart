@@ -29,5 +29,5 @@ Future<void> openInBrowser(String url) async {
     scheme: 'https',
     path: url,
   );
-  await launchUrl(launchUri);
+  await launchUrl(launchUri, mode: LaunchMode.externalApplication);
 }

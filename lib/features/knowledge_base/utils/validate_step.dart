@@ -10,7 +10,7 @@ String? validateStep(BuildContext context, InstructionStep step) {
     return AppLocalizations.of(context)!.content_type_not_selected;
   }
   // text content
-  if (step.contentType == ContentType.text) {
+  else if (step.contentType == ContentType.text) {
     // title
     if (step.title == null || step.title!.trim().length < 2) {
       return '${AppLocalizations.of(context)!.header} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
@@ -25,7 +25,7 @@ String? validateStep(BuildContext context, InstructionStep step) {
       return '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} - ${AppLocalizations.of(context)!.header} -  ${AppLocalizations.of(context)!.validation_min_two_characters}';
     } else if ((step.contentUrl == null || step.contentUrl!.isEmpty) &&
         step.file == null) {
-      return AppLocalizations.of(context)!.content_image_not_added;
+      return '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} -  ${AppLocalizations.of(context)!.content_image_not_added}';
     }
     // video content
   } else if (step.contentType == ContentType.video) {
@@ -33,14 +33,22 @@ String? validateStep(BuildContext context, InstructionStep step) {
       return '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} - ${AppLocalizations.of(context)!.header} -  ${AppLocalizations.of(context)!.validation_min_two_characters}';
     } else if ((step.contentUrl == null || step.contentUrl!.isEmpty) &&
         step.file == null) {
-      return AppLocalizations.of(context)!.content_video_not_added;
+      return '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} -  ${AppLocalizations.of(context)!.content_video_not_added}';
+    }
+    // pdf content
+  } else if (step.contentType == ContentType.pdf) {
+    if (step.title == null || step.title!.trim().length < 2) {
+      return '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} - ${AppLocalizations.of(context)!.header} -  ${AppLocalizations.of(context)!.validation_min_two_characters}';
+    } else if ((step.contentUrl == null || step.contentUrl!.isEmpty) &&
+        step.file == null) {
+      return '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} -  ${AppLocalizations.of(context)!.content_pdf_not_added}';
     }
   } else if (step.contentType == ContentType.youtube) {
     if (step.title == null || step.title!.trim().length < 2) {
       return '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} - ${AppLocalizations.of(context)!.header} -  ${AppLocalizations.of(context)!.validation_min_two_characters}';
     } else if ((step.contentUrl == null || step.contentUrl!.isEmpty) &&
         step.file == null) {
-      return AppLocalizations.of(context)!.content_youtube_not_added;
+      return '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1} -  ${AppLocalizations.of(context)!.content_youtube_not_added}';
     }
     // file
   } else {

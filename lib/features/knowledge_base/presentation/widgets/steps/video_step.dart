@@ -80,16 +80,22 @@ class VideoStep extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
+              // file size
               if (step.file != null)
-                Row(
+                Column(
                   children: [
-                    Expanded(child: Text(AppLocalizations.of(context)!.size)),
-                    Text(getFileSize(step.file!.path, 2)),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Text(AppLocalizations.of(context)!.size)),
+                        Text(getFileSize(step.file!.path, 2)),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
                   ],
                 ),
-              const SizedBox(
-                height: 16,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

@@ -11,6 +11,7 @@ import 'package:under_control_v2/features/knowledge_base/domain/entities/instruc
 import 'package:under_control_v2/features/knowledge_base/presentation/widgets/add_instruction/add_step_menu_grid.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/widgets/steps/image_step.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/widgets/steps/text_step.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/widgets/steps/url_step.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
@@ -187,11 +188,10 @@ class AddStepCard extends StatelessWidget {
                         YoutubeStep(step: step, updateStep: updateStep),
                       if (step.contentType == ContentType.pdf)
                         PdfStep(step: step, updateStep: updateStep),
+                      if (step.contentType == ContentType.url)
+                        UrlStep(step: step, updateStep: updateStep),
                     ],
                   ),
-                  if (step.contentType == ContentType.url)
-                    Text(step.contentType.name),
-
                   const SizedBox(
                     height: 16,
                   ),

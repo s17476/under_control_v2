@@ -47,6 +47,7 @@ class OverlayIconButton extends StatelessWidget {
             Text(
               title,
               style: TextStyle(color: titleColor),
+              textAlign: TextAlign.center,
             ),
           ],
         ),

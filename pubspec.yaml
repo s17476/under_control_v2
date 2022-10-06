@@ -66,6 +66,7 @@ dependencies:
   youtube_player_iframe: ^3.1.0
   file_picker: ^5.2.0+1
   flutter_pdfview: ^1.2.5
+  flutter_link_previewer: ^3.1.0
   
 
 
@@ -127,6 +128,7 @@ flutter:
     - assets/video.png
     - assets/youtube.png
     - assets/pdf.png
+    - assets/website.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

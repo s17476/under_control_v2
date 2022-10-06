@@ -69,6 +69,9 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
     } else {
       for (var step in _getFinalSteps()) {
         errorMessage = validateStep(context, step) ?? '';
+        if (errorMessage.isNotEmpty) {
+          break;
+        }
       }
     }
 
