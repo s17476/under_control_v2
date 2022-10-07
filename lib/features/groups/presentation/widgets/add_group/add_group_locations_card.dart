@@ -41,19 +41,23 @@ class AddGroupLocationsCard extends StatelessWidget {
               child: Column(
                 children: [
                   // title
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 12,
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!
-                          .home_screen_filter_select_locations,
-                      style: TextStyle(
-                        fontSize:
-                            Theme.of(context).textTheme.headline5!.fontSize,
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 12,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!
+                            .home_screen_filter_select_locations,
+                        style: TextStyle(
+                          fontSize:
+                              Theme.of(context).textTheme.headline5!.fontSize,
+                        ),
                       ),
                     ),
+                  ),
+                  const Divider(
+                    thickness: 1.5,
                   ),
                   BlocBuilder<LocationBloc, LocationState>(
                     builder: (context, state) {

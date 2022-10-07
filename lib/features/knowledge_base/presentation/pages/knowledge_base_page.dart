@@ -14,7 +14,6 @@ class KnowledgeBasePage extends StatelessWidget {
       child: BlocBuilder<InstructionBloc, InstructionState>(
         builder: (context, state) {
           if (state is InstructionLoadedState) {
-            print(state.allInstructions.allInstructions.length);
             return ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,

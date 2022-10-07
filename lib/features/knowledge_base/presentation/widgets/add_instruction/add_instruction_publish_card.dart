@@ -34,7 +34,7 @@ class AddInstructionPublishCard extends StatelessWidget with ResponsiveSize {
                     right: 8,
                   ),
                   child: Text(
-                    AppLocalizations.of(context)!.item_spare_part,
+                    AppLocalizations.of(context)!.save_mode,
                     style: TextStyle(
                       fontSize: Theme.of(context).textTheme.headline5!.fontSize,
                     ),

@@ -6,6 +6,7 @@ import 'package:under_control_v2/features/knowledge_base/utils/instruction_manag
 
 import '../../../assets/presentation/pages/assets_page.dart';
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
+import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../filter/presentation/widgets/home_page_filter.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../inventory/presentation/blocs/items_management/items_management_bloc.dart';
@@ -347,29 +348,75 @@ class _HomePageState extends State<HomePage>
               // body
               body: Stack(
                 children: [
-                  // tabs
-                  PageView(
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      if (!_isBottomNavigationAnimating) {
-                        setState(() {
-                          _pageIndex = index;
-                        });
-                        _navigationController.value = index;
+                  BlocBuilder<FilterBloc, FilterState>(
+                    builder: (context, state) {
+                      // locations not selected
+                      if (state is FilterLoadedState &&
+                          state.locations.isEmpty) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16,
+                                top: 8,
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      AppLocalizations.of(context)!
+                                          .home_screen_filter_select_locations,
+                                      style: const TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_upward,
+                                    size: 50,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Expanded(
+                              child: Center(
+                                child: Icon(
+                                  Icons.location_off,
+                                  size: 100,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 36,
+                            ),
+                          ],
+                        );
+                      } else {
+                        // tabs
+                        return PageView(
+                          controller: _pageController,
+                          onPageChanged: (index) {
+                            if (!_isBottomNavigationAnimating) {
+                              setState(() {
+                                _pageIndex = index;
+                              });
+                              _navigationController.value = index;
+                            }
+                          },
+                          children: [
+                            const TasksPage(),
+                            InventoryPage(
+                              searchBoxHeight: _searchBoxHeight,
+                              isSearchBoxExpanded:
+                                  _isInventorySearchBarExpanded,
+                              searchQuery: _inventorySearchQuery,
+                              isSortedByCategory: false,
+                            ),
+                            const DashboardPage(),
+                            const AssetsPage(),
+                            const KnowledgeBasePage(),
+                          ],
+                        );
                       }
                     },
-                    children: [
-                      const TasksPage(),
-                      InventoryPage(
-                        searchBoxHeight: _searchBoxHeight,
-                        isSearchBoxExpanded: _isInventorySearchBarExpanded,
-                        searchQuery: _inventorySearchQuery,
-                        isSortedByCategory: false,
-                      ),
-                      const DashboardPage(),
-                      const AssetsPage(),
-                      const KnowledgeBasePage(),
-                    ],
                   ),
                   // bottom navigation bar
                   HomeBottomNavigationBar(
