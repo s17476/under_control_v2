@@ -97,6 +97,12 @@ class HomeSliverAppBar extends StatelessWidget {
                   context: context,
                   featureType: FeatureType.assets,
                   premissionType: PremissionType.read,
+                )) ||
+            (pageIndex == 4 &&
+                getUserPremission(
+                  context: context,
+                  featureType: FeatureType.knowledgeBase,
+                  premissionType: PremissionType.read,
                 )))
           IconButton(
             onPressed: () {

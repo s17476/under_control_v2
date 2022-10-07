@@ -19,63 +19,69 @@ class InstructionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // title
-            HighlightedText(
-              text: instruction.name,
-              query: searchQuery,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(
-              height: 4,
-            ),
-            // description
-            HighlightedText(
-              text: instruction.name,
-              query: searchQuery,
-              style: Theme.of(context).textTheme.caption,
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(
-              height: 4,
-            ),
-            // steps
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
+    return Container(
+      color: Theme.of(context).cardColor,
+      child: Material(
+        child: InkWell(
+          onTap: () {},
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${AppLocalizations.of(context)!.instruction_steps}: ${instruction.steps.length} - ',
-                  style: Theme.of(context).textTheme.caption,
+                // title
+                HighlightedText(
+                  text: instruction.name,
+                  query: searchQuery,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w500),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                for (var step in instruction.steps)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: FaIcon(
-                      getStepContentIcon(step.contentType),
-                      size: 18,
-                      color: Theme.of(context).textTheme.caption!.color,
-                    ),
+                const SizedBox(
+                  height: 4,
+                ),
+                // description
+                if (instruction.description.isNotEmpty)
+                  Text(
+                    instruction.description,
+                    style: Theme.of(context).textTheme.caption,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
                   ),
+                const SizedBox(
+                  height: 4,
+                ),
+                // steps
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text(
+                      '${AppLocalizations.of(context)!.instruction_steps}: ${instruction.steps.length} - ',
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    for (var step in instruction.steps)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4),
+                        child: FaIcon(
+                          getStepContentIcon(step.contentType),
+                          size: 18,
+                          color: Theme.of(context).textTheme.caption!.color,
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 6,
+                ),
+                InstructionCategoryMiniRow(
+                  categoryId: instruction.category,
+                  searchQuery: searchQuery,
+                ),
               ],
             ),
-            const SizedBox(
-              height: 6,
-            ),
-            InstructionCategoryMiniRow(
-              categoryId: instruction.category,
-              searchQuery: searchQuery,
-            ),
-          ],
+          ),
         ),
       ),
     );

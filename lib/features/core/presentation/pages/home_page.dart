@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage>
   bool _isFilterExpanded = false;
   bool _isInventorySearchBarExpanded = false;
   bool _isAssetsSearchBarExpanded = false;
+  bool _isInstructionsSearchBarExpanded = false;
   bool _isControlsVisible = true;
   bool _isMenuVisible = false;
   bool _isBottomNavigationAnimating = false;
@@ -62,13 +63,16 @@ class _HomePageState extends State<HomePage>
   // assets search
   final _assetsSearchTextEditingController = TextEditingController();
 
+  // instructions search
+  final _instructionsSearchTextEditingController = TextEditingController();
+
   // scroll controller current offset
   double _currentScrollOffset = 0;
 
   // search
   String _inventorySearchQuery = '';
   String _assetsSearchQuery = '';
-  String _knowledgeSearchQuery = '';
+  String _instructionsSearchQuery = '';
 
   // bottom navigation show/hide animation
   AnimationController? _animationController;
@@ -84,6 +88,13 @@ class _HomePageState extends State<HomePage>
   void _searchInAssets() {
     setState(() {
       _assetsSearchQuery = _assetsSearchTextEditingController.text;
+    });
+  }
+
+  // search in assets
+  void _searchInInstructions() {
+    setState(() {
+      _instructionsSearchQuery = _instructionsSearchTextEditingController.text;
     });
   }
 
@@ -156,14 +167,25 @@ class _HomePageState extends State<HomePage>
       } else if (!_isAssetsSearchBarExpanded && _pageIndex == 3) {
         _isAssetsSearchBarExpanded = true;
       }
+
+      // toggle instructions search
+      if (_isInstructionsSearchBarExpanded) {
+        _instructionsSearchTextEditingController.text = '';
+        _searchInInstructions();
+        _isInstructionsSearchBarExpanded = false;
+      } else if (!_isInstructionsSearchBarExpanded && _pageIndex == 4) {
+        _isInstructionsSearchBarExpanded = true;
+      }
     });
   }
 
   bool _getFlagForPageIndex(int index) {
     if (_pageIndex == 1) {
       return _isInventorySearchBarExpanded;
-    } else {
+    } else if (_pageIndex == 3) {
       return _isAssetsSearchBarExpanded;
+    } else {
+      return _isInstructionsSearchBarExpanded;
     }
   }
 
@@ -240,7 +262,9 @@ class _HomePageState extends State<HomePage>
 
     // closes search bar when page changes
     _pageController.addListener(() {
-      if (_isInventorySearchBarExpanded || _isAssetsSearchBarExpanded) {
+      if (_isInventorySearchBarExpanded ||
+          _isAssetsSearchBarExpanded ||
+          _isInstructionsSearchBarExpanded) {
         _toggleIsSearchBarExpanded();
       }
     });
@@ -267,6 +291,7 @@ class _HomePageState extends State<HomePage>
     _pageController.dispose();
     _inventorySearchTextEditingController.dispose();
     _assetsSearchTextEditingController.dispose();
+    _instructionsSearchTextEditingController.dispose();
     super.dispose();
   }
 
@@ -416,8 +441,8 @@ class _HomePageState extends State<HomePage>
                               KnowledgeBasePage(
                                 searchBoxHeight: _searchBoxHeight,
                                 isSearchBoxExpanded:
-                                    _isInventorySearchBarExpanded,
-                                searchQuery: _inventorySearchQuery,
+                                    _isInstructionsSearchBarExpanded,
+                                searchQuery: _instructionsSearchQuery,
                               ),
                             ],
                           ),
@@ -460,6 +485,15 @@ class _HomePageState extends State<HomePage>
                     onChanged: _searchInAssets,
                     searchTextEditingController:
                         _assetsSearchTextEditingController,
+                  ),
+                  // instructions search box
+                  AppBarSearchBox(
+                    title: AppLocalizations.of(context)!.search,
+                    searchBoxHeight: _searchBoxHeight,
+                    isSearchBoxExpanded: _isInstructionsSearchBarExpanded,
+                    onChanged: _searchInInstructions,
+                    searchTextEditingController:
+                        _instructionsSearchTextEditingController,
                   ),
                 ],
               ),

@@ -47,7 +47,6 @@ class ShimmerItemActionListTile extends StatelessWidget {
               ),
               width: double.infinity,
               decoration: BoxDecoration(
-                // color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
