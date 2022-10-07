@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/repositories/instruction_repository.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/usecases/update_instruction.dart';
@@ -14,7 +15,7 @@ void main() {
   late MockInstructionRepository repository;
 
   const tInstructionParams = InstructionParams(
-    instruction: Instruction(
+    instruction: InstructionModel(
       id: 'id',
       name: 'name',
       description: 'description',

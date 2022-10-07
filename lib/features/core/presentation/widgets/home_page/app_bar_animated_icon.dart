@@ -1,8 +1,9 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
 
+import '../../../../knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../../inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
 import '../../../../inventory/presentation/blocs/items/items_bloc.dart';

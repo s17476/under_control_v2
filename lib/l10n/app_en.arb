@@ -1484,5 +1484,29 @@
     "instruction_no_steps": "No steps added",
     "@instruction_no_steps": {
       "description": "instruction no steps"
+    },
+    "instruction_msg_added": "New instruction added",
+    "@instruction_msg_added": {
+      "description": "instruction - added msg"
+    },
+    "instruction_msg_not_added": "Instruction NOT added",
+    "@instruction_msg_not_added": {
+      "description": "instruction - NOT added msg"
+    },
+    "instruction_msg_updated": "Instruction updated",
+    "@instruction_msg_updated": {
+      "description": "instruction - updated msg"
+    },
+    "instruction_msg_not_updated": "Instruction NOT updated",
+    "@instruction_msg_not_updated": {
+      "description": "instruction - NOT updated msg"
+    },
+    "instruction_msg_deleted": "Instruction deleted",
+    "@instruction_msg_deleted": {
+      "description": "instruction - delete msg"
+    },
+    "instruction_msg_not_deleted": "Instruction NOT deleted",
+    "@instruction_msg_not_deleted": {
+      "description": "instruction - NOT deleted msg"
     }
 }

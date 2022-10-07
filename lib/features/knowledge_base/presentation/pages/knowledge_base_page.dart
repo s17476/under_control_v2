@@ -10,26 +10,25 @@ class KnowledgeBasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        child: BlocBuilder<InstructionBloc, InstructionState>(
-          builder: (context, state) {
-            if (state is InstructionLoadedState) {
-              return SizedBox(
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.bottom_bar_title_knowledge,
-                    ),
-                  ],
+    return SingleChildScrollView(
+      child: BlocBuilder<InstructionBloc, InstructionState>(
+        builder: (context, state) {
+          if (state is InstructionLoadedState) {
+            print(state.allInstructions.allInstructions.length);
+            return ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: state.allInstructions.allInstructions.length,
+              itemBuilder: (context, index) => Card(
+                child: Text(
+                  state.allInstructions.allInstructions[index].name,
                 ),
-              );
-            } else {
-              return const CircularProgressIndicator();
-            }
-          },
-        ),
+              ),
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
       ),
     );
   }

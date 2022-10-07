@@ -107,12 +107,10 @@ class InstructionRepositoryImpl extends InstructionRepository {
 
       return Right(instructionReference.id);
     } on FirebaseException catch (e) {
-      print(e);
       return Left(
         DatabaseFailure(message: e.message ?? 'Database Failure'),
       );
     } catch (e) {
-      print(e);
       return const Left(
         UnsuspectedFailure(message: 'Unsuspected error'),
       );
@@ -176,7 +174,7 @@ class InstructionRepositoryImpl extends InstructionRepository {
           .collection('companies')
           .doc(params.companyId)
           .collection('instructions')
-          .where('locationId', whereIn: params.locations)
+          .where('locations', arrayContainsAny: params.locations)
           .orderBy('name', descending: true)
           .snapshots();
 
@@ -222,8 +220,7 @@ class InstructionRepositoryImpl extends InstructionRepository {
               await fileReference.putFile(step.file!);
               // get file url
               final fileUrl = await fileReference.getDownloadURL();
-              steps.add(
-                  (step as InstructionStepModel).copyWith(contentUrl: fileUrl));
+              steps.add(step.copyWith(contentUrl: fileUrl));
             }
             break;
           default:

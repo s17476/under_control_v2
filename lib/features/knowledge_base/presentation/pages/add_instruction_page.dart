@@ -211,11 +211,6 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       );
       // saves instruction to DB if no error
     } else {
-      showSnackBar(
-        context: context,
-        message: 'OK',
-      );
-
       final lastEdit = LastEditModel(userId: _userId, dateTime: DateTime.now());
       List<LastEditModel> lastEdited = [];
       if (_instruction != null) {
@@ -249,6 +244,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
               ),
             );
       }
+      Navigator.pop(context);
     }
   }
 

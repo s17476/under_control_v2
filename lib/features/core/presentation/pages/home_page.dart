@@ -2,6 +2,7 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/knowledge_base/utils/instruction_management_bloc_listener.dart';
 
 import '../../../assets/presentation/pages/assets_page.dart';
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
@@ -10,6 +11,7 @@ import '../../../groups/domain/entities/feature.dart';
 import '../../../inventory/presentation/blocs/items_management/items_management_bloc.dart';
 import '../../../inventory/presentation/pages/inventory_page.dart';
 import '../../../inventory/utils/item_management_bloc_listener.dart';
+import '../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import '../../../knowledge_base/presentation/pages/knowledge_base_page.dart';
 import '../../../tasks/presentation/pages/tasks_page.dart';
 import '../../utils/get_user_premission.dart';
@@ -59,26 +61,28 @@ class _HomePageState extends State<HomePage>
   // assets search
   final _assetsSearchTextEditingController = TextEditingController();
 
-  double _currentOffset = 0;
+  // scroll controller current offset
+  double _currentScrollOffset = 0;
 
-  String _inventoryQuery = '';
-  String _assetsQuery = '';
+  // search
+  String _inventorySearchQuery = '';
+  String _assetsSearchQuery = '';
+  String _knowledgeSearchQuery = '';
 
   // bottom navigation show/hide animation
   AnimationController? _animationController;
-  // Animation<Offset>? downSlideAnimation;
 
   // search in inventory
   void _searchInInventory() {
     setState(() {
-      _inventoryQuery = _inventorySearchTextEditingController.text;
+      _inventorySearchQuery = _inventorySearchTextEditingController.text;
     });
   }
 
   // search in assets
   void _searchInAssets() {
     setState(() {
-      _assetsQuery = _assetsSearchTextEditingController.text;
+      _assetsSearchQuery = _assetsSearchTextEditingController.text;
     });
   }
 
@@ -210,26 +214,31 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
+    // bottom bar navigation
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
     );
 
+    // bottom navigation
     _navigationController = CircularBottomNavigationController(_pageIndex);
+
+    // triggers hide/show bottom navigation bar
     _scrollController.addListener(() {
-      if (_isControlsVisible && _scrollController.offset > _currentOffset) {
+      if (_isControlsVisible &&
+          _scrollController.offset > _currentScrollOffset) {
         _hideControls();
       }
       if (MediaQuery.of(context).viewInsets.bottom == 0 &&
           !_isControlsVisible &&
-          _scrollController.offset < _currentOffset) {
+          _scrollController.offset < _currentScrollOffset) {
         _showControls();
       }
-      _currentOffset = _scrollController.offset;
+      _currentScrollOffset = _scrollController.offset;
     });
 
+    // closes search bar when page changes
     _pageController.addListener(() {
-      // closes search bar when page changes
       if (_isInventorySearchBarExpanded || _isAssetsSearchBarExpanded) {
         _toggleIsSearchBarExpanded();
       }
@@ -267,11 +276,12 @@ class _HomePageState extends State<HomePage>
 
     return WillPopScope(
       onWillPop: () async {
-        // hide filter widget if expanded
+        // hides filter widget if expanded
         if (_isFilterExpanded) {
           _toggleIsFilterExpanded();
           return false;
         }
+        // hides menu drawer if visible
         if (_isMenuVisible) {
           _toggleIsMenuVisible();
           return false;
@@ -281,18 +291,21 @@ class _HomePageState extends State<HomePage>
         final cantExit = timegap >= const Duration(seconds: 2);
         preBackpress = DateTime.now();
         if (cantExit) {
+          // shows snack bar after first click
           ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.back_to_exit,
-                style: const TextStyle(
-                  color: Colors.white,
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(
+                  AppLocalizations.of(context)!.back_to_exit,
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
+                duration: const Duration(seconds: 2),
+                backgroundColor: Colors.black,
               ),
-              duration: const Duration(seconds: 2),
-              backgroundColor: Colors.black,
-            ));
+            );
           return false;
         } else {
           return true;
@@ -303,6 +316,10 @@ class _HomePageState extends State<HomePage>
           BlocListener<ItemsManagementBloc, ItemsManagementState>(
             listener: (context, state) =>
                 itemManagementBlocListener(context, state),
+          ),
+          BlocListener<InstructionManagementBloc, InstructionManagementState>(
+            listener: (context, state) =>
+                instructionManagementBlocListener(context, state),
           ),
         ],
         child: Scaffold(
@@ -346,7 +363,7 @@ class _HomePageState extends State<HomePage>
                       InventoryPage(
                         searchBoxHeight: _searchBoxHeight,
                         isSearchBoxExpanded: _isInventorySearchBarExpanded,
-                        searchQuery: _inventoryQuery,
+                        searchQuery: _inventorySearchQuery,
                         isSortedByCategory: false,
                       ),
                       const DashboardPage(),

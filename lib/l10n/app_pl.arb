@@ -353,5 +353,11 @@
     "instruction_step": "Krok",
     "instruction_steps": "Kroki",
     "instruction_step_total": "Liczba kroków",
-    "instruction_no_steps": "Nie dodano kroków"
+    "instruction_no_steps": "Nie dodano kroków",
+    "instruction_msg_added": "Instrukcja została dodana",
+    "instruction_msg_not_added": "Instrukcja NIE została dodana",
+    "instruction_msg_updated": "Instrukcja została zaktualizowana",
+    "instruction_msg_not_updated": "Instrukcja NIE została zaktualizowana",
+    "instruction_msg_deleted": "Instrukcja została usunięta",
+    "instruction_msg_not_deleted": "Instrukcja NIE została usunięta"
 }

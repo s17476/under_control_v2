@@ -88,6 +88,7 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
             locations: chunk,
             companyId: _companyId,
           );
+
           final failureOrInstructionssStream =
               await getInstructionsStream(params);
           await failureOrInstructionssStream.fold(
@@ -120,6 +121,7 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
           InstructionsListModel.fromSnapshot(
         event.snapshot as QuerySnapshot<Map<String, dynamic>>,
       );
+
       // merge instructions list if this is not a first chunk
       if (oldInstructions != null) {
         for (var instruction in instructionsList.allInstructions) {
