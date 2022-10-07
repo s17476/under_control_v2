@@ -413,7 +413,12 @@ class _HomePageState extends State<HomePage>
                               ),
                               const DashboardPage(),
                               const AssetsPage(),
-                              const KnowledgeBasePage(),
+                              KnowledgeBasePage(
+                                searchBoxHeight: _searchBoxHeight,
+                                isSearchBoxExpanded:
+                                    _isInventorySearchBarExpanded,
+                                searchQuery: _inventorySearchQuery,
+                              ),
                             ],
                           ),
                         ],

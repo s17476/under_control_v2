@@ -22,6 +22,7 @@ class IconTitleMiniRow extends StatelessWidget {
         Icon(
           icon,
           size: 16,
+          color: Theme.of(context).textTheme.caption!.color,
         ),
         const SizedBox(
           width: 4,
