@@ -35,9 +35,17 @@
     "@draft": {
       "description": "draft button"
     },
+    "drafts": "My drafts",
+    "@drafts": {
+      "description": "drafts"
+    },
     "publish": "Publish",
     "@publish": {
       "description": "publish button"
+    },
+    "published": "Published",
+    "@published": {
+      "description": "published"
     },
     "save_mode": "Save mode",
     "@save_mode": {
