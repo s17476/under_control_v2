@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../../groups/domain/entities/group.dart';
 import '../../../../groups/presentation/blocs/group/group_bloc.dart';

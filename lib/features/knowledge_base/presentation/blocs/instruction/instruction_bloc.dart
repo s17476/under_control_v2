@@ -42,7 +42,12 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
           }
 
           _companyId = state.companyId;
-          _locations = state.locations.map((loc) => loc.id).toList();
+          if (state.isAdmin && state.groups.isEmpty) {
+            _locations = state.locations.map((loc) => loc.id).toList();
+          } else {
+            _locations =
+                state.getAvailableLocations.map((loc) => loc.id).toList();
+          }
 
           add(GetInstructionsStreamEvent());
         }

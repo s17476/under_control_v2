@@ -56,4 +56,22 @@ class FilterLoadedState extends FilterState {
       allPossibleGroups: allPossibleGroups ?? this.allPossibleGroups,
     );
   }
+
+  List<Location> get getAvailableLocations {
+    List<Location> result = [];
+
+    for (var group in groups) {
+      final feature = group.features
+          .firstWhere((ftr) => ftr.type == FeatureType.knowledgeBase);
+      if (feature.read) {
+        for (var location in locations) {
+          if (group.locations.contains(location.id) &&
+              !result.contains(location)) {
+            result.add(location);
+          }
+        }
+      }
+    }
+    return result;
+  }
 }

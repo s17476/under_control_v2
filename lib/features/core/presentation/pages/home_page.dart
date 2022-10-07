@@ -351,71 +351,73 @@ class _HomePageState extends State<HomePage>
                   BlocBuilder<FilterBloc, FilterState>(
                     builder: (context, state) {
                       // locations not selected
-                      if (state is FilterLoadedState &&
-                          state.locations.isEmpty) {
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 16,
-                                top: 8,
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      AppLocalizations.of(context)!
-                                          .home_screen_filter_select_locations,
-                                      style: const TextStyle(fontSize: 18),
+                      return Stack(
+                        children: [
+                          if (state is FilterLoadedState &&
+                              state.locations.isEmpty)
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 16,
+                                    top: 8,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .home_screen_filter_select_locations,
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_upward,
+                                        size: 50,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Expanded(
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.location_off,
+                                      size: 100,
                                     ),
                                   ),
-                                  const Icon(
-                                    Icons.arrow_upward,
-                                    size: 50,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Expanded(
-                              child: Center(
-                                child: Icon(
-                                  Icons.location_off,
-                                  size: 100,
                                 ),
+                                const SizedBox(
+                                  height: 36,
+                                ),
+                              ],
+                            ),
+                          // tabs
+                          PageView(
+                            controller: _pageController,
+                            onPageChanged: (index) {
+                              if (!_isBottomNavigationAnimating) {
+                                setState(() {
+                                  _pageIndex = index;
+                                });
+                                _navigationController.value = index;
+                              }
+                            },
+                            children: [
+                              const TasksPage(),
+                              InventoryPage(
+                                searchBoxHeight: _searchBoxHeight,
+                                isSearchBoxExpanded:
+                                    _isInventorySearchBarExpanded,
+                                searchQuery: _inventorySearchQuery,
+                                isSortedByCategory: false,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 36,
-                            ),
-                          ],
-                        );
-                      } else {
-                        // tabs
-                        return PageView(
-                          controller: _pageController,
-                          onPageChanged: (index) {
-                            if (!_isBottomNavigationAnimating) {
-                              setState(() {
-                                _pageIndex = index;
-                              });
-                              _navigationController.value = index;
-                            }
-                          },
-                          children: [
-                            const TasksPage(),
-                            InventoryPage(
-                              searchBoxHeight: _searchBoxHeight,
-                              isSearchBoxExpanded:
-                                  _isInventorySearchBarExpanded,
-                              searchQuery: _inventorySearchQuery,
-                              isSortedByCategory: false,
-                            ),
-                            const DashboardPage(),
-                            const AssetsPage(),
-                            const KnowledgeBasePage(),
-                          ],
-                        );
-                      }
+                              const DashboardPage(),
+                              const AssetsPage(),
+                              const KnowledgeBasePage(),
+                            ],
+                          ),
+                        ],
+                      );
                     },
                   ),
                   // bottom navigation bar
