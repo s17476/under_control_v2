@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:under_control_v2/features/core/data/models/last_edit_model.dart';
 import 'package:under_control_v2/features/core/domain/entities/last_edit.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/creator_bottom_navigation.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/widgets/add_instruction/add_instruction_publish_card.dart';
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -438,6 +439,9 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         InstructionStepModel.initial(),
       );
     }
+    _pageController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
     super.initState();
   }
 
@@ -492,7 +496,6 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       KeepAlivePage(
         child: AddInstructionCard(
           isEditMode: _instruction != null,
-          pageController: _pageController,
           titleTexEditingController: _titleTexEditingController,
           descriptionTexEditingController: _descriptionTextEditingController,
           category: _category,
@@ -501,7 +504,6 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       ),
       KeepAlivePage(
         child: AddGroupLocationsCard(
-          pageController: _pageController,
           locationsChildren: _locationsChildren,
           locationsContext: _locationsContext,
           selectedLocations: _selectedLocations,
@@ -511,7 +513,6 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       for (var step in _steps)
         KeepAlivePage(
           child: AddStepCard(
-            pageController: _pageController,
             step: step,
             setContentType: _setStepContentType,
             updateStep: _updateStep,
@@ -524,7 +525,6 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
           ),
         ),
       AddInstructionPublishCard(
-        pageController: _pageController,
         setIsPublished: _setIsPublished,
         isPublished: _isPublished,
       ),
@@ -549,18 +549,11 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         final cantExit = timegap >= const Duration(seconds: 2);
         preBackpress = DateTime.now();
         if (cantExit) {
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.back_to_exit_creator,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              duration: const Duration(seconds: 2),
-              backgroundColor: Theme.of(context).errorColor,
-            ));
+          showSnackBar(
+            context: context,
+            message: AppLocalizations.of(context)!.back_to_exit_creator,
+            isErrorMessage: true,
+          );
           return false;
         } else {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -582,18 +575,14 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
                     children: _pages,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 32),
-                  child: SmoothPageIndicator(
-                    controller: _pageController,
-                    count: _pages.length,
-                    effect: JumpingDotEffect(
-                      dotHeight: 10,
-                      dotWidth: 10,
-                      jumpScale: 2,
-                      activeDotColor: Theme.of(context).primaryColor,
-                    ),
-                  ),
+                CreatorBottomNavigation(
+                  lastPageForwardButtonFunction: () =>
+                      _addNewInstruction(context),
+                  lastPageForwardButtonIconData: _isPublished
+                      ? Icons.cloud_upload
+                      : Icons.drive_file_rename_outline_rounded,
+                  pages: _pages,
+                  pageController: _pageController,
                 ),
               ],
             );

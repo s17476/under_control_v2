@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../core/presentation/widgets/backward_text_button.dart';
-import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/get_file_size.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -244,43 +242,11 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                           ),
                         ],
                       ),
-
                     const SizedBox(
-                      height: 16,
+                      height: 50,
                     ),
                   ],
                 ),
-              ),
-            ),
-            // bottom navigation
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BackwardTextButton(
-                    icon: Icons.arrow_back_ios_new,
-                    color: Theme.of(context).textTheme.headline5!.color!,
-                    label: AppLocalizations.of(context)!
-                        .user_profile_add_user_personal_data_back,
-                    function: () => pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    ),
-                  ),
-                  ForwardTextButton(
-                    color: Theme.of(context).textTheme.headline5!.color!,
-                    label: isPublished
-                        ? AppLocalizations.of(context)!.publish
-                        : AppLocalizations.of(context)!.draft,
-                    function: () {
-                      addNewInstruction(context);
-                    },
-                    icon: isPublished
-                        ? Icons.cloud_upload
-                        : Icons.drive_file_rename_outline_rounded,
-                  ),
-                ],
               ),
             ),
           ],

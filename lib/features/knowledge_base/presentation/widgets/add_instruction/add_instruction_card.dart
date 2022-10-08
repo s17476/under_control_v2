@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../utils/show_add_instruction_category_modal_bottom_sheet.dart';
 import 'instruction_category_dropdown_button.dart';
@@ -12,7 +10,6 @@ class AddInstructionCard extends StatelessWidget {
   const AddInstructionCard({
     Key? key,
     required this.isEditMode,
-    required this.pageController,
     required this.titleTexEditingController,
     required this.descriptionTexEditingController,
     required this.setCategory,
@@ -20,7 +17,6 @@ class AddInstructionCard extends StatelessWidget {
   }) : super(key: key);
 
   final bool isEditMode;
-  final PageController pageController;
   final TextEditingController titleTexEditingController;
   final TextEditingController descriptionTexEditingController;
   final Function(String category) setCategory;
@@ -75,8 +71,8 @@ class AddInstructionCard extends StatelessWidget {
                         },
                         fieldKey: 'name',
                         controller: titleTexEditingController,
-                        keyboardType: TextInputType.name,
-                        textCapitalization: TextCapitalization.words,
+                        // keyboardType: TextInputType.name,
+                        textCapitalization: TextCapitalization.sentences,
                         labelText: AppLocalizations.of(context)!.title,
                       ),
                       const SizedBox(
@@ -128,30 +124,12 @@ class AddInstructionCard extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(
-                        height: 8,
+                        height: 50,
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ),
-          // bottom navigation
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ForwardTextButton(
-                  color: Theme.of(context).textTheme.headline5!.color!,
-                  label:
-                      AppLocalizations.of(context)!.user_profile_add_user_next,
-                  function: () => pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut),
-                  icon: Icons.arrow_forward_ios_outlined,
-                ),
-              ],
             ),
           ),
         ],

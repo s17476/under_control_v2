@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../core/presentation/widgets/backward_text_button.dart';
-import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/utils/choice.dart';
 import '../../../data/models/instruction_step_model.dart';
 import '../../../domain/entities/content_type.dart';
@@ -19,7 +17,6 @@ class AddStepCard extends StatelessWidget {
   const AddStepCard({
     Key? key,
     required this.isLastStep,
-    required this.pageController,
     required this.step,
     required this.setContentType,
     required this.updateStep,
@@ -31,8 +28,6 @@ class AddStepCard extends StatelessWidget {
   }) : super(key: key);
 
   final bool isLastStep;
-
-  final PageController pageController;
 
   final InstructionStepModel step;
 
@@ -187,42 +182,10 @@ class AddStepCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: 50,
                   ),
                 ],
               ),
-            ),
-          ),
-
-          // bottom navigation
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                BackwardTextButton(
-                  icon: Icons.arrow_back_ios_new,
-                  color: Theme.of(context).textTheme.headline5!.color!,
-                  label: AppLocalizations.of(context)!
-                      .user_profile_add_user_personal_data_back,
-                  function: () => pageController.previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  ),
-                ),
-                ForwardTextButton(
-                  color: Theme.of(context).textTheme.headline5!.color!,
-                  label: step.contentType == ContentType.unknown
-                      ? AppLocalizations.of(context)!.skip
-                      : AppLocalizations.of(context)!
-                          .user_profile_add_user_next,
-                  function: () => pageController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  ),
-                  icon: Icons.arrow_forward_ios_outlined,
-                ),
-              ],
             ),
           ),
         ],

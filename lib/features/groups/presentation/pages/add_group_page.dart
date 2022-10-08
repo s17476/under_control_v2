@@ -311,7 +311,6 @@ class _AddGroupPageState extends State<AddGroupPage> {
       ),
       KeepAlivePage(
         child: AddGroupLocationsCard(
-          pageController: _pageController,
           locationsChildren: _locationsChildren,
           locationsContext: _locationsContext,
           selectedLocations: _selectedLocations,
