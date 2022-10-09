@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:under_control_v2/features/core/data/models/last_edit_model.dart';
-import 'package:under_control_v2/features/core/domain/entities/last_edit.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/creator_bottom_navigation.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/widgets/add_instruction/add_instruction_publish_card.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
+import '../../../core/data/models/last_edit_model.dart';
 import '../../../core/presentation/pages/loading_page.dart';
+import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/location_selection_helpers.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../groups/presentation/widgets/add_group/add_group_locations_card.dart';
 import '../../../locations/domain/entities/location.dart';
 import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/instruction_model.dart';
 import '../../data/models/instruction_step_model.dart';
 import '../../domain/entities/content_type.dart';
@@ -23,7 +19,9 @@ import '../../domain/entities/instruction.dart';
 import '../../domain/entities/instruction_step.dart';
 import '../../utils/steps_validation.dart';
 import '../blocs/instruction/instruction_bloc.dart';
+import '../blocs/instruction_management/instruction_management_bloc.dart';
 import '../widgets/add_instruction/add_instruction_card.dart';
+import '../widgets/add_instruction/add_instruction_publish_card.dart';
 import '../widgets/add_instruction/add_instruction_summary_card.dart';
 import '../widgets/add_instruction/add_step_card.dart';
 

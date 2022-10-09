@@ -7,6 +7,8 @@
     "size": "Rozmiar",
     "lenght": "Długość",
     "category": "Kategoria",
+    "created": "Utworzono",
+    "edited": "Edytowano",
     "draft": "Zapisz jako projekt",
     "drafts": "Moje projekty",
     "publish": "Opublikuj",
@@ -361,5 +363,7 @@
     "instruction_msg_updated": "Instrukcja została zaktualizowana",
     "instruction_msg_not_updated": "Instrukcja NIE została zaktualizowana",
     "instruction_msg_deleted": "Instrukcja została usunięta",
-    "instruction_msg_not_deleted": "Instrukcja NIE została usunięta"
+    "instruction_msg_not_deleted": "Instrukcja NIE została usunięta",
+    "instruction_details": "Szczegóły instrukjci",
+    "instruction_history": "Historia instrukcji"
 }

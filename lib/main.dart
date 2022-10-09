@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/pages/instruction_preview_page.dart';
 
 import 'features/core/presentation/pages/qr_scanner.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
@@ -225,6 +226,8 @@ class App extends StatelessWidget
           InstructionCategoryManagementPage.routeName: (context) =>
               const InstructionCategoryManagementPage(),
           AddInstructionPage.routeName: (context) => const AddInstructionPage(),
+          InstructionPreviewPage.routeName: (context) =>
+              const InstructionPreviewPage(),
         },
         // localization
         localizationsDelegates: const [

@@ -19,12 +19,12 @@ import 'overlay_icon_button.dart';
 class UserInfoCard extends StatefulWidget {
   const UserInfoCard({
     Key? key,
-    required this.group,
+    this.group,
     required this.user,
     required this.onDismiss,
   }) : super(key: key);
 
-  final Group group;
+  final Group? group;
   final UserProfile user;
   final VoidCallback onDismiss;
 
@@ -38,18 +38,18 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
   late UserProfile _selectedUser;
 
   void _toggleGroupAdmin(bool value) {
-    if (value) {
+    if (value && widget.group != null) {
       context.read<UserManagementBloc>().add(
             AssignGroupAdminEvent(
-              groupId: widget.group.id,
+              groupId: widget.group!.id,
               userId: _selectedUser.id,
               companyId: _selectedUser.companyId,
             ),
           );
-    } else {
+    } else if (!value && widget.group != null) {
       context.read<UserManagementBloc>().add(
             UnassignGroupAdminEvent(
-              groupId: widget.group.id,
+              groupId: widget.group!.id,
               userId: _selectedUser.id,
               companyId: _selectedUser.companyId,
             ),
@@ -113,7 +113,9 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                 ),
                 const SizedBox(height: 8),
                 // toggle group administrator
-                if (_currentUser.administrator && !_selectedUser.administrator)
+                if (_currentUser.administrator &&
+                    !_selectedUser.administrator &&
+                    widget.group != null)
                   Column(
                     children: [
                       const Divider(thickness: 1.5),
@@ -136,7 +138,7 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                               ),
                             ),
                             Switch(
-                              value: widget.group.groupAdministrators
+                              value: widget.group!.groupAdministrators
                                   .contains(_selectedUser.id),
                               onChanged: _toggleGroupAdmin,
                               activeColor: Theme.of(context).primaryColor,

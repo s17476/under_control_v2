@@ -31,6 +31,14 @@
     "@category": {
       "description": "Category"
     },
+    "created": "Created",
+    "@created": {
+      "description": "Created"
+    },
+    "edited": "Edited",
+    "@edited": {
+      "description": "Edited"
+    },
     "draft": "Save as draft",
     "@draft": {
       "description": "draft button"
@@ -1516,5 +1524,13 @@
     "instruction_msg_not_deleted": "Instruction NOT deleted",
     "@instruction_msg_not_deleted": {
       "description": "instruction - NOT deleted msg"
+    },
+    "instruction_details": "Instruction details",
+    "@instruction_details": {
+      "description": "instruction details"
+    },
+    "instruction_history": "Instruction history",
+    "@instruction_history": {
+      "description": "instruction history"
     }
 }

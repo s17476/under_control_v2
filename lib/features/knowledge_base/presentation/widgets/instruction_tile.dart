@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/pages/instruction_preview_page.dart';
 
 import '../../../core/presentation/widgets/highlighted_text.dart';
 import '../../domain/entities/instruction.dart';
@@ -23,7 +24,11 @@ class InstructionTile extends StatelessWidget {
       color: Theme.of(context).cardColor,
       child: Material(
         child: InkWell(
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(
+            context,
+            InstructionPreviewPage.routeName,
+            arguments: instruction,
+          ),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             width: MediaQuery.of(context).size.width,
