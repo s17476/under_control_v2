@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../data/models/user_profile_model.dart';
 import '../blocs/user_profile/user_profile_bloc.dart';
@@ -71,6 +72,14 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
   }
 
   @override
+  void initState() {
+    _pageController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _firstNameTexEditingController.dispose();
     _lastNameTexEditingController.dispose();
@@ -82,20 +91,17 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
   @override
   Widget build(BuildContext context) {
     _pages = [
-      WelcomeCard(pageController: _pageController),
+      const WelcomeCard(),
       PersonalDataCard(
-        pageController: _pageController,
         firstNameTexEditingController: _firstNameTexEditingController,
         lastNameTexEditingController: _lastNameTexEditingController,
         phoneNumberTexEditingController: _phoneNumberTexEditingController,
       ),
       AvatarCard(
-        pageController: _pageController,
         setAvatar: _setAvatar,
         image: _userAvatar,
       ),
       DataCheckCard(
-        addUser: _addUser,
         pageController: _pageController,
         firstNameTexEditingController: _firstNameTexEditingController,
         lastNameTexEditingController: _lastNameTexEditingController,
@@ -138,18 +144,10 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
               controller: _pageController,
               children: _pages,
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 40),
-              child: SmoothPageIndicator(
-                controller: _pageController,
-                count: _pages.length,
-                effect: JumpingDotEffect(
-                  dotHeight: 10,
-                  dotWidth: 10,
-                  jumpScale: 2,
-                  activeDotColor: Theme.of(context).primaryColor,
-                ),
-              ),
+            CreatorBottomNavigation(
+              lastPageForwardButtonFunction: () => _addUser(),
+              pages: _pages,
+              pageController: _pageController,
             ),
           ],
         ),

@@ -13,7 +13,6 @@ import '../../../core/utils/size_config.dart';
 class AddCompanyCard extends StatelessWidget with ResponsiveSize {
   const AddCompanyCard({
     Key? key,
-    required this.pageController,
     required this.nameTexEditingController,
     required this.addressTexEditingController,
     required this.postCodeTexEditingController,
@@ -24,10 +23,8 @@ class AddCompanyCard extends StatelessWidget with ResponsiveSize {
     required this.phoneNumberTexEditingController,
     required this.emailTexEditingController,
     required this.homepageTexEditingController,
-    required this.addNewCompany,
   }) : super(key: key);
 
-  final PageController pageController;
   final TextEditingController nameTexEditingController;
   final TextEditingController addressTexEditingController;
   final TextEditingController postCodeTexEditingController;
@@ -38,7 +35,6 @@ class AddCompanyCard extends StatelessWidget with ResponsiveSize {
   final TextEditingController phoneNumberTexEditingController;
   final TextEditingController emailTexEditingController;
   final TextEditingController homepageTexEditingController;
-  final Function(BuildContext context) addNewCompany;
 
   void _pickCountry(BuildContext context) {
     showCountryPicker(
@@ -320,32 +316,12 @@ class AddCompanyCard extends StatelessWidget with ResponsiveSize {
                               .add_company_intro_card_homepage,
                         ),
                         const SizedBox(
-                          height: 16,
+                          height: 50,
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BackwardTextButton(
-                    icon: Icons.cancel,
-                    color: Theme.of(context).textTheme.headline4!.color!,
-                    label: AppLocalizations.of(context)!.cancel,
-                    function: () => Navigator.pop(context),
-                  ),
-                  ForwardTextButton(
-                    color: Theme.of(context).textTheme.headline5!.color!,
-                    label: AppLocalizations.of(context)!.add,
-                    function: () => addNewCompany(context),
-                    icon: Icons.check,
-                  ),
-                ],
               ),
             ),
           ],

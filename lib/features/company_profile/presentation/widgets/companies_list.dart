@@ -9,9 +9,7 @@ import 'companies_list_view.dart';
 class CompaniesList extends StatelessWidget {
   const CompaniesList({
     Key? key,
-    required this.pageController,
   }) : super(key: key);
-  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,6 @@ class CompaniesList extends StatelessWidget {
         switch (state.runtimeType) {
           case CompanyManagementCompaniesLoaded:
             return CompaniesListView(
-              pageController: pageController,
               companies: (state as CompanyManagementCompaniesLoaded)
                   .companies
                   .allCompanies,

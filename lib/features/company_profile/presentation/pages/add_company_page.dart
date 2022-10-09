@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
+import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
+import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/company_model.dart';
 import '../blocs/company_management/company_management_bloc.dart';
@@ -69,6 +71,14 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
   }
 
   @override
+  void initState() {
+    _pageController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _pageController.dispose();
     _nameTexEditingController.dispose();
@@ -98,71 +108,83 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
         emailTexEditingController: _emailTexEditingController,
         phoneNumberTexEditingController: _phoneNumberTexEditingController,
         vatNumberTexEditingController: _vatNumberTexEditingController,
-        addNewCompany: _addNewCompany,
-        pageController: _pageController,
       ),
     ];
-    return Scaffold(
-      body: BlocConsumer<CompanyManagementBloc, CompanyManagementState>(
-        listener: (context, state) {
-          if (state.error) {
-            ScaffoldMessenger.of(context)
-              ..clearSnackBars()
-              ..showSnackBar(
-                SnackBar(
-                  content: Text(
-                    state.message,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: state.error
-                      ? Theme.of(context).errorColor
-                      : Theme.of(context).snackBarTheme.backgroundColor,
-                ),
-              );
-          } else if (!state.error &&
-              state is CompanyManagementCompaniesLoaded &&
-              state.selectedCompany != null) {
-            context.read<UserProfileBloc>().add(
-                  AssignToCompanyEvent(
-                    companyId: state.selectedCompany!.id,
-                    userProfile: (context.read<UserProfileBloc>().state
-                            as NoCompanyState)
-                        .userProfile,
+    DateTime preBackpress = DateTime.now();
+
+    return WillPopScope(
+      onWillPop: () async {
+        // double click to exit the app
+        final timegap = DateTime.now().difference(preBackpress);
+        final cantExit = timegap >= const Duration(seconds: 2);
+        preBackpress = DateTime.now();
+        if (cantExit) {
+          showSnackBar(
+            context: context,
+            message: AppLocalizations.of(context)!.back_to_exit_creator,
+            isErrorMessage: true,
+          );
+          return false;
+        } else {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          return true;
+        }
+      },
+      child: Scaffold(
+        body: BlocConsumer<CompanyManagementBloc, CompanyManagementState>(
+          listener: (context, state) {
+            if (state.error) {
+              ScaffoldMessenger.of(context)
+                ..clearSnackBars()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      state.message,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: state.error
+                        ? Theme.of(context).errorColor
+                        : Theme.of(context).snackBarTheme.backgroundColor,
                   ),
                 );
-          }
-        },
-        builder: (context, state) {
-          if (state is CompanyManagementLoading) {
-            return const LoadingPage();
-          } else {
-            return Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Form(
-                  key: _formKey,
-                  child: PageView(
-                    controller: _pageController,
-                    children: _pages,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: SmoothPageIndicator(
-                    controller: _pageController,
-                    count: _pages.length,
-                    effect: JumpingDotEffect(
-                      dotHeight: 10,
-                      dotWidth: 10,
-                      jumpScale: 2,
-                      activeDotColor: Theme.of(context).primaryColor,
+            } else if (!state.error &&
+                state is CompanyManagementCompaniesLoaded &&
+                state.selectedCompany != null) {
+              context.read<UserProfileBloc>().add(
+                    AssignToCompanyEvent(
+                      companyId: state.selectedCompany!.id,
+                      userProfile: (context.read<UserProfileBloc>().state
+                              as NoCompanyState)
+                          .userProfile,
+                    ),
+                  );
+            }
+          },
+          builder: (context, state) {
+            if (state is CompanyManagementLoading) {
+              return const LoadingPage();
+            } else {
+              return Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Form(
+                    key: _formKey,
+                    child: PageView(
+                      controller: _pageController,
+                      children: _pages,
                     ),
                   ),
-                ),
-              ],
-            );
-          }
-        },
+                  CreatorBottomNavigation(
+                    lastPageForwardButtonFunction: () =>
+                        _addNewCompany(context),
+                    pages: _pages,
+                    pageController: _pageController,
+                  ),
+                ],
+              );
+            }
+          },
+        ),
       ),
     );
   }

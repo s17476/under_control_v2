@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:under_control_v2/features/company_profile/domain/usecases/add_company.dart';
+import 'package:under_control_v2/features/company_profile/presentation/pages/add_company_page.dart';
 
+import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
+import '../../../core/utils/show_snack_bar.dart';
 import '../widgets/companies_list.dart';
 import '../widgets/intro_card.dart';
 
@@ -18,6 +22,14 @@ class _AssignCompanyPageState extends State<AssignCompanyPage> {
   final _pageController = PageController();
 
   @override
+  void initState() {
+    _pageController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
@@ -27,8 +39,8 @@ class _AssignCompanyPageState extends State<AssignCompanyPage> {
   Widget build(BuildContext context) {
     DateTime preBackpress = DateTime.now();
     _pages = [
-      IntroCard(pageController: _pageController),
-      CompaniesList(pageController: _pageController),
+      const IntroCard(),
+      const CompaniesList(),
     ];
 
     return WillPopScope(
@@ -38,18 +50,11 @@ class _AssignCompanyPageState extends State<AssignCompanyPage> {
         final cantExit = timegap >= const Duration(seconds: 2);
         preBackpress = DateTime.now();
         if (cantExit) {
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.back_to_exit,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              duration: const Duration(seconds: 2),
-              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-            ));
+          showSnackBar(
+            context: context,
+            message: AppLocalizations.of(context)!.back_to_exit_creator,
+            isErrorMessage: true,
+          );
           return false;
         } else {
           return true;
@@ -63,18 +68,15 @@ class _AssignCompanyPageState extends State<AssignCompanyPage> {
               controller: _pageController,
               children: _pages,
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 40),
-              child: SmoothPageIndicator(
-                controller: _pageController,
-                count: _pages.length,
-                effect: JumpingDotEffect(
-                  dotHeight: 10,
-                  dotWidth: 10,
-                  jumpScale: 2,
-                  activeDotColor: Theme.of(context).primaryColor,
-                ),
+            CreatorBottomNavigation(
+              lastPageForwardButtonFunction: () => Navigator.pushNamed(
+                context,
+                AddCompanyPage.routeName,
               ),
+              lastPageForwardButtonLabel: AppLocalizations.of(context)!.add,
+              lastPageForwardButtonIconData: Icons.add,
+              pages: _pages,
+              pageController: _pageController,
             ),
           ],
         ),

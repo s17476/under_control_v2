@@ -128,9 +128,10 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
 
   IconData _getForwardIcon() {
     // last page
-    if (widget.pageController.page != null &&
-        (widget.pageController.page! + 0.5).toInt() ==
-            widget.pages.length - 1) {
+    if ((widget.pageController.page != null &&
+            (widget.pageController.page! + 0.5).toInt() ==
+                widget.pages.length - 1) ||
+        widget.pages.length == 1) {
       return widget.lastPageForwardButtonIconData ?? Icons.save;
       // other pages
     } else {
@@ -140,9 +141,10 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
 
   String _getForwardLabel(BuildContext context) {
     // last page
-    if (widget.pageController.page != null &&
-        (widget.pageController.page! + 0.5).toInt() ==
-            widget.pages.length - 1) {
+    if ((widget.pageController.page != null &&
+            (widget.pageController.page! + 0.5).toInt() ==
+                widget.pages.length - 1) ||
+        widget.pages.length == 1) {
       return widget.lastPageForwardButtonLabel ??
           AppLocalizations.of(context)!
               .user_profile_add_user_personal_data_save;
@@ -155,9 +157,10 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
 
   Color _getForwardColor() {
     // last page
-    if (widget.pageController.page != null &&
-        (widget.pageController.page! + 0.5).toInt() ==
-            widget.pages.length - 1) {
+    if ((widget.pageController.page != null &&
+            (widget.pageController.page! + 0.5).toInt() ==
+                widget.pages.length - 1) ||
+        widget.pages.length == 1) {
       return widget.lastPageForwardButtonColor ?? Colors.white;
       // other pages
     } else {
@@ -212,9 +215,8 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
                             (widget.pageController.page != null &&
                                 (widget.pageController.page! + 0.5).toInt() ==
                                     0))
-                    ? const SizedBox(
-                        width: 70,
-                      )
+                    // first page and first page function is null
+                    ? const SizedBox()
                     : BackwardTextButton(
                         function: _backward,
                         icon: _getBackwardIcon(),
@@ -223,12 +225,18 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
                       ),
 
                 // forward button
-                ForwardTextButton(
-                  function: _forward,
-                  icon: _getForwardIcon(),
-                  label: _getForwardLabel(context),
-                  color: _getForwardColor(),
-                ),
+                widget.lastPageForwardButtonFunction == null &&
+                        (widget.pageController.page != null &&
+                            (widget.pageController.page! + 0.5).toInt() ==
+                                widget.pages.length - 1)
+                    // last page and last page function function is null
+                    ? const SizedBox()
+                    : ForwardTextButton(
+                        function: _forward,
+                        icon: _getForwardIcon(),
+                        label: _getForwardLabel(context),
+                        color: _getForwardColor(),
+                      ),
               ],
             ),
             Padding(

@@ -560,35 +560,37 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
           return true;
         }
       },
-      child: Scaffold(body: BlocBuilder<InstructionBloc, InstructionState>(
-        builder: (context, state) {
-          if (state is InstructionLoadingState) {
-            return const LoadingPage();
-          } else {
-            return Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Form(
-                  key: _formKey,
-                  child: PageView(
-                    controller: _pageController,
-                    children: _pages,
+      child: Scaffold(
+        body: BlocBuilder<InstructionBloc, InstructionState>(
+          builder: (context, state) {
+            if (state is InstructionLoadingState) {
+              return const LoadingPage();
+            } else {
+              return Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Form(
+                    key: _formKey,
+                    child: PageView(
+                      controller: _pageController,
+                      children: _pages,
+                    ),
                   ),
-                ),
-                CreatorBottomNavigation(
-                  lastPageForwardButtonFunction: () =>
-                      _addNewInstruction(context),
-                  lastPageForwardButtonIconData: _isPublished
-                      ? Icons.cloud_upload
-                      : Icons.drive_file_rename_outline_rounded,
-                  pages: _pages,
-                  pageController: _pageController,
-                ),
-              ],
-            );
-          }
-        },
-      )),
+                  CreatorBottomNavigation(
+                    lastPageForwardButtonFunction: () =>
+                        _addNewInstruction(context),
+                    lastPageForwardButtonIconData: _isPublished
+                        ? Icons.cloud_upload
+                        : Icons.drive_file_rename_outline_rounded,
+                    pages: _pages,
+                    pageController: _pageController,
+                  ),
+                ],
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }
