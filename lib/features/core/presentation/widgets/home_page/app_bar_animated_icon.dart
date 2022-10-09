@@ -3,12 +3,23 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../company_profile/presentation/blocs/company_management/company_management_bloc.dart';
+import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../groups/presentation/blocs/group/group_bloc.dart';
+import '../../../../inventory/presentation/blocs/item_action/item_action_bloc.dart';
+import '../../../../inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart';
+import '../../../../inventory/presentation/blocs/item_category/item_category_bloc.dart';
+import '../../../../inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart';
 import '../../../../knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../../inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
 import '../../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../../inventory/presentation/blocs/items_management/items_management_bloc.dart';
+import '../../../../knowledge_base/presentation/blocs/instruction_category/instruction_category_bloc.dart';
+import '../../../../knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart';
 import '../../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
+import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 
 class AppBarAnimatedIcon extends StatefulWidget {
   const AppBarAnimatedIcon({Key? key}) : super(key: key);
@@ -63,6 +74,106 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<InstructionCategoryManagementBloc,
+            InstructionCategoryManagementState>(
+          listener: (context, state) {
+            if (state is InstructionCategoryManagementLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<InstructionCategoryBloc, InstructionCategoryState>(
+          listener: (context, state) {
+            if (state is InstructionCategoryLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<ItemActionManagementBloc, ItemActionManagementState>(
+          listener: (context, state) {
+            if (state is ItemActionManagementLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<ItemActionBloc, ItemActionState>(
+          listener: (context, state) {
+            if (state is ItemActionLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<ItemCategoryManagementBloc, ItemCategoryManagementState>(
+          listener: (context, state) {
+            if (state is ItemCategoryManagementLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<ItemCategoryBloc, ItemCategoryState>(
+          listener: (context, state) {
+            if (state is ItemCategoryLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<GroupBloc, GroupState>(
+          listener: (context, state) {
+            if (state is GroupLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<LocationBloc, LocationState>(
+          listener: (context, state) {
+            if (state is LocationLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<CompanyManagementBloc, CompanyManagementState>(
+          listener: (context, state) {
+            if (state is CompanyManagementLoading) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<CompanyProfileBloc, CompanyProfileState>(
+          listener: (context, state) {
+            if (state is CompanyProfileLoading) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<UserManagementBloc, UserManagementState>(
+          listener: (context, state) {
+            if (state is UserManagementLoading) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
         BlocListener<ItemsBloc, ItemsState>(
           listener: (context, state) {
             if (state is ItemsLoadingState) {

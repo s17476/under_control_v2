@@ -312,6 +312,13 @@ class _HomePageState extends State<HomePage>
           _toggleIsMenuVisible();
           return false;
         }
+        // hides search box if visible
+        if (_isAssetsSearchBarExpanded ||
+            _isInstructionsSearchBarExpanded ||
+            _isInventorySearchBarExpanded) {
+          _toggleIsSearchBarExpanded();
+          return false;
+        }
         // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);
         final cantExit = timegap >= const Duration(seconds: 2);

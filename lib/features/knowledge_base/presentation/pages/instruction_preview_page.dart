@@ -136,67 +136,77 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // backgroundColor: Colors.grey,
-      appBar: AppBar(
-        title: Text(_appBarTitle),
-        centerTitle: true,
-        actions: [
-          // popup menu
-          if (getUserPremission(
-            context: context,
-            featureType: FeatureType.knowledgeBase,
-            premissionType: PremissionType.edit,
-          ))
-            PopupMenuButton<Choice>(
-              onSelected: (Choice choice) {
-                _hideUserInfoCard();
-                choice.onTap();
-              },
-              itemBuilder: (BuildContext context) {
-                return _choices.map((Choice choice) {
-                  return PopupMenuItem<Choice>(
-                    value: choice,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(choice.icon),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          choice.title,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList();
-              },
+    return WillPopScope(
+      onWillPop: () async {
+        if (_isUserInfoCardVisible) {
+          _hideUserInfoCard();
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        // backgroundColor: Colors.grey,
+        appBar: AppBar(
+          title: Text(_appBarTitle),
+          centerTitle: true,
+          actions: [
+            // popup menu
+            if (getUserPremission(
+              context: context,
+              featureType: FeatureType.knowledgeBase,
+              premissionType: PremissionType.edit,
+            ))
+              PopupMenuButton<Choice>(
+                onSelected: (Choice choice) {
+                  _hideUserInfoCard();
+                  choice.onTap();
+                },
+                itemBuilder: (BuildContext context) {
+                  return _choices.map((Choice choice) {
+                    return PopupMenuItem<Choice>(
+                      value: choice,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(choice.icon),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            choice.title,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList();
+                },
+              ),
+          ],
+        ),
+        body: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            PageView(
+              controller: _pageController,
+              children: _pages,
             ),
-        ],
-      ),
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          PageView(
-            controller: _pageController,
-            children: _pages,
-          ),
-          CreatorBottomNavigation(
-            lastPageForwardButtonFunction: () => Navigator.pop(context),
-            lastPageForwardButtonIconData: Icons.done,
-            lastPageForwardButtonLabel: AppLocalizations.of(context)!.well_done,
-            pages: _pages,
-            pageController: _pageController,
-          ),
-          // user info card
-          if (_isUserInfoCardVisible)
-            UserInfoCard(
-              onDismiss: _hideUserInfoCard,
-              user: _userProfile!,
+            CreatorBottomNavigation(
+              lastPageForwardButtonFunction: () => Navigator.pop(context),
+              lastPageForwardButtonIconData: Icons.done,
+              lastPageForwardButtonLabel:
+                  AppLocalizations.of(context)!.well_done,
+              pages: _pages,
+              pageController: _pageController,
             ),
-        ],
+            // user info card
+            if (_isUserInfoCardVisible)
+              UserInfoCard(
+                onDismiss: _hideUserInfoCard,
+                user: _userProfile!,
+              ),
+          ],
+        ),
       ),
     );
   }
