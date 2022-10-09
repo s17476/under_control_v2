@@ -238,7 +238,7 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                         onTapAnimateToPage: 2,
                       ),
                     const SizedBox(
-                      height: 16,
+                      height: 50,
                     ),
                   ],
                 ),

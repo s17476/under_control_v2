@@ -214,11 +214,11 @@ class _MoveInsideItemSummaryCardState extends State<MoveInsideItemSummaryCard> {
                           pageController: widget.pageController,
                           onTapAnimateToPage: 3,
                         ),
+                        const SizedBox(
+                          height: 50,
+                        ),
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 4,
                   ),
                 ],
               ),

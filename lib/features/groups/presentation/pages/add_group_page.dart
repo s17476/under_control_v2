@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
+import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/location_selection_helpers.dart';
 import '../../../core/utils/show_snack_bar.dart';
@@ -256,6 +257,10 @@ class _AddGroupPageState extends State<AddGroupPage> {
       ),
     ];
 
+    _pageController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
+
     super.initState();
   }
 
@@ -304,7 +309,6 @@ class _AddGroupPageState extends State<AddGroupPage> {
       KeepAlivePage(
         child: AddGroupNameCard(
           isEditMode: group != null,
-          pageController: _pageController,
           nameTexEditingController: _nameTexEditingController,
           descriptionTexEditingController: _descriptionTexEditingController,
         ),
@@ -318,12 +322,10 @@ class _AddGroupPageState extends State<AddGroupPage> {
         ),
       ),
       AddGroupFeaturesCard(
-        pageController: _pageController,
         features: _features,
       ),
       AddGroupSummaryCard(
         pageController: _pageController,
-        addNewGroup: _addNewGroup,
         nameTexEditingController: _nameTexEditingController,
         descriptionTexEditingController: _descriptionTexEditingController,
         totalSelectedLocations: _totalSelectedLocations,
@@ -340,18 +342,11 @@ class _AddGroupPageState extends State<AddGroupPage> {
         final cantExit = timegap >= const Duration(seconds: 2);
         preBackpress = DateTime.now();
         if (cantExit) {
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.back_to_exit_creator,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              duration: const Duration(seconds: 2),
-              backgroundColor: Theme.of(context).errorColor,
-            ));
+          showSnackBar(
+            context: context,
+            message: AppLocalizations.of(context)!.back_to_exit_creator,
+            isErrorMessage: true,
+          );
           return false;
         } else {
           return true;
@@ -372,18 +367,10 @@ class _AddGroupPageState extends State<AddGroupPage> {
                     children: _pages,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: SmoothPageIndicator(
-                    controller: _pageController,
-                    count: _pages.length,
-                    effect: JumpingDotEffect(
-                      dotHeight: 10,
-                      dotWidth: 10,
-                      jumpScale: 2,
-                      activeDotColor: Theme.of(context).primaryColor,
-                    ),
-                  ),
+                CreatorBottomNavigation(
+                  lastPageForwardButtonFunction: () => _addNewGroup(context),
+                  pages: _pages,
+                  pageController: _pageController,
                 ),
               ],
             );

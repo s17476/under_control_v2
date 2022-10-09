@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
+import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/double_apis.dart';
 import '../../../core/utils/show_snack_bar.dart';
@@ -212,18 +213,11 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
         final cantExit = timegap >= const Duration(seconds: 2);
         preBackpress = DateTime.now();
         if (cantExit) {
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.back_to_exit_creator,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              duration: const Duration(seconds: 2),
-              backgroundColor: Theme.of(context).errorColor,
-            ));
+          showSnackBar(
+            context: context,
+            message: AppLocalizations.of(context)!.back_to_exit_creator,
+            isErrorMessage: true,
+          );
           return false;
         } else {
           return true;
@@ -244,18 +238,11 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
                     children: _pages,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: SmoothPageIndicator(
-                    controller: _pageController,
-                    count: _pages.length,
-                    effect: JumpingDotEffect(
-                      dotHeight: 10,
-                      dotWidth: 10,
-                      jumpScale: 2,
-                      activeDotColor: Theme.of(context).primaryColor,
-                    ),
-                  ),
+                CreatorBottomNavigation(
+                  lastPageForwardButtonFunction: () =>
+                      _subtractFromItem(context),
+                  pages: _pages,
+                  pageController: _pageController,
                 ),
               ],
             );

@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
+import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../data/models/checklist_model.dart';
@@ -38,30 +39,8 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
 
   List<CheckpointModel> _checkpoints = [];
 
-  @override
-  void didChangeDependencies() {
-    final arguments = ModalRoute.of(context)!.settings.arguments;
-
-    if (arguments != null && arguments is ChecklistModel) {
-      _checklist = arguments.deepCopy();
-      _titleTexEditingController.text = _checklist!.title;
-      _descriptionTexEditingController.text = _checklist!.description;
-
-      _checkpoints = _checklist!.allCheckpoints;
-    }
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    _titleTexEditingController.dispose();
-    _descriptionTexEditingController.dispose();
-    super.dispose();
-  }
-
   // add new checklist
-  void addNewChecklist(BuildContext context) {
+  void _addNewChecklist(BuildContext context) {
     String errorMessage = '';
     // name lenght validation
     if (!_formKey.currentState!.validate()) {
@@ -119,19 +98,47 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    _titleTexEditingController.dispose();
+    _descriptionTexEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    _pageController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    final arguments = ModalRoute.of(context)!.settings.arguments;
+
+    if (arguments != null && arguments is ChecklistModel) {
+      _checklist = arguments.deepCopy();
+      _titleTexEditingController.text = _checklist!.title;
+      _descriptionTexEditingController.text = _checklist!.description;
+
+      _checkpoints = _checklist!.allCheckpoints;
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _pages = [
       KeepAlivePage(
         child: AddChecklistTitleCard(
           isEditMode: _checklist != null,
-          pageController: _pageController,
           titleTexEditingController: _titleTexEditingController,
           descriptionTexEditingController: _descriptionTexEditingController,
         ),
       ),
       KeepAlivePage(
         child: AddCheckpointsCard(
-          pageController: _pageController,
           checkpoints: _checkpoints,
         ),
       ),
@@ -140,7 +147,6 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
         titleTexEditingController: _titleTexEditingController,
         descriptionTexEditingController: _descriptionTexEditingController,
         checkpoints: _checkpoints,
-        addNewChecklist: addNewChecklist,
       ),
     ];
 
@@ -153,18 +159,11 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
         final cantExit = timegap >= const Duration(seconds: 2);
         preBackpress = DateTime.now();
         if (cantExit) {
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.back_to_exit_creator,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              duration: const Duration(seconds: 2),
-              backgroundColor: Theme.of(context).errorColor,
-            ));
+          showSnackBar(
+            context: context,
+            message: AppLocalizations.of(context)!.back_to_exit_creator,
+            isErrorMessage: true,
+          );
           return false;
         } else {
           return true;
@@ -186,18 +185,11 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
                       children: _pages,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: SmoothPageIndicator(
-                      controller: _pageController,
-                      count: _pages.length,
-                      effect: JumpingDotEffect(
-                        dotHeight: 10,
-                        dotWidth: 10,
-                        jumpScale: 2,
-                        activeDotColor: Theme.of(context).primaryColor,
-                      ),
-                    ),
+                  CreatorBottomNavigation(
+                    lastPageForwardButtonFunction: () =>
+                        _addNewChecklist(context),
+                    pages: _pages,
+                    pageController: _pageController,
                   ),
                 ],
               );

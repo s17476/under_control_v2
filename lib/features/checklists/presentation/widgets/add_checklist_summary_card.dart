@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/presentation/widgets/backward_text_button.dart';
-import '../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../core/presentation/widgets/summary_card.dart';
 import '../../data/models/checkpoint_model.dart';
 
@@ -13,17 +11,12 @@ class AddChecklistSummaryCard extends StatelessWidget {
     required this.titleTexEditingController,
     required this.descriptionTexEditingController,
     required this.checkpoints,
-    required this.addNewChecklist,
   }) : super(key: key);
 
   final PageController pageController;
-
   final TextEditingController titleTexEditingController;
   final TextEditingController descriptionTexEditingController;
-
   final List<CheckpointModel> checkpoints;
-
-  final Function(BuildContext context) addNewChecklist;
 
   @override
   Widget build(BuildContext context) {
@@ -129,36 +122,11 @@ class AddChecklistSummaryCard extends StatelessWidget {
                       pageController: pageController,
                       onTapAnimateToPage: 1,
                     ),
+                    const SizedBox(
+                      height: 50,
+                    ),
                   ],
                 ),
-              ),
-            ),
-            // bottom navigation
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BackwardTextButton(
-                    icon: Icons.arrow_back_ios_new,
-                    color: Theme.of(context).textTheme.headline5!.color!,
-                    label: AppLocalizations.of(context)!
-                        .user_profile_add_user_personal_data_back,
-                    function: () => pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    ),
-                  ),
-                  ForwardTextButton(
-                    color: Theme.of(context).textTheme.headline5!.color!,
-                    label: AppLocalizations.of(context)!
-                        .user_profile_add_user_personal_data_save,
-                    function: () {
-                      addNewChecklist(context);
-                    },
-                    icon: Icons.save,
-                  ),
-                ],
               ),
             ),
           ],

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/presentation/widgets/backward_text_button.dart';
-import '../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../data/models/checkpoint_model.dart';
 import '../../utils/show_add_checkpoint_bottom_modal_sheet.dart';
@@ -12,11 +10,8 @@ import 'checkpoint_tile.dart';
 class AddCheckpointsCard extends StatefulWidget {
   const AddCheckpointsCard({
     Key? key,
-    required this.pageController,
     required this.checkpoints,
   }) : super(key: key);
-
-  final PageController pageController;
 
   final List<CheckpointModel> checkpoints;
 
@@ -135,40 +130,10 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
                         },
                       ),
                       const SizedBox(
-                        height: 70,
+                        height: 130,
                       ),
                     ],
                   ),
-                ),
-              ),
-
-              // bottom navigation
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    BackwardTextButton(
-                      icon: Icons.arrow_back_ios_new,
-                      color: Theme.of(context).textTheme.headline5!.color!,
-                      label: AppLocalizations.of(context)!
-                          .user_profile_add_user_personal_data_back,
-                      function: () => widget.pageController.previousPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      ),
-                    ),
-                    ForwardTextButton(
-                      color: Theme.of(context).textTheme.headline5!.color!,
-                      label: AppLocalizations.of(context)!
-                          .user_profile_add_user_next,
-                      function: () => widget.pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      ),
-                      icon: Icons.arrow_forward_ios_outlined,
-                    ),
-                  ],
                 ),
               ),
             ],

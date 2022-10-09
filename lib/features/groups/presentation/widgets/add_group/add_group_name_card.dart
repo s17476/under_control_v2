@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../../../core/presentation/widgets/forward_text_button.dart';
 
 class AddGroupNameCard extends StatelessWidget {
   const AddGroupNameCard({
     Key? key,
     required this.isEditMode,
-    required this.pageController,
     required this.nameTexEditingController,
     required this.descriptionTexEditingController,
   }) : super(key: key);
 
   final bool isEditMode;
-  final PageController pageController;
   final TextEditingController nameTexEditingController;
   final TextEditingController descriptionTexEditingController;
 
@@ -69,8 +65,7 @@ class AddGroupNameCard extends StatelessWidget {
                         },
                         fieldKey: 'name',
                         controller: nameTexEditingController,
-                        keyboardType: TextInputType.name,
-                        textCapitalization: TextCapitalization.words,
+                        textCapitalization: TextCapitalization.sentences,
                         labelText: AppLocalizations.of(context)!
                             .group_management_add_card_name,
                       ),
@@ -81,36 +76,18 @@ class AddGroupNameCard extends StatelessWidget {
                       CustomTextFormField(
                         fieldKey: 'description',
                         controller: descriptionTexEditingController,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.multiline,
                         textCapitalization: TextCapitalization.sentences,
                         labelText: AppLocalizations.of(context)!
                             .group_management_add_card_description,
                       ),
                       const SizedBox(
-                        height: 16,
+                        height: 50,
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ),
-          // bottom navigation
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ForwardTextButton(
-                  color: Theme.of(context).textTheme.headline5!.color!,
-                  label:
-                      AppLocalizations.of(context)!.user_profile_add_user_next,
-                  function: () => pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut),
-                  icon: Icons.arrow_forward_ios_outlined,
-                ),
-              ],
             ),
           ),
         ],

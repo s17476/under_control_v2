@@ -164,6 +164,9 @@ class _AddDateAndDescriptionCardState extends State<AddDateAndDescriptionCard>
                             return null;
                           },
                         ),
+                        const SizedBox(
+                          height: 50,
+                        ),
                       ],
                     ),
                   ),

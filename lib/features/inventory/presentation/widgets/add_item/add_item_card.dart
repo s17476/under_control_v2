@@ -84,7 +84,7 @@ class AddItemCard extends StatelessWidget {
                       ),
 
                       const SizedBox(
-                        height: 16,
+                        height: 50,
                       ),
                     ],
                   ),

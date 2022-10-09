@@ -195,7 +195,7 @@ class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
                       ],
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: 50,
                     ),
                   ],
                 ),

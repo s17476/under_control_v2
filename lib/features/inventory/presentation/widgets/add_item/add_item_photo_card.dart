@@ -118,6 +118,9 @@ class AddItemPhotoCard extends StatelessWidget with ResponsiveSize {
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 50,
+                  ),
                 ],
               ),
             ),

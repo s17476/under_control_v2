@@ -172,11 +172,11 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
                           pageController: widget.pageController,
                           onTapAnimateToPage: 2,
                         ),
+                        const SizedBox(
+                          height: 50,
+                        ),
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 4,
                   ),
                 ],
               ),

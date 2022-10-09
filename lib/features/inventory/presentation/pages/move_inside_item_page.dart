@@ -271,18 +271,11 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
         final cantExit = timegap >= const Duration(seconds: 2);
         preBackpress = DateTime.now();
         if (cantExit) {
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.back_to_exit_creator,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              duration: const Duration(seconds: 2),
-              backgroundColor: Theme.of(context).errorColor,
-            ));
+          showSnackBar(
+            context: context,
+            message: AppLocalizations.of(context)!.back_to_exit_creator,
+            isErrorMessage: true,
+          );
           return false;
         } else {
           return true;

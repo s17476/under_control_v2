@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/summary_card.dart';
 
 import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/forward_text_button.dart';
+import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../data/models/feature_model.dart';
 import 'feature_summary_card.dart';
 
@@ -15,19 +15,13 @@ class AddGroupSummaryCard extends StatelessWidget {
     required this.descriptionTexEditingController,
     required this.features,
     required this.totalSelectedLocations,
-    required this.addNewGroup,
   }) : super(key: key);
 
   final PageController pageController;
-
   final TextEditingController nameTexEditingController;
   final TextEditingController descriptionTexEditingController;
-
   final List<FeatureModel> features;
-
   final List<String> totalSelectedLocations;
-
-  final Function(BuildContext context) addNewGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -140,36 +134,11 @@ class AddGroupSummaryCard extends StatelessWidget {
                       pageController: pageController,
                       onTapAnimateToPage: 2,
                     ),
+                    const SizedBox(
+                      height: 50,
+                    ),
                   ],
                 ),
-              ),
-            ),
-            // bottom navigation
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BackwardTextButton(
-                    icon: Icons.arrow_back_ios_new,
-                    color: Theme.of(context).textTheme.headline5!.color!,
-                    label: AppLocalizations.of(context)!
-                        .user_profile_add_user_personal_data_back,
-                    function: () => pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    ),
-                  ),
-                  ForwardTextButton(
-                    color: Theme.of(context).textTheme.headline5!.color!,
-                    label: AppLocalizations.of(context)!
-                        .user_profile_add_user_personal_data_save,
-                    function: () {
-                      addNewGroup(context);
-                    },
-                    icon: Icons.save,
-                  ),
-                ],
               ),
             ),
           ],

@@ -56,6 +56,9 @@ class AddToLocationCard extends StatelessWidget {
                     item: item,
                     isSubtract: isSubtract,
                   ),
+                  const SizedBox(
+                    height: 50,
+                  ),
                 ],
               ),
             ),
