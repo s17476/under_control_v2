@@ -140,6 +140,14 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
   }
 
   @override
+  void initState() {
+    _pageController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     final arguments = ModalRoute.of(context)!.settings.arguments;
 
@@ -162,7 +170,6 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
     _pages = [
       KeepAlivePage(
         child: AddToLocationCard(
-          pageController: _pageController,
           selectedLocation: _selectedLocation,
           setLocation: _setLocation,
           title: AppLocalizations.of(context)!.item_subtract_from_location,
@@ -172,7 +179,6 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
       ),
       KeepAlivePage(
         child: AddQuantityCard(
-          pageController: _pageController,
           quantityTextEditingController: _quantityTextEditingController,
           itemUnit: _item!.itemUnit,
           maxQuantity: _maxQuantity,
@@ -180,7 +186,6 @@ class _SubtractFromPageState extends State<SubtractFromItemPage> {
       ),
       KeepAlivePage(
         child: AddDateAndDescriptionCard(
-          pageController: _pageController,
           descriptionTextEditingController: _descriptionTextEditingController,
           dateTime: _dateTime,
           setDate: _setDate,

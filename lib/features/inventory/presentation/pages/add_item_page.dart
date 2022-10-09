@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
+import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../data/models/item_model.dart';
@@ -177,6 +177,14 @@ class _AddItemPageState extends State<AddItemPage> {
   }
 
   @override
+  void initState() {
+    _pageController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     final arguments = ModalRoute.of(context)!.settings.arguments;
 
@@ -211,7 +219,6 @@ class _AddItemPageState extends State<AddItemPage> {
       KeepAlivePage(
         child: AddItemCard(
           isEditMode: _item != null,
-          pageController: _pageController,
           nameTexEditingController: _nameTexEditingController,
           descriptionTexEditingController: _descriptionTexEditingController,
         ),
@@ -219,7 +226,6 @@ class _AddItemPageState extends State<AddItemPage> {
       KeepAlivePage(
         child: AddItemDataCard(
           isEditMode: _item != null,
-          pageController: _pageController,
           priceTextEditingController: _priceTextEditingController,
           codeTextEditingController: _codeTextEditingController,
           barCodeTextEditingController: _barCodeTextEditingController,
@@ -231,7 +237,6 @@ class _AddItemPageState extends State<AddItemPage> {
       ),
       KeepAlivePage(
         child: AddItemPhotoCard(
-          pageController: _pageController,
           setImage: _setImage,
           deleteImage: _deleteImage,
           image: _itemImage,
@@ -245,7 +250,6 @@ class _AddItemPageState extends State<AddItemPage> {
         barCodeTextEditingController: _barCodeTextEditingController,
         codeTextEditingController: _codeTextEditingController,
         priceTextEditingController: _priceTextEditingController,
-        addNewItem: _addNewItem,
         category: _category,
         itemUnit: _itemUnit,
         itemImage: _itemImage,
@@ -293,18 +297,10 @@ class _AddItemPageState extends State<AddItemPage> {
                     children: _pages,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: SmoothPageIndicator(
-                    controller: _pageController,
-                    count: _pages.length,
-                    effect: JumpingDotEffect(
-                      dotHeight: 10,
-                      dotWidth: 10,
-                      jumpScale: 2,
-                      activeDotColor: Theme.of(context).primaryColor,
-                    ),
-                  ),
+                CreatorBottomNavigation(
+                  lastPageForwardButtonFunction: () => _addNewItem(context),
+                  pages: _pages,
+                  pageController: _pageController,
                 ),
               ],
             );

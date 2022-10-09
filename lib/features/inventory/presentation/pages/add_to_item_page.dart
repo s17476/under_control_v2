@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
+import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/double_apis.dart';
 import '../../../core/utils/show_snack_bar.dart';
@@ -67,17 +67,7 @@ class _AddItemPageState extends State<AddToItemPage> {
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    final arguments = ModalRoute.of(context)!.settings.arguments;
-
-    if (arguments != null && arguments is ItemModel) {
-      _item = arguments.deepCopy();
-    }
-    super.didChangeDependencies();
-  }
-
-  void addToItem(BuildContext context) {
+  void _addToItem(BuildContext context) {
     String errorMessage = '';
     double quantity = 0;
 
@@ -147,6 +137,24 @@ class _AddItemPageState extends State<AddToItemPage> {
   }
 
   @override
+  void initState() {
+    _pageController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    final arguments = ModalRoute.of(context)!.settings.arguments;
+
+    if (arguments != null && arguments is ItemModel) {
+      _item = arguments.deepCopy();
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     _quantityTextEditingController.dispose();
     _descriptionTextEditingController.dispose();
@@ -159,7 +167,6 @@ class _AddItemPageState extends State<AddToItemPage> {
     _pages = [
       KeepAlivePage(
         child: AddToLocationCard(
-          pageController: _pageController,
           selectedLocation: _selectedLocation,
           setLocation: _setLocation,
           title: AppLocalizations.of(context)!.item_add_to_location,
@@ -168,14 +175,12 @@ class _AddItemPageState extends State<AddToItemPage> {
       ),
       KeepAlivePage(
         child: AddQuantityCard(
-          pageController: _pageController,
           quantityTextEditingController: _quantityTextEditingController,
           itemUnit: _item!.itemUnit,
         ),
       ),
       KeepAlivePage(
         child: AddDateAndDescriptionCard(
-          pageController: _pageController,
           descriptionTextEditingController: _descriptionTextEditingController,
           dateTime: _dateTime,
           setDate: _setDate,
@@ -186,7 +191,7 @@ class _AddItemPageState extends State<AddToItemPage> {
         quantityTextEditingController: _quantityTextEditingController,
         selectedLocation: _selectedLocation,
         itemUnit: getLocalizedUnitName(context, _item!.itemUnit),
-        addNewItem: addToItem,
+        addNewItem: _addToItem,
         dateTime: _dateTime,
         descriptionTextEditingController: _descriptionTextEditingController,
       ),
@@ -201,18 +206,11 @@ class _AddItemPageState extends State<AddToItemPage> {
         final cantExit = timegap >= const Duration(seconds: 2);
         preBackpress = DateTime.now();
         if (cantExit) {
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.back_to_exit_creator,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              duration: const Duration(seconds: 2),
-              backgroundColor: Theme.of(context).errorColor,
-            ));
+          showSnackBar(
+            context: context,
+            message: AppLocalizations.of(context)!.back_to_exit_creator,
+            isErrorMessage: true,
+          );
           return false;
         } else {
           return true;
@@ -233,18 +231,10 @@ class _AddItemPageState extends State<AddToItemPage> {
                     children: _pages,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: SmoothPageIndicator(
-                    controller: _pageController,
-                    count: _pages.length,
-                    effect: JumpingDotEffect(
-                      dotHeight: 10,
-                      dotWidth: 10,
-                      jumpScale: 2,
-                      activeDotColor: Theme.of(context).primaryColor,
-                    ),
-                  ),
+                CreatorBottomNavigation(
+                  lastPageForwardButtonFunction: () => _addToItem(context),
+                  pages: _pages,
+                  pageController: _pageController,
                 ),
               ],
             );

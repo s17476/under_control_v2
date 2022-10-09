@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/custom_youtube_player.dart';
 import '../../../../core/utils/extract_youtube_id.dart';
-import '../../../domain/entities/instruction_step.dart';
+import '../../../data/models/instruction_step_model.dart';
 
 class YoutubeStep extends StatelessWidget {
   const YoutubeStep({
@@ -56,8 +55,7 @@ class YoutubeStep extends StatelessWidget {
                 fieldKey: 'youtube-link',
                 labelText:
                     AppLocalizations.of(context)!.content_youtube_paste_here,
-                keyboardType: TextInputType.name,
-                textCapitalization: TextCapitalization.sentences,
+                textCapitalization: TextCapitalization.none,
                 validator: (val) {
                   if (val!.length < 2) {
                     return AppLocalizations.of(context)!
@@ -91,7 +89,6 @@ class YoutubeStep extends StatelessWidget {
                 initialValue: step.title,
                 fieldKey: 'header',
                 labelText: AppLocalizations.of(context)!.header,
-                keyboardType: TextInputType.name,
                 textCapitalization: TextCapitalization.sentences,
                 validator: (val) {
                   if (val!.length < 2) {
@@ -123,7 +120,7 @@ class YoutubeStep extends StatelessWidget {
                 initialValue: step.description,
                 fieldKey: 'description',
                 labelText: AppLocalizations.of(context)!.description_optional,
-                keyboardType: TextInputType.name,
+                keyboardType: TextInputType.multiline,
                 textCapitalization: TextCapitalization.sentences,
                 maxLines: 8,
                 onChanged: (val) {

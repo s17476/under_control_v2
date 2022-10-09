@@ -3,14 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:under_control_v2/features/core/utils/get_file_size.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 
+import 'package:under_control_v2/features/core/utils/get_file_size.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/custom_video_player.dart';
 import '../../../../core/presentation/widgets/overlay_icon_button.dart';
 import '../../../../core/utils/show_snack_bar.dart';
-import '../../../domain/entities/instruction_step.dart';
+import '../../../data/models/instruction_step_model.dart';
 
 class VideoStep extends StatelessWidget {
   const VideoStep({
@@ -88,7 +87,8 @@ class VideoStep extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                            child: Text(AppLocalizations.of(context)!.size)),
+                          child: Text(AppLocalizations.of(context)!.size),
+                        ),
                         Text(getFileSize(step.file!.path, 2)),
                       ],
                     ),
@@ -138,7 +138,6 @@ class VideoStep extends StatelessWidget {
                 initialValue: step.title,
                 fieldKey: 'header',
                 labelText: AppLocalizations.of(context)!.header,
-                keyboardType: TextInputType.name,
                 textCapitalization: TextCapitalization.sentences,
                 validator: (val) {
                   if (val!.length < 2) {
@@ -170,7 +169,7 @@ class VideoStep extends StatelessWidget {
                 initialValue: step.description,
                 fieldKey: 'description',
                 labelText: AppLocalizations.of(context)!.description_optional,
-                keyboardType: TextInputType.name,
+                keyboardType: TextInputType.multiline,
                 textCapitalization: TextCapitalization.sentences,
                 maxLines: 8,
                 onChanged: (val) {

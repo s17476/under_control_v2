@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../../core/utils/double_apis.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -14,18 +12,13 @@ import '../../../utils/get_localized_unit_name.dart';
 class AddQuantityCard extends StatefulWidget {
   const AddQuantityCard({
     Key? key,
-    required this.pageController,
     required this.quantityTextEditingController,
     required this.itemUnit,
     this.maxQuantity = 0,
   }) : super(key: key);
 
-  final PageController pageController;
-
   final TextEditingController quantityTextEditingController;
-
   final ItemUnit itemUnit;
-
   final double maxQuantity;
 
   @override
@@ -212,36 +205,6 @@ class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
                     ),
                   ),
                 const Expanded(child: SizedBox()),
-              ],
-            ),
-          ),
-
-          // bottom navigation
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                BackwardTextButton(
-                  icon: Icons.arrow_back_ios_new,
-                  color: Theme.of(context).textTheme.headline5!.color!,
-                  label: AppLocalizations.of(context)!
-                      .user_profile_add_user_personal_data_back,
-                  function: () => widget.pageController.previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  ),
-                ),
-                ForwardTextButton(
-                  color: Theme.of(context).textTheme.headline5!.color!,
-                  label:
-                      AppLocalizations.of(context)!.user_profile_add_user_next,
-                  function: () => widget.pageController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  ),
-                  icon: Icons.arrow_forward_ios_outlined,
-                ),
               ],
             ),
           ),

@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../../../core/presentation/widgets/forward_text_button.dart';
 
 class AddItemCard extends StatelessWidget {
   const AddItemCard({
     Key? key,
     required this.isEditMode,
-    required this.pageController,
     required this.nameTexEditingController,
     required this.descriptionTexEditingController,
   }) : super(key: key);
 
   final bool isEditMode;
-  final PageController pageController;
   final TextEditingController nameTexEditingController;
   final TextEditingController descriptionTexEditingController;
 
@@ -69,7 +65,6 @@ class AddItemCard extends StatelessWidget {
                         },
                         fieldKey: 'name',
                         controller: nameTexEditingController,
-                        keyboardType: TextInputType.name,
                         textCapitalization: TextCapitalization.words,
                         labelText: AppLocalizations.of(context)!.item_name,
                       ),
@@ -95,24 +90,6 @@ class AddItemCard extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ),
-          // bottom navigation
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ForwardTextButton(
-                  color: Theme.of(context).textTheme.headline5!.color!,
-                  label:
-                      AppLocalizations.of(context)!.user_profile_add_user_next,
-                  function: () => pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut),
-                  icon: Icons.arrow_forward_ios_outlined,
-                ),
-              ],
             ),
           ),
         ],

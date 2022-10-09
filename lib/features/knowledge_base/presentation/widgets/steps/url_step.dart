@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' show PreviewData;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_link_previewer/flutter_link_previewer.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/url_preview.dart';
-import '../../../domain/entities/instruction_step.dart';
+import '../../../data/models/instruction_step_model.dart';
 import '../../../utils/steps_validation.dart';
 
 class UrlStep extends StatelessWidget {
@@ -163,7 +162,6 @@ class UrlStep extends StatelessWidget {
                 initialValue: step.title,
                 fieldKey: 'header',
                 labelText: AppLocalizations.of(context)!.header,
-                keyboardType: TextInputType.name,
                 textCapitalization: TextCapitalization.sentences,
                 validator: (val) {
                   if (val!.length < 2) {
@@ -195,7 +193,7 @@ class UrlStep extends StatelessWidget {
                 initialValue: step.description,
                 fieldKey: 'description',
                 labelText: AppLocalizations.of(context)!.description_optional,
-                keyboardType: TextInputType.name,
+                keyboardType: TextInputType.multiline,
                 textCapitalization: TextCapitalization.sentences,
                 maxLines: 8,
                 onChanged: (val) {

@@ -1,22 +1,17 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/pdf_viewer.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
+import '../../../../core/presentation/widgets/pdf_viewer.dart';
+import '../../../data/models/instruction_step_model.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../../../core/presentation/widgets/image_viewer.dart';
 import '../../../../core/presentation/widgets/overlay_icon_button.dart';
 import '../../../../core/utils/get_file_size.dart';
 import '../../../../core/utils/responsive_size.dart';
-import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../core/utils/size_config.dart';
-import '../../../domain/entities/instruction_step.dart';
 
 class PdfStep extends StatelessWidget with ResponsiveSize {
   const PdfStep({
@@ -143,7 +138,6 @@ class PdfStep extends StatelessWidget with ResponsiveSize {
             initialValue: step.title,
             fieldKey: 'header',
             labelText: AppLocalizations.of(context)!.header,
-            keyboardType: TextInputType.name,
             textCapitalization: TextCapitalization.sentences,
             validator: (val) {
               if (val!.length < 2) {
@@ -175,7 +169,7 @@ class PdfStep extends StatelessWidget with ResponsiveSize {
             initialValue: step.description,
             fieldKey: 'description',
             labelText: AppLocalizations.of(context)!.description_optional,
-            keyboardType: TextInputType.name,
+            keyboardType: TextInputType.multiline,
             textCapitalization: TextCapitalization.sentences,
             maxLines: 8,
             onChanged: (val) {

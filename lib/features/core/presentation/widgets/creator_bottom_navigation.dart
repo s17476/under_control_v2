@@ -25,6 +25,7 @@ class CreatorBottomNavigation extends StatefulWidget {
     this.backgroundColor,
     required this.pages,
     required this.pageController,
+    this.dotIndicatorPadding,
   }) : super(key: key);
 
   final Function()? firstPageBackwardButtonFunction;
@@ -44,6 +45,7 @@ class CreatorBottomNavigation extends StatefulWidget {
   final Color? backgroundColor;
   final List<Widget> pages;
   final PageController pageController;
+  final EdgeInsetsGeometry? dotIndicatorPadding;
 
   @override
   State<CreatorBottomNavigation> createState() =>
@@ -198,61 +200,76 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
         width: MediaQuery.of(context).size.width,
         color:
             widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            // back button
-            widget.firstPageBackwardButtonFunction == null &&
-                    (widget.pageController.page == null ||
-                        (widget.pageController.page != null &&
-                            (widget.pageController.page! + 0.5).toInt() == 0))
-                ? const SizedBox(
-                    width: 70,
-                  )
-                : BackwardTextButton(
-                    function: _backward,
-                    icon: _getBackwardIcon(),
-                    label: _getBackwardLabel(context),
-                    color: _getBackwardColor(),
-                  ),
-            // dot indicator
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: AnimatedSmoothIndicator(
-                        activeIndex: widget.pageController.page == null
-                            ? 0
-                            : (widget.pageController.page! + 0.5).toInt(),
-                        count: widget.pages.length,
-                        effect: WormEffect(
-                          activeDotColor: Theme.of(context).primaryColor,
-                          dotHeight: 10,
-                          dotWidth: 10,
-                          type: WormType.thin,
-                          paintStyle: PaintingStyle.stroke,
-                        ),
-                        // effect: JumpingDotEffect(
-                        //   dotHeight: 10,
-                        //   dotWidth: 10,
-                        //   jumpScale: 2,
-                        //   activeDotColor: Theme.of(context).primaryColor,
-                        // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // back button
+                widget.firstPageBackwardButtonFunction == null &&
+                        (widget.pageController.page == null ||
+                            (widget.pageController.page != null &&
+                                (widget.pageController.page! + 0.5).toInt() ==
+                                    0))
+                    ? const SizedBox(
+                        width: 70,
+                      )
+                    : BackwardTextButton(
+                        function: _backward,
+                        icon: _getBackwardIcon(),
+                        label: _getBackwardLabel(context),
+                        color: _getBackwardColor(),
                       ),
+
+                // forward button
+                ForwardTextButton(
+                  function: _forward,
+                  icon: _getForwardIcon(),
+                  label: _getForwardLabel(context),
+                  color: _getForwardColor(),
+                ),
+              ],
+            ),
+            Padding(
+              padding: widget.dotIndicatorPadding ??
+                  const EdgeInsets.symmetric(horizontal: 110),
+              child: Row(
+                children: [
+                  // dot indicator
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: AnimatedSmoothIndicator(
+                              activeIndex: widget.pageController.page == null
+                                  ? 0
+                                  : (widget.pageController.page! + 0.5).toInt(),
+                              count: widget.pages.length,
+                              effect: WormEffect(
+                                activeDotColor: Theme.of(context).primaryColor,
+                                dotHeight: 10,
+                                dotWidth: 10,
+                                type: WormType.thin,
+                                paintStyle: PaintingStyle.stroke,
+                              ),
+                              // effect: JumpingDotEffect(
+                              //   dotHeight: 10,
+                              //   dotWidth: 10,
+                              //   jumpScale: 2,
+                              //   activeDotColor: Theme.of(context).primaryColor,
+                              // ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-            // forward button
-            ForwardTextButton(
-              function: _forward,
-              icon: _getForwardIcon(),
-              label: _getForwardLabel(context),
-              color: _getForwardColor(),
             ),
           ],
         ),

@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
+import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/double_apis.dart';
 import '../../../core/utils/show_snack_bar.dart';
@@ -188,6 +189,14 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
   }
 
   @override
+  void initState() {
+    _pageController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     final arguments = ModalRoute.of(context)!.settings.arguments;
 
@@ -210,7 +219,6 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
     _pages = [
       KeepAlivePage(
         child: AddToLocationCard(
-          pageController: _pageController,
           selectedLocation: _selectedFromLocation,
           setLocation: _setFromLocation,
           title: AppLocalizations.of(context)!.item_subtract_from_location,
@@ -220,7 +228,6 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
       ),
       KeepAlivePage(
         child: AddToLocationCard(
-          pageController: _pageController,
           selectedLocation: _selectedToLocation,
           selectedFromLocation: _selectedFromLocation,
           setLocation: _setToLocation,
@@ -231,7 +238,6 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
       ),
       KeepAlivePage(
         child: AddQuantityCard(
-          pageController: _pageController,
           quantityTextEditingController: _quantityTextEditingController,
           itemUnit: _item!.itemUnit,
           maxQuantity: _maxQuantity,
@@ -239,7 +245,6 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
       ),
       KeepAlivePage(
         child: AddDateAndDescriptionCard(
-          pageController: _pageController,
           descriptionTextEditingController: _descriptionTextEditingController,
           dateTime: _dateTime,
           setDate: _setDate,
@@ -252,7 +257,6 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
         selectedToLocation: _selectedToLocation,
         itemUnit: getLocalizedUnitName(context, _item!.itemUnit),
         maxQuantity: _maxQuantity,
-        addNewItem: _moveInsideItem,
         dateTime: _dateTime,
         descriptionTextEditingController: _descriptionTextEditingController,
       ),
@@ -299,19 +303,11 @@ class _MoveInsideItemPageState extends State<MoveInsideItemPage> {
                     children: _pages,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: SmoothPageIndicator(
-                    controller: _pageController,
-                    count: _pages.length,
-                    effect: JumpingDotEffect(
-                      dotHeight: 10,
-                      dotWidth: 10,
-                      jumpScale: 2,
-                      activeDotColor: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
+                CreatorBottomNavigation(
+                  lastPageForwardButtonFunction: () => _moveInsideItem(context),
+                  pages: _pages,
+                  pageController: _pageController,
+                )
               ],
             );
           }

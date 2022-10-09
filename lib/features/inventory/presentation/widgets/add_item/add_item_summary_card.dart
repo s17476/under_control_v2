@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/utils/double_apis.dart';
-import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../domain/entities/item.dart';
@@ -25,7 +23,6 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.category,
     required this.itemUnit,
     required this.itemImage,
-    required this.addNewItem,
   }) : super(key: key);
 
   final PageController pageController;
@@ -40,8 +37,6 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
   final String itemUnit;
 
   final File? itemImage;
-
-  final Function(BuildContext context) addNewItem;
 
   @override
   Widget build(BuildContext context) {
@@ -247,34 +242,6 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                     ),
                   ],
                 ),
-              ),
-            ),
-            // bottom navigation
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BackwardTextButton(
-                    icon: Icons.arrow_back_ios_new,
-                    color: Theme.of(context).textTheme.headline5!.color!,
-                    label: AppLocalizations.of(context)!
-                        .user_profile_add_user_personal_data_back,
-                    function: () => pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    ),
-                  ),
-                  ForwardTextButton(
-                    color: Theme.of(context).textTheme.headline5!.color!,
-                    label: AppLocalizations.of(context)!
-                        .user_profile_add_user_personal_data_save,
-                    function: () {
-                      addNewItem(context);
-                    },
-                    icon: Icons.save,
-                  ),
-                ],
               ),
             ),
           ],

@@ -4,9 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/pages/qr_scanner.dart';
-import '../../../../core/presentation/widgets/backward_text_button.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../../../core/presentation/widgets/forward_text_button.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/show_snack_bar.dart';
@@ -18,7 +16,6 @@ class AddItemDataCard extends StatefulWidget {
   const AddItemDataCard({
     Key? key,
     required this.isEditMode,
-    required this.pageController,
     required this.priceTextEditingController,
     required this.codeTextEditingController,
     required this.barCodeTextEditingController,
@@ -29,7 +26,6 @@ class AddItemDataCard extends StatefulWidget {
   }) : super(key: key);
 
   final bool isEditMode;
-  final PageController pageController;
   final TextEditingController priceTextEditingController;
   final TextEditingController codeTextEditingController;
   final TextEditingController barCodeTextEditingController;
@@ -163,7 +159,7 @@ class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
                       scrollPadding: const EdgeInsets.all(170),
                       fieldKey: 'code',
                       controller: widget.codeTextEditingController,
-                      keyboardType: TextInputType.name,
+                      textCapitalization: TextCapitalization.characters,
                       labelText: AppLocalizations.of(context)!
                           .item_internal_code_optional,
                     ),
@@ -204,34 +200,6 @@ class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
                   ],
                 ),
               ),
-            ),
-          ),
-          // bottom navigation
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                BackwardTextButton(
-                  icon: Icons.arrow_back_ios_new,
-                  color: Theme.of(context).textTheme.headline5!.color!,
-                  label: AppLocalizations.of(context)!
-                      .user_profile_add_user_personal_data_back,
-                  function: () => widget.pageController.previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  ),
-                ),
-                ForwardTextButton(
-                  color: Theme.of(context).textTheme.headline5!.color!,
-                  label:
-                      AppLocalizations.of(context)!.user_profile_add_user_next,
-                  function: () => widget.pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut),
-                  icon: Icons.arrow_forward_ios_outlined,
-                ),
-              ],
             ),
           ),
         ],
