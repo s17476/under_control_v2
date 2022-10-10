@@ -3,43 +3,84 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_compress/video_compress.dart';
 
 import 'package:under_control_v2/features/core/utils/get_file_size.dart';
+import 'package:under_control_v2/features/core/utils/responsive_size.dart';
+
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/custom_video_player.dart';
 import '../../../../core/presentation/widgets/overlay_icon_button.dart';
 import '../../../../core/utils/show_snack_bar.dart';
 import '../../../data/models/instruction_step_model.dart';
+import '../../../domain/entities/instruction.dart';
 
-class VideoStep extends StatelessWidget {
+class VideoStep extends StatefulWidget {
   const VideoStep({
     Key? key,
     required this.step,
+    this.instruction,
     required this.updateStep,
   }) : super(key: key);
 
   final InstructionStepModel step;
+  final Instruction? instruction;
 
   final Function(InstructionStepModel) updateStep;
 
-  // picks video from camera or gallery
+  @override
+  State<VideoStep> createState() => _VideoStepState();
+}
+
+class _VideoStepState extends State<VideoStep> with ResponsiveSize {
+  String _originalFileSize = '';
+  String _compressedFileSize = '';
+  int _videoCompressionProgress = 0;
+  MediaInfo? _compressedFileInfo;
+  bool _isCompressingVideoFile = false;
+
+  // picks video from camera or gallery and compress it
   void _pickVideo(BuildContext context, ImageSource souruce) async {
+    Subscription subscription;
     final picker = ImagePicker();
     try {
       final pickedFile = await picker.pickVideo(
         source: souruce,
         maxDuration: const Duration(minutes: 2),
       );
-      // updates current step
       if (pickedFile != null) {
-        updateStep(
+        _originalFileSize = getFileSize(pickedFile.path, 2);
+        setState(() {
+          _isCompressingVideoFile = true;
+        });
+        subscription = VideoCompress.compressProgress$.subscribe((progress) {
+          setState(() {
+            _videoCompressionProgress = progress.toInt();
+          });
+        });
+        await VideoCompress.setLogLevel(0);
+        final info = await VideoCompress.compressVideo(
+          pickedFile.path,
+          quality: VideoQuality.MediumQuality,
+          deleteOrigin: false,
+          includeAudio: true,
+        );
+        setState(() {
+          _isCompressingVideoFile = false;
+        });
+        subscription.unsubscribe();
+        _videoCompressionProgress = 0;
+        _compressedFileSize = getFileSize(info!.file!.path, 2);
+        _compressedFileInfo = info;
+        // updates current step
+        widget.updateStep(
           InstructionStepModel(
-            id: step.id,
-            contentType: step.contentType,
-            contentUrl: step.contentUrl,
-            title: step.title,
-            description: step.description,
-            file: File(pickedFile.path),
+            id: widget.step.id,
+            contentType: widget.step.contentType,
+            contentUrl: widget.step.contentUrl,
+            title: widget.step.title,
+            description: widget.step.description,
+            file: File(info.file!.path),
           ),
         );
       }
@@ -57,43 +98,119 @@ class VideoStep extends StatelessWidget {
     return Column(
       children: [
         // video player
-        if (step.file != null || step.contentUrl != null)
-          Container(
-            constraints:
-                BoxConstraints(maxHeight: MediaQuery.of(context).size.width),
-            child: CustomVideoPlayer(
-              videoFile: step.file,
-              videoUrl: step.contentUrl,
-            ),
-          ),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            if (widget.step.file != null || widget.step.contentUrl != null)
+              Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.width,
+                ),
+                child: CustomVideoPlayer(
+                  videoFile: widget.step.file,
+                  videoUrl: widget.step.contentUrl,
+                ),
+              ),
+            // placeholder image
+            if (widget.step.file == null)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 16,
+                ),
+                child: Image.asset(
+                  'assets/video.png',
+                  fit: BoxFit.fill,
+                ),
+              ),
+            //
+            if (_isCompressingVideoFile)
+              Container(
+                alignment: Alignment.center,
+                height: 170,
+                width: 170,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.black.withOpacity(0.7),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Text(
+                          '${_videoCompressionProgress.toString()} %',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(AppLocalizations.of(context)!.video_compressing),
+                  ],
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(
+          height: 16,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
           ),
           child: Column(
             children: [
-              // placeholder image
-              if (step.file == null)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    'assets/video.png',
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              const SizedBox(
-                height: 16,
-              ),
               // file size
-              if (step.file != null)
+              if (widget.step.file != null)
                 Column(
                   children: [
+                    // original file size
                     Row(
                       children: [
                         Expanded(
                           child: Text(AppLocalizations.of(context)!.size),
                         ),
-                        Text(getFileSize(step.file!.path, 2)),
+                        Text(_originalFileSize),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    // compressed file size
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            AppLocalizations.of(context)!.compressed_size,
+                          ),
+                        ),
+                        Text(_compressedFileSize),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    // compressed file size
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            AppLocalizations.of(context)!.video_size,
+                          ),
+                        ),
+                        Text(
+                            '${_compressedFileInfo!.width.toString()}x${_compressedFileInfo!.height.toString()}'),
                       ],
                     ),
                     const SizedBox(
@@ -111,15 +228,15 @@ class VideoStep extends StatelessWidget {
                     title: AppLocalizations.of(context)!
                         .user_profile_add_user_personal_data_take_photo_btn,
                   ),
-                  if (step.file != null)
+                  if (widget.step.file != null)
                     OverlayIconButton(
-                      onPressed: () => updateStep(
+                      onPressed: () => widget.updateStep(
                         InstructionStepModel(
-                          id: step.id,
-                          contentType: step.contentType,
-                          contentUrl: step.contentUrl,
-                          title: step.title,
-                          description: step.description,
+                          id: widget.step.id,
+                          contentType: widget.step.contentType,
+                          contentUrl: widget.step.contentUrl,
+                          title: widget.step.title,
+                          description: widget.step.description,
                           file: null,
                         ),
                       ),
@@ -139,7 +256,7 @@ class VideoStep extends StatelessWidget {
               ),
               // header
               CustomTextFormField(
-                initialValue: step.title,
+                initialValue: widget.step.title,
                 fieldKey: 'header',
                 labelText: AppLocalizations.of(context)!.header,
                 textCapitalization: TextCapitalization.sentences,
@@ -152,13 +269,13 @@ class VideoStep extends StatelessWidget {
                 },
                 onChanged: (val) {
                   if (val!.trim().isNotEmpty) {
-                    updateStep(
+                    widget.updateStep(
                       InstructionStepModel(
-                        id: step.id,
-                        contentType: step.contentType,
-                        contentUrl: step.contentUrl,
-                        description: step.description,
-                        file: step.file,
+                        id: widget.step.id,
+                        contentType: widget.step.contentType,
+                        contentUrl: widget.step.contentUrl,
+                        description: widget.step.description,
+                        file: widget.step.file,
                         title: val.trim(),
                       ),
                     );
@@ -170,7 +287,7 @@ class VideoStep extends StatelessWidget {
               ),
               // description
               CustomTextFormField(
-                initialValue: step.description,
+                initialValue: widget.step.description,
                 fieldKey: 'description',
                 labelText: AppLocalizations.of(context)!.description_optional,
                 keyboardType: TextInputType.multiline,
@@ -178,14 +295,14 @@ class VideoStep extends StatelessWidget {
                 maxLines: 8,
                 onChanged: (val) {
                   if (val!.trim().isNotEmpty) {
-                    updateStep(
+                    widget.updateStep(
                       InstructionStepModel(
-                        id: step.id,
-                        contentType: step.contentType,
-                        contentUrl: step.contentUrl,
+                        id: widget.step.id,
+                        contentType: widget.step.contentType,
+                        contentUrl: widget.step.contentUrl,
                         description: val.trim(),
-                        file: step.file,
-                        title: step.title,
+                        file: widget.step.file,
+                        title: widget.step.title,
                       ),
                     );
                   }

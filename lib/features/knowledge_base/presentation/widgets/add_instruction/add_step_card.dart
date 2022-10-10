@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
 
 import '../../../../core/utils/choice.dart';
 import '../../../data/models/instruction_step_model.dart';
@@ -25,11 +26,13 @@ class AddStepCard extends StatelessWidget {
     required this.insertStepAfter,
     required this.moveBack,
     required this.moveForward,
+    required this.instruction,
   }) : super(key: key);
 
   final bool isLastStep;
 
   final InstructionStepModel step;
+  final Instruction? instruction;
 
   final Function(InstructionStep, ContentType) setContentType;
 
@@ -172,7 +175,11 @@ class AddStepCard extends StatelessWidget {
                       if (step.contentType == ContentType.image)
                         ImageStep(step: step, updateStep: updateStep),
                       if (step.contentType == ContentType.video)
-                        VideoStep(step: step, updateStep: updateStep),
+                        VideoStep(
+                          step: step,
+                          updateStep: updateStep,
+                          instruction: instruction,
+                        ),
                       if (step.contentType == ContentType.youtube)
                         YoutubeStep(step: step, updateStep: updateStep),
                       if (step.contentType == ContentType.pdf)

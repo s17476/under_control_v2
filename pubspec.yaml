@@ -67,6 +67,7 @@ dependencies:
   file_picker: ^5.2.0+1
   flutter_pdfview: ^1.2.5
   flutter_link_previewer: ^3.1.0
+  video_compress: ^3.1.1
   
 
 

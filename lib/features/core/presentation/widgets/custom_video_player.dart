@@ -32,6 +32,9 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
         _isInitialized = true;
       });
     } else if (widget.videoUrl != null && widget.videoUrl!.isNotEmpty) {
+      // get cached file
+
+      // gets file directly from network
       _videoPlayerController = VideoPlayerController.network(widget.videoUrl!);
       await _videoPlayerController!.initialize();
       setState(() {

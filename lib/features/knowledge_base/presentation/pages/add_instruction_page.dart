@@ -520,6 +520,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
             insertStepBefore: _insertStepBefore,
             moveBack: _moveStepBack,
             moveForward: _moveStepForward,
+            instruction: _instruction,
           ),
         ),
       AddInstructionPublishCard(

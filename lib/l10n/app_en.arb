@@ -23,6 +23,14 @@
     "@size": {
       "description": "Size"
     },
+    "video_size": "Video resolution",
+    "@video_size": {
+      "description": "video resolution"
+    },
+    "compressed_size": "Compressed size",
+    "@compressed_size": {
+      "description": "compressed size"
+    },
     "lenght": "Lenght",
     "@lenght": {
       "description": "Lenght"
@@ -30,6 +38,10 @@
     "category": "Category",
     "@category": {
       "description": "Category"
+    },
+    "video_compressing": "Compressing video",
+    "@video_compressing": {
+      "description": "video compressing"
     },
     "created": "Created",
     "@created": {
