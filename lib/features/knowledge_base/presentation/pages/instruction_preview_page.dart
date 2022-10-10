@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/keep_alive_page.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/widgets/instruction_preview/step_details_card.dart';
 
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/user_info_card.dart';
@@ -110,10 +112,15 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
         _pageController.addListener(
           () {
             if ((_pageController.page! + 0.5).toInt() == 0) {
-              _appBarTitle = AppLocalizations.of(context)!.instruction_details;
+              setState(() {
+                _appBarTitle =
+                    AppLocalizations.of(context)!.instruction_details;
+              });
             } else {
-              _appBarTitle =
-                  '${AppLocalizations.of(context)!.instruction_step} ${(_pageController.page! + 0.5).toInt()}';
+              setState(() {
+                _appBarTitle =
+                    '${AppLocalizations.of(context)!.instruction_step} ${(_pageController.page! + 0.5).toInt()}';
+              });
             }
           },
         );
@@ -122,6 +129,12 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
             instruction: _instruction!,
             showUserInfoCard: _showUserInfoCard,
           ),
+          for (var step in _instruction!.steps)
+            KeepAlivePage(
+              child: StepDetailsCard(
+                step: step,
+              ),
+            ),
         ];
       }
     }
@@ -194,8 +207,7 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
             CreatorBottomNavigation(
               lastPageForwardButtonFunction: () => Navigator.pop(context),
               lastPageForwardButtonIconData: Icons.done,
-              lastPageForwardButtonLabel:
-                  AppLocalizations.of(context)!.well_done,
+              lastPageForwardButtonLabel: AppLocalizations.of(context)!.done,
               pages: _pages,
               pageController: _pageController,
             ),

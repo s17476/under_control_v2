@@ -121,72 +121,96 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   Widget build(BuildContext context) {
     // update controller
     if (_isInitialized) {
-      final filePath = widget.videoFile!.path;
-      final controllerPath = _videoPlayerController!.dataSource
-          .replaceFirst(RegExp('file://'), '');
-      if (filePath != controllerPath) {
-        _initVideo();
+      if (widget.videoFile != null) {
+        final filePath = widget.videoFile?.path;
+        final controllerPath = _videoPlayerController!.dataSource
+            .replaceFirst(RegExp('file://'), '');
+        if (filePath != controllerPath) {
+          _initVideo();
+        }
       }
 
-      return Stack(
-        children: [
-          // player
-          Center(
-            child: GestureDetector(
-              onTap: _togglePlay,
-              onDoubleTap: _toggleFullScreen,
-              child: AspectRatio(
+      return Center(
+        child: AspectRatio(
+          aspectRatio: _videoPlayerController!.value.aspectRatio,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              // player
+              AspectRatio(
                 aspectRatio: _videoPlayerController!.value.aspectRatio,
-                child: VideoPlayer(_videoPlayerController!),
-              ),
-            ),
-          ),
-          // progress bar
-          Positioned(
-            bottom: 0,
-            width: MediaQuery.of(context).size.width,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  onPressed: _togglePlay,
-                  icon: Icon(
-                    _finishedPlaying
-                        ? Icons.replay
-                        : _videoPlayerController!.value.isPlaying
-                            ? Icons.pause
-                            : Icons.play_arrow,
-                    size: 40,
-                  ),
+                child: GestureDetector(
+                  onTap: _togglePlay,
+                  onDoubleTap: _toggleFullScreen,
+                  child: VideoPlayer(_videoPlayerController!),
                 ),
-                Expanded(
-                  child: SizedBox(
-                    height: 15,
-                    child: VideoProgressIndicator(
-                      _videoPlayerController!,
-                      allowScrubbing: true,
-                      colors: const VideoProgressColors(
-                        backgroundColor: Colors.blueGrey,
-                        bufferedColor: Colors.blueGrey,
-                        playedColor: Colors.blueAccent,
+              ),
+              // progress bar
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: _togglePlay,
+                    icon: Icon(
+                      shadows: const [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 15,
+                        )
+                      ],
+                      _finishedPlaying
+                          ? Icons.replay
+                          : _videoPlayerController!.value.isPlaying
+                              ? Icons.pause
+                              : Icons.play_arrow,
+                      size: 40,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 4),
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black45,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      height: 15,
+                      child: VideoProgressIndicator(
+                        _videoPlayerController!,
+                        allowScrubbing: true,
+                        colors: const VideoProgressColors(
+                          backgroundColor: Colors.blueGrey,
+                          bufferedColor: Color.fromARGB(52, 27, 181, 112),
+                          playedColor: Color.fromARGB(255, 27, 181, 112),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                // fullscreen button
-                IconButton(
-                  onPressed: _toggleFullScreen,
-                  icon: Icon(
-                    widget.videoPlayerController == null
-                        ? Icons.fullscreen
-                        : Icons.fullscreen_exit,
-                    size: 40,
+                  // fullscreen button
+                  IconButton(
+                    onPressed: _toggleFullScreen,
+                    icon: Icon(
+                      shadows: const [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 15,
+                        )
+                      ],
+                      widget.videoPlayerController == null
+                          ? Icons.fullscreen
+                          : Icons.fullscreen_exit,
+                      size: 40,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
-        ],
+        ),
       );
     } else {
       return Container(

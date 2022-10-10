@@ -58,9 +58,13 @@ class VideoStep extends StatelessWidget {
       children: [
         // video player
         if (step.file != null || step.contentUrl != null)
-          CustomVideoPlayer(
-            videoFile: step.file,
-            videoUrl: step.contentUrl,
+          Container(
+            constraints:
+                BoxConstraints(maxHeight: MediaQuery.of(context).size.width),
+            child: CustomVideoPlayer(
+              videoFile: step.file,
+              videoUrl: step.contentUrl,
+            ),
           ),
         Padding(
           padding: const EdgeInsets.symmetric(

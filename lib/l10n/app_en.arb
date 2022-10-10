@@ -155,6 +155,10 @@
     "@move": {
       "description": "Move"
     },
+    "done": "Done", 
+    "@done": {
+      "description": "Done"
+    },
     "well_done": "Well done!", 
     "@well_done": {
       "description": "Well done"
