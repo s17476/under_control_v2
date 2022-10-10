@@ -2,19 +2,22 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:under_control_v2/features/core/utils/get_cached_firebase_storage_file.dart';
 import 'package:video_player/video_player.dart';
+
+import 'package:under_control_v2/features/core/utils/get_cached_firebase_storage_file.dart';
 
 class CustomVideoPlayer extends StatefulWidget {
   const CustomVideoPlayer({
     Key? key,
     this.videoFile,
     this.videoUrl,
+    required this.cacheKey,
     this.videoPlayerController,
   }) : super(key: key);
 
   final File? videoFile;
   final String? videoUrl;
+  final String cacheKey;
   final VideoPlayerController? videoPlayerController;
 
   @override
@@ -34,7 +37,10 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       });
     } else if (widget.videoUrl != null && widget.videoUrl!.isNotEmpty) {
       // get cached file
-      final cachedFile = await getCachedFirebaseStorageFile(widget.videoUrl!);
+      final cachedFile = await getCachedFirebaseStorageFile(
+        widget.videoUrl!,
+        widget.cacheKey,
+      );
       if (cachedFile != null) {
         _videoPlayerController = VideoPlayerController.file(cachedFile);
       } else {
@@ -95,6 +101,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
             videoFile: widget.videoFile,
             videoUrl: widget.videoUrl,
             videoPlayerController: _videoPlayerController,
+            cacheKey: widget.cacheKey,
           ),
         ),
       );

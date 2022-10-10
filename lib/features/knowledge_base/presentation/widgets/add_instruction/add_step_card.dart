@@ -26,7 +26,7 @@ class AddStepCard extends StatelessWidget {
     required this.insertStepAfter,
     required this.moveBack,
     required this.moveForward,
-    required this.instruction,
+    this.instruction,
   }) : super(key: key);
 
   final bool isLastStep;

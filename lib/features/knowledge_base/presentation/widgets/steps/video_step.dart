@@ -19,7 +19,7 @@ class VideoStep extends StatefulWidget {
   const VideoStep({
     Key? key,
     required this.step,
-    this.instruction,
+    required this.instruction,
     required this.updateStep,
   }) : super(key: key);
 
@@ -38,6 +38,7 @@ class _VideoStepState extends State<VideoStep> with ResponsiveSize {
   int _videoCompressionProgress = 0;
   MediaInfo? _compressedFileInfo;
   bool _isCompressingVideoFile = false;
+  String _cacheKey = '';
 
   // picks video from camera or gallery and compress it
   void _pickVideo(BuildContext context, ImageSource souruce) async {
@@ -94,6 +95,16 @@ class _VideoStepState extends State<VideoStep> with ResponsiveSize {
   }
 
   @override
+  void initState() {
+    if (widget.instruction != null) {
+      _cacheKey = widget.instruction!
+          .lastEdited[widget.instruction!.lastEdited.length - 1].dateTime
+          .toIso8601String();
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -109,6 +120,7 @@ class _VideoStepState extends State<VideoStep> with ResponsiveSize {
                 child: CustomVideoPlayer(
                   videoFile: widget.step.file,
                   videoUrl: widget.step.contentUrl,
+                  cacheKey: _cacheKey,
                 ),
               ),
             // placeholder image

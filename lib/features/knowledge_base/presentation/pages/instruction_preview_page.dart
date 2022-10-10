@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager_firebase/flutter_cache_manager_firebase.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/keep_alive_page.dart';
+import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/widgets/instruction_preview/step_details_card.dart';
 
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -126,6 +127,9 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
             }
           },
         );
+        final cacheKey = _instruction!
+            .lastEdited[_instruction!.lastEdited.length - 1].dateTime
+            .toIso8601String();
         _pages = [
           InstructionDetailsCard(
             instruction: _instruction!,
@@ -135,6 +139,7 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
             KeepAlivePage(
               child: StepDetailsCard(
                 step: step,
+                cacheKey: cacheKey,
               ),
             ),
         ];
@@ -159,69 +164,75 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
         }
         return true;
       },
-      child: Scaffold(
-        // backgroundColor: Colors.grey,
-        appBar: AppBar(
-          title: Text(_appBarTitle),
-          centerTitle: true,
-          actions: [
-            // popup menu
-            if (getUserPremission(
-              context: context,
-              featureType: FeatureType.knowledgeBase,
-              premissionType: PremissionType.edit,
-            ))
-              PopupMenuButton<Choice>(
-                onSelected: (Choice choice) {
-                  _hideUserInfoCard();
-                  choice.onTap();
-                },
-                itemBuilder: (BuildContext context) {
-                  return _choices.map((Choice choice) {
-                    return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(choice.icon),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            choice.title,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+      child: OrientationBuilder(builder: (context, orientation) {
+        return Scaffold(
+          // backgroundColor: Colors.grey,
+          appBar: orientation == Orientation.landscape
+              ? null
+              : AppBar(
+                  title: Text(_appBarTitle),
+                  centerTitle: true,
+                  actions: [
+                    // popup menu
+                    if (getUserPremission(
+                      context: context,
+                      featureType: FeatureType.knowledgeBase,
+                      premissionType: PremissionType.edit,
+                    ))
+                      PopupMenuButton<Choice>(
+                        onSelected: (Choice choice) {
+                          _hideUserInfoCard();
+                          choice.onTap();
+                        },
+                        itemBuilder: (BuildContext context) {
+                          return _choices.map((Choice choice) {
+                            return PopupMenuItem<Choice>(
+                              value: choice,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(choice.icon),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    choice.title,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList();
+                        },
                       ),
-                    );
-                  }).toList();
-                },
+                  ],
+                ),
+          body: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              PageView(
+                controller: _pageController,
+                children: _pages,
               ),
-          ],
-        ),
-        body: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            PageView(
-              controller: _pageController,
-              children: _pages,
-            ),
-            CreatorBottomNavigation(
-              lastPageForwardButtonFunction: () => Navigator.pop(context),
-              lastPageForwardButtonIconData: Icons.done,
-              lastPageForwardButtonLabel: AppLocalizations.of(context)!.done,
-              pages: _pages,
-              pageController: _pageController,
-            ),
-            // user info card
-            if (_isUserInfoCardVisible)
-              UserInfoCard(
-                onDismiss: _hideUserInfoCard,
-                user: _userProfile!,
-              ),
-          ],
-        ),
-      ),
+              if (orientation == Orientation.portrait)
+                CreatorBottomNavigation(
+                  lastPageForwardButtonFunction: () => Navigator.pop(context),
+                  lastPageForwardButtonIconData: Icons.done,
+                  lastPageForwardButtonLabel:
+                      AppLocalizations.of(context)!.done,
+                  pages: _pages,
+                  pageController: _pageController,
+                ),
+              // user info card
+              if (_isUserInfoCardVisible)
+                UserInfoCard(
+                  onDismiss: _hideUserInfoCard,
+                  user: _userProfile!,
+                ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

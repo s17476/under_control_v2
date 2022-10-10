@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/custom_youtube_player.dart';
+
 import 'package:under_control_v2/features/core/utils/responsive_size.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
-
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction_step.dart';
 
 import '../../../../core/presentation/widgets/custom_video_player.dart';
@@ -13,9 +14,11 @@ class StepDetailsCard extends StatelessWidget with ResponsiveSize {
   const StepDetailsCard({
     Key? key,
     required this.step,
+    required this.cacheKey,
   }) : super(key: key);
 
   final InstructionStep step;
+  final String cacheKey;
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +71,17 @@ class StepDetailsCard extends StatelessWidget with ResponsiveSize {
                 child: CustomVideoPlayer(
                   videoFile: step.file,
                   videoUrl: step.contentUrl,
+                  cacheKey: cacheKey,
                 ),
               ),
+            // youtue step
+            if (step.contentType == ContentType.youtube)
+              CustomYoutubePlayer(contentUrl: step.contentUrl!),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
+                  // title
                   Text(
                     step.title!,
                     style: Theme.of(context).textTheme.headline6,
@@ -83,6 +91,7 @@ class StepDetailsCard extends StatelessWidget with ResponsiveSize {
                   const SizedBox(
                     height: 8,
                   ),
+                  // description
                   if (step.description != null && step.description!.isNotEmpty)
                     Text(
                       step.description!,
