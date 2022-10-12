@@ -111,7 +111,9 @@ class _VideoStepState extends State<VideoStep> with ResponsiveSize {
                 ),
               ),
             // placeholder image
-            if (widget.step.file == null)
+            if (widget.step.file == null &&
+                (widget.step.contentUrl == null ||
+                    widget.step.contentUrl!.isEmpty))
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
@@ -227,6 +229,7 @@ class _VideoStepState extends State<VideoStep> with ResponsiveSize {
                     title: AppLocalizations.of(context)!
                         .user_profile_add_user_personal_data_take_photo_btn,
                   ),
+                  // reset
                   if (widget.step.file != null)
                     OverlayIconButton(
                       onPressed: () => widget.updateStep(
@@ -242,6 +245,7 @@ class _VideoStepState extends State<VideoStep> with ResponsiveSize {
                       icon: Icons.clear,
                       title: AppLocalizations.of(context)!.reset_video,
                     ),
+                  // gallery
                   OverlayIconButton(
                     onPressed: () => _pickVideo(context, ImageSource.gallery),
                     icon: Icons.photo_size_select_actual_rounded,

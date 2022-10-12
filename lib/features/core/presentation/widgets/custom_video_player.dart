@@ -26,6 +26,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   VideoPlayerController? _videoPlayerController;
   bool _isInitialized = false;
   bool _finishedPlaying = false;
+  File? _cachedFile;
+  bool _isPalyingFromFile = false;
 
   Future<void> _initVideo() async {
     if (widget.videoPlayerController != null) {
@@ -33,13 +35,16 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       setState(() {
         _isInitialized = true;
       });
-    } else if (widget.videoUrl != null && widget.videoUrl!.isNotEmpty) {
+      // play from network
+    } else if (widget.videoFile == null &&
+        widget.videoUrl != null &&
+        widget.videoUrl!.isNotEmpty) {
       // get cached file
-      final cachedFile = await getCachedFirebaseStorageFile(
+      _cachedFile ??= await getCachedFirebaseStorageFile(
         widget.videoUrl!,
       );
-      if (cachedFile != null) {
-        _videoPlayerController = VideoPlayerController.file(cachedFile);
+      if (_cachedFile != null) {
+        _videoPlayerController = VideoPlayerController.file(_cachedFile!);
       } else {
         // gets file directly from network
         _videoPlayerController =
@@ -49,12 +54,15 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       await _videoPlayerController!.initialize();
       setState(() {
         _isInitialized = true;
+        _isPalyingFromFile = false;
       });
+      // play from choosen file
     } else if (widget.videoFile != null) {
       _videoPlayerController = VideoPlayerController.file(widget.videoFile!);
       await _videoPlayerController!.initialize();
       setState(() {
         _isInitialized = true;
+        _isPalyingFromFile = true;
       });
     }
     if (_videoPlayerController != null) {
@@ -141,6 +149,9 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
         if (filePath != controllerPath) {
           _initVideo();
         }
+      }
+      if (widget.videoFile == null && _isPalyingFromFile) {
+        _initVideo();
       }
 
       return Center(

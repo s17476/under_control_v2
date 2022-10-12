@@ -550,7 +550,9 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         if (cantExit) {
           showSnackBar(
             context: context,
-            message: AppLocalizations.of(context)!.back_to_exit_creator,
+            message: _instruction != null
+                ? AppLocalizations.of(context)!.back_to_exit_edit
+                : AppLocalizations.of(context)!.back_to_exit_creator,
             isErrorMessage: true,
           );
           return false;

@@ -29,6 +29,7 @@ class OverlayIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => onPressed(),
+      borderRadius: BorderRadius.circular(15),
       child: Container(
         width: width,
         height: height,

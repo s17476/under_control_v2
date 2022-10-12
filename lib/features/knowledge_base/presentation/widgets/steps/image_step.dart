@@ -76,7 +76,7 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
                     fit: BoxFit.fill,
                   ),
                 ),
-              if (step.contentUrl != null)
+              if (step.contentUrl != null && step.file == null)
                 InkWell(
                   onTap: () {
                     Navigator.push(
@@ -96,8 +96,7 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
                     height: responsiveSizePct(small: 100),
                     child: CachedNetworkImage(
                       imageUrl: step.contentUrl!,
-                      placeholder: (context, url) => const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      placeholder: (context, url) => const Center(
                         child: CircularProgressIndicator(),
                       ),
                       errorWidget: (context, url, error) => const SizedBox(),

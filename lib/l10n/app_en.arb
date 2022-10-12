@@ -335,6 +335,10 @@
     "@back_to_exit_creator": {
       "description": "Back button to exit - SnackBar"
     },
+    "back_to_exit_edit": "Press Back button again to exit this creator. Warning! All chnges will be lost!",
+    "@back_to_exit_edit": {
+      "description": "Back button to exit edit mode - SnackBar"
+    },
     "password": "Password",
     "@password": {
       "description": "Authentication page - password text field label"

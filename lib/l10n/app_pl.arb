@@ -83,6 +83,7 @@
     "delete_success": "Pomyślnie usunięto",
     "back_to_exit": "Wciśnij Wstecz ponownie by wyjść.",
     "back_to_exit_creator": "Naciśnij ponownie przycisk Wstecz, aby wyjść z tego kreatora. Ostrzeżenie! Wszystkie dane zostaną utracone!",
+    "back_to_exit_edit": "Naciśnij ponownie przycisk Wstecz, aby wyjść z tego kreatora. Ostrzeżenie! Wszystkie zmiany zostaną utracone!",
     "password": "Hasło",
     "password_reset_email": "Email resetujący hasło został wysłany",
     "password_reset_dialog": "Zresetuj swoje hasło",

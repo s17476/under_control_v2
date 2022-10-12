@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/pages/add_instruction_page.dart';
 import 'package:under_control_v2/features/knowledge_base/utils/show_instruction_category_delete_dialog.dart';
 import 'package:under_control_v2/features/knowledge_base/utils/show_instruction_delete_dialog.dart';
 import 'package:under_control_v2/features/locations/utils/show_delete_dialog.dart';
@@ -77,12 +78,11 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
             Choice(
               title: AppLocalizations.of(context)!.edit,
               icon: Icons.edit,
-              onTap: () {},
-              // => Navigator.pushNamed(
-              //   context,
-              //   AddItemPage.routeName,
-              //   arguments: _item,
-              // ),
+              onTap: () => Navigator.pushNamed(
+                context,
+                AddInstructionPage.routeName,
+                arguments: _instruction,
+              ),
             ),
           if (getUserPremission(
             context: context,
@@ -99,22 +99,6 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
                   Navigator.pop(context);
                 }
               },
-              // () async {
-              //   if (getItemTotalQuantity(_item!) > 0) {
-              //     showSnackBar(
-              //       context: context,
-              //       message: AppLocalizations.of(context)!
-              //           .item_details_cannot_delete,
-              //       isErrorMessage: true,
-              //     );
-              //   } else {
-              //     final result = await showItemDeleteDialog(
-              //         context: context, item: _item!);
-              //     if (result != null && result) {
-              //       Navigator.pop(context);
-              //     }
-              //   }
-              // },
             ),
         ];
         if (!_pageController.hasClients) {
