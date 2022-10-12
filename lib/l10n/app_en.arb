@@ -147,6 +147,10 @@
     "@content_youtube_paste_here": {
       "description": "youtube link"
     },
+    "youtube_play": "Open in YouTube",
+    "@youtube_play": {
+      "description": "youtube play"
+    },
     "content_pdf": "PDF file",
     "@content_pdf": {
       "description": "pdf"
