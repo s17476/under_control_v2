@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/cached_pdf_viewer.dart';
 import '../../../../core/presentation/widgets/pdf_viewer.dart';
 import '../../../data/models/instruction_step_model.dart';
 
@@ -71,7 +72,8 @@ class PdfStep extends StatelessWidget with ResponsiveSize {
           // image
           Stack(
             children: [
-              if (step.file == null)
+              if (step.file == null &&
+                  (step.contentUrl == null || step.contentUrl!.isEmpty))
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.asset(
@@ -84,6 +86,14 @@ class PdfStep extends StatelessWidget with ResponsiveSize {
                   width: responsiveSizePct(small: 75),
                   height: responsiveSizePct(small: 100),
                   child: PdfViewer(path: step.file!.path),
+                ),
+              if (step.file == null &&
+                  step.contentUrl != null &&
+                  step.contentUrl!.isNotEmpty)
+                SizedBox(
+                  width: responsiveSizePct(small: 75),
+                  height: responsiveSizePct(small: 100),
+                  child: CachedPdfViewer(pdfUrl: step.contentUrl!),
                 ),
             ],
           ),
