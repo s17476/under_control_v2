@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
+import 'package:under_control_v2/features/knowledge_base/utils/show_instruction_category_delete_dialog.dart';
+import 'package:under_control_v2/features/knowledge_base/utils/show_instruction_delete_dialog.dart';
+import 'package:under_control_v2/features/locations/utils/show_delete_dialog.dart';
 
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -89,14 +92,12 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
             Choice(
               title: AppLocalizations.of(context)!.delete,
               icon: Icons.delete,
-              onTap: () {
-                context.read<InstructionManagementBloc>().add(
-                      DeleteInstructionEvent(
-                        instruction:
-                            InstructionModel.fromInstruction(_instruction!),
-                      ),
-                    );
-                Navigator.pop(context);
+              onTap: () async {
+                final result = await showInstructionDeleteDialog(
+                    context: context, instruction: _instruction!);
+                if (result != null && result) {
+                  Navigator.pop(context);
+                }
               },
               // () async {
               //   if (getItemTotalQuantity(_item!) > 0) {
