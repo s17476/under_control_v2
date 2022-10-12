@@ -124,9 +124,6 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
             }
           },
         );
-        final cacheKey = _instruction!
-            .lastEdited[_instruction!.lastEdited.length - 1].dateTime
-            .toIso8601String();
         _pages = [
           InstructionDetailsCard(
             instruction: _instruction!,
@@ -136,7 +133,6 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
             KeepAlivePage(
               child: StepDetailsCard(
                 step: step,
-                cacheKey: cacheKey,
               ),
             ),
         ];

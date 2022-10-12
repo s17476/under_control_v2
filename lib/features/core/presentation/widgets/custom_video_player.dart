@@ -11,13 +11,11 @@ class CustomVideoPlayer extends StatefulWidget {
     Key? key,
     this.videoFile,
     this.videoUrl,
-    required this.cacheKey,
     this.videoPlayerController,
   }) : super(key: key);
 
   final File? videoFile;
   final String? videoUrl;
-  final String cacheKey;
   final VideoPlayerController? videoPlayerController;
 
   @override
@@ -39,7 +37,6 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       // get cached file
       final cachedFile = await getCachedFirebaseStorageFile(
         widget.videoUrl!,
-        widget.cacheKey,
       );
       if (cachedFile != null) {
         _videoPlayerController = VideoPlayerController.file(cachedFile);
@@ -101,7 +98,6 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
             videoFile: widget.videoFile,
             videoUrl: widget.videoUrl,
             videoPlayerController: _videoPlayerController,
-            cacheKey: widget.cacheKey,
           ),
         ),
       );

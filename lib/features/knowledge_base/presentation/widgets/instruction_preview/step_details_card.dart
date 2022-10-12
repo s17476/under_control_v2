@@ -1,24 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/custom_youtube_player.dart';
 
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction_step.dart';
-
+import '../../../../core/presentation/widgets/cached_pdf_viewer.dart';
 import '../../../../core/presentation/widgets/custom_video_player.dart';
+import '../../../../core/presentation/widgets/custom_youtube_player.dart';
 import '../../../../core/presentation/widgets/image_viewer.dart';
+import '../../../../core/presentation/widgets/url_preview_card.dart';
+import '../../../../core/utils/responsive_size.dart';
+import '../../../domain/entities/content_type.dart';
+import '../../../domain/entities/instruction_step.dart';
 
 class StepDetailsCard extends StatelessWidget with ResponsiveSize {
   const StepDetailsCard({
     Key? key,
     required this.step,
-    required this.cacheKey,
   }) : super(key: key);
 
   final InstructionStep step;
-  final String cacheKey;
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +70,25 @@ class StepDetailsCard extends StatelessWidget with ResponsiveSize {
                 child: CustomVideoPlayer(
                   videoFile: step.file,
                   videoUrl: step.contentUrl,
-                  cacheKey: cacheKey,
                 ),
               ),
             // youtue step
             if (step.contentType == ContentType.youtube)
               CustomYoutubePlayer(contentUrl: step.contentUrl!),
+            // pdf step
+            if (step.contentType == ContentType.pdf)
+              SizedBox(
+                width: responsiveSizePct(small: 75),
+                height: responsiveSizePct(small: 100),
+                child: CachedPdfViewer(
+                  pdfUrl: step.contentUrl!,
+                ),
+              ),
+            if (step.contentType == ContentType.url)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: UrlPreviewCard(url: step.contentUrl),
+              ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -95,7 +107,6 @@ class StepDetailsCard extends StatelessWidget with ResponsiveSize {
                   if (step.description != null && step.description!.isNotEmpty)
                     Text(
                       step.description!,
-                      // style: Theme.of(context).textTheme.headline6,
                       maxLines: 4,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.justify,
