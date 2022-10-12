@@ -78,6 +78,20 @@ class InstructionModel extends Instruction {
     );
   }
 
+  factory InstructionModel.fromInstruction(Instruction instruction) {
+    return InstructionModel(
+      id: instruction.id,
+      name: instruction.name,
+      description: instruction.description,
+      category: instruction.category,
+      steps: instruction.steps,
+      locations: instruction.locations,
+      userId: instruction.userId,
+      lastEdited: instruction.lastEdited,
+      isPublished: instruction.isPublished,
+    );
+  }
+
   InstructionModel deepCopy() {
     return copyWith(
       locations: [...locations],

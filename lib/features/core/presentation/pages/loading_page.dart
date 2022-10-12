@@ -54,17 +54,21 @@ class _LoadingPageState extends State<LoadingPage>
               child: Logo(greenLettersSize: 15, whitheLettersSize: 10),
             ),
           ),
-          AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, child) {
-              final child = Image.asset('assets/under_control_menu_icon.png');
+          SizedBox(
+            width: 60,
+            height: 60,
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                final child = Image.asset('assets/under_control_menu_icon.png');
 
-              return Transform(
-                transform: Matrix4.rotationY(_rotateY.value * 2 * math.pi),
-                alignment: Alignment.center,
-                child: child,
-              );
-            },
+                return Transform(
+                  transform: Matrix4.rotationY(_rotateY.value * 2 * math.pi),
+                  alignment: Alignment.center,
+                  child: child,
+                );
+              },
+            ),
           ),
         ],
       ),

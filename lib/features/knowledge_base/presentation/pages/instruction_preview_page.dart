@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
+import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -87,7 +89,15 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
             Choice(
               title: AppLocalizations.of(context)!.delete,
               icon: Icons.delete,
-              onTap: () {},
+              onTap: () {
+                context.read<InstructionManagementBloc>().add(
+                      DeleteInstructionEvent(
+                        instruction:
+                            InstructionModel.fromInstruction(_instruction!),
+                      ),
+                    );
+                Navigator.pop(context);
+              },
               // () async {
               //   if (getItemTotalQuantity(_item!) > 0) {
               //     showSnackBar(

@@ -104,6 +104,7 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
                   instructionsStream.allInstructions.listen((snapshot) {
                 add(UpdateInstructionsListEvent(
                   snapshot: snapshot,
+                  locations: chunk,
                 ));
               });
               _instructionStreamSubscriptions.add(streamSubscription);
@@ -129,12 +130,23 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
 
       // merge instructions list if this is not a first chunk
       if (oldInstructions != null) {
-        for (var instruction in instructionsList.allInstructions) {
-          final index = oldInstructions.indexOf(instruction);
-          if (index >= 0) {
-            oldInstructions.removeAt(index);
+        List<Instruction> instructionsToRemove = [];
+        for (var oldInstruction in oldInstructions) {
+          if (oldInstruction.locations.any(
+            (inst) => event.locations.contains(inst),
+          )) {
+            instructionsToRemove.add(oldInstruction);
           }
         }
+        for (var instructionToRemove in instructionsToRemove) {
+          oldInstructions.remove(instructionToRemove);
+        }
+        // for (var instruction in instructionsList.allInstructions) {
+        //   final index = oldInstructions.indexOf(instruction);
+        //   if (index >= 0) {
+        //     oldInstructions.removeAt(index);
+        //   }
+        // }
         // merge and sort by name
         List<Instruction> tmpList = [
           ...oldInstructions,
@@ -145,6 +157,7 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
           allInstructions: tmpList,
         );
       }
+      print(instructionsList.allInstructions.map((e) => e.name));
       emit(InstructionLoadedState(
         allInstructions: instructionsList,
       ));

@@ -15,8 +15,10 @@ class GetInstructionsStreamEvent extends InstructionEvent {}
 
 class UpdateInstructionsListEvent extends InstructionEvent {
   final QuerySnapshot<Object?> snapshot;
+  final List<String> locations;
 
   UpdateInstructionsListEvent({
     required this.snapshot,
-  }) : super(properties: [snapshot]);
+    required this.locations,
+  }) : super(properties: [snapshot, locations]);
 }

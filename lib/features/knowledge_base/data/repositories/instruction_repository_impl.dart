@@ -138,12 +138,28 @@ class InstructionRepositoryImpl extends InstructionRepository {
       // save steps
       for (var step in params.instruction.steps) {
         if (step.contentType == ContentType.image ||
-            step.contentType == ContentType.video) {
+            step.contentType == ContentType.video ||
+            step.contentType == ContentType.pdf) {
           // file reference
-          final fileReference =
-              storageReference.child('${params.instruction.id}-${step.id}.jpg');
+          Reference? fileReference;
+          switch (step.contentType) {
+            case ContentType.image:
+              fileReference = storageReference
+                  .child('${params.instruction.id}-${step.id}.jpg');
+              break;
+            case ContentType.video:
+              fileReference = storageReference
+                  .child('${params.instruction.id}-${step.id}.mp4');
+              break;
+            case ContentType.pdf:
+              fileReference = storageReference
+                  .child('${params.instruction.id}-${step.id}.pdf');
+              break;
+            default:
+              break;
+          }
           // save file
-          await fileReference.delete();
+          await fileReference?.delete();
         }
       }
 
