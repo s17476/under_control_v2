@@ -202,6 +202,7 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
                 controller: _pageController,
                 children: _pages,
               ),
+              // bottom navigation
               if (orientation == Orientation.portrait)
                 CreatorBottomNavigation(
                   lastPageForwardButtonFunction: () => Navigator.pop(context),
@@ -217,6 +218,19 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
                   onDismiss: _hideUserInfoCard,
                   user: _userProfile!,
                 ),
+              //shows loading indicator while updating instruction
+              BlocBuilder<InstructionManagementBloc,
+                  InstructionManagementState>(
+                builder: (context, state) {
+                  if (state is InstructionManagementLoadingState) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              ),
             ],
           ),
         );

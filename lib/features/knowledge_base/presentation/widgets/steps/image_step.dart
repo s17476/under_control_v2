@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:under_control_v2/features/core/utils/get_cached_firebase_storage_file.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/image_viewer.dart';
@@ -68,7 +69,7 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
           // image
           Stack(
             children: [
-              if (step.file == null)
+              if (step.file == null && step.contentUrl == null)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.asset(
@@ -91,18 +92,29 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
                       ),
                     );
                   },
-                  child: SizedBox(
-                    width: responsiveSizePct(small: 100),
-                    height: responsiveSizePct(small: 100),
-                    child: CachedNetworkImage(
-                      imageUrl: step.contentUrl!,
-                      placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      errorWidget: (context, url, error) => const SizedBox(),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                  child: FutureBuilder(
+                      future: getCachedFirebaseStorageFile(step.contentUrl!),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            snapshot.hasData) {
+                          return SizedBox(
+                            width: responsiveSizePct(small: 100),
+                            height: responsiveSizePct(small: 100),
+                            child: Image.file(
+                              snapshot.data as File,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        } else {
+                          return SizedBox(
+                            width: responsiveSizePct(small: 100),
+                            height: responsiveSizePct(small: 100),
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+                      }),
                 ),
               if (step.file != null)
                 SizedBox(

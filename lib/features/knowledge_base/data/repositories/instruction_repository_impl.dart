@@ -1,14 +1,17 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:under_control_v2/features/core/error/failures.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/instruction_step_model.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/instructions_stream.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/repositories/instruction_repository.dart';
+import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
+import '../../../core/utils/get_cached_firebase_storage_file.dart';
+import '../../domain/entities/content_type.dart';
+import '../../domain/entities/instructions_stream.dart';
+import '../../domain/repositories/instruction_repository.dart';
+import '../models/instruction_step_model.dart';
 
 @LazySingleton(as: InstructionRepository)
 class InstructionRepositoryImpl extends InstructionRepository {
@@ -37,20 +40,22 @@ class InstructionRepositoryImpl extends InstructionRepository {
       // instruction reference
       final instructionReference =
           await instructionsReference.add({'name': ''});
-
       // storage reference
       final storageReference =
           firebaseStorage.ref().child(params.companyId).child('instructions');
 
       // save steps
       for (var step in params.instruction.steps) {
+        // file name
+        final fileName =
+            '${instructionReference.id}-${step.id}-${DateTime.now().toIso8601String()}';
         switch (step.contentType) {
+
           // image
           case ContentType.image:
             if (step.file != null) {
               // filereference
-              final fileReference = storageReference
-                  .child('${instructionReference.id}-${step.id}.jpg');
+              final fileReference = storageReference.child('$fileName.jpg');
               // save file
               await fileReference.putFile(step.file!);
               // get file url
@@ -61,8 +66,7 @@ class InstructionRepositoryImpl extends InstructionRepository {
           case ContentType.video:
             if (step.file != null) {
               // filereference
-              final fileReference = storageReference
-                  .child('${instructionReference.id}-${step.id}.mp4');
+              final fileReference = storageReference.child('$fileName.mp4');
               // save file
               await fileReference.putFile(step.file!);
               // get file url
@@ -73,8 +77,7 @@ class InstructionRepositoryImpl extends InstructionRepository {
           case ContentType.pdf:
             if (step.file != null) {
               // filereference
-              final fileReference = storageReference
-                  .child('${instructionReference.id}-${step.id}.pdf');
+              final fileReference = storageReference.child('$fileName.pdf');
               // save file
               await fileReference.putFile(step.file!);
               // get file url
@@ -135,33 +138,44 @@ class InstructionRepositoryImpl extends InstructionRepository {
       final storageReference =
           firebaseStorage.ref().child(params.companyId).child('instructions');
 
-      // save steps
-      for (var step in params.instruction.steps) {
-        if (step.contentType == ContentType.image ||
-            step.contentType == ContentType.video ||
-            step.contentType == ContentType.pdf) {
-          // file reference
-          Reference? fileReference;
-          switch (step.contentType) {
-            case ContentType.image:
-              fileReference = storageReference
-                  .child('${params.instruction.id}-${step.id}.jpg');
-              break;
-            case ContentType.video:
-              fileReference = storageReference
-                  .child('${params.instruction.id}-${step.id}.mp4');
-              break;
-            case ContentType.pdf:
-              fileReference = storageReference
-                  .child('${params.instruction.id}-${step.id}.pdf');
-              break;
-            default:
-              break;
-          }
-          // save file
-          await fileReference?.delete();
-        }
+      final allFilesInDirectory = await storageReference.listAll();
+      final filesForStep = allFilesInDirectory.items.where(
+        (file) => file.name.contains(
+          params.instruction.id,
+        ),
+      );
+
+      for (var file in filesForStep) {
+        storageReference.child(file.name).delete();
       }
+
+      // save steps
+      // for (var step in params.instruction.steps) {
+      //   if (step.contentType == ContentType.image ||
+      //       step.contentType == ContentType.video ||
+      //       step.contentType == ContentType.pdf) {
+      //     // file name
+      //     final fileName =
+      //         '${params.instruction.id}-${step.id}-${DateTime.now().toIso8601String()}';
+      //     // file reference
+      //     Reference? fileReference;
+      //     switch (step.contentType) {
+      //       case ContentType.image:
+      //         fileReference = storageReference.child('$fileName.jpg');
+      //         break;
+      //       case ContentType.video:
+      //         fileReference = storageReference.child('$fileName.mp4');
+      //         break;
+      //       case ContentType.pdf:
+      //         fileReference = storageReference.child('$fileName.pdf');
+      //         break;
+      //       default:
+      //         break;
+      //     }
+      //     // save file
+      //     await fileReference?.delete();
+      //   }
+      // }
 
       // adds instruction to DB
       batch.delete(instructionReference);
@@ -223,27 +237,91 @@ class InstructionRepositoryImpl extends InstructionRepository {
       final storageReference =
           firebaseStorage.ref().child(params.companyId).child('instructions');
 
-      // save steps
+      // updated file list
+      List<String> addedFiles = [];
+
+      // update steps
       for (var step in params.instruction.steps) {
+        //filename without extension
+        final fileNameWithoutExtension =
+            '${params.instruction.id}-${step.id}-${DateTime.now().toIso8601String()}';
+
+        // save updated files
         switch (step.contentType) {
           // image
           case ContentType.image:
+            // filereference
+            final fileReference =
+                storageReference.child('$fileNameWithoutExtension.jpg');
+            File? file;
             if (step.file != null) {
-              // filereference
-              final fileReference = storageReference
-                  .child('${params.instruction.id}-${step.id}.jpg');
-              // save file
-              await fileReference.putFile(step.file!);
-              // get file url
-              final fileUrl = await fileReference.getDownloadURL();
-              steps.add(step.copyWith(contentUrl: fileUrl));
+              file = step.file!;
+            } else {
+              file = await getCachedFirebaseStorageFile(step.contentUrl!);
             }
+            // save file
+            await fileReference.putFile(file!);
+            addedFiles.add('$fileNameWithoutExtension.jpg');
+            // get file url
+            final fileUrl = await fileReference.getDownloadURL();
+            steps.add(step.copyWith(contentUrl: fileUrl));
+            break;
+          // video
+          case ContentType.video:
+            // filereference
+            final fileReference =
+                storageReference.child('$fileNameWithoutExtension.mp4');
+            File? file;
+            if (step.file != null) {
+              file = step.file!;
+            } else {
+              file = await getCachedFirebaseStorageFile(step.contentUrl!);
+            }
+            // save file
+            await fileReference.putFile(file!);
+            addedFiles.add('$fileNameWithoutExtension.mp4');
+            // get file url
+            final fileUrl = await fileReference.getDownloadURL();
+            steps.add(step.copyWith(contentUrl: fileUrl));
+            break;
+          // pdf
+          case ContentType.pdf:
+            // filereference
+            final fileReference =
+                storageReference.child('$fileNameWithoutExtension.pdf');
+            File? file;
+            if (step.file != null) {
+              file = step.file!;
+            } else {
+              file = await getCachedFirebaseStorageFile(step.contentUrl!);
+            }
+            // save file
+            await fileReference.putFile(file!);
+            addedFiles.add('$fileNameWithoutExtension.pdf');
+            // get file url
+            final fileUrl = await fileReference.getDownloadURL();
+            steps.add(step.copyWith(contentUrl: fileUrl));
             break;
           default:
             steps.add(step);
             break;
         }
+
+        // all files in folder
+        final filesList = (await storageReference.listAll())
+            .items
+            .where((file) => file.name.contains(params.instruction.id))
+            .toList();
+
+        // remove old files
+        for (var file in filesList) {
+          if (!addedFiles.contains(file.name)) {
+            storageReference.child(file.name).delete();
+          }
+        }
       }
+
+      // final all file = filesList.
 
       // update instruction
       final updatedInstruction = params.instruction.copyWith(
@@ -264,10 +342,15 @@ class InstructionRepositoryImpl extends InstructionRepository {
 
       return Right(VoidResult());
     } on FirebaseException catch (e) {
+      print('firebase');
+      print(e);
       return Left(
         DatabaseFailure(message: e.message ?? 'Database Failure'),
       );
     } catch (e) {
+      print('exception');
+      print(e);
+      print(e);
       return const Left(
         UnsuspectedFailure(message: 'Unsuspected error'),
       );

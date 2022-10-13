@@ -54,6 +54,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
   bool _isPublished = false;
 
   List<InstructionStepModel> _steps = [];
+  List<ValueKey> _stepsKeys = [];
   List<Location> _selectedLocations = [];
   List<String> _locationsChildren = [];
   List<String> _locationsContext = [];
@@ -277,6 +278,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
           );
         }
         _steps.removeAt(index);
+        _stepsKeys.removeAt(index);
       });
     }
   }
@@ -289,6 +291,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
           index,
           InstructionStepModel(id: index, contentType: ContentType.unknown),
         );
+        _stepsKeys.insert(index, ValueKey(DateTime.now().toIso8601String()));
         for (int i = index + 1; i < _steps.length; i++) {
           _steps[i] = InstructionStepModel(
             id: _steps[i].id + 1,
@@ -310,6 +313,10 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         _steps.insert(
           index + 1,
           InstructionStepModel(id: index + 1, contentType: ContentType.unknown),
+        );
+        _stepsKeys.insert(
+          index + 1,
+          ValueKey(DateTime.now().toIso8601String()),
         );
         for (int i = index + 2; i < _steps.length; i++) {
           _steps[i] = InstructionStepModel(
@@ -349,6 +356,9 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
             title: step.title,
           ),
         );
+        final key = _stepsKeys[index];
+        _stepsKeys.removeAt(index);
+        _stepsKeys.insert(index - 1, key);
       });
       _pageController.previousPage(
         duration: const Duration(milliseconds: 300),
@@ -381,6 +391,9 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
             title: step.title,
           ),
         );
+        final key = _stepsKeys[index];
+        _stepsKeys.removeAt(index);
+        _stepsKeys.insert(index + 1, key);
       });
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
@@ -410,6 +423,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
               contentType: ContentType.unknown,
             ),
           );
+          _stepsKeys.add(ValueKey(DateTime.now().toIso8601String()));
         });
       } else {
         setState(() {
@@ -436,6 +450,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       _steps.add(
         InstructionStepModel.initial(),
       );
+      _stepsKeys.add(ValueKey(DateTime.now().toIso8601String()));
     }
     _pageController.addListener(() {
       FocusScope.of(context).unfocus();
@@ -452,13 +467,21 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       _userId = userState.userProfile.id;
     }
 
-    if (arguments != null && arguments is InstructionModel) {
+    if (arguments != null &&
+        arguments is InstructionModel &&
+        _instruction == null) {
       _instruction = arguments.deepCopy();
 
+      _isPublished = _instruction!.isPublished;
       _titleTexEditingController.text = _instruction!.name;
       _descriptionTextEditingController.text = _instruction!.description;
       _category = _instruction!.category;
       _steps = _instruction!.steps;
+      _steps.add(InstructionStepModel.initial().copyWith(id: _steps.length));
+      _stepsKeys.clear();
+      for (var _ in _steps) {
+        _stepsKeys.add(ValueKey(DateTime.now().toIso8601String()));
+      }
       List<Location> tmpSelecedlocations = [];
       final allLocations =
           (context.read<LocationBloc>().state as LocationLoadedState)
@@ -510,6 +533,7 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
       ),
       for (var step in _steps)
         KeepAlivePage(
+          key: ValueKey(_stepsKeys[_steps.indexOf(step)]),
           child: AddStepCard(
             step: step,
             setContentType: _setStepContentType,
