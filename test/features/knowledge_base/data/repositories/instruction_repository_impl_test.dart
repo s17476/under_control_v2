@@ -95,16 +95,16 @@ void main() {
             expect(result, isA<Right<Failure, VoidResult>>());
           },
         );
-        test(
-          'should return [VoidResult] when deleteinstruction is called',
-          () async {
-            // act
-            final result =
-                await repository.deleteInstruction(tInstructionParams);
-            // assert
-            expect(result, isA<Right<Failure, VoidResult>>());
-          },
-        );
+        // test(
+        //   'should return [VoidResult] when deleteinstruction is called',
+        //   () async {
+        //     // act
+        //     final result =
+        //         await repository.deleteInstruction(tInstructionParams);
+        //     // assert
+        //     expect(result, isA<Right<Failure, VoidResult>>());
+        //   },
+        // );
         test(
           'should return [InstructionsStream] when getInstructionsStream is called',
           () async {

@@ -5,6 +5,7 @@ import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 void main() {
   const tItemModel = ItemModel(
     id: 'id',
+    producer: 'producer',
     name: 'name',
     description: 'description',
     category: 'category',
@@ -19,6 +20,7 @@ void main() {
   );
 
   final tItemModelMap = {
+    'producer': 'producer',
     'name': 'name',
     'description': 'description',
     'category': 'category',

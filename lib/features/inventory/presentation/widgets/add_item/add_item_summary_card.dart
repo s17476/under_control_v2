@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../core/utils/double_apis.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
+import '../../../../core/utils/double_apis.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../domain/entities/item.dart';
 import '../../../utils/get_localized_unit_name.dart';
@@ -15,7 +15,8 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
   const AddItemSummaryCard({
     Key? key,
     required this.pageController,
-    required this.titleTexEditingController,
+    required this.producerTextEditingController,
+    required this.titleTextEditingController,
     required this.descriptionTextEditingController,
     required this.barCodeTextEditingController,
     required this.codeTextEditingController,
@@ -27,7 +28,8 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
 
   final PageController pageController;
 
-  final TextEditingController titleTexEditingController;
+  final TextEditingController producerTextEditingController;
+  final TextEditingController titleTextEditingController;
   final TextEditingController descriptionTextEditingController;
   final TextEditingController barCodeTextEditingController;
   final TextEditingController codeTextEditingController;
@@ -89,15 +91,31 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                     const Divider(
                       thickness: 1.5,
                     ),
+                    // producer name
+                    SummaryCard(
+                      title: AppLocalizations.of(context)!.item_producer,
+                      validator: () =>
+                          producerTextEditingController.text.trim().length < 2
+                              ? AppLocalizations.of(context)!
+                                  .validation_min_two_characters
+                              : null,
+                      child: Text(producerTextEditingController.text.trim()),
+                      pageController: pageController,
+                      onTapAnimateToPage: 0,
+                    ),
+
+                    const SizedBox(
+                      height: 8,
+                    ),
                     // item name
                     SummaryCard(
                       title: AppLocalizations.of(context)!.item_name,
                       validator: () =>
-                          titleTexEditingController.text.trim().length < 2
+                          titleTextEditingController.text.trim().length < 2
                               ? AppLocalizations.of(context)!
                                   .validation_min_two_characters
                               : null,
-                      child: Text(titleTexEditingController.text.trim()),
+                      child: Text(titleTextEditingController.text.trim()),
                       pageController: pageController,
                       onTapAnimateToPage: 0,
                     ),

@@ -19,6 +19,7 @@ void main() {
   const tItemParams = ItemParams(
     item: Item(
       id: 'id',
+      producer: 'producer',
       name: 'name',
       description: 'description',
       category: 'category',

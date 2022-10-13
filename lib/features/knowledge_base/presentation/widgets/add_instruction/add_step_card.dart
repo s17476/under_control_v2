@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
 
 import '../../../../core/utils/choice.dart';
 import '../../../data/models/instruction_step_model.dart';
 import '../../../domain/entities/content_type.dart';
+import '../../../domain/entities/instruction.dart';
 import '../../../domain/entities/instruction_step.dart';
 import '../steps/image_step.dart';
 import '../steps/pdf_step.dart';

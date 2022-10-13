@@ -149,34 +149,6 @@ class InstructionRepositoryImpl extends InstructionRepository {
         storageReference.child(file.name).delete();
       }
 
-      // save steps
-      // for (var step in params.instruction.steps) {
-      //   if (step.contentType == ContentType.image ||
-      //       step.contentType == ContentType.video ||
-      //       step.contentType == ContentType.pdf) {
-      //     // file name
-      //     final fileName =
-      //         '${params.instruction.id}-${step.id}-${DateTime.now().toIso8601String()}';
-      //     // file reference
-      //     Reference? fileReference;
-      //     switch (step.contentType) {
-      //       case ContentType.image:
-      //         fileReference = storageReference.child('$fileName.jpg');
-      //         break;
-      //       case ContentType.video:
-      //         fileReference = storageReference.child('$fileName.mp4');
-      //         break;
-      //       case ContentType.pdf:
-      //         fileReference = storageReference.child('$fileName.pdf');
-      //         break;
-      //       default:
-      //         break;
-      //     }
-      //     // save file
-      //     await fileReference?.delete();
-      //   }
-      // }
-
       // adds instruction to DB
       batch.delete(instructionReference);
 
@@ -342,15 +314,10 @@ class InstructionRepositoryImpl extends InstructionRepository {
 
       return Right(VoidResult());
     } on FirebaseException catch (e) {
-      print('firebase');
-      print(e);
       return Left(
         DatabaseFailure(message: e.message ?? 'Database Failure'),
       );
     } catch (e) {
-      print('exception');
-      print(e);
-      print(e);
       return const Left(
         UnsuspectedFailure(message: 'Unsuspected error'),
       );

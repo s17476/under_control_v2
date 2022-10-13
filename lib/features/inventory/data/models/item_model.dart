@@ -4,6 +4,7 @@ import 'item_amount_in_location_model.dart';
 class ItemModel extends Item {
   const ItemModel({
     required super.id,
+    required super.producer,
     required super.name,
     required super.description,
     required super.category,
@@ -19,6 +20,7 @@ class ItemModel extends Item {
 
   ItemModel copyWith({
     String? id,
+    String? producer,
     String? name,
     String? description,
     String? category,
@@ -33,6 +35,7 @@ class ItemModel extends Item {
   }) {
     return ItemModel(
       id: id ?? this.id,
+      producer: producer ?? this.producer,
       name: name ?? this.name,
       description: description ?? this.description,
       category: category ?? this.category,
@@ -50,6 +53,7 @@ class ItemModel extends Item {
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
+    result.addAll({'producer': producer});
     result.addAll({'name': name});
     result.addAll({'description': description});
     result.addAll({'category': category});
@@ -70,6 +74,7 @@ class ItemModel extends Item {
   factory ItemModel.fromMap(Map<String, dynamic> map, String id) {
     return ItemModel(
       id: id,
+      producer: map['producer'] ?? '',
       name: map['name'] ?? '',
       description: map['description'] ?? '',
       category: map['category'] ?? '',

@@ -35,6 +35,9 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
         return items
             .where(
               (item) =>
+                  item.producer
+                      .toLowerCase()
+                      .contains(searchQuery.trim().toLowerCase()) ||
                   item.name
                       .toLowerCase()
                       .contains(searchQuery.trim().toLowerCase()) ||

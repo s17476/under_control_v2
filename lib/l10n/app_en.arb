@@ -1195,17 +1195,21 @@
     "@item_edit_card_title": {
       "description": "Edit item"
     },
-    "item_name": "Item's name",
+    "item_producer": "Producer",
+    "@item_producer": {
+      "description": "Item producer"
+    },
+    "item_name": "Model",
     "@item_name": {
-      "description": "Item's name"
+      "description": "Item model"
     },
-    "item_description": "Item's description (optional)",
+    "item_description": "Item description (optional)",
     "@item_description": {
-      "description": "Item's description"
+      "description": "Item description"
     },
-    "item_data": "Item's data",
+    "item_data": "Item data",
     "@item_data": {
-      "description": "Item's data"
+      "description": "Item data"
     },
     "item_category": "Item category",
     "@item_category": {
@@ -1283,7 +1287,7 @@
     "@item_spare_part_yes": {
       "description": "This is spare part"
     },
-     "item_add_error_name_to_short": "The item name is too short - it must contain at least 2 characters!",
+     "item_add_error_name_to_short": "Producer name and model must contain at least 2 characters!",
     "@item_add_error_name_to_short": {
       "description": "Item - name error"
     },

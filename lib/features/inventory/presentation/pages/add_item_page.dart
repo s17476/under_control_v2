@@ -38,8 +38,9 @@ class _AddItemPageState extends State<AddItemPage> {
 
   final _pageController = PageController();
 
-  final _nameTexEditingController = TextEditingController();
-  final _descriptionTexEditingController = TextEditingController();
+  final _producerTextEditingController = TextEditingController();
+  final _nameTextEditingController = TextEditingController();
+  final _descriptionTextEditingController = TextEditingController();
   final _codeTextEditingController = TextEditingController();
   final _barCodeTextEditingController = TextEditingController();
   final _priceTextEditingController = TextEditingController();
@@ -112,7 +113,7 @@ class _AddItemPageState extends State<AddItemPage> {
           final currentState = context.read<ItemsBloc>().state;
           if (currentState is ItemsLoadedState) {
             final tmpItems = currentState.allItems.allItems
-                .where((i) => i.name == _nameTexEditingController.text.trim());
+                .where((i) => i.name == _nameTextEditingController.text.trim());
             if (tmpItems.isNotEmpty) {
               errorMessage = AppLocalizations.of(context)!
                   .group_management_add_error_name_exists;
@@ -133,8 +134,9 @@ class _AddItemPageState extends State<AddItemPage> {
     } else {
       final newItem = ItemModel(
         id: _item != null ? _item!.id : '',
-        name: _nameTexEditingController.text.trim(),
-        description: _descriptionTexEditingController.text.trim(),
+        producer: _producerTextEditingController.text.trim(),
+        name: _nameTextEditingController.text.trim(),
+        description: _descriptionTextEditingController.text.trim(),
         category: _category,
         price: price,
         itemCode: _codeTextEditingController.text.trim(),
@@ -188,11 +190,12 @@ class _AddItemPageState extends State<AddItemPage> {
   void didChangeDependencies() {
     final arguments = ModalRoute.of(context)!.settings.arguments;
 
-    if (arguments != null && arguments is ItemModel) {
+    if (arguments != null && arguments is ItemModel && _item == null) {
       _item = arguments.deepCopy();
 
-      _nameTexEditingController.text = _item!.name;
-      _descriptionTexEditingController.text = _item!.description;
+      _producerTextEditingController.text = _item!.producer;
+      _nameTextEditingController.text = _item!.name;
+      _descriptionTextEditingController.text = _item!.description;
       _codeTextEditingController.text = _item!.itemCode;
       _barCodeTextEditingController.text = _item!.itemBarCode;
       _priceTextEditingController.text = _item!.price.toString();
@@ -204,8 +207,9 @@ class _AddItemPageState extends State<AddItemPage> {
 
   @override
   void dispose() {
-    _nameTexEditingController.dispose();
-    _descriptionTexEditingController.dispose();
+    _producerTextEditingController.dispose();
+    _nameTextEditingController.dispose();
+    _descriptionTextEditingController.dispose();
     _codeTextEditingController.dispose();
     _barCodeTextEditingController.dispose();
     _priceTextEditingController.dispose();
@@ -219,8 +223,9 @@ class _AddItemPageState extends State<AddItemPage> {
       KeepAlivePage(
         child: AddItemCard(
           isEditMode: _item != null,
-          nameTexEditingController: _nameTexEditingController,
-          descriptionTexEditingController: _descriptionTexEditingController,
+          producerTextEditingController: _producerTextEditingController,
+          nameTextEditingController: _nameTextEditingController,
+          descriptionTextEditingController: _descriptionTextEditingController,
         ),
       ),
       KeepAlivePage(
@@ -245,8 +250,9 @@ class _AddItemPageState extends State<AddItemPage> {
       ),
       AddItemSummaryCard(
         pageController: _pageController,
-        titleTexEditingController: _nameTexEditingController,
-        descriptionTextEditingController: _descriptionTexEditingController,
+        producerTextEditingController: _producerTextEditingController,
+        titleTextEditingController: _nameTextEditingController,
+        descriptionTextEditingController: _descriptionTextEditingController,
         barCodeTextEditingController: _barCodeTextEditingController,
         codeTextEditingController: _codeTextEditingController,
         priceTextEditingController: _priceTextEditingController,

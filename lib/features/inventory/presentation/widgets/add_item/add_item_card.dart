@@ -7,13 +7,15 @@ class AddItemCard extends StatelessWidget {
   const AddItemCard({
     Key? key,
     required this.isEditMode,
-    required this.nameTexEditingController,
-    required this.descriptionTexEditingController,
+    required this.producerTextEditingController,
+    required this.nameTextEditingController,
+    required this.descriptionTextEditingController,
   }) : super(key: key);
 
   final bool isEditMode;
-  final TextEditingController nameTexEditingController;
-  final TextEditingController descriptionTexEditingController;
+  final TextEditingController producerTextEditingController;
+  final TextEditingController nameTextEditingController;
+  final TextEditingController descriptionTextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,24 @@ class AddItemCard extends StatelessWidget {
                           ),
                         ),
                       ),
+                      // producer text field
+                      CustomTextFormField(
+                        scrollPadding: const EdgeInsets.all(170),
+                        validator: (val) {
+                          if (val!.length < 2) {
+                            return AppLocalizations.of(context)!
+                                .validation_min_two_characters;
+                          }
+                          return null;
+                        },
+                        fieldKey: 'producer',
+                        controller: producerTextEditingController,
+                        textCapitalization: TextCapitalization.words,
+                        labelText: AppLocalizations.of(context)!.item_producer,
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
                       // name text field
                       CustomTextFormField(
                         scrollPadding: const EdgeInsets.all(170),
@@ -64,7 +84,7 @@ class AddItemCard extends StatelessWidget {
                           return null;
                         },
                         fieldKey: 'name',
-                        controller: nameTexEditingController,
+                        controller: nameTextEditingController,
                         textCapitalization: TextCapitalization.words,
                         labelText: AppLocalizations.of(context)!.item_name,
                       ),
@@ -74,7 +94,7 @@ class AddItemCard extends StatelessWidget {
                       // description text field
                       CustomTextFormField(
                         fieldKey: 'description',
-                        controller: descriptionTexEditingController,
+                        controller: descriptionTextEditingController,
                         keyboardType: TextInputType.multiline,
                         maxLines: 4,
                         textCapitalization: TextCapitalization.sentences,

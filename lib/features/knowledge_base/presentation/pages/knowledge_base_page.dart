@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/responsive_size.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/widgets/instruction_tile.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/widgets/shimmer_instruction_tile.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
+import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../domain/entities/instruction.dart';
 import '../blocs/instruction/instruction_bloc.dart';
 import '../blocs/instruction_category/instruction_category_bloc.dart';
+import '../widgets/instruction_tile.dart';
+import '../widgets/shimmer_instruction_tile.dart';
 
 class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
   const KnowledgeBasePage({

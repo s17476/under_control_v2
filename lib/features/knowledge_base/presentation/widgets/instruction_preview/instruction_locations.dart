@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
 
 import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../groups/presentation/widgets/group_details/group_details_location_tile.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../../domain/entities/instruction.dart';
 
 class InstructionLocations extends StatefulWidget {
   const InstructionLocations({

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/knowledge_base/utils/get_step_content_icon.dart';
 
 import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../domain/entities/content_type.dart';
 import '../../../domain/entities/instruction_step.dart';
+import '../../../utils/get_step_content_icon.dart';
 
 class AddStepMenuGrid extends StatelessWidget {
   const AddStepMenuGrid({

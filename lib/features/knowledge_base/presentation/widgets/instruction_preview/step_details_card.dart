@@ -107,7 +107,7 @@ class StepDetailsCard extends StatelessWidget with ResponsiveSize {
                   if (step.description != null && step.description!.isNotEmpty)
                     Text(
                       step.description!,
-                      maxLines: 4,
+                      maxLines: 100,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.justify,
                     ),

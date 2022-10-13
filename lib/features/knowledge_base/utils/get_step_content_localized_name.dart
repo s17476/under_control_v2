@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import '../domain/entities/content_type.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../domain/entities/content_type.dart';
 
 String getStepContentLocalizedName(
   BuildContext context,

@@ -4,9 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/pages/instruction_preview_page.dart';
 
-import 'features/core/presentation/pages/qr_scanner.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
 import 'features/authentication/presentation/pages/email_confirmation_page.dart';
@@ -24,6 +22,7 @@ import 'features/company_profile/presentation/pages/assign_company_page.dart';
 import 'features/company_profile/presentation/pages/company_details_page.dart';
 import 'features/core/presentation/pages/home_page.dart';
 import 'features/core/presentation/pages/loading_page.dart';
+import 'features/core/presentation/pages/qr_scanner.dart';
 import 'features/core/themes/themes.dart';
 import 'features/core/utils/custom_page_transition.dart';
 import 'features/core/utils/error_message_handler.dart';
@@ -54,6 +53,7 @@ import 'features/knowledge_base/presentation/blocs/instruction_category_manageme
 import 'features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import 'features/knowledge_base/presentation/pages/add_instruction_page.dart';
 import 'features/knowledge_base/presentation/pages/instruction_category_management_page.dart';
+import 'features/knowledge_base/presentation/pages/instruction_preview_page.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';

@@ -62,7 +62,7 @@ class ItemInfoTab extends StatelessWidget with ResponsiveSize {
                 bottom: 0,
                 child: Container(
                   padding: const EdgeInsets.only(
-                    top: 16,
+                    top: 8,
                     left: 16,
                     right: 16,
                     bottom: 8,
@@ -86,6 +86,18 @@ class ItemInfoTab extends StatelessWidget with ResponsiveSize {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // producer
+                      Text(
+                        item.producer,
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
                       // name
                       Text(
                         item.name,

@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/pages/add_instruction_page.dart';
-import 'package:under_control_v2/features/knowledge_base/utils/show_instruction_category_delete_dialog.dart';
-import 'package:under_control_v2/features/knowledge_base/utils/show_instruction_delete_dialog.dart';
-import 'package:under_control_v2/features/locations/utils/show_delete_dialog.dart';
 
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -17,9 +11,12 @@ import '../../../core/utils/premission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../domain/entities/instruction.dart';
+import '../../utils/show_instruction_delete_dialog.dart';
 import '../blocs/instruction/instruction_bloc.dart';
+import '../blocs/instruction_management/instruction_management_bloc.dart';
 import '../widgets/instruction_preview/instruction_details_card.dart';
 import '../widgets/instruction_preview/step_details_card.dart';
+import 'add_instruction_page.dart';
 
 class InstructionPreviewPage extends StatefulWidget {
   const InstructionPreviewPage({Key? key}) : super(key: key);

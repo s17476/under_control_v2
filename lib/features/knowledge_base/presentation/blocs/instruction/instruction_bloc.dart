@@ -141,12 +141,6 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
         for (var instructionToRemove in instructionsToRemove) {
           oldInstructions.remove(instructionToRemove);
         }
-        // for (var instruction in instructionsList.allInstructions) {
-        //   final index = oldInstructions.indexOf(instruction);
-        //   if (index >= 0) {
-        //     oldInstructions.removeAt(index);
-        //   }
-        // }
         // merge and sort by name
         List<Instruction> tmpList = [
           ...oldInstructions,
@@ -157,7 +151,6 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
           allInstructions: tmpList,
         );
       }
-      print(instructionsList.allInstructions.map((e) => e.name));
       emit(InstructionLoadedState(
         allInstructions: instructionsList,
       ));

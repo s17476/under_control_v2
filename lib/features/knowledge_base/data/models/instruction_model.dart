@@ -1,7 +1,5 @@
 import '../../../core/data/models/last_edit_model.dart';
-import '../../../core/domain/entities/last_edit.dart';
 import '../../domain/entities/instruction.dart';
-import '../../domain/entities/instruction_step.dart';
 import 'instruction_step_model.dart';
 
 class InstructionModel extends Instruction {

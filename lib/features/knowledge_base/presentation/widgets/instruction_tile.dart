@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/pages/instruction_preview_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../core/presentation/widgets/highlighted_text.dart';
 import '../../domain/entities/instruction.dart';
 import '../../utils/get_step_content_icon.dart';
+import '../pages/instruction_preview_page.dart';
 import 'instruction_category_mini_row.dart';
 
 class InstructionTile extends StatelessWidget {

@@ -4,15 +4,15 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/cached_pdf_viewer.dart';
-import '../../../../core/presentation/widgets/pdf_viewer.dart';
-import '../../../data/models/instruction_step_model.dart';
 
+import '../../../../core/presentation/widgets/cached_pdf_viewer.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/overlay_icon_button.dart';
+import '../../../../core/presentation/widgets/pdf_viewer.dart';
 import '../../../../core/utils/get_file_size.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/size_config.dart';
+import '../../../data/models/instruction_step_model.dart';
 
 class PdfStep extends StatelessWidget with ResponsiveSize {
   const PdfStep({

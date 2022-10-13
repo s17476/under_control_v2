@@ -25,6 +25,7 @@ void main() {
 
   const tItemModel = ItemModel(
     id: 'id',
+    producer: 'producer',
     name: 'name',
     description: 'description',
     category: 'category',

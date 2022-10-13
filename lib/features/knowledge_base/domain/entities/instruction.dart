@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:under_control_v2/features/core/data/models/last_edit_model.dart';
 
-import '../../../core/domain/entities/last_edit.dart';
+import '../../../core/data/models/last_edit_model.dart';
 import '../../data/models/instruction_step_model.dart';
 
 class Instruction extends Equatable {

@@ -43,6 +43,7 @@ void main() {
     category: 'category',
     price: 0,
     id: 'id',
+    producer: 'producer',
     name: 'name',
     description: 'description',
     itemPhoto: 'itemPhoto',

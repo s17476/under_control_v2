@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/usecases/add_instruction.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/usecases/delete_instruction.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/usecases/update_instruction.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/bloc_message.dart';
-import '../../../domain/entities/instruction.dart';
+import '../../../data/models/instruction_model.dart';
+import '../../../domain/usecases/add_instruction.dart';
+import '../../../domain/usecases/delete_instruction.dart';
+import '../../../domain/usecases/update_instruction.dart';
+
 part 'instruction_management_event.dart';
 part 'instruction_management_state.dart';
 

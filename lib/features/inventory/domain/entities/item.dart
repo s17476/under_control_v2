@@ -34,6 +34,7 @@ enum ItemUnit {
 
 class Item extends Equatable {
   final String id;
+  final String producer;
   final String name;
   final String description;
   final String category;
@@ -50,6 +51,7 @@ class Item extends Equatable {
     required this.category,
     required this.price,
     required this.id,
+    required this.producer,
     required this.name,
     required this.description,
     required this.itemPhoto,
@@ -65,6 +67,7 @@ class Item extends Equatable {
   List<Object> get props {
     return [
       id,
+      producer,
       name,
       description,
       category,
@@ -81,6 +84,6 @@ class Item extends Equatable {
 
   @override
   String toString() {
-    return 'Item(id: $id, name: $name, description: $description, category: $category, price: $price, itemPhoto: $itemPhoto, itemCode: $itemCode, itemBarCode: $itemBarCode, sparePartFor: $sparePartFor, itemUnit: $itemUnit, locations: $locations, amountInLocations: $amountInLocations)';
+    return 'Item(id: $id, producer: $producer, name: $name, description: $description, category: $category, price: $price, itemPhoto: $itemPhoto, itemCode: $itemCode, itemBarCode: $itemBarCode, sparePartFor: $sparePartFor, itemUnit: $itemUnit, locations: $locations, amountInLocations: $amountInLocations)';
   }
 }

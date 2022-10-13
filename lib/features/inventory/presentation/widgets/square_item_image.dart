@@ -40,7 +40,7 @@ class SquareItemImage extends StatelessWidget with ResponsiveSize {
                 imageUrl: item.itemPhoto,
                 placeholder: (context, url) => const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(),
+                  child: Center(child: CircularProgressIndicator()),
                 ),
                 errorWidget: (context, url, error) => Center(
                   child: Icon(

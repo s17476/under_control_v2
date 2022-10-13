@@ -18,6 +18,7 @@ void main() {
 
   const tItem = Item(
     id: 'id',
+    producer: 'producer',
     name: 'name',
     description: 'description',
     category: 'category',

@@ -58,6 +58,7 @@ class ItemTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // item photo or icon
                             Container(
@@ -123,15 +124,33 @@ class ItemTile extends StatelessWidget {
                             const SizedBox(
                               width: 12,
                             ),
-                            // item name
+                            // item model
                             Expanded(
-                              child: HighlightedText(
-                                text: item.name,
-                                query: searchQuery,
-                                highlightColor: highlightColor,
-                                style: const TextStyle(fontSize: 18),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  HighlightedText(
+                                    text: item.producer,
+                                    query: searchQuery,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context).textTheme.caption,
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  HighlightedText(
+                                    text: item.name,
+                                    query: searchQuery,
+                                    highlightColor: highlightColor,
+                                    style: const TextStyle(fontSize: 18),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  ),
+                                ],
                               ),
                             )
                           ],
