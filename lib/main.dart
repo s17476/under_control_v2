@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'features/assets/presentation/blocs/asset_category/asset_category_bloc.dart';
+import 'features/assets/presentation/blocs/asset_category_management/asset_category_management_bloc.dart';
+import 'features/assets/presentation/pages/asset_category_management_page.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
 import 'features/authentication/presentation/pages/email_confirmation_page.dart';
@@ -152,6 +155,11 @@ class App extends StatelessWidget
           create: (context) => getIt<InstructionManagementBloc>(),
           lazy: false,
         ),
+        BlocProvider(create: (context) => getIt<AssetCategoryBloc>()),
+        BlocProvider(
+          create: (context) => getIt<AssetCategoryManagementBloc>(),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -228,6 +236,8 @@ class App extends StatelessWidget
           AddInstructionPage.routeName: (context) => const AddInstructionPage(),
           InstructionPreviewPage.routeName: (context) =>
               const InstructionPreviewPage(),
+          AssetCategoryManagementPage.routeName: (context) =>
+              const AssetCategoryManagementPage(),
         },
         // localization
         localizationsDelegates: const [
