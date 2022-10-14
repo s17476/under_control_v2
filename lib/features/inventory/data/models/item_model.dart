@@ -9,6 +9,7 @@ class ItemModel extends Item {
     required super.description,
     required super.category,
     required super.price,
+    required super.alertQuantity,
     required super.itemPhoto,
     required super.itemCode,
     required super.itemBarCode,
@@ -25,6 +26,7 @@ class ItemModel extends Item {
     String? description,
     String? category,
     double? price,
+    double? alertQuantity,
     String? itemPhoto,
     String? itemCode,
     String? itemBarCode,
@@ -40,6 +42,7 @@ class ItemModel extends Item {
       description: description ?? this.description,
       category: category ?? this.category,
       price: price ?? this.price,
+      alertQuantity: alertQuantity ?? this.alertQuantity,
       itemPhoto: itemPhoto ?? this.itemPhoto,
       itemCode: itemCode ?? this.itemCode,
       itemBarCode: itemBarCode ?? this.itemBarCode,
@@ -58,6 +61,7 @@ class ItemModel extends Item {
     result.addAll({'description': description});
     result.addAll({'category': category});
     result.addAll({'price': price});
+    result.addAll({'alertQuantity': alertQuantity});
     result.addAll({'itemPhoto': itemPhoto});
     result.addAll({'itemCode': itemCode});
     result.addAll({'itemBarCode': itemBarCode});
@@ -79,6 +83,7 @@ class ItemModel extends Item {
       description: map['description'] ?? '',
       category: map['category'] ?? '',
       price: map['price'] ?? '',
+      alertQuantity: map['alertQuantity'],
       itemPhoto: map['itemPhoto'] ?? '',
       itemCode: map['itemCode'] ?? '',
       itemBarCode: map['itemBarCode'] ?? '',

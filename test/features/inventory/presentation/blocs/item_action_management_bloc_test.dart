@@ -42,6 +42,7 @@ void main() {
   const item = ItemModel(
     category: 'category',
     price: 0,
+    alertQuantity: 0,
     id: 'id',
     producer: 'producer',
     name: 'name',

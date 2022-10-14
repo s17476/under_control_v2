@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/alarm_row.dart';
 
 import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -50,9 +51,8 @@ class ItemInfoTab extends StatelessWidget with ResponsiveSize {
                     quantity: getItemQuantityInLocations(context, item),
                     title:
                         AppLocalizations.of(context)!.item_in_selected_quantity,
-                    quantityStyle: TextStyle(
+                    quantityStyle: const TextStyle(
                       fontSize: 24,
-                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ],
@@ -133,6 +133,34 @@ class ItemInfoTab extends StatelessWidget with ResponsiveSize {
                 const Divider(
                   thickness: 1.5,
                 ),
+                if (item.alertQuantity != null &&
+                    item.alertQuantity! >=
+                        getItemQuantityInLocations(context, item))
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: LinearGradient(colors: [
+                              Theme.of(context).errorColor.withAlpha(80),
+                              Theme.of(context).errorColor,
+                              Theme.of(context).errorColor.withAlpha(80)
+                            ])),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            AppLocalizations.of(context)!.quantity_low_level,
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                      const Divider(
+                        thickness: 1.5,
+                      ),
+                    ],
+                  ),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: Column(
@@ -162,7 +190,10 @@ class ItemInfoTab extends StatelessWidget with ResponsiveSize {
                       if (item.itemCode.isNotEmpty) InternalCodeRow(item: item),
                       // price
                       if (item.price > 0) const SizedBox(height: 16),
-                      if (item.price > 0) PriceRow(item: item)
+                      if (item.price > 0) PriceRow(item: item),
+                      // alarm quantity
+                      const SizedBox(height: 16),
+                      if (item.alertQuantity != null) AlarmRow(item: item),
                     ],
                   ),
                 ),

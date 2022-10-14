@@ -383,6 +383,38 @@
     "@quantity": {
       "description": "quantity"
     },
+    "quantity_low_level": "Quantity below limit",
+    "@quantity_low_level": {
+      "description": "quantity below limit"
+    },
+    "quantity_to_small": "Quantity must be equal or greater than 0",
+    "@quantity_to_small": {
+      "description": "quantity to small"
+    },
+    "quantity_format_error": "Quantity - incorect number format",
+    "@quantity_format_error": {
+      "description": "quantity format error"
+    },
+    "alert_quantity": "Alert quantity",
+    "@alert_quantity": {
+      "description": "alert quantity"
+    },
+    "set_alert_quantity": "Set alert quantity",
+    "@set_alert_quantity": {
+      "description": "set alert quantity"
+    },
+    "no_alert_quantity": "No quantity alerts",
+    "@no_alert_quantity": {
+      "description": "no alert quantity"
+    },
+    "no_alert": "No alerts",
+    "@no_alert": {
+      "description": "no alert"
+    },
+    "use_alert_quantity": "Use quantity alert",
+    "@use_alert_quantity": {
+      "description": "use alert quantity"
+    },
     "location": "Location",
     "@location": {
       "description": "location"

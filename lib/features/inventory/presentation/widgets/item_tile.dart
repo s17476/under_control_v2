@@ -175,41 +175,45 @@ class ItemTile extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 8,
-                      left: 8,
-                      right: 8,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.item_total_quantity,
-                          style: Theme.of(context).textTheme.caption,
+                  Builder(builder: (context) {
+                    final quantity = getItemQuantityInLocations(context, item);
+                    return Container(
+                      alignment: Alignment.center,
+                      width: 70,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        color: (item.alertQuantity != null &&
+                                quantity <= item.alertQuantity!)
+                            ? Colors.orange
+                            : Colors.black54,
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                Theme.of(context).shadowColor.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: const Offset(-2, 2),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(borderRadius),
+                          bottomLeft: Radius.circular(borderRadius),
                         ),
-                        Text(
-                          getItemTotalQuantity(item).toStringWithFixedDecimal(),
-                          style: const TextStyle(
-                            fontSize: 18,
+                      ),
+                      child: FittedBox(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            getItemQuantityInLocations(context, item)
+                                .toStringWithFixedDecimal(),
+                            style: const TextStyle(
+                              fontSize: 24,
+                            ),
                           ),
                         ),
-                        Text(
-                          AppLocalizations.of(context)!
-                              .item_in_selected_quantity,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        Text(
-                          getItemQuantityInLocations(context, item)
-                              .toStringWithFixedDecimal(),
-                          style: const TextStyle(
-                            fontSize: 22,
-                            color: Colors.amber,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
+                      ),
+                    );
+                  }),
                 ],
               ),
               Padding(

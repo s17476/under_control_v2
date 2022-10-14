@@ -30,6 +30,7 @@ void main() {
     description: 'description',
     category: 'category',
     price: 0,
+    alertQuantity: 0,
     itemPhoto: 'itemPhoto',
     itemCode: 'itemCode',
     itemBarCode: 'itemBarCode',

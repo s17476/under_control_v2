@@ -6,29 +6,35 @@ import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../groups/domain/entities/feature.dart';
-import '../../../inventory/domain/entities/item_action/item_action.dart';
-import '../../../inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
-import '../../../inventory/presentation/widgets/actions/item_action_list_tile.dart';
+import '../../../inventory/domain/entities/item.dart';
+import '../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../inventory/presentation/widgets/actions/shimmer_item_action_list_tile.dart';
-import '../pages/all_actions_list_page.dart';
+import '../../../inventory/presentation/widgets/item_tile.dart';
+import '../../../inventory/utils/get_item_quantity_in_locations.dart';
 
-class InventoryLatestActions extends StatefulWidget {
-  const InventoryLatestActions({Key? key}) : super(key: key);
+class InventoryLowLevelItems extends StatefulWidget {
+  const InventoryLowLevelItems({Key? key}) : super(key: key);
 
   @override
-  State<InventoryLatestActions> createState() => _InventoryLatestActionsState();
+  State<InventoryLowLevelItems> createState() => _InventoryLowLevelItemsState();
 }
 
-class _InventoryLatestActionsState extends State<InventoryLatestActions> {
-  List<ItemAction>? _actions;
+class _InventoryLowLevelItemsState extends State<InventoryLowLevelItems> {
+  List<Item>? _items;
 
   @override
   void didChangeDependencies() {
-    final actionsState = context.watch<DashboardItemActionBloc>().state;
-    if (actionsState is DashboardItemActionLoadedState) {
-      _actions = actionsState.allActions.allItemActions.toList();
-      if (_actions != null && _actions!.length > 5) {
-        _actions = _actions!.sublist(0, 5);
+    final itemsState = context.watch<ItemsBloc>().state;
+    if (itemsState is ItemsLoadedState) {
+      _items = itemsState.allItems.allItems
+          .where((item) => item.alertQuantity != null)
+          .toList();
+      _items = _items!
+          .where((item) =>
+              item.alertQuantity! >= getItemQuantityInLocations(context, item))
+          .toList();
+      if (_items != null && _items!.length > 5) {
+        _items = _items!.sublist(0, 5);
       }
     }
     super.didChangeDependencies();
@@ -66,16 +72,16 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
                         iconColor: Colors.white,
                         iconBackground: Theme.of(context).primaryColor,
                         title:
-                            '${AppLocalizations.of(context)!.bottom_bar_title_inventory} - ${AppLocalizations.of(context)!.latest_actions}',
+                            '${AppLocalizations.of(context)!.bottom_bar_title_inventory} - ${AppLocalizations.of(context)!.quantity_low_level}',
                       ),
                     ),
-                    if (_actions != null && _actions!.isNotEmpty)
+                    if (_items != null && _items!.isNotEmpty)
                       InkWell(
                         onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            AllActionsListPage.routeName,
-                          );
+                          // Navigator.pushNamed(
+                          //   context,
+                          //   AllActionsListPage.routeName,
+                          // );
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -90,7 +96,7 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
                           ),
                         ),
                       ),
-                    if (_actions == null)
+                    if (_items == null)
                       const SizedBox(
                         width: 25,
                         height: 25,
@@ -101,7 +107,7 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
               ),
               Column(
                 children: [
-                  if (_actions == null)
+                  if (_items == null)
                     ListView.builder(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
@@ -115,21 +121,20 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
                         isDashboardTile: true,
                       ),
                     ),
-                  if (_actions != null && _actions!.isNotEmpty)
+                  if (_items != null && _items!.isNotEmpty)
                     ListView.builder(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
                         vertical: 4,
                       ),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _actions!.length,
-                      itemBuilder: (context, index) => ItemActionListTile(
-                        action: _actions![index],
-                        isDashboardTile: true,
+                      itemCount: _items!.length,
+                      itemBuilder: (context, index) => ItemTile(
+                        item: _items![index],
+                        searchQuery: '',
                       ),
                     ),
-                  if (_actions != null && _actions!.isEmpty)
+                  if (_items != null && _items!.isEmpty)
                     Container(
                       alignment: Alignment.center,
                       height: 50,

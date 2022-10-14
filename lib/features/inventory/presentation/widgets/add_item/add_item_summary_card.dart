@@ -21,6 +21,8 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.barCodeTextEditingController,
     required this.codeTextEditingController,
     required this.priceTextEditingController,
+    required this.alertQuantityTextEditingController,
+    required this.isAlertQuantitySet,
     required this.category,
     required this.itemUnit,
     required this.itemImage,
@@ -34,6 +36,9 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
   final TextEditingController barCodeTextEditingController;
   final TextEditingController codeTextEditingController;
   final TextEditingController priceTextEditingController;
+  final TextEditingController alertQuantityTextEditingController;
+
+  final bool isAlertQuantitySet;
 
   final String category;
   final String itemUnit;
@@ -45,6 +50,7 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
     // category name
     String categoryName = '';
     String priceString = '';
+    String alertQuantityString = '';
     final itemCategoryState = context.read<ItemCategoryBloc>().state;
     if (category.isNotEmpty && itemCategoryState is ItemCategoryLoadedState) {
       categoryName = itemCategoryState.allItemsCategories.allItemsCategories
@@ -57,6 +63,15 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
       priceString = price.toStringWithFixedDecimal();
     } catch (e) {
       priceString = priceTextEditingController.text;
+    }
+    if (isAlertQuantitySet) {
+      try {
+        final alert = double.parse(alertQuantityTextEditingController.text);
+
+        alertQuantityString = alert.toStringWithFixedDecimal();
+      } catch (e) {
+        alertQuantityString = priceTextEditingController.text;
+      }
     }
     return SafeArea(
       child: Padding(
@@ -239,6 +254,48 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                         height: 8,
                       ),
 
+                    // alert quantity not set
+                    if (!isAlertQuantitySet)
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!.alert_quantity,
+                        validator: () => '',
+                        child: Text(
+                          AppLocalizations.of(context)!.no_alert_quantity,
+                        ),
+                        pageController: pageController,
+                        onTapAnimateToPage: 2,
+                        errorColor: Colors.orange.withAlpha(210),
+                      ),
+
+                    // alert quantity set
+                    if (isAlertQuantitySet)
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!.alert_quantity,
+                        validator: () {
+                          try {
+                            final alert = double.parse(
+                                alertQuantityTextEditingController.text);
+                            if (alert < 0) {
+                              return AppLocalizations.of(context)!
+                                  .quantity_to_small;
+                            }
+                          } catch (e) {
+                            return AppLocalizations.of(context)!
+                                .quantity_format_error;
+                          }
+                          return null;
+                        },
+                        child: Text(
+                          alertQuantityString,
+                        ),
+                        pageController: pageController,
+                        onTapAnimateToPage: 2,
+                      ),
+
+                    const SizedBox(
+                      height: 8,
+                    ),
+
                     // item photo
                     if (itemImage != null)
                       SummaryCard(
@@ -253,7 +310,7 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                           ),
                         ),
                         pageController: pageController,
-                        onTapAnimateToPage: 2,
+                        onTapAnimateToPage: 3,
                       ),
                     const SizedBox(
                       height: 50,

@@ -13,6 +13,7 @@ import '../../data/models/item_model.dart';
 import '../../domain/entities/item.dart';
 import '../blocs/items/items_bloc.dart';
 import '../blocs/items_management/items_management_bloc.dart';
+import '../widgets/add_alert_quantity_card.dart';
 import '../widgets/add_item/add_item_card.dart';
 import '../widgets/add_item/add_item_data_card.dart';
 import '../widgets/add_item/add_item_photo_card.dart';
@@ -44,6 +45,9 @@ class _AddItemPageState extends State<AddItemPage> {
   final _codeTextEditingController = TextEditingController();
   final _barCodeTextEditingController = TextEditingController();
   final _priceTextEditingController = TextEditingController();
+  final _alertQuantityTextEditingController = TextEditingController(text: '0');
+
+  bool _isAlertQuantitySet = false;
 
   String _category = '';
   String _itemUnit = '';
@@ -83,6 +87,7 @@ class _AddItemPageState extends State<AddItemPage> {
   void _addNewItem(BuildContext context) {
     String errorMessage = '';
     double price = 0;
+    double? alertQuantity;
     // item name validation
     if (!_formKey.currentState!.validate()) {
       errorMessage = AppLocalizations.of(context)!.item_add_error_name_to_short;
@@ -120,6 +125,19 @@ class _AddItemPageState extends State<AddItemPage> {
             }
           }
         }
+
+        // alert quantity validation
+        if (_isAlertQuantitySet && errorMessage.isEmpty) {
+          try {
+            alertQuantity =
+                double.parse(_alertQuantityTextEditingController.text);
+            if (alertQuantity < 0) {
+              errorMessage = AppLocalizations.of(context)!.quantity_to_small;
+            }
+          } catch (e) {
+            errorMessage = AppLocalizations.of(context)!.quantity_format_error;
+          }
+        }
       }
     }
 
@@ -139,6 +157,7 @@ class _AddItemPageState extends State<AddItemPage> {
         description: _descriptionTextEditingController.text.trim(),
         category: _category,
         price: price,
+        alertQuantity: alertQuantity,
         itemCode: _codeTextEditingController.text.trim(),
         itemBarCode: _barCodeTextEditingController.text.trim(),
         itemPhoto: _item != null ? _item!.itemPhoto : '',
@@ -178,6 +197,12 @@ class _AddItemPageState extends State<AddItemPage> {
     });
   }
 
+  void _toggleIsAlertQuantitySet(bool value) {
+    setState(() {
+      _isAlertQuantitySet = value;
+    });
+  }
+
   @override
   void initState() {
     _pageController.addListener(() {
@@ -199,6 +224,13 @@ class _AddItemPageState extends State<AddItemPage> {
       _codeTextEditingController.text = _item!.itemCode;
       _barCodeTextEditingController.text = _item!.itemBarCode;
       _priceTextEditingController.text = _item!.price.toString();
+      if (_item!.alertQuantity != null) {
+        _alertQuantityTextEditingController.text =
+            _item!.alertQuantity.toString();
+        _isAlertQuantitySet = true;
+      } else {
+        _isAlertQuantitySet = false;
+      }
       _category = _item!.category;
       _itemUnit = _item!.itemUnit.name;
     }
@@ -213,6 +245,7 @@ class _AddItemPageState extends State<AddItemPage> {
     _codeTextEditingController.dispose();
     _barCodeTextEditingController.dispose();
     _priceTextEditingController.dispose();
+    _alertQuantityTextEditingController.dispose();
     _pageController.dispose();
     super.dispose();
   }
@@ -241,6 +274,14 @@ class _AddItemPageState extends State<AddItemPage> {
         ),
       ),
       KeepAlivePage(
+        child: AddAlertQuantityCard(
+          quantityTextEditingController: _alertQuantityTextEditingController,
+          isAlertQuantitySet: _isAlertQuantitySet,
+          toggleIsAlertQuantitySet: _toggleIsAlertQuantitySet,
+          itemUnit: _itemUnit,
+        ),
+      ),
+      KeepAlivePage(
         child: AddItemPhotoCard(
           setImage: _setImage,
           deleteImage: _deleteImage,
@@ -256,6 +297,8 @@ class _AddItemPageState extends State<AddItemPage> {
         barCodeTextEditingController: _barCodeTextEditingController,
         codeTextEditingController: _codeTextEditingController,
         priceTextEditingController: _priceTextEditingController,
+        alertQuantityTextEditingController: _alertQuantityTextEditingController,
+        isAlertQuantitySet: _isAlertQuantitySet,
         category: _category,
         itemUnit: _itemUnit,
         itemImage: _itemImage,
