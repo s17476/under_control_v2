@@ -6,6 +6,7 @@ import 'package:under_control_v2/features/knowledge_base/data/models/instruction
 
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
 
+import '../../assets/domain/entities/asset_category/asset_category.dart';
 import '../../checklists/domain/entities/checklist.dart';
 import '../../groups/domain/entities/group.dart';
 import '../../inventory/domain/entities/item.dart';
@@ -262,6 +263,23 @@ class ItemCategoryParams extends Equatable {
   @override
   String toString() =>
       'ItemsCategoriesParams(itemCategory: $itemCategory, companyId: $companyId)';
+}
+
+class AssetCategoryParams extends Equatable {
+  final AssetCategory assetCategory;
+  final String companyId;
+
+  const AssetCategoryParams({
+    required this.assetCategory,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [assetCategory, companyId];
+
+  @override
+  String toString() =>
+      'AssetCategoryParams(assetCategory: $assetCategory, companyId: $companyId)';
 }
 
 class InstructionCategoryParams extends Equatable {
