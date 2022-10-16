@@ -78,7 +78,7 @@ class ItemActionListTile extends StatelessWidget {
                       top: 4,
                       bottom: 4,
                       left: 24,
-                      right: 8,
+                      // right: 8,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,7 +108,8 @@ class ItemActionListTile extends StatelessWidget {
                                     AppLocalizations.of(context)!
                                         .location_unknown,
                                 style: TextStyle(
-                                    fontSize: isDashboardTile ? 14 : 18),
+                                  fontSize: isDashboardTile ? 14 : 18,
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                               // description
@@ -141,9 +142,19 @@ class ItemActionListTile extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Text(
-                          action.ammount.toStringWithFixedDecimal(),
-                          style: const TextStyle(fontSize: 24),
+                        Container(
+                          alignment: Alignment.center,
+                          height: 70,
+                          width: 70,
+                          child: FittedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                action.ammount.toStringWithFixedDecimal(),
+                                style: const TextStyle(fontSize: 24),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),

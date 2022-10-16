@@ -2,7 +2,6 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/knowledge_base/utils/instruction_management_bloc_listener.dart';
 
 import '../../../assets/presentation/pages/assets_page.dart';
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
@@ -14,6 +13,7 @@ import '../../../inventory/presentation/pages/inventory_page.dart';
 import '../../../inventory/utils/item_management_bloc_listener.dart';
 import '../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import '../../../knowledge_base/presentation/pages/knowledge_base_page.dart';
+import '../../../knowledge_base/utils/instruction_management_bloc_listener.dart';
 import '../../../tasks/presentation/pages/tasks_page.dart';
 import '../../utils/get_user_premission.dart';
 import '../../utils/premission.dart';
@@ -424,6 +424,8 @@ class _HomePageState extends State<HomePage>
                               ],
                             ),
                           // tabs
+                          // if (state is FilterLoadedState &&
+                          //     state.locations.isNotEmpty)
                           PageView(
                             controller: _pageController,
                             onPageChanged: (index) {

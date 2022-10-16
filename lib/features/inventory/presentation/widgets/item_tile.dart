@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/presentation/widgets/highlighted_text.dart';
@@ -8,7 +7,6 @@ import '../../../core/presentation/widgets/icon_title_mini_row.dart';
 import '../../../core/utils/double_apis.dart';
 import '../../domain/entities/item.dart';
 import '../../utils/get_item_quantity_in_locations.dart';
-import '../../utils/get_item_total_quantity.dart';
 import '../../utils/get_localized_unit_name.dart';
 import '../pages/item_details_page.dart';
 import 'item_category_mini_row.dart';
@@ -177,41 +175,53 @@ class ItemTile extends StatelessWidget {
                   ),
                   Builder(builder: (context) {
                     final quantity = getItemQuantityInLocations(context, item);
-                    return Container(
-                      alignment: Alignment.center,
-                      width: 70,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        color: (item.alertQuantity != null &&
-                                quantity <= item.alertQuantity!)
-                            ? Colors.orange
-                            : Colors.black54,
-                        boxShadow: [
-                          BoxShadow(
-                            color:
-                                Theme.of(context).shadowColor.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 4,
-                            offset: const Offset(-2, 2),
+                    return Stack(
+                      children: [
+                        // warning icon
+                        if (item.alertQuantity != null &&
+                            quantity <= item.alertQuantity!)
+                          Container(
+                            alignment: Alignment.topRight,
+                            padding: const EdgeInsets.all(4),
+                            width: 70,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(borderRadius),
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.warning_amber_rounded,
+                              size: 26,
+                              color: Colors.amber,
+                            ),
                           ),
-                        ],
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(borderRadius),
-                          bottomLeft: Radius.circular(borderRadius),
-                        ),
-                      ),
-                      child: FittedBox(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            getItemQuantityInLocations(context, item)
-                                .toStringWithFixedDecimal(),
-                            style: const TextStyle(
-                              fontSize: 24,
+                        Container(
+                          alignment: Alignment.center,
+                          width: 70,
+                          height: 90,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(borderRadius),
+                            ),
+                          ),
+                          child: FittedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                quantity.toStringWithFixedDecimal(),
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  color: (item.alertQuantity != null &&
+                                          quantity <= item.alertQuantity!)
+                                      ? Colors.amber
+                                      : null,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     );
                   }),
                 ],

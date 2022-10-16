@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
+import 'package:under_control_v2/features/inventory/utils/get_item_total_quantity.dart';
 
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/utils/get_user_premission.dart';
@@ -11,6 +13,7 @@ import '../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../inventory/presentation/widgets/actions/shimmer_item_action_list_tile.dart';
 import '../../../inventory/presentation/widgets/item_tile.dart';
 import '../../../inventory/utils/get_item_quantity_in_locations.dart';
+import '../pages/all_low_level_items_page.dart';
 
 class InventoryLowLevelItems extends StatefulWidget {
   const InventoryLowLevelItems({Key? key}) : super(key: key);
@@ -24,11 +27,17 @@ class _InventoryLowLevelItemsState extends State<InventoryLowLevelItems> {
 
   @override
   void didChangeDependencies() {
+    context.watch<FilterBloc>().stream.listen((event) {
+      setState(() {});
+    });
     final itemsState = context.watch<ItemsBloc>().state;
     if (itemsState is ItemsLoadedState) {
       _items = itemsState.allItems.allItems
           .where((item) => item.alertQuantity != null)
           .toList();
+      // _items = _items!
+      //     .where((item) => item.alertQuantity! >= getItemTotalQuantity(item))
+      //     .toList();
       _items = _items!
           .where((item) =>
               item.alertQuantity! >= getItemQuantityInLocations(context, item))
@@ -78,10 +87,10 @@ class _InventoryLowLevelItemsState extends State<InventoryLowLevelItems> {
                     if (_items != null && _items!.isNotEmpty)
                       InkWell(
                         onTap: () {
-                          // Navigator.pushNamed(
-                          //   context,
-                          //   AllActionsListPage.routeName,
-                          // );
+                          Navigator.pushNamed(
+                            context,
+                            AllLowLevelItemsPage.routeName,
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),

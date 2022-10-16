@@ -10,7 +10,7 @@ import '../../../inventory/presentation/widgets/actions/item_action_list_tile.da
 class AllActionsListPage extends StatefulWidget {
   const AllActionsListPage({Key? key}) : super(key: key);
 
-  static const routeName = '/item-details/all-actions-list';
+  static const routeName = '/dashboard/all-actions-list';
 
   @override
   State<AllActionsListPage> createState() => _AllActionsListPageState();
