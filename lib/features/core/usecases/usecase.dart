@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
 
+import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
 
+import '../../assets/domain/entities/asset.dart';
+import '../../assets/domain/entities/asset_action/asset_action.dart';
 import '../../assets/domain/entities/asset_category/asset_category.dart';
 import '../../checklists/domain/entities/checklist.dart';
 import '../../groups/domain/entities/group.dart';
@@ -185,6 +187,23 @@ class ItemParams extends Equatable {
   List<Object> get props => [item, companyId];
 }
 
+class AssetParams extends Equatable {
+  final Asset asset;
+  final List<File>? photos;
+  final List<File>? documents;
+  final String companyId;
+
+  const AssetParams({
+    required this.asset,
+    this.photos,
+    this.documents,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [asset, companyId];
+}
+
 class ItemActionParams extends Equatable {
   final Item updatedItem;
   final ItemAction itemAction;
@@ -198,6 +217,21 @@ class ItemActionParams extends Equatable {
 
   @override
   List<Object> get props => [updatedItem, itemAction, companyId];
+}
+
+class AssetActionParams extends Equatable {
+  final Asset updatedAsset;
+  final AssetAction assetAction;
+  final String companyId;
+
+  const AssetActionParams({
+    required this.updatedAsset,
+    required this.assetAction,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [updatedAsset, assetAction, companyId];
 }
 
 class MoveItemActionParams extends Equatable {
