@@ -21,7 +21,7 @@ class ItemActionLoadingState extends ItemActionState {}
 
 class ItemActionErrorState extends ItemActionState {
   const ItemActionErrorState({
-    super.message,
+    required super.message,
     super.error = true,
   });
 }
