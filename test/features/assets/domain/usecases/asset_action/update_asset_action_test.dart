@@ -29,7 +29,6 @@ void main() {
     barCode: 'barCode',
     isInUse: true,
     addDate: DateTime.now(),
-    actionHistory: const [],
     currentStatus: AssetStatus.ok,
     lastInspection: DateTime.now(),
     durationUnit: DurationUnit.year,
@@ -43,6 +42,7 @@ void main() {
 
   final tAssetAction = AssetAction(
     id: 'id',
+    assetId: 'assetId',
     dateTime: DateTime.now(),
     description: 'description',
     isAssetInUse: true,

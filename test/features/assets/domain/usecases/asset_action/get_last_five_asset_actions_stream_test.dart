@@ -29,7 +29,6 @@ void main() {
     barCode: 'barCode',
     isInUse: true,
     addDate: DateTime.now(),
-    actionHistory: const [],
     currentStatus: AssetStatus.ok,
     lastInspection: DateTime.now(),
     durationUnit: DurationUnit.year,

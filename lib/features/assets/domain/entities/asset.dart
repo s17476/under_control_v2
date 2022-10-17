@@ -3,8 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 import 'package:under_control_v2/features/core/utils/duration_unit.dart';
 
-import 'asset_action/asset_action.dart';
-
 class Asset extends Equatable {
   final String id;
   final String producer;
@@ -16,7 +14,6 @@ class Asset extends Equatable {
   final String barCode;
   final bool isInUse;
   final DateTime addDate;
-  final List<AssetAction> actionHistory;
   final AssetStatus currentStatus;
   final DateTime lastInspection;
   final DurationUnit durationUnit;
@@ -38,7 +35,6 @@ class Asset extends Equatable {
     required this.barCode,
     required this.isInUse,
     required this.addDate,
-    required this.actionHistory,
     required this.currentStatus,
     required this.lastInspection,
     required this.durationUnit,
@@ -63,7 +59,6 @@ class Asset extends Equatable {
       barCode,
       isInUse,
       addDate,
-      actionHistory,
       currentStatus,
       lastInspection,
       durationUnit,
@@ -78,6 +73,6 @@ class Asset extends Equatable {
 
   @override
   String toString() {
-    return 'Asset(id: $id, producer: $producer, model: $model, description: $description, categoryId: $categoryId, locationId: $locationId, internalCode: $internalCode, barCode: $barCode, isInUse: $isInUse, addDate: $addDate, actionHistory: $actionHistory, currentStatus: $currentStatus, lastInspection: $lastInspection, durationUnit: $durationUnit, duration: $duration, images: $images, doucments: $doucments, spareParts: $spareParts, currentParentId: $currentParentId, possibleParents: $possibleParents)';
+    return 'Asset(id: $id, producer: $producer, model: $model, description: $description, categoryId: $categoryId, locationId: $locationId, internalCode: $internalCode, barCode: $barCode, isInUse: $isInUse, addDate: $addDate, currentStatus: $currentStatus, lastInspection: $lastInspection, durationUnit: $durationUnit, duration: $duration, images: $images, doucments: $doucments, spareParts: $spareParts, currentParentId: $currentParentId, possibleParents: $possibleParents)';
   }
 }

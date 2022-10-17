@@ -4,6 +4,7 @@ import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 
 class AssetAction extends Equatable {
   final String id;
+  final String assetId;
   final DateTime dateTime;
   final String description;
   final bool isAssetInUse;
@@ -12,6 +13,7 @@ class AssetAction extends Equatable {
 
   const AssetAction({
     required this.id,
+    required this.assetId,
     required this.dateTime,
     required this.description,
     required this.isAssetInUse,
@@ -23,6 +25,7 @@ class AssetAction extends Equatable {
   List<Object> get props {
     return [
       id,
+      assetId,
       dateTime,
       description,
       isAssetInUse,
@@ -33,6 +36,6 @@ class AssetAction extends Equatable {
 
   @override
   String toString() {
-    return 'AssetAction(id: $id, dateTime: $dateTime, description: $description, isAssetInUse: $isAssetInUse, assetStatus: $assetStatus, connectedTask: $connectedTask)';
+    return 'AssetAction(id: $id, assetId: $assetId, dateTime: $dateTime, description: $description, isAssetInUse: $isAssetInUse, assetStatus: $assetStatus, connectedTask: $connectedTask)';
   }
 }
