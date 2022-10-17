@@ -96,7 +96,7 @@ class AssetModel extends Asset {
 
   factory AssetModel.fromMap(Map<String, dynamic> map, String id) {
     return AssetModel(
-      id: map['id'] ?? '',
+      id: id,
       producer: map['producer'] ?? '',
       model: map['model'] ?? '',
       description: map['description'] ?? '',
