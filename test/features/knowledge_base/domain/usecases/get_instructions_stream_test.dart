@@ -29,7 +29,7 @@ void main() {
 
   group('Knowledge Base', () {
     test(
-      'should return [String] from repository when GetInstructionsStream is called',
+      'should return [InstructionsStream] from repository when GetInstructionsStream is called',
       () async {
         // arrange
         when(() => repository.getInstructionsStream(any())).thenAnswer(

@@ -269,6 +269,19 @@ class ItemsInLocationsParams extends Equatable {
   List<Object> get props => [locations, companyId];
 }
 
+class AssetsInLocationsParams extends Equatable {
+  final List<String> locations;
+  final String companyId;
+
+  const AssetsInLocationsParams({
+    required this.locations,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [locations, companyId];
+}
+
 class InstructionsInLocationsParams extends Equatable {
   final List<String> locations;
   final String companyId;
