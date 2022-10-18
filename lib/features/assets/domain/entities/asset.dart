@@ -22,7 +22,7 @@ class Asset extends Equatable {
   final List<String> doucments;
   final List<String> spareParts;
   final String currentParentId;
-  final List<String> possibleParents;
+  final bool isSparePart;
 
   const Asset({
     required this.id,
@@ -43,7 +43,7 @@ class Asset extends Equatable {
     required this.doucments,
     required this.spareParts,
     required this.currentParentId,
-    required this.possibleParents,
+    required this.isSparePart,
   });
 
   @override
@@ -67,12 +67,12 @@ class Asset extends Equatable {
       doucments,
       spareParts,
       currentParentId,
-      possibleParents,
+      isSparePart,
     ];
   }
 
   @override
   String toString() {
-    return 'Asset(id: $id, producer: $producer, model: $model, description: $description, categoryId: $categoryId, locationId: $locationId, internalCode: $internalCode, barCode: $barCode, isInUse: $isInUse, addDate: $addDate, currentStatus: $currentStatus, lastInspection: $lastInspection, durationUnit: $durationUnit, duration: $duration, images: $images, doucments: $doucments, spareParts: $spareParts, currentParentId: $currentParentId, possibleParents: $possibleParents)';
+    return 'Asset(id: $id, producer: $producer, model: $model, description: $description, categoryId: $categoryId, locationId: $locationId, internalCode: $internalCode, barCode: $barCode, isInUse: $isInUse, addDate: $addDate, currentStatus: $currentStatus, lastInspection: $lastInspection, durationUnit: $durationUnit, duration: $duration, images: $images, doucments: $doucments, spareParts: $spareParts, currentParentId: $currentParentId, isSparePart: $isSparePart)';
   }
 }

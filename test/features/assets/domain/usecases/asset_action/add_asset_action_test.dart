@@ -37,7 +37,7 @@ void main() {
     doucments: const [],
     spareParts: const [],
     currentParentId: 'currentParentId',
-    possibleParents: const [],
+    isSparePart: true,
   );
 
   final tAssetAction = AssetAction(

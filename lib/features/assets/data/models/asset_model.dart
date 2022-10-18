@@ -22,7 +22,7 @@ class AssetModel extends Asset {
     required super.doucments,
     required super.spareParts,
     required super.currentParentId,
-    required super.possibleParents,
+    required super.isSparePart,
   });
 
   AssetModel copyWith({
@@ -44,7 +44,7 @@ class AssetModel extends Asset {
     List<String>? doucments,
     List<String>? spareParts,
     String? currentParentId,
-    List<String>? possibleParents,
+    bool? isSparePart,
   }) {
     return AssetModel(
       id: id ?? this.id,
@@ -65,7 +65,7 @@ class AssetModel extends Asset {
       doucments: doucments ?? this.doucments,
       spareParts: spareParts ?? this.spareParts,
       currentParentId: currentParentId ?? this.currentParentId,
-      possibleParents: possibleParents ?? this.possibleParents,
+      isSparePart: isSparePart ?? this.isSparePart,
     );
   }
 
@@ -89,7 +89,7 @@ class AssetModel extends Asset {
     result.addAll({'doucments': doucments});
     result.addAll({'spareParts': spareParts});
     result.addAll({'currentParentId': currentParentId});
-    result.addAll({'possibleParents': possibleParents});
+    result.addAll({'isSparePart': isSparePart});
 
     return result;
   }
@@ -114,7 +114,7 @@ class AssetModel extends Asset {
       doucments: List<String>.from(map['doucments']),
       spareParts: List<String>.from(map['spareParts']),
       currentParentId: map['currentParentId'] ?? '',
-      possibleParents: List<String>.from(map['possibleParents']),
+      isSparePart: map['possibleParents'] ?? false,
     );
   }
 }

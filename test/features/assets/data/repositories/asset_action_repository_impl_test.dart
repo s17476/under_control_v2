@@ -46,7 +46,7 @@ void main() async {
     doucments: const [],
     spareParts: const [],
     currentParentId: 'currentParentId',
-    possibleParents: const [],
+    isSparePart: true,
   );
 
   setUp(() async {
