@@ -3,10 +3,12 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/blocs/asset_action/asset_action_bloc.dart';
 import '../../../../assets/presentation/blocs/asset_action_management/asset_action_management_bloc.dart';
 import '../../../../assets/presentation/blocs/asset_category/asset_category_bloc.dart';
 import '../../../../assets/presentation/blocs/asset_category_management/asset_category_management_bloc.dart';
+import '../../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../../company_profile/presentation/blocs/company_management/company_management_bloc.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../groups/presentation/blocs/group/group_bloc.dart';
@@ -262,6 +264,24 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
         BlocListener<AssetActionManagementBloc, AssetActionManagementState>(
           listener: (context, state) {
             if (state is AssetActionManagementLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<AssetBloc, AssetState>(
+          listener: (context, state) {
+            if (state is AssetLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<AssetManagementBloc, AssetManagementState>(
+          listener: (context, state) {
+            if (state is AssetManagementLoadingState) {
               _startAnimation();
             } else {
               _stopAnimation();

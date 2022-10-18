@@ -151,7 +151,7 @@ class AssetRepositoryImpl extends AssetRepository {
           .collection('companies')
           .doc(params.companyId)
           .collection('assets')
-          .where('locations', arrayContainsAny: params.locations)
+          .where('locations', whereIn: params.locations)
           .orderBy('name', descending: true)
           .snapshots();
 
