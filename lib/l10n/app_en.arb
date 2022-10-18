@@ -1592,5 +1592,13 @@
     "instruction_history": "Instruction history",
     "@instruction_history": {
       "description": "instruction history"
+    },
+    "asset_add_new": "Add new asset",
+    "@asset_add_new": {
+      "description": "add asset menu item"
+    },
+    "asset_edit": "Edit asset",
+    "@asset_edit": {
+      "description": "edit asset"
     }
 }

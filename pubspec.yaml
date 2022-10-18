@@ -131,6 +131,7 @@ flutter:
     - assets/youtube.png
     - assets/pdf.png
     - assets/website.png
+    - assets/asset.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

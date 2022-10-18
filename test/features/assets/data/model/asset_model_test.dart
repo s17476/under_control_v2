@@ -25,7 +25,7 @@ void main() {
     durationUnit: DurationUnit.day,
     duration: 1,
     images: const [],
-    doucments: const [],
+    documents: const [],
     spareParts: const [],
     currentParentId: 'currentParentId',
     isSparePart: true,

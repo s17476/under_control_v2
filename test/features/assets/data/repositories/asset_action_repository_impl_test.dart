@@ -43,7 +43,7 @@ void main() async {
     durationUnit: DurationUnit.year,
     duration: 1,
     images: const [],
-    doucments: const [],
+    documents: const [],
     spareParts: const [],
     currentParentId: 'currentParentId',
     isSparePart: true,

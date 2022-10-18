@@ -19,7 +19,7 @@ class Asset extends Equatable {
   final DurationUnit durationUnit;
   final int duration;
   final List<String> images;
-  final List<String> doucments;
+  final List<String> documents;
   final List<String> spareParts;
   final String currentParentId;
   final bool isSparePart;
@@ -40,7 +40,7 @@ class Asset extends Equatable {
     required this.durationUnit,
     required this.duration,
     required this.images,
-    required this.doucments,
+    required this.documents,
     required this.spareParts,
     required this.currentParentId,
     required this.isSparePart,
@@ -64,7 +64,7 @@ class Asset extends Equatable {
       durationUnit,
       duration,
       images,
-      doucments,
+      documents,
       spareParts,
       currentParentId,
       isSparePart,
@@ -73,6 +73,6 @@ class Asset extends Equatable {
 
   @override
   String toString() {
-    return 'Asset(id: $id, producer: $producer, model: $model, description: $description, categoryId: $categoryId, locationId: $locationId, internalCode: $internalCode, barCode: $barCode, isInUse: $isInUse, addDate: $addDate, currentStatus: $currentStatus, lastInspection: $lastInspection, durationUnit: $durationUnit, duration: $duration, images: $images, doucments: $doucments, spareParts: $spareParts, currentParentId: $currentParentId, isSparePart: $isSparePart)';
+    return 'Asset(id: $id, producer: $producer, model: $model, description: $description, categoryId: $categoryId, locationId: $locationId, internalCode: $internalCode, barCode: $barCode, isInUse: $isInUse, addDate: $addDate, currentStatus: $currentStatus, lastInspection: $lastInspection, durationUnit: $durationUnit, duration: $duration, images: $images, doucments: $documents, spareParts: $spareParts, currentParentId: $currentParentId, isSparePart: $isSparePart)';
   }
 }

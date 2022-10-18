@@ -60,7 +60,7 @@ class _LoadingPageState extends State<LoadingPage>
             child: AnimatedBuilder(
               animation: _animationController,
               builder: (context, child) {
-                final child = Image.asset('assets/under_control_menu_icon.png');
+                final child = Image.asset('assets/under_control_icon.png');
 
                 return Transform(
                   transform: Matrix4.rotationY(_rotateY.value * 2 * math.pi),

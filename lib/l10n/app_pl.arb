@@ -380,5 +380,7 @@
     "instruction_msg_deleted": "Instrukcja została usunięta",
     "instruction_msg_not_deleted": "Instrukcja NIE została usunięta",
     "instruction_details": "Szczegóły instrukjci",
-    "instruction_history": "Historia instrukcji"
+    "instruction_history": "Historia instrukcji",
+    "asset_add_new": "Dodaj aktywa",
+    "asset_edit": "Edytuj aktywa"
 }

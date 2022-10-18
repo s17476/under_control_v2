@@ -19,7 +19,7 @@ class AssetModel extends Asset {
     required super.durationUnit,
     required super.duration,
     required super.images,
-    required super.doucments,
+    required super.documents,
     required super.spareParts,
     required super.currentParentId,
     required super.isSparePart,
@@ -41,7 +41,7 @@ class AssetModel extends Asset {
     DurationUnit? durationUnit,
     int? duration,
     List<String>? images,
-    List<String>? doucments,
+    List<String>? documents,
     List<String>? spareParts,
     String? currentParentId,
     bool? isSparePart,
@@ -62,7 +62,7 @@ class AssetModel extends Asset {
       durationUnit: durationUnit ?? this.durationUnit,
       duration: duration ?? this.duration,
       images: images ?? this.images,
-      doucments: doucments ?? this.doucments,
+      documents: documents ?? this.documents,
       spareParts: spareParts ?? this.spareParts,
       currentParentId: currentParentId ?? this.currentParentId,
       isSparePart: isSparePart ?? this.isSparePart,
@@ -86,7 +86,7 @@ class AssetModel extends Asset {
     result.addAll({'durationUnit': durationUnit.name});
     result.addAll({'duration': duration});
     result.addAll({'images': images});
-    result.addAll({'doucments': doucments});
+    result.addAll({'documents': documents});
     result.addAll({'spareParts': spareParts});
     result.addAll({'currentParentId': currentParentId});
     result.addAll({'isSparePart': isSparePart});
@@ -111,10 +111,18 @@ class AssetModel extends Asset {
       durationUnit: DurationUnit.fromString(map['durationUnit']),
       duration: map['duration']?.toInt() ?? 0,
       images: List<String>.from(map['images']),
-      doucments: List<String>.from(map['doucments']),
+      documents: List<String>.from(map['documents']),
       spareParts: List<String>.from(map['spareParts']),
       currentParentId: map['currentParentId'] ?? '',
       isSparePart: map['possibleParents'] ?? false,
+    );
+  }
+
+  AssetModel deepCopy() {
+    return copyWith(
+      documents: [...documents],
+      images: [...images],
+      spareParts: [...spareParts],
     );
   }
 }

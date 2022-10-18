@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/assets/presentation/pages/add_asset_page.dart';
 import 'package:under_control_v2/features/dashboard/presentation/pages/all_low_level_items_page.dart';
 
 import 'features/assets/presentation/blocs/asset/asset_bloc.dart';
@@ -258,7 +259,8 @@ class App extends StatelessWidget
           AssetCategoryManagementPage.routeName: (context) =>
               const AssetCategoryManagementPage(),
           AllLowLevelItemsPage.routeName: (context) =>
-              const AllLowLevelItemsPage()
+              const AllLowLevelItemsPage(),
+          AddAssetPage.routeName: (context) => const AddAssetPage(),
         },
         // localization
         localizationsDelegates: const [

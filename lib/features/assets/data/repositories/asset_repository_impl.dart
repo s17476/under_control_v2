@@ -70,7 +70,7 @@ class AssetRepositoryImpl extends AssetRepository {
       // update asset
       final updatedAsset = params.asset.copyWith(
         images: photos,
-        doucments: documents,
+        documents: documents,
       );
 
       // asset map
@@ -151,7 +151,7 @@ class AssetRepositoryImpl extends AssetRepository {
           .collection('companies')
           .doc(params.companyId)
           .collection('assets')
-          .where('locations', whereIn: params.locations)
+          .where('locationId', whereIn: params.locations)
           .orderBy('name', descending: true)
           .snapshots();
 
@@ -230,7 +230,7 @@ class AssetRepositoryImpl extends AssetRepository {
       // update asset
       final updatedAsset = params.asset.copyWith(
         images: photos,
-        doucments: documents,
+        documents: documents,
       );
 
       // asset map
