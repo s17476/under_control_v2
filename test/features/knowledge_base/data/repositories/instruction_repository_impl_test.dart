@@ -15,7 +15,7 @@ class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
 void main() {
   late FakeFirebaseFirestore fakeFirebaseFirestore;
-  late MockFirebaseFirestore badkFirebaseFirestore;
+  late MockFirebaseFirestore badFirebaseFirestore;
   late MockFirebaseStorage mockFirebaseStorage;
   late CollectionReference mockCollectionReference;
   late InstructionRepositoryImpl repository;
@@ -40,7 +40,7 @@ void main() {
   setUp(
     () async {
       fakeFirebaseFirestore = FakeFirebaseFirestore();
-      badkFirebaseFirestore = MockFirebaseFirestore();
+      badFirebaseFirestore = MockFirebaseFirestore();
       mockFirebaseStorage = MockFirebaseStorage();
 
       mockCollectionReference = fakeFirebaseFirestore
@@ -53,7 +53,7 @@ void main() {
           firebaseStorage: mockFirebaseStorage);
 
       badRepository = InstructionRepositoryImpl(
-        firebaseFirestore: badkFirebaseFirestore,
+        firebaseFirestore: badFirebaseFirestore,
         firebaseStorage: mockFirebaseStorage,
       );
 
@@ -121,7 +121,7 @@ void main() {
           'should return [DatabaseFailure] when addInstruction is called',
           () async {
             // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+            when(() => badFirebaseFirestore.collection(any())).thenThrow(
               FirebaseException(plugin: 'Bad Firebase'),
             );
             // act
@@ -135,7 +135,7 @@ void main() {
           'should return [DatabaseFailure] when updateInstruction is called',
           () async {
             // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+            when(() => badFirebaseFirestore.collection(any())).thenThrow(
               FirebaseException(plugin: 'Bad Firebase'),
             );
             // act
@@ -149,7 +149,7 @@ void main() {
           'should return [DatabaseFailure] when deleteinstruction is called',
           () async {
             // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+            when(() => badFirebaseFirestore.collection(any())).thenThrow(
               FirebaseException(plugin: 'Bad Firebase'),
             );
             // act
@@ -163,7 +163,7 @@ void main() {
           'should return [DatabaseFailure] when getInstructionsStream is called',
           () async {
             // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+            when(() => badFirebaseFirestore.collection(any())).thenThrow(
               FirebaseException(plugin: 'Bad Firebase'),
             );
             // act
@@ -179,7 +179,7 @@ void main() {
           'should return [UnsuspectedFailure]  when addInstruction is called',
           () async {
             // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+            when(() => badFirebaseFirestore.collection(any())).thenThrow(
               Exception(),
             );
             // act
@@ -193,7 +193,7 @@ void main() {
           'should return [UnsuspectedFailure] when updateinstruction is called',
           () async {
             // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+            when(() => badFirebaseFirestore.collection(any())).thenThrow(
               Exception(),
             );
             // act
@@ -207,7 +207,7 @@ void main() {
           'should return [UnsuspectedFailure] when deleteInstruction is called',
           () async {
             // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+            when(() => badFirebaseFirestore.collection(any())).thenThrow(
               Exception(),
             );
             // act
@@ -221,7 +221,7 @@ void main() {
           'should return [UnsuspectedFailure] when getInstructionsStream is called',
           () async {
             // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+            when(() => badFirebaseFirestore.collection(any())).thenThrow(
               Exception(),
             );
             // act

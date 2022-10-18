@@ -11,7 +11,7 @@ abstract class AssetActionEvent extends Equatable {
 }
 
 class GetAssetActionsEvent extends AssetActionEvent {
-  final Asset asset;
+  final AssetModel asset;
   final String companyId;
 
   GetAssetActionsEvent({
@@ -24,7 +24,7 @@ class GetAssetActionsEvent extends AssetActionEvent {
 }
 
 class GetLastFiveAssetActionsEvent extends AssetActionEvent {
-  final Asset asset;
+  final AssetModel asset;
   final String companyId;
 
   GetLastFiveAssetActionsEvent({

@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import 'package:under_control_v2/features/assets/data/models/asset_action/asset_actions_list_model.dart';
+import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 import 'package:under_control_v2/features/assets/domain/usecases/asset_action/get_asset_actions_stream.dart';
 import 'package:under_control_v2/features/assets/domain/usecases/asset_action/get_last_five_asset_actions_stream.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';

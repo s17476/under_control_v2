@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
 
+import '../../assets/data/models/asset_model.dart';
 import '../../assets/domain/entities/asset.dart';
 import '../../assets/domain/entities/asset_action/asset_action.dart';
 import '../../assets/domain/entities/asset_category/asset_category.dart';
@@ -188,7 +189,7 @@ class ItemParams extends Equatable {
 }
 
 class AssetParams extends Equatable {
-  final Asset asset;
+  final AssetModel asset;
   final List<File>? photos;
   final List<File>? documents;
   final String companyId;

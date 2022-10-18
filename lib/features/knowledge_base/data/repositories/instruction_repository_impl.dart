@@ -124,15 +124,15 @@ class InstructionRepositoryImpl extends InstructionRepository {
   Future<Either<Failure, VoidResult>> deleteInstruction(
       InstructionParams params) async {
     try {
-      // batch
-      final batch = firebaseFirestore.batch();
-
       // collection reference
       final instructionReference = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
           .collection('instructions')
           .doc(params.instruction.id);
+
+      // batch
+      final batch = firebaseFirestore.batch();
 
       // storage reference
       final storageReference =
@@ -149,7 +149,7 @@ class InstructionRepositoryImpl extends InstructionRepository {
         storageReference.child(file.name).delete();
       }
 
-      // adds instruction to DB
+      // delete instruction
       batch.delete(instructionReference);
 
       // commit the batch

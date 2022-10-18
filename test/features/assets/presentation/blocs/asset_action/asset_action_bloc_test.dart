@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
 import 'package:under_control_v2/features/assets/domain/entities/asset_action/asset_actions_stream.dart';
 import 'package:under_control_v2/features/assets/domain/usecases/asset_action/get_asset_actions_stream.dart';
@@ -24,7 +25,7 @@ void main() {
 
   const tCompanyId = 'companyId';
 
-  final tAsset = Asset(
+  final tAsset = AssetModel(
     id: 'id',
     producer: 'producer',
     model: 'model',
