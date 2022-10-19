@@ -12,6 +12,7 @@ class AssetModel extends Asset {
     required super.locationId,
     required super.internalCode,
     required super.barCode,
+    required super.price,
     required super.isInUse,
     required super.addDate,
     required super.currentStatus,
@@ -34,6 +35,7 @@ class AssetModel extends Asset {
     String? locationId,
     String? internalCode,
     String? barCode,
+    double? price,
     bool? isInUse,
     DateTime? addDate,
     AssetStatus? currentStatus,
@@ -55,6 +57,7 @@ class AssetModel extends Asset {
       locationId: locationId ?? this.locationId,
       internalCode: internalCode ?? this.internalCode,
       barCode: barCode ?? this.barCode,
+      price: price ?? this.price,
       isInUse: isInUse ?? this.isInUse,
       addDate: addDate ?? this.addDate,
       currentStatus: currentStatus ?? this.currentStatus,
@@ -79,6 +82,7 @@ class AssetModel extends Asset {
     result.addAll({'locationId': locationId});
     result.addAll({'internalCode': internalCode});
     result.addAll({'barCode': barCode});
+    result.addAll({'price': price});
     result.addAll({'isInUse': isInUse});
     result.addAll({'addDate': addDate.toIso8601String()});
     result.addAll({'currentStatus': currentStatus.name});
@@ -104,6 +108,7 @@ class AssetModel extends Asset {
       locationId: map['locationId'] ?? '',
       internalCode: map['internalCode'] ?? '',
       barCode: map['barCode'] ?? '',
+      price: map['price'] ?? 0,
       isInUse: map['isInUse'] ?? false,
       addDate: DateTime.parse(map['addDate']),
       currentStatus: AssetStatus.fromString(map['currentStatus']),

@@ -15,6 +15,7 @@ import '../../domain/entities/asset.dart';
 import '../../utils/asset_status.dart';
 import '../blocs/asset/asset_bloc.dart';
 import '../widgets/add_asset_card.dart';
+import '../widgets/add_asset_data_card.dart';
 
 class AddAssetPage extends StatefulWidget {
   const AddAssetPage({Key? key}) : super(key: key);
@@ -41,13 +42,16 @@ class _AddAssetPageState extends State<AddAssetPage> {
   final _internalCodeTextEditingController = TextEditingController();
   final _barCodeTextEditingController = TextEditingController();
 
-  String _categoryId = '';
+  String _category = '';
   String _locationId = '';
   String _currentParentId = '';
+
+  final _priceTextEditingController = TextEditingController();
 
   bool _isInUse = false;
   bool _isSparePart = false;
 
+  DateTime _dateTime = DateTime.now();
   DateTime _lastInspection = DateTime.now();
   AssetStatus _assetStatus = AssetStatus.unknown;
   DurationUnit _durationUnit = DurationUnit.unknown;
@@ -58,6 +62,18 @@ class _AddAssetPageState extends State<AddAssetPage> {
   List<String> _spareParts = [];
 
   _addNewAsset(BuildContext context) {}
+
+  void _setCategory(String value) {
+    setState(() {
+      _category = value;
+    });
+  }
+
+  void _setDate(DateTime date) {
+    setState(() {
+      _dateTime = date;
+    });
+  }
 
   @override
   void initState() {
@@ -85,7 +101,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
       _internalCodeTextEditingController.text = _asset!.internalCode;
       _barCodeTextEditingController.text = _asset!.barCode;
 
-      _categoryId = _asset!.categoryId;
+      _category = _asset!.categoryId;
       _locationId = _asset!.locationId;
       _currentParentId = _asset!.currentParentId;
       _isInUse = _asset!.isInUse;
@@ -94,6 +110,8 @@ class _AddAssetPageState extends State<AddAssetPage> {
       _assetStatus = _asset!.currentStatus;
       _durationUnit = _asset!.durationUnit;
       _duration = _asset!.duration;
+      _priceTextEditingController.text = _asset!.price.toString();
+      _dateTime = _asset!.addDate;
 
       _spareParts = _asset!.spareParts;
     }
@@ -108,6 +126,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
     _descriptionTextEditingController.dispose();
     _internalCodeTextEditingController.dispose();
     _barCodeTextEditingController.dispose();
+    _priceTextEditingController.dispose();
     super.dispose();
   }
 
@@ -122,6 +141,16 @@ class _AddAssetPageState extends State<AddAssetPage> {
           descriptionTextEditingController: _descriptionTextEditingController,
         ),
       ),
+      KeepAlivePage(
+          child: AddAssetDataCard(
+        category: _category,
+        setCategory: _setCategory,
+        priceTextEditingController: _priceTextEditingController,
+        codeTextEditingController: _internalCodeTextEditingController,
+        barCodeTextEditingController: _barCodeTextEditingController,
+        dateTime: _dateTime,
+        setDate: _setDate,
+      )),
     ];
 
     DateTime preBackpress = DateTime.now();

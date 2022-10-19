@@ -12,6 +12,7 @@ class Asset extends Equatable {
   final String locationId;
   final String internalCode;
   final String barCode;
+  final double price;
   final bool isInUse;
   final DateTime addDate;
   final AssetStatus currentStatus;
@@ -33,6 +34,7 @@ class Asset extends Equatable {
     required this.locationId,
     required this.internalCode,
     required this.barCode,
+    required this.price,
     required this.isInUse,
     required this.addDate,
     required this.currentStatus,
@@ -57,6 +59,7 @@ class Asset extends Equatable {
       locationId,
       internalCode,
       barCode,
+      price,
       isInUse,
       addDate,
       currentStatus,
@@ -73,6 +76,6 @@ class Asset extends Equatable {
 
   @override
   String toString() {
-    return 'Asset(id: $id, producer: $producer, model: $model, description: $description, categoryId: $categoryId, locationId: $locationId, internalCode: $internalCode, barCode: $barCode, isInUse: $isInUse, addDate: $addDate, currentStatus: $currentStatus, lastInspection: $lastInspection, durationUnit: $durationUnit, duration: $duration, images: $images, doucments: $documents, spareParts: $spareParts, currentParentId: $currentParentId, isSparePart: $isSparePart)';
+    return 'Asset(id: $id, producer: $producer, model: $model, description: $description, categoryId: $categoryId, locationId: $locationId, internalCode: $internalCode, barCode: $barCode, price: $price, isInUse: $isInUse, addDate: $addDate, currentStatus: $currentStatus, lastInspection: $lastInspection, durationUnit: $durationUnit, duration: $duration, images: $images, documents: $documents, spareParts: $spareParts, currentParentId: $currentParentId, isSparePart: $isSparePart)';
   }
 }

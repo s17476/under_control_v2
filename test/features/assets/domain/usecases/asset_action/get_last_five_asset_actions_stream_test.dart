@@ -28,6 +28,7 @@ void main() {
     locationId: 'locationId',
     internalCode: 'internalCode',
     barCode: 'barCode',
+    price: 0,
     isInUse: true,
     addDate: DateTime.now(),
     currentStatus: AssetStatus.ok,

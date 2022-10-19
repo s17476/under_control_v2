@@ -382,5 +382,7 @@
     "instruction_details": "Szczegóły instrukjci",
     "instruction_history": "Historia instrukcji",
     "asset_add_new": "Dodaj aktywa",
-    "asset_edit": "Edytuj aktywa"
+    "asset_edit": "Edytuj aktywa",
+    "asset_price": "Cena",
+    "asset_price_optional": "Cena (opcjonalne)"
 }

@@ -1600,5 +1600,13 @@
     "asset_edit": "Edit asset",
     "@asset_edit": {
       "description": "edit asset"
+    },
+    "asset_price": "Asset price",
+    "@asset_price": {
+      "description": "Asset price"
+    },
+    "asset_price_optional": "Asset price (optional)",
+    "@asset_price_optional": {
+      "description": "Asset price - optional"
     }
 }
