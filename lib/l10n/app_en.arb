@@ -1608,5 +1608,13 @@
     "asset_price_optional": "Asset price (optional)",
     "@asset_price_optional": {
       "description": "Asset price - optional"
+    },
+    "asset_select_location": "Select location",
+    "@asset_select_location": {
+      "description": "Asset select location"
+    },
+    "asset_add_data": "Asset data",
+    "@asset_add_data": {
+      "description": "Asset data"
     }
 }

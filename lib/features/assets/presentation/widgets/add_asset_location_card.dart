@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../domain/entities/item.dart';
-import 'selectable_item_locations_list.dart';
+import 'selectable_location_list.dart';
 
-class AddToLocationCard extends StatelessWidget {
-  const AddToLocationCard({
+class AddAssetLocationCard extends StatelessWidget {
+  const AddAssetLocationCard({
     Key? key,
-    required this.item,
-    required this.title,
-    this.selectedFromLocation = '',
     required this.selectedLocation,
-    this.isSubtract = false,
-    this.isFirstPage = true,
     required this.setLocation,
   }) : super(key: key);
 
-  final Item item;
-  final String title;
-  final String selectedFromLocation;
   final String selectedLocation;
-  final bool isSubtract;
-  final bool isFirstPage;
   final Function(String) setLocation;
 
   @override
@@ -39,7 +29,7 @@ class AddToLocationCard extends StatelessWidget {
                       right: 8,
                     ),
                     child: Text(
-                      title,
+                      AppLocalizations.of(context)!.asset_select_location,
                       style: TextStyle(
                         fontSize:
                             Theme.of(context).textTheme.headline5!.fontSize,
@@ -49,12 +39,9 @@ class AddToLocationCard extends StatelessWidget {
                   const Divider(
                     thickness: 1.5,
                   ),
-                  SelectableItemLocationsList(
+                  SelectableLocationsList(
                     selectedLocation: selectedLocation,
-                    selectedFromLocation: selectedFromLocation,
                     setLocation: setLocation,
-                    item: item,
-                    isSubtract: isSubtract,
                   ),
                   const SizedBox(
                     height: 50,

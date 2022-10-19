@@ -118,6 +118,22 @@ class _AddAssetDataCardState extends State<AddAssetDataCard> {
     return SafeArea(
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 12,
+              left: 8,
+              right: 8,
+            ),
+            child: Text(
+              AppLocalizations.of(context)!.asset_add_data,
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+              ),
+            ),
+          ),
+          const Divider(
+            thickness: 1.5,
+          ),
           Expanded(
             child: Center(
               child: SingleChildScrollView(

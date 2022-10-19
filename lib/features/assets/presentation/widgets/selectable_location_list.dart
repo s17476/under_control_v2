@@ -1,28 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/utils/location_selection_helpers.dart';
-import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
-import '../../../domain/entities/item.dart';
-import 'selectable_locations_list_tile.dart';
+import '../../../core/utils/location_selection_helpers.dart';
+import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import 'selectable_location_list_tile.dart';
 
 class SelectableLocationsList extends StatelessWidget {
   const SelectableLocationsList({
     Key? key,
-    required this.item,
     required this.selectedLocation,
-    this.selectedFromLocation = '',
-    this.isSubtract = false,
     required this.setLocation,
   }) : super(key: key);
 
-  final Item item;
-
   final String selectedLocation;
-  final String selectedFromLocation;
-
-  final bool isSubtract;
-
   final Function(String) setLocation;
 
   @override
@@ -39,16 +29,13 @@ class SelectableLocationsList extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: topLevelItems.length,
             itemBuilder: (context, index) {
-              return SelectableLocationslistTile(
+              return SelectableLocationsListTile(
                 key: ValueKey(topLevelItems[index].id),
                 location: topLevelItems[index],
                 selectedLocation: selectedLocation,
-                selectedFromLocation: selectedFromLocation,
                 childrenLocations: getSelectedLocationsChildren(
                     topLevelItems[index], state.allLocations.allLocations),
                 setLocation: setLocation,
-                item: item,
-                isSubtract: isSubtract,
               );
             },
           );

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_location_card.dart';
 import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
 
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -75,6 +76,19 @@ class _AddAssetPageState extends State<AddAssetPage> {
     });
   }
 
+  void _setLocation(String location) async {
+    setState(() {
+      _locationId = location;
+    });
+    await Future.delayed(
+      const Duration(milliseconds: 500),
+    );
+    _pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeIn,
+    );
+  }
+
   @override
   void initState() {
     _pageController.addListener(() {
@@ -142,15 +156,22 @@ class _AddAssetPageState extends State<AddAssetPage> {
         ),
       ),
       KeepAlivePage(
-          child: AddAssetDataCard(
-        category: _category,
-        setCategory: _setCategory,
-        priceTextEditingController: _priceTextEditingController,
-        codeTextEditingController: _internalCodeTextEditingController,
-        barCodeTextEditingController: _barCodeTextEditingController,
-        dateTime: _dateTime,
-        setDate: _setDate,
-      )),
+        child: AddAssetDataCard(
+          category: _category,
+          setCategory: _setCategory,
+          priceTextEditingController: _priceTextEditingController,
+          codeTextEditingController: _internalCodeTextEditingController,
+          barCodeTextEditingController: _barCodeTextEditingController,
+          dateTime: _dateTime,
+          setDate: _setDate,
+        ),
+      ),
+      KeepAlivePage(
+        child: AddAssetLocationCard(
+          selectedLocation: _locationId,
+          setLocation: _setLocation,
+        ),
+      ),
     ];
 
     DateTime preBackpress = DateTime.now();

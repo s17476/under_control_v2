@@ -1,76 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../core/utils/double_apis.dart';
-import '../../../../core/utils/get_user_premission.dart';
-import '../../../../core/utils/location_selection_helpers.dart';
-import '../../../../core/utils/premission.dart';
-import '../../../../core/utils/show_snack_bar.dart';
-import '../../../../groups/domain/entities/feature.dart';
-import '../../../../locations/domain/entities/location.dart';
-import '../../../domain/entities/item.dart';
+import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/location_selection_helpers.dart';
+import '../../../core/utils/premission.dart';
+import '../../../core/utils/show_snack_bar.dart';
+import '../../../groups/domain/entities/feature.dart';
+import '../../../locations/domain/entities/location.dart';
 
-class SelectableLocationslistTile extends StatefulWidget {
-  const SelectableLocationslistTile({
+class SelectableLocationsListTile extends StatefulWidget {
+  const SelectableLocationsListTile({
     Key? key,
     required this.location,
     required this.selectedLocation,
-    this.selectedFromLocation = '',
     required this.childrenLocations,
-    this.isSubtract = false,
     required this.setLocation,
-    required this.item,
   }) : super(key: key);
 
   final Location location;
-  final Item item;
-
   final String selectedLocation;
-
-  final String selectedFromLocation;
-
   final List<Location> childrenLocations;
-
-  final bool isSubtract;
-
   final Function(String) setLocation;
 
   @override
-  State<SelectableLocationslistTile> createState() =>
-      _SelectableLocationslistTileState();
+  State<SelectableLocationsListTile> createState() =>
+      _SelectableLocationsListTileState();
 }
 
-class _SelectableLocationslistTileState
-    extends State<SelectableLocationslistTile> {
+class _SelectableLocationsListTileState
+    extends State<SelectableLocationsListTile> {
   bool _isExpanded = false;
   bool _isChildSelected = false;
   bool _isAvailable = false;
 
   late List<Location> _directChildren;
-
-  double _amountInLocation = 0;
-  double _totalAmount = 0;
-
-  void _onSelect(BuildContext context, double amountInLocation) {
-    if (!widget.isSubtract || (widget.isSubtract && amountInLocation > 0)) {
-      if (widget.selectedFromLocation != widget.location.id) {
-        widget.setLocation(widget.location.id);
-      } else {
-        showSnackBar(
-          context: context,
-          message: AppLocalizations.of(context)!.item_move_same_location,
-          isErrorMessage: true,
-        );
-      }
-    } else {
-      showSnackBar(
-        context: context,
-        message:
-            AppLocalizations.of(context)!.item_subtract_no_items_in_location,
-        isErrorMessage: true,
-      );
-    }
-  }
 
   @override
   void initState() {
@@ -78,27 +41,9 @@ class _SelectableLocationslistTileState
         .where((element) => element.parentId == widget.location.id)
         .toList();
 
-    final index = widget.item.amountInLocations.indexWhere(
-      (element) => element.locationId == widget.location.id,
-    );
-
-    if (index >= 0) {
-      _amountInLocation = widget.item.amountInLocations[index].amount;
-    }
-
-    _totalAmount = _amountInLocation;
-    for (var child in widget.childrenLocations) {
-      final index = widget.item.amountInLocations.indexWhere(
-        (element) => element.locationId == child.id,
-      );
-
-      if (index >= 0) {
-        _totalAmount += widget.item.amountInLocations[index].amount;
-      }
-    }
     _isAvailable = getUserPremission(
       context: context,
-      featureType: FeatureType.inventory,
+      featureType: FeatureType.assets,
       premissionType: PremissionType.create,
       locationId: widget.location.id,
     );
@@ -130,7 +75,7 @@ class _SelectableLocationslistTileState
             borderRadius: BorderRadius.circular(5),
             onTap: () {
               if (_isAvailable && _directChildren.isEmpty) {
-                _onSelect(context, _amountInLocation);
+                widget.setLocation(widget.location.id);
               } else if (_directChildren.isNotEmpty) {
                 setState(() {
                   _isExpanded = !_isExpanded;
@@ -185,24 +130,6 @@ class _SelectableLocationslistTileState
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (_directChildren.isNotEmpty)
-                        Text(
-                          _totalAmount.toStringWithFixedDecimal(),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Theme.of(context).highlightColor,
-                          ),
-                        ),
-                      Text(
-                        _amountInLocation.toStringWithFixedDecimal(),
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
                   // radio button
                   Radio<String>(
                     value: widget.location.id,
@@ -216,7 +143,7 @@ class _SelectableLocationslistTileState
                               isErrorMessage: true,
                             );
                           }
-                        : (_) => _onSelect(context, _amountInLocation),
+                        : (_) => widget.setLocation(widget.location.id),
                     // activeColor: Theme.of(context).primaryColor,
                     activeColor: Colors.amber,
                   ),
@@ -235,18 +162,15 @@ class _SelectableLocationslistTileState
               child: Column(
                 children: [
                   for (var child in _directChildren)
-                    SelectableLocationslistTile(
+                    SelectableLocationsListTile(
                       key: ValueKey(child.id),
                       location: child,
                       selectedLocation: widget.selectedLocation,
-                      selectedFromLocation: widget.selectedFromLocation,
                       childrenLocations: getSelectedLocationsChildren(
                         child,
                         widget.childrenLocations,
                       ),
                       setLocation: widget.setLocation,
-                      item: widget.item,
-                      isSubtract: widget.isSubtract,
                     ),
                 ],
               ),
