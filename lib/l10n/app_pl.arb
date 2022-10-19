@@ -400,5 +400,15 @@
     "duration_unit_years": "Lata",
     "duration_unit_hour": "Godzina",
     "duration_unit_hours": "Godziny",
-    "duration_unit_select": "Wybierz jednostkę czasu"
+    "duration_unit_select": "Wybierz jednostkę czasu",
+    "duration_unit": "Jednostka czasu",
+    "duration": "Okres",
+    "duration_select": "Wybierz okres",
+    "asset_status_ok": "W porządku",
+    "asset_status_working_requires_attention": "W użyciu - wymaga uwagi",
+    "asset_status_working_requires_reparation": "W użyciu - wymaga naprawy",
+    "asset_status_not_working_requires_reparation": "Nieczynny - wymaga naprawy",
+    "asset_status_disposed": "Usunięty",
+    "asset_status_select": "Wybierz status aktywa",
+    "asset_status": "Status aktywa"
 }

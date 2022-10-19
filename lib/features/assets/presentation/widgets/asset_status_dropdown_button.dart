@@ -1,49 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 
 import '../../../core/presentation/widgets/custom_dropdown_button.dart';
-import '../../../core/utils/duration_unit.dart';
-import '../../utils/get_localizad_duration_unit_name.dart';
+import '../../utils/get_localizae_asset_status_name.dart';
 
-class DurationUnitDropdownButton extends StatelessWidget {
-  const DurationUnitDropdownButton({
+class AssetStatusDropdownButton extends StatelessWidget {
+  const AssetStatusDropdownButton({
     Key? key,
-    required this.selectedUnit,
+    required this.assetStatus,
     required this.onSelected,
   }) : super(key: key);
 
-  final String selectedUnit;
+  final String assetStatus;
   final Function(String onSelected) onSelected;
 
   @override
   Widget build(BuildContext context) {
-    final dropdownItems = DurationUnit.values
+    final dropdownItems = AssetStatus.values
         .where((unit) => unit.name.isNotEmpty)
         .map<DropdownMenuItem<String>>(
           (unit) => DropdownMenuItem(
             value: unit.name,
             child: Text(
-              getLocalizedDurationUnitName(context, unit),
+              getLocalizedAssetStatusName(context, unit),
             ),
           ),
         )
         .toList();
     // adds initial element
-    if (selectedUnit.isEmpty) {
+    if (assetStatus.isEmpty) {
       dropdownItems.add(
         DropdownMenuItem(
-          child: Text(AppLocalizations.of(context)!.duration_unit_select),
+          child: Text(AppLocalizations.of(context)!.asset_status_select),
           value: '',
         ),
       );
     }
 
     return CustomDropdownButton(
-      initialValue: selectedUnit,
+      initialValue: assetStatus,
       items: dropdownItems,
-      selectedValue: selectedUnit,
+      selectedValue: assetStatus,
       onSelected: onSelected,
-      label: AppLocalizations.of(context)!.duration_unit,
+      label: AppLocalizations.of(context)!.asset_status,
     );
   }
 }

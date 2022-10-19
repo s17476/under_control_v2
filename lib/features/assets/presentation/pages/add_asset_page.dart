@@ -55,9 +55,9 @@ class _AddAssetPageState extends State<AddAssetPage> {
 
   DateTime _dateTime = DateTime.now();
   DateTime _lastInspectionDate = DateTime.now();
-  AssetStatus _assetStatus = AssetStatus.unknown;
+  String _assetStatus = '';
   String _durationUnit = '';
-  int _duration = 1;
+  int _duration = 0;
 
   List<File> _images = [];
   List<File> _documents = [];
@@ -65,9 +65,22 @@ class _AddAssetPageState extends State<AddAssetPage> {
 
   _addNewAsset(BuildContext context) {}
 
+  void _setAssetStatus(String value) {
+    setState(() {
+      _assetStatus = value;
+    });
+  }
+
+  void _setDuration(String value) {
+    setState(() {
+      _duration = int.parse(value);
+    });
+  }
+
   void _setDurationUnit(String value) {
     setState(() {
       _durationUnit = value;
+      _duration = 0;
     });
   }
 
@@ -134,7 +147,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
       _isInUse = _asset!.isInUse;
       _isSparePart = _asset!.isSparePart;
       _lastInspectionDate = _asset!.lastInspection;
-      _assetStatus = _asset!.currentStatus;
+      _assetStatus = _asset!.currentStatus.name;
       _durationUnit = _asset!.durationUnit.name;
       _duration = _asset!.duration;
       _priceTextEditingController.text = _asset!.price.toString();
@@ -191,6 +204,10 @@ class _AddAssetPageState extends State<AddAssetPage> {
           setLastInspectionDate: _setLastInspectionDate,
           durationUnit: _durationUnit,
           setDurationUnit: _setDurationUnit,
+          assetStatus: _assetStatus,
+          setAssetStatus: _setAssetStatus,
+          duration: _duration,
+          setDuration: _setDuration,
         ),
       ),
     ];

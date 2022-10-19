@@ -1672,5 +1672,45 @@
     "duration_unit_select": "Select duration unit",
     "@duration_unit_select": {
       "description": "Duration unit selection"
+    },
+    "duration_unit": "Duration unit",
+    "@duration_unit": {
+      "description": "Duration unit"
+    },
+    "duration": "Duration",
+    "@duration": {
+      "description": "Duration"
+    },
+    "duration_select": "Duration select",
+    "@duration_select": {
+      "description": "Duration select"
+    },
+    "asset_status_ok": "OK",
+    "@asse_status": {
+      "description": "Asset status"
+    },
+    "asset_status_working_requires_attention": "In use - requires attention",
+    "@asset_status_working_requires_attention": {
+      "description": "Asset status"
+    },
+    "asset_status_working_requires_reparation": "In use - requires reparation",
+    "@asset_status_working_requires_reparation": {
+      "description": "Asset status"
+    },
+    "asset_status_not_working_requires_reparation": "Out of order - requires reparation",
+    "@asset_status_not_working_requires_reparation": {
+      "description": "Asset status"
+    },
+    "asset_status_disposed": "Disposed",
+    "@asset_status_disposed": {
+      "description": "Asset status"
+    },
+    "asset_status_select": "Select asset status",
+    "@asset_status_select": {
+      "description": "Asset status selection"
+    },
+    "asset_status": "Asset status",
+    "@asset_status": {
+      "description": "Asset status selection"
     }
 }
