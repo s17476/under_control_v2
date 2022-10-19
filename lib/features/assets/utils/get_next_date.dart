@@ -7,10 +7,7 @@ DateTime getNetxDate(
   int week = 0;
   int month = 0;
   int year = 0;
-  print('durationUnit');
-  print(durationUnit.name);
-  print('duration');
-  print(duration);
+
   switch (durationUnit) {
     case DurationUnit.hour:
       hour += duration;
@@ -37,7 +34,6 @@ DateTime getNetxDate(
     lastDate.hour + hour,
     lastDate.minute,
   );
-  print('nextDate');
-  print(nextDate);
+
   return nextDate;
 }

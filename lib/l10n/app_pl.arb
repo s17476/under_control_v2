@@ -410,5 +410,7 @@
     "asset_status_not_working_requires_reparation": "Nieczynny - wymaga naprawy",
     "asset_status_disposed": "Usunięty",
     "asset_status_select": "Wybierz status aktywa",
-    "asset_status": "Status aktywa"
+    "asset_status": "Status aktywa",
+    "asset_next_inspection": "Data następnego przeglądu",
+    "asset_next_inspection_tip": "Wybierz jednostkę oraz okres czasu"
 }

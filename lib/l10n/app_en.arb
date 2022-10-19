@@ -1712,5 +1712,13 @@
     "asset_status": "Asset status",
     "@asset_status": {
       "description": "Asset status selection"
+    },
+    "asset_next_inspection": "Next inspection date",
+    "@asset_next_inspection": {
+      "description": "Asset next inspection"
+    },
+    "asset_next_inspection_tip": "Select duration unit and duration",
+    "@asset_next_inspection_tip": {
+      "description": "Asset next inspection"
     }
 }
