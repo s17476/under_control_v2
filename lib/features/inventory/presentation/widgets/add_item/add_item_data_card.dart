@@ -30,7 +30,7 @@ class AddItemDataCard extends StatefulWidget {
   final TextEditingController codeTextEditingController;
   final TextEditingController barCodeTextEditingController;
   final Function(String category) setCategory;
-  final Function(String category) setItemUnit;
+  final Function(String unit) setItemUnit;
   final String category;
   final String itemUnit;
 

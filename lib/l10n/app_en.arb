@@ -1616,5 +1616,61 @@
     "asset_add_data": "Asset data",
     "@asset_add_data": {
       "description": "Asset data"
+    },
+    "asset_last_inspection_date": "Last inspection date",
+    "@asset_last_inspection_date": {
+      "description": "Asset last inspection date"
+    },
+    "asset_last_inspection": "Last inspection",
+    "@asset_last_inspection": {
+      "description": "Asset last inspection"
+    },
+    "asset_inspection_interval": "Inspection interval",
+    "@asset_inspection_interval": {
+      "description": "Inspection interval"
+    },
+    "duration_unit_day": "Day",
+    "@duration_unit_day": {
+      "description": "Duration unit"
+    },
+    "duration_unit_days": "Days",
+    "@duration_unit_days": {
+      "description": "Duration unit"
+    },
+    "duration_unit_week": "Week",
+    "@duration_unit_week": {
+      "description": "Duration unit"
+    },
+    "duration_unit_weeks": "Weeks",
+    "@duration_unit_weeks": {
+      "description": "Duration unit"
+    },
+    "duration_unit_month": "Month",
+    "@duration_unit_month": {
+      "description": "Duration unit"
+    },
+    "duration_unit_months": "Months",
+    "@duration_unit_months": {
+      "description": "Duration unit"
+    },
+    "duration_unit_year": "Year",
+    "@duration_unit_year": {
+      "description": "Duration unit"
+    },
+    "duration_unit_years": "Years",
+    "@duration_unit_years": {
+      "description": "Duration unit"
+    },
+    "duration_unit_hour": "Hour",
+    "@duration_unit_hour": {
+      "description": "Duration unit"
+    },
+    "duration_unit_hours": "Hours",
+    "@duration_unit_hours": {
+      "description": "Duration unit"
+    },
+    "duration_unit_select": "Select duration unit",
+    "@duration_unit_select": {
+      "description": "Duration unit selection"
     }
 }

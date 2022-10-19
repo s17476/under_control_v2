@@ -386,5 +386,19 @@
     "asset_price": "Cena",
     "asset_price_optional": "Cena (opcjonalne)",
     "asset_select_location": "Wybierz lokalizację",
-    "asset_add_data": "Dodaj dane"
+    "asset_add_data": "Dodaj dane",
+    "asset_last_inspection_date": "Data ostatniego przeglądu",
+    "asset_last_inspection": "Ostatni przegląd",
+    "asset_inspection_interval": "interwał przeglądów",
+    "duration_unit_day": "Dzień",
+    "duration_unit_days": "Dni",
+    "duration_unit_week": "Tydzień",
+    "duration_unit_weeks": "Tygodnie",
+    "duration_unit_month": "Miesiąc",
+    "duration_unit_months": "Miesiące",
+    "duration_unit_year": "Rok",
+    "duration_unit_years": "Lata",
+    "duration_unit_hour": "Godzina",
+    "duration_unit_hours": "Godziny",
+    "duration_unit_select": "Wybierz jednostkę czasu"
 }

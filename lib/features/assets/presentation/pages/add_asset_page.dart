@@ -17,6 +17,7 @@ import '../../utils/asset_status.dart';
 import '../blocs/asset/asset_bloc.dart';
 import '../widgets/add_asset_card.dart';
 import '../widgets/add_asset_data_card.dart';
+import '../widgets/add_asset_status_card.dart';
 
 class AddAssetPage extends StatefulWidget {
   const AddAssetPage({Key? key}) : super(key: key);
@@ -53,9 +54,9 @@ class _AddAssetPageState extends State<AddAssetPage> {
   bool _isSparePart = false;
 
   DateTime _dateTime = DateTime.now();
-  DateTime _lastInspection = DateTime.now();
+  DateTime _lastInspectionDate = DateTime.now();
   AssetStatus _assetStatus = AssetStatus.unknown;
-  DurationUnit _durationUnit = DurationUnit.unknown;
+  String _durationUnit = '';
   int _duration = 1;
 
   List<File> _images = [];
@@ -63,6 +64,12 @@ class _AddAssetPageState extends State<AddAssetPage> {
   List<String> _spareParts = [];
 
   _addNewAsset(BuildContext context) {}
+
+  void _setDurationUnit(String value) {
+    setState(() {
+      _durationUnit = value;
+    });
+  }
 
   void _setCategory(String value) {
     setState(() {
@@ -73,6 +80,12 @@ class _AddAssetPageState extends State<AddAssetPage> {
   void _setDate(DateTime date) {
     setState(() {
       _dateTime = date;
+    });
+  }
+
+  void _setLastInspectionDate(DateTime date) {
+    setState(() {
+      _lastInspectionDate = date;
     });
   }
 
@@ -120,9 +133,9 @@ class _AddAssetPageState extends State<AddAssetPage> {
       _currentParentId = _asset!.currentParentId;
       _isInUse = _asset!.isInUse;
       _isSparePart = _asset!.isSparePart;
-      _lastInspection = _asset!.lastInspection;
+      _lastInspectionDate = _asset!.lastInspection;
       _assetStatus = _asset!.currentStatus;
-      _durationUnit = _asset!.durationUnit;
+      _durationUnit = _asset!.durationUnit.name;
       _duration = _asset!.duration;
       _priceTextEditingController.text = _asset!.price.toString();
       _dateTime = _asset!.addDate;
@@ -170,6 +183,14 @@ class _AddAssetPageState extends State<AddAssetPage> {
         child: AddAssetLocationCard(
           selectedLocation: _locationId,
           setLocation: _setLocation,
+        ),
+      ),
+      KeepAlivePage(
+        child: AddAssetStatusCard(
+          lastInspectionDate: _lastInspectionDate,
+          setLastInspectionDate: _setLastInspectionDate,
+          durationUnit: _durationUnit,
+          setDurationUnit: _setDurationUnit,
         ),
       ),
     ];
