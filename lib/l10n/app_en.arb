@@ -1768,5 +1768,9 @@
     "asset_add_spare_parts_inventory": "Add form inventory",
     "@asset_add_spare_parts_inventory": {
       "description": "Asset add spare parts - inventory"
+    },
+    "asset_add_photos": "Add photos",
+    "@asset_add_photos": {
+      "description": "Asset add photos"
     }
 }

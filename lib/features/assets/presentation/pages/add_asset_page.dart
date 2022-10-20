@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_images_card.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_in_use_card.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_spare_part.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_location_card.dart';
@@ -70,6 +71,18 @@ class _AddAssetPageState extends State<AddAssetPage> {
   List<String> _spareParts = [];
 
   _addNewAsset(BuildContext context) {}
+
+  void _addImage(File image) {
+    setState(() {
+      _images.add(image);
+    });
+  }
+
+  void _removeImage(File image) {
+    setState(() {
+      _images.remove(image);
+    });
+  }
 
   void _toggleAddAssetVisibility() {
     setState(() {
@@ -277,6 +290,11 @@ class _AddAssetPageState extends State<AddAssetPage> {
         isAddInventoryVisible: _isAddInventoryVisible,
         toggleAddAssetVisibility: _toggleAddAssetVisibility,
         toggleAddInventoryVisibility: _toggleAddInventoryVisibility,
+      ),
+      AddAssetImagesCard(
+        addImage: _addImage,
+        removeImage: _removeImage,
+        images: _images,
       ),
     ];
 

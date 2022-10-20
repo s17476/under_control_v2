@@ -424,5 +424,6 @@
     "asset_parent_select": "Wybierz rodzica, którego te aktywa są częścią",
     "asset_add_spare_parts": "Dodaj częsci zamienne",
     "asset_add_spare_parts_assets": "Dodaj aktywa",
-    "asset_add_spare_parts_inventory": "Dodaj z inventarza"
+    "asset_add_spare_parts_inventory": "Dodaj z inventarza",
+    "asset_add_photos": "Dodaj zdjęcia"
 }
