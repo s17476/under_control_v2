@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_in_use_card.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_spare_part.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_location_card.dart';
 import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
 
@@ -65,6 +67,24 @@ class _AddAssetPageState extends State<AddAssetPage> {
 
   _addNewAsset(BuildContext context) {}
 
+  void _addSparePart(String sparePartId) {
+    setState(() {
+      _spareParts.add(sparePartId);
+    });
+  }
+
+  void _setParentAsset(String parentAssetId) {
+    setState(() {
+      _currentParentId = parentAssetId;
+    });
+  }
+
+  void _setIsInUse(bool value) {
+    setState(() {
+      _isInUse = value;
+    });
+  }
+
   void _setAssetStatus(String value) {
     setState(() {
       _assetStatus = value;
@@ -99,6 +119,12 @@ class _AddAssetPageState extends State<AddAssetPage> {
   void _setLastInspectionDate(DateTime date) {
     setState(() {
       _lastInspectionDate = date;
+    });
+  }
+
+  void _setIsSparePart(bool value) {
+    setState(() {
+      _isSparePart = value;
     });
   }
 
@@ -209,6 +235,17 @@ class _AddAssetPageState extends State<AddAssetPage> {
           duration: _duration,
           setDuration: _setDuration,
         ),
+      ),
+      AddAssetIsSparePartCard(
+        setIsSparePart: _setIsSparePart,
+        isSparePart: _isSparePart,
+      ),
+      AddAssetIsInUseCard(
+        setIsInUse: _setIsInUse,
+        isInUse: _isInUse,
+        setParentAsset: _setParentAsset,
+        isSparePart: _isSparePart,
+        setLocation: _setLocation,
       ),
     ];
 

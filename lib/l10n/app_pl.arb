@@ -412,5 +412,14 @@
     "asset_status_select": "Wybierz status aktywa",
     "asset_status": "Status aktywa",
     "asset_next_inspection": "Data następnego przeglądu",
-    "asset_next_inspection_tip": "Wybierz jednostkę oraz okres czasu"
+    "asset_next_inspection_tip": "Wybierz jednostkę oraz okres czasu",
+    "asset_type": "Typ aktywa",
+    "asset_not_spare_part": "To nie jest część zamienna",
+    "asset_spare_part": "To jest część zamienna",
+    "asset_spare_part_description": "Część zamienna jest częścią innego aktywa",
+    "asset_is_in_use": "Czy jest w użyciu?",
+    "asset_in_use": "W użyciu",
+    "asset_not_in_use": "W rezerwie",
+    "asset_parent": "Część aktywa",
+    "asset_parent_select": "Wybierz rodzica, którego te aktywa są częścią"
 }

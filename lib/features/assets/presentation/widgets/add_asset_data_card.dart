@@ -192,8 +192,8 @@ class _AddAssetDataCardState extends State<AddAssetDataCard> {
                         fieldKey: 'code',
                         controller: widget.codeTextEditingController,
                         textCapitalization: TextCapitalization.characters,
-                        labelText: AppLocalizations.of(context)!
-                            .item_internal_code_optional,
+                        labelText:
+                            AppLocalizations.of(context)!.item_internal_code,
                       ),
                       const SizedBox(
                         height: 16,

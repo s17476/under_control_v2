@@ -1720,5 +1720,41 @@
     "asset_next_inspection_tip": "Select duration unit and duration",
     "@asset_next_inspection_tip": {
       "description": "Asset next inspection"
+    },
+    "asset_type": "Asset type",
+    "@asset_type": {
+      "description": "Asset type"
+    },
+    "asset_not_spare_part": "This is not a spare part",
+    "@asset_not_spare_part": {
+      "description": "Asset not spare part"
+    },
+    "asset_spare_part": "This is spare part",
+    "@asset_spare_part": {
+      "description": "Asset spare part"
+    },
+    "asset_spare_part_description": "The spare part is part of another asset.",
+    "@asset_spare_part_description": {
+      "description": "Asset spare part description"
+    },
+    "asset_is_in_use": "Is asset in use",
+    "@asset_is_in_use": {
+      "description": "Asset is in use?"
+    },
+    "asset_in_use": "Asset is in use",
+    "@asset_in_use": {
+      "description": "Asset is in use"
+    },
+    "asset_not_in_use": "Asset is in reserve",
+    "@asset_not_in_use": {
+      "description": "Asset is in reserve"
+    },
+    "asset_parent": "Parent asset",
+    "@asset_parent": {
+      "description": "Parent asset"
+    },
+    "asset_parent_select": "Select parent asset",
+    "@asset_parent_select": {
+      "description": "Parent asset selection"
     }
 }
