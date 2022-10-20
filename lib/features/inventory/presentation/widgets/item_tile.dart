@@ -19,6 +19,8 @@ class ItemTile extends StatelessWidget {
     this.color = Colors.black,
     this.margin = const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
     required this.searchQuery,
+    this.onSelected,
+    this.isSelected,
   }) : super(key: key);
 
   final Item item;
@@ -26,6 +28,8 @@ class ItemTile extends StatelessWidget {
   final Color color;
   final EdgeInsetsGeometry margin;
   final String searchQuery;
+  final Function(String)? onSelected;
+  final bool? isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +43,13 @@ class ItemTile extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(borderRadius),
         child: InkWell(
-          onTap: () => Navigator.pushNamed(
-            context,
-            ItemDetailsPage.routeName,
-            arguments: item,
-          ),
+          onTap: onSelected != null
+              ? () => onSelected!(item.id)
+              : () => Navigator.pushNamed(
+                    context,
+                    ItemDetailsPage.routeName,
+                    arguments: item,
+                  ),
           borderRadius: BorderRadius.circular(borderRadius),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,52 +181,70 @@ class ItemTile extends StatelessWidget {
                   ),
                   Builder(builder: (context) {
                     final quantity = getItemQuantityInLocations(context, item);
-                    return Stack(
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        // warning icon
-                        if (item.alertQuantity != null &&
-                            quantity <= item.alertQuantity!)
+                        if (onSelected != null && isSelected != null)
                           Container(
                             alignment: Alignment.topRight,
                             padding: const EdgeInsets.all(4),
                             width: 70,
                             height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(borderRadius),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.warning_amber_rounded,
-                              size: 26,
-                              color: Colors.amber,
+                            child: Checkbox(
+                              value: isSelected,
+                              onChanged: (_) => onSelected!(item.id),
+                              activeColor: Theme.of(context).primaryColor,
                             ),
                           ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: 70,
-                          height: 90,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(borderRadius),
-                            ),
-                          ),
-                          child: FittedBox(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                quantity.toStringWithFixedDecimal(),
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  color: (item.alertQuantity != null &&
-                                          quantity <= item.alertQuantity!)
-                                      ? Colors.amber
-                                      : null,
+                        if (onSelected == null || isSelected == null)
+                          Stack(
+                            children: [
+                              // warning icon
+                              if (item.alertQuantity != null &&
+                                  quantity <= item.alertQuantity!)
+                                Container(
+                                  alignment: Alignment.topRight,
+                                  padding: const EdgeInsets.all(4),
+                                  width: 70,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(borderRadius),
+                                    ),
+                                  ),
+                                  child: const Icon(
+                                    Icons.warning_amber_rounded,
+                                    size: 26,
+                                    color: Colors.amber,
+                                  ),
+                                ),
+                              Container(
+                                alignment: Alignment.center,
+                                width: 70,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(borderRadius),
+                                  ),
+                                ),
+                                child: FittedBox(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      quantity.toStringWithFixedDecimal(),
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        color: (item.alertQuantity != null &&
+                                                quantity <= item.alertQuantity!)
+                                            ? Colors.amber
+                                            : null,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ),
                       ],
                     );
                   }),

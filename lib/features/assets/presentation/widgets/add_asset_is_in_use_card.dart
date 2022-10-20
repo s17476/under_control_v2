@@ -14,6 +14,7 @@ class AddAssetIsInUseCard extends StatelessWidget with ResponsiveSize {
     required this.setParentAsset,
     required this.isSparePart,
     required this.setLocation,
+    required this.currentParentId,
   }) : super(key: key);
 
   final Function(bool) setIsInUse;
@@ -21,6 +22,7 @@ class AddAssetIsInUseCard extends StatelessWidget with ResponsiveSize {
   final Function(String) setParentAsset;
   final bool isSparePart;
   final Function(String) setLocation;
+  final String currentParentId;
 
   @override
   Widget build(BuildContext context) {

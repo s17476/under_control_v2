@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_in_use_card.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_spare_part.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_location_card.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_spare_parts.dart';
 import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
 
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -52,8 +53,11 @@ class _AddAssetPageState extends State<AddAssetPage> {
 
   final _priceTextEditingController = TextEditingController();
 
-  bool _isInUse = false;
+  bool _isInUse = true;
   bool _isSparePart = false;
+
+  bool _isAddAssetVisible = false;
+  bool _isAddInventoryVisible = false;
 
   DateTime _dateTime = DateTime.now();
   DateTime _lastInspectionDate = DateTime.now();
@@ -67,10 +71,28 @@ class _AddAssetPageState extends State<AddAssetPage> {
 
   _addNewAsset(BuildContext context) {}
 
-  void _addSparePart(String sparePartId) {
+  void _toggleAddAssetVisibility() {
     setState(() {
-      _spareParts.add(sparePartId);
+      _isAddAssetVisible = !_isAddAssetVisible;
     });
+  }
+
+  void _toggleAddInventoryVisibility() {
+    setState(() {
+      _isAddInventoryVisible = !_isAddInventoryVisible;
+    });
+  }
+
+  void _toggleSparePartSelection(String sparePartId) {
+    if (!_spareParts.contains(sparePartId)) {
+      setState(() {
+        _spareParts.add(sparePartId);
+      });
+    } else {
+      setState(() {
+        _spareParts.remove(sparePartId);
+      });
+    }
   }
 
   void _setParentAsset(String parentAssetId) {
@@ -246,6 +268,15 @@ class _AddAssetPageState extends State<AddAssetPage> {
         setParentAsset: _setParentAsset,
         isSparePart: _isSparePart,
         setLocation: _setLocation,
+        currentParentId: _currentParentId,
+      ),
+      AddAssetSparePartCard(
+        toggleSelection: _toggleSparePartSelection,
+        spareParts: _spareParts,
+        isAddAssetVisible: _isAddAssetVisible,
+        isAddInventoryVisible: _isAddInventoryVisible,
+        toggleAddAssetVisibility: _toggleAddAssetVisibility,
+        toggleAddInventoryVisibility: _toggleAddInventoryVisibility,
       ),
     ];
 
@@ -253,6 +284,14 @@ class _AddAssetPageState extends State<AddAssetPage> {
 
     return WillPopScope(
       onWillPop: () async {
+        if (_isAddAssetVisible) {
+          _toggleAddAssetVisibility();
+          return false;
+        }
+        if (_isAddInventoryVisible) {
+          _toggleAddInventoryVisibility();
+          return false;
+        }
         // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);
         final cantExit = timegap >= const Duration(seconds: 2);
