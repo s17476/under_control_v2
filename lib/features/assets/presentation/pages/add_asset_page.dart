@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_documents.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_images_card.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_in_use_card.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_spare_part.dart';
@@ -66,11 +67,23 @@ class _AddAssetPageState extends State<AddAssetPage> {
   String _durationUnit = '';
   int _duration = 0;
 
-  List<File> _images = [];
-  List<File> _documents = [];
+  final List<File> _images = [];
+  final List<File> _documents = [];
   List<String> _spareParts = [];
 
   _addNewAsset(BuildContext context) {}
+
+  void _addDocument(File doc) {
+    setState(() {
+      _documents.add(doc);
+    });
+  }
+
+  void _removeDocument(File doc) {
+    setState(() {
+      _documents.remove(doc);
+    });
+  }
 
   void _addImage(File image) {
     setState(() {
@@ -295,6 +308,11 @@ class _AddAssetPageState extends State<AddAssetPage> {
         addImage: _addImage,
         removeImage: _removeImage,
         images: _images,
+      ),
+      AddAssetDocumentsCard(
+        addDocument: _addDocument,
+        removeDocument: _removeDocument,
+        documents: _documents,
       ),
     ];
 

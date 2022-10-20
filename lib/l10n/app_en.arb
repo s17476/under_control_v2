@@ -1772,5 +1772,13 @@
     "asset_add_photos": "Add photos",
     "@asset_add_photos": {
       "description": "Asset add photos"
+    },
+    "asset_add_documents": "Add documents",
+    "@asset_add_documents": {
+      "description": "Asset add documents"
+    },
+    "asset_add_pdf": "Add pdf file",
+    "@asset_add_pdf": {
+      "description": "Asset add PDF"
     }
 }
