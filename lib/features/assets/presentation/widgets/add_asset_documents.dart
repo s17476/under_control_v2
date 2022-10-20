@@ -60,15 +60,40 @@ class AddAssetDocumentsCard extends StatelessWidget with ResponsiveSize {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      children: documents
-                          .map(
-                            (doc) => PdfViewer(path: doc.path),
-                          )
-                          .toList(),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: documents.length,
+                      itemBuilder: (context, index) => Stack(
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 2 / 3,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 16,
+                              ),
+                              child: PdfViewer(path: documents[index].path),
+                            ),
+                          ),
+                          Positioned(
+                            top: 16,
+                            left: 16,
+                            child: IconButton(
+                              onPressed: () => removeDocument(documents[index]),
+                              icon: const Icon(
+                                Icons.delete,
+                                size: 30,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black,
+                                    blurRadius: 25,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

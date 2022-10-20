@@ -101,11 +101,12 @@ class AddAssetImagesCard extends StatelessWidget with ResponsiveSize {
                                     ),
                                     Positioned(
                                       top: 0,
-                                      right: 0,
+                                      left: 0,
                                       child: IconButton(
                                         onPressed: () => removeImage(img),
                                         icon: const Icon(
                                           Icons.delete,
+                                          size: 30,
                                           shadows: [
                                             Shadow(
                                               color: Colors.black,

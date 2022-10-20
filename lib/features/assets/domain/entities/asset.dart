@@ -22,6 +22,7 @@ class Asset extends Equatable {
   final List<String> images;
   final List<String> documents;
   final List<String> spareParts;
+  final List<String> instructions;
   final String currentParentId;
   final bool isSparePart;
 
@@ -44,6 +45,7 @@ class Asset extends Equatable {
     required this.images,
     required this.documents,
     required this.spareParts,
+    required this.instructions,
     required this.currentParentId,
     required this.isSparePart,
   });
@@ -69,6 +71,7 @@ class Asset extends Equatable {
       images,
       documents,
       spareParts,
+      instructions,
       currentParentId,
       isSparePart,
     ];
@@ -76,6 +79,6 @@ class Asset extends Equatable {
 
   @override
   String toString() {
-    return 'Asset(id: $id, producer: $producer, model: $model, description: $description, categoryId: $categoryId, locationId: $locationId, internalCode: $internalCode, barCode: $barCode, price: $price, isInUse: $isInUse, addDate: $addDate, currentStatus: $currentStatus, lastInspection: $lastInspection, durationUnit: $durationUnit, duration: $duration, images: $images, documents: $documents, spareParts: $spareParts, currentParentId: $currentParentId, isSparePart: $isSparePart)';
+    return 'Asset(id: $id, producer: $producer, model: $model, description: $description, categoryId: $categoryId, locationId: $locationId, internalCode: $internalCode, barCode: $barCode, price: $price, isInUse: $isInUse, addDate: $addDate, currentStatus: $currentStatus, lastInspection: $lastInspection, durationUnit: $durationUnit, duration: $duration, images: $images, documents: $documents, spareParts: $spareParts, instructions: $instructions, currentParentId: $currentParentId, isSparePart: $isSparePart)';
   }
 }

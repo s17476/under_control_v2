@@ -1780,5 +1780,9 @@
     "asset_add_pdf": "Add pdf file",
     "@asset_add_pdf": {
       "description": "Asset add PDF"
+    },
+    "asset_add_instructions": "Add instructions",
+    "@asset_add_instructions": {
+      "description": "Asset add instructions"
     }
 }

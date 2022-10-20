@@ -21,6 +21,7 @@ class AssetModel extends Asset {
     required super.duration,
     required super.images,
     required super.documents,
+    required super.instructions,
     required super.spareParts,
     required super.currentParentId,
     required super.isSparePart,
@@ -45,6 +46,7 @@ class AssetModel extends Asset {
     List<String>? images,
     List<String>? documents,
     List<String>? spareParts,
+    List<String>? instructions,
     String? currentParentId,
     bool? isSparePart,
   }) {
@@ -67,6 +69,7 @@ class AssetModel extends Asset {
       images: images ?? this.images,
       documents: documents ?? this.documents,
       spareParts: spareParts ?? this.spareParts,
+      instructions: instructions ?? this.instructions,
       currentParentId: currentParentId ?? this.currentParentId,
       isSparePart: isSparePart ?? this.isSparePart,
     );
@@ -92,6 +95,7 @@ class AssetModel extends Asset {
     result.addAll({'images': images});
     result.addAll({'documents': documents});
     result.addAll({'spareParts': spareParts});
+    result.addAll({'instructions': instructions});
     result.addAll({'currentParentId': currentParentId});
     result.addAll({'isSparePart': isSparePart});
 
@@ -118,6 +122,7 @@ class AssetModel extends Asset {
       images: List<String>.from(map['images']),
       documents: List<String>.from(map['documents']),
       spareParts: List<String>.from(map['spareParts']),
+      instructions: List<String>.from(map['instructions']),
       currentParentId: map['currentParentId'] ?? '',
       isSparePart: map['possibleParents'] ?? false,
     );
@@ -128,6 +133,7 @@ class AssetModel extends Asset {
       documents: [...documents],
       images: [...images],
       spareParts: [...spareParts],
+      instructions: [...instructions],
     );
   }
 }

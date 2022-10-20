@@ -38,6 +38,7 @@ void main() {
     images: const [],
     documents: const [],
     spareParts: const [],
+    instructions: const [],
     currentParentId: 'currentParentId',
     isSparePart: true,
   );

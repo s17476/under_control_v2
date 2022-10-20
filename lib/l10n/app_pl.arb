@@ -427,5 +427,6 @@
     "asset_add_spare_parts_inventory": "Dodaj z inventarza",
     "asset_add_photos": "Dodaj zdjęcia",
     "asset_add_documents": "Dodaj dokumenty",
-    "asset_add_pdf": "Dodaj plik PDF"
+    "asset_add_pdf": "Dodaj plik PDF",
+    "asset_add_instructions": "Dodaj instrukcje"
 }

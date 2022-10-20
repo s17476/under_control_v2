@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_documents.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_images_card.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_instructions.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_in_use_card.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_spare_part.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_location_card.dart';
@@ -60,6 +61,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
 
   bool _isAddAssetVisible = false;
   bool _isAddInventoryVisible = false;
+  bool _isAddInstructionsVisible = false;
 
   DateTime _dateTime = DateTime.now();
   DateTime _lastInspectionDate = DateTime.now();
@@ -70,6 +72,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
   final List<File> _images = [];
   final List<File> _documents = [];
   List<String> _spareParts = [];
+  List<String> _instructions = [];
 
   _addNewAsset(BuildContext context) {}
 
@@ -109,6 +112,12 @@ class _AddAssetPageState extends State<AddAssetPage> {
     });
   }
 
+  void _toggleAddInstructionsVisibility() {
+    setState(() {
+      _isAddInstructionsVisible = !_isAddInstructionsVisible;
+    });
+  }
+
   void _toggleSparePartSelection(String sparePartId) {
     if (!_spareParts.contains(sparePartId)) {
       setState(() {
@@ -117,6 +126,18 @@ class _AddAssetPageState extends State<AddAssetPage> {
     } else {
       setState(() {
         _spareParts.remove(sparePartId);
+      });
+    }
+  }
+
+  void _toggleInstructionSelection(String instruction) {
+    if (!_instructions.contains(instruction)) {
+      setState(() {
+        _instructions.add(instruction);
+      });
+    } else {
+      setState(() {
+        _instructions.remove(instruction);
       });
     }
   }
@@ -193,6 +214,13 @@ class _AddAssetPageState extends State<AddAssetPage> {
   void initState() {
     _pageController.addListener(() {
       FocusScope.of(context).unfocus();
+      if (_isAddAssetVisible) {
+        _toggleAddAssetVisibility();
+      } else if (_isAddInventoryVisible) {
+        _toggleAddInventoryVisibility();
+      } else if (_isAddInstructionsVisible) {
+        _toggleAddInstructionsVisibility();
+      }
     });
     super.initState();
   }
@@ -228,6 +256,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
       _dateTime = _asset!.addDate;
 
       _spareParts = _asset!.spareParts;
+      _instructions = _asset!.instructions;
     }
     super.didChangeDependencies();
   }
@@ -304,6 +333,12 @@ class _AddAssetPageState extends State<AddAssetPage> {
         toggleAddAssetVisibility: _toggleAddAssetVisibility,
         toggleAddInventoryVisibility: _toggleAddInventoryVisibility,
       ),
+      AddAssetInstructionsCard(
+        toggleSelection: _toggleInstructionSelection,
+        toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
+        instructions: _instructions,
+        isAddInstructionsVisible: _isAddInstructionsVisible,
+      ),
       AddAssetImagesCard(
         addImage: _addImage,
         removeImage: _removeImage,
@@ -326,6 +361,10 @@ class _AddAssetPageState extends State<AddAssetPage> {
         }
         if (_isAddInventoryVisible) {
           _toggleAddInventoryVisibility();
+          return false;
+        }
+        if (_isAddInstructionsVisible) {
+          _toggleAddInstructionsVisibility();
           return false;
         }
         // double click to exit the app

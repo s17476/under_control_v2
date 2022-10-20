@@ -151,7 +151,7 @@ class _AddAssetSparePartCardState extends State<AddAssetSparePartCard>
                       ),
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: Colors.blue.shade700,
                         ),
                         onPressed: widget.toggleAddAssetVisibility,
                         icon: SizedBox(
@@ -192,7 +192,7 @@ class _AddAssetSparePartCardState extends State<AddAssetSparePartCard>
                       ),
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange,
+                          backgroundColor: Colors.orange.shade700,
                         ),
                         onPressed: widget.toggleAddInventoryVisibility,
                         icon: SizedBox(
