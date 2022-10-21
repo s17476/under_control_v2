@@ -106,8 +106,8 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
                             state.allInstructions.allInstructions,
                             searchQuery,
                           );
-                          final published = [];
-                          final drafts = [];
+                          final List<Instruction> published = [];
+                          final List<Instruction> drafts = [];
                           for (var instruction in filteredInstructions) {
                             if (instruction.isPublished) {
                               published.add(instruction);
@@ -161,7 +161,7 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    if (drafts.isNotEmpty)
+                                    if (published.isNotEmpty)
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 16,

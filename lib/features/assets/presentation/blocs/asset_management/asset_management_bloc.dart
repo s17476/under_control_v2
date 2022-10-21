@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -45,6 +46,8 @@ class AssetManagementBloc
         AssetParams(
           asset: event.asset,
           companyId: _companyId,
+          documents: event.documents,
+          images: event.images,
         ),
       );
       await failureOrString.fold(
@@ -85,10 +88,13 @@ class AssetManagementBloc
 
     on<UpdateAssetEvent>((event, emit) async {
       emit(AssetManagementLoadingState());
+
       final failureOrVoidResult = await updateAsset(
         AssetParams(
           asset: event.asset,
           companyId: _companyId,
+          documents: event.documents,
+          images: event.images,
         ),
       );
       await failureOrVoidResult.fold(

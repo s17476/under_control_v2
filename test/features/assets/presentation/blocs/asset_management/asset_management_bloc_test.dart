@@ -104,7 +104,13 @@ void main() {
           when(() => mockAddAsset(any())).thenAnswer(
             (_) async => const Right(''),
           );
-          bloc.add(AddAssetEvent(asset: tAssetModel));
+          bloc.add(
+            AddAssetEvent(
+              asset: tAssetModel,
+              documents: const [],
+              images: const [],
+            ),
+          );
         },
         expect: () => [
           AssetManagementLoadingState(),
@@ -118,7 +124,13 @@ void main() {
           when(() => mockAddAsset(any())).thenAnswer(
             (_) async => const Left(DatabaseFailure()),
           );
-          bloc.add(AddAssetEvent(asset: tAssetModel));
+          bloc.add(
+            AddAssetEvent(
+              asset: tAssetModel,
+              documents: const [],
+              images: const [],
+            ),
+          );
         },
         expect: () => [
           AssetManagementLoadingState(),
@@ -166,7 +178,13 @@ void main() {
           when(() => mockUpdateAsset(any())).thenAnswer(
             (_) async => Right(VoidResult()),
           );
-          bloc.add(UpdateAssetEvent(asset: tAssetModel));
+          bloc.add(
+            UpdateAssetEvent(
+              asset: tAssetModel,
+              documents: const [],
+              images: const [],
+            ),
+          );
         },
         expect: () => [
           AssetManagementLoadingState(),
@@ -180,7 +198,13 @@ void main() {
           when(() => mockUpdateAsset(any())).thenAnswer(
             (_) async => const Left(DatabaseFailure()),
           );
-          bloc.add(UpdateAssetEvent(asset: tAssetModel));
+          bloc.add(
+            UpdateAssetEvent(
+              asset: tAssetModel,
+              documents: const [],
+              images: const [],
+            ),
+          );
         },
         expect: () => [
           AssetManagementLoadingState(),

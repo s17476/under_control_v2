@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
-import 'package:under_control_v2/features/assets/utils/asset_status.dart';
-import 'package:under_control_v2/features/assets/utils/get_localizad_duration_unit_name.dart';
-import 'package:under_control_v2/features/assets/utils/get_localizae_asset_status_name.dart';
-import 'package:under_control_v2/features/core/utils/double_apis.dart';
-import 'package:under_control_v2/features/core/utils/duration_unit.dart';
+import '../../utils/asset_status.dart';
+import '../../utils/get_localizad_duration_unit_name.dart';
+import '../../utils/get_localizae_asset_status_name.dart';
+import '../../../core/utils/double_apis.dart';
+import '../../../core/utils/duration_unit.dart';
 
 import '../../../core/presentation/widgets/summary_card.dart';
 import '../../../core/utils/location_selection_helpers.dart';

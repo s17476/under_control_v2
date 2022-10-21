@@ -42,8 +42,8 @@ class AssetRepositoryImpl extends AssetRepository {
           firebaseStorage.ref().child(params.companyId).child('assets');
 
       // save photos
-      if (params.photos != null && params.photos!.isNotEmpty) {
-        for (var photo in params.photos!) {
+      if (params.images != null && params.images!.isNotEmpty) {
+        for (var photo in params.images!) {
           final fileName =
               '${assetReference.id}-${DateTime.now().toIso8601String()}.jpg';
 
@@ -63,7 +63,7 @@ class AssetRepositoryImpl extends AssetRepository {
           final fileReference = storageReference.child(fileName);
           await fileReference.putFile(document);
           final documentUrl = await fileReference.getDownloadURL();
-          photos.add(documentUrl);
+          documents.add(documentUrl);
         }
       }
 
@@ -152,7 +152,7 @@ class AssetRepositoryImpl extends AssetRepository {
           .doc(params.companyId)
           .collection('assets')
           .where('locationId', whereIn: params.locations)
-          .orderBy('name', descending: true)
+          // .orderBy('producer', descending: true)
           .snapshots();
 
       return Right(AssetsStream(allAssets: querySnapshot));
@@ -189,8 +189,8 @@ class AssetRepositoryImpl extends AssetRepository {
           firebaseStorage.ref().child(params.companyId).child('assets');
 
       // save photos
-      if (params.photos != null && params.photos!.isNotEmpty) {
-        for (var photo in params.photos!) {
+      if (params.images != null && params.images!.isNotEmpty) {
+        for (var photo in params.images!) {
           final fileName =
               '${params.asset.id}-${DateTime.now().toIso8601String()}.jpg';
 
@@ -210,7 +210,7 @@ class AssetRepositoryImpl extends AssetRepository {
           final fileReference = storageReference.child(fileName);
           await fileReference.putFile(document);
           final documentUrl = await fileReference.getDownloadURL();
-          photos.add(documentUrl);
+          documents.add(documentUrl);
         }
       }
 

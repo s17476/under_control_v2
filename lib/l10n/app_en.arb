@@ -1753,9 +1753,17 @@
     "@asset_in_use": {
       "description": "Asset is in use"
     },
+    "assets_in_use": "Assets in use",
+    "@assets_in_use": {
+      "description": "Assets in use"
+    },
     "asset_not_in_use": "Asset is in reserve",
     "@asset_not_in_use": {
       "description": "Asset is in reserve"
+    },
+    "assets_not_in_use": "Assets in reserve",
+    "@assets_not_in_use": {
+      "description": "Assets in reserve"
     },
     "asset_parent": "Parent asset",
     "@asset_parent": {

@@ -190,13 +190,13 @@ class ItemParams extends Equatable {
 
 class AssetParams extends Equatable {
   final AssetModel asset;
-  final List<File>? photos;
+  final List<File>? images;
   final List<File>? documents;
   final String companyId;
 
   const AssetParams({
     required this.asset,
-    this.photos,
+    this.images,
     this.documents,
     required this.companyId,
   });

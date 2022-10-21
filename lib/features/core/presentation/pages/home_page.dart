@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../assets/presentation/pages/assets_page.dart';
+import '../../../assets/utils/asset_management_bloc_listener.dart';
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
 import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../filter/presentation/widgets/home_page_filter.dart';
@@ -354,6 +356,10 @@ class _HomePageState extends State<HomePage>
             listener: (context, state) =>
                 instructionManagementBlocListener(context, state),
           ),
+          BlocListener<AssetManagementBloc, AssetManagementState>(
+            listener: (context, state) =>
+                assetManagementBlocListener(context, state),
+          ),
         ],
         child: Scaffold(
           drawer: const MainDrawer(),
@@ -446,7 +452,11 @@ class _HomePageState extends State<HomePage>
                                 isSortedByCategory: false,
                               ),
                               const DashboardPage(),
-                              const AssetsPage(),
+                              AssetsPage(
+                                searchBoxHeight: _searchBoxHeight,
+                                isSearchBoxExpanded: _isAssetsSearchBarExpanded,
+                                searchQuery: _assetsSearchQuery,
+                              ),
                               KnowledgeBasePage(
                                 searchBoxHeight: _searchBoxHeight,
                                 isSearchBoxExpanded:
