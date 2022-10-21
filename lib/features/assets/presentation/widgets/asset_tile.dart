@@ -178,7 +178,7 @@ class AssetTile extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 8),
+                    margin: const EdgeInsets.all(8),
                     height: 50,
                     width: 50,
                     child: getAssetStatusIcon(

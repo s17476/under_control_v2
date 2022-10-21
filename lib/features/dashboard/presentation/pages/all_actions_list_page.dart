@@ -21,7 +21,7 @@ class _AllActionsListPageState extends State<AllActionsListPage>
   List<ItemAction>? actions;
   List<ItemAction>? _filteredActions;
 
-  _filterActions(int index) {
+  void _filterActions(int index) {
     switch (index) {
       case 0:
         setState(() {
