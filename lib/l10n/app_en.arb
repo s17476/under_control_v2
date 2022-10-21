@@ -435,6 +435,10 @@
     "@selected_date": {
       "description": "selected date"
     },
+    "add_date": "Add date",
+    "@add_date": {
+      "description": "add date"
+    },
     "latest_actions": "latest actions",
     "@latest_actions": {
       "description": "latestActions"
@@ -1713,6 +1717,10 @@
     "@asset_status": {
       "description": "Asset status selection"
     },
+    "asset_status_not_selected": "Asset status not selected",
+    "@asset_status_not_selected": {
+      "description": "Asset status not selected"
+    },
     "asset_next_inspection": "Next inspection date",
     "@asset_next_inspection": {
       "description": "Asset next inspection"
@@ -1761,6 +1769,18 @@
     "@asset_add_spare_parts": {
       "description": "Asset add spare parts"
     },
+    "asset_spare_parts": "Spare parts",
+    "@asset_spare_parts": {
+      "description": "Asset spare parts"
+    },
+    "asset_spare_parts_added": "Added spare parts",
+    "@asset_spare_parts_added": {
+      "description": "Added spare parts"
+    },
+    "asset_spare_parts_not_added": "Spare parts not added",
+    "@asset_spare_parts_not_added": {
+      "description": "Spare parts not added"
+    },
     "asset_add_spare_parts_assets": "Add from assets",
     "@asset_add_spare_parts_assets": {
       "description": "Asset add spare parts - assets"
@@ -1784,5 +1804,41 @@
     "asset_add_instructions": "Add instructions",
     "@asset_add_instructions": {
       "description": "Asset add instructions"
+    },
+    "asset_add_instructions_title": "Instructions",
+    "@asset_add_instructions_title": {
+      "description": "instructions"
+    },
+    "asset_add_instructions_added": "Added instructions",
+    "@asset_add_instructions_added": {
+      "description": "added instructions"
+    },
+    "asset_add_instructions_not_added": "Instructions not added",
+    "@asset_add_instructions_not_added": {
+      "description": "instructions not added"
+    },
+    "asset_add_images_title": "Images",
+    "@asset_add_images_title": {
+      "description": "Images"
+    },
+    "asset_add_images_added": "Added images",
+    "@asset_add_images_added": {
+      "description": "added images"
+    },
+    "asset_add_images_not_added": "Images not added",
+    "@asset_add_images_not_added": {
+      "description": "images not added"
+    },
+    "asset_add_documents_title": "Documents",
+    "@asset_add_documents_title": {
+      "description": "documents"
+    },
+    "asset_add_documents_added": "Added documents",
+    "@asset_add_documents_added": {
+      "description": "added documents"
+    },
+    "asset_add_documents_not_added": "Documents not added",
+    "@asset_add_documents_not_added": {
+      "description": "documents not added"
     }
 }

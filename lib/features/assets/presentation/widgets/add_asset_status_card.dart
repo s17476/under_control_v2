@@ -97,7 +97,7 @@ class _AddAssetStatusCardState extends State<AddAssetStatusCard> {
     int? duration,
   }) {
     if ((duration ?? widget.duration) != 0) {
-      final nextDate = getNetxDate(
+      final nextDate = getNextDate(
         lastInspectionDate ?? widget.lastInspectionDate,
         DurationUnit.fromString(durationUnit ?? widget.durationUnit),
         duration ?? widget.duration,

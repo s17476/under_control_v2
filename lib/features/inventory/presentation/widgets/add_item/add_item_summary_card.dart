@@ -60,7 +60,7 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
     try {
       final price = double.parse(priceTextEditingController.text);
 
-      priceString = price.toStringWithFixedDecimal();
+      priceString = price.toStringWithFixedDecimal(decimalPlaces: 2);
     } catch (e) {
       priceString = priceTextEditingController.text;
     }

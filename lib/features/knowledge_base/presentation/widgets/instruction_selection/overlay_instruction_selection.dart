@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/widgets/instruction_tile.dart';
-import 'package:under_control_v2/features/knowledge_base/presentation/widgets/shimmer_instruction_tile.dart';
 
-import '../../../../core/presentation/pages/qr_scanner.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/glass_layer.dart';
-import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../../core/utils/responsive_size.dart';
-import '../../../../core/utils/show_snack_bar.dart';
+import '../../../domain/entities/instruction.dart';
+import '../../blocs/instruction/instruction_bloc.dart';
 import '../../blocs/instruction_category/instruction_category_bloc.dart';
+import '../instruction_tile.dart';
+import '../shimmer_instruction_tile.dart';
 
 class OverlayInstructionSelection extends StatefulWidget {
   const OverlayInstructionSelection({
@@ -83,6 +80,7 @@ class _OverlayInstructionSelectionState
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
+              // search field
               CustomTextFormField(
                 fieldKey: 'search',
                 controller: _searchTextEditingController,
@@ -99,6 +97,8 @@ class _OverlayInstructionSelectionState
                 ),
               ),
               const Divider(),
+
+              // instructions list
               Expanded(
                 child: SingleChildScrollView(
                   child: BlocBuilder<InstructionBloc, InstructionState>(
@@ -142,7 +142,7 @@ class _OverlayInstructionSelectionState
                           },
                         );
                       } else {
-                        // loading shimmer animation
+                        // shimmer loading animation
                         return ListView.builder(
                           padding: const EdgeInsets.only(top: 2),
                           shrinkWrap: true,
@@ -157,7 +157,6 @@ class _OverlayInstructionSelectionState
                   ),
                 ),
               ),
-              Container(),
             ],
           ),
         ),

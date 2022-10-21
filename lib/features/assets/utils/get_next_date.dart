@@ -1,6 +1,6 @@
 import '../../core/utils/duration_unit.dart';
 
-DateTime getNetxDate(
+DateTime getNextDate(
     DateTime lastDate, DurationUnit durationUnit, int duration) {
   int hour = 0;
   int day = 0;

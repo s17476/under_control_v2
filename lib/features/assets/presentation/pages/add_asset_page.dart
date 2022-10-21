@@ -3,26 +3,25 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_documents.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_images_card.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_instructions.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_in_use_card.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_is_spare_part.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_location_card.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_spare_parts.dart';
-import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/add_asset_summary_card.dart';
 
+import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
-import '../../../core/utils/duration_unit.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/asset_model.dart';
 import '../../domain/entities/asset.dart';
-import '../../utils/asset_status.dart';
 import '../blocs/asset/asset_bloc.dart';
 import '../widgets/add_asset_card.dart';
 import '../widgets/add_asset_data_card.dart';
+import '../widgets/add_asset_documents.dart';
+import '../widgets/add_asset_images_card.dart';
+import '../widgets/add_asset_instructions.dart';
+import '../widgets/add_asset_is_in_use_card.dart';
+import '../widgets/add_asset_is_spare_part.dart';
+import '../widgets/add_asset_location_card.dart';
+import '../widgets/add_asset_spare_parts.dart';
 import '../widgets/add_asset_status_card.dart';
 
 class AddAssetPage extends StatefulWidget {
@@ -74,7 +73,70 @@ class _AddAssetPageState extends State<AddAssetPage> {
   List<String> _spareParts = [];
   List<String> _instructions = [];
 
-  _addNewAsset(BuildContext context) {}
+  _addNewAsset(BuildContext context) {
+    String errorMessage = '';
+    double price = 0;
+    if (!_formKey.currentState!.validate()) {
+      if (_producerTextEditingController.text.trim().length < 2) {
+        errorMessage =
+            '${AppLocalizations.of(context)!.item_producer} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
+      } else if (_modelTextEditingController.text.trim().length < 2) {
+        errorMessage =
+            '${AppLocalizations.of(context)!.item_name} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
+      } else if (_internalCodeTextEditingController.text.trim().length < 2) {
+        errorMessage =
+            '${AppLocalizations.of(context)!.item_internal_code} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
+      }
+    } else {
+      // category selection validation
+      if (errorMessage.isEmpty && _category.isEmpty) {
+        errorMessage =
+            AppLocalizations.of(context)!.item_add_error_category_not_selected;
+
+        // price validation
+      }
+      if (errorMessage.isEmpty &&
+          _priceTextEditingController.text.trim().isNotEmpty) {
+        try {
+          price = double.parse(_priceTextEditingController.text.trim());
+          if (price < 0) {
+            errorMessage =
+                AppLocalizations.of(context)!.incorrect_price_to_small;
+          }
+        } catch (e) {
+          errorMessage = AppLocalizations.of(context)!.incorrect_price_format;
+        }
+      }
+      // location validation
+      if (errorMessage.isEmpty && _locationId.isEmpty) {
+        errorMessage =
+            AppLocalizations.of(context)!.validation_location_not_selected;
+      }
+      // asset status
+      if (errorMessage.isEmpty && _assetStatus.isEmpty) {
+        errorMessage = AppLocalizations.of(context)!.asset_status_not_selected;
+      }
+      // duration unit and duration
+      if (errorMessage.isEmpty && (_duration == 0 || _durationUnit.isEmpty)) {
+        errorMessage = AppLocalizations.of(context)!.asset_next_inspection_tip;
+      }
+    }
+
+    // shows SnackBar if validation error occures
+    if (errorMessage.isNotEmpty) {
+      showSnackBar(
+        context: context,
+        message: errorMessage,
+        isErrorMessage: true,
+      );
+      // saves instruction to DB if no error
+    } else {
+      showSnackBar(
+        context: context,
+        message: 'ok',
+      );
+    }
+  }
 
   void _addDocument(File doc) {
     setState(() {
@@ -347,6 +409,29 @@ class _AddAssetPageState extends State<AddAssetPage> {
       AddAssetDocumentsCard(
         addDocument: _addDocument,
         removeDocument: _removeDocument,
+        documents: _documents,
+      ),
+      AddAssetSummaryCard(
+        pageController: _pageController,
+        producerTextEditingController: _producerTextEditingController,
+        modelTextEditingController: _modelTextEditingController,
+        descriptionTextEditingController: _descriptionTextEditingController,
+        category: _category,
+        priceTextEditingController: _priceTextEditingController,
+        internalCodeTextEditingController: _internalCodeTextEditingController,
+        barCodeTextEditingController: _barCodeTextEditingController,
+        addDate: _dateTime,
+        selectedLocation: _locationId,
+        lastInspectionDate: _lastInspectionDate,
+        assetStatus: _assetStatus,
+        durationUnit: _durationUnit,
+        duration: _duration,
+        isSparePart: _isSparePart,
+        isInUse: _isInUse,
+        parentId: _currentParentId,
+        spareParts: _spareParts,
+        instructions: _instructions,
+        images: _images,
         documents: _documents,
       ),
     ];

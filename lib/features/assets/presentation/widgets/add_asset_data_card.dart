@@ -194,6 +194,13 @@ class _AddAssetDataCardState extends State<AddAssetDataCard> {
                         textCapitalization: TextCapitalization.characters,
                         labelText:
                             AppLocalizations.of(context)!.item_internal_code,
+                        validator: (val) {
+                          if (val!.length < 2) {
+                            return AppLocalizations.of(context)!
+                                .validation_min_two_characters;
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 16,
@@ -229,7 +236,7 @@ class _AddAssetDataCardState extends State<AddAssetDataCard> {
                       const SizedBox(
                         height: 16,
                       ),
-                      // date time row
+                      // add date time row
                       InkWell(
                         onTap: _pickDate,
                         child: Row(
@@ -242,7 +249,7 @@ class _AddAssetDataCardState extends State<AddAssetDataCard> {
                                 controller: _dateTextEditingController,
                                 textAlign: TextAlign.center,
                                 labelText:
-                                    AppLocalizations.of(context)!.selected_date,
+                                    AppLocalizations.of(context)!.add_date,
                               ),
                             ),
                             const SizedBox(
