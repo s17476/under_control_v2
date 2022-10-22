@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/utils/get_asset_status_icon.dart';
 
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
@@ -164,40 +165,54 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                         child: TabBar(
                           tabs: [
                             Tab(
-                              icon: Text(
-                                AppLocalizations.of(context)!.all,
-                                style: TextStyle(
-                                  color: tabBarIconColor,
-                                  fontSize: 18,
+                              icon: Icon(
+                                Icons.all_inclusive,
+                                size: tabBarIconSize,
+                                color: tabBarIconColor,
+                              ),
+                            ),
+                            Tab(
+                              icon: SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: getAssetStatusIcon(
+                                  context,
+                                  AssetStatus.ok,
+                                  14,
                                 ),
                               ),
                             ),
                             Tab(
-                              icon: Icon(
-                                Icons.add,
-                                color: tabBarIconColor,
-                                size: tabBarIconSize,
+                              icon: SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: getAssetStatusIcon(
+                                  context,
+                                  AssetStatus.workingRequiresAttention,
+                                  14,
+                                ),
                               ),
                             ),
                             Tab(
-                              icon: Icon(
-                                Icons.remove,
-                                color: tabBarIconColor,
-                                size: tabBarIconSize,
+                              icon: SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: getAssetStatusIcon(
+                                  context,
+                                  AssetStatus.workingRequiresReparation,
+                                  14,
+                                ),
                               ),
                             ),
                             Tab(
-                              icon: Icon(
-                                Icons.compare_arrows,
-                                color: tabBarIconColor,
-                                size: tabBarIconSize,
-                              ),
-                            ),
-                            Tab(
-                              icon: Icon(
-                                Icons.compare_arrows,
-                                color: tabBarIconColor,
-                                size: tabBarIconSize,
+                              icon: SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: getAssetStatusIcon(
+                                  context,
+                                  AssetStatus.notWorkingRequiresReparation,
+                                  14,
+                                ),
                               ),
                             ),
                           ],
