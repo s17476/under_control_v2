@@ -2,6 +2,7 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/keep_alive_page.dart';
 
 import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../assets/presentation/pages/assets_page.dart';
@@ -444,24 +445,31 @@ class _HomePageState extends State<HomePage>
                             },
                             children: [
                               const TasksPage(),
-                              InventoryPage(
-                                searchBoxHeight: _searchBoxHeight,
-                                isSearchBoxExpanded:
-                                    _isInventorySearchBarExpanded,
-                                searchQuery: _inventorySearchQuery,
-                                isSortedByCategory: false,
+                              KeepAlivePage(
+                                child: InventoryPage(
+                                  searchBoxHeight: _searchBoxHeight,
+                                  isSearchBoxExpanded:
+                                      _isInventorySearchBarExpanded,
+                                  searchQuery: _inventorySearchQuery,
+                                  isSortedByCategory: false,
+                                ),
                               ),
-                              const DashboardPage(),
-                              AssetsPage(
-                                searchBoxHeight: _searchBoxHeight,
-                                isSearchBoxExpanded: _isAssetsSearchBarExpanded,
-                                searchQuery: _assetsSearchQuery,
+                              const KeepAlivePage(child: DashboardPage()),
+                              KeepAlivePage(
+                                child: AssetsPage(
+                                  searchBoxHeight: _searchBoxHeight,
+                                  isSearchBoxExpanded:
+                                      _isAssetsSearchBarExpanded,
+                                  searchQuery: _assetsSearchQuery,
+                                ),
                               ),
-                              KnowledgeBasePage(
-                                searchBoxHeight: _searchBoxHeight,
-                                isSearchBoxExpanded:
-                                    _isInstructionsSearchBarExpanded,
-                                searchQuery: _instructionsSearchQuery,
+                              KeepAlivePage(
+                                child: KnowledgeBasePage(
+                                  searchBoxHeight: _searchBoxHeight,
+                                  isSearchBoxExpanded:
+                                      _isInstructionsSearchBarExpanded,
+                                  searchQuery: _instructionsSearchQuery,
+                                ),
                               ),
                             ],
                           ),

@@ -8,10 +8,12 @@ class AddAssetIsSparePartCard extends StatelessWidget with ResponsiveSize {
   const AddAssetIsSparePartCard({
     Key? key,
     required this.setIsSparePart,
+    required this.setParentAsset,
     required this.isSparePart,
   }) : super(key: key);
 
   final Function(bool) setIsSparePart;
+  final Function(String) setParentAsset;
   final bool isSparePart;
 
   @override
@@ -47,7 +49,10 @@ class AddAssetIsSparePartCard extends StatelessWidget with ResponsiveSize {
                       children: [
                         // not a spare part
                         SelectionButton<bool>(
-                          onSelected: setIsSparePart,
+                          onSelected: (val) {
+                            setIsSparePart(val);
+                            setParentAsset('');
+                          },
                           icon: Icons.check_circle,
                           iconSize: 50,
                           title: AppLocalizations.of(context)!

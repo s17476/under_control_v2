@@ -5,9 +5,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
+import '../../../inventory/presentation/widgets/inventory_spare_parts_list.dart';
 import '../../../inventory/presentation/widgets/item_tile.dart';
 import '../../../inventory/presentation/widgets/shimmer_item_tile.dart';
+import '../blocs/asset/asset_bloc.dart';
 import 'asset_selection/overlay_asset_selection.dart';
+import 'asset_tile.dart';
+import 'assets_spare_parts_list.dart';
 
 class AddAssetSparePartCard extends StatefulWidget {
   const AddAssetSparePartCard({
@@ -65,80 +69,16 @@ class _AddAssetSparePartCardState extends State<AddAssetSparePartCard>
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            if (widget.spareParts.isNotEmpty)
-                              BlocBuilder<ItemsBloc, ItemsState>(
-                                builder: (context, state) {
-                                  if (state is ItemsLoadedState) {
-                                    if (state.allItems.allItems.isEmpty) {
-                                      return Column(
-                                        children: [
-                                          SizedBox(
-                                            height: responsiveSizeVerticalPct(
-                                                small: 40),
-                                          ),
-                                          Text(
-                                            AppLocalizations.of(context)!
-                                                .item_no_items,
-                                          ),
-                                        ],
-                                      );
-                                    }
-                                    final filteredItems =
-                                        state.allItems.allItems
-                                            .where(
-                                              (asset) => widget.spareParts
-                                                  .contains(asset.id),
-                                            )
-                                            .toList();
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0,
-                                          ),
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .bottom_bar_title_inventory,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption!
-                                                .copyWith(fontSize: 18),
-                                          ),
-                                        ),
-                                        ListView.builder(
-                                          padding:
-                                              const EdgeInsets.only(top: 2),
-                                          shrinkWrap: true,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemCount: filteredItems.length,
-                                          itemBuilder: (context, index) {
-                                            return ItemTile(
-                                              item: filteredItems[index],
-                                              searchQuery: '',
-                                              onSelected: (_) {},
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  } else {
-                                    // loading shimmer animation
-                                    return ListView.builder(
-                                      padding: const EdgeInsets.only(top: 2),
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: 6,
-                                      itemBuilder: (context, index) {
-                                        return const ShimmerItemTile();
-                                      },
-                                    );
-                                  }
-                                },
-                              ),
+                            // assets
+                            AssetsSparePartsList(
+                              items: widget.spareParts,
+                              onSelected: widget.toggleSelection,
+                            ),
+                            // inventory
+                            InventorySparePartsList(
+                              items: widget.spareParts,
+                              onSelected: widget.toggleSelection,
+                            ),
                           ],
                         ),
                       ),
@@ -237,9 +177,8 @@ class _AddAssetSparePartCardState extends State<AddAssetSparePartCard>
         if (widget.isAddAssetVisible)
           OverlayAssetSelection(
             spareParts: widget.spareParts,
-            addAsset: widget.toggleSelection,
-            removeAsset: widget.toggleSelection,
-            onDismiss: widget.toggleAddAssetVisibility,
+            toggleSelection: widget.toggleSelection,
+            onDismiss: widget.toggleAddInventoryVisibility,
           ),
         if (widget.isAddInventoryVisible)
           OverlayInventorySelection(

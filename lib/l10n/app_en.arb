@@ -1848,5 +1848,29 @@
     "asset_add_documents_not_added": "Documents not added",
     "@asset_add_documents_not_added": {
       "description": "documents not added"
+    },
+    "asset_msg_added": "New asset added",
+    "@asset_msg_added": {
+      "description": "asset - added msg"
+    },
+    "asset_msg_not_added": "Asset NOT added",
+    "@asset_msg_not_added": {
+      "description": "asset - NOT added msg"
+    },
+    "asset_msg_updated": "Asset updated",
+    "@asset_msg_updated": {
+      "description": "asset - updated msg"
+    },
+    "asset_msg_not_updated": "Asset NOT updated",
+    "@asset_msg_not_updated": {
+      "description": "asset - NOT updated msg"
+    },
+    "asset_msg_deleted": "Asset deleted",
+    "@asset_msg_deleted": {
+      "description": "asset - delete msg"
+    },
+    "asset_msg_not_deleted": "Asset NOT deleted",
+    "@asset_msg_not_deleted": {
+      "description": "asset - NOT deleted msg"
     }
 }

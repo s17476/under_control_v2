@@ -444,5 +444,11 @@
     "asset_add_images_not_added": "Nie dodano zdjęć",
     "asset_add_documents_title": "Dokumenty",
     "asset_add_documents_added": "Dodane dokumenty",
-    "asset_add_documents_not_added": "Nie dodano dokumentów"
+    "asset_add_documents_not_added": "Nie dodano dokumentów",
+    "asset_msg_added": "Aktywa zostały dodane",
+    "asset_msg_not_added": "Aktywa NIE zostały dodane",
+    "asset_msg_updated": "Aktywa zostały zaktualizowane",
+    "asset_msg_not_updated": "Aktywa NIE zostały zaktualizowane",
+    "asset_msg_deleted": "Aktywa zostały usunięte",
+    "asset_msg_not_deleted": "Aktywa NIE zostały usunięte"
 }

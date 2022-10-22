@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/utils/get_asset_status_icon.dart';
 
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
-import '../../../knowledge_base/presentation/widgets/shimmer_instruction_tile.dart';
+import '../../../inventory/presentation/widgets/shimmer_item_tile.dart';
 import '../../domain/entities/asset.dart';
 import '../../utils/asset_status.dart';
+import '../../utils/get_asset_status_icon.dart';
+import '../../utils/search_assets.dart';
 import '../blocs/asset/asset_bloc.dart';
-import '../blocs/asset_category/asset_category_bloc.dart';
 import '../widgets/asset_tile.dart';
 
 class AssetsPage extends StatefulWidget {
@@ -82,41 +82,6 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
       _inUse = _filteredAssets!.where((asset) => asset.isInUse).toList();
       _inReserve = _filteredAssets!.where((asset) => !asset.isInUse).toList();
     }
-  }
-
-  List<Asset> _search(
-    BuildContext context,
-    List<Asset> allAssets,
-    String searchQuery,
-  ) {
-    if (searchQuery.trim().isNotEmpty) {
-      final categoryState = context.read<AssetCategoryBloc>().state;
-      if (categoryState is AssetCategoryLoadedState) {
-        return allAssets
-            .where(
-              (asset) =>
-                  asset.producer
-                      .toLowerCase()
-                      .contains(searchQuery.trim().toLowerCase()) ||
-                  asset.model
-                      .toLowerCase()
-                      .contains(searchQuery.trim().toLowerCase()) ||
-                  asset.internalCode
-                      .toLowerCase()
-                      .contains(searchQuery.trim().toLowerCase()) ||
-                  asset.barCode
-                      .toLowerCase()
-                      .contains(searchQuery.trim().toLowerCase()) ||
-                  categoryState
-                      .getAssetCategoryById(asset.categoryId)!
-                      .name
-                      .toLowerCase()
-                      .contains(searchQuery.trim().toLowerCase()),
-            )
-            .toList();
-      }
-    }
-    return allAssets;
   }
 
   @override
@@ -237,7 +202,7 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                                 ],
                               );
                             }
-                            _assets = _search(
+                            _assets = searchAssets(
                               context,
                               state.allAssets.allAssets,
                               widget.searchQuery,
@@ -327,8 +292,7 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                               shrinkWrap: true,
                               itemCount: 8,
                               itemBuilder: (context, index) =>
-                                  // TODO build new shimmer
-                                  const ShimmerInstructionTile(),
+                                  const ShimmerItemTile(),
                             );
                           }
                         },

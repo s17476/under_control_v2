@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:under_control_v2/features/assets/utils/get_asset_status_icon.dart';
 
 import '../../../core/presentation/widgets/highlighted_text.dart';
 import '../../../core/presentation/widgets/icon_title_mini_row.dart';
 import '../../domain/entities/asset.dart';
+import '../../utils/get_asset_status_icon.dart';
 import 'asset_category_mini_row.dart';
 
 class AssetTile extends StatelessWidget {
@@ -16,6 +16,10 @@ class AssetTile extends StatelessWidget {
     this.color = Colors.black,
     this.margin = const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
     required this.searchQuery,
+    this.onSelected,
+    this.isSelected,
+    this.groupValue,
+    this.onRadioSelected,
   }) : super(key: key);
 
   final Asset asset;
@@ -23,8 +27,10 @@ class AssetTile extends StatelessWidget {
   final Color color;
   final EdgeInsetsGeometry margin;
   final String searchQuery;
-  // final Function(String)? onSelected;
-  // final bool? isSelected;
+  final Function(String)? onSelected;
+  final bool? isSelected;
+  final String? groupValue;
+  final Function(String)? onRadioSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +44,14 @@ class AssetTile extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(borderRadius),
         child: InkWell(
-          onTap: () {},
-          // onSelected != null
-          //     ? () => onSelected!(item.id)
-          //     :
+          // multi selection
+          onTap: onSelected != null
+              ? () => onSelected!(asset.id)
+              // single asset selection
+              : onRadioSelected != null
+                  ? () => onRadioSelected!(asset.id)
+                  // open details page
+                  : () {},
           // () =>
           // Navigator.pushNamed(
           //       context,
@@ -157,19 +167,6 @@ class AssetTile extends StatelessWidget {
                             )
                           ],
                         ),
-                        // description
-                        // if (asset.description.isNotEmpty)
-                        //   Padding(
-                        //     padding: const EdgeInsets.only(
-                        //       top: 8,
-                        //       left: 8,
-                        //       right: 8,
-                        //     ),
-                        //     child: Text(
-                        //       asset.description,
-                        //       overflow: TextOverflow.ellipsis,
-                        //     ),
-                        //   ),
                         if (asset.description.isEmpty)
                           const SizedBox(
                             height: 6,
@@ -177,15 +174,41 @@ class AssetTile extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.all(8),
-                    height: 50,
-                    width: 50,
-                    child: getAssetStatusIcon(
-                      context,
-                      asset.currentStatus,
+                  if (onSelected == null && onRadioSelected != null)
+                    Container(
+                      alignment: Alignment.topRight,
+                      padding: const EdgeInsets.all(4),
+                      width: 50,
+                      height: 50,
+                      child: Radio<String>(
+                        value: asset.id,
+                        groupValue: groupValue,
+                        onChanged: (val) => onRadioSelected!(val!),
+                        activeColor: Theme.of(context).primaryColor,
+                      ),
                     ),
-                  ),
+                  if (onSelected != null && onRadioSelected == null)
+                    Container(
+                      alignment: Alignment.topRight,
+                      padding: const EdgeInsets.all(4),
+                      width: 50,
+                      height: 50,
+                      child: Checkbox(
+                        value: isSelected,
+                        onChanged: (_) => onSelected!(asset.id),
+                        activeColor: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  if (onSelected == null && onRadioSelected == null)
+                    Container(
+                      margin: const EdgeInsets.all(8),
+                      height: 50,
+                      width: 50,
+                      child: getAssetStatusIcon(
+                        context,
+                        asset.currentStatus,
+                      ),
+                    ),
                 ],
               ),
               Padding(

@@ -173,6 +173,7 @@ class _OverlayInventorySelectionState extends State<OverlayInventorySelection>
                           itemCount: filteredItems.length,
                           itemBuilder: (context, index) {
                             return ItemTile(
+                              key: ValueKey(filteredItems[index].id),
                               margin: const EdgeInsets.symmetric(vertical: 4),
                               item: filteredItems[index],
                               searchQuery: _searchQuery,

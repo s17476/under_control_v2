@@ -32,4 +32,12 @@ class AssetLoadedState extends AssetState {
   AssetLoadedState({
     required this.allAssets,
   }) : super(properties: [allAssets]);
+
+  Asset? getAssetById(String id) {
+    final index = allAssets.allAssets.indexWhere((asset) => asset.id == id);
+    if (index >= 0) {
+      return allAssets.allAssets[index];
+    }
+    return null;
+  }
 }

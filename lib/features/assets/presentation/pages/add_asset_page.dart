@@ -123,6 +123,10 @@ class _AddAssetPageState extends State<AddAssetPage> {
       if (errorMessage.isEmpty && (_duration == 0 || _durationUnit.isEmpty)) {
         errorMessage = AppLocalizations.of(context)!.asset_next_inspection_tip;
       }
+      // parent asset validation
+      if (errorMessage.isEmpty && _currentParentId.isEmpty) {
+        errorMessage = AppLocalizations.of(context)!.asset_parent_select;
+      }
     }
 
     // shows SnackBar if validation error occures
@@ -436,6 +440,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
       AddAssetIsSparePartCard(
         setIsSparePart: _setIsSparePart,
         isSparePart: _isSparePart,
+        setParentAsset: _setParentAsset,
       ),
       AddAssetIsInUseCard(
         setIsInUse: _setIsInUse,

@@ -124,7 +124,7 @@ class AssetModel extends Asset {
       spareParts: List<String>.from(map['spareParts']),
       instructions: List<String>.from(map['instructions']),
       currentParentId: map['currentParentId'] ?? '',
-      isSparePart: map['possibleParents'] ?? false,
+      isSparePart: map['isSparePart'] ?? false,
     );
   }
 

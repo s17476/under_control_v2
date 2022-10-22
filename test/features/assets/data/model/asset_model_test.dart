@@ -41,7 +41,7 @@ void main() {
     'locationId': 'locationId',
     'internalCode': 'internalCode',
     'barCode': 'barCode',
-    'price': 0,
+    'price': 0.0,
     'isInUse': true,
     'addDate': tDate.toIso8601String(),
     'currentStatus': AssetStatus.ok.name,

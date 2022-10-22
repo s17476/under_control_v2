@@ -5,17 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
-import '../../utils/asset_status.dart';
-import '../../utils/get_localizad_duration_unit_name.dart';
-import '../../utils/get_localizae_asset_status_name.dart';
+import '../../../core/presentation/widgets/summary_card.dart';
 import '../../../core/utils/double_apis.dart';
 import '../../../core/utils/duration_unit.dart';
-
-import '../../../core/presentation/widgets/summary_card.dart';
 import '../../../core/utils/location_selection_helpers.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../utils/asset_status.dart';
+import '../../utils/get_localizad_duration_unit_name.dart';
+import '../../utils/get_localizae_asset_status_name.dart';
 import '../../utils/get_next_date.dart';
+import '../blocs/asset/asset_bloc.dart';
 import '../blocs/asset_category/asset_category_bloc.dart';
 
 class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
@@ -399,6 +399,40 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                       pageController: pageController,
                       onTapAnimateToPage: 5,
                     ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+
+                    // parent asset
+                    if (isSparePart && isInUse)
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!.asset_parent,
+                        validator: () {
+                          if (parentId.isEmpty) {
+                            return AppLocalizations.of(context)!
+                                .asset_parent_select;
+                          }
+                          return null;
+                        },
+                        child: BlocBuilder<AssetBloc, AssetState>(
+                          builder: (context, state) {
+                            if (state is AssetLoadedState) {
+                              final parent = state.getAssetById(parentId);
+                              if (parent != null) {
+                                return Text(
+                                  '${parent.producer} ${parent.model} ${parent.internalCode}',
+                                );
+                              }
+                              return const Text('');
+                            }
+                            return const CircularProgressIndicator(
+                              color: Colors.white,
+                            );
+                          },
+                        ),
+                        pageController: pageController,
+                        onTapAnimateToPage: 5,
+                      ),
                     const SizedBox(
                       height: 8,
                     ),
