@@ -134,6 +134,7 @@ flutter:
     - assets/asset.png
     - assets/status_ok.png
     - assets/status_working.png
+    - assets/status_working_attention.png
     - assets/status_not_working.png
     - assets/status_disposed.png
 
