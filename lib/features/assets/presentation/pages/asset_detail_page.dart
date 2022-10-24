@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/assets_spare_parts_tab.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_documents_tab.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_instructions_tab.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/assets_spare_parts_tab.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
@@ -117,7 +120,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
     appBarTitle = AppLocalizations.of(context)!.item_details_title;
 
     return DefaultTabController(
-      length: 2,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: Text(appBarTitle),
@@ -171,6 +174,20 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
                   size: tabBarIconSize,
                 ),
               ),
+              Tab(
+                icon: Icon(
+                  Icons.menu_book,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  FontAwesomeIcons.filePdf,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
               // Tab(
               //   icon: Icon(
               //     Icons.settings_applications,
@@ -200,6 +217,8 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
                   children: [
                     AssetInfoTab(asset: _asset!),
                     AssetsSparePartsTab(asset: _asset!),
+                    AssetsInstructionsTab(asset: _asset!),
+                    AssetDocumentsTab(asset: _asset!),
                     // ItemActionsTab(item: _asset!),
                     // ItemLocationsTab(item: _asset!),
                   ],
