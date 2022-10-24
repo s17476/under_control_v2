@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_documents_tab.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_images_tab.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_instructions_tab.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/assets_spare_parts_tab.dart';
 
@@ -120,7 +121,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
     appBarTitle = AppLocalizations.of(context)!.item_details_title;
 
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           title: Text(appBarTitle),
@@ -163,6 +164,13 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
               Tab(
                 icon: Icon(
                   Icons.info,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.image,
                   color: tabBarIconColor,
                   size: tabBarIconSize,
                 ),
@@ -216,6 +224,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
                 child: TabBarView(
                   children: [
                     AssetInfoTab(asset: _asset!),
+                    AssetImagesTab(asset: _asset!),
                     AssetsSparePartsTab(asset: _asset!),
                     AssetsInstructionsTab(asset: _asset!),
                     AssetDocumentsTab(asset: _asset!),

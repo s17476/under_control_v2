@@ -31,14 +31,16 @@ class AssetsInstructionsTab extends StatelessWidget {
                         )
                         .toList();
                 return ListView.builder(
-                  padding: const EdgeInsets.only(top: 2),
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: filteredInstructions.length,
                   itemBuilder: (context, index) {
-                    return InstructionTile(
-                      instruction: filteredInstructions[index],
-                      searchQuery: '',
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2.0),
+                      child: InstructionTile(
+                        instruction: filteredInstructions[index],
+                        searchQuery: '',
+                      ),
                     );
                   },
                 );
