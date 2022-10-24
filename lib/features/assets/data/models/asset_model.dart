@@ -128,6 +128,32 @@ class AssetModel extends Asset {
     );
   }
 
+  factory AssetModel.fromAsset(Asset asset) {
+    return AssetModel(
+      id: asset.id,
+      producer: asset.producer,
+      model: asset.model,
+      description: asset.description,
+      categoryId: asset.categoryId,
+      locationId: asset.locationId,
+      internalCode: asset.internalCode,
+      barCode: asset.barCode,
+      price: asset.price,
+      isInUse: asset.isInUse,
+      addDate: asset.addDate,
+      currentStatus: asset.currentStatus,
+      lastInspection: asset.lastInspection,
+      durationUnit: asset.durationUnit,
+      duration: asset.duration,
+      images: asset.images,
+      documents: asset.documents,
+      instructions: asset.instructions,
+      spareParts: asset.spareParts,
+      currentParentId: asset.currentParentId,
+      isSparePart: asset.isSparePart,
+    );
+  }
+
   AssetModel deepCopy() {
     return copyWith(
       documents: [...documents],

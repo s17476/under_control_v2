@@ -124,7 +124,10 @@ class _AddAssetPageState extends State<AddAssetPage> {
         errorMessage = AppLocalizations.of(context)!.asset_next_inspection_tip;
       }
       // parent asset validation
-      if (errorMessage.isEmpty && _currentParentId.isEmpty) {
+      if (errorMessage.isEmpty &&
+          _currentParentId.isEmpty &&
+          _isSparePart &&
+          _isInUse) {
         errorMessage = AppLocalizations.of(context)!.asset_parent_select;
       }
     }

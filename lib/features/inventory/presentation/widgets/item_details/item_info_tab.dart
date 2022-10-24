@@ -184,13 +184,15 @@ class ItemInfoTab extends StatelessWidget with ResponsiveSize {
                       // qr code
                       if (item.itemBarCode.isNotEmpty)
                         const SizedBox(height: 16),
-                      if (item.itemBarCode.isNotEmpty) QrCodeRow(item: item),
+                      if (item.itemBarCode.isNotEmpty)
+                        QrCodeRow(code: item.itemBarCode),
                       // internal code
                       if (item.itemCode.isNotEmpty) const SizedBox(height: 16),
-                      if (item.itemCode.isNotEmpty) InternalCodeRow(item: item),
+                      if (item.itemCode.isNotEmpty)
+                        InternalCodeRow(code: item.itemCode),
                       // price
                       if (item.price > 0) const SizedBox(height: 16),
-                      if (item.price > 0) PriceRow(item: item),
+                      if (item.price > 0) PriceRow(price: item.price),
                       // alarm quantity
                       const SizedBox(height: 16),
                       if (item.alertQuantity != null) AlarmRow(item: item),

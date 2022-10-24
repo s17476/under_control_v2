@@ -450,5 +450,7 @@
     "asset_msg_updated": "Aktywa zostały zaktualizowane",
     "asset_msg_not_updated": "Aktywa NIE zostały zaktualizowane",
     "asset_msg_deleted": "Aktywa zostały usunięte",
-    "asset_msg_not_deleted": "Aktywa NIE zostały usunięte"
+    "asset_msg_not_deleted": "Aktywa NIE zostały usunięte",
+    "asset_data": "Dane",
+    "asset_add_date": "Data dodania"
 }

@@ -1872,5 +1872,13 @@
     "asset_msg_not_deleted": "Asset NOT deleted",
     "@asset_msg_not_deleted": {
       "description": "asset - NOT deleted msg"
+    },
+    "asset_data": "Asset data",
+    "@asset_data": {
+      "description": "asset - data"
+    },
+    "asset_add_date": "Add date",
+    "@asset_add_date": {
+      "description": "asset - add date"
     }
 }

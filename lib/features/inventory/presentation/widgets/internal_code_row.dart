@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/icon_title_row.dart';
-import '../../domain/entities/item.dart';
 
 class InternalCodeRow extends StatelessWidget {
   const InternalCodeRow({
     Key? key,
-    required this.item,
+    required this.code,
   }) : super(key: key);
 
-  final Item? item;
+  final String code;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class InternalCodeRow extends StatelessWidget {
             titleFontSize: 16,
           ),
         ),
-        Text(item!.itemCode),
+        Text(code),
       ],
     );
   }

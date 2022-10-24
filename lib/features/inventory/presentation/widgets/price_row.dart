@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 
+import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
-import '../../domain/entities/item.dart';
 
 class PriceRow extends StatelessWidget {
   const PriceRow({
     Key? key,
-    required this.item,
+    required this.price,
   }) : super(key: key);
 
-  final Item? item;
+  final double price;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class PriceRow extends StatelessWidget {
             titleFontSize: 16,
           ),
         ),
-        Text('${item!.price.toString()} $currency'),
+        Text('${price.toString()} $currency'),
       ],
     );
   }
