@@ -44,7 +44,7 @@ class SquareAssetImage extends StatelessWidget with ResponsiveSize {
                 ),
                 errorWidget: (context, url, error) => Center(
                   child: Icon(
-                    Icons.api,
+                    Icons.precision_manufacturing,
                     size: responsiveSizePct(small: 30),
                   ),
                 ),
@@ -52,7 +52,7 @@ class SquareAssetImage extends StatelessWidget with ResponsiveSize {
               )
             : Center(
                 child: Icon(
-                  Icons.api,
+                  Icons.precision_manufacturing,
                   size: responsiveSizePct(small: 30),
                 ),
               ),

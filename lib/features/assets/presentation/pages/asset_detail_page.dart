@@ -2,28 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
-import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_documents_tab.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_images_tab.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_instructions_tab.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/assets_spare_parts_tab.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
-import '../../../core/utils/show_snack_bar.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../data/models/asset_model.dart';
+import '../../domain/entities/asset.dart';
 import '../../utils/asset_management_bloc_listener.dart';
 import '../blocs/asset/asset_bloc.dart';
 import '../blocs/asset_action/asset_action_bloc.dart';
-import '../blocs/asset_action_management/asset_action_management_bloc.dart';
 import '../blocs/asset_management/asset_management_bloc.dart';
+import '../widgets/asset_details/asset_documents_tab.dart';
+import '../widgets/asset_details/asset_images_tab.dart';
 import '../widgets/asset_details/asset_info_tab.dart';
+import '../widgets/asset_details/asset_instructions_tab.dart';
+import '../widgets/asset_details/assets_spare_parts_tab.dart';
 import 'add_asset_page.dart';
 
 class AssetDetailsPage extends StatefulWidget {
@@ -74,31 +72,6 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
                 arguments: _asset,
               ),
             ),
-          // if (getUserPremission(
-          //   context: context,
-          //   featureType: FeatureType.assets,
-          //   premissionType: PremissionType.delete,
-          // ))
-          //   Choice(
-          //     title: AppLocalizations.of(context)!.delete,
-          //     icon: Icons.delete,
-          //     onTap: () async {
-          //       if (getItemTotalQuantity(_asset!) > 0) {
-          //         showSnackBar(
-          //           context: context,
-          //           message: AppLocalizations.of(context)!
-          //               .item_details_cannot_delete,
-          //           isErrorMessage: true,
-          //         );
-          //       } else {
-          //         final result = await showItemDeleteDialog(
-          //             context: context, item: _asset!);
-          //         if (result != null && result) {
-          //           Navigator.pop(context);
-          //         }
-          //       }
-          //     },
-          //   ),
         ];
         // gets last actions for selected item
         context.read<AssetActionBloc>().add(
@@ -196,13 +169,6 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
                   size: tabBarIconSize,
                 ),
               ),
-              // Tab(
-              //   icon: Icon(
-              //     Icons.settings_applications,
-              //     color: tabBarIconColor,
-              //     size: tabBarIconSize,
-              //   ),
-              // ),
             ],
             indicatorColor: tabBarIconColor,
           ),
@@ -215,11 +181,6 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
                     listener: (context, state) =>
                         assetManagementBlocListener(context, state),
                   ),
-                  // BlocListener<AssetActionManagementBloc,
-                  //     AssetActionManagementState>(
-                  //   listener: (context, state) =>
-                  //       assetActionManagementBlocListener(context, state),
-                  // ),
                 ],
                 child: TabBarView(
                   children: [
@@ -228,8 +189,6 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
                     AssetsSparePartsTab(asset: _asset!),
                     AssetsInstructionsTab(asset: _asset!),
                     AssetDocumentsTab(asset: _asset!),
-                    // ItemActionsTab(item: _asset!),
-                    // ItemLocationsTab(item: _asset!),
                   ],
                 ),
               ),

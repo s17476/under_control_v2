@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/creator_bottom_navigation.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/image_viewer.dart';
+
+import '../widgets/image_viewer.dart';
 
 class ImagesCarousel extends StatefulWidget {
   const ImagesCarousel({
@@ -68,6 +69,13 @@ class _ImagesCarouselState extends State<ImagesCarousel> {
         ),
       );
     }
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
     super.initState();
   }
 
@@ -78,6 +86,11 @@ class _ImagesCarouselState extends State<ImagesCarousel> {
     for (var ctrl in _photoViewControllers) {
       ctrl.dispose();
     }
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 
