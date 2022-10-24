@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:under_control_v2/features/assets/presentation/pages/add_asset_page.dart';
 import 'package:under_control_v2/features/assets/presentation/pages/asset_detail_page.dart';
+import 'package:under_control_v2/features/core/presentation/pages/images_carousel.dart';
 import 'package:under_control_v2/features/dashboard/presentation/pages/all_low_level_items_page.dart';
 
 import 'features/assets/presentation/blocs/asset/asset_bloc.dart';

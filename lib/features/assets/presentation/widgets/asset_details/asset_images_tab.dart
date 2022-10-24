@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:under_control_v2/features/core/presentation/pages/images_carousel.dart';
 
 import '../../../domain/entities/asset.dart';
 
@@ -15,17 +16,29 @@ class AssetImagesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
+      padding: const EdgeInsets.all(16),
       crossAxisCount: 2,
       crossAxisSpacing: 16,
       mainAxisSpacing: 16,
       children: asset.images
           .map(
             (img) => InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ImagesCarousel(
+                      images: asset.images,
+                      initialPage: asset.images.indexOf(img),
+                    ),
+                  ),
+                );
+              },
               child: Hero(
                 tag: img,
                 child: SizedBox.expand(
                   child: CachedNetworkImage(
+                    fit: BoxFit.cover,
                     imageUrl: img,
                     placeholder: (_, __) => SizedBox.expand(
                       child: Shimmer.fromColors(
