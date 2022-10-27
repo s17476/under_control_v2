@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
 import '../../../../knowledge_base/presentation/widgets/instruction_tile.dart';
@@ -39,10 +40,20 @@ class AssetsInstructionsTab extends StatelessWidget {
               },
             );
           }
-          return const Center(
-            child: Icon(
-              Icons.menu_book,
-              size: 70,
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.menu_book,
+                  size: 70,
+                  color: Theme.of(context).textTheme.caption!.color!,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.details_no_instructions,
+                  style: Theme.of(context).textTheme.caption,
+                ),
+              ],
             ),
           );
         } else {

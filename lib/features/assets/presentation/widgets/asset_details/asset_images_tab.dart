@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/presentation/pages/images_carousel.dart';
@@ -60,10 +61,20 @@ class AssetImagesTab extends StatelessWidget {
             .toList(),
       );
     }
-    return const Center(
-      child: Icon(
-        Icons.image_not_supported_outlined,
-        size: 70,
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.image,
+            size: 70,
+            color: Theme.of(context).textTheme.caption!.color!,
+          ),
+          Text(
+            AppLocalizations.of(context)!.details_no_images,
+            style: Theme.of(context).textTheme.caption,
+          ),
+        ],
       ),
     );
   }

@@ -4,6 +4,7 @@ enum AssetStatus {
   workingRequiresReparation('workingReparation'),
   notWorkingRequiresReparation('notWorkingReparation'),
   disposed('disposed'),
+  noInspection('noInspection'),
   unknown('');
 
   final String name;
@@ -22,6 +23,8 @@ enum AssetStatus {
         return AssetStatus.notWorkingRequiresReparation;
       case 'disposed':
         return AssetStatus.disposed;
+      case 'noInspection':
+        return AssetStatus.noInspection;
       default:
         return AssetStatus.unknown;
     }

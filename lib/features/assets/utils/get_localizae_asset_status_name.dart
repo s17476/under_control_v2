@@ -18,6 +18,8 @@ String getLocalizedAssetStatusName(
           .asset_status_not_working_requires_reparation;
     case AssetStatus.disposed:
       return AppLocalizations.of(context)!.asset_status_disposed;
+    case AssetStatus.noInspection:
+      return AppLocalizations.of(context)!.asset_status_no_inspection;
     default:
       return '';
   }

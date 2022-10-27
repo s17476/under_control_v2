@@ -55,6 +55,14 @@ Widget getAssetStatusIcon(
       );
       assetPath = 'assets/status_not_working.png';
       break;
+    case AssetStatus.noInspection:
+      icon = Icon(
+        Icons.search_off,
+        color: Colors.black87,
+        size: iconSize,
+      );
+      assetPath = 'assets/status_not_working.png';
+      break;
     case AssetStatus.disposed:
       icon = Icon(
         Icons.clear,

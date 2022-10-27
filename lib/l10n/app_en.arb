@@ -23,6 +23,22 @@
     "@size": {
       "description": "Size"
     },
+    "details_no_images": "No images added",
+    "@details_no_images": {
+      "description": "details - no images"
+    },
+    "details_no_spare_parts": "No spare parts added",
+    "@details_no_spare_parts": {
+      "description": "details - no spare parts"
+    },
+    "details_no_instructions": "No instructions added",
+    "@details_no_instructions": {
+      "description": "details - no instructions"
+    },
+    "details_no_documents": "No documents added",
+    "@details_no_documents": {
+      "description": "details - no documents"
+    },
     "video_size": "Video resolution",
     "@video_size": {
       "description": "video resolution"
@@ -1707,6 +1723,10 @@
     },
     "asset_status_disposed": "Disposed",
     "@asset_status_disposed": {
+      "description": "Asset status"
+    },
+    "asset_status_no_inspection": "No technical inspection",
+    "@asset_status_no_inspection": {
       "description": "Asset status"
     },
     "asset_status_select": "Select asset status",

@@ -71,6 +71,11 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                 asset.currentStatus == AssetStatus.notWorkingRequiresReparation)
             .toList();
         break;
+      case 5:
+        _filteredAssets = _assets
+            ?.where((asset) => asset.currentStatus == AssetStatus.noInspection)
+            .toList();
+        break;
       default:
         _filteredAssets = _assets;
         break;
@@ -94,7 +99,7 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
       premissionType: PremissionType.read,
     );
     return DefaultTabController(
-      length: 5,
+      length: 6,
       child: CustomScrollView(
         slivers: [
           SliverOverlapInjector(
@@ -176,6 +181,17 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                                 child: getAssetStatusIcon(
                                   context,
                                   AssetStatus.notWorkingRequiresReparation,
+                                  14,
+                                ),
+                              ),
+                            ),
+                            Tab(
+                              icon: SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: getAssetStatusIcon(
+                                  context,
+                                  AssetStatus.noInspection,
                                   14,
                                 ),
                               ),

@@ -1,3 +1,5 @@
+import 'package:under_control_v2/features/assets/utils/get_next_date.dart';
+
 import '../../../core/utils/duration_unit.dart';
 import '../../domain/entities/asset.dart';
 import '../../utils/asset_status.dart';
@@ -103,7 +105,7 @@ class AssetModel extends Asset {
   }
 
   factory AssetModel.fromMap(Map<String, dynamic> map, String id) {
-    return AssetModel(
+    final asset = AssetModel(
       id: id,
       producer: map['producer'] ?? '',
       model: map['model'] ?? '',
@@ -126,6 +128,14 @@ class AssetModel extends Asset {
       currentParentId: map['currentParentId'] ?? '',
       isSparePart: map['isSparePart'] ?? false,
     );
+
+    final nextInspectionDate =
+        getNextDate(asset.lastInspection, asset.durationUnit, asset.duration);
+    final currentDate = DateTime.now();
+    if (currentDate.isAfter(nextInspectionDate)) {
+      return asset.copyWith(currentStatus: AssetStatus.noInspection);
+    }
+    return asset;
   }
 
   factory AssetModel.fromAsset(Asset asset) {

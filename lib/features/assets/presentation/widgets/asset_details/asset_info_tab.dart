@@ -32,8 +32,8 @@ class AssetInfoTab extends StatelessWidget with ResponsiveSize {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd-mm-yyyy');
-    final detailedDateFormat = DateFormat('dd-mm-yyyy hh:MM');
+    final dateFormat = DateFormat('dd-MM-yyyy');
+    final detailedDateFormat = DateFormat('dd-MM-yyyy hh:mm');
     SizeConfig.init(context);
     return SingleChildScrollView(
       child: Column(
