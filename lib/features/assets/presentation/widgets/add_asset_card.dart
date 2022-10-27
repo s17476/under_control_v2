@@ -6,12 +6,14 @@ import '../../../core/presentation/widgets/custom_text_form_field.dart';
 class AddAssetCard extends StatelessWidget {
   const AddAssetCard({
     Key? key,
+    required this.isCopyMode,
     required this.isEditMode,
     required this.producerTextEditingController,
     required this.modelTextEditingController,
     required this.descriptionTextEditingController,
   }) : super(key: key);
 
+  final bool isCopyMode;
   final bool isEditMode;
   final TextEditingController producerTextEditingController;
   final TextEditingController modelTextEditingController;
@@ -44,9 +46,11 @@ class AddAssetCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24),
                         child: Text(
-                          isEditMode
-                              ? AppLocalizations.of(context)!.asset_edit
-                              : AppLocalizations.of(context)!.asset_add_new,
+                          isCopyMode
+                              ? AppLocalizations.of(context)!.asset_copy
+                              : isEditMode
+                                  ? AppLocalizations.of(context)!.asset_edit
+                                  : AppLocalizations.of(context)!.asset_add_new,
                           style: TextStyle(
                             fontSize:
                                 Theme.of(context).textTheme.headline5!.fontSize,

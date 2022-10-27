@@ -295,6 +295,10 @@
     "@edit": {
       "description": "Edit"
     },
+    "copy": "Copy",
+    "@copy": {
+      "description": "Copy"
+    },
     "title": "Title",
     "@title": {
       "description": "Title"
@@ -1620,6 +1624,10 @@
     "asset_edit": "Edit asset",
     "@asset_edit": {
       "description": "edit asset"
+    },
+    "asset_copy": "Copy asset",
+    "@asset_copy": {
+      "description": "copy asset"
     },
     "asset_price": "Asset price",
     "@asset_price": {

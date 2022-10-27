@@ -46,7 +46,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
   bool _loadingImages = false;
   bool _loadingDocuments = false;
 
-  bool isCodeAvailable = false;
+  bool _isCodeAvailable = false;
 
   // pageview
   List<Widget> _pages = [];
@@ -99,6 +99,16 @@ class _AddAssetPageState extends State<AddAssetPage> {
             '${AppLocalizations.of(context)!.item_internal_code} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
       }
     } else {
+      // allowed same internal code only while editing asset
+      if (!_isCodeAvailable &&
+          ((_asset == null || _asset!.id.isEmpty) ||
+              (_asset != null &&
+                  _asset!.internalCode.toLowerCase() !=
+                      _internalCodeTextEditingController.text
+                          .trim()
+                          .toLowerCase()))) {
+        errorMessage = 'ten sam kod';
+      }
       // category selection validation
       if (errorMessage.isEmpty && _categoryId.isEmpty) {
         errorMessage =
@@ -189,25 +199,25 @@ class _AddAssetPageState extends State<AddAssetPage> {
       );
 
       // add new asset
-      if (_asset == null) {
-        context.read<AssetManagementBloc>().add(
-              AddAssetEvent(
-                asset: newAsset,
-                documents: _documents,
-                images: _images,
-              ),
-            );
-      } else {
-        context.read<AssetManagementBloc>().add(
-              UpdateAssetEvent(
-                asset: newAsset,
-                documents: _documents,
-                images: _images,
-              ),
-            );
-      }
+      // if (_asset == null) {
+      //   context.read<AssetManagementBloc>().add(
+      //         AddAssetEvent(
+      //           asset: newAsset,
+      //           documents: _documents,
+      //           images: _images,
+      //         ),
+      //       );
+      // } else {
+      //   context.read<AssetManagementBloc>().add(
+      //         UpdateAssetEvent(
+      //           asset: newAsset,
+      //           documents: _documents,
+      //           images: _images,
+      //         ),
+      //       );
+      // }
 
-      Navigator.pop(context);
+      // Navigator.pop(context);
     }
   }
 
@@ -410,6 +420,13 @@ class _AddAssetPageState extends State<AddAssetPage> {
       _companyId = userState.userProfile.companyId;
     }
 
+    final internalNumberState = context.watch<AssetInternalNumberCubit>().state;
+    if (internalNumberState is AssetInternalNumberLoadedState) {
+      _isCodeAvailable = internalNumberState.isCodeAvailable;
+    } else {
+      _isCodeAvailable = false;
+    }
+
     if (arguments != null && arguments is AssetModel && _asset == null) {
       _asset = arguments.deepCopy();
 
@@ -458,11 +475,15 @@ class _AddAssetPageState extends State<AddAssetPage> {
     super.dispose();
   }
 
+  // TODO
+  // finish copy mode and internal code validation
+
   @override
   Widget build(BuildContext context) {
     _pages = [
       KeepAlivePage(
         child: AddAssetCard(
+          isCopyMode: _asset != null && _asset!.id.isEmpty,
           isEditMode: _asset != null,
           producerTextEditingController: _producerTextEditingController,
           modelTextEditingController: _modelTextEditingController,

@@ -264,7 +264,10 @@ class AssetRepositoryImpl extends AssetRepository {
           .collection('companies')
           .doc(params.companyId)
           .collection('assets')
-          .where('internalCode', isEqualTo: params.internalCode.trim())
+          .where(
+            'internalCodeLowerCase',
+            isEqualTo: params.internalCode.toLowerCase().trim(),
+          )
           .get();
 
       final isCodeAvailable = assetsList.size == 0;

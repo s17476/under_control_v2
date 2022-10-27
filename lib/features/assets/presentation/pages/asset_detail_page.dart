@@ -72,6 +72,21 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
                 arguments: _asset,
               ),
             ),
+          // copy asset
+          if (getUserPremission(
+            context: context,
+            featureType: FeatureType.assets,
+            premissionType: PremissionType.create,
+          ))
+            Choice(
+              title: AppLocalizations.of(context)!.copy,
+              icon: Icons.copy,
+              onTap: () => Navigator.pushNamed(
+                context,
+                AddAssetPage.routeName,
+                arguments: AssetModel.fromAsset(_asset!).copyWith(id: ''),
+              ),
+            ),
         ];
         // gets last actions for selected item
         context.read<AssetActionBloc>().add(

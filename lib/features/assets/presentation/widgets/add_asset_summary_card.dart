@@ -86,12 +86,6 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
           .name;
     }
 
-    //
-    //
-    //
-    print('context.read<AssetInternalNumberCubit>().state');
-    print(context.read<AssetInternalNumberCubit>().state);
-
     // price format
     String priceString = '';
     try {
