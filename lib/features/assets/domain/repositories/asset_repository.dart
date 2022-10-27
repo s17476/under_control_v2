@@ -30,4 +30,10 @@ abstract class AssetRepository {
   ///Returns [VoidResult] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, VoidResult>> deleteAsset(AssetParams params);
+
+  ///Checks if asset internal code is available.
+  ///
+  ///Returns [bool] if operation is successful.
+  ///Returns [Failure] if operation is unsuccessful.
+  Future<Either<Failure, bool>> checkCodeAvailability(CodeParams params);
 }

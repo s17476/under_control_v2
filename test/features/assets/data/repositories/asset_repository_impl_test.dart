@@ -51,6 +51,11 @@ void main() {
     isSparePart: true,
   );
 
+  const tCodeParams = CodeParams(
+    internalCode: 'internalCode',
+    companyId: tCompanyId,
+  );
+
   setUp(() async {
     fakeFirebaseFirestore = FakeFirebaseFirestore();
     badFirebaseFirestore = MockFirebaseFirestore();
@@ -125,6 +130,15 @@ void main() {
           expect(result, isA<Right<Failure, AssetsStream>>());
         },
       );
+      test(
+        'should return [bool] when checkCodeAvailability is called',
+        () async {
+          // act
+          final result = await repository.checkCodeAvailability(tCodeParams);
+          // assert
+          expect(result, isA<Right<Failure, bool>>());
+        },
+      );
     });
     group('unsuccessful DB response', () {
       test(
@@ -180,6 +194,19 @@ void main() {
           expect(result, isA<Left<Failure, AssetsStream>>());
         },
       );
+      test(
+        'should return [DatabaseFailure] when checkCodeAvailability is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            FirebaseException(plugin: 'Bad Firebase'),
+          );
+          // act
+          final result = await badRepository.checkCodeAvailability(tCodeParams);
+          // assert
+          expect(result, isA<Left<Failure, bool>>());
+        },
+      );
     });
     group('unexpected error', () {
       test(
@@ -233,6 +260,19 @@ void main() {
               await badRepository.getAssetsStream(tAssetsInLocationsParams);
           // assert
           expect(result, isA<Left<Failure, AssetsStream>>());
+        },
+      );
+      test(
+        'should return [UnsuspectedFailure] when checkCodeAvailability is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            Exception(),
+          );
+          // act
+          final result = await badRepository.checkCodeAvailability(tCodeParams);
+          // assert
+          expect(result, isA<Left<Failure, bool>>());
         },
       );
     });

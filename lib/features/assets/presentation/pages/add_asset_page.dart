@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/get_cached_firebase_storage_file.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -40,6 +41,9 @@ class _AddAssetPageState extends State<AddAssetPage> {
   Asset? _asset;
   late String _userId;
 
+  bool _loadingImages = false;
+  bool _loadingDocuments = false;
+
   // pageview
   List<Widget> _pages = [];
   final _pageController = PageController();
@@ -71,8 +75,8 @@ class _AddAssetPageState extends State<AddAssetPage> {
   String _durationUnit = '';
   int _duration = 0;
 
-  final List<File> _images = [];
-  final List<File> _documents = [];
+  List<File> _images = [];
+  List<File> _documents = [];
   List<String> _spareParts = [];
   List<String> _instructions = [];
 
@@ -337,6 +341,40 @@ class _AddAssetPageState extends State<AddAssetPage> {
     );
   }
 
+  void fetchImages(List<String> urls) async {
+    setState(() {
+      _loadingImages = true;
+    });
+    List<File> result = [];
+    for (var url in urls) {
+      final image = await getCachedFirebaseStorageFile(url);
+      if (image != null) {
+        result.add(image);
+      }
+    }
+    setState(() {
+      _images = result;
+      _loadingImages = false;
+    });
+  }
+
+  void fetchDocuments(List<String> urls) async {
+    setState(() {
+      _loadingDocuments = true;
+    });
+    List<File> result = [];
+    for (var url in urls) {
+      final doc = await getCachedFirebaseStorageFile(url);
+      if (doc != null) {
+        result.add(doc);
+      }
+    }
+    setState(() {
+      _documents = result;
+      _loadingDocuments = false;
+    });
+  }
+
   @override
   void initState() {
     _pageController.addListener(() {
@@ -363,6 +401,14 @@ class _AddAssetPageState extends State<AddAssetPage> {
 
     if (arguments != null && arguments is AssetModel && _asset == null) {
       _asset = arguments.deepCopy();
+
+      if (_asset!.images.isNotEmpty) {
+        fetchImages(_asset!.images);
+      }
+
+      if (_asset!.documents.isNotEmpty) {
+        fetchDocuments(_asset!.documents);
+      }
 
       _producerTextEditingController.text = _asset!.producer;
       _modelTextEditingController.text = _asset!.model;
@@ -471,11 +517,13 @@ class _AddAssetPageState extends State<AddAssetPage> {
         addImage: _addImage,
         removeImage: _removeImage,
         images: _images,
+        loading: _loadingImages,
       ),
       AddAssetDocumentsCard(
         addDocument: _addDocument,
         removeDocument: _removeDocument,
         documents: _documents,
+        loading: _loadingDocuments,
       ),
       AddAssetSummaryCard(
         pageController: _pageController,

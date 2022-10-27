@@ -256,4 +256,26 @@ class AssetRepositoryImpl extends AssetRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> checkCodeAvailability(CodeParams params) async {
+    try {
+      final assetsList = await firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('assets')
+          .where('internalCode', isEqualTo: params.internalCode.trim())
+          .get();
+
+      final isCodeAvailable = assetsList.size == 0;
+
+      return Right(isCodeAvailable);
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
 }

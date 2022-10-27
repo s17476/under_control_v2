@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../core/presentation/widgets/pdf_viewer.dart';
 import '../../../core/utils/responsive_size.dart';
@@ -14,11 +15,13 @@ class AddAssetDocumentsCard extends StatelessWidget with ResponsiveSize {
     required this.addDocument,
     required this.removeDocument,
     required this.documents,
+    required this.loading,
   }) : super(key: key);
 
   final Function(File) addDocument;
   final Function(File) removeDocument;
   final List<File> documents;
+  final bool loading;
 
   void _pickPdfFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -34,6 +37,29 @@ class AddAssetDocumentsCard extends StatelessWidget with ResponsiveSize {
 
   @override
   Widget build(BuildContext context) {
+    // loading images - edit mode
+    if (loading) {
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: GridView.count(
+            crossAxisCount: 1,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            children: [
+              for (int i = 0; i < 16; i++)
+                SizedBox.expand(
+                  child: Shimmer.fromColors(
+                    baseColor: Theme.of(context).cardColor,
+                    highlightColor: Theme.of(context).cardColor.withAlpha(60),
+                    child: Container(color: Colors.black),
+                  ),
+                )
+            ],
+          ),
+        ),
+      );
+    }
     return SafeArea(
       child: Column(
         children: [

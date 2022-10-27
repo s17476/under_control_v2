@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../core/presentation/widgets/image_viewer.dart';
 import '../../../core/utils/responsive_size.dart';
@@ -14,11 +15,13 @@ class AddAssetImagesCard extends StatelessWidget with ResponsiveSize {
     required this.addImage,
     required this.removeImage,
     required this.images,
+    required this.loading,
   }) : super(key: key);
 
   final Function(File) addImage;
   final Function(File) removeImage;
   final List<File> images;
+  final bool loading;
 
   void _pickImage(BuildContext context, ImageSource souruce) async {
     final picker = ImagePicker();
@@ -44,6 +47,29 @@ class AddAssetImagesCard extends StatelessWidget with ResponsiveSize {
 
   @override
   Widget build(BuildContext context) {
+    // loading images - edit mode
+    if (loading) {
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: GridView.count(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            children: [
+              for (int i = 0; i < 16; i++)
+                SizedBox.expand(
+                  child: Shimmer.fromColors(
+                    baseColor: Theme.of(context).cardColor,
+                    highlightColor: Theme.of(context).cardColor.withAlpha(60),
+                    child: Container(color: Colors.black),
+                  ),
+                )
+            ],
+          ),
+        ),
+      );
+    }
     return SafeArea(
       child: Column(
         children: [
