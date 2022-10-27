@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart';
 
 import '../../../core/presentation/widgets/summary_card.dart';
 import '../../../core/utils/double_apis.dart';
@@ -84,6 +85,12 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
           .firstWhere((cat) => cat.id == category)
           .name;
     }
+
+    //
+    //
+    //
+    print('context.read<AssetInternalNumberCubit>().state');
+    print(context.read<AssetInternalNumberCubit>().state);
 
     // price format
     String priceString = '';

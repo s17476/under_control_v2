@@ -15,6 +15,7 @@ import 'features/assets/presentation/blocs/asset_action_management/asset_action_
 import 'features/assets/presentation/blocs/asset_category/asset_category_bloc.dart';
 import 'features/assets/presentation/blocs/asset_category_management/asset_category_management_bloc.dart';
 import 'features/assets/presentation/blocs/asset_management/asset_management_bloc.dart';
+import 'features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart';
 import 'features/assets/presentation/pages/asset_category_management_page.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
@@ -181,6 +182,9 @@ class App extends StatelessWidget
         BlocProvider(
           create: (context) => getIt<AssetManagementBloc>(),
           lazy: false,
+        ),
+        BlocProvider(
+          create: (context) => getIt<AssetInternalNumberCubit>(),
         ),
       ],
       child: MaterialApp(

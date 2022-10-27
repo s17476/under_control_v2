@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart';
 import 'package:under_control_v2/features/core/utils/get_cached_firebase_storage_file.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
@@ -40,9 +41,12 @@ class AddAssetPage extends StatefulWidget {
 class _AddAssetPageState extends State<AddAssetPage> {
   Asset? _asset;
   late String _userId;
+  late String _companyId;
 
   bool _loadingImages = false;
   bool _loadingDocuments = false;
+
+  bool isCodeAvailable = false;
 
   // pageview
   List<Widget> _pages = [];
@@ -387,6 +391,12 @@ class _AddAssetPageState extends State<AddAssetPage> {
         _toggleAddInstructionsVisibility();
       }
     });
+    _internalCodeTextEditingController.addListener(() {
+      context.read<AssetInternalNumberCubit>().checkAssetCodeAvailability(
+            code: _internalCodeTextEditingController.text.trim(),
+            companyId: _companyId,
+          );
+    });
     super.initState();
   }
 
@@ -397,6 +407,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
     final userState = context.watch<UserProfileBloc>().state;
     if (userState is Approved) {
       _userId = userState.userProfile.id;
+      _companyId = userState.userProfile.companyId;
     }
 
     if (arguments != null && arguments is AssetModel && _asset == null) {
@@ -431,6 +442,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
       _spareParts = _asset!.spareParts;
       _instructions = _asset!.instructions;
     }
+
     super.didChangeDependencies();
   }
 
