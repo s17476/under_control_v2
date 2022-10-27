@@ -62,7 +62,7 @@ void main() {
     id: 'id',
     assetId: 'assetId',
     dateTime: DateTime.now(),
-    description: 'description',
+    userId: 'description',
     isAssetInUse: true,
     assetStatus: AssetStatus.ok,
     connectedTask: 'connectedTask',

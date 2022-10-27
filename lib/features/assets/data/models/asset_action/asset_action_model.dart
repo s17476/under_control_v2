@@ -6,7 +6,7 @@ class AssetActionModel extends AssetAction {
     required super.id,
     required super.assetId,
     required super.dateTime,
-    required super.description,
+    required super.userId,
     required super.isAssetInUse,
     required super.assetStatus,
     required super.connectedTask,
@@ -16,7 +16,7 @@ class AssetActionModel extends AssetAction {
     String? id,
     String? assetId,
     DateTime? dateTime,
-    String? description,
+    String? userId,
     bool? isAssetInUse,
     AssetStatus? assetStatus,
     String? connectedTask,
@@ -25,7 +25,7 @@ class AssetActionModel extends AssetAction {
       id: id ?? this.id,
       assetId: assetId ?? this.assetId,
       dateTime: dateTime ?? this.dateTime,
-      description: description ?? this.description,
+      userId: userId ?? this.userId,
       isAssetInUse: isAssetInUse ?? this.isAssetInUse,
       assetStatus: assetStatus ?? this.assetStatus,
       connectedTask: connectedTask ?? this.connectedTask,
@@ -37,7 +37,7 @@ class AssetActionModel extends AssetAction {
 
     result.addAll({'assetId': assetId});
     result.addAll({'dateTime': dateTime.toIso8601String()});
-    result.addAll({'description': description});
+    result.addAll({'userId': userId});
     result.addAll({'isAssetInUse': isAssetInUse});
     result.addAll({'assetStatus': assetStatus.name});
     result.addAll({'connectedTask': connectedTask});
@@ -53,7 +53,7 @@ class AssetActionModel extends AssetAction {
       id: id,
       assetId: map['assetId'] ?? '',
       dateTime: DateTime.parse(map['dateTime']),
-      description: map['description'] ?? '',
+      userId: map['userId'] ?? '',
       isAssetInUse: map['isAssetInUse'] ?? false,
       assetStatus: AssetStatus.fromString(map['assetStatus']),
       connectedTask: map['connectedTask'] ?? '',

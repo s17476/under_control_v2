@@ -6,7 +6,7 @@ class AssetAction extends Equatable {
   final String id;
   final String assetId;
   final DateTime dateTime;
-  final String description;
+  final String userId;
   final bool isAssetInUse;
   final AssetStatus assetStatus;
   final String connectedTask;
@@ -15,7 +15,7 @@ class AssetAction extends Equatable {
     required this.id,
     required this.assetId,
     required this.dateTime,
-    required this.description,
+    required this.userId,
     required this.isAssetInUse,
     required this.assetStatus,
     required this.connectedTask,
@@ -27,7 +27,7 @@ class AssetAction extends Equatable {
       id,
       assetId,
       dateTime,
-      description,
+      userId,
       isAssetInUse,
       assetStatus,
       connectedTask,
@@ -36,6 +36,6 @@ class AssetAction extends Equatable {
 
   @override
   String toString() {
-    return 'AssetAction(id: $id, assetId: $assetId, dateTime: $dateTime, description: $description, isAssetInUse: $isAssetInUse, assetStatus: $assetStatus, connectedTask: $connectedTask)';
+    return 'AssetAction(id: $id, assetId: $assetId, dateTime: $dateTime, description: $userId, isAssetInUse: $isAssetInUse, assetStatus: $assetStatus, connectedTask: $connectedTask)';
   }
 }

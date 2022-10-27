@@ -40,6 +40,7 @@ void main() {
     'categoryId': 'categoryId',
     'locationId': 'locationId',
     'internalCode': 'internalCode',
+    'internalCodeLowerCase': 'internalcode',
     'barCode': 'barCode',
     'price': 0.0,
     'isInUse': true,
@@ -66,7 +67,7 @@ void main() {
     );
 
     test(
-      'should return a map containing propre data',
+      'should return a map containing proper data',
       () async {
         // act
         final result = tAssetModel.toMap();

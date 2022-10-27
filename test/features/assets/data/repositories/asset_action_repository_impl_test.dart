@@ -76,7 +76,7 @@ void main() async {
       id: 'id',
       assetId: assetReference.id,
       dateTime: DateTime.now(),
-      description: 'description',
+      userId: 'description',
       isAssetInUse: true,
       assetStatus: AssetStatus.ok,
       connectedTask: 'connectedTask',

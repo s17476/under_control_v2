@@ -10,7 +10,7 @@ void main() {
     id: 'id',
     assetId: 'assetId',
     dateTime: date,
-    description: 'description',
+    userId: 'userId',
     isAssetInUse: true,
     assetStatus: AssetStatus.ok,
     connectedTask: 'connectedTask',
@@ -19,7 +19,7 @@ void main() {
   final tAssetActionModelMap = {
     'assetId': 'assetId',
     'dateTime': date.toIso8601String(),
-    'description': 'description',
+    'userId': 'userId',
     'isAssetInUse': true,
     'assetStatus': AssetStatus.ok.name,
     'connectedTask': 'connectedTask',
