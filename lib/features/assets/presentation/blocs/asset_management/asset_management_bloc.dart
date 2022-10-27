@@ -5,9 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/bloc_message.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/asset_model.dart';
 import '../../../domain/usecases/add_asset.dart';
 import '../../../domain/usecases/delete_asset.dart';
@@ -19,24 +19,25 @@ part 'asset_management_state.dart';
 @injectable
 class AssetManagementBloc
     extends Bloc<AssetManagementEvent, AssetManagementState> {
-  final CompanyProfileBloc companyProfileBloc;
+  final UserProfileBloc userProfileBloc;
   final AddAsset addAsset;
   final DeleteAsset deleteAsset;
   final UpdateAsset updateAsset;
 
-  late StreamSubscription _companyProfileStreamSubscription;
+  late StreamSubscription _userProfileStreamSubscription;
   String _companyId = '';
+  String _userId = '';
 
   AssetManagementBloc({
-    required this.companyProfileBloc,
+    required this.userProfileBloc,
     required this.addAsset,
     required this.deleteAsset,
     required this.updateAsset,
   }) : super(AssetManagementEmptyState()) {
-    _companyProfileStreamSubscription =
-        companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
-        _companyId = state.company.id;
+    _userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
+      if (state is Approved && _companyId.isEmpty) {
+        _companyId = state.userProfile.companyId;
+        _userId = state.userProfile.id;
       }
     });
 
@@ -48,6 +49,7 @@ class AssetManagementBloc
           companyId: _companyId,
           documents: event.documents,
           images: event.images,
+          userId: _userId,
         ),
       );
       await failureOrString.fold(
@@ -95,6 +97,7 @@ class AssetManagementBloc
           companyId: _companyId,
           documents: event.documents,
           images: event.images,
+          userId: _userId,
         ),
       );
       await failureOrVoidResult.fold(
@@ -114,7 +117,7 @@ class AssetManagementBloc
 
   @override
   Future<void> close() {
-    _companyProfileStreamSubscription.cancel();
+    _userProfileStreamSubscription.cancel();
     return super.close();
   }
 }

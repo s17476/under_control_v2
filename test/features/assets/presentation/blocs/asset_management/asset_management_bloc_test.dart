@@ -8,13 +8,13 @@ import 'package:under_control_v2/features/assets/domain/usecases/delete_asset.da
 import 'package:under_control_v2/features/assets/domain/usecases/update_asset.dart';
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/core/utils/duration_unit.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
-class MockCompanyProfileBloc extends Mock
-    implements Stream<CompanyProfileState>, CompanyProfileBloc {}
+class MockUserProfileBloc extends Mock
+    implements Stream<UserProfileState>, UserProfileBloc {}
 
 class MockAddAsset extends Mock implements AddAsset {}
 
@@ -23,7 +23,7 @@ class MockDeleteAsset extends Mock implements DeleteAsset {}
 class MockUpdateAsset extends Mock implements UpdateAsset {}
 
 void main() {
-  late MockCompanyProfileBloc mockCompanyProfileBloc;
+  late MockUserProfileBloc mockUserProfileBloc;
 
   late MockAddAsset mockAddAsset;
   late MockDeleteAsset mockDeleteAsset;
@@ -63,11 +63,11 @@ void main() {
   );
 
   setUp(() {
-    mockCompanyProfileBloc = MockCompanyProfileBloc();
+    mockUserProfileBloc = MockUserProfileBloc();
 
-    when(() => mockCompanyProfileBloc.stream).thenAnswer(
+    when(() => mockUserProfileBloc.stream).thenAnswer(
       (_) => Stream.fromFuture(
-        Future.value(CompanyProfileEmpty()),
+        Future.value(UserProfileEmpty()),
       ),
     );
 
@@ -76,7 +76,7 @@ void main() {
     mockUpdateAsset = MockUpdateAsset();
 
     assetManagementBloc = AssetManagementBloc(
-      companyProfileBloc: mockCompanyProfileBloc,
+      userProfileBloc: mockUserProfileBloc,
       addAsset: mockAddAsset,
       deleteAsset: mockDeleteAsset,
       updateAsset: mockUpdateAsset,

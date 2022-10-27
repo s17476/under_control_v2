@@ -206,12 +206,14 @@ class AssetParams extends Equatable {
   final List<File>? images;
   final List<File>? documents;
   final String companyId;
+  final String? userId;
 
   const AssetParams({
     required this.asset,
     this.images,
     this.documents,
     required this.companyId,
+    this.userId,
   });
 
   @override

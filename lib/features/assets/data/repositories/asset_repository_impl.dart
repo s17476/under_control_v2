@@ -8,6 +8,8 @@ import 'package:under_control_v2/features/assets/domain/repositories/asset_repos
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
+import '../models/asset_action/asset_action_model.dart';
+
 @LazySingleton(as: AssetRepository)
 class AssetRepositoryImpl extends AssetRepository {
   final FirebaseFirestore firebaseFirestore;
@@ -35,8 +37,30 @@ class AssetRepositoryImpl extends AssetRepository {
           .doc(params.companyId)
           .collection('assets');
 
+      // action
+      final actionsReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('assetsActions');
+
+      // get action reference
+      final actionReference = await actionsReference.add({'name': ''});
+
       // instruction reference
       final assetReference = await assetsReference.add({'name': ''});
+
+      final assetAction = AssetActionModel(
+        id: actionReference.id,
+        assetId: assetReference.id,
+        dateTime: DateTime.now(),
+        userId: params.userId ?? '',
+        isAssetInUse: params.asset.isInUse,
+        assetStatus: params.asset.currentStatus,
+        connectedTask: '',
+      );
+
+      final actionMap = assetAction.toMap();
+
       // storage reference
       final storageReference =
           firebaseStorage.ref().child(params.companyId).child('assets');
@@ -76,9 +100,15 @@ class AssetRepositoryImpl extends AssetRepository {
       // asset map
       final assetMap = updatedAsset.toMap();
 
+      // add action
+      batch.set(
+        actionReference,
+        actionMap,
+      );
+
       // add asset to DB
       batch.set(
-        assetsReference.doc(assetReference.id),
+        assetReference,
         assetMap,
       );
 
@@ -107,8 +137,23 @@ class AssetRepositoryImpl extends AssetRepository {
           .collection('assets')
           .doc(params.asset.id);
 
+      final actionsReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('assetsActions');
+
+      final assetActions = await actionsReference
+          .where('assetId', isEqualTo: params.asset.id)
+          .get();
+
       // batch
       final batch = firebaseFirestore.batch();
+
+      // deletes connected actions
+      for (var doc in assetActions.docs) {
+        final documentReference = actionsReference.doc(doc.id);
+        batch.delete(documentReference);
+      }
 
       // storage reference
       final storageReference =
@@ -184,6 +229,27 @@ class AssetRepositoryImpl extends AssetRepository {
           .collection('assets')
           .doc(params.asset.id);
 
+      // action
+      final actionsReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('assetsActions');
+
+      // get action reference
+      final actionReference = await actionsReference.add({'name': ''});
+
+      final assetAction = AssetActionModel(
+        id: actionReference.id,
+        assetId: params.asset.id,
+        dateTime: DateTime.now(),
+        userId: params.userId ?? '',
+        isAssetInUse: params.asset.isInUse,
+        assetStatus: params.asset.currentStatus,
+        connectedTask: '',
+      );
+
+      final actionMap = assetAction.toMap();
+
       // storage reference
       final storageReference =
           firebaseStorage.ref().child(params.companyId).child('assets');
@@ -235,6 +301,12 @@ class AssetRepositoryImpl extends AssetRepository {
 
       // asset map
       final assetMap = updatedAsset.toMap();
+
+      // add action
+      batch.set(
+        actionReference,
+        actionMap,
+      );
 
       // add asset to DB
       batch.update(
