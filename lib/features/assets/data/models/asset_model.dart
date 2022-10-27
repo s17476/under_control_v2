@@ -86,7 +86,7 @@ class AssetModel extends Asset {
     result.addAll({'categoryId': categoryId});
     result.addAll({'locationId': locationId});
     result.addAll({'internalCode': internalCode});
-    result.addAll({'internalCodeLowerCase': internalCode});
+    result.addAll({'internalCodeLowerCase': internalCode.toLowerCase()});
     result.addAll({'barCode': barCode});
     result.addAll({'price': price});
     result.addAll({'isInUse': isInUse});

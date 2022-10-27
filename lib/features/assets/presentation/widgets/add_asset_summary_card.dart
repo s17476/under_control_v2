@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:under_control_v2/features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart';
 
 import '../../../core/presentation/widgets/summary_card.dart';
 import '../../../core/utils/double_apis.dart';
@@ -12,6 +11,7 @@ import '../../../core/utils/duration_unit.dart';
 import '../../../core/utils/location_selection_helpers.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../domain/entities/asset.dart';
 import '../../utils/asset_status.dart';
 import '../../utils/get_localizad_duration_unit_name.dart';
 import '../../utils/get_localizae_asset_status_name.dart';
@@ -22,6 +22,7 @@ import '../blocs/asset_category/asset_category_bloc.dart';
 class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
   const AddAssetSummaryCard({
     Key? key,
+    this.asset,
     required this.pageController,
     required this.producerTextEditingController,
     required this.modelTextEditingController,
@@ -39,11 +40,14 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.duration,
     required this.isSparePart,
     required this.isInUse,
+    required this.isCodeAvailable,
     required this.spareParts,
     required this.instructions,
     required this.images,
     required this.documents,
   }) : super(key: key);
+
+  final Asset? asset;
 
   final PageController pageController;
 
@@ -67,6 +71,7 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
 
   final bool isSparePart;
   final bool isInUse;
+  final bool isCodeAvailable;
 
   final List<String> spareParts;
   final List<String> instructions;
@@ -237,12 +242,25 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                     // internal code
                     SummaryCard(
                       title: AppLocalizations.of(context)!.item_internal_code,
-                      validator: () =>
-                          internalCodeTextEditingController.text.trim().length <
-                                  2
-                              ? AppLocalizations.of(context)!
-                                  .validation_min_two_characters
-                              : null,
+                      validator: () {
+                        if (!isCodeAvailable &&
+                            ((asset == null || asset!.id.isEmpty) ||
+                                (asset != null &&
+                                    asset!.internalCode.toLowerCase() !=
+                                        internalCodeTextEditingController.text
+                                            .trim()
+                                            .toLowerCase()))) {
+                          return AppLocalizations.of(context)!
+                              .asset_msg_code_exists;
+                        }
+                        return internalCodeTextEditingController.text
+                                    .trim()
+                                    .length <
+                                2
+                            ? AppLocalizations.of(context)!
+                                .validation_min_two_characters
+                            : null;
+                      },
                       child:
                           Text(internalCodeTextEditingController.text.trim()),
                       pageController: pageController,

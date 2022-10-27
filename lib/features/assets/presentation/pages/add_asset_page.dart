@@ -107,7 +107,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
                       _internalCodeTextEditingController.text
                           .trim()
                           .toLowerCase()))) {
-        errorMessage = 'ten sam kod';
+        errorMessage = AppLocalizations.of(context)!.asset_msg_code_exists;
       }
       // category selection validation
       if (errorMessage.isEmpty && _categoryId.isEmpty) {
@@ -161,63 +161,48 @@ class _AddAssetPageState extends State<AddAssetPage> {
     } else {
       final newAsset = AssetModel(
         id: _asset != null ? _asset!.id : '',
-        producer: _asset != null
-            ? _asset!.producer
-            : _producerTextEditingController.text,
-        model:
-            _asset != null ? _asset!.model : _modelTextEditingController.text,
-        description: _asset != null
-            ? _asset!.description
-            : _descriptionTextEditingController.text,
-        categoryId: _asset != null ? _asset!.categoryId : _categoryId,
-        locationId: _asset != null ? _asset!.locationId : _locationId,
-        internalCode: _asset != null
-            ? _asset!.internalCode
-            : _internalCodeTextEditingController.text,
-        barCode: _asset != null
-            ? _asset!.barCode
-            : _barCodeTextEditingController.text,
+        producer: _producerTextEditingController.text,
+        model: _modelTextEditingController.text,
+        description: _descriptionTextEditingController.text,
+        categoryId: _categoryId,
+        locationId: _locationId,
+        internalCode: _internalCodeTextEditingController.text,
+        barCode: _barCodeTextEditingController.text,
         price: price,
-        isInUse: _asset != null ? _asset!.isInUse : _isInUse,
-        addDate: _asset != null ? _asset!.addDate : _addDate,
-        currentStatus: _asset != null
-            ? _asset!.currentStatus
-            : AssetStatus.fromString(_assetStatus),
-        lastInspection:
-            _asset != null ? _asset!.lastInspection : _lastInspectionDate,
-        durationUnit: _asset != null
-            ? _asset!.durationUnit
-            : DurationUnit.fromString(_durationUnit),
-        duration: _asset != null ? _asset!.duration : _duration,
-        images: _asset != null ? _asset!.images : const [],
-        documents: _asset != null ? _asset!.documents : const [],
-        instructions: _asset != null ? _asset!.instructions : _instructions,
-        spareParts: _asset != null ? _asset!.spareParts : _spareParts,
-        currentParentId:
-            _asset != null ? _asset!.currentParentId : _currentParentId,
-        isSparePart: _asset != null ? _asset!.isSparePart : _isSparePart,
+        isInUse: _isInUse,
+        addDate: _addDate,
+        currentStatus: AssetStatus.fromString(_assetStatus),
+        lastInspection: _lastInspectionDate,
+        durationUnit: DurationUnit.fromString(_durationUnit),
+        duration: _duration,
+        images: const [],
+        documents: const [],
+        instructions: _instructions,
+        spareParts: _spareParts,
+        currentParentId: _currentParentId,
+        isSparePart: _isSparePart,
       );
 
       // add new asset
-      // if (_asset == null) {
-      //   context.read<AssetManagementBloc>().add(
-      //         AddAssetEvent(
-      //           asset: newAsset,
-      //           documents: _documents,
-      //           images: _images,
-      //         ),
-      //       );
-      // } else {
-      //   context.read<AssetManagementBloc>().add(
-      //         UpdateAssetEvent(
-      //           asset: newAsset,
-      //           documents: _documents,
-      //           images: _images,
-      //         ),
-      //       );
-      // }
+      if (_asset == null || _asset!.id.isEmpty) {
+        context.read<AssetManagementBloc>().add(
+              AddAssetEvent(
+                asset: newAsset,
+                documents: _documents,
+                images: _images,
+              ),
+            );
+      } else {
+        context.read<AssetManagementBloc>().add(
+              UpdateAssetEvent(
+                asset: newAsset,
+                documents: _documents,
+                images: _images,
+              ),
+            );
+      }
 
-      // Navigator.pop(context);
+      Navigator.pop(context);
     }
   }
 
@@ -475,9 +460,6 @@ class _AddAssetPageState extends State<AddAssetPage> {
     super.dispose();
   }
 
-  // TODO
-  // finish copy mode and internal code validation
-
   @override
   Widget build(BuildContext context) {
     _pages = [
@@ -559,6 +541,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
         loading: _loadingDocuments,
       ),
       AddAssetSummaryCard(
+        asset: _asset,
         pageController: _pageController,
         producerTextEditingController: _producerTextEditingController,
         modelTextEditingController: _modelTextEditingController,
@@ -580,6 +563,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
         instructions: _instructions,
         images: _images,
         documents: _documents,
+        isCodeAvailable: _isCodeAvailable,
       ),
     ];
 

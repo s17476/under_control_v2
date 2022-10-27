@@ -1901,6 +1901,10 @@
     "@asset_msg_not_deleted": {
       "description": "asset - NOT deleted msg"
     },
+    "asset_msg_code_exists": "Asset with given internal code already exists",
+    "@asset_msg_code_exists": {
+      "description": "asset - exists"
+    },
     "asset_data": "Asset data",
     "@asset_data": {
       "description": "asset - data"
