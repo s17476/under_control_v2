@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/utils/responsive_size.dart';
-import '../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
 import '../../../inventory/presentation/widgets/inventory_spare_parts_list.dart';
-import '../../../inventory/presentation/widgets/item_tile.dart';
-import '../../../inventory/presentation/widgets/shimmer_item_tile.dart';
-import '../blocs/asset/asset_bloc.dart';
 import 'asset_selection/overlay_asset_selection.dart';
-import 'asset_tile.dart';
 import 'assets_spare_parts_list.dart';
 
 class AddAssetSparePartCard extends StatefulWidget {

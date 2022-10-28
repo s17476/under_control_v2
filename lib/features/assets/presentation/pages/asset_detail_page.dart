@@ -49,7 +49,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
       _currentUser = currentState.userProfile;
     }
     // gets selected asset
-    final assetId = (ModalRoute.of(context)?.settings.arguments as Asset).id;
+    final assetId = (ModalRoute.of(context)?.settings.arguments as String);
     final assetsState = context.watch<AssetBloc>().state;
     if (assetsState is AssetLoadedState) {
       setState(() {

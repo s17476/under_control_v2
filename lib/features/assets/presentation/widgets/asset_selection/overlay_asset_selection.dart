@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
 
 import '../../../../core/presentation/pages/qr_scanner.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
@@ -12,7 +11,6 @@ import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../inventory/presentation/widgets/shimmer_item_tile.dart';
 import '../../../utils/search_assets.dart';
 import '../../blocs/asset/asset_bloc.dart';
-import '../../blocs/asset_category/asset_category_bloc.dart';
 import '../asset_tile.dart';
 
 class OverlayAssetSelection extends StatefulWidget {

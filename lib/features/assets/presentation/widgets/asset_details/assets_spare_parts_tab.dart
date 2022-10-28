@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
 
+import '../../../../inventory/domain/entities/item.dart';
 import '../../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../../inventory/presentation/widgets/item_tile.dart';
 import '../../../../inventory/presentation/widgets/shimmer_item_tile.dart';

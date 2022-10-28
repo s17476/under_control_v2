@@ -63,7 +63,9 @@ void main() {
     assetId: 'assetId',
     dateTime: DateTime.now(),
     userId: 'description',
+    locationId: 'locationId',
     isAssetInUse: true,
+    isCreate: false,
     assetStatus: AssetStatus.ok,
     connectedTask: 'connectedTask',
   );

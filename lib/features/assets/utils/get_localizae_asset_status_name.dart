@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/utils/asset_status.dart';
+
+import 'asset_status.dart';
 
 String getLocalizedAssetStatusName(
     BuildContext context, AssetStatus assetStatus) {

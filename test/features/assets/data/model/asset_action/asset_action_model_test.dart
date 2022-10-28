@@ -11,7 +11,9 @@ void main() {
     assetId: 'assetId',
     dateTime: date,
     userId: 'userId',
+    locationId: 'locationId',
     isAssetInUse: true,
+    isCreate: false,
     assetStatus: AssetStatus.ok,
     connectedTask: 'connectedTask',
   );
@@ -20,7 +22,9 @@ void main() {
     'assetId': 'assetId',
     'dateTime': date.toIso8601String(),
     'userId': 'userId',
+    'locationId': 'locationId',
     'isAssetInUse': true,
+    'isCreate': false,
     'assetStatus': AssetStatus.ok.name,
     'connectedTask': 'connectedTask',
   };

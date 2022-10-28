@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/utils/bloc_message.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/asset_category/assets_categories_list_model.dart';
 import '../../../domain/entities/asset_category/asset_category.dart';

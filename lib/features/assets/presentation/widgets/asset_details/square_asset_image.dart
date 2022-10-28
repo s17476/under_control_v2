@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/presentation/pages/images_carousel.dart';
-import '../../../../core/presentation/widgets/image_viewer.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/size_config.dart';
 import '../../../domain/entities/asset.dart';

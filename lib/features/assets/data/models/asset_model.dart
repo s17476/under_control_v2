@@ -1,8 +1,7 @@
-import 'package:under_control_v2/features/assets/utils/get_next_date.dart';
-
 import '../../../core/utils/duration_unit.dart';
 import '../../domain/entities/asset.dart';
 import '../../utils/asset_status.dart';
+import '../../utils/get_next_date.dart';
 
 class AssetModel extends Asset {
   const AssetModel({

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 
 import '../../../core/presentation/widgets/custom_dropdown_button.dart';
+import '../../utils/asset_status.dart';
 import '../../utils/get_localizae_asset_status_name.dart';
 
 class AssetStatusDropdownButton extends StatelessWidget {

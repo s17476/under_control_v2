@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_action_tile.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/icon_title_mini_row.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/actions/shimmer_item_action_list_tile.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/shimmer_item_tile.dart';
-import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
-import '../../../../core/presentation/widgets/cached_pdf_viewer.dart';
 import '../../../../core/presentation/widgets/icon_title_row.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/asset_model.dart';
 import '../../../domain/entities/asset.dart';
 import '../../../domain/entities/asset_action/asset_action.dart';
 import '../../blocs/asset_action/asset_action_bloc.dart';
+import 'asset_action_tile.dart';
 import 'asset_actions_list_page.dart';
 import 'shimmer_asset_action_list_tile.dart';
 
@@ -113,7 +108,6 @@ class _AssetHistoryTabState extends State<AssetHistoryTab> {
                     ),
                     child: AssetActionTile(
                       action: actions[index],
-                      isAddAction: index == actions.length - 1,
                     ),
                   ),
                 ),

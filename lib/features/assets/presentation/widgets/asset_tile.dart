@@ -55,7 +55,7 @@ class AssetTile extends StatelessWidget {
                   : () => Navigator.pushNamed(
                         context,
                         AssetDetailsPage.routeName,
-                        arguments: asset,
+                        arguments: asset.id,
                       ),
           borderRadius: BorderRadius.circular(borderRadius),
           child: Column(

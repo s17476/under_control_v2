@@ -3,15 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/presentation/blocs/asset_action/asset_action_bloc.dart';
-import 'package:under_control_v2/features/assets/presentation/blocs/asset_action_management/asset_action_management_bloc.dart';
-import 'package:under_control_v2/features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart';
-import 'package:under_control_v2/features/core/utils/get_cached_firebase_storage_file.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/duration_unit.dart';
+import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/asset_model.dart';
@@ -19,6 +16,7 @@ import '../../domain/entities/asset.dart';
 import '../../utils/asset_status.dart';
 import '../blocs/asset/asset_bloc.dart';
 import '../blocs/asset_management/asset_management_bloc.dart';
+import '../cubits/cubit/asset_internal_number_cubit.dart';
 import '../widgets/add_asset_card.dart';
 import '../widgets/add_asset_data_card.dart';
 import '../widgets/add_asset_documents.dart';
@@ -42,7 +40,6 @@ class AddAssetPage extends StatefulWidget {
 
 class _AddAssetPageState extends State<AddAssetPage> {
   Asset? _asset;
-  late String _userId;
   late String _companyId;
 
   bool _loadingImages = false;
@@ -403,7 +400,6 @@ class _AddAssetPageState extends State<AddAssetPage> {
 
     final userState = context.watch<UserProfileBloc>().state;
     if (userState is Approved) {
-      _userId = userState.userProfile.id;
       _companyId = userState.userProfile.companyId;
     }
 

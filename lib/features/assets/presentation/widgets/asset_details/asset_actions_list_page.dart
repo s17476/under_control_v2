@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/presentation/blocs/asset_action/asset_action_bloc.dart';
 
 import '../../../../core/utils/responsive_size.dart';
-import '../../../../inventory/presentation/widgets/shimmer_item_tile.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/asset_model.dart';
 import '../../../domain/entities/asset.dart';
 import '../../../domain/entities/asset_action/asset_action.dart';
 import '../../blocs/asset/asset_bloc.dart';
+import '../../blocs/asset_action/asset_action_bloc.dart';
 import 'asset_action_tile.dart';
 import 'shimmer_asset_action_list_tile.dart';
 
@@ -59,8 +58,6 @@ class _AssetActionsListPageState extends State<AssetActionsListPage>
     final actionsState = context.watch<AssetActionBloc>().state;
     if (actionsState is AssetActionLoadedState && actionsState.isAllItems) {
       _actions = actionsState.allActions.allAssetActions.toList();
-      print('asset ok');
-      print(_actions!.length);
     }
     super.didChangeDependencies();
   }
@@ -89,7 +86,6 @@ class _AssetActionsListPageState extends State<AssetActionsListPage>
                   ),
                   child: AssetActionTile(
                     action: _actions![index],
-                    isAddAction: index == _actions!.length - 1,
                   ),
                 ),
               ),

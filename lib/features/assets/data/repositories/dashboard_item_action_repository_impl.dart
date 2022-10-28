@@ -24,7 +24,7 @@ class DashboardAssetActionRepositoryImpl
       querySnapshot = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('assetActions')
+          .collection('assetsActions')
           .where('locationId', whereIn: params.locations)
           .orderBy('dateTime', descending: true)
           .snapshots();
@@ -48,7 +48,7 @@ class DashboardAssetActionRepositoryImpl
       querySnapshot = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('assetActions')
+          .collection('assetsActions')
           .where('locationId', whereIn: params.locations)
           .orderBy('dateTime', descending: true)
           .limit(5)

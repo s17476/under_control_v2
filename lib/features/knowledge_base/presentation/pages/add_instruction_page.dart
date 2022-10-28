@@ -53,8 +53,8 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
 
   bool _isPublished = false;
 
+  final List<ValueKey> _stepsKeys = [];
   List<InstructionStepModel> _steps = [];
-  List<ValueKey> _stepsKeys = [];
   List<Location> _selectedLocations = [];
   List<String> _locationsChildren = [];
   List<String> _locationsContext = [];

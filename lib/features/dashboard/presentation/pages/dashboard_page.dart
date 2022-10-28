@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:under_control_v2/features/dashboard/presentation/widgets/inventory_low_level_items.dart';
 
+import '../widgets/assets_latest_actions.dart';
 import '../widgets/inventory_latest_actions.dart';
+import '../widgets/inventory_low_level_items.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class DashboardPage extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: const [
+          AssetsLatestActions(),
           InventoryLowLevelItems(),
           InventoryLatestActions(),
         ],

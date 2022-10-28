@@ -54,7 +54,9 @@ class AssetRepositoryImpl extends AssetRepository {
         assetId: assetReference.id,
         dateTime: DateTime.now(),
         userId: params.userId ?? '',
+        locationId: params.asset.locationId,
         isAssetInUse: params.asset.isInUse,
+        isCreate: true,
         assetStatus: params.asset.currentStatus,
         connectedTask: '',
       );
@@ -197,7 +199,6 @@ class AssetRepositoryImpl extends AssetRepository {
           .doc(params.companyId)
           .collection('assets')
           .where('locationId', whereIn: params.locations)
-          // .orderBy('producer', descending: true)
           .snapshots();
 
       return Right(AssetsStream(allAssets: querySnapshot));
@@ -243,7 +244,9 @@ class AssetRepositoryImpl extends AssetRepository {
         assetId: params.asset.id,
         dateTime: DateTime.now(),
         userId: params.userId ?? '',
+        locationId: params.asset.locationId,
         isAssetInUse: params.asset.isInUse,
+        isCreate: false,
         assetStatus: params.asset.currentStatus,
         connectedTask: '',
       );

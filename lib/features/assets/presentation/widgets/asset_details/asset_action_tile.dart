@@ -8,19 +8,17 @@ import '../../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../domain/entities/asset_action/asset_action.dart';
 import '../../../utils/get_asset_status_icon.dart';
+import '../../pages/asset_detail_page.dart';
 
 class AssetActionTile extends StatelessWidget {
   const AssetActionTile({
     Key? key,
     required this.action,
-    required this.isAddAction,
+    this.isDashboardTile = false,
   }) : super(key: key);
 
   final AssetAction action;
-  final bool isAddAction;
-
-  // TODO
-  // go to task on lick if available
+  final bool isDashboardTile;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +43,15 @@ class AssetActionTile extends StatelessWidget {
           child: Material(
             borderRadius: BorderRadius.circular(10),
             child: InkWell(
-              onTap: () {},
+              onTap: isDashboardTile
+                  ? () {
+                      Navigator.pushNamed(
+                        context,
+                        AssetDetailsPage.routeName,
+                        arguments: action.assetId,
+                      );
+                    }
+                  : () {},
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 padding: const EdgeInsets.only(
@@ -80,7 +86,7 @@ class AssetActionTile extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          isAddAction
+                          action.isCreate
                               ? AppLocalizations.of(context)!.created
                               : AppLocalizations.of(context)!.edited,
                         ),

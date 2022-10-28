@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:under_control_v2/features/assets/utils/asset_status.dart';
-import 'package:under_control_v2/features/core/utils/duration_unit.dart';
+import '../../../core/utils/duration_unit.dart';
+import '../../utils/asset_status.dart';
 
 class Asset extends Equatable {
   final String id;

@@ -15,6 +15,7 @@ import 'features/assets/presentation/blocs/asset_action_management/asset_action_
 import 'features/assets/presentation/blocs/asset_category/asset_category_bloc.dart';
 import 'features/assets/presentation/blocs/asset_category_management/asset_category_management_bloc.dart';
 import 'features/assets/presentation/blocs/asset_management/asset_management_bloc.dart';
+import 'features/assets/presentation/blocs/dashboard_asset_action/dashboard_asset_action_bloc.dart';
 import 'features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart';
 import 'features/assets/presentation/pages/asset_category_management_page.dart';
 import 'features/assets/presentation/widgets/asset_details/asset_actions_list_page.dart';
@@ -41,6 +42,7 @@ import 'features/core/utils/custom_page_transition.dart';
 import 'features/core/utils/error_message_handler.dart';
 import 'features/core/utils/material_color_generator.dart';
 import 'features/dashboard/presentation/pages/all_actions_list_page.dart';
+import 'features/dashboard/presentation/pages/all_asset_actions_page.dart';
 import 'features/filter/presentation/blocs/filter/filter_bloc.dart';
 import 'features/groups/presentation/blocs/group/group_bloc.dart';
 import 'features/groups/presentation/pages/add_group_page.dart';
@@ -187,6 +189,10 @@ class App extends StatelessWidget
         BlocProvider(
           create: (context) => getIt<AssetInternalNumberCubit>(),
         ),
+        BlocProvider(
+          create: (context) => getIt<DashboardAssetActionBloc>(),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -271,6 +277,8 @@ class App extends StatelessWidget
           AssetDetailsPage.routeName: (context) => const AssetDetailsPage(),
           AssetActionsListPage.routeName: (context) =>
               const AssetActionsListPage(),
+          AllAssetActionsListPage.routeName: (context) =>
+              const AllAssetActionsListPage(),
         },
         // localization
         localizationsDelegates: const [
