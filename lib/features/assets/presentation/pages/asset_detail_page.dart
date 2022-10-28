@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_history_tab.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
@@ -19,6 +18,7 @@ import '../blocs/asset/asset_bloc.dart';
 import '../blocs/asset_action/asset_action_bloc.dart';
 import '../blocs/asset_management/asset_management_bloc.dart';
 import '../widgets/asset_details/asset_documents_tab.dart';
+import '../widgets/asset_details/asset_history_tab.dart';
 import '../widgets/asset_details/asset_images_tab.dart';
 import '../widgets/asset_details/asset_info_tab.dart';
 import '../widgets/asset_details/asset_instructions_tab.dart';
@@ -107,7 +107,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
     final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;
     const double tabBarIconSize = 32;
 
-    appBarTitle = AppLocalizations.of(context)!.item_details_title;
+    appBarTitle = AppLocalizations.of(context)!.asset_details;
 
     return DefaultTabController(
       length: 6,

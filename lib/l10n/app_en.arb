@@ -1912,5 +1912,9 @@
     "asset_add_date": "Add date",
     "@asset_add_date": {
       "description": "asset - add date"
+    },
+    "asset_details": "Asset details",
+    "@asset_details": {
+      "description": "asset - details"
     }
 }

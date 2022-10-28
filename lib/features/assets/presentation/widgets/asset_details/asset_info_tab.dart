@@ -44,6 +44,37 @@ class AssetInfoTab extends StatelessWidget with ResponsiveSize {
               // asset photo
               SquareAssetImage(asset: asset),
 
+              // is asset in use
+              Positioned(
+                top: 16,
+                left: 16,
+                child: Container(
+                  width: 90,
+                  height: 90,
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.black54,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        asset.isInUse ? Icons.play_arrow : Icons.pause,
+                        size: 40,
+                      ),
+                      FittedBox(
+                        child: Text(
+                          asset.isInUse
+                              ? AppLocalizations.of(context)!.asset_in_use
+                              : AppLocalizations.of(context)!.asset_not_in_use,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
               // asset status
               Positioned(
                 top: 16,

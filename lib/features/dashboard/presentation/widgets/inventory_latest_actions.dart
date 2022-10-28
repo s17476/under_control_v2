@@ -64,9 +64,9 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
                       child: IconTitleRow(
                         icon: Icons.apps,
                         iconColor: Colors.white,
-                        iconBackground: Theme.of(context).primaryColor,
+                        iconBackground: Colors.orange,
                         title:
-                            '${AppLocalizations.of(context)!.bottom_bar_title_inventory} - ${AppLocalizations.of(context)!.latest_actions}',
+                            '${AppLocalizations.of(context)!.bottom_bar_title_inventory} - ${AppLocalizations.of(context)!.item_details_latest_actions}',
                       ),
                     ),
                     if (_actions != null && _actions!.isNotEmpty)

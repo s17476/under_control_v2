@@ -460,5 +460,6 @@
     "asset_msg_not_deleted": "Aktywa NIE zostały usunięte",
     "asset_msg_code_exists": "Aktywa o podanym kodzie wewnętrznym już istnieją",
     "asset_data": "Dane",
-    "asset_add_date": "Data dodania"
+    "asset_add_date": "Data dodania",
+    "asset_details": "Szczegóy aktywów"
 }

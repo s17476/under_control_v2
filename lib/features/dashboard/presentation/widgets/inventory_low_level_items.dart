@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
-import 'package:under_control_v2/features/inventory/utils/get_item_total_quantity.dart';
 
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
+import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../inventory/domain/entities/item.dart';
 import '../../../inventory/presentation/blocs/items/items_bloc.dart';
@@ -79,7 +78,7 @@ class _InventoryLowLevelItemsState extends State<InventoryLowLevelItems> {
                       child: IconTitleRow(
                         icon: Icons.apps,
                         iconColor: Colors.white,
-                        iconBackground: Theme.of(context).primaryColor,
+                        iconBackground: Colors.orange,
                         title:
                             '${AppLocalizations.of(context)!.bottom_bar_title_inventory} - ${AppLocalizations.of(context)!.quantity_low_level}',
                       ),

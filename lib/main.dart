@@ -17,6 +17,7 @@ import 'features/assets/presentation/blocs/asset_category_management/asset_categ
 import 'features/assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import 'features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart';
 import 'features/assets/presentation/pages/asset_category_management_page.dart';
+import 'features/assets/presentation/widgets/asset_details/asset_actions_list_page.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
 import 'features/authentication/presentation/pages/email_confirmation_page.dart';
@@ -268,6 +269,8 @@ class App extends StatelessWidget
               const AllLowLevelItemsPage(),
           AddAssetPage.routeName: (context) => const AddAssetPage(),
           AssetDetailsPage.routeName: (context) => const AssetDetailsPage(),
+          AssetActionsListPage.routeName: (context) =>
+              const AssetActionsListPage(),
         },
         // localization
         localizationsDelegates: const [
