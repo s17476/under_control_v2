@@ -6,7 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 import 'package:under_control_v2/features/assets/data/repositories/asset_repository_impl.dart';
-import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
 import 'package:under_control_v2/features/assets/domain/entities/assets_stream.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';

@@ -1,14 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 import 'package:under_control_v2/features/assets/domain/repositories/asset_repository.dart';
-import 'package:under_control_v2/features/assets/domain/usecases/add_asset.dart';
 import 'package:under_control_v2/features/assets/domain/usecases/check_code_availability.dart';
-import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/core/utils/duration_unit.dart';
 
 class MockAssetRepository extends Mock implements AssetRepository {}
 

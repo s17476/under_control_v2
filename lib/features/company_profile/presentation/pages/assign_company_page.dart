@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:under_control_v2/features/company_profile/domain/usecases/add_company.dart';
 import 'package:under_control_v2/features/company_profile/presentation/pages/add_company_page.dart';
 
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';

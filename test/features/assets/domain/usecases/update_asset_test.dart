@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
-import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
 import 'package:under_control_v2/features/assets/domain/repositories/asset_repository.dart';
 import 'package:under_control_v2/features/assets/domain/usecases/update_asset.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';

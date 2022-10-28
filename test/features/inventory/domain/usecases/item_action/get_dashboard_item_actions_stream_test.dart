@@ -6,7 +6,6 @@ import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_actions_stream.dart';
 import 'package:under_control_v2/features/inventory/domain/repositories/dashboard_item_action_repository.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/get_dashboard_item_actions_stream.dart';
-import 'package:under_control_v2/features/inventory/domain/usecases/item_action/get_dashboard_last_five_item_actions_stream.dart';
 
 class MockDashboardItemActionRepository extends Mock
     implements DashboardItemActionRepository {}

@@ -4,7 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/instruction.dart';
 
 import '../../assets/data/models/asset_model.dart';
 import '../../assets/domain/entities/asset.dart';

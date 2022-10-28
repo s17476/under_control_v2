@@ -6,8 +6,6 @@ import 'package:under_control_v2/features/assets/domain/repositories/asset_repos
 import 'package:under_control_v2/features/assets/domain/usecases/get_assets_stream.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/entities/instructions_stream.dart';
-import 'package:under_control_v2/features/knowledge_base/domain/usecases/get_instructions_stream.dart';
 
 class MockAssetRepository extends Mock implements AssetRepository {}
 
