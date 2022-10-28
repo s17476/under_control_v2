@@ -115,7 +115,7 @@ class AssetActionRepositoryImpl extends AssetActionRepository {
           .doc(params.companyId)
           .collection('assetsActions')
           .where('assetId', isEqualTo: params.asset.id)
-          .orderBy('date', descending: true)
+          .orderBy('dateTime', descending: true)
           .snapshots();
 
       return Right(AssetActionsStream(allAssetActions: querySnapshot));
@@ -138,7 +138,7 @@ class AssetActionRepositoryImpl extends AssetActionRepository {
           .doc(params.companyId)
           .collection('assetsActions')
           .where('assetId', isEqualTo: params.asset.id)
-          .orderBy('date', descending: true)
+          .orderBy('dateTime', descending: true)
           .limit(5)
           .snapshots();
 

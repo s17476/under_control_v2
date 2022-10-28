@@ -3,16 +3,13 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:under_control_v2/features/assets/data/models/asset_action/asset_actions_list_model.dart';
-import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
-import 'package:under_control_v2/features/assets/domain/usecases/asset_action/get_asset_actions_stream.dart';
-import 'package:under_control_v2/features/assets/domain/usecases/asset_action/get_last_five_asset_actions_stream.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-
-import '../../../domain/entities/asset.dart';
+import '../../../data/models/asset_action/asset_actions_list_model.dart';
+import '../../../data/models/asset_model.dart';
+import '../../../domain/usecases/asset_action/get_asset_actions_stream.dart';
+import '../../../domain/usecases/asset_action/get_last_five_asset_actions_stream.dart';
+import '../../../../core/usecases/usecase.dart';
 
 part 'asset_action_event.dart';
 part 'asset_action_state.dart';
