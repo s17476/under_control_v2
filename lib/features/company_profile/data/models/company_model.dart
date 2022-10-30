@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/entities/company.dart';
 
 class CompanyModel extends Company {
@@ -79,7 +81,7 @@ class CompanyModel extends Company {
     result.addAll({'email': email});
     result.addAll({'homepage': homepage});
     result.addAll({'logo': logo});
-    result.addAll({'joinDate': joinDate.toIso8601String()});
+    result.addAll({'joinDate': joinDate});
 
     return result;
   }
@@ -98,7 +100,7 @@ class CompanyModel extends Company {
       email: map['email'] ?? '',
       homepage: map['homepage'] ?? '',
       logo: map['logo'] ?? '',
-      joinDate: DateTime.parse(map['joinDate']),
+      joinDate: (map['joinDate'] as Timestamp).toDate(),
     );
   }
 }

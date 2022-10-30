@@ -455,7 +455,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                       ),
                                     ),
                                     Text(
-                                      DateFormat('dd/MM/yyyy')
+                                      DateFormat('dd-MM-yyyy')
                                           .format(_company.joinDate),
                                     ),
                                   ],

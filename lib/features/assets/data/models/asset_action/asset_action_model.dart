@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../../domain/entities/asset_action/asset_action.dart';
 import '../../../utils/asset_status.dart';
 
@@ -42,7 +44,7 @@ class AssetActionModel extends AssetAction {
     final result = <String, dynamic>{};
 
     result.addAll({'assetId': assetId});
-    result.addAll({'dateTime': dateTime.toIso8601String()});
+    result.addAll({'dateTime': dateTime});
     result.addAll({'userId': userId});
     result.addAll({'locationId': locationId});
     result.addAll({'isAssetInUse': isAssetInUse});
@@ -60,7 +62,7 @@ class AssetActionModel extends AssetAction {
     return AssetActionModel(
       id: id,
       assetId: map['assetId'] ?? '',
-      dateTime: DateTime.parse(map['dateTime']),
+      dateTime: (map['dateTime'] as Timestamp).toDate(),
       userId: map['userId'] ?? '',
       locationId: map['locationId'] ?? '',
       isAssetInUse: map['isAssetInUse'] ?? false,

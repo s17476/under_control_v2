@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/company_profile/presentation/pages/add_company_page.dart';
 
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../widgets/companies_list.dart';
 import '../widgets/intro_card.dart';
+import 'add_company_page.dart';
 
 class AssignCompanyPage extends StatefulWidget {
   const AssignCompanyPage({Key? key}) : super(key: key);

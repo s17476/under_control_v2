@@ -49,7 +49,9 @@ class InstructionTile extends StatelessWidget {
                         text: instruction.name,
                         query: searchQuery,
                         style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),

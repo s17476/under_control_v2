@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../../core/utils/duration_unit.dart';
 import '../../domain/entities/asset.dart';
 import '../../utils/asset_status.dart';
@@ -89,9 +91,9 @@ class AssetModel extends Asset {
     result.addAll({'barCode': barCode});
     result.addAll({'price': price});
     result.addAll({'isInUse': isInUse});
-    result.addAll({'addDate': addDate.toIso8601String()});
+    result.addAll({'addDate': addDate});
     result.addAll({'currentStatus': currentStatus.name});
-    result.addAll({'lastInspection': lastInspection.toIso8601String()});
+    result.addAll({'lastInspection': lastInspection});
     result.addAll({'durationUnit': durationUnit.name});
     result.addAll({'duration': duration});
     result.addAll({'images': images});
@@ -116,9 +118,9 @@ class AssetModel extends Asset {
       barCode: map['barCode'] ?? '',
       price: map['price'] ?? 0,
       isInUse: map['isInUse'] ?? false,
-      addDate: DateTime.parse(map['addDate']),
+      addDate: (map['addDate'] as Timestamp).toDate(),
       currentStatus: AssetStatus.fromString(map['currentStatus']),
-      lastInspection: DateTime.parse(map['lastInspection']),
+      lastInspection: (map['lastInspection'] as Timestamp).toDate(),
       durationUnit: DurationUnit.fromString(map['durationUnit']),
       duration: map['duration']?.toInt() ?? 0,
       images: List<String>.from(map['images']),

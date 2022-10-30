@@ -476,7 +476,8 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
+                                      vertical: 8.0,
+                                    ),
                                     child: Row(
                                       children: [
                                         Icon(
@@ -493,7 +494,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                           ),
                                         ),
                                         Text(
-                                          DateFormat('dd/MM/yyyy')
+                                          DateFormat('dd-MM-yyyy')
                                               .format(_user!.joinDate),
                                           overflow: TextOverflow.ellipsis,
                                         ),

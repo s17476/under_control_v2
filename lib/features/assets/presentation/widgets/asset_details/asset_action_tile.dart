@@ -29,7 +29,7 @@ class AssetActionTile extends StatelessWidget {
       user = userState.getUserById(action.userId);
     }
 
-    final dateFormat = DateFormat('dd-MM-yyyy hh:mm');
+    final dateFormat = DateFormat('dd-MM-yyyy HH:mm');
     return Stack(
       alignment: Alignment.centerLeft,
       children: [
