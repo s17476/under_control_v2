@@ -59,10 +59,16 @@ class AssetActionModel extends AssetAction {
     Map<String, dynamic> map,
     String id,
   ) {
+    DateTime? date;
+    try {
+      date = (map['dateTime'] as Timestamp).toDate();
+    } catch (e) {
+      date = DateTime.now();
+    }
     return AssetActionModel(
       id: id,
       assetId: map['assetId'] ?? '',
-      dateTime: (map['dateTime'] as Timestamp).toDate(),
+      dateTime: date,
       userId: map['userId'] ?? '',
       locationId: map['locationId'] ?? '',
       isAssetInUse: map['isAssetInUse'] ?? false,

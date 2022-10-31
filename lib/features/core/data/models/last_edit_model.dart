@@ -28,9 +28,15 @@ class LastEditModel extends LastEdit {
   }
 
   factory LastEditModel.fromMap(Map<String, dynamic> map) {
+    DateTime? date;
+    try {
+      date = (map['dateTime'] as Timestamp).toDate();
+    } catch (e) {
+      date = DateTime.now();
+    }
     return LastEditModel(
       userId: map['userId'] ?? '',
-      dateTime: (map['dateTime'] as Timestamp).toDate(),
+      dateTime: date,
     );
   }
 }

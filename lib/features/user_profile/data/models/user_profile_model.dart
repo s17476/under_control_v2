@@ -79,6 +79,12 @@ class UserProfileModel extends UserProfile {
   }
 
   factory UserProfileModel.fromMap(Map<String, dynamic> map, String id) {
+    DateTime? date;
+    try {
+      date = (map['joinDate'] as Timestamp).toDate();
+    } catch (e) {
+      date = DateTime.now();
+    }
     return UserProfileModel(
       id: id,
       firstName: map['firstName'] ?? '',
@@ -94,7 +100,7 @@ class UserProfileModel extends UserProfile {
       suspended: map['suspended'] ?? false,
       isActive: map['isActive'] ?? false,
       administrator: map['administrator'] ?? false,
-      joinDate: ((map['joinDate']) as Timestamp).toDate(),
+      joinDate: date,
     );
   }
 

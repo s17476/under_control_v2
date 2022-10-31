@@ -107,6 +107,18 @@ class AssetModel extends Asset {
   }
 
   factory AssetModel.fromMap(Map<String, dynamic> map, String id) {
+    DateTime? addDate;
+    DateTime? lastInspection;
+    try {
+      addDate = (map['addDate'] as Timestamp).toDate();
+    } catch (e) {
+      addDate = DateTime.now();
+    }
+    try {
+      lastInspection = (map['lastInspection'] as Timestamp).toDate();
+    } catch (e) {
+      lastInspection = DateTime.now();
+    }
     final asset = AssetModel(
       id: id,
       producer: map['producer'] ?? '',
@@ -118,9 +130,9 @@ class AssetModel extends Asset {
       barCode: map['barCode'] ?? '',
       price: map['price'] ?? 0,
       isInUse: map['isInUse'] ?? false,
-      addDate: (map['addDate'] as Timestamp).toDate(),
+      addDate: addDate,
       currentStatus: AssetStatus.fromString(map['currentStatus']),
-      lastInspection: (map['lastInspection'] as Timestamp).toDate(),
+      lastInspection: lastInspection,
       durationUnit: DurationUnit.fromString(map['durationUnit']),
       duration: map['duration']?.toInt() ?? 0,
       images: List<String>.from(map['images']),

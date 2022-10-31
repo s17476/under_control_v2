@@ -63,6 +63,12 @@ class ItemActionModel extends ItemAction {
     Map<String, dynamic> map,
     String id,
   ) {
+    DateTime? date;
+    try {
+      date = (map['date'] as Timestamp).toDate();
+    } catch (e) {
+      date = DateTime.now();
+    }
     return ItemActionModel(
       id: id,
       type: ItemActionType.fromString(map['type']),
@@ -70,7 +76,7 @@ class ItemActionModel extends ItemAction {
       ammount: map['ammount']?.toDouble() ?? 0.0,
       itemUnit: ItemUnit.fromString(map['itemUnit']),
       locationId: map['locationId'] ?? '',
-      date: (map['date'] as Timestamp).toDate(),
+      date: date,
       taskId: map['taskId'] ?? '',
       itemId: map['itemId'] ?? '',
       userId: map['userId'] ?? '',

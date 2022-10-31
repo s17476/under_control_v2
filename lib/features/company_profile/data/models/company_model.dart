@@ -87,6 +87,12 @@ class CompanyModel extends Company {
   }
 
   factory CompanyModel.fromMap(Map<String, dynamic> map, String id) {
+    DateTime? date;
+    try {
+      date = (map['joinDate'] as Timestamp).toDate();
+    } catch (e) {
+      date = DateTime.now();
+    }
     return CompanyModel(
       id: id,
       name: map['name'] ?? '',
@@ -100,7 +106,7 @@ class CompanyModel extends Company {
       email: map['email'] ?? '',
       homepage: map['homepage'] ?? '',
       logo: map['logo'] ?? '',
-      joinDate: (map['joinDate'] as Timestamp).toDate(),
+      joinDate: date,
     );
   }
 }
