@@ -41,7 +41,6 @@ class StepDetailsCard extends StatelessWidget with ResponsiveSize {
                                 imageProvider: CachedNetworkImageProvider(
                                   step.contentUrl!,
                                 ),
-                                heroTag: step.contentUrl!,
                                 title:
                                     '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1}',
                               ),

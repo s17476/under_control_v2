@@ -219,6 +219,7 @@ class AssetRepositoryImpl extends AssetRepository {
 
       // link to stored documents
       List<String> documents = [];
+      List<String> documentsNames = [];
 
       // batch
       final batch = firebaseFirestore.batch();
@@ -267,6 +268,7 @@ class AssetRepositoryImpl extends AssetRepository {
           await fileReference.putFile(photo);
           final photoUrl = await fileReference.getDownloadURL();
           photos.add(photoUrl);
+          documentsNames.add(fileName);
         }
       }
 
@@ -280,6 +282,7 @@ class AssetRepositoryImpl extends AssetRepository {
           await fileReference.putFile(document);
           final documentUrl = await fileReference.getDownloadURL();
           documents.add(documentUrl);
+          documentsNames.add(fileName);
         }
       }
 
@@ -291,7 +294,7 @@ class AssetRepositoryImpl extends AssetRepository {
 
       // remove old files
       for (var file in filesList) {
-        if (!photos.contains(file.name) && !documents.contains(file.name)) {
+        if (!documentsNames.contains(file.name)) {
           storageReference.child(file.name).delete();
         }
       }

@@ -100,30 +100,26 @@ class AssetTile extends StatelessWidget {
                                   color: color,
                                   // shows asset's photo or an icon if no there is no photo url
                                   child: asset.images.isNotEmpty
-                                      ? Hero(
-                                          tag: asset.id,
-                                          child: CachedNetworkImage(
-                                            imageUrl: asset.images[0],
-                                            placeholder: (context, url) =>
-                                                Shimmer.fromColors(
-                                              baseColor: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
-                                              highlightColor:
-                                                  Theme.of(context).cardColor,
-                                              child: Container(
-                                                color: Colors.black,
-                                                width: double.infinity,
-                                                height: 70,
-                                              ),
+                                      ? CachedNetworkImage(
+                                          imageUrl: asset.images[0],
+                                          placeholder: (context, url) =>
+                                              Shimmer.fromColors(
+                                            baseColor: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                            highlightColor:
+                                                Theme.of(context).cardColor,
+                                            child: Container(
+                                              color: Colors.black,
+                                              width: double.infinity,
+                                              height: 70,
                                             ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Icon(
-                                              Icons.precision_manufacturing,
-                                              size: 50,
-                                            ),
-                                            fit: BoxFit.cover,
                                           ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(
+                                            Icons.precision_manufacturing,
+                                            size: 50,
+                                          ),
+                                          fit: BoxFit.cover,
                                         )
                                       : const Icon(
                                           Icons.precision_manufacturing,

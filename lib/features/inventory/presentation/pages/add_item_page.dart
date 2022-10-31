@@ -173,8 +173,6 @@ class _AddItemPageState extends State<AddItemPage> {
         amountInLocations: _item != null ? _item!.amountInLocations : const [],
         locations: _item != null ? _item!.locations : const [],
         sparePartFor: const [],
-        // TODO
-        // add documents and instructions
         instructions: _instructions,
         documents: const [],
       );

@@ -36,21 +36,18 @@ class AssetImagesTab extends StatelessWidget {
                     ),
                   );
                 },
-                child: Hero(
-                  tag: img,
-                  child: SizedBox.expand(
-                    child: CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      imageUrl: img,
-                      placeholder: (_, __) => SizedBox.expand(
-                        child: Shimmer.fromColors(
-                          baseColor:
-                              Theme.of(context).appBarTheme.backgroundColor!,
-                          highlightColor:
-                              Theme.of(context).backgroundColor.withAlpha(150),
-                          child: Container(
-                            color: Colors.black,
-                          ),
+                child: SizedBox.expand(
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: img,
+                    placeholder: (_, __) => SizedBox.expand(
+                      child: Shimmer.fromColors(
+                        baseColor:
+                            Theme.of(context).appBarTheme.backgroundColor!,
+                        highlightColor:
+                            Theme.of(context).backgroundColor.withAlpha(150),
+                        child: Container(
+                          color: Colors.black,
                         ),
                       ),
                     ),

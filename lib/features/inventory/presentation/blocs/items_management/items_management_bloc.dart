@@ -69,7 +69,6 @@ class ItemsManagementBloc
             item: event.item,
             companyId: _companyId,
             photo: event.itemPhoto,
-            documents: event.documents,
           ),
         );
         failureOrImageUrl.fold(
@@ -82,6 +81,7 @@ class ItemsManagementBloc
           ItemParams(
             item: item,
             companyId: _companyId,
+            documents: event.documents,
           ),
         );
         await failureOrString.fold(
@@ -132,7 +132,6 @@ class ItemsManagementBloc
             item: event.item,
             companyId: _companyId,
             photo: event.itemPhoto,
-            documents: event.documents,
           ),
         );
         failureOrImageUrl.fold(
@@ -145,6 +144,7 @@ class ItemsManagementBloc
           ItemParams(
             item: item,
             companyId: _companyId,
+            documents: event.documents,
           ),
         );
         await failureOrVoidResult.fold(

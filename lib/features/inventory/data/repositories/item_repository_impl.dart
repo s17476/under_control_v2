@@ -112,6 +112,22 @@ class ItemRepositoryImpl extends ItemRepository {
         batch.delete(actionsReference.doc(actionId));
       }
 
+      // storage reference
+      final storageReference =
+          firebaseStorage.ref().child(params.companyId).child('items');
+
+      final allFilesInDirectory = await storageReference.listAll();
+
+      final filesForAsset = allFilesInDirectory.items.where(
+        (file) => file.name.contains(
+          params.item.id,
+        ),
+      );
+
+      for (var file in filesForAsset) {
+        storageReference.child(file.name).delete();
+      }
+
       // deletes item
       batch.delete(itemReference);
 
@@ -160,6 +176,7 @@ class ItemRepositoryImpl extends ItemRepository {
 
       // link to stored documents
       List<String> documents = [];
+      List<String> documentsNames = [];
 
       // batch
       final batch = firebaseFirestore.batch();
@@ -178,6 +195,7 @@ class ItemRepositoryImpl extends ItemRepository {
           await fileReference.putFile(document);
           final documentUrl = await fileReference.getDownloadURL();
           documents.add(documentUrl);
+          documentsNames.add(fileName);
         }
       }
 
@@ -189,7 +207,7 @@ class ItemRepositoryImpl extends ItemRepository {
 
       // remove old files
       for (var file in filesList) {
-        if (!documents.contains(file.name)) {
+        if (!documentsNames.contains(file.name)) {
           storageReference.child(file.name).delete();
         }
       }

@@ -109,7 +109,6 @@ class AddAssetImagesCard extends StatelessWidget with ResponsiveSize {
                                   MaterialPageRoute(
                                     builder: (context) => ImageViewer(
                                       imageProvider: FileImage(img),
-                                      heroTag: img.path,
                                       title: '',
                                     ),
                                   ),

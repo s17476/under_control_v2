@@ -92,19 +92,20 @@ class ItemModel extends Item {
       name: map['name'] ?? '',
       description: map['description'] ?? '',
       category: map['category'] ?? '',
-      price: map['price'] ?? '',
-      alertQuantity: map['alertQuantity'],
+      price: map['price'] ?? 0,
+      alertQuantity: map['alertQuantity'] ?? 0,
       itemPhoto: map['itemPhoto'] ?? '',
       itemCode: map['itemCode'] ?? '',
       itemBarCode: map['itemBarCode'] ?? '',
       documents: List<String>.from(map['documents'] ?? []),
       instructions: List<String>.from(map['instructions'] ?? []),
       sparePartFor: List<String>.from(map['sparePartFor'] ?? []),
-      itemUnit: ItemUnit.fromString(map['itemUnit']),
+      itemUnit: ItemUnit.fromString(map['itemUnit'] ?? ''),
       locations: List<String>.from(map['locations'] ?? []),
       amountInLocations: List<ItemAmountInLocationModel>.from(
         map['amountInLocations']
-            ?.map((x) => ItemAmountInLocationModel.fromMap(x)),
+                ?.map((x) => ItemAmountInLocationModel.fromMap(x)) ??
+            [],
       ),
     );
   }

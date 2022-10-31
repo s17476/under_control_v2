@@ -86,7 +86,6 @@ class ImageStep extends StatelessWidget with ResponsiveSize {
                         builder: (context) => ImageViewer(
                           imageProvider:
                               CachedNetworkImageProvider(step.contentUrl!),
-                          heroTag: step.contentUrl!,
                           title: '',
                         ),
                       ),

@@ -65,7 +65,6 @@ class _ImagesCarouselState extends State<ImagesCarousel> {
         ImageViewer(
           controller: _photoViewControllers[i],
           imageProvider: CachedNetworkImageProvider(widget.images[i]),
-          heroTag: widget.images[i],
         ),
       );
     }

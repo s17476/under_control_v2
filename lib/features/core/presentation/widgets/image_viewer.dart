@@ -6,14 +6,12 @@ class ImageViewer extends StatelessWidget {
     Key? key,
     required this.imageProvider,
     this.backgroundDecoration,
-    required this.heroTag,
     this.title,
     this.controller,
   }) : super(key: key);
 
   final ImageProvider imageProvider;
   final BoxDecoration? backgroundDecoration;
-  final String heroTag;
   final String? title;
   final PhotoViewController? controller;
 
@@ -35,7 +33,6 @@ class ImageViewer extends StatelessWidget {
           imageProvider: imageProvider,
           backgroundDecoration: backgroundDecoration,
           minScale: PhotoViewComputedScale.contained,
-          heroAttributes: PhotoViewHeroAttributes(tag: heroTag),
         ),
       ),
     );

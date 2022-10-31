@@ -90,6 +90,7 @@ class AddAssetDocumentsCard extends StatelessWidget with ResponsiveSize {
                       shrinkWrap: true,
                       itemCount: documents.length,
                       itemBuilder: (context, index) => Stack(
+                        key: ValueKey(documents[index].path),
                         children: [
                           AspectRatio(
                             aspectRatio: 2 / 3,

@@ -25,7 +25,6 @@ class SquareItemImage extends StatelessWidget with ResponsiveSize {
                 MaterialPageRoute(
                   builder: (context) => ImageViewer(
                     imageProvider: CachedNetworkImageProvider(item.itemPhoto),
-                    heroTag: item.id,
                     title: item.name,
                   ),
                 ),
