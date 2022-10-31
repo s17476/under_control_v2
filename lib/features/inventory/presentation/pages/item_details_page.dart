@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_documents_tab.dart';
+import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_instructions_tab.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
@@ -121,7 +124,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
     appBarTitle = AppLocalizations.of(context)!.item_details_title;
 
     return DefaultTabController(
-      length: 3,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           title: Text(appBarTitle),
@@ -182,6 +185,20 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                   size: tabBarIconSize,
                 ),
               ),
+              Tab(
+                icon: Icon(
+                  Icons.menu_book,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  FontAwesomeIcons.filePdf,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
             ],
             indicatorColor: tabBarIconColor,
           ),
@@ -205,6 +222,8 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                     ItemInfoTab(item: _item!),
                     ItemActionsTab(item: _item!),
                     ItemLocationsTab(item: _item!),
+                    ItemInstructionsTab(item: _item!),
+                    ItemDocumentsTab(item: _item!),
                   ],
                 ),
               ),

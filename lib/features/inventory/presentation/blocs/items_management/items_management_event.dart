@@ -13,9 +13,11 @@ abstract class ItemsManagementEvent extends Equatable {
 }
 
 class AddItemEvent extends ItemsManagementEvent {
+  final List<File> documents;
   const AddItemEvent({
     required super.item,
     super.itemPhoto,
+    required this.documents,
   });
 }
 
@@ -24,8 +26,10 @@ class DeleteItemEvent extends ItemsManagementEvent {
 }
 
 class UpdateItemEvent extends ItemsManagementEvent {
+  final List<File> documents;
   const UpdateItemEvent({
     required super.item,
     super.itemPhoto,
+    required this.documents,
   });
 }

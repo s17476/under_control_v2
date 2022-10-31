@@ -69,6 +69,7 @@ class ItemsManagementBloc
             item: event.item,
             companyId: _companyId,
             photo: event.itemPhoto,
+            documents: event.documents,
           ),
         );
         failureOrImageUrl.fold(
@@ -131,6 +132,7 @@ class ItemsManagementBloc
             item: event.item,
             companyId: _companyId,
             photo: event.itemPhoto,
+            documents: event.documents,
           ),
         );
         failureOrImageUrl.fold(

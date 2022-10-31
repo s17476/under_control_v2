@@ -5,10 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../assets/presentation/widgets/add_asset_documents.dart';
 import '../../../assets/presentation/widgets/add_asset_instructions.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
+import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../data/models/item_model.dart';
 import '../../domain/entities/item.dart';
@@ -53,6 +55,7 @@ class _AddItemPageState extends State<AddItemPage> {
 
   bool _isAlertQuantitySet = false;
   bool _isAddInstructionsVisible = false;
+  bool _loadingDocuments = false;
 
   String _category = '';
   String _itemUnit = '';
@@ -180,18 +183,32 @@ class _AddItemPageState extends State<AddItemPage> {
         context.read<ItemsManagementBloc>().add(UpdateItemEvent(
               item: newItem,
               itemPhoto: _itemImage,
+              documents: _documents,
             ));
       } else {
         context.read<ItemsManagementBloc>().add(
               AddItemEvent(
                 item: newItem,
                 itemPhoto: _itemImage,
+                documents: _documents,
               ),
             );
       }
 
       Navigator.pop(context);
     }
+  }
+
+  void _addDocument(File doc) {
+    setState(() {
+      _documents.add(doc);
+    });
+  }
+
+  void _removeDocument(File doc) {
+    setState(() {
+      _documents.remove(doc);
+    });
   }
 
   void _toggleInstructionSelection(String instruction) {
@@ -230,6 +247,23 @@ class _AddItemPageState extends State<AddItemPage> {
     });
   }
 
+  void fetchDocuments(List<String> urls) async {
+    setState(() {
+      _loadingDocuments = true;
+    });
+    List<File> result = [];
+    for (var url in urls) {
+      final doc = await getCachedFirebaseStorageFile(url);
+      if (doc != null) {
+        result.add(doc);
+      }
+    }
+    setState(() {
+      _documents = result;
+      _loadingDocuments = false;
+    });
+  }
+
   @override
   void initState() {
     _pageController.addListener(() {
@@ -247,6 +281,10 @@ class _AddItemPageState extends State<AddItemPage> {
 
     if (arguments != null && arguments is ItemModel && _item == null) {
       _item = arguments.deepCopy();
+
+      if (_item!.documents.isNotEmpty) {
+        fetchDocuments(_item!.documents);
+      }
 
       _producerTextEditingController.text = _item!.producer;
       _nameTextEditingController.text = _item!.name;
@@ -326,6 +364,12 @@ class _AddItemPageState extends State<AddItemPage> {
         instructions: _instructions,
         isAddInstructionsVisible: _isAddInstructionsVisible,
       ),
+      AddAssetDocumentsCard(
+        addDocument: _addDocument,
+        removeDocument: _removeDocument,
+        documents: _documents,
+        loading: _loadingDocuments,
+      ),
       AddItemSummaryCard(
         pageController: _pageController,
         producerTextEditingController: _producerTextEditingController,
@@ -340,6 +384,7 @@ class _AddItemPageState extends State<AddItemPage> {
         itemUnit: _itemUnit,
         itemImage: _itemImage,
         instructions: _instructions,
+        documents: _documents,
       ),
     ];
 
