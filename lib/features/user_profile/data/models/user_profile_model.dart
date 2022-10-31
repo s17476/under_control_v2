@@ -94,9 +94,7 @@ class UserProfileModel extends UserProfile {
       suspended: map['suspended'] ?? false,
       isActive: map['isActive'] ?? false,
       administrator: map['administrator'] ?? false,
-      joinDate:
-          ((map['joinDate'] ?? Timestamp.fromDate(DateTime.now())) as Timestamp)
-              .toDate(),
+      joinDate: ((map['joinDate']) as Timestamp).toDate(),
     );
   }
 

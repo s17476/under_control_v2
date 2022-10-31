@@ -30,9 +30,7 @@ class LastEditModel extends LastEdit {
   factory LastEditModel.fromMap(Map<String, dynamic> map) {
     return LastEditModel(
       userId: map['userId'] ?? '',
-      dateTime:
-          ((map['dateTime'] ?? Timestamp.fromDate(DateTime.now())) as Timestamp)
-              .toDate(),
+      dateTime: (map['dateTime'] as Timestamp).toDate(),
     );
   }
 }

@@ -70,8 +70,7 @@ class ItemActionModel extends ItemAction {
       ammount: map['ammount']?.toDouble() ?? 0.0,
       itemUnit: ItemUnit.fromString(map['itemUnit']),
       locationId: map['locationId'] ?? '',
-      date: ((map['date'] ?? Timestamp.fromDate(DateTime.now())) as Timestamp)
-          .toDate(),
+      date: (map['date'] as Timestamp).toDate(),
       taskId: map['taskId'] ?? '',
       itemId: map['itemId'] ?? '',
       userId: map['userId'] ?? '',
