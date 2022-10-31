@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:under_control_v2/features/user_profile/data/models/user_profile_model.dart';
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
@@ -21,7 +22,7 @@ void main() {
     administrator: false,
     joinDate: date,
   );
-  final tUserProfileModelMap = {
+  final tUserProfileModelToMap = {
     'firstName': 'firstName',
     'lastName': 'lastName',
     'email': 'email',
@@ -35,7 +36,23 @@ void main() {
     'suspended': false,
     'isActive': false,
     'administrator': false,
-    'joinDate': date.toIso8601String(),
+    'joinDate': date,
+  };
+  final tUserProfileModelFromMap = {
+    'firstName': 'firstName',
+    'lastName': 'lastName',
+    'email': 'email',
+    'phoneNumber': 'phoneNumber',
+    'avatarUrl': 'avatarUrl',
+    'userGroups': ['userGroups'],
+    'locations': ['locations'],
+    'companyId': 'companyId',
+    'approved': false,
+    'rejected': false,
+    'suspended': false,
+    'isActive': false,
+    'administrator': false,
+    'joinDate': Timestamp.fromDate(date),
   };
 
   group('UserPorfile', () {
@@ -52,7 +69,7 @@ void main() {
       () async {
         // act
         final result = UserProfileModel.fromMap(
-            tUserProfileModelMap, tUserProfileModel.id);
+            tUserProfileModelFromMap, tUserProfileModel.id);
         // assert
         expect(result, tUserProfileModel);
       },
@@ -64,7 +81,7 @@ void main() {
         // act
         final result = tUserProfileModel.toMap();
         // assert
-        expect(result, tUserProfileModelMap);
+        expect(result, tUserProfileModelToMap);
       },
     );
   });

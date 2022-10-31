@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item.dart';
@@ -19,13 +20,24 @@ void main() {
     userId: 'userId',
   );
 
-  final tItemActionModelMap = {
+  final tItemActionModelToMap = {
     'type': ItemActionType.add.name,
     'description': 'description',
     'ammount': 0,
     'itemUnit': ItemUnit.kg.name,
     'locationId': 'locationId',
-    'date': date.toIso8601String(),
+    'date': date,
+    'taskId': 'taskId',
+    'itemId': 'itemId',
+    'userId': 'userId',
+  };
+  final tItemActionModelFromMap = {
+    'type': ItemActionType.add.name,
+    'description': 'description',
+    'ammount': 0,
+    'itemUnit': ItemUnit.kg.name,
+    'locationId': 'locationId',
+    'date': Timestamp.fromDate(date),
     'taskId': 'taskId',
     'itemId': 'itemId',
     'userId': 'userId',
@@ -43,7 +55,7 @@ void main() {
       'should return a valid model from a map',
       () async {
         // act
-        final result = ItemActionModel.fromMap(tItemActionModelMap, 'id');
+        final result = ItemActionModel.fromMap(tItemActionModelFromMap, 'id');
         // assert
         expect(result, tItemActionModel);
       },
@@ -54,7 +66,7 @@ void main() {
         // act
         final result = tItemActionModel.toMap();
         // assert
-        expect(result, tItemActionModelMap);
+        expect(result, tItemActionModelToMap);
       },
     );
   });

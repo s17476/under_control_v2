@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
@@ -33,7 +34,7 @@ void main() {
     isSparePart: true,
   );
 
-  final tAssetModelMap = {
+  final tAssetToModelMap = {
     'producer': 'producer',
     'model': 'model',
     'description': 'description',
@@ -44,9 +45,33 @@ void main() {
     'barCode': 'barCode',
     'price': 0.0,
     'isInUse': true,
-    'addDate': tDate.toIso8601String(),
+    'addDate': tDate,
     'currentStatus': AssetStatus.ok.name,
-    'lastInspection': tDate.toIso8601String(),
+    'lastInspection': tDate,
+    'durationUnit': DurationUnit.day.name,
+    'duration': 1,
+    'images': const [],
+    'documents': const [],
+    'spareParts': const [],
+    'instructions': const [],
+    'currentParentId': 'currentParentId',
+    'isSparePart': true,
+  };
+
+  final tAssetFromModelMap = {
+    'producer': 'producer',
+    'model': 'model',
+    'description': 'description',
+    'categoryId': 'categoryId',
+    'locationId': 'locationId',
+    'internalCode': 'internalCode',
+    'internalCodeLowerCase': 'internalcode',
+    'barCode': 'barCode',
+    'price': 0.0,
+    'isInUse': true,
+    'addDate': Timestamp.fromDate(tDate),
+    'currentStatus': AssetStatus.ok.name,
+    'lastInspection': Timestamp.fromDate(tDate),
     'durationUnit': DurationUnit.day.name,
     'duration': 1,
     'images': const [],
@@ -72,7 +97,7 @@ void main() {
         // act
         final result = tAssetModel.toMap();
         // assert
-        expect(result, tAssetModelMap);
+        expect(result, tAssetToModelMap);
       },
     );
 
@@ -80,7 +105,7 @@ void main() {
       'should return valid model from a map',
       () async {
         // act
-        final result = AssetModel.fromMap(tAssetModelMap, tId);
+        final result = AssetModel.fromMap(tAssetFromModelMap, tId);
         // assert
         expect(result, tAssetModel);
       },

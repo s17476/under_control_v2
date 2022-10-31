@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:under_control_v2/features/company_profile/data/models/company_model.dart';
@@ -20,7 +21,7 @@ void main() {
     logo: 'logo',
     joinDate: dateTime,
   );
-  final Map<String, dynamic> tCompanyModelMap = {
+  final Map<String, dynamic> tCompanyToModelMap = {
     'name': 'name',
     'address': 'address',
     'postCode': 'postCode',
@@ -32,7 +33,21 @@ void main() {
     'email': 'email',
     'homepage': 'homepage',
     'logo': 'logo',
-    'joinDate': dateTime.toIso8601String()
+    'joinDate': dateTime
+  };
+  final Map<String, dynamic> tCompanyFromModelMap = {
+    'name': 'name',
+    'address': 'address',
+    'postCode': 'postCode',
+    'city': 'city',
+    'country': 'country',
+    'currency': 'currency',
+    'vatNumber': 'vatNumber',
+    'phoneNumber': 'phoneNumber',
+    'email': 'email',
+    'homepage': 'homepage',
+    'logo': 'logo',
+    'joinDate': Timestamp.fromDate(dateTime)
   };
   group('Company Profile', () {
     test(
@@ -47,7 +62,8 @@ void main() {
       'should return a valid model from a map',
       () async {
         // act
-        final result = CompanyModel.fromMap(tCompanyModelMap, tCompanyModel.id);
+        final result =
+            CompanyModel.fromMap(tCompanyFromModelMap, tCompanyModel.id);
         // assert
         expect(result, tCompanyModel);
       },
@@ -59,7 +75,7 @@ void main() {
         // act
         final result = tCompanyModel.toMap();
         // assert
-        expect(result, tCompanyModelMap);
+        expect(result, tCompanyToModelMap);
       },
     );
   });

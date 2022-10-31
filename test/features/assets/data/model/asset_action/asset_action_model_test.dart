@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:under_control_v2/features/assets/data/models/asset_action/asset_action_model.dart';
 import 'package:under_control_v2/features/assets/domain/entities/asset_action/asset_action.dart';
@@ -18,9 +19,19 @@ void main() {
     connectedTask: 'connectedTask',
   );
 
-  final tAssetActionModelMap = {
+  final tAssetActionToModelMap = {
     'assetId': 'assetId',
-    'dateTime': date.toIso8601String(),
+    'dateTime': date,
+    'userId': 'userId',
+    'locationId': 'locationId',
+    'isAssetInUse': true,
+    'isCreate': false,
+    'assetStatus': AssetStatus.ok.name,
+    'connectedTask': 'connectedTask',
+  };
+  final tAssetActionFromModelMap = {
+    'assetId': 'assetId',
+    'dateTime': Timestamp.fromDate(date),
     'userId': 'userId',
     'locationId': 'locationId',
     'isAssetInUse': true,
@@ -41,7 +52,7 @@ void main() {
       'should return a valid model from a map',
       () async {
         // act
-        final result = AssetActionModel.fromMap(tAssetActionModelMap, 'id');
+        final result = AssetActionModel.fromMap(tAssetActionFromModelMap, 'id');
         // assert
         expect(result, tAssetActionModel);
       },
@@ -52,7 +63,7 @@ void main() {
         // act
         final result = tAssetActionModel.toMap();
         // assert
-        expect(result, tAssetActionModelMap);
+        expect(result, tAssetActionToModelMap);
       },
     );
   });

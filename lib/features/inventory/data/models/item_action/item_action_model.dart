@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../../domain/entities/item.dart';
 import '../../../domain/entities/item_action/item_action.dart';
 
@@ -49,7 +51,7 @@ class ItemActionModel extends ItemAction {
     result.addAll({'ammount': ammount});
     result.addAll({'itemUnit': itemUnit.name});
     result.addAll({'locationId': locationId});
-    result.addAll({'date': date.toIso8601String()});
+    result.addAll({'date': date});
     result.addAll({'taskId': taskId});
     result.addAll({'itemId': itemId});
     result.addAll({'userId': userId});
@@ -68,7 +70,8 @@ class ItemActionModel extends ItemAction {
       ammount: map['ammount']?.toDouble() ?? 0.0,
       itemUnit: ItemUnit.fromString(map['itemUnit']),
       locationId: map['locationId'] ?? '',
-      date: DateTime.parse(map['date']),
+      date: ((map['date'] ?? Timestamp.fromDate(DateTime.now())) as Timestamp)
+          .toDate(),
       taskId: map['taskId'] ?? '',
       itemId: map['itemId'] ?? '',
       userId: map['userId'] ?? '',

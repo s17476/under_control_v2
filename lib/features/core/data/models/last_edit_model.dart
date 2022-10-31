@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/entities/last_edit.dart';
 
 class LastEditModel extends LastEdit {
@@ -20,7 +22,7 @@ class LastEditModel extends LastEdit {
     final result = <String, dynamic>{};
 
     result.addAll({'userId': userId});
-    result.addAll({'dateTime': dateTime.toIso8601String()});
+    result.addAll({'dateTime': dateTime});
 
     return result;
   }
@@ -28,7 +30,9 @@ class LastEditModel extends LastEdit {
   factory LastEditModel.fromMap(Map<String, dynamic> map) {
     return LastEditModel(
       userId: map['userId'] ?? '',
-      dateTime: DateTime.parse(map['dateTime'] ?? DateTime.now()),
+      dateTime:
+          ((map['dateTime'] ?? Timestamp.fromDate(DateTime.now())) as Timestamp)
+              .toDate(),
     );
   }
 }

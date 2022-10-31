@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:under_control_v2/features/core/data/models/last_edit_model.dart';
 import 'package:under_control_v2/features/core/domain/entities/last_edit.dart';
@@ -10,9 +11,13 @@ void main() {
     dateTime: tTimeDate,
   );
 
-  final tLastEditMap = {
+  final tLastEditToMap = {
     'userId': 'userId',
-    'dateTime': tTimeDate.toIso8601String(),
+    'dateTime': tTimeDate,
+  };
+  final tLastEditFromMap = {
+    'userId': 'userId',
+    'dateTime': Timestamp.fromDate(tTimeDate),
   };
 
   group('LastEditModel', () {
@@ -30,7 +35,7 @@ void main() {
         // act
         final result = tLastEditModel.toMap();
         // assert
-        expect(result, tLastEditMap);
+        expect(result, tLastEditToMap);
       },
     );
 
@@ -38,7 +43,7 @@ void main() {
       'should return proper model from a map',
       () async {
         // act
-        final result = LastEditModel.fromMap(tLastEditMap);
+        final result = LastEditModel.fromMap(tLastEditFromMap);
         // assert
         expect(result, tLastEditModel);
       },

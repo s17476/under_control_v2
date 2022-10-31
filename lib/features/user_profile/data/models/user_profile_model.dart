@@ -73,7 +73,7 @@ class UserProfileModel extends UserProfile {
     result.addAll({'suspended': suspended});
     result.addAll({'isActive': isActive});
     result.addAll({'administrator': administrator});
-    result.addAll({'joinDate': joinDate.toIso8601String()});
+    result.addAll({'joinDate': joinDate});
 
     return result;
   }
@@ -94,7 +94,9 @@ class UserProfileModel extends UserProfile {
       suspended: map['suspended'] ?? false,
       isActive: map['isActive'] ?? false,
       administrator: map['administrator'] ?? false,
-      joinDate: DateTime.parse(map['joinDate'] ?? DateTime.now()),
+      joinDate:
+          ((map['joinDate'] ?? Timestamp.fromDate(DateTime.now())) as Timestamp)
+              .toDate(),
     );
   }
 
