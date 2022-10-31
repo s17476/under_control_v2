@@ -15,6 +15,14 @@ String getLocalizedUnitName(BuildContext context, ItemUnit itemUnit) {
       return AppLocalizations.of(context)!.item_unit_ltr;
     case ItemUnit.gallon:
       return AppLocalizations.of(context)!.item_unit_gallon;
+    case ItemUnit.inch:
+      return AppLocalizations.of(context)!.item_unit_inch;
+    case ItemUnit.foot:
+      return AppLocalizations.of(context)!.item_unit_foot;
+    case ItemUnit.centimeter:
+      return AppLocalizations.of(context)!.item_unit_centimeter;
+    case ItemUnit.meter:
+      return AppLocalizations.of(context)!.item_unit_meter;
     default:
       return '';
   }

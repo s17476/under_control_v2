@@ -8,6 +8,10 @@ enum ItemUnit {
   pound('pound'),
   liter('liter'),
   gallon('gallon'),
+  inch('inch'),
+  foot('foot'),
+  centimeter('centimeter'),
+  meter('meter'),
   unknown('');
 
   final String name;
@@ -26,6 +30,14 @@ enum ItemUnit {
         return ItemUnit.liter;
       case 'gallon':
         return ItemUnit.gallon;
+      case 'inch':
+        return ItemUnit.inch;
+      case 'foot':
+        return ItemUnit.foot;
+      case 'centimeter':
+        return ItemUnit.centimeter;
+      case 'meter':
+        return ItemUnit.meter;
       default:
         return ItemUnit.unknown;
     }

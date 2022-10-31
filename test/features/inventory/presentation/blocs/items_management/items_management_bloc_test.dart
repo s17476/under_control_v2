@@ -117,7 +117,7 @@ void main() {
               .thenAnswer((_) async => const Right(''));
           when(() => mockAddItem(any()))
               .thenAnswer((_) async => const Right(''));
-          bloc.add(const AddItemEvent(item: tItemModel));
+          bloc.add(const AddItemEvent(item: tItemModel, documents: []));
         },
         expect: () => [
           ItemsManagementLoadingState(),
@@ -135,7 +135,7 @@ void main() {
               DatabaseFailure(),
             ),
           );
-          bloc.add(const AddItemEvent(item: tItemModel));
+          bloc.add(const AddItemEvent(item: tItemModel, documents: []));
         },
         expect: () => [
           ItemsManagementLoadingState(),
@@ -183,7 +183,7 @@ void main() {
               .thenAnswer((_) async => const Right(''));
           when(() => mockUpdateItem(any()))
               .thenAnswer((_) async => Right(VoidResult()));
-          bloc.add(const UpdateItemEvent(item: tItemModel));
+          bloc.add(const UpdateItemEvent(item: tItemModel, documents: []));
         },
         expect: () => [
           ItemsManagementLoadingState(),
@@ -201,7 +201,7 @@ void main() {
               DatabaseFailure(),
             ),
           );
-          bloc.add(const UpdateItemEvent(item: tItemModel));
+          bloc.add(const UpdateItemEvent(item: tItemModel, documents: []));
         },
         expect: () => [
           ItemsManagementLoadingState(),

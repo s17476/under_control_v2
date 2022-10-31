@@ -1319,6 +1319,22 @@
     "@item_unit_ltr": {
       "description": "Ltr - unit"
     },
+    "item_unit_inch": "Inch",
+    "@item_unit_inch": {
+      "description": "Inch - unit"
+    },
+    "item_unit_foot": "Foot",
+    "@item_unit_foot": {
+      "description": "Foot - unit"
+    },
+    "item_unit_centimeter": "Centimeter",
+    "@item_unit_centimeter": {
+      "description": "Centimeter - unit"
+    },
+    "item_unit_meter": "Meter",
+    "@item_unit_meter": {
+      "description": "Meter - unit"
+    },
     "item_select_unit": "Select item unit",
     "@item_select_unit": {
       "description": "Select unit"
