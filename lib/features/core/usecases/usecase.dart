@@ -175,11 +175,15 @@ class ChecklistParams extends Equatable {
 class ItemParams extends Equatable {
   final Item item;
   final File? photo;
+  final List<File>? images;
+  final List<File>? documents;
   final String companyId;
 
   const ItemParams({
     required this.item,
     this.photo,
+    this.images,
+    this.documents,
     required this.companyId,
   });
 

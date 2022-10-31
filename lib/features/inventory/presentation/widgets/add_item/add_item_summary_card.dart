@@ -26,6 +26,7 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.category,
     required this.itemUnit,
     required this.itemImage,
+    required this.instructions,
   }) : super(key: key);
 
   final PageController pageController;
@@ -44,6 +45,7 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
   final String itemUnit;
 
   final File? itemImage;
+  final List<String> instructions;
 
   @override
   Widget build(BuildContext context) {
@@ -312,6 +314,24 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                         pageController: pageController,
                         onTapAnimateToPage: 3,
                       ),
+
+                    // instructions
+                    SummaryCard(
+                      title: AppLocalizations.of(context)!
+                          .asset_add_instructions_title,
+                      validator: () => null,
+                      child: Text(
+                        instructions.isNotEmpty
+                            ? '${AppLocalizations.of(context)!.asset_add_instructions_added}: ${instructions.length}'
+                            : AppLocalizations.of(context)!
+                                .asset_add_instructions_not_added,
+                      ),
+                      pageController: pageController,
+                      onTapAnimateToPage: 4,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     const SizedBox(
                       height: 50,
                     ),

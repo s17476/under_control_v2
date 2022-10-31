@@ -339,8 +339,10 @@ Future<_i1.GetIt> $initGetIt(
           firebaseFirestore: get<_i5.FirebaseFirestore>()));
   gh.lazySingleton<_i17.ItemFilesRepository>(() => _i18.ItemFilesRepositoryImpl(
       firebaseStorage: get<_i6.FirebaseStorage>()));
-  gh.lazySingleton<_i19.ItemRepository>(() =>
-      _i20.ItemRepositoryImpl(firebaseFirestore: get<_i5.FirebaseFirestore>()));
+  gh.lazySingleton<_i19.ItemRepository>(() => _i20.ItemRepositoryImpl(
+        firebaseFirestore: get<_i5.FirebaseFirestore>(),
+        firebaseStorage: get<_i6.FirebaseStorage>(),
+      ));
   gh.lazySingleton<_i21.LocationRemoteDataSource>(() =>
       _i21.LocationRemoteDataSourceImpl(
           firebaseFirestore: get<_i5.FirebaseFirestore>()));

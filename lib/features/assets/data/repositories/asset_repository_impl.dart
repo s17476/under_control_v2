@@ -291,7 +291,7 @@ class AssetRepositoryImpl extends AssetRepository {
 
       // remove old files
       for (var file in filesList) {
-        if (!photos.contains(file.name) && documents.contains(file.name)) {
+        if (!photos.contains(file.name) && !documents.contains(file.name)) {
           storageReference.child(file.name).delete();
         }
       }

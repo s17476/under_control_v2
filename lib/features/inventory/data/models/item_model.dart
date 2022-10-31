@@ -13,6 +13,8 @@ class ItemModel extends Item {
     required super.itemPhoto,
     required super.itemCode,
     required super.itemBarCode,
+    required super.documents,
+    required super.instructions,
     required super.sparePartFor,
     required super.itemUnit,
     required super.locations,
@@ -30,6 +32,8 @@ class ItemModel extends Item {
     String? itemPhoto,
     String? itemCode,
     String? itemBarCode,
+    List<String>? documents,
+    List<String>? instructions,
     List<String>? sparePartFor,
     ItemUnit? itemUnit,
     List<String>? locations,
@@ -46,6 +50,8 @@ class ItemModel extends Item {
       itemPhoto: itemPhoto ?? this.itemPhoto,
       itemCode: itemCode ?? this.itemCode,
       itemBarCode: itemBarCode ?? this.itemBarCode,
+      documents: documents ?? this.documents,
+      instructions: instructions ?? this.instructions,
       sparePartFor: sparePartFor ?? this.sparePartFor,
       itemUnit: itemUnit ?? this.itemUnit,
       locations: locations ?? this.locations,
@@ -65,6 +71,10 @@ class ItemModel extends Item {
     result.addAll({'itemPhoto': itemPhoto});
     result.addAll({'itemCode': itemCode});
     result.addAll({'itemBarCode': itemBarCode});
+    result.addAll({'documents': documents});
+    result.addAll({'instructions': instructions});
+    result.addAll({'documents': documents});
+    result.addAll({'instructions': instructions});
     result.addAll({'sparePartFor': sparePartFor});
     result.addAll({'itemUnit': itemUnit.name});
     result.addAll({'locations': locations});
@@ -87,12 +97,15 @@ class ItemModel extends Item {
       itemPhoto: map['itemPhoto'] ?? '',
       itemCode: map['itemCode'] ?? '',
       itemBarCode: map['itemBarCode'] ?? '',
-      sparePartFor: List<String>.from(map['sparePartFor']),
+      documents: List<String>.from(map['documents'] ?? []),
+      instructions: List<String>.from(map['instructions'] ?? []),
+      sparePartFor: List<String>.from(map['sparePartFor'] ?? []),
       itemUnit: ItemUnit.fromString(map['itemUnit']),
-      locations: List<String>.from(map['locations']),
+      locations: List<String>.from(map['locations'] ?? []),
       amountInLocations: List<ItemAmountInLocationModel>.from(
-          map['amountInLocations']
-              ?.map((x) => ItemAmountInLocationModel.fromMap(x))),
+        map['amountInLocations']
+            ?.map((x) => ItemAmountInLocationModel.fromMap(x)),
+      ),
     );
   }
 
@@ -100,9 +113,32 @@ class ItemModel extends Item {
     return copyWith(
       sparePartFor: [...sparePartFor],
       locations: [...locations],
+      instructions: [...instructions],
+      documents: [...documents],
       amountInLocations: amountInLocations
           .map((ItemAmountInLocationModel e) => e.copyWith())
           .toList(),
+    );
+  }
+
+  factory ItemModel.fromItem(Item item) {
+    return ItemModel(
+      id: item.id,
+      producer: item.producer,
+      name: item.name,
+      description: item.description,
+      category: item.category,
+      price: item.price,
+      alertQuantity: item.alertQuantity,
+      itemPhoto: item.itemPhoto,
+      itemCode: item.itemCode,
+      itemBarCode: item.itemBarCode,
+      documents: item.documents,
+      instructions: item.instructions,
+      sparePartFor: item.sparePartFor,
+      itemUnit: item.itemUnit,
+      locations: item.locations,
+      amountInLocations: item.amountInLocations,
     );
   }
 }

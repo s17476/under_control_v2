@@ -38,7 +38,10 @@ class AddAssetInstructionsCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: SingleChildScrollView(
-                        child: InstructionsList(instructions: instructions),
+                        child: InstructionsList(
+                          instructions: instructions,
+                          toggleSelection: toggleSelection,
+                        ),
                       ),
                     ),
 
@@ -94,9 +97,11 @@ class InstructionsList extends StatelessWidget {
   const InstructionsList({
     Key? key,
     required this.instructions,
+    required this.toggleSelection,
   }) : super(key: key);
 
   final List<String> instructions;
+  final Function(String) toggleSelection;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +138,8 @@ class InstructionsList extends StatelessWidget {
                 child: InstructionTile(
                   instruction: filteredItems[index],
                   searchQuery: '',
-                  onSelection: (_) {},
+                  isSelected: instructions.contains(filteredItems[index].id),
+                  onSelection: toggleSelection,
                 ),
               );
             },

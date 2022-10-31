@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../assets/presentation/widgets/add_asset_instructions.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -47,7 +48,11 @@ class _AddItemPageState extends State<AddItemPage> {
   final _priceTextEditingController = TextEditingController();
   final _alertQuantityTextEditingController = TextEditingController(text: '0');
 
+  List<File> _documents = [];
+  List<String> _instructions = [];
+
   bool _isAlertQuantitySet = false;
+  bool _isAddInstructionsVisible = false;
 
   String _category = '';
   String _itemUnit = '';
@@ -165,6 +170,10 @@ class _AddItemPageState extends State<AddItemPage> {
         amountInLocations: _item != null ? _item!.amountInLocations : const [],
         locations: _item != null ? _item!.locations : const [],
         sparePartFor: const [],
+        // TODO
+        // add documents and instructions
+        instructions: _instructions,
+        documents: const [],
       );
 
       if (_item != null) {
@@ -182,6 +191,18 @@ class _AddItemPageState extends State<AddItemPage> {
       }
 
       Navigator.pop(context);
+    }
+  }
+
+  void _toggleInstructionSelection(String instruction) {
+    if (!_instructions.contains(instruction)) {
+      setState(() {
+        _instructions.add(instruction);
+      });
+    } else {
+      setState(() {
+        _instructions.remove(instruction);
+      });
     }
   }
 
@@ -203,10 +224,19 @@ class _AddItemPageState extends State<AddItemPage> {
     });
   }
 
+  void _toggleAddInstructionsVisibility() {
+    setState(() {
+      _isAddInstructionsVisible = !_isAddInstructionsVisible;
+    });
+  }
+
   @override
   void initState() {
     _pageController.addListener(() {
       FocusScope.of(context).unfocus();
+      if (_isAddInstructionsVisible) {
+        _toggleAddInstructionsVisibility();
+      }
     });
     super.initState();
   }
@@ -233,6 +263,7 @@ class _AddItemPageState extends State<AddItemPage> {
       }
       _category = _item!.category;
       _itemUnit = _item!.itemUnit.name;
+      _instructions = _item!.instructions;
     }
     super.didChangeDependencies();
   }
@@ -289,6 +320,12 @@ class _AddItemPageState extends State<AddItemPage> {
           imageUrl: _item?.itemPhoto,
         ),
       ),
+      AddAssetInstructionsCard(
+        toggleSelection: _toggleInstructionSelection,
+        toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
+        instructions: _instructions,
+        isAddInstructionsVisible: _isAddInstructionsVisible,
+      ),
       AddItemSummaryCard(
         pageController: _pageController,
         producerTextEditingController: _producerTextEditingController,
@@ -302,6 +339,7 @@ class _AddItemPageState extends State<AddItemPage> {
         category: _category,
         itemUnit: _itemUnit,
         itemImage: _itemImage,
+        instructions: _instructions,
       ),
     ];
 
@@ -309,10 +347,15 @@ class _AddItemPageState extends State<AddItemPage> {
 
     return WillPopScope(
       onWillPop: () async {
+        if (_isAddInstructionsVisible) {
+          _toggleAddInstructionsVisibility();
+          return false;
+        }
         // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);
         final cantExit = timegap >= const Duration(seconds: 2);
         preBackpress = DateTime.now();
+
         if (cantExit) {
           ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()

@@ -25,6 +25,8 @@ void main() {
       itemPhoto: 'itemPhoto',
       itemCode: 'itemCode',
       itemBarCode: 'itemBarCode',
+      instructions: [],
+      documents: [],
       sparePartFor: [],
       itemUnit: ItemUnit.pcs,
       locations: [],
