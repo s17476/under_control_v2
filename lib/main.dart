@@ -42,6 +42,7 @@ import 'features/core/utils/error_message_handler.dart';
 import 'features/core/utils/material_color_generator.dart';
 import 'features/dashboard/presentation/pages/all_actions_list_page.dart';
 import 'features/dashboard/presentation/pages/all_asset_actions_page.dart';
+import 'features/dashboard/presentation/pages/all_assets_without_inspection_list_page.dart';
 import 'features/filter/presentation/blocs/filter/filter_bloc.dart';
 import 'features/groups/presentation/blocs/group/group_bloc.dart';
 import 'features/groups/presentation/pages/add_group_page.dart';
@@ -278,6 +279,8 @@ class App extends StatelessWidget
               const AssetActionsListPage(),
           AllAssetActionsListPage.routeName: (context) =>
               const AllAssetActionsListPage(),
+          AllAssetsWithoutInspectionListPage.routeName: (context) =>
+              const AllAssetsWithoutInspectionListPage(),
         },
         // localization
         localizationsDelegates: const [
