@@ -8,6 +8,7 @@ import '../../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../domain/entities/asset_action/asset_action.dart';
 import '../../../utils/get_asset_status_icon.dart';
+import '../../blocs/asset/asset_bloc.dart';
 import '../../pages/asset_detail_page.dart';
 
 class AssetActionTile extends StatelessWidget {
@@ -75,6 +76,29 @@ class AssetActionTile extends StatelessWidget {
                         style: Theme.of(context).textTheme.caption,
                       ),
                     ),
+                    if (isDashboardTile)
+                      BlocBuilder<AssetBloc, AssetState>(
+                        builder: (context, state) {
+                          if (state is AssetLoadedState) {
+                            final asset = state.getAssetById(action.assetId);
+                            if (asset != null) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  '${asset.internalCode} - ${asset.producer} - ${asset.model}',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).highlightColor,
+                                  ),
+                                ),
+                              );
+                            }
+                          }
+                          return Text(action.assetId);
+                        },
+                      ),
                     // connected task
                     if (action.connectedTask.isNotEmpty)
                       Padding(
@@ -94,9 +118,16 @@ class AssetActionTile extends StatelessWidget {
                     // is asset in use
                     Row(
                       children: [
-                        Icon(
-                          action.isAssetInUse ? Icons.play_arrow : Icons.pause,
-                          color: Theme.of(context).textTheme.caption!.color,
+                        Padding(
+                          padding: action.isAssetInUse
+                              ? const EdgeInsets.all(0)
+                              : const EdgeInsets.only(left: 4.0),
+                          child: Icon(
+                            action.isAssetInUse
+                                ? Icons.play_arrow
+                                : Icons.pause,
+                            color: Theme.of(context).textTheme.caption!.color,
+                          ),
                         ),
                         Text(
                           action.isAssetInUse
