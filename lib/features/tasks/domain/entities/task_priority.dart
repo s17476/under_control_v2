@@ -1,4 +1,4 @@
-enum TaskPriority {
+enum TaskPriority implements Comparable {
   low('low'),
   medium('medium'),
   high('high'),
@@ -20,4 +20,7 @@ enum TaskPriority {
         return TaskPriority.unknown;
     }
   }
+
+  @override
+  int compareTo(priority) => index.compareTo(priority.index);
 }

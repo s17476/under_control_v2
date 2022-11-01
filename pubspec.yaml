@@ -138,6 +138,8 @@ flutter:
     - assets/status_working_attention.png
     - assets/status_not_working.png
     - assets/status_disposed.png
+    - assets/work-order.png
+    - assets/task.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
