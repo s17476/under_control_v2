@@ -4,7 +4,7 @@ import '../../../domain/entities/task_priority.dart';
 import '../../../domain/entities/work_order/work_order.dart';
 
 class WorkOrderModel extends WorkOrder {
-  WorkOrderModel({
+  const WorkOrderModel({
     required super.id,
     required super.title,
     required super.description,

@@ -97,15 +97,15 @@ void main() {
         //     expect(result, isA<Right<Failure, VoidResult>>());
         //   },
         // );
-        test(
-          'should return [VoidResult] when deleteItem is called',
-          () async {
-            // act
-            final result = await repository.deleteItem(tItemParams);
-            // assert
-            expect(result, isA<Right<Failure, VoidResult>>());
-          },
-        );
+        // test(
+        //   'should return [VoidResult] when deleteItem is called',
+        //   () async {
+        //     // act
+        //     final result = await repository.deleteItem(tItemParams);
+        //     // assert
+        //     expect(result, isA<Right<Failure, VoidResult>>());
+        //   },
+        // );
         test(
           'should return [ItemsStream] when getItemsStream is called',
           () async {

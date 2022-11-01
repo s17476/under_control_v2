@@ -16,6 +16,7 @@ import '../../inventory/domain/entities/item_action/item_action.dart';
 import '../../inventory/domain/entities/item_category/item_category.dart';
 import '../../knowledge_base/domain/entities/instruction_category/instruction_category.dart';
 import '../../locations/domain/entities/location.dart';
+import '../../tasks/domain/entities/work_order/work_order.dart';
 import '../error/failures.dart';
 
 abstract class FutureUseCase<Type, Params> {
@@ -189,6 +190,23 @@ class ItemParams extends Equatable {
 
   @override
   List<Object> get props => [item, companyId];
+}
+
+class WorkOrderParams extends Equatable {
+  final WorkOrder workOrder;
+  final List<File>? images;
+  final File? video;
+  final String companyId;
+
+  const WorkOrderParams({
+    required this.workOrder,
+    this.images,
+    this.video,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [workOrder, companyId];
 }
 
 class CodeParams extends Equatable {

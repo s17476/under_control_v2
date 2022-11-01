@@ -29,7 +29,7 @@ void main() {
 
   group('Inventory', () {
     test(
-      'should return [String] from repository when GetItemsStream is called',
+      'should return [ItemsStream] from repository when GetItemsStream is called',
       () async {
         // arrange
         when(() => repository.getItemsStream(any())).thenAnswer(

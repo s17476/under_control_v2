@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
 import '../task_priority.dart';
 
@@ -15,7 +14,7 @@ class WorkOrder extends Equatable {
   final String video;
   final TaskPriority priority;
 
-  WorkOrder({
+  const WorkOrder({
     required this.id,
     required this.title,
     required this.description,
