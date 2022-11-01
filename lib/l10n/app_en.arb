@@ -1944,5 +1944,21 @@
     "asset_details": "Asset details",
     "@asset_details": {
       "description": "asset - details"
+    },
+    "task_priority": "Taks priority",
+    "@task_priority": {
+      "description": "task priority"
+    },
+    "task_priority_low": "Low",
+    "@task_priority_low": {
+      "description": "task priority"
+    },
+    "task_priority_medium": "Medium",
+    "@task_priority_medium": {
+      "description": "task priority"
+    },
+    "task_priority_high": "High",
+    "@task_priority_high": {
+      "description": "task priority"
     }
 }
