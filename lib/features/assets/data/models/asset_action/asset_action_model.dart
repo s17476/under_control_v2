@@ -14,6 +14,7 @@ class AssetActionModel extends AssetAction {
     required super.isCreate,
     required super.assetStatus,
     required super.connectedTask,
+    required super.connectedWorkOrder,
   });
 
   AssetActionModel copyWith({
@@ -26,6 +27,7 @@ class AssetActionModel extends AssetAction {
     bool? isCreate,
     AssetStatus? assetStatus,
     String? connectedTask,
+    String? connectedWorkOrder,
   }) {
     return AssetActionModel(
       id: id ?? this.id,
@@ -37,6 +39,7 @@ class AssetActionModel extends AssetAction {
       isCreate: isCreate ?? this.isCreate,
       assetStatus: assetStatus ?? this.assetStatus,
       connectedTask: connectedTask ?? this.connectedTask,
+      connectedWorkOrder: connectedWorkOrder ?? this.connectedWorkOrder,
     );
   }
 
@@ -51,6 +54,7 @@ class AssetActionModel extends AssetAction {
     result.addAll({'isCreate': isCreate});
     result.addAll({'assetStatus': assetStatus.name});
     result.addAll({'connectedTask': connectedTask});
+    result.addAll({'connectedWorkOrder': connectedWorkOrder});
 
     return result;
   }
@@ -75,6 +79,7 @@ class AssetActionModel extends AssetAction {
       isCreate: map['isCreate'] ?? false,
       assetStatus: AssetStatus.fromString(map['assetStatus']),
       connectedTask: map['connectedTask'] ?? '',
+      connectedWorkOrder: map['connectedWorkOrder'] ?? '',
     );
   }
 }
