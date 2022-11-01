@@ -79,4 +79,23 @@ class WorkOrderModel extends WorkOrder {
       priority: TaskPriority.fromString(map['priority']),
     );
   }
+
+  WorkOrderModel deepCopy() {
+    return copyWith(
+      images: [...images],
+    );
+  }
+
+  factory WorkOrderModel.fromWorkOrder(WorkOrder workOrder) => WorkOrderModel(
+        id: workOrder.id,
+        title: workOrder.title,
+        description: workOrder.description,
+        date: workOrder.date,
+        locationId: workOrder.locationId,
+        userId: workOrder.userId,
+        assetId: workOrder.assetId,
+        images: workOrder.images,
+        video: workOrder.video,
+        priority: workOrder.priority,
+      );
 }
