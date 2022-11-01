@@ -25,6 +25,8 @@ import '../../../../knowledge_base/presentation/blocs/instruction_category/instr
 import '../../../../knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart';
 import '../../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../../../tasks/presentation/blocs/work_order/work_order_bloc.dart';
+import '../../../../tasks/presentation/blocs/work_order_management/work_order_management_bloc.dart';
 import '../../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 
 class AppBarAnimatedIcon extends StatefulWidget {
@@ -282,6 +284,24 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
         BlocListener<AssetManagementBloc, AssetManagementState>(
           listener: (context, state) {
             if (state is AssetManagementLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<WorkOrderBloc, WorkOrderState>(
+          listener: (context, state) {
+            if (state is WorkOrderLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<WorkOrderManagementBloc, WorkOrderManagementState>(
+          listener: (context, state) {
+            if (state is WorkOrderManagementLoadingState) {
               _startAnimation();
             } else {
               _stopAnimation();
