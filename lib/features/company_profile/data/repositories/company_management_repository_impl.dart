@@ -41,7 +41,6 @@ class CompanyManagementRepositoryImpl extends CompanyManagementRepository {
     try {
       final logoReferance = firebaseStorage
           .ref()
-          .child('companies')
           .child(params.id)
           .child('logo')
           .child('${params.id}.jpg');

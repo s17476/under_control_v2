@@ -98,7 +98,7 @@ class CompanyManagementBloc
             avatar: event.logo!,
           ),
         );
-        failureOrLogoUrl.fold(
+        await failureOrLogoUrl.fold(
           (failure) async => emit(
             CompanyManagementError(
               message: failure.message,

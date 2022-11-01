@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:under_control_v2/features/company_profile/presentation/pages/add_company_page.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
-import '../../../core/utils/url_launcher_helpers.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/responsive_size.dart';
+import '../../../core/utils/show_snack_bar.dart';
 import '../../../core/utils/size_config.dart';
+import '../../../core/utils/url_launcher_helpers.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/company.dart';
 import '../blocs/company_management/company_management_bloc.dart';
 import '../blocs/company_profile/company_profile_bloc.dart';
-import '../../utils/show_edit_company_modal_bottom_sheet.dart';
+import '../widgets/logo_editor_card.dart';
+import 'add_company_page.dart';
 
 class CompanyDetailsPage extends StatefulWidget {
   const CompanyDetailsPage({Key? key}) : super(key: key);
@@ -72,8 +72,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
       Choice(
         title: AppLocalizations.of(context)!.company_details_edit_logo,
         icon: Icons.image,
-        // TODO
-        onTap: () => print('image'),
+        onTap: () => _showLogoEditor(),
       ),
     ];
 
@@ -495,7 +494,12 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                         ],
                       ),
                     ),
-                  )
+                  ),
+                  if (_isLogoEditorVisible)
+                    LogoEditorCard(
+                      company: _company,
+                      onDismiss: _hideLogoEditor,
+                    )
                 ],
               ),
             ),
