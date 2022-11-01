@@ -601,6 +601,10 @@
     "@add_company_intro_card_title": {
       "description": "Add new company page - title"
     },
+    "add_company_intro_card_edit_title": "Edit company",
+    "@add_company_intro_card_edit_title": {
+      "description": "edit company page - title"
+    },
     "add_company_intro_card_name": "Organization name",
     "@add_company_intro_card_name": {
       "description": "Add new company page - name"
@@ -640,6 +644,14 @@
     "add_company_intro_card_homepage": "Homepage",
     "@add_company_intro_card_homepage": {
       "description": "Add new company page - homepage"
+    },
+    "add_company_msg_updated": "Company data updated",
+    "@add_company_msg_updated": {
+      "description": "company updated message"
+    },
+    "add_company_msg_not_updated": "Company data NOT updated",
+    "@add_company_msg_not_updated": {
+      "description": "company not updated message"
     },
     "approve_page_text": "The last stage is the approval of your request to join the selected organization by its administrator. You can also change the organization you want to join.",
     "@approve_page_text": {

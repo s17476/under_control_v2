@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -22,6 +23,8 @@ class AddCompanyPage extends StatefulWidget {
 class _AddCompanyPageState extends State<AddCompanyPage> {
   List<Widget> _pages = [];
 
+  Company? _company;
+
   final _formKey = GlobalKey<FormState>();
 
   final _pageController = PageController();
@@ -42,7 +45,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
       FocusScope.of(context).unfocus();
       if (isValid) {
         final company = CompanyModel(
-          id: '',
+          id: _company != null ? _company!.id : '',
           name: _nameTexEditingController.text.trim(),
           address: _addressTexEditingController.text.trim(),
           postCode: _postCodeTexEditingController.text.trim(),
@@ -53,18 +56,26 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
           phoneNumber: _phoneNumberTexEditingController.text.trim(),
           email: _emailTexEditingController.text.trim(),
           homepage: _homepageTexEditingController.text.trim(),
-          logo: '',
+          logo: _company != null ? _company!.logo : '',
           joinDate: DateTime.now(),
         );
 
-        context.read<CompanyManagementBloc>().add(
-              AddCompanyEvent(
-                company: company,
-                companies: (context.read<CompanyManagementBloc>().state
-                        as CompanyManagementCompaniesLoaded)
-                    .companies,
-              ),
-            );
+        if (_company == null) {
+          context.read<CompanyManagementBloc>().add(
+                AddCompanyEvent(
+                  company: company,
+                  companies: (context.read<CompanyManagementBloc>().state
+                          as CompanyManagementCompaniesLoaded)
+                      .companies,
+                ),
+              );
+        } else {
+          context.read<CompanyManagementBloc>().add(
+                UpdateCompanyDataEvent(
+                  company: company,
+                ),
+              );
+        }
         Navigator.pop(context);
       }
     }
@@ -76,6 +87,27 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
       FocusScope.of(context).unfocus();
     });
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    final data = ModalRoute.of(context)!.settings.arguments;
+    if (data is Company) {
+      _company = data;
+    }
+    if (_company != null) {
+      _nameTexEditingController.text = _company!.name;
+      _addressTexEditingController.text = _company!.address;
+      _postCodeTexEditingController.text = _company!.postCode;
+      _cityTexEditingController.text = _company!.city;
+      _countryTexEditingController.text = _company!.country;
+      _currencyTexEditingController.text = _company!.currency;
+      _vatNumberTexEditingController.text = _company!.vatNumber;
+      _phoneNumberTexEditingController.text = _company!.phoneNumber;
+      _emailTexEditingController.text = _company!.email;
+      _homepageTexEditingController.text = _company!.homepage;
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -108,6 +140,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
         emailTexEditingController: _emailTexEditingController,
         phoneNumberTexEditingController: _phoneNumberTexEditingController,
         vatNumberTexEditingController: _vatNumberTexEditingController,
+        isEditMode: _company != null,
       ),
     ];
     DateTime preBackpress = DateTime.now();

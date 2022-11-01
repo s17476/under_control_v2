@@ -21,6 +21,7 @@ class AddCompanyCard extends StatelessWidget with ResponsiveSize {
     required this.phoneNumberTexEditingController,
     required this.emailTexEditingController,
     required this.homepageTexEditingController,
+    required this.isEditMode,
   }) : super(key: key);
 
   final TextEditingController nameTexEditingController;
@@ -33,6 +34,7 @@ class AddCompanyCard extends StatelessWidget with ResponsiveSize {
   final TextEditingController phoneNumberTexEditingController;
   final TextEditingController emailTexEditingController;
   final TextEditingController homepageTexEditingController;
+  final bool isEditMode;
 
   void _pickCountry(BuildContext context) {
     showCountryPicker(
@@ -94,8 +96,11 @@ class AddCompanyCard extends StatelessWidget with ResponsiveSize {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
                           child: Text(
-                            AppLocalizations.of(context)!
-                                .add_company_intro_card_title,
+                            isEditMode
+                                ? AppLocalizations.of(context)!
+                                    .add_company_intro_card_edit_title
+                                : AppLocalizations.of(context)!
+                                    .add_company_intro_card_title,
                             style: TextStyle(
                               fontSize: Theme.of(context)
                                   .textTheme
