@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/data/models/work_order/work_order_model.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_work_order/add_work_order_set_asset_card.dart';
 
+import '../../../assets/presentation/widgets/add_asset_location_card.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -218,6 +219,7 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
       setState(() {
         _isConnectedToAsset = false;
         _assetId = '';
+        _locationId = '';
       });
     }
   }
@@ -337,6 +339,13 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         setLocation: _setLocation,
         assetId: _assetId,
       ),
+      if (!_isConnectedToAsset)
+        KeepAlivePage(
+          child: AddAssetLocationCard(
+            selectedLocation: _locationId,
+            setLocation: _setLocation,
+          ),
+        ),
       // KeepAlivePage(
       //   child: AddAssetDataCard(
       //     category: _categoryId,
@@ -346,12 +355,6 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
       //     barCodeTextEditingController: _barCodeTextEditingController,
       //     dateTime: _date,
       //     setDate: _setDate,
-      //   ),
-      // ),
-      // KeepAlivePage(
-      //   child: AddAssetLocationCard(
-      //     selectedLocation: _locationId,
-      //     setLocation: _setLocation,
       //   ),
       // ),
       // KeepAlivePage(
