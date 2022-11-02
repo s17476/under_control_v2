@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/data/models/work_order/work_order_model.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_work_order/add_work_order_set_asset_card.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -48,6 +49,7 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
   String _priority = '';
 
   bool _isAddAssetVisible = false;
+  bool _isConnectedToAsset = false;
 
   DateTime _date = DateTime.now();
 
@@ -201,6 +203,25 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
     });
   }
 
+  void _setAssetId(String assetId) {
+    setState(() {
+      _assetId = assetId;
+    });
+  }
+
+  void _setIsConnectedToAsset(bool value) {
+    if (value) {
+      setState(() {
+        _isConnectedToAsset = true;
+      });
+    } else {
+      setState(() {
+        _isConnectedToAsset = false;
+        _assetId = '';
+      });
+    }
+  }
+
   void _setDate(DateTime date) {
     setState(() {
       _date = date;
@@ -308,6 +329,13 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
           titleTextEditingController: _titleTextEditingController,
           descriptionTextEditingController: _descriptionTextEditingController,
         ),
+      ),
+      AddWorkOrderSetAssetCard(
+        setIsConnectedToAsset: _setIsConnectedToAsset,
+        isConnectedToAsset: _isConnectedToAsset,
+        setAssetId: _setAssetId,
+        setLocation: _setLocation,
+        assetId: _assetId,
       ),
       // KeepAlivePage(
       //   child: AddAssetDataCard(

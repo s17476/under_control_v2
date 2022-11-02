@@ -1968,5 +1968,21 @@
     "task_priority_high": "High",
     "@task_priority_high": {
       "description": "task priority"
+    },
+    "task_connected_asset": "Connected asset",
+    "@task_connected_asset": {
+      "description": "task/work order connected asset"
+    },
+    "task_connected_asset_yes": "Connected to an asset",
+    "@task_connected_asset_yes": {
+      "description": "task/work order connected to an asset"
+    },
+    "task_connected_asset_no": "Not connected to an asset",
+    "@task_connected_asset_no": {
+      "description": "task/work order not connected to an asset"
+    },
+    "task_connected_asset_select": "Select asset",
+    "@task_connected_asset_select": {
+      "description": "task/work order select connected asset"
     }
 }

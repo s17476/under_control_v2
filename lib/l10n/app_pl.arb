@@ -474,5 +474,9 @@
     "task_priority": "Priorytet zadania",
     "task_priority_low": "Niski",
     "task_priority_medium": "Sredni",
-    "task_priority_high": "Wysoki"
+    "task_priority_high": "Wysoki",
+    "task_connected_asset": "Połączone aktywa",
+    "task_connected_asset_yes": "Połączone z aktywami",
+    "task_connected_asset_no": "Nie połączone z aktywami",
+    "task_connected_asset_select": "Wybierz aktywa"
 }
