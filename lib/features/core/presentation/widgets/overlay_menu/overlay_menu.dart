@@ -4,7 +4,7 @@ import '../../../../assets/presentation/widgets/assets_overlay_menu_items.dart';
 import '../../../../dashboard/presentation/widgets/dashboard_overlay_menu_items.dart';
 import '../../../../inventory/utils/inventory_overlay_menu_items.dart';
 import '../../../../knowledge_base/utils/knowledge_base_overlay_menu_items.dart';
-import '../../../../tasks/presentation/utils/tasks_overlay_menu_items.dart';
+import '../../../../tasks/utils/tasks_overlay_menu_items.dart';
 import '../../../utils/choice.dart';
 import '../glass_layer.dart';
 import 'overlay_menu_item.dart';

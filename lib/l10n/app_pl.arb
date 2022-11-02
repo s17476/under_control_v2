@@ -469,6 +469,8 @@
     "asset_data": "Dane",
     "asset_add_date": "Data dodania",
     "asset_details": "Szczegóy aktywów",
+    "work_order_add": "Dodaj nowe zlecenie",
+    "work_order_edit": "Edytuj zlecenie",
     "task_priority": "Priorytet zadania",
     "task_priority_low": "Niski",
     "task_priority_medium": "Sredni",

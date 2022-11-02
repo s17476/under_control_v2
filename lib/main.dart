@@ -73,6 +73,7 @@ import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/tasks/presentation/blocs/work_order/work_order_bloc.dart';
 import 'features/tasks/presentation/blocs/work_order_management/work_order_management_bloc.dart';
+import 'features/tasks/presentation/pages/add_work_order_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import 'features/user_profile/presentation/pages/add_user_profile_page.dart';
@@ -290,6 +291,7 @@ class App extends StatelessWidget
               const AllAssetActionsListPage(),
           AllAssetsWithoutInspectionListPage.routeName: (context) =>
               const AllAssetsWithoutInspectionListPage(),
+          AddWorkOrderPage.routeName: (context) => const AddWorkOrderPage(),
         },
         // localization
         localizationsDelegates: const [

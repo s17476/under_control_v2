@@ -1945,6 +1945,14 @@
     "@asset_details": {
       "description": "asset - details"
     },
+    "work_order_add": "Add new work order",
+    "@work_order_add": {
+      "description": "work order add"
+    },
+    "work_order_edit": "Edit work order",
+    "@work_order_edit": {
+      "description": "work order edit"
+    },
     "task_priority": "Taks priority",
     "@task_priority": {
       "description": "task priority"
