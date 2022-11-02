@@ -140,6 +140,12 @@ flutter:
     - assets/status_disposed.png
     - assets/work-order.png
     - assets/task.png
+    - assets/priority_low.png
+    - assets/priority_low_shadow.png
+    - assets/priority_medium.png
+    - assets/priority_medium_shadow.png
+    - assets/priority_high.png
+    - assets/priority_high_shadow.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -3,22 +3,23 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/tasks/data/models/work_order/work_order_model.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_video_card.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_work_order/add_work_order_set_asset_card.dart';
 
 import '../../../assets/presentation/widgets/add_asset_images_card.dart';
 import '../../../assets/presentation/widgets/add_asset_location_card.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
-import '../../../core/utils/duration_unit.dart';
 import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../data/models/work_order/work_order_model.dart';
+import '../../domain/entities/task_priority.dart';
 import '../../domain/entities/work_order/work_order.dart';
 import '../blocs/work_order/work_order_bloc.dart';
+import '../widgets/add_video_card.dart';
 import '../widgets/add_work_order/add_work_order_card.dart';
+import '../widgets/add_work_order/add_work_order_set_asset_card.dart';
+import '../widgets/set_priority_card.dart';
 
 class AddWorkOrderPage extends StatefulWidget {
   const AddWorkOrderPage({Key? key}) : super(key: key);
@@ -49,7 +50,7 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
   String _locationId = '';
   String _userId = '';
   String _assetId = '';
-  String _priority = '';
+  String _priority = TaskPriority.low.name;
 
   bool _isAddAssetVisible = false;
   bool _isConnectedToAsset = false;
@@ -206,7 +207,7 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
     });
   }
 
-  void _setTaskPriority(String value) {
+  void _setPriority(String value) {
     setState(() {
       _priority = value;
     });
@@ -262,17 +263,6 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
     });
   }
 
-  // void fetchVideo(String videoUrl) async {
-  //   setState(() {
-  //     _loadingVideo = true;
-  //   });
-  //   final videoFile = await getCachedFirebaseStorageFile(videoUrl);
-  //   setState(() {
-  //     _videoFile = videoFile;
-  //     _loadingVideo = false;
-  //   });
-  // }
-
   @override
   void initState() {
     _pageController.addListener(() {
@@ -300,10 +290,6 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
       if (_workOrder!.images.isNotEmpty) {
         fetchImages(_workOrder!.images);
       }
-
-      // if (_workOrder!.video.isEmpty) {
-      //   fetchVideo(_workOrder!.video);
-      // }
 
       _titleTextEditingController.text = _workOrder!.title;
       _descriptionTextEditingController.text = _workOrder!.description;
@@ -354,68 +340,19 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         images: _images,
         loading: _loadingImages,
       ),
-      AddVideoCard(
-        videoFile: _videoFile,
-        videoUrl: _workOrder?.video,
-        isVideoLoading: _loadingVideo,
-        updateVideo: _setVideo,
+      KeepAlivePage(
+        child: AddVideoCard(
+          videoFile: _videoFile,
+          videoUrl: _workOrder?.video,
+          isVideoLoading: _loadingVideo,
+          updateVideo: _setVideo,
+        ),
       ),
-      // KeepAlivePage(
-      //   child: AddAssetDataCard(
-      //     category: _categoryId,
-      //     setCategory: _setCategory,
-      //     priceTextEditingController: _priceTextEditingController,
-      //     codeTextEditingController: _internalCodeTextEditingController,
-      //     barCodeTextEditingController: _barCodeTextEditingController,
-      //     dateTime: _date,
-      //     setDate: _setDate,
-      //   ),
-      // ),
-      // KeepAlivePage(
-      //   child: AddAssetStatusCard(
-      //     lastInspectionDate: _lastInspectionDate,
-      //     setLastInspectionDate: _setLastInspectionDate,
-      //     durationUnit: _durationUnit,
-      //     setDurationUnit: _setDurationUnit,
-      //     assetStatus: _priority,
-      //     setAssetStatus: _setTaskPriority,
-      //     duration: _duration,
-      //     setDuration: _setDuration,
-      //   ),
-      // ),
-      // AddAssetIsSparePartCard(
-      //   setIsSparePart: _setIsSparePart,
-      //   isSparePart: _isSparePart,
-      //   setParentAsset: _setParentAsset,
-      // ),
-      // AddAssetIsInUseCard(
-      //   setIsInUse: _setIsInUse,
-      //   isInUse: _isInUse,
-      //   setParentAsset: _setParentAsset,
-      //   isSparePart: _isSparePart,
-      //   setLocation: _setLocation,
-      //   currentParentId: _currentParentId,
-      // ),
-      // AddAssetSparePartCard(
-      //   toggleSelection: _toggleSparePartSelection,
-      //   spareParts: _spareParts,
-      //   isAddAssetVisible: _isAddAssetVisible,
-      //   isAddInventoryVisible: _isAddInventoryVisible,
-      //   toggleAddAssetVisibility: _toggleAddAssetVisibility,
-      //   toggleAddInventoryVisibility: _toggleAddInventoryVisibility,
-      // ),
-      // AddAssetInstructionsCard(
-      //   toggleSelection: _toggleInstructionSelection,
-      //   toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
-      //   instructions: _instructions,
-      //   isAddInstructionsVisible: _isAddInstructionsVisible,
-      // ),
-      // AddAssetDocumentsCard(
-      //   addDocument: _addDocument,
-      //   removeDocument: _removeDocument,
-      //   documents: _documents,
-      //   loading: _loadingDocuments,
-      // ),
+      SetPriorityCard(
+        setPriority: _setPriority,
+        priority: _priority,
+      ),
+
       // AddAssetSummaryCard(
       //   asset: _asset,
       //   pageController: _pageController,
