@@ -478,5 +478,6 @@
     "task_connected_asset": "Połączone aktywa",
     "task_connected_asset_yes": "Połączone z aktywami",
     "task_connected_asset_no": "Nie połączone z aktywami",
-    "task_connected_asset_select": "Wybierz aktywa"
+    "task_connected_asset_select": "Wybierz aktywa",
+    "task_add_video": "Dodaj wideo"
 }

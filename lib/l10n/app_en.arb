@@ -1984,5 +1984,9 @@
     "task_connected_asset_select": "Select asset",
     "@task_connected_asset_select": {
       "description": "task/work order select connected asset"
+    },
+    "task_add_video": "Add video",
+    "@task_add_video": {
+      "description": "task/work order add video"
     }
 }

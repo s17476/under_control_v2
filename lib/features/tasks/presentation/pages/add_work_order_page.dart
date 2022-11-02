@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/data/models/work_order/work_order_model.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_video_card.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_work_order/add_work_order_set_asset_card.dart';
 
 import '../../../assets/presentation/widgets/add_asset_images_card.dart';
@@ -181,6 +182,12 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
     // }
   }
 
+  void _setVideo(File? video) {
+    setState(() {
+      _videoFile = video;
+    });
+  }
+
   void _addImage(File image) {
     setState(() {
       _images.add(image);
@@ -255,16 +262,16 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
     });
   }
 
-  void fetchVideo(String videoUrl) async {
-    setState(() {
-      _loadingVideo = true;
-    });
-    final videoFile = await getCachedFirebaseStorageFile(videoUrl);
-    setState(() {
-      _videoFile = videoFile;
-      _loadingVideo = false;
-    });
-  }
+  // void fetchVideo(String videoUrl) async {
+  //   setState(() {
+  //     _loadingVideo = true;
+  //   });
+  //   final videoFile = await getCachedFirebaseStorageFile(videoUrl);
+  //   setState(() {
+  //     _videoFile = videoFile;
+  //     _loadingVideo = false;
+  //   });
+  // }
 
   @override
   void initState() {
@@ -294,9 +301,9 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         fetchImages(_workOrder!.images);
       }
 
-      if (_workOrder!.video.isEmpty) {
-        fetchVideo(_workOrder!.video);
-      }
+      // if (_workOrder!.video.isEmpty) {
+      //   fetchVideo(_workOrder!.video);
+      // }
 
       _titleTextEditingController.text = _workOrder!.title;
       _descriptionTextEditingController.text = _workOrder!.description;
@@ -346,6 +353,12 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         removeImage: _removeImage,
         images: _images,
         loading: _loadingImages,
+      ),
+      AddVideoCard(
+        videoFile: _videoFile,
+        videoUrl: _workOrder?.video,
+        isVideoLoading: _loadingVideo,
+        updateVideo: _setVideo,
       ),
       // KeepAlivePage(
       //   child: AddAssetDataCard(
