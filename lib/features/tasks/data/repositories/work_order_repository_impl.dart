@@ -45,7 +45,7 @@ class WorkOrdersRepositoryImpl extends WorkOrdersRepository {
       if (params.images != null && params.images!.isNotEmpty) {
         for (var image in params.images!) {
           final fileName =
-              '${workOrderReference.id}-${DateTime.now().toIso8601String()}.pdf';
+              '${workOrderReference.id}-${DateTime.now().toIso8601String()}.jpg';
 
           final fileReference = storageReference.child(fileName);
           await fileReference.putFile(image);
@@ -56,7 +56,7 @@ class WorkOrdersRepositoryImpl extends WorkOrdersRepository {
 
       if (params.video != null) {
         final fileName =
-            '${workOrderReference.id}-${DateTime.now().toIso8601String()}.pdf';
+            '${workOrderReference.id}-${DateTime.now().toIso8601String()}.mp4';
 
         final fileReference = storageReference.child(fileName);
         await fileReference.putFile(params.video!);

@@ -76,7 +76,7 @@ class WorkOrderModel extends WorkOrder {
       assetId: map['assetId'] ?? '',
       images: List<String>.from(map['images'] ?? []),
       video: map['video'] ?? '',
-      priority: TaskPriority.fromString(map['priority'] ?? []),
+      priority: TaskPriority.fromString(map['priority'] ?? ''),
     );
   }
 
