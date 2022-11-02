@@ -106,7 +106,8 @@ class _AddAssetIsInUseCardState extends State<AddAssetIsInUseCard>
                         SelectionButton<bool>(
                           onSelected: widget.setIsInUse,
                           icon: Icons.play_circle,
-                          iconSize: 50,
+                          iconSize:
+                              (widget.isInUse && widget.isSparePart) ? 30 : 50,
                           title: AppLocalizations.of(context)!.asset_in_use,
                           titleSize: 18,
                           gradient: LinearGradient(
@@ -121,8 +122,9 @@ class _AddAssetIsInUseCardState extends State<AddAssetIsInUseCard>
                           value: true,
                           groupValue: widget.isInUse,
                         ),
-                        const SizedBox(
-                          height: 16,
+                        SizedBox(
+                          height:
+                              (widget.isInUse && widget.isSparePart) ? 8 : 16,
                         ),
                         // spare part
                         SelectionButton<bool>(
@@ -131,7 +133,8 @@ class _AddAssetIsInUseCardState extends State<AddAssetIsInUseCard>
                             widget.setParentAsset('');
                           },
                           icon: Icons.pause_circle,
-                          iconSize: 50,
+                          iconSize:
+                              (widget.isInUse && widget.isSparePart) ? 30 : 50,
                           title: AppLocalizations.of(context)!.asset_not_in_use,
                           titleSize: 18,
                           gradient: LinearGradient(
@@ -228,7 +231,10 @@ class _AddAssetIsInUseCardState extends State<AddAssetIsInUseCard>
                                     _searchQuery,
                                   );
                                   return ListView.builder(
-                                    padding: const EdgeInsets.only(top: 2),
+                                    padding: const EdgeInsets.only(
+                                      top: 2,
+                                      bottom: 50,
+                                    ),
                                     itemCount: filteredAssets.length,
                                     itemBuilder: (context, index) {
                                       return AssetTile(
@@ -265,9 +271,6 @@ class _AddAssetIsInUseCardState extends State<AddAssetIsInUseCard>
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 50,
                 ),
               ],
             ),

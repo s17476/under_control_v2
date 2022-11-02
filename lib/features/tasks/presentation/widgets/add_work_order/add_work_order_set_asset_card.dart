@@ -104,7 +104,7 @@ class _AddWorkOrderSetAssetState extends State<AddWorkOrderSetAssetCard>
                         SelectionButton<bool>(
                           onSelected: widget.setIsConnectedToAsset,
                           icon: Icons.handyman,
-                          iconSize: 50,
+                          iconSize: widget.isConnectedToAsset ? 30 : 50,
                           title: AppLocalizations.of(context)!
                               .task_connected_asset_no,
                           titleSize: 18,
@@ -120,8 +120,8 @@ class _AddWorkOrderSetAssetState extends State<AddWorkOrderSetAssetCard>
                           value: false,
                           groupValue: widget.isConnectedToAsset,
                         ),
-                        const SizedBox(
-                          height: 16,
+                        SizedBox(
+                          height: widget.isConnectedToAsset ? 8 : 16,
                         ),
                         // connected to an asset
                         SelectionButton<bool>(
@@ -130,7 +130,7 @@ class _AddWorkOrderSetAssetState extends State<AddWorkOrderSetAssetCard>
                             widget.setAssetId('');
                           },
                           icon: Icons.precision_manufacturing,
-                          iconSize: 50,
+                          iconSize: widget.isConnectedToAsset ? 30 : 50,
                           title: AppLocalizations.of(context)!
                               .task_connected_asset_yes,
                           titleSize: 18,
@@ -230,7 +230,10 @@ class _AddWorkOrderSetAssetState extends State<AddWorkOrderSetAssetCard>
                                     _searchQuery,
                                   );
                                   return ListView.builder(
-                                    padding: const EdgeInsets.only(top: 2),
+                                    padding: const EdgeInsets.only(
+                                      top: 2,
+                                      bottom: 50,
+                                    ),
                                     itemCount: filteredAssets.length,
                                     itemBuilder: (context, index) {
                                       return AssetTile(
@@ -267,9 +270,6 @@ class _AddWorkOrderSetAssetState extends State<AddWorkOrderSetAssetCard>
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 50,
                 ),
               ],
             ),

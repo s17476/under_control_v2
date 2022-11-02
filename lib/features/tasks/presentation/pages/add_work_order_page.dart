@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_work_order/add_work_order_summary_card.dart';
 
 import '../../../assets/presentation/widgets/add_asset_images_card.dart';
 import '../../../assets/presentation/widgets/add_asset_location_card.dart';
@@ -223,6 +224,7 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
     if (value) {
       setState(() {
         _isConnectedToAsset = true;
+        _locationId = '';
       });
     } else {
       setState(() {
@@ -351,6 +353,17 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
       SetPriorityCard(
         setPriority: _setPriority,
         priority: _priority,
+      ),
+      AddWorkOrderSummaryCard(
+        pageController: _pageController,
+        titleTextEditingController: _titleTextEditingController,
+        descriptionTextEditingController: _descriptionTextEditingController,
+        date: _date,
+        locationId: _locationId,
+        assetId: _assetId,
+        priority: _priority,
+        isConnectedToAsset: _isConnectedToAsset,
+        images: _images,
       ),
 
       // AddAssetSummaryCard(
