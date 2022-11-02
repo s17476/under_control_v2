@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/data/models/work_order/work_order_model.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_work_order/add_work_order_set_asset_card.dart';
 
+import '../../../assets/presentation/widgets/add_asset_images_card.dart';
 import '../../../assets/presentation/widgets/add_asset_location_card.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -224,12 +225,6 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
     }
   }
 
-  void _setDate(DateTime date) {
-    setState(() {
-      _date = date;
-    });
-  }
-
   void _setLocation(String location) async {
     setState(() {
       _locationId = location;
@@ -346,6 +341,12 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
             setLocation: _setLocation,
           ),
         ),
+      AddAssetImagesCard(
+        addImage: _addImage,
+        removeImage: _removeImage,
+        images: _images,
+        loading: _loadingImages,
+      ),
       // KeepAlivePage(
       //   child: AddAssetDataCard(
       //     category: _categoryId,
@@ -395,12 +396,6 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
       //   toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
       //   instructions: _instructions,
       //   isAddInstructionsVisible: _isAddInstructionsVisible,
-      // ),
-      // AddAssetImagesCard(
-      //   addImage: _addImage,
-      //   removeImage: _removeImage,
-      //   images: _images,
-      //   loading: _loadingImages,
       // ),
       // AddAssetDocumentsCard(
       //   addDocument: _addDocument,

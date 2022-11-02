@@ -103,6 +103,7 @@ class AddAssetImagesCard extends StatelessWidget with ResponsiveSize {
                       children: images
                           .map(
                             (img) => InkWell(
+                              key: ValueKey(img.path),
                               onTap: () {
                                 Navigator.push(
                                   context,
