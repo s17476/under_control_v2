@@ -16,13 +16,11 @@ class AddVideoCard extends StatefulWidget {
     Key? key,
     required this.videoFile,
     required this.videoUrl,
-    required this.isVideoLoading,
     required this.updateVideo,
   }) : super(key: key);
 
   final File? videoFile;
   final String? videoUrl;
-  final bool isVideoLoading;
   final Function(File?) updateVideo;
 
   @override

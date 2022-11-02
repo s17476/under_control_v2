@@ -1953,6 +1953,30 @@
     "@work_order_edit": {
       "description": "work order edit"
     },
+    "work_order_msg_added": "New work order added",
+    "@work_order_msg_added": {
+      "description": "work order - added msg"
+    },
+    "work_order_msg_not_added": "New work order NOT added",
+    "@work_order_msg_not_added": {
+      "description": "work order - NOT added msg"
+    },
+    "work_order_msg_updated": "Work order updated",
+    "@work_order_msg_updated": {
+      "description": "work order - updated msg"
+    },
+    "work_order_msg_not_updated": "Work order NOT updated",
+    "@work_order_msg_not_updated": {
+      "description": "work order - NOT updated msg"
+    },
+    "work_order_msg_deleted": "Work order deleted",
+    "@work_order_msg_deleted": {
+      "description": "work order - deleted msg"
+    },
+    "work_order_msg_not_deleted": "Work order NOT deleted",
+    "@work_order_msg_not_deleted": {
+      "description": "work order - NOT deleted msg"
+    },
     "task_priority": "Taks priority",
     "@task_priority": {
       "description": "task priority"

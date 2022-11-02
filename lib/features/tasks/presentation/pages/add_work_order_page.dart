@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_work_order/add_work_order_summary_card.dart';
 
 import '../../../assets/presentation/widgets/add_asset_images_card.dart';
 import '../../../assets/presentation/widgets/add_asset_location_card.dart';
@@ -17,9 +16,11 @@ import '../../data/models/work_order/work_order_model.dart';
 import '../../domain/entities/task_priority.dart';
 import '../../domain/entities/work_order/work_order.dart';
 import '../blocs/work_order/work_order_bloc.dart';
+import '../blocs/work_order_management/work_order_management_bloc.dart';
 import '../widgets/add_video_card.dart';
 import '../widgets/add_work_order/add_work_order_card.dart';
 import '../widgets/add_work_order/add_work_order_set_asset_card.dart';
+import '../widgets/add_work_order/add_work_order_summary_card.dart';
 import '../widgets/set_priority_card.dart';
 
 class AddWorkOrderPage extends StatefulWidget {
@@ -34,10 +35,7 @@ class AddWorkOrderPage extends StatefulWidget {
 class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
   WorkOrder? _workOrder;
 
-  late String _companyId;
-
   bool _loadingImages = false;
-  bool _loadingVideo = false;
 
   // pageview
   List<Widget> _pages = [];
@@ -63,125 +61,69 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
   File? _videoFile;
 
   _addNewWorkOrder(BuildContext context) {
-    // String errorMessage = '';
-    // double price = 0;
-    // if (!_formKey.currentState!.validate()) {
-    //   if (_titleTextEditingController.text.trim().length < 2) {
-    //     errorMessage =
-    //         '${AppLocalizations.of(context)!.item_producer} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
-    //   } else if (_modelTextEditingController.text.trim().length < 2) {
-    //     errorMessage =
-    //         '${AppLocalizations.of(context)!.item_name} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
-    //   } else if (_internalCodeTextEditingController.text.trim().length < 2) {
-    //     errorMessage =
-    //         '${AppLocalizations.of(context)!.item_internal_code} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
-    //   }
-    // } else {
-    //   // allowed same internal code only while editing asset
-    //   if (!_isCodeAvailable &&
-    //       ((_asset == null || _asset!.id.isEmpty) ||
-    //           (_asset != null &&
-    //               _asset!.internalCode.toLowerCase() !=
-    //                   _internalCodeTextEditingController.text
-    //                       .trim()
-    //                       .toLowerCase()))) {
-    //     errorMessage = AppLocalizations.of(context)!.asset_msg_code_exists;
-    //   }
-    //   // category selection validation
-    //   if (errorMessage.isEmpty && _categoryId.isEmpty) {
-    //     errorMessage =
-    //         AppLocalizations.of(context)!.item_add_error_category_not_selected;
+    String errorMessage = '';
+    if (!_formKey.currentState!.validate()) {
+      if (_titleTextEditingController.text.trim().length < 2) {
+        errorMessage =
+            '${AppLocalizations.of(context)!.title} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
+      }
+    } else {
+      // asset selection validation
+      if (errorMessage.isEmpty && _isConnectedToAsset && _assetId.isEmpty) {
+        errorMessage =
+            AppLocalizations.of(context)!.task_connected_asset_select;
+      }
+      // location validation
+      if (errorMessage.isEmpty && _locationId.isEmpty) {
+        errorMessage =
+            AppLocalizations.of(context)!.validation_location_not_selected;
+      }
+    }
 
-    //     // price validation
-    //   }
-    //   if (errorMessage.isEmpty &&
-    //       _priceTextEditingController.text.trim().isNotEmpty) {
-    //     try {
-    //       price = double.parse(_priceTextEditingController.text.trim());
-    //       if (price < 0) {
-    //         errorMessage =
-    //             AppLocalizations.of(context)!.incorrect_price_to_small;
-    //       }
-    //     } catch (e) {
-    //       errorMessage = AppLocalizations.of(context)!.incorrect_price_format;
-    //     }
-    //   }
-    //   // location validation
-    //   if (errorMessage.isEmpty && _locationId.isEmpty) {
-    //     errorMessage =
-    //         AppLocalizations.of(context)!.validation_location_not_selected;
-    //   }
-    //   // asset status
-    //   if (errorMessage.isEmpty && _priority.isEmpty) {
-    //     errorMessage = AppLocalizations.of(context)!.asset_status_not_selected;
-    //   }
-    //   // duration unit and duration
-    //   if (errorMessage.isEmpty && (_duration == 0 || _durationUnit.isEmpty)) {
-    //     errorMessage = AppLocalizations.of(context)!.asset_next_inspection_tip;
-    //   }
-    //   // parent asset validation
-    //   if (errorMessage.isEmpty &&
-    //       _currentParentId.isEmpty &&
-    //       _isSparePart &&
-    //       _isInUse) {
-    //     errorMessage = AppLocalizations.of(context)!.asset_parent_select;
-    //   }
-    // }
+    // shows SnackBar if validation error occures
+    if (errorMessage.isNotEmpty) {
+      showSnackBar(
+        context: context,
+        message: errorMessage,
+        isErrorMessage: true,
+      );
+      // saves instruction to DB if no error
+    } else {
+      final newWorkOrder = WorkOrderModel(
+        id: _workOrder != null ? _workOrder!.id : '',
+        title: _titleTextEditingController.text,
+        description: _descriptionTextEditingController.text,
+        date: _date,
+        locationId: _locationId,
+        userId: _userId,
+        assetId: _assetId,
+        images: const [],
+        video: '',
+        priority: TaskPriority.fromString(_priority),
+      );
 
-    // // shows SnackBar if validation error occures
-    // if (errorMessage.isNotEmpty) {
-    //   showSnackBar(
-    //     context: context,
-    //     message: errorMessage,
-    //     isErrorMessage: true,
-    //   );
-    //   // saves instruction to DB if no error
-    // } else {
-    //   final newAsset = AssetModel(
-    //     id: _asset != null ? _asset!.id : '',
-    //     producer: _titleTextEditingController.text,
-    //     model: _modelTextEditingController.text,
-    //     description: _descriptionTextEditingController.text,
-    //     categoryId: _categoryId,
-    //     locationId: _locationId,
-    //     internalCode: _internalCodeTextEditingController.text,
-    //     barCode: _barCodeTextEditingController.text,
-    //     price: price,
-    //     isInUse: _isInUse,
-    //     addDate: _date,
-    //     currentStatus: AssetStatus.fromString(_priority),
-    //     lastInspection: _lastInspectionDate,
-    //     durationUnit: DurationUnit.fromString(_durationUnit),
-    //     duration: _duration,
-    //     images: const [],
-    //     documents: const [],
-    //     instructions: _instructions,
-    //     spareParts: _spareParts,
-    //     currentParentId: _currentParentId,
-    //     isSparePart: _isSparePart,
-    //   );
+      // add new work order
+      if (_workOrder == null || _workOrder!.id.isEmpty) {
+        context.read<WorkOrderManagementBloc>().add(
+              AddWorkOrderEvent(
+                workOrder: newWorkOrder,
+                images: _images,
+                video: _videoFile,
+              ),
+            );
+        // update work order
+      } else {
+        context.read<WorkOrderManagementBloc>().add(
+              UpdateWorkOrderEvent(
+                workOrder: newWorkOrder,
+                images: _images,
+                video: _videoFile,
+              ),
+            );
+      }
 
-    //   // add new asset
-    //   if (_asset == null || _asset!.id.isEmpty) {
-    //     context.read<AssetManagementBloc>().add(
-    //           AddAssetEvent(
-    //             asset: newAsset,
-    //             documents: _documents,
-    //             images: _images,
-    //           ),
-    //         );
-    //   } else {
-    //     context.read<AssetManagementBloc>().add(
-    //           UpdateAssetEvent(
-    //             asset: newAsset,
-    //             documents: _documents,
-    //             images: _images,
-    //           ),
-    //         );
-    //   }
-
-    //   Navigator.pop(context);
-    // }
+      Navigator.pop(context);
+    }
   }
 
   void _setVideo(File? video) {
@@ -282,7 +224,6 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
 
     final userState = context.watch<UserProfileBloc>().state;
     if (userState is Approved) {
-      _companyId = userState.userProfile.companyId;
       _userId = userState.userProfile.id;
     }
 
@@ -346,7 +287,6 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         child: AddVideoCard(
           videoFile: _videoFile,
           videoUrl: _workOrder?.video,
-          isVideoLoading: _loadingVideo,
           updateVideo: _setVideo,
         ),
       ),
@@ -365,32 +305,6 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         isConnectedToAsset: _isConnectedToAsset,
         images: _images,
       ),
-
-      // AddAssetSummaryCard(
-      //   asset: _asset,
-      //   pageController: _pageController,
-      //   producerTextEditingController: _titleTextEditingController,
-      //   modelTextEditingController: _modelTextEditingController,
-      //   descriptionTextEditingController: _descriptionTextEditingController,
-      //   category: _categoryId,
-      //   priceTextEditingController: _priceTextEditingController,
-      //   internalCodeTextEditingController: _internalCodeTextEditingController,
-      //   barCodeTextEditingController: _barCodeTextEditingController,
-      //   addDate: _date,
-      //   selectedLocation: _locationId,
-      //   lastInspectionDate: _lastInspectionDate,
-      //   assetStatus: _priority,
-      //   durationUnit: _durationUnit,
-      //   duration: _duration,
-      //   isSparePart: _isSparePart,
-      //   isInUse: _isInUse,
-      //   parentId: _currentParentId,
-      //   spareParts: _spareParts,
-      //   instructions: _instructions,
-      //   images: _images,
-      //   documents: _documents,
-      //   isCodeAvailable: _isCodeAvailable,
-      // ),
     ];
 
     DateTime preBackpress = DateTime.now();
