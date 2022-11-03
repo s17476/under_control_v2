@@ -142,6 +142,7 @@ class WorkOrdersRepositoryImpl extends WorkOrdersRepository {
           .collection('companies')
           .doc(params.companyId)
           .collection('workOrders')
+          .where('locationId', whereIn: params.locations)
           .snapshots();
 
       return Right(WorkOrdersStream(allWorkOrders: querySnapshot));

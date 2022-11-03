@@ -9,17 +9,23 @@ Widget getTaskPriorityIcon(
     vertical: 16,
     horizontal: 12,
   ),
+  bool shadow = true,
 ]) {
   String assetPath = '';
   switch (priority) {
     case TaskPriority.low:
-      assetPath = 'assets/priority_low_shadow.png';
+      assetPath =
+          shadow ? 'assets/priority_low_shadow.png' : 'assets/priority_low.png';
       break;
     case TaskPriority.medium:
-      assetPath = 'assets/priority_medium_shadow.png';
+      assetPath = shadow
+          ? 'assets/priority_medium_shadow.png'
+          : 'assets/priority_medium.png';
       break;
     case TaskPriority.high:
-      assetPath = 'assets/priority_high_shadow.png';
+      assetPath = shadow
+          ? 'assets/priority_high_shadow.png'
+          : 'assets/priority_high.png';
       break;
     default:
       assetPath = 'assets/status_disposed.png';

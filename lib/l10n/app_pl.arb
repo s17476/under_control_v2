@@ -469,6 +469,7 @@
     "asset_data": "Dane",
     "asset_add_date": "Data dodania",
     "asset_details": "Szczegóy aktywów",
+    "work_orders": "Zlecenia",
     "work_order_add": "Dodaj nowe zlecenie",
     "work_order_edit": "Edytuj zlecenie",
     "work_order_msg_added": "Dodano nowe zlecenie",

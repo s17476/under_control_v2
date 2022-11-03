@@ -1945,6 +1945,10 @@
     "@asset_details": {
       "description": "asset - details"
     },
+    "work_orders": "Work orders",
+    "@work_orders": {
+      "description": "work orders"
+    },
     "work_order_add": "Add new work order",
     "@work_order_add": {
       "description": "work order add"
