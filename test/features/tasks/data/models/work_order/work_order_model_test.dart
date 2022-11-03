@@ -19,6 +19,8 @@ void main() {
     video: 'video',
     priority: TaskPriority.high,
     count: 0,
+    taskId: 'taskId',
+    cancelled: false,
   );
 
   final tWorkOrderModelToMap = {
@@ -32,6 +34,8 @@ void main() {
     'video': 'video',
     'priority': TaskPriority.high.name,
     'count': 0,
+    'taskId': 'taskId',
+    'cancelled': false,
   };
 
   final tWorkOrderModelFromMap = {
@@ -45,6 +49,8 @@ void main() {
     'video': 'video',
     'priority': TaskPriority.high.name,
     'count': 0,
+    'taskId': 'taskId',
+    'cancelled': false,
   };
 
   group('WorkOrderModel', () {

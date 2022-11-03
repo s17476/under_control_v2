@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -245,6 +247,21 @@ class WorkOrderTile extends StatelessWidget {
         ),
         getTaskPriorityIcon(
             context, workOrder.priority, 50, const EdgeInsets.all(0)),
+        if (workOrder.cancelled)
+          Positioned(
+            right: 16,
+            child: Transform.rotate(
+              angle: -math.pi / 8,
+              child: Text(
+                AppLocalizations.of(context)!.cancelled,
+                style: TextStyle(
+                  color: Theme.of(context).highlightColor,
+                  backgroundColor: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          )
       ],
     );
   }

@@ -14,6 +14,8 @@ class WorkOrder extends Equatable {
   final String video;
   final TaskPriority priority;
   final int count;
+  final String taskId;
+  final bool cancelled;
 
   const WorkOrder({
     required this.id,
@@ -27,6 +29,8 @@ class WorkOrder extends Equatable {
     required this.video,
     required this.priority,
     required this.count,
+    required this.taskId,
+    required this.cancelled,
   });
 
   @override
@@ -43,11 +47,13 @@ class WorkOrder extends Equatable {
       video,
       priority,
       count,
+      taskId,
+      cancelled,
     ];
   }
 
   @override
   String toString() {
-    return 'WorkOrder(id: $id, title: $title, description: $description, date: $date, locationId: $locationId, userId: $userId, assetId: $assetId, images: $images, video: $video, priority: $priority, count: $count)';
+    return 'WorkOrder(id: $id, title: $title, description: $description, date: $date, locationId: $locationId, userId: $userId, assetId: $assetId, images: $images, video: $video, priority: $priority, count: $count, taskId: $taskId, cancelled: $cancelled)';
   }
 }

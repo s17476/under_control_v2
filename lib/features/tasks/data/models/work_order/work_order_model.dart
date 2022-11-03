@@ -16,6 +16,8 @@ class WorkOrderModel extends WorkOrder {
     required super.video,
     required super.priority,
     required super.count,
+    required super.taskId,
+    required super.cancelled,
   });
 
   WorkOrderModel copyWith({
@@ -30,6 +32,8 @@ class WorkOrderModel extends WorkOrder {
     String? video,
     TaskPriority? priority,
     int? count,
+    String? taskId,
+    bool? cancelled,
   }) {
     return WorkOrderModel(
       id: id ?? this.id,
@@ -43,6 +47,8 @@ class WorkOrderModel extends WorkOrder {
       video: video ?? this.video,
       priority: priority ?? this.priority,
       count: count ?? this.count,
+      taskId: taskId ?? this.taskId,
+      cancelled: cancelled ?? this.cancelled,
     );
   }
 
@@ -59,6 +65,8 @@ class WorkOrderModel extends WorkOrder {
     result.addAll({'video': video});
     result.addAll({'priority': priority.name});
     result.addAll({'count': count});
+    result.addAll({'taskId': taskId});
+    result.addAll({'canceled': cancelled});
 
     return result;
   }
@@ -82,6 +90,8 @@ class WorkOrderModel extends WorkOrder {
       video: map['video'] ?? '',
       priority: TaskPriority.fromString(map['priority'] ?? ''),
       count: map['count'] ?? 0,
+      taskId: map['taskId'] ?? '',
+      cancelled: map['cancelled'] ?? false,
     );
   }
 
@@ -103,5 +113,7 @@ class WorkOrderModel extends WorkOrder {
         video: workOrder.video,
         priority: workOrder.priority,
         count: workOrder.count,
+        taskId: workOrder.taskId,
+        cancelled: workOrder.cancelled,
       );
 }

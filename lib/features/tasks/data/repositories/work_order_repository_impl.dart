@@ -221,31 +221,11 @@ class WorkOrdersRepositoryImpl extends WorkOrdersRepository {
         filesNames.add(fileName);
       }
 
-      // increment work orders counter
-      int counterValue = 0;
-      final companyReference =
-          firebaseFirestore.collection('companies').doc(params.companyId);
-
-      await firebaseFirestore.runTransaction((transaction) async {
-        final companySnapshot = await transaction.get(companyReference);
-
-        if (!companySnapshot.exists) {
-          throw Exception("Comapny does not exist!");
-        }
-
-        counterValue = companySnapshot.data()!['workOrdersCounter'] ?? 0;
-        counterValue++;
-
-        transaction
-            .update(companyReference, {'workOrdersCounter': counterValue});
-      });
-
       // update work order
       final updatedWorkOrder =
           WorkOrderModel.fromWorkOrder(params.workOrder).copyWith(
         images: images,
         video: videoUrl,
-        count: counterValue,
       );
 
       // all files in folder

@@ -223,6 +223,10 @@
     "@cancel": {
       "description": "Cancel buttons"
     },
+    "cancelled": "CANCELLED",
+    "@cancelled": {
+      "description": "Cancelled"
+    },
     "delete": "Delete",
     "@delete": {
       "description": "Delete buttons"

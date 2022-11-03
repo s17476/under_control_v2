@@ -101,6 +101,8 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         video: '',
         priority: TaskPriority.fromString(_priority),
         count: _workOrder != null ? _workOrder!.count : 0,
+        taskId: '',
+        cancelled: false,
       );
 
       // add new work order

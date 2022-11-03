@@ -37,6 +37,8 @@ void main() {
     video: 'video',
     priority: TaskPriority.low,
     count: 0,
+    taskId: 'taskId',
+    cancelled: false,
   );
 
   setUp(
