@@ -12,6 +12,7 @@ import '../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../domain/entities/work_order/work_order.dart';
 import '../../utils/get_task_priority_icon.dart';
+import '../pages/work_order_details_page.dart';
 
 class WorkOrderTile extends StatelessWidget {
   const WorkOrderTile({
@@ -44,15 +45,13 @@ class WorkOrderTile extends StatelessWidget {
           child: Material(
             borderRadius: BorderRadius.circular(10),
             child: InkWell(
-              onTap:
-                  // () {
-                  //         Navigator.pushNamed(
-                  //           context,
-                  //           AssetDetailsPage.routeName,
-                  //           arguments: workOrder.assetId,
-                  //         );
-                  //       }
-                  () {},
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  WorkOrderDetailsPage.routeName,
+                  arguments: workOrder.id,
+                );
+              },
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 padding: const EdgeInsets.only(

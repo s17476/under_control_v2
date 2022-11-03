@@ -28,7 +28,7 @@ import 'add_asset_page.dart';
 class AssetDetailsPage extends StatefulWidget {
   const AssetDetailsPage({Key? key}) : super(key: key);
 
-  static const routeName = '//item-details';
+  static const routeName = '/asset-details';
 
   @override
   State<AssetDetailsPage> createState() => _AssetDetailsPageState();

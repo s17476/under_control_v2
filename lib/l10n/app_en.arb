@@ -1953,6 +1953,18 @@
     "@work_orders": {
       "description": "work orders"
     },
+    "work_order_type": "Work order type",
+    "@work_order_type": {
+      "description": "work order type"
+    },
+    "work_order_details": "Work order details",
+    "@work_order_details": {
+      "description": "work order details"
+    },
+    "work_order_data": "Work order data",
+    "@work_order_data": {
+      "description": "work order"
+    },
     "work_order_add": "Add new work order",
     "@work_order_add": {
       "description": "work order add"

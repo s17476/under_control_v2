@@ -9,7 +9,7 @@ import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../domain/entities/asset_action/asset_action.dart';
 import '../../../utils/get_asset_status_icon.dart';
 import '../../blocs/asset/asset_bloc.dart';
-import '../../pages/asset_detail_page.dart';
+import '../../pages/asset_details_page.dart';
 
 class AssetActionTile extends StatelessWidget {
   const AssetActionTile({

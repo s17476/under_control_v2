@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:under_control_v2/features/assets/presentation/pages/add_asset_page.dart';
-import 'package:under_control_v2/features/assets/presentation/pages/asset_detail_page.dart';
+import 'package:under_control_v2/features/assets/presentation/pages/asset_details_page.dart';
 import 'package:under_control_v2/features/dashboard/presentation/pages/all_low_level_items_page.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/work_order_details_page.dart';
 
 import 'features/assets/presentation/blocs/asset/asset_bloc.dart';
 import 'features/assets/presentation/blocs/asset_action/asset_action_bloc.dart';
@@ -292,6 +293,8 @@ class App extends StatelessWidget
           AllAssetsWithoutInspectionListPage.routeName: (context) =>
               const AllAssetsWithoutInspectionListPage(),
           AddWorkOrderPage.routeName: (context) => const AddWorkOrderPage(),
+          WorkOrderDetailsPage.routeName: (context) =>
+              const WorkOrderDetailsPage(),
         },
         // localization
         localizationsDelegates: const [

@@ -6,7 +6,7 @@ import '../../../core/presentation/widgets/highlighted_text.dart';
 import '../../../core/presentation/widgets/icon_title_mini_row.dart';
 import '../../domain/entities/asset.dart';
 import '../../utils/get_asset_status_icon.dart';
-import '../pages/asset_detail_page.dart';
+import '../pages/asset_details_page.dart';
 import 'asset_category_mini_row.dart';
 
 class AssetTile extends StatelessWidget {
