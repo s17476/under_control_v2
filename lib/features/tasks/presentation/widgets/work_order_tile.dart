@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
@@ -66,13 +67,21 @@ class WorkOrderTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // date
-                    // TODO
-                    // add count
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        dateFormat.format(workOrder.date),
-                        style: Theme.of(context).textTheme.caption,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              dateFormat.format(workOrder.date),
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                          ),
+                          Text(
+                            '#${workOrder.count}',
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                        ],
                       ),
                     ),
                     // shows asset data if work order is connected to an asset
@@ -146,10 +155,11 @@ class WorkOrderTile extends StatelessWidget {
                         workOrder.title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(fontSize: 16),
+                        // style: Theme.of(context)
+                        //     .textTheme
+                        //     .caption!
+                        //     .copyWith(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ),
 
@@ -172,21 +182,59 @@ class WorkOrderTile extends StatelessWidget {
                     if (user != null)
                       Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 4,
-                              right: 4,
-                              left: 8,
-                            ),
-                            child: CachedUserAvatar(
-                              size: 20,
-                              imageUrl: user.avatarUrl,
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 4,
+                                    right: 4,
+                                    left: 8,
+                                  ),
+                                  child: CachedUserAvatar(
+                                    size: 20,
+                                    imageUrl: user.avatarUrl,
+                                  ),
+                                ),
+                                Text(
+                                  '${user.firstName} ${user.lastName}',
+                                  style: Theme.of(context).textTheme.caption,
+                                ),
+                              ],
                             ),
                           ),
-                          Text(
-                            '${user.firstName} ${user.lastName}',
-                            style: Theme.of(context).textTheme.caption,
-                          ),
+                          // image icon
+                          if (workOrder.images.isNotEmpty)
+                            Row(
+                              children: [
+                                if (workOrder.images.length > 1)
+                                  Text(
+                                    '${workOrder.images.length}x',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .caption!
+                                        .copyWith(fontSize: 14),
+                                  ),
+                                FaIcon(
+                                  FontAwesomeIcons.image,
+                                  size: 18,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .color,
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                              ],
+                            ),
+                          // video icon
+                          if (workOrder.video.isNotEmpty)
+                            FaIcon(
+                              FontAwesomeIcons.play,
+                              size: 18,
+                              color: Theme.of(context).textTheme.caption!.color,
+                            ),
                         ],
                       ),
                   ],
