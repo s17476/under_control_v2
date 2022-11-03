@@ -15,6 +15,7 @@ class WorkOrderModel extends WorkOrder {
     required super.images,
     required super.video,
     required super.priority,
+    required super.count,
   });
 
   WorkOrderModel copyWith({
@@ -28,6 +29,7 @@ class WorkOrderModel extends WorkOrder {
     List<String>? images,
     String? video,
     TaskPriority? priority,
+    int? count,
   }) {
     return WorkOrderModel(
       id: id ?? this.id,
@@ -40,6 +42,7 @@ class WorkOrderModel extends WorkOrder {
       images: images ?? this.images,
       video: video ?? this.video,
       priority: priority ?? this.priority,
+      count: count ?? this.count,
     );
   }
 
@@ -55,6 +58,7 @@ class WorkOrderModel extends WorkOrder {
     result.addAll({'images': images});
     result.addAll({'video': video});
     result.addAll({'priority': priority.name});
+    result.addAll({'count': count});
 
     return result;
   }
@@ -77,6 +81,7 @@ class WorkOrderModel extends WorkOrder {
       images: List<String>.from(map['images'] ?? []),
       video: map['video'] ?? '',
       priority: TaskPriority.fromString(map['priority'] ?? ''),
+      count: map['count'] ?? 0,
     );
   }
 
@@ -97,5 +102,6 @@ class WorkOrderModel extends WorkOrder {
         images: workOrder.images,
         video: workOrder.video,
         priority: workOrder.priority,
+        count: workOrder.count,
       );
 }

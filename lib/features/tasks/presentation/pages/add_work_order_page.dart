@@ -100,6 +100,7 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         images: const [],
         video: '',
         priority: TaskPriority.fromString(_priority),
+        count: _workOrder != null ? _workOrder!.count : 0,
       );
 
       // add new work order

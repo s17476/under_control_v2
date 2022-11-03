@@ -15,9 +15,10 @@ void main() {
     locationId: 'locationId',
     userId: 'userId',
     assetId: 'assetId',
-    images: [],
+    images: const [],
     video: 'video',
     priority: TaskPriority.high,
+    count: 0,
   );
 
   final tWorkOrderModelToMap = {
@@ -30,6 +31,7 @@ void main() {
     'images': [],
     'video': 'video',
     'priority': TaskPriority.high.name,
+    'count': 0,
   };
 
   final tWorkOrderModelFromMap = {
@@ -42,6 +44,7 @@ void main() {
     'images': [],
     'video': 'video',
     'priority': TaskPriority.high.name,
+    'count': 0,
   };
 
   group('WorkOrderModel', () {

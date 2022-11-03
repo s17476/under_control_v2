@@ -43,6 +43,7 @@ void main() {
     images: const [],
     video: 'video',
     priority: TaskPriority.low,
+    count: 0,
   );
 
   final tWorkOrderParams = WorkOrderParams(
