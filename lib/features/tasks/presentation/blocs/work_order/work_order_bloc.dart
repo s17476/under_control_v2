@@ -141,7 +141,7 @@ class WorkOrderBloc extends Bloc<WorkOrderEvent, WorkOrderState> {
         List<WorkOrder> tmpList = [
           ...oldWorkOrders,
           ...workOrdersList.allWorkOrders,
-        ]..sort((a, b) => b.priority.compareTo(a.priority));
+        ]..sort((a, b) => a.date.compareTo(b.date));
 
         workOrdersList = WorkOrdersListModel(
           allWorkOrders: tmpList,

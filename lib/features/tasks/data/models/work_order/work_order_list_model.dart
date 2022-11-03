@@ -19,7 +19,7 @@ class WorkOrdersListModel extends WorkOrdersList {
         )
         .toList()
       ..sort(
-        (a, b) => b.priority.compareTo(a.priority),
+        (a, b) => a.date.compareTo(b.date),
       );
     return WorkOrdersListModel(allWorkOrders: workOrdersList);
   }

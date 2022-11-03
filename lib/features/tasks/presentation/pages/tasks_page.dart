@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/work_order/work_order.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/work_order_tile.dart';
 import 'package:under_control_v2/features/tasks/utils/get_task_priority_icon.dart';
 
 import '../../../core/utils/get_user_premission.dart';
@@ -175,9 +177,17 @@ class _TasksPageState extends State<TasksPage> with ResponsiveSize {
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: _filteredWorkOrders!.length,
-                                  itemBuilder: (context, index) =>
-                                      // TODO
-                                      Text(_filteredWorkOrders![index].title),
+                                  itemBuilder: (context, index) => Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 4,
+                                      bottom: 4,
+                                      right: 8,
+                                      left: 2,
+                                    ),
+                                    child: WorkOrderTile(
+                                      workOrder: _filteredWorkOrders![index],
+                                    ),
+                                  ),
                                 ),
                               ],
                             );
@@ -193,9 +203,8 @@ class _TasksPageState extends State<TasksPage> with ResponsiveSize {
                               shrinkWrap: true,
                               itemCount: 8,
                               itemBuilder: (context, index) =>
-                                  // TODO
                                   // shimmer work order
-                                  const ShimmerItemTile(),
+                                  const ShimmerAssetActionListTile(),
                             );
                           }
                         },
