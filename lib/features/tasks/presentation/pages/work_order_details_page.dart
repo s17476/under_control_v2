@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/images_tab.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/work_order_details/work_order_info_tab.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -96,7 +97,7 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
     appBarTitle = AppLocalizations.of(context)!.work_order_details;
 
     return DefaultTabController(
-      length: 1,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Text(appBarTitle),
@@ -143,13 +144,13 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
                   size: tabBarIconSize,
                 ),
               ),
-              // Tab(
-              //   icon: Icon(
-              //     FontAwesomeIcons.images,
-              //     color: tabBarIconColor,
-              //     size: tabBarIconSize,
-              //   ),
-              // ),
+              Tab(
+                icon: Icon(
+                  Icons.image,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
               // Tab(
               //   icon: Icon(
               //     FontAwesomeIcons.play,
@@ -174,6 +175,7 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
                 child: TabBarView(
                   children: [
                     WorkOrderInfoTab(workOrder: _workOrder!),
+                    ImagesTab(images: _workOrder!.images),
                     // AssetInfoTab(asset: _workOrder!),
                     // AssetHistoryTab(asset: _workOrder!),
                     // AssetImagesTab(asset: _workOrder!),
