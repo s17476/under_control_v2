@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/tasks/utils/show_work_order_cancel_dialog.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
@@ -51,10 +52,21 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
       if (_workOrder != null) {
         // popup menu items
         _choices = [
-          // edit item
+          // convert work order
           if (getUserPremission(
             context: context,
-            featureType: FeatureType.assets,
+            featureType: FeatureType.tasks,
+            premissionType: PremissionType.create,
+          ))
+            Choice(
+              title: AppLocalizations.of(context)!.work_order_convert,
+              icon: Icons.add_task,
+              onTap: () {},
+            ),
+          // edit work order
+          if (getUserPremission(
+            context: context,
+            featureType: FeatureType.tasks,
             premissionType: PremissionType.edit,
           ))
             Choice(
@@ -66,21 +78,24 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
                 arguments: _workOrder,
               ),
             ),
-          // copy work order
-          // if (getUserPremission(
-          //   context: context,
-          //   featureType: FeatureType.assets,
-          //   premissionType: PremissionType.create,
-          // ))
-          //   Choice(
-          //     title: AppLocalizations.of(context)!.copy,
-          //     icon: Icons.copy,
-          //     onTap: () => Navigator.pushNamed(
-          //       context,
-          //       AddAssetPage.routeName,
-          //       arguments: AssetModel.fromAsset(_workOrder!).copyWith(id: ''),
-          //     ),
-          //   ),
+          // cancel work order
+          if (getUserPremission(
+            context: context,
+            featureType: FeatureType.tasks,
+            premissionType: PremissionType.delete,
+          ))
+            Choice(
+              title: AppLocalizations.of(context)!.work_order_cancel,
+              icon: Icons.clear,
+              onTap: () async => showWorkOrderCancelDialog(
+                context: context,
+                workOrder: _workOrder!,
+              ).then((value) {
+                if (value is bool && value) {
+                  Navigator.pop(context);
+                }
+              }),
+            ),
         ];
       }
     }
@@ -171,53 +186,11 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
                         workOrderManagementBlocListener(context, state),
                   ),
                 ],
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                child: TabBarView(
                   children: [
-                    Expanded(
-                      child: TabBarView(
-                        children: [
-                          WorkOrderInfoTab(workOrder: _workOrder!),
-                          ImagesTab(images: _workOrder!.images),
-                          VideoTab(videoUrl: _workOrder!.video),
-                        ],
-                      ),
-                    ),
-                    // convert to task button
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 4,
-                      ),
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).primaryColor,
-                        ),
-                        // TODO
-                        onPressed: () {},
-                        icon: const Icon(Icons.add_task),
-                        label: Text(
-                          AppLocalizations.of(context)!.work_order_convert,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 4,
-                      ),
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).errorColor,
-                        ),
-                        // TODO
-                        onPressed: () {},
-                        icon: const Icon(Icons.clear),
-                        label: Text(
-                          AppLocalizations.of(context)!.work_order_cancel,
-                        ),
-                      ),
-                    ),
+                    WorkOrderInfoTab(workOrder: _workOrder!),
+                    ImagesTab(images: _workOrder!.images),
+                    VideoTab(videoUrl: _workOrder!.video),
                   ],
                 ),
               ),

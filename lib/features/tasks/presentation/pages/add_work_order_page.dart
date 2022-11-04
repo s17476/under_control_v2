@@ -204,10 +204,12 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         result.add(image);
       }
     }
-    setState(() {
-      _images = result;
-      _loadingImages = false;
-    });
+    if (mounted) {
+      setState(() {
+        _images = result;
+        _loadingImages = false;
+      });
+    }
   }
 
   @override

@@ -487,6 +487,10 @@
     "@validation_min_two_characters": {
       "description": "Validation - min two characters"
     },
+    "validation_min_five_characters": "At least 5 characters",
+    "@validation_min_five_characters": {
+      "description": "Validation - min five characters"
+    },
     "account_exist": "I aleready have an account",
     "@account_exist": {
       "description": "Authentication page - create new / i have an account button"
@@ -1972,6 +1976,18 @@
     "work_order_details": "Work order details",
     "@work_order_details": {
       "description": "work order details"
+    },
+    "work_order_confirm_cancel": "Confirm the cancellation",
+    "@work_order_confirm_cancel": {
+      "description": "work order cancel"
+    },
+    "work_order_confirm_cancel_description": "Please enter the reason for cancellation below",
+    "@work_order_confirm_cancel_description": {
+      "description": "work order cancel"
+    },
+    "work_order_confirm_cancel_hint": "Min 5 characters",
+    "@work_order_confirm_cancel_hint": {
+      "description": "work order hint"
     },
     "work_order_data": "Work order data",
     "@work_order_data": {

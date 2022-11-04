@@ -273,7 +273,7 @@ class WorkOrdersRepositoryImpl extends WorkOrdersRepository {
       final workOrderInArchiveReference = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('workOrders')
+          .collection('workOrdersArchive')
           .doc(params.workOrder.id);
 
       // batch
