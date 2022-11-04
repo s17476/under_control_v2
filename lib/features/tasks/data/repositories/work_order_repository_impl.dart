@@ -176,6 +176,28 @@ class WorkOrdersRepositoryImpl extends WorkOrdersRepository {
   }
 
   @override
+  Future<Either<Failure, WorkOrdersStream>> getArchiveWorkOrdersStream(
+      ItemsInLocationsParams params) async {
+    try {
+      final Stream<QuerySnapshot> querySnapshot;
+      querySnapshot = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('workOrdersArchive')
+          .where('locationId', whereIn: params.locations)
+          .snapshots();
+
+      return Right(WorkOrdersStream(allWorkOrders: querySnapshot));
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
+
+  @override
   Future<Either<Failure, VoidResult>> updateWorkOrder(
       WorkOrderParams params) async {
     try {
