@@ -23,6 +23,10 @@
     "@size": {
       "description": "Size"
     },
+    "details_no_video": "No video added",
+    "@details_no_video": {
+      "description": "details - no images"
+    },
     "details_no_images": "No images added",
     "@details_no_images": {
       "description": "details - no images"
@@ -1956,6 +1960,14 @@
     "work_order_type": "Work order type",
     "@work_order_type": {
       "description": "work order type"
+    },
+    "work_order_convert": "Convert to task",
+    "@work_order_convert": {
+      "description": "work order convert"
+    },
+    "work_order_cancel": "Cancel work order",
+    "@work_order_cancel": {
+      "description": "work order cancel"
     },
     "work_order_details": "Work order details",
     "@work_order_details": {

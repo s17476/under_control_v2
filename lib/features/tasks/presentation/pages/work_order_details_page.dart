@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/images_tab.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/work_order_details/work_order_info_tab.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
@@ -11,12 +9,13 @@ import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
-import '../../../user_profile/domain/entities/user_profile.dart';
-import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/work_order/work_order.dart';
 import '../../utils/work_order_management_bloc_listener.dart';
 import '../blocs/work_order/work_order_bloc.dart';
 import '../blocs/work_order_management/work_order_management_bloc.dart';
+import '../widgets/images_tab.dart';
+import '../widgets/video_tab.dart';
+import '../widgets/work_order_details/work_order_info_tab.dart';
 import 'add_work_order_page.dart';
 
 class WorkOrderDetailsPage extends StatefulWidget {
@@ -31,17 +30,17 @@ class WorkOrderDetailsPage extends StatefulWidget {
 class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
     with ResponsiveSize {
   WorkOrder? _workOrder;
-  late UserProfile _currentUser;
+  // late UserProfile _currentUser;
 
   List<Choice> _choices = [];
 
   @override
   void didChangeDependencies() {
-    // gets current user
-    final currentState = context.read<UserProfileBloc>().state;
-    if (currentState is Approved) {
-      _currentUser = currentState.userProfile;
-    }
+    // // gets current user
+    // final currentState = context.read<UserProfileBloc>().state;
+    // if (currentState is Approved) {
+    //   _currentUser = currentState.userProfile;
+    // }
     // gets selected asset
     final workOrderId = (ModalRoute.of(context)?.settings.arguments as String);
     final workOrderState = context.watch<WorkOrderBloc>().state;
@@ -97,7 +96,7 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
     appBarTitle = AppLocalizations.of(context)!.work_order_details;
 
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text(appBarTitle),
@@ -151,13 +150,13 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
                   size: tabBarIconSize,
                 ),
               ),
-              // Tab(
-              //   icon: Icon(
-              //     FontAwesomeIcons.play,
-              //     color: tabBarIconColor,
-              //     size: tabBarIconSize,
-              //   ),
-              // ),
+              Tab(
+                icon: Icon(
+                  FontAwesomeIcons.play,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
             ],
             indicatorColor: tabBarIconColor,
           ),
@@ -172,13 +171,53 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
                         workOrderManagementBlocListener(context, state),
                   ),
                 ],
-                child: TabBarView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    WorkOrderInfoTab(workOrder: _workOrder!),
-                    ImagesTab(images: _workOrder!.images),
-                    // AssetInfoTab(asset: _workOrder!),
-                    // AssetHistoryTab(asset: _workOrder!),
-                    // AssetImagesTab(asset: _workOrder!),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          WorkOrderInfoTab(workOrder: _workOrder!),
+                          ImagesTab(images: _workOrder!.images),
+                          VideoTab(videoUrl: _workOrder!.video),
+                        ],
+                      ),
+                    ),
+                    // convert to task button
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 4,
+                      ),
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ),
+                        // TODO
+                        onPressed: () {},
+                        icon: const Icon(Icons.add_task),
+                        label: Text(
+                          AppLocalizations.of(context)!.work_order_convert,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 4,
+                      ),
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).errorColor,
+                        ),
+                        // TODO
+                        onPressed: () {},
+                        icon: const Icon(Icons.clear),
+                        label: Text(
+                          AppLocalizations.of(context)!.work_order_cancel,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

@@ -27,30 +27,38 @@ class OverlayIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => onPressed(),
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: backgroundColor ?? Theme.of(context).cardColor,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: backgroundColor ?? Theme.of(context).cardColor,
+      ),
+      child: Material(
+        borderRadius: BorderRadius.circular(15),
+        child: InkWell(
+          onTap: () => onPressed(),
           borderRadius: BorderRadius.circular(15),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FaIcon(
-              icon,
-              size: iconSize,
-              color: iconColor ?? Theme.of(context).primaryColor,
+          child: Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
             ),
-            Text(
-              title,
-              style: TextStyle(color: titleColor),
-              textAlign: TextAlign.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FaIcon(
+                  icon,
+                  size: iconSize,
+                  color: iconColor ?? Theme.of(context).primaryColor,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(color: titleColor),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
