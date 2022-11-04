@@ -24,6 +24,14 @@ class DeleteWorkOrderEvent extends WorkOrderManagementEvent {
   const DeleteWorkOrderEvent({required super.workOrder});
 }
 
+class CancelWorkOrderEvent extends WorkOrderManagementEvent {
+  final String comment;
+  const CancelWorkOrderEvent({
+    required super.workOrder,
+    required this.comment,
+  });
+}
+
 class UpdateWorkOrderEvent extends WorkOrderManagementEvent {
   final List<File>? images;
   final File? video;

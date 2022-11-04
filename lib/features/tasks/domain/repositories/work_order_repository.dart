@@ -30,4 +30,10 @@ abstract class WorkOrdersRepository {
   ///Returns [VoidResult] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, VoidResult>> deleteWorkOrder(WorkOrderParams params);
+
+  ///Cancel work order and move it to work orders archive.
+  ///
+  ///Returns [VoidResult] if operation is successful.
+  ///Returns [Failure] if operation is unsuccessful.
+  Future<Either<Failure, VoidResult>> cancelWorkOrder(WorkOrderParams params);
 }

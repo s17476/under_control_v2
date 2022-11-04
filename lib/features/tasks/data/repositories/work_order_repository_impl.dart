@@ -259,4 +259,50 @@ class WorkOrdersRepositoryImpl extends WorkOrdersRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, VoidResult>> cancelWorkOrder(
+      WorkOrderParams params) async {
+    try {
+      final workOrderReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('workOrders')
+          .doc(params.workOrder.id);
+
+      final workOrderInArchiveReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('workOrders')
+          .doc(params.workOrder.id);
+
+      // batch
+      final batch = firebaseFirestore.batch();
+
+      // update work order
+      final updatedWorkOrder =
+          WorkOrderModel.fromWorkOrder(params.workOrder).copyWith(
+        cancelled: true,
+      );
+
+      final workOrderMap = updatedWorkOrder.toMap();
+
+      batch.set(
+        workOrderInArchiveReference,
+        workOrderMap,
+      );
+
+      batch.delete(workOrderReference);
+
+      batch.commit();
+
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
 }

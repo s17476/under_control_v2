@@ -8,8 +8,10 @@ import 'package:injectable/injectable.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/bloc_message.dart';
+import '../../../data/models/work_order/work_order_model.dart';
 import '../../../domain/entities/work_order/work_order.dart';
 import '../../../domain/usecases/work_order/add_work_order.dart';
+import '../../../domain/usecases/work_order/cancel_work_order.dart';
 import '../../../domain/usecases/work_order/delete_work_order.dart';
 import '../../../domain/usecases/work_order/update_work_order.dart';
 
@@ -23,6 +25,7 @@ class WorkOrderManagementBloc
   final AddWorkOrder addWorkOrder;
   final DeleteWorkOrder deleteWorkOrder;
   final UpdateWorkOrder updateWorkOrder;
+  final CancelWorkOrder cancelWorkOrder;
 
   late StreamSubscription _companyProfileStreamSubscription;
   String _companyId = '';
@@ -32,6 +35,7 @@ class WorkOrderManagementBloc
     required this.addWorkOrder,
     required this.deleteWorkOrder,
     required this.updateWorkOrder,
+    required this.cancelWorkOrder,
   }) : super(WorkOrderManagementEmptyState()) {
     _companyProfileStreamSubscription =
         companyProfileBloc.stream.listen((state) {
@@ -84,6 +88,41 @@ class WorkOrderManagementBloc
           (_) async => emit(
             WorkOrderManagementSuccessState(
               message: BlocMessage.deleted,
+            ),
+          ),
+        );
+      },
+    );
+
+    on<CancelWorkOrderEvent>(
+      (event, emit) async {
+        emit(WorkOrderManagementLoadingState());
+        String updatedDescription = '';
+        if (event.workOrder.description.isEmpty) {
+          updatedDescription = event.comment;
+        } else {
+          updatedDescription =
+              '${event.comment} \n\n ${event.workOrder.description}';
+        }
+        final updatedWorkOrder =
+            WorkOrderModel.fromWorkOrder(event.workOrder).copyWith(
+          description: updatedDescription,
+        );
+        final failureOrVoidResult = await cancelWorkOrder(
+          WorkOrderParams(
+            workOrder: updatedWorkOrder,
+            companyId: _companyId,
+          ),
+        );
+        await failureOrVoidResult.fold(
+          (failure) async => emit(
+            WorkOrderManagementErrorState(
+              message: BlocMessage.notUpdated,
+            ),
+          ),
+          (_) async => emit(
+            WorkOrderManagementSuccessState(
+              message: BlocMessage.updated,
             ),
           ),
         );

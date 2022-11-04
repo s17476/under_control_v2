@@ -8,6 +8,7 @@ import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/tasks/data/models/work_order/work_order_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
 import 'package:under_control_v2/features/tasks/domain/usecases/work_order/add_work_order.dart';
+import 'package:under_control_v2/features/tasks/domain/usecases/work_order/cancel_work_order.dart';
 import 'package:under_control_v2/features/tasks/domain/usecases/work_order/delete_work_order.dart';
 import 'package:under_control_v2/features/tasks/domain/usecases/work_order/update_work_order.dart';
 import 'package:under_control_v2/features/tasks/presentation/blocs/work_order_management/work_order_management_bloc.dart';
@@ -19,6 +20,8 @@ class MockAddWorkOrder extends Mock implements AddWorkOrder {}
 
 class MockDeleteWorkOrder extends Mock implements DeleteWorkOrder {}
 
+class MockCancelWorkOrder extends Mock implements CancelWorkOrder {}
+
 class MockUpdateWorkOrder extends Mock implements UpdateWorkOrder {}
 
 void main() {
@@ -26,6 +29,7 @@ void main() {
 
   late MockAddWorkOrder mockAddWorkOrder;
   late MockDeleteWorkOrder mockDeleteWorkOrder;
+  late MockCancelWorkOrder mockCancelWorkOrder;
   late MockUpdateWorkOrder mockUpdateWorkOrder;
 
   late WorkOrderManagementBloc workOrderManagementBloc;
@@ -58,6 +62,7 @@ void main() {
 
     mockAddWorkOrder = MockAddWorkOrder();
     mockDeleteWorkOrder = MockDeleteWorkOrder();
+    mockCancelWorkOrder = MockCancelWorkOrder();
     mockUpdateWorkOrder = MockUpdateWorkOrder();
 
     when(() => mockCompanyProfileBloc.stream).thenAnswer(
@@ -71,6 +76,7 @@ void main() {
       addWorkOrder: mockAddWorkOrder,
       deleteWorkOrder: mockDeleteWorkOrder,
       updateWorkOrder: mockUpdateWorkOrder,
+      cancelWorkOrder: mockCancelWorkOrder,
     );
   });
 
@@ -142,6 +148,43 @@ void main() {
             ),
           );
           bloc.add(DeleteWorkOrderEvent(workOrder: tWorkOrderModel));
+        },
+        expect: () => [
+          WorkOrderManagementLoadingState(),
+          isA<WorkOrderManagementErrorState>(),
+        ],
+      );
+    });
+    group('CancelWorkOrder', () {
+      blocTest<WorkOrderManagementBloc, WorkOrderManagementState>(
+        'should emit [WorkOrderManagementSuccessfulStete]',
+        build: () => workOrderManagementBloc,
+        act: (bloc) async {
+          when(() => mockCancelWorkOrder(any()))
+              .thenAnswer((_) async => Right(VoidResult()));
+          bloc.add(CancelWorkOrderEvent(
+            workOrder: tWorkOrderModel,
+            comment: '',
+          ));
+        },
+        expect: () => [
+          WorkOrderManagementLoadingState(),
+          isA<WorkOrderManagementSuccessState>(),
+        ],
+      );
+      blocTest<WorkOrderManagementBloc, WorkOrderManagementState>(
+        'should emit [WorkOrderManagementErrorStete]',
+        build: () => workOrderManagementBloc,
+        act: (bloc) async {
+          when(() => mockCancelWorkOrder(any())).thenAnswer(
+            (_) async => const Left(
+              DatabaseFailure(),
+            ),
+          );
+          bloc.add(CancelWorkOrderEvent(
+            workOrder: tWorkOrderModel,
+            comment: '',
+          ));
         },
         expect: () => [
           WorkOrderManagementLoadingState(),

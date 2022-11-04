@@ -86,6 +86,15 @@ void main() {
           },
         );
         test(
+          'should return [VoidResult]  when cancelWorkOrder is called',
+          () async {
+            // act
+            final result = await repository.cancelWorkOrder(tWorkOrderParams);
+            // assert
+            expect(result, isA<Right<Failure, VoidResult>>());
+          },
+        );
+        test(
           'should return [WorkOrdersStream] when getWorkOrdersStream is called',
           () async {
             // act
@@ -134,6 +143,20 @@ void main() {
             // act
             final result =
                 await badRepository.deleteWorkOrder(tWorkOrderParams);
+            // assert
+            expect(result, isA<Left<Failure, VoidResult>>());
+          },
+        );
+        test(
+          'should return [DatabaseFailure] when cancelWorkOrder is called',
+          () async {
+            // arrange
+            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+              FirebaseException(plugin: 'Bad Firebase'),
+            );
+            // act
+            final result =
+                await badRepository.cancelWorkOrder(tWorkOrderParams);
             // assert
             expect(result, isA<Left<Failure, VoidResult>>());
           },
@@ -191,6 +214,20 @@ void main() {
             // act
             final result =
                 await badRepository.deleteWorkOrder(tWorkOrderParams);
+            // assert
+            expect(result, isA<Left<Failure, VoidResult>>());
+          },
+        );
+        test(
+          'should return [UnsuspectedFailure] when cancelWorkOrder is called',
+          () async {
+            // arrange
+            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+              Exception(),
+            );
+            // act
+            final result =
+                await badRepository.cancelWorkOrder(tWorkOrderParams);
             // assert
             expect(result, isA<Left<Failure, VoidResult>>());
           },
