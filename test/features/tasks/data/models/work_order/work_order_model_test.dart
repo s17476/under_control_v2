@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 import 'package:under_control_v2/features/tasks/data/models/work_order/work_order_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/work_order/work_order.dart';
@@ -20,6 +21,7 @@ void main() {
     priority: TaskPriority.high,
     count: 0,
     taskId: 'taskId',
+    assetStatus: AssetStatus.ok,
     cancelled: false,
   );
 
@@ -35,6 +37,7 @@ void main() {
     'priority': TaskPriority.high.name,
     'count': 0,
     'taskId': 'taskId',
+    'assetStatus': AssetStatus.ok.name,
     'cancelled': false,
   };
 
@@ -50,6 +53,7 @@ void main() {
     'priority': TaskPriority.high.name,
     'count': 0,
     'taskId': 'taskId',
+    'assetStatus': AssetStatus.ok.name,
     'cancelled': false,
   };
 

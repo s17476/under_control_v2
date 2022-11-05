@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../assets/utils/asset_status.dart';
 import '../task_priority.dart';
 
 class WorkOrder extends Equatable {
@@ -15,6 +16,7 @@ class WorkOrder extends Equatable {
   final TaskPriority priority;
   final int count;
   final String taskId;
+  final AssetStatus assetStatus;
   final bool cancelled;
 
   const WorkOrder({
@@ -30,6 +32,7 @@ class WorkOrder extends Equatable {
     required this.priority,
     required this.count,
     required this.taskId,
+    required this.assetStatus,
     required this.cancelled,
   });
 
@@ -48,12 +51,13 @@ class WorkOrder extends Equatable {
       priority,
       count,
       taskId,
+      assetStatus,
       cancelled,
     ];
   }
 
   @override
   String toString() {
-    return 'WorkOrder(id: $id, title: $title, description: $description, date: $date, locationId: $locationId, userId: $userId, assetId: $assetId, images: $images, video: $video, priority: $priority, count: $count, taskId: $taskId, cancelled: $cancelled)';
+    return 'WorkOrder(id: $id, title: $title, description: $description, date: $date, locationId: $locationId, userId: $userId, assetId: $assetId, images: $images, video: $video, priority: $priority, count: $count, taskId: $taskId, assetStatus: $assetStatus, cancelled: $cancelled)';
   }
 }

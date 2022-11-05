@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 
 import '../../../domain/entities/task_priority.dart';
 import '../../../domain/entities/work_order/work_order.dart';
@@ -17,6 +18,7 @@ class WorkOrderModel extends WorkOrder {
     required super.priority,
     required super.count,
     required super.taskId,
+    required super.assetStatus,
     required super.cancelled,
   });
 
@@ -33,6 +35,7 @@ class WorkOrderModel extends WorkOrder {
     TaskPriority? priority,
     int? count,
     String? taskId,
+    AssetStatus? assetStatus,
     bool? cancelled,
   }) {
     return WorkOrderModel(
@@ -48,6 +51,7 @@ class WorkOrderModel extends WorkOrder {
       priority: priority ?? this.priority,
       count: count ?? this.count,
       taskId: taskId ?? this.taskId,
+      assetStatus: assetStatus ?? this.assetStatus,
       cancelled: cancelled ?? this.cancelled,
     );
   }
@@ -66,6 +70,7 @@ class WorkOrderModel extends WorkOrder {
     result.addAll({'priority': priority.name});
     result.addAll({'count': count});
     result.addAll({'taskId': taskId});
+    result.addAll({'assetStatus': assetStatus});
     result.addAll({'canceled': cancelled});
 
     return result;
@@ -91,6 +96,7 @@ class WorkOrderModel extends WorkOrder {
       priority: TaskPriority.fromString(map['priority'] ?? ''),
       count: map['count'] ?? 0,
       taskId: map['taskId'] ?? '',
+      assetStatus: AssetStatus.fromString(map['assetStatus'] ?? ''),
       cancelled: map['cancelled'] ?? false,
     );
   }
@@ -114,6 +120,7 @@ class WorkOrderModel extends WorkOrder {
         priority: workOrder.priority,
         count: workOrder.count,
         taskId: workOrder.taskId,
+        assetStatus: workOrder.assetStatus,
         cancelled: workOrder.cancelled,
       );
 }

@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
@@ -49,6 +50,7 @@ void main() {
     priority: TaskPriority.low,
     count: 0,
     taskId: 'taskId',
+    assetStatus: AssetStatus.ok,
     cancelled: false,
   );
 

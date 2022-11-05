@@ -4,6 +4,7 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/tasks/data/models/work_order/work_order_model.dart';
@@ -38,6 +39,7 @@ void main() {
     priority: TaskPriority.low,
     count: 0,
     taskId: 'taskId',
+    assetStatus: AssetStatus.ok,
     cancelled: false,
   );
 
