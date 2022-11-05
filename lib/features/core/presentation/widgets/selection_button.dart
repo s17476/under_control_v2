@@ -12,7 +12,7 @@ class SelectionButton<T> extends StatelessWidget {
     this.titleSize,
     this.padding,
     this.foregroundColor,
-    required this.gradient,
+    this.gradient,
     required this.value,
     required this.groupValue,
   }) : super(key: key);
@@ -25,7 +25,7 @@ class SelectionButton<T> extends StatelessWidget {
   final double? titleSize;
   final EdgeInsetsGeometry? padding;
   final Color? foregroundColor;
-  final Gradient gradient;
+  final Gradient? gradient;
   final T value;
   final T groupValue;
 

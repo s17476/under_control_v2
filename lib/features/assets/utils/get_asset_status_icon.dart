@@ -39,14 +39,6 @@ Widget getAssetStatusIcon(
       );
       assetPath = 'assets/status_working.png';
       break;
-    case AssetStatus.workingRequiresReparation:
-      icon = Icon(
-        Icons.handyman,
-        color: Colors.black87,
-        size: iconSize,
-      );
-      assetPath = 'assets/status_working_attention.png';
-      break;
     case AssetStatus.notWorkingRequiresReparation:
       icon = Icon(
         Icons.handyman,

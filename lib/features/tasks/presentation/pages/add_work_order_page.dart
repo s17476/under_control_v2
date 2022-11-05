@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/utils/asset_status.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/set_task_status.dart';
 
 import '../../../assets/presentation/widgets/add_asset_images_card.dart';
 import '../../../assets/presentation/widgets/add_asset_location_card.dart';
@@ -50,6 +52,7 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
   String _userId = '';
   String _assetId = '';
   String _priority = TaskPriority.low.name;
+  String _assetStatus = '';
 
   bool _isAddAssetVisible = false;
   bool _isConnectedToAsset = false;
@@ -156,6 +159,12 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
   void _setPriority(String value) {
     setState(() {
       _priority = value;
+    });
+  }
+
+  void _setAssetStatus(String value) {
+    setState(() {
+      _assetStatus = value;
     });
   }
 
@@ -275,6 +284,11 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         setLocation: _setLocation,
         assetId: _assetId,
       ),
+      if (_isConnectedToAsset)
+        SetAssetStatusCard(
+          setStatus: _setAssetStatus,
+          assetStatus: _assetStatus,
+        ),
       if (!_isConnectedToAsset)
         KeepAlivePage(
           child: AddAssetLocationCard(

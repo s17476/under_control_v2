@@ -1,7 +1,6 @@
 enum AssetStatus {
   ok('ok'),
   workingRequiresAttention('workingAttention'),
-  workingRequiresReparation('workingReparation'),
   notWorkingRequiresReparation('notWorkingReparation'),
   disposed('disposed'),
   noInspection('noInspection'),
@@ -17,8 +16,6 @@ enum AssetStatus {
         return AssetStatus.ok;
       case 'workingAttention':
         return AssetStatus.workingRequiresAttention;
-      case 'workingReparation':
-        return AssetStatus.workingRequiresReparation;
       case 'notWorkingReparation':
         return AssetStatus.notWorkingRequiresReparation;
       case 'disposed':

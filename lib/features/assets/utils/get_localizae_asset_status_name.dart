@@ -11,9 +11,6 @@ String getLocalizedAssetStatusName(
     case AssetStatus.workingRequiresAttention:
       return AppLocalizations.of(context)!
           .asset_status_working_requires_attention;
-    case AssetStatus.workingRequiresReparation:
-      return AppLocalizations.of(context)!
-          .asset_status_working_requires_reparation;
     case AssetStatus.notWorkingRequiresReparation:
       return AppLocalizations.of(context)!
           .asset_status_not_working_requires_reparation;
