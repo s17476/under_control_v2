@@ -1757,7 +1757,15 @@
     "@asse_status": {
       "description": "Asset status"
     },
+    "asset_status_ok_comment": "The asset works as usual. There are no visual or audible signs of damage.",
+    "@asse_status": {
+      "description": "Asset status"
+    },
     "asset_status_working_requires_attention": "In use - requires attention",
+    "@asset_status_working_requires_attention": {
+      "description": "Asset status"
+    },
+    "asset_status_working_requires_attention_comment": "The asset is still working, but not working as usual. Intervention is necessary.",
     "@asset_status_working_requires_attention": {
       "description": "Asset status"
     },
@@ -1766,6 +1774,10 @@
       "description": "Asset status"
     },
     "asset_status_not_working_requires_reparation": "Out of order - requires reparation",
+    "@asset_status_not_working_requires_reparation": {
+      "description": "Asset status"
+    },
+    "asset_status_not_working_requires_reparation_comment": "The asset is damaged and cannot be used.",
     "@asset_status_not_working_requires_reparation": {
       "description": "Asset status"
     },

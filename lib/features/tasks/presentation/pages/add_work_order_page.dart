@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/set_task_status.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/set_asset_status_card.dart';
 
 import '../../../assets/presentation/widgets/add_asset_images_card.dart';
 import '../../../assets/presentation/widgets/add_asset_location_card.dart';
@@ -171,6 +171,7 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
   void _setAssetId(String assetId) {
     setState(() {
       _assetId = assetId;
+      _assetStatus = '';
     });
   }
 
@@ -179,12 +180,14 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
       setState(() {
         _isConnectedToAsset = true;
         _locationId = '';
+        _assetStatus = '';
       });
     } else {
       setState(() {
         _isConnectedToAsset = false;
         _assetId = '';
         _locationId = '';
+        _assetStatus = '';
       });
     }
   }
@@ -321,6 +324,7 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         locationId: _locationId,
         assetId: _assetId,
         priority: _priority,
+        assetStatus: _assetStatus,
         isConnectedToAsset: _isConnectedToAsset,
         images: _images,
       ),

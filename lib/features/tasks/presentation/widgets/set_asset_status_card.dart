@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/utils/asset_status.dart';
-import 'package:under_control_v2/features/assets/utils/get_asset_status_icon.dart';
 
+import '../../../assets/utils/asset_status.dart';
+import '../../../assets/utils/get_asset_status_icon.dart';
 import '../../../core/presentation/widgets/selection_button.dart';
 import '../../../core/utils/responsive_size.dart';
-import '../../domain/entities/task_priority.dart';
-import '../../utils/get_task_priority_icon.dart';
 
 class SetAssetStatusCard extends StatelessWidget with ResponsiveSize {
   const SetAssetStatusCard({
@@ -65,8 +63,9 @@ class SetAssetStatusCard extends StatelessWidget with ResponsiveSize {
                                 getAssetStatusIcon(context, AssetStatus.ok, 35),
                           ),
                           iconSize: 50,
-                          title: AppLocalizations.of(context)!.asset_status_ok,
-                          titleSize: 22,
+                          title: AppLocalizations.of(context)!
+                              .asset_status_ok_comment,
+                          titleSize: 14,
                           gradient: LinearGradient(
                             colors: [
                               Theme.of(context).cardColor,
@@ -98,8 +97,8 @@ class SetAssetStatusCard extends StatelessWidget with ResponsiveSize {
                           ),
                           iconSize: 50,
                           title: AppLocalizations.of(context)!
-                              .asset_status_working_requires_attention,
-                          titleSize: 22,
+                              .asset_status_working_requires_attention_comment,
+                          titleSize: 14,
                           gradient: LinearGradient(
                             colors: [
                               Theme.of(context).cardColor,
@@ -131,8 +130,8 @@ class SetAssetStatusCard extends StatelessWidget with ResponsiveSize {
                           ),
                           iconSize: 50,
                           title: AppLocalizations.of(context)!
-                              .asset_status_not_working_requires_reparation,
-                          titleSize: 22,
+                              .asset_status_not_working_requires_reparation_comment,
+                          titleSize: 14,
                           gradient: LinearGradient(
                             colors: [
                               Theme.of(context).cardColor,

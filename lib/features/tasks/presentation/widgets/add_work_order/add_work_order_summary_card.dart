@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/assets/utils/get_localizae_asset_status_name.dart';
 
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
+import '../../../../assets/utils/asset_status.dart';
+import '../../../../assets/utils/get_asset_status_icon.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/location_selection_helpers.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -26,6 +29,7 @@ class AddWorkOrderSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.locationId,
     required this.assetId,
     required this.priority,
+    required this.assetStatus,
     required this.isConnectedToAsset,
     required this.images,
     this.video,
@@ -43,6 +47,7 @@ class AddWorkOrderSummaryCard extends StatelessWidget with ResponsiveSize {
   final String locationId;
   final String assetId;
   final String priority;
+  final String assetStatus;
 
   final bool isConnectedToAsset;
 
@@ -139,11 +144,52 @@ class AddWorkOrderSummaryCard extends StatelessWidget with ResponsiveSize {
                         ],
                       ),
                       pageController: pageController,
-                      onTapAnimateToPage: isConnectedToAsset ? 4 : 5,
+                      onTapAnimateToPage: 5,
                     ),
                     const SizedBox(
                       height: 8,
                     ),
+
+                    // asset status
+                    if (isConnectedToAsset)
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!.asset_status,
+                        validator: () => assetStatus.isEmpty
+                            ? AppLocalizations.of(context)!
+                                .asset_status_not_selected
+                            : null,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 70,
+                              height: 70,
+                              child: getAssetStatusIcon(
+                                context,
+                                AssetStatus.fromString(assetStatus),
+                                35,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Expanded(
+                              child: Text(
+                                getLocalizedAssetStatusName(
+                                  context,
+                                  AssetStatus.fromString(assetStatus),
+                                ),
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ),
+                        pageController: pageController,
+                        onTapAnimateToPage: 2,
+                      ),
+                    if (isConnectedToAsset)
+                      const SizedBox(
+                        height: 8,
+                      ),
 
                     // title
                     SummaryCard(
@@ -220,7 +266,7 @@ class AddWorkOrderSummaryCard extends StatelessWidget with ResponsiveSize {
                           : null,
                       child: Text(locationString),
                       pageController: pageController,
-                      onTapAnimateToPage: isConnectedToAsset ? 1 : 2,
+                      onTapAnimateToPage: 2,
                     ),
                     const SizedBox(
                       height: 8,
@@ -238,7 +284,7 @@ class AddWorkOrderSummaryCard extends StatelessWidget with ResponsiveSize {
                                 .asset_add_images_not_added,
                       ),
                       pageController: pageController,
-                      onTapAnimateToPage: isConnectedToAsset ? 2 : 3,
+                      onTapAnimateToPage: 3,
                     ),
                     const SizedBox(
                       height: 8,
@@ -251,7 +297,7 @@ class AddWorkOrderSummaryCard extends StatelessWidget with ResponsiveSize {
                         validator: () => null,
                         child: const SizedBox(),
                         pageController: pageController,
-                        onTapAnimateToPage: isConnectedToAsset ? 3 : 4,
+                        onTapAnimateToPage: 4,
                       ),
 
                     const SizedBox(
