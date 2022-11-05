@@ -102,7 +102,7 @@ class WorkOrderManagementBloc
           updatedDescription = event.comment;
         } else {
           updatedDescription =
-              '${event.comment} \n\n ${event.workOrder.description}';
+              '${event.comment} \n---\n ${event.workOrder.description}';
         }
         final updatedWorkOrder =
             WorkOrderModel.fromWorkOrder(event.workOrder).copyWith(

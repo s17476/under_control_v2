@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/work_order_archive/work_order_archive_bloc.dart';
 import 'package:under_control_v2/features/tasks/utils/show_work_order_cancel_dialog.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -37,18 +38,18 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
 
   @override
   void didChangeDependencies() {
-    // // gets current user
-    // final currentState = context.read<UserProfileBloc>().state;
-    // if (currentState is Approved) {
-    //   _currentUser = currentState.userProfile;
-    // }
     // gets selected asset
     final workOrderId = (ModalRoute.of(context)?.settings.arguments as String);
     final workOrderState = context.watch<WorkOrderBloc>().state;
     if (workOrderState is WorkOrderLoadedState) {
-      setState(() {
-        _workOrder = workOrderState.getWorkOrderById(workOrderId);
-      });
+      _workOrder = workOrderState.getWorkOrderById(workOrderId);
+      if (_workOrder == null) {
+        final workOrderArchiveState =
+            context.watch<WorkOrderArchiveBloc>().state;
+        if (workOrderArchiveState is WorkOrderArchiveLoadedState) {
+          _workOrder = workOrderArchiveState.getWorkOrderById(workOrderId);
+        }
+      }
       if (_workOrder != null) {
         // popup menu items
         _choices = [
@@ -118,11 +119,13 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage>
           centerTitle: true,
           actions: [
             // popup menu
-            if (getUserPremission(
-              context: context,
-              featureType: FeatureType.assets,
-              premissionType: PremissionType.edit,
-            ))
+            if (_workOrder != null &&
+                !_workOrder!.cancelled &&
+                getUserPremission(
+                  context: context,
+                  featureType: FeatureType.assets,
+                  premissionType: PremissionType.edit,
+                ))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {
                   choice.onTap();

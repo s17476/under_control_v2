@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:under_control_v2/features/assets/presentation/pages/add_asset_page.dart';
 import 'package:under_control_v2/features/assets/presentation/pages/asset_details_page.dart';
 import 'package:under_control_v2/features/dashboard/presentation/pages/all_low_level_items_page.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/work_order_archive_page.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/work_order_details_page.dart';
 
 import 'features/assets/presentation/blocs/asset/asset_bloc.dart';
@@ -73,6 +74,7 @@ import 'features/knowledge_base/presentation/pages/instruction_preview_page.dart
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/tasks/presentation/blocs/work_order/work_order_bloc.dart';
+import 'features/tasks/presentation/blocs/work_order_archive/work_order_archive_bloc.dart';
 import 'features/tasks/presentation/blocs/work_order_management/work_order_management_bloc.dart';
 import 'features/tasks/presentation/pages/add_work_order_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
@@ -204,6 +206,9 @@ class App extends StatelessWidget
           create: (context) => getIt<WorkOrderManagementBloc>(),
           lazy: false,
         ),
+        BlocProvider(
+          create: (context) => getIt<WorkOrderArchiveBloc>(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -295,6 +300,8 @@ class App extends StatelessWidget
           AddWorkOrderPage.routeName: (context) => const AddWorkOrderPage(),
           WorkOrderDetailsPage.routeName: (context) =>
               const WorkOrderDetailsPage(),
+          WorkOrderArchivePage.routeName: (context) =>
+              const WorkOrderArchivePage(),
         },
         // localization
         localizationsDelegates: const [

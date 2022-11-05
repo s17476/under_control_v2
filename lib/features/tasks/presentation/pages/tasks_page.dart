@@ -12,7 +12,6 @@ import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
-import '../../../inventory/presentation/widgets/shimmer_item_tile.dart';
 import '../blocs/work_order/work_order_bloc.dart';
 
 class TasksPage extends StatefulWidget {

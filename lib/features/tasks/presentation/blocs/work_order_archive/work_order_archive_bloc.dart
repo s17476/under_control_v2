@@ -21,7 +21,7 @@ class WorkOrderArchiveBloc
   final GetArchiveWorkOrdersStream getArchiveWorkOrdersStream;
 
   late StreamSubscription _filterStreamSubscription;
-  final List<StreamSubscription?> _workOrderStreamSubscriptions = [];
+  final List<StreamSubscription?> _workOrderArchiveStreamSubscriptions = [];
 
   String _companyId = '';
   List<String> _locations = [];
@@ -33,13 +33,14 @@ class WorkOrderArchiveBloc
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
-          if (_workOrderStreamSubscriptions.isNotEmpty) {
+          if (_workOrderArchiveStreamSubscriptions.isNotEmpty) {
             // cancel old subscriptions
-            for (var workOrderSubscription in _workOrderStreamSubscriptions) {
+            for (var workOrderSubscription
+                in _workOrderArchiveStreamSubscriptions) {
               workOrderSubscription?.cancel();
             }
             // clear subscriptions list
-            _workOrderStreamSubscriptions.clear();
+            _workOrderArchiveStreamSubscriptions.clear();
           }
 
           _companyId = state.companyId;
@@ -50,7 +51,7 @@ class WorkOrderArchiveBloc
                 state.getAvailableLocations.map((loc) => loc.id).toList();
           }
 
-          add(GetWorkOrdersArchiveStreamEvent());
+          // add(GetWorkOrdersArchiveStreamEvent());
         }
       },
     );
@@ -66,13 +67,14 @@ class WorkOrderArchiveBloc
         );
       } else {
         emit(WorkOrderArchiveLoadingState());
-        if (_workOrderStreamSubscriptions.isNotEmpty) {
+        if (_workOrderArchiveStreamSubscriptions.isNotEmpty) {
           // cancel old subscriptions
-          for (var workOrderSubscription in _workOrderStreamSubscriptions) {
+          for (var workOrderSubscription
+              in _workOrderArchiveStreamSubscriptions) {
             workOrderSubscription?.cancel();
           }
           // clear subscriptions list
-          _workOrderStreamSubscriptions.clear();
+          _workOrderArchiveStreamSubscriptions.clear();
         }
 
         final List<List<String>> chunkedLocations = [];
@@ -108,7 +110,7 @@ class WorkOrderArchiveBloc
                   locations: chunk,
                 ));
               });
-              _workOrderStreamSubscriptions.add(streamSubscription);
+              _workOrderArchiveStreamSubscriptions.add(streamSubscription);
             },
           );
         }
@@ -143,7 +145,7 @@ class WorkOrderArchiveBloc
         List<WorkOrder> tmpList = [
           ...oldWorkOrders,
           ...workOrdersList.allWorkOrders,
-        ]..sort((a, b) => a.date.compareTo(b.date));
+        ]..sort((a, b) => b.date.compareTo(a.date));
 
         workOrdersList = WorkOrdersListModel(
           allWorkOrders: tmpList,
@@ -158,8 +160,8 @@ class WorkOrderArchiveBloc
   @override
   Future<void> close() {
     _filterStreamSubscription.cancel();
-    if (_workOrderStreamSubscriptions.isNotEmpty) {
-      for (var assetSubscription in _workOrderStreamSubscriptions) {
+    if (_workOrderArchiveStreamSubscriptions.isNotEmpty) {
+      for (var assetSubscription in _workOrderArchiveStreamSubscriptions) {
         assetSubscription?.cancel();
       }
     }

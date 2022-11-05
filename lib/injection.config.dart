@@ -28,78 +28,78 @@ import 'features/assets/domain/repositories/asset_category_repository.dart'
 import 'features/assets/domain/repositories/asset_repository.dart' as _i53;
 import 'features/assets/domain/repositories/dashboard_asset_action_repository.dart'
     as _i70;
-import 'features/assets/domain/usecases/add_asset.dart' as _i140;
+import 'features/assets/domain/usecases/add_asset.dart' as _i141;
 import 'features/assets/domain/usecases/asset_action/add_asset_action.dart'
-    as _i141;
+    as _i142;
 import 'features/assets/domain/usecases/asset_action/delete_asset_action.dart'
     as _i75;
 import 'features/assets/domain/usecases/asset_action/get_asset_actions_stream.dart'
-    as _i89;
+    as _i90;
 import 'features/assets/domain/usecases/asset_action/get_dashboard_asset_actions_stream.dart'
-    as _i94;
+    as _i95;
 import 'features/assets/domain/usecases/asset_action/get_dashboard_last_five_asset_actions_stream.dart'
-    as _i96;
+    as _i97;
 import 'features/assets/domain/usecases/asset_action/get_last_five_asset_actions_stream.dart'
-    as _i103;
+    as _i104;
 import 'features/assets/domain/usecases/asset_action/update_asset_action.dart'
-    as _i131;
+    as _i132;
 import 'features/assets/domain/usecases/asset_category/add_asset_category.dart'
-    as _i142;
+    as _i143;
 import 'features/assets/domain/usecases/asset_category/delete_asset_category.dart'
     as _i76;
 import 'features/assets/domain/usecases/asset_category/get_assets_categories_stream.dart'
-    as _i90;
+    as _i91;
 import 'features/assets/domain/usecases/asset_category/update_asset_category.dart'
-    as _i132;
+    as _i133;
 import 'features/assets/domain/usecases/check_code_availability.dart' as _i62;
 import 'features/assets/domain/usecases/delete_asset.dart' as _i74;
-import 'features/assets/domain/usecases/get_assets_stream.dart' as _i91;
-import 'features/assets/domain/usecases/update_asset.dart' as _i130;
-import 'features/assets/presentation/blocs/asset/asset_bloc.dart' as _i182;
+import 'features/assets/domain/usecases/get_assets_stream.dart' as _i92;
+import 'features/assets/domain/usecases/update_asset.dart' as _i131;
+import 'features/assets/presentation/blocs/asset/asset_bloc.dart' as _i184;
 import 'features/assets/presentation/blocs/asset_action/asset_action_bloc.dart'
-    as _i148;
-import 'features/assets/presentation/blocs/asset_action_management/asset_action_management_bloc.dart'
-    as _i174;
-import 'features/assets/presentation/blocs/asset_category/asset_category_bloc.dart'
-    as _i158;
-import 'features/assets/presentation/blocs/asset_category_management/asset_category_management_bloc.dart'
-    as _i175;
-import 'features/assets/presentation/blocs/asset_management/asset_management_bloc.dart'
-    as _i159;
-import 'features/assets/presentation/blocs/dashboard_asset_action/dashboard_asset_action_bloc.dart'
-    as _i183;
-import 'features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart'
     as _i149;
+import 'features/assets/presentation/blocs/asset_action_management/asset_action_management_bloc.dart'
+    as _i175;
+import 'features/assets/presentation/blocs/asset_category/asset_category_bloc.dart'
+    as _i159;
+import 'features/assets/presentation/blocs/asset_category_management/asset_category_management_bloc.dart'
+    as _i176;
+import 'features/assets/presentation/blocs/asset_management/asset_management_bloc.dart'
+    as _i160;
+import 'features/assets/presentation/blocs/dashboard_asset_action/dashboard_asset_action_bloc.dart'
+    as _i185;
+import 'features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart'
+    as _i150;
 import 'features/authentication/data/repositories/authentication_repository_impl.dart'
     as _i59;
 import 'features/authentication/domain/repositories/authentication_repository.dart'
     as _i58;
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i185;
+    as _i187;
 import 'features/authentication/domain/usecases/auto_signin.dart' as _i60;
 import 'features/authentication/domain/usecases/check_email_verification.dart'
     as _i63;
 import 'features/authentication/domain/usecases/send_password_reset_email.dart'
-    as _i118;
-import 'features/authentication/domain/usecases/send_verification_email.dart'
     as _i119;
-import 'features/authentication/domain/usecases/signin.dart' as _i120;
-import 'features/authentication/domain/usecases/signout.dart' as _i121;
-import 'features/authentication/domain/usecases/signup.dart' as _i122;
+import 'features/authentication/domain/usecases/send_verification_email.dart'
+    as _i120;
+import 'features/authentication/domain/usecases/signin.dart' as _i121;
+import 'features/authentication/domain/usecases/signout.dart' as _i122;
+import 'features/authentication/domain/usecases/signup.dart' as _i123;
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart'
-    as _i150;
+    as _i151;
 import 'features/checklists/data/repositories/checklists_repository_impl.dart'
     as _i65;
 import 'features/checklists/domain/repositories/checklists_repository.dart'
     as _i64;
-import 'features/checklists/domain/usecases/add_checklist.dart' as _i143;
+import 'features/checklists/domain/usecases/add_checklist.dart' as _i144;
 import 'features/checklists/domain/usecases/delete_checklist.dart' as _i77;
-import 'features/checklists/domain/usecases/get_checklists_stream.dart' as _i92;
-import 'features/checklists/domain/usecases/update_checklist.dart' as _i133;
+import 'features/checklists/domain/usecases/get_checklists_stream.dart' as _i93;
+import 'features/checklists/domain/usecases/update_checklist.dart' as _i134;
 import 'features/checklists/presentation/blocs/checklist/checklist_bloc.dart'
-    as _i176;
-import 'features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart'
     as _i177;
+import 'features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart'
+    as _i178;
 import 'features/company_profile/data/repositories/company_management_repository_impl.dart'
     as _i67;
 import 'features/company_profile/data/repositories/company_repository_impl.dart'
@@ -108,9 +108,9 @@ import 'features/company_profile/domain/repositories/company_management_reposito
     as _i66;
 import 'features/company_profile/domain/repositories/company_repository.dart'
     as _i68;
-import 'features/company_profile/domain/usecases/add_company.dart' as _i144;
+import 'features/company_profile/domain/usecases/add_company.dart' as _i145;
 import 'features/company_profile/domain/usecases/add_company_logo.dart'
-    as _i145;
+    as _i146;
 import 'features/company_profile/domain/usecases/fetch_all_companies.dart'
     as _i85;
 import 'features/company_profile/domain/usecases/fetch_all_company_users.dart'
@@ -119,31 +119,31 @@ import 'features/company_profile/domain/usecases/fetch_new_users.dart' as _i87;
 import 'features/company_profile/domain/usecases/fetch_suspended_users.dart'
     as _i88;
 import 'features/company_profile/domain/usecases/get_company_by_id.dart'
-    as _i93;
-import 'features/company_profile/domain/usecases/update_company.dart' as _i134;
+    as _i94;
+import 'features/company_profile/domain/usecases/update_company.dart' as _i135;
 import 'features/company_profile/presentation/blocs/company_management/company_management_bloc.dart'
-    as _i160;
-import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart'
     as _i161;
+import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart'
+    as _i162;
 import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dart'
-    as _i171;
-import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
     as _i172;
-import 'features/core/injectable_modules/injectable_modules.dart' as _i186;
+import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
+    as _i173;
+import 'features/core/injectable_modules/injectable_modules.dart' as _i188;
 import 'features/core/network/network_info.dart' as _i23;
 import 'features/core/utils/input_validator.dart' as _i8;
-import 'features/filter/presentation/blocs/filter/filter_bloc.dart' as _i178;
-import 'features/groups/data/datasources/group_local_data_source.dart' as _i108;
+import 'features/filter/presentation/blocs/filter/filter_bloc.dart' as _i179;
+import 'features/groups/data/datasources/group_local_data_source.dart' as _i109;
 import 'features/groups/data/datasources/group_remote_data_source.dart' as _i7;
-import 'features/groups/data/repositories/group_repository_impl.dart' as _i110;
-import 'features/groups/domain/repositories/group_repository.dart' as _i109;
-import 'features/groups/domain/usecases/add_group.dart' as _i146;
-import 'features/groups/domain/usecases/cache_groups.dart' as _i151;
-import 'features/groups/domain/usecases/delete_group.dart' as _i153;
-import 'features/groups/domain/usecases/get_groups_stream.dart' as _i156;
-import 'features/groups/domain/usecases/try_to_get_cached_groups.dart' as _i124;
-import 'features/groups/domain/usecases/update_group.dart' as _i135;
-import 'features/groups/presentation/blocs/group/group_bloc.dart' as _i162;
+import 'features/groups/data/repositories/group_repository_impl.dart' as _i111;
+import 'features/groups/domain/repositories/group_repository.dart' as _i110;
+import 'features/groups/domain/usecases/add_group.dart' as _i147;
+import 'features/groups/domain/usecases/cache_groups.dart' as _i152;
+import 'features/groups/domain/usecases/delete_group.dart' as _i154;
+import 'features/groups/domain/usecases/get_groups_stream.dart' as _i157;
+import 'features/groups/domain/usecases/try_to_get_cached_groups.dart' as _i125;
+import 'features/groups/domain/usecases/update_group.dart' as _i136;
+import 'features/groups/presentation/blocs/group/group_bloc.dart' as _i163;
 import 'features/inventory/data/repositories/dashboard_item_action_repository_impl.dart'
     as _i73;
 import 'features/inventory/data/repositories/item_action_repository_impl.dart'
@@ -166,19 +166,19 @@ import 'features/inventory/domain/usecases/add_item.dart' as _i39;
 import 'features/inventory/domain/usecases/add_item_photo.dart' as _i42;
 import 'features/inventory/domain/usecases/delete_item.dart' as _i80;
 import 'features/inventory/domain/usecases/delete_item_photo.dart' as _i83;
-import 'features/inventory/domain/usecases/get_items_stream.dart' as _i102;
+import 'features/inventory/domain/usecases/get_items_stream.dart' as _i103;
 import 'features/inventory/domain/usecases/item_action/add_item_action.dart'
     as _i40;
 import 'features/inventory/domain/usecases/item_action/delete_item_action.dart'
     as _i81;
 import 'features/inventory/domain/usecases/item_action/get_dashboard_item_actions_stream.dart'
-    as _i95;
+    as _i96;
 import 'features/inventory/domain/usecases/item_action/get_dashboard_last_five_item_actions_stream.dart'
-    as _i97;
+    as _i98;
 import 'features/inventory/domain/usecases/item_action/get_item_actions_stream.dart'
-    as _i100;
+    as _i101;
 import 'features/inventory/domain/usecases/item_action/get_last_five_item_actions_stream.dart'
-    as _i104;
+    as _i105;
 import 'features/inventory/domain/usecases/item_action/move_item_action.dart'
     as _i22;
 import 'features/inventory/domain/usecases/item_action/update_item_action.dart'
@@ -188,24 +188,24 @@ import 'features/inventory/domain/usecases/item_category/add_item_category.dart'
 import 'features/inventory/domain/usecases/item_category/delete_item_category.dart'
     as _i82;
 import 'features/inventory/domain/usecases/item_category/get_items_categories_stream.dart'
-    as _i101;
+    as _i102;
 import 'features/inventory/domain/usecases/item_category/update_item_category.dart'
     as _i29;
 import 'features/inventory/domain/usecases/update_item.dart' as _i27;
 import 'features/inventory/domain/usecases/update_item_photo.dart' as _i30;
 import 'features/inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart'
-    as _i184;
+    as _i186;
 import 'features/inventory/presentation/blocs/item_action/item_action_bloc.dart'
-    as _i111;
+    as _i112;
 import 'features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart'
-    as _i166;
-import 'features/inventory/presentation/blocs/item_category/item_category_bloc.dart'
     as _i167;
-import 'features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart'
+import 'features/inventory/presentation/blocs/item_category/item_category_bloc.dart'
     as _i168;
-import 'features/inventory/presentation/blocs/items/items_bloc.dart' as _i180;
-import 'features/inventory/presentation/blocs/items_management/items_management_bloc.dart'
+import 'features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart'
     as _i169;
+import 'features/inventory/presentation/blocs/items/items_bloc.dart' as _i181;
+import 'features/inventory/presentation/blocs/items_management/items_management_bloc.dart'
+    as _i170;
 import 'features/knowledge_base/data/repositories/instruction_category_repository_impl.dart'
     as _i10;
 import 'features/knowledge_base/data/repositories/instruction_repository_impl.dart'
@@ -218,41 +218,41 @@ import 'features/knowledge_base/domain/usecases/add_instruction.dart' as _i37;
 import 'features/knowledge_base/domain/usecases/delete_instruction.dart'
     as _i78;
 import 'features/knowledge_base/domain/usecases/get_instructions_stream.dart'
-    as _i99;
+    as _i100;
 import 'features/knowledge_base/domain/usecases/item_category/add_instruction_category.dart'
     as _i38;
 import 'features/knowledge_base/domain/usecases/item_category/delete_instruction_category.dart'
     as _i79;
 import 'features/knowledge_base/domain/usecases/item_category/get_instructions_categories_stream.dart'
-    as _i98;
+    as _i99;
 import 'features/knowledge_base/domain/usecases/item_category/update_instruction_category.dart'
     as _i26;
 import 'features/knowledge_base/domain/usecases/update_instruction.dart'
     as _i25;
 import 'features/knowledge_base/presentation/blocs/instruction/instruction_bloc.dart'
-    as _i179;
+    as _i180;
 import 'features/knowledge_base/presentation/blocs/instruction_category/instruction_category_bloc.dart'
-    as _i163;
-import 'features/knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart'
     as _i164;
-import 'features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart'
+import 'features/knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart'
     as _i165;
+import 'features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart'
+    as _i166;
 import 'features/locations/data/datasources/location_local_data_source.dart'
-    as _i112;
+    as _i113;
 import 'features/locations/data/datasources/location_remote_data_source.dart'
     as _i21;
 import 'features/locations/data/repositories/location_repository_impl.dart'
-    as _i114;
+    as _i115;
 import 'features/locations/domain/repositories/location_repository.dart'
-    as _i113;
-import 'features/locations/domain/usecases/add_location.dart' as _i147;
-import 'features/locations/domain/usecases/cache_location.dart' as _i152;
-import 'features/locations/domain/usecases/delete_location.dart' as _i154;
-import 'features/locations/domain/usecases/fetch_all_locations.dart' as _i155;
+    as _i114;
+import 'features/locations/domain/usecases/add_location.dart' as _i148;
+import 'features/locations/domain/usecases/cache_location.dart' as _i153;
+import 'features/locations/domain/usecases/delete_location.dart' as _i155;
+import 'features/locations/domain/usecases/fetch_all_locations.dart' as _i156;
 import 'features/locations/domain/usecases/try_to_get_cached_location.dart'
-    as _i125;
-import 'features/locations/domain/usecases/update_location.dart' as _i136;
-import 'features/locations/presentation/blocs/bloc/location_bloc.dart' as _i170;
+    as _i126;
+import 'features/locations/domain/usecases/update_location.dart' as _i137;
+import 'features/locations/presentation/blocs/bloc/location_bloc.dart' as _i171;
 import 'features/tasks/data/repositories/work_order_repository_impl.dart'
     as _i36;
 import 'features/tasks/domain/repositories/work_order_repository.dart' as _i35;
@@ -261,14 +261,18 @@ import 'features/tasks/domain/usecases/work_order/cancel_work_order.dart'
     as _i61;
 import 'features/tasks/domain/usecases/work_order/delete_work_order.dart'
     as _i84;
+import 'features/tasks/domain/usecases/work_order/get_archive_work_orders_stream.dart'
+    as _i89;
 import 'features/tasks/domain/usecases/work_order/get_work_orders_stream.dart'
-    as _i107;
+    as _i108;
 import 'features/tasks/domain/usecases/work_order/update_work_order.dart'
-    as _i138;
+    as _i139;
 import 'features/tasks/presentation/blocs/work_order/work_order_bloc.dart'
-    as _i181;
+    as _i183;
+import 'features/tasks/presentation/blocs/work_order_archive/work_order_archive_bloc.dart'
+    as _i182;
 import 'features/tasks/presentation/blocs/work_order_management/work_order_management_bloc.dart'
-    as _i173;
+    as _i174;
 import 'features/user_profile/data/repositories/user_files_repository_impl.dart'
     as _i32;
 import 'features/user_profile/data/repositories/user_profile_repository_impl.dart'
@@ -289,26 +293,26 @@ import 'features/user_profile/domain/usecases/assign_user_to_company.dart'
     as _i56;
 import 'features/user_profile/domain/usecases/assign_user_to_group.dart'
     as _i57;
-import 'features/user_profile/domain/usecases/get_user_by_id.dart' as _i105;
+import 'features/user_profile/domain/usecases/get_user_by_id.dart' as _i106;
 import 'features/user_profile/domain/usecases/get_user_stream_by_id.dart'
-    as _i106;
+    as _i107;
 import 'features/user_profile/domain/usecases/make_user_administrator.dart'
-    as _i115;
-import 'features/user_profile/domain/usecases/reject_user.dart' as _i116;
-import 'features/user_profile/domain/usecases/reset_company.dart' as _i117;
-import 'features/user_profile/domain/usecases/suspend_user.dart' as _i123;
+    as _i116;
+import 'features/user_profile/domain/usecases/reject_user.dart' as _i117;
+import 'features/user_profile/domain/usecases/reset_company.dart' as _i118;
+import 'features/user_profile/domain/usecases/suspend_user.dart' as _i124;
 import 'features/user_profile/domain/usecases/unassign_group_admin.dart'
-    as _i126;
-import 'features/user_profile/domain/usecases/unassign_user_from_group.dart'
     as _i127;
-import 'features/user_profile/domain/usecases/unmake_user_administrator.dart'
+import 'features/user_profile/domain/usecases/unassign_user_from_group.dart'
     as _i128;
-import 'features/user_profile/domain/usecases/unsuspend_user.dart' as _i129;
-import 'features/user_profile/domain/usecases/update_user_data.dart' as _i137;
+import 'features/user_profile/domain/usecases/unmake_user_administrator.dart'
+    as _i129;
+import 'features/user_profile/domain/usecases/unsuspend_user.dart' as _i130;
+import 'features/user_profile/domain/usecases/update_user_data.dart' as _i138;
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart'
-    as _i139;
+    as _i140;
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart'
-    as _i157; // ignore_for_file: unnecessary_lambdas
+    as _i158; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -496,372 +500,380 @@ Future<_i1.GetIt> $initGetIt(
       _i87.FetchNewUsers(companyRepository: get<_i68.CompanyRepository>()));
   gh.lazySingleton<_i88.FetchSuspendedUsers>(() => _i88.FetchSuspendedUsers(
       companyRepository: get<_i68.CompanyRepository>()));
-  gh.lazySingleton<_i89.GetAssetActionsStream>(() => _i89.GetAssetActionsStream(
+  gh.lazySingleton<_i89.GetArchiveWorkOrdersStream>(() =>
+      _i89.GetArchiveWorkOrdersStream(
+          repository: get<_i35.WorkOrdersRepository>()));
+  gh.lazySingleton<_i90.GetAssetActionsStream>(() => _i90.GetAssetActionsStream(
       repository: get<_i49.AssetActionRepository>()));
-  gh.lazySingleton<_i90.GetAssetsCategoriesStream>(() =>
-      _i90.GetAssetsCategoriesStream(
+  gh.lazySingleton<_i91.GetAssetsCategoriesStream>(() =>
+      _i91.GetAssetsCategoriesStream(
           repository: get<_i51.AssetCategoryRepository>()));
-  gh.lazySingleton<_i91.GetAssetsStream>(
-      () => _i91.GetAssetsStream(repository: get<_i53.AssetRepository>()));
-  gh.lazySingleton<_i92.GetChecklistStream>(() =>
-      _i92.GetChecklistStream(repository: get<_i64.CheckListsRepository>()));
-  gh.lazySingleton<_i93.GetCompanyById>(() =>
-      _i93.GetCompanyById(companyRepository: get<_i68.CompanyRepository>()));
-  gh.lazySingleton<_i94.GetDashboardAssetActionsStream>(() =>
-      _i94.GetDashboardAssetActionsStream(
+  gh.lazySingleton<_i92.GetAssetsStream>(
+      () => _i92.GetAssetsStream(repository: get<_i53.AssetRepository>()));
+  gh.lazySingleton<_i93.GetChecklistStream>(() =>
+      _i93.GetChecklistStream(repository: get<_i64.CheckListsRepository>()));
+  gh.lazySingleton<_i94.GetCompanyById>(() =>
+      _i94.GetCompanyById(companyRepository: get<_i68.CompanyRepository>()));
+  gh.lazySingleton<_i95.GetDashboardAssetActionsStream>(() =>
+      _i95.GetDashboardAssetActionsStream(
           repository: get<_i70.DashboardAssetActionRepository>()));
-  gh.lazySingleton<_i95.GetDashboardItemsActionsStream>(() =>
-      _i95.GetDashboardItemsActionsStream(
+  gh.lazySingleton<_i96.GetDashboardItemsActionsStream>(() =>
+      _i96.GetDashboardItemsActionsStream(
           repository: get<_i72.DashboardItemActionRepository>()));
-  gh.lazySingleton<_i96.GetDashboardLastFiveAssetActionsStream>(() =>
-      _i96.GetDashboardLastFiveAssetActionsStream(
+  gh.lazySingleton<_i97.GetDashboardLastFiveAssetActionsStream>(() =>
+      _i97.GetDashboardLastFiveAssetActionsStream(
           repository: get<_i70.DashboardAssetActionRepository>()));
-  gh.lazySingleton<_i97.GetDashboardLastFiveItemsActionsStream>(() =>
-      _i97.GetDashboardLastFiveItemsActionsStream(
+  gh.lazySingleton<_i98.GetDashboardLastFiveItemsActionsStream>(() =>
+      _i98.GetDashboardLastFiveItemsActionsStream(
           repository: get<_i72.DashboardItemActionRepository>()));
-  gh.lazySingleton<_i98.GetInstructionsCategoriesStream>(() =>
-      _i98.GetInstructionsCategoriesStream(
+  gh.lazySingleton<_i99.GetInstructionsCategoriesStream>(() =>
+      _i99.GetInstructionsCategoriesStream(
           repository: get<_i9.InstructionCategoryRepository>()));
-  gh.lazySingleton<_i99.GetInstructionsStream>(() => _i99.GetInstructionsStream(
-      repository: get<_i11.InstructionRepository>()));
-  gh.lazySingleton<_i100.GetItemsActionsStream>(() =>
-      _i100.GetItemsActionsStream(
+  gh.lazySingleton<_i100.GetInstructionsStream>(() =>
+      _i100.GetInstructionsStream(
+          repository: get<_i11.InstructionRepository>()));
+  gh.lazySingleton<_i101.GetItemsActionsStream>(() =>
+      _i101.GetItemsActionsStream(
           repository: get<_i13.ItemActionRepository>()));
-  gh.lazySingleton<_i101.GetItemsCategoriesStream>(() =>
-      _i101.GetItemsCategoriesStream(
+  gh.lazySingleton<_i102.GetItemsCategoriesStream>(() =>
+      _i102.GetItemsCategoriesStream(
           repository: get<_i15.ItemCategoryRepository>()));
-  gh.lazySingleton<_i102.GetItemsStream>(
-      () => _i102.GetItemsStream(repository: get<_i19.ItemRepository>()));
-  gh.lazySingleton<_i103.GetLastFiveAssetActionsStream>(() =>
-      _i103.GetLastFiveAssetActionsStream(
+  gh.lazySingleton<_i103.GetItemsStream>(
+      () => _i103.GetItemsStream(repository: get<_i19.ItemRepository>()));
+  gh.lazySingleton<_i104.GetLastFiveAssetActionsStream>(() =>
+      _i104.GetLastFiveAssetActionsStream(
           repository: get<_i49.AssetActionRepository>()));
-  gh.lazySingleton<_i104.GetLastFiveItemsActionsStream>(() =>
-      _i104.GetLastFiveItemsActionsStream(
+  gh.lazySingleton<_i105.GetLastFiveItemsActionsStream>(() =>
+      _i105.GetLastFiveItemsActionsStream(
           repository: get<_i13.ItemActionRepository>()));
-  gh.lazySingleton<_i105.GetUserById>(
-      () => _i105.GetUserById(repository: get<_i33.UserProfileRepository>()));
-  gh.lazySingleton<_i106.GetUserStreamById>(() => _i106.GetUserStreamById(
+  gh.lazySingleton<_i106.GetUserById>(
+      () => _i106.GetUserById(repository: get<_i33.UserProfileRepository>()));
+  gh.lazySingleton<_i107.GetUserStreamById>(() => _i107.GetUserStreamById(
       userRepository: get<_i33.UserProfileRepository>()));
-  gh.lazySingleton<_i107.GetWorkOrdersStream>(() =>
-      _i107.GetWorkOrdersStream(repository: get<_i35.WorkOrdersRepository>()));
-  gh.lazySingleton<_i108.GroupLocalDataSource>(() =>
-      _i108.GroupLocalDataSourceImpl(source: get<_i24.SharedPreferences>()));
-  gh.lazySingleton<_i109.GroupRepository>(() => _i110.GroupRepositoryImpl(
+  gh.lazySingleton<_i108.GetWorkOrdersStream>(() =>
+      _i108.GetWorkOrdersStream(repository: get<_i35.WorkOrdersRepository>()));
+  gh.lazySingleton<_i109.GroupLocalDataSource>(() =>
+      _i109.GroupLocalDataSourceImpl(source: get<_i24.SharedPreferences>()));
+  gh.lazySingleton<_i110.GroupRepository>(() => _i111.GroupRepositoryImpl(
         groupRemoteDataSource: get<_i7.GroupRemoteDataSource>(),
-        groupLocalDataSource: get<_i108.GroupLocalDataSource>(),
+        groupLocalDataSource: get<_i109.GroupLocalDataSource>(),
       ));
-  gh.factory<_i111.ItemActionBloc>(() => _i111.ItemActionBloc(
-        getItemsActionsStream: get<_i100.GetItemsActionsStream>(),
+  gh.factory<_i112.ItemActionBloc>(() => _i112.ItemActionBloc(
+        getItemsActionsStream: get<_i101.GetItemsActionsStream>(),
         getLastFiveItemsActionsStream:
-            get<_i104.GetLastFiveItemsActionsStream>(),
+            get<_i105.GetLastFiveItemsActionsStream>(),
       ));
-  gh.lazySingleton<_i112.LocationLocalDataSource>(() =>
-      _i112.LocationLocalDataSourceImpl(source: get<_i24.SharedPreferences>()));
-  gh.lazySingleton<_i113.LocationRepository>(() => _i114.LocationRepositoryImpl(
-        locationLocalDataSource: get<_i112.LocationLocalDataSource>(),
+  gh.lazySingleton<_i113.LocationLocalDataSource>(() =>
+      _i113.LocationLocalDataSourceImpl(source: get<_i24.SharedPreferences>()));
+  gh.lazySingleton<_i114.LocationRepository>(() => _i115.LocationRepositoryImpl(
+        locationLocalDataSource: get<_i113.LocationLocalDataSource>(),
         locationRemoteDataSource: get<_i21.LocationRemoteDataSource>(),
       ));
-  gh.lazySingleton<_i115.MakeUserAdministrator>(() =>
-      _i115.MakeUserAdministrator(
+  gh.lazySingleton<_i116.MakeUserAdministrator>(() =>
+      _i116.MakeUserAdministrator(
           repository: get<_i33.UserProfileRepository>()));
-  gh.lazySingleton<_i116.RejectUser>(
-      () => _i116.RejectUser(repository: get<_i33.UserProfileRepository>()));
-  gh.lazySingleton<_i117.ResetCompany>(
-      () => _i117.ResetCompany(repository: get<_i33.UserProfileRepository>()));
-  gh.lazySingleton<_i118.SendPasswordResetEmail>(() =>
-      _i118.SendPasswordResetEmail(
+  gh.lazySingleton<_i117.RejectUser>(
+      () => _i117.RejectUser(repository: get<_i33.UserProfileRepository>()));
+  gh.lazySingleton<_i118.ResetCompany>(
+      () => _i118.ResetCompany(repository: get<_i33.UserProfileRepository>()));
+  gh.lazySingleton<_i119.SendPasswordResetEmail>(() =>
+      _i119.SendPasswordResetEmail(
           authenticationRepository: get<_i58.AuthenticationRepository>()));
-  gh.lazySingleton<_i119.SendVerificationEmail>(() =>
-      _i119.SendVerificationEmail(
+  gh.lazySingleton<_i120.SendVerificationEmail>(() =>
+      _i120.SendVerificationEmail(
           authenticationRepository: get<_i58.AuthenticationRepository>()));
-  gh.lazySingleton<_i120.Signin>(() => _i120.Signin(
+  gh.lazySingleton<_i121.Signin>(() => _i121.Signin(
       authenticationRepository: get<_i58.AuthenticationRepository>()));
-  gh.lazySingleton<_i121.Signout>(() => _i121.Signout(
+  gh.lazySingleton<_i122.Signout>(() => _i122.Signout(
       authenticationRepository: get<_i58.AuthenticationRepository>()));
-  gh.lazySingleton<_i122.Signup>(() => _i122.Signup(
+  gh.lazySingleton<_i123.Signup>(() => _i123.Signup(
       authenticationRepository: get<_i58.AuthenticationRepository>()));
-  gh.lazySingleton<_i123.SuspendUser>(
-      () => _i123.SuspendUser(repository: get<_i33.UserProfileRepository>()));
-  gh.lazySingleton<_i124.TryToGetCachedGroups>(() => _i124.TryToGetCachedGroups(
-      groupRepository: get<_i109.GroupRepository>()));
-  gh.lazySingleton<_i125.TryToGetCachedLocation>(() =>
-      _i125.TryToGetCachedLocation(
-          locationRepository: get<_i113.LocationRepository>()));
-  gh.lazySingleton<_i126.UnassignGroupAdmin>(() =>
-      _i126.UnassignGroupAdmin(repository: get<_i33.UserProfileRepository>()));
-  gh.lazySingleton<_i127.UnassignUserFromGroup>(() =>
-      _i127.UnassignUserFromGroup(
+  gh.lazySingleton<_i124.SuspendUser>(
+      () => _i124.SuspendUser(repository: get<_i33.UserProfileRepository>()));
+  gh.lazySingleton<_i125.TryToGetCachedGroups>(() => _i125.TryToGetCachedGroups(
+      groupRepository: get<_i110.GroupRepository>()));
+  gh.lazySingleton<_i126.TryToGetCachedLocation>(() =>
+      _i126.TryToGetCachedLocation(
+          locationRepository: get<_i114.LocationRepository>()));
+  gh.lazySingleton<_i127.UnassignGroupAdmin>(() =>
+      _i127.UnassignGroupAdmin(repository: get<_i33.UserProfileRepository>()));
+  gh.lazySingleton<_i128.UnassignUserFromGroup>(() =>
+      _i128.UnassignUserFromGroup(
           repository: get<_i33.UserProfileRepository>()));
-  gh.lazySingleton<_i128.UnmakeUserAdministrator>(() =>
-      _i128.UnmakeUserAdministrator(
+  gh.lazySingleton<_i129.UnmakeUserAdministrator>(() =>
+      _i129.UnmakeUserAdministrator(
           repository: get<_i33.UserProfileRepository>()));
-  gh.lazySingleton<_i129.UnsuspendUser>(
-      () => _i129.UnsuspendUser(repository: get<_i33.UserProfileRepository>()));
-  gh.lazySingleton<_i130.UpdateAsset>(
-      () => _i130.UpdateAsset(repository: get<_i53.AssetRepository>()));
-  gh.lazySingleton<_i131.UpdateAssetAction>(() =>
-      _i131.UpdateAssetAction(repository: get<_i49.AssetActionRepository>()));
-  gh.lazySingleton<_i132.UpdateAssetCategory>(() => _i132.UpdateAssetCategory(
+  gh.lazySingleton<_i130.UnsuspendUser>(
+      () => _i130.UnsuspendUser(repository: get<_i33.UserProfileRepository>()));
+  gh.lazySingleton<_i131.UpdateAsset>(
+      () => _i131.UpdateAsset(repository: get<_i53.AssetRepository>()));
+  gh.lazySingleton<_i132.UpdateAssetAction>(() =>
+      _i132.UpdateAssetAction(repository: get<_i49.AssetActionRepository>()));
+  gh.lazySingleton<_i133.UpdateAssetCategory>(() => _i133.UpdateAssetCategory(
       repository: get<_i51.AssetCategoryRepository>()));
-  gh.lazySingleton<_i133.UpdateChecklist>(() =>
-      _i133.UpdateChecklist(repository: get<_i64.CheckListsRepository>()));
-  gh.lazySingleton<_i134.UpdateCompany>(() => _i134.UpdateCompany(
+  gh.lazySingleton<_i134.UpdateChecklist>(() =>
+      _i134.UpdateChecklist(repository: get<_i64.CheckListsRepository>()));
+  gh.lazySingleton<_i135.UpdateCompany>(() => _i135.UpdateCompany(
       companyRepository: get<_i66.CompanyManagementRepository>()));
-  gh.lazySingleton<_i135.UpdateGroup>(
-      () => _i135.UpdateGroup(groupRepository: get<_i109.GroupRepository>()));
-  gh.lazySingleton<_i136.UpdateLocation>(() => _i136.UpdateLocation(
-      locationRepository: get<_i113.LocationRepository>()));
-  gh.lazySingleton<_i137.UpdateUserData>(() =>
-      _i137.UpdateUserData(repository: get<_i33.UserProfileRepository>()));
-  gh.lazySingleton<_i138.UpdateWorkOrder>(() =>
-      _i138.UpdateWorkOrder(repository: get<_i35.WorkOrdersRepository>()));
-  gh.factory<_i139.UserManagementBloc>(() => _i139.UserManagementBloc(
+  gh.lazySingleton<_i136.UpdateGroup>(
+      () => _i136.UpdateGroup(groupRepository: get<_i110.GroupRepository>()));
+  gh.lazySingleton<_i137.UpdateLocation>(() => _i137.UpdateLocation(
+      locationRepository: get<_i114.LocationRepository>()));
+  gh.lazySingleton<_i138.UpdateUserData>(() =>
+      _i138.UpdateUserData(repository: get<_i33.UserProfileRepository>()));
+  gh.lazySingleton<_i139.UpdateWorkOrder>(() =>
+      _i139.UpdateWorkOrder(repository: get<_i35.WorkOrdersRepository>()));
+  gh.factory<_i140.UserManagementBloc>(() => _i140.UserManagementBloc(
         approveUser: get<_i47.ApproveUser>(),
         approvePassiveUser: get<_i46.ApprovePassiveUser>(),
-        makeUserAdministrator: get<_i115.MakeUserAdministrator>(),
-        unmakeUserAdministrator: get<_i128.UnmakeUserAdministrator>(),
+        makeUserAdministrator: get<_i116.MakeUserAdministrator>(),
+        unmakeUserAdministrator: get<_i129.UnmakeUserAdministrator>(),
         approveUserAndMakeAdmin: get<_i48.ApproveUserAndMakeAdmin>(),
-        rejectUser: get<_i116.RejectUser>(),
-        suspendUser: get<_i123.SuspendUser>(),
-        unsuspendUser: get<_i129.UnsuspendUser>(),
-        updateUserData: get<_i137.UpdateUserData>(),
+        rejectUser: get<_i117.RejectUser>(),
+        suspendUser: get<_i124.SuspendUser>(),
+        unsuspendUser: get<_i130.UnsuspendUser>(),
+        updateUserData: get<_i138.UpdateUserData>(),
         assignUserToGroup: get<_i57.AssignUserToGroup>(),
-        unassignUserFromGroup: get<_i127.UnassignUserFromGroup>(),
+        unassignUserFromGroup: get<_i128.UnassignUserFromGroup>(),
         assignGroupAdmin: get<_i55.AssignGroupAdmin>(),
-        unassignGroupAdmin: get<_i126.UnassignGroupAdmin>(),
+        unassignGroupAdmin: get<_i127.UnassignGroupAdmin>(),
         addUserAvatar: get<_i44.AddUserAvatar>(),
       ));
-  gh.lazySingleton<_i140.AddAsset>(
-      () => _i140.AddAsset(repository: get<_i53.AssetRepository>()));
-  gh.lazySingleton<_i141.AddAssetAction>(() =>
-      _i141.AddAssetAction(repository: get<_i49.AssetActionRepository>()));
-  gh.lazySingleton<_i142.AddAssetCategory>(() =>
-      _i142.AddAssetCategory(repository: get<_i51.AssetCategoryRepository>()));
-  gh.lazySingleton<_i143.AddChecklist>(
-      () => _i143.AddChecklist(repository: get<_i64.CheckListsRepository>()));
-  gh.lazySingleton<_i144.AddCompany>(() => _i144.AddCompany(
+  gh.lazySingleton<_i141.AddAsset>(
+      () => _i141.AddAsset(repository: get<_i53.AssetRepository>()));
+  gh.lazySingleton<_i142.AddAssetAction>(() =>
+      _i142.AddAssetAction(repository: get<_i49.AssetActionRepository>()));
+  gh.lazySingleton<_i143.AddAssetCategory>(() =>
+      _i143.AddAssetCategory(repository: get<_i51.AssetCategoryRepository>()));
+  gh.lazySingleton<_i144.AddChecklist>(
+      () => _i144.AddChecklist(repository: get<_i64.CheckListsRepository>()));
+  gh.lazySingleton<_i145.AddCompany>(() => _i145.AddCompany(
       companyManagementRepository: get<_i66.CompanyManagementRepository>()));
-  gh.lazySingleton<_i145.AddCompanyLogo>(() => _i145.AddCompanyLogo(
+  gh.lazySingleton<_i146.AddCompanyLogo>(() => _i146.AddCompanyLogo(
       repository: get<_i66.CompanyManagementRepository>()));
-  gh.lazySingleton<_i146.AddGroup>(
-      () => _i146.AddGroup(groupRepository: get<_i109.GroupRepository>()));
-  gh.lazySingleton<_i147.AddLocation>(() =>
-      _i147.AddLocation(locationRepository: get<_i113.LocationRepository>()));
-  gh.factory<_i148.AssetActionBloc>(() => _i148.AssetActionBloc(
-        getAssetActionsStream: get<_i89.GetAssetActionsStream>(),
+  gh.lazySingleton<_i147.AddGroup>(
+      () => _i147.AddGroup(groupRepository: get<_i110.GroupRepository>()));
+  gh.lazySingleton<_i148.AddLocation>(() =>
+      _i148.AddLocation(locationRepository: get<_i114.LocationRepository>()));
+  gh.factory<_i149.AssetActionBloc>(() => _i149.AssetActionBloc(
+        getAssetActionsStream: get<_i90.GetAssetActionsStream>(),
         getLastFiveAssetActionsStream:
-            get<_i103.GetLastFiveAssetActionsStream>(),
+            get<_i104.GetLastFiveAssetActionsStream>(),
       ));
-  gh.factory<_i149.AssetInternalNumberCubit>(
-      () => _i149.AssetInternalNumberCubit(get<_i62.CheckCodeAvailability>()));
-  gh.factory<_i150.AuthenticationBloc>(() => _i150.AuthenticationBloc(
-        signin: get<_i120.Signin>(),
-        signup: get<_i122.Signup>(),
-        signout: get<_i121.Signout>(),
+  gh.factory<_i150.AssetInternalNumberCubit>(
+      () => _i150.AssetInternalNumberCubit(get<_i62.CheckCodeAvailability>()));
+  gh.factory<_i151.AuthenticationBloc>(() => _i151.AuthenticationBloc(
+        signin: get<_i121.Signin>(),
+        signup: get<_i123.Signup>(),
+        signout: get<_i122.Signout>(),
         autoSignin: get<_i60.AutoSignin>(),
-        sendVerificationEmail: get<_i119.SendVerificationEmail>(),
+        sendVerificationEmail: get<_i120.SendVerificationEmail>(),
         checkEmailVerification: get<_i63.CheckEmailVerification>(),
-        sendPasswordResetEmail: get<_i118.SendPasswordResetEmail>(),
+        sendPasswordResetEmail: get<_i119.SendPasswordResetEmail>(),
         inputValidator: get<_i8.InputValidator>(),
       ));
-  gh.lazySingleton<_i151.CacheGroups>(
-      () => _i151.CacheGroups(groupRepository: get<_i109.GroupRepository>()));
-  gh.lazySingleton<_i152.CacheLocation>(() =>
-      _i152.CacheLocation(locationRepository: get<_i113.LocationRepository>()));
-  gh.lazySingleton<_i153.DeleteGroup>(
-      () => _i153.DeleteGroup(groupRepository: get<_i109.GroupRepository>()));
-  gh.lazySingleton<_i154.DeleteLocation>(() => _i154.DeleteLocation(
-      locationRepository: get<_i113.LocationRepository>()));
-  gh.lazySingleton<_i155.FetchAllLocations>(() => _i155.FetchAllLocations(
-      locationRepository: get<_i113.LocationRepository>()));
-  gh.lazySingleton<_i156.GetGroupsStream>(() =>
-      _i156.GetGroupsStream(groupRepository: get<_i109.GroupRepository>()));
-  gh.factory<_i157.UserProfileBloc>(() => _i157.UserProfileBloc(
-        authenticationBloc: get<_i150.AuthenticationBloc>(),
+  gh.lazySingleton<_i152.CacheGroups>(
+      () => _i152.CacheGroups(groupRepository: get<_i110.GroupRepository>()));
+  gh.lazySingleton<_i153.CacheLocation>(() =>
+      _i153.CacheLocation(locationRepository: get<_i114.LocationRepository>()));
+  gh.lazySingleton<_i154.DeleteGroup>(
+      () => _i154.DeleteGroup(groupRepository: get<_i110.GroupRepository>()));
+  gh.lazySingleton<_i155.DeleteLocation>(() => _i155.DeleteLocation(
+      locationRepository: get<_i114.LocationRepository>()));
+  gh.lazySingleton<_i156.FetchAllLocations>(() => _i156.FetchAllLocations(
+      locationRepository: get<_i114.LocationRepository>()));
+  gh.lazySingleton<_i157.GetGroupsStream>(() =>
+      _i157.GetGroupsStream(groupRepository: get<_i110.GroupRepository>()));
+  gh.factory<_i158.UserProfileBloc>(() => _i158.UserProfileBloc(
+        authenticationBloc: get<_i151.AuthenticationBloc>(),
         addUser: get<_i43.AddUser>(),
         assignUserToCompany: get<_i56.AssignUserToCompany>(),
-        resetCompany: get<_i117.ResetCompany>(),
-        getUserById: get<_i105.GetUserById>(),
-        getUserStreamById: get<_i106.GetUserStreamById>(),
-        updateUserData: get<_i137.UpdateUserData>(),
+        resetCompany: get<_i118.ResetCompany>(),
+        getUserById: get<_i106.GetUserById>(),
+        getUserStreamById: get<_i107.GetUserStreamById>(),
+        updateUserData: get<_i138.UpdateUserData>(),
         addUserAvatar: get<_i44.AddUserAvatar>(),
         inputValidator: get<_i8.InputValidator>(),
       ));
-  gh.lazySingleton<_i158.AssetCategoryBloc>(() => _i158.AssetCategoryBloc(
-        userProfileBloc: get<_i157.UserProfileBloc>(),
-        getAssetsCategoriesStream: get<_i90.GetAssetsCategoriesStream>(),
+  gh.lazySingleton<_i159.AssetCategoryBloc>(() => _i159.AssetCategoryBloc(
+        userProfileBloc: get<_i158.UserProfileBloc>(),
+        getAssetsCategoriesStream: get<_i91.GetAssetsCategoriesStream>(),
       ));
-  gh.factory<_i159.AssetManagementBloc>(() => _i159.AssetManagementBloc(
-        userProfileBloc: get<_i157.UserProfileBloc>(),
-        addAsset: get<_i140.AddAsset>(),
+  gh.factory<_i160.AssetManagementBloc>(() => _i160.AssetManagementBloc(
+        userProfileBloc: get<_i158.UserProfileBloc>(),
+        addAsset: get<_i141.AddAsset>(),
         deleteAsset: get<_i74.DeleteAsset>(),
-        updateAsset: get<_i130.UpdateAsset>(),
+        updateAsset: get<_i131.UpdateAsset>(),
       ));
-  gh.factory<_i160.CompanyManagementBloc>(() => _i160.CompanyManagementBloc(
-        userProfileBloc: get<_i157.UserProfileBloc>(),
+  gh.factory<_i161.CompanyManagementBloc>(() => _i161.CompanyManagementBloc(
+        userProfileBloc: get<_i158.UserProfileBloc>(),
         inputValidator: get<_i8.InputValidator>(),
-        addCompany: get<_i144.AddCompany>(),
+        addCompany: get<_i145.AddCompany>(),
         fetchAllCompanies: get<_i85.FetchAllCompanies>(),
-        addCompanyLogo: get<_i145.AddCompanyLogo>(),
-        updateCompany: get<_i134.UpdateCompany>(),
+        addCompanyLogo: get<_i146.AddCompanyLogo>(),
+        updateCompany: get<_i135.UpdateCompany>(),
       ));
-  gh.factory<_i161.CompanyProfileBloc>(() => _i161.CompanyProfileBloc(
-        userProfileBloc: get<_i157.UserProfileBloc>(),
+  gh.factory<_i162.CompanyProfileBloc>(() => _i162.CompanyProfileBloc(
+        userProfileBloc: get<_i158.UserProfileBloc>(),
         fetchAllCompanyUsers: get<_i86.FetchAllCompanyUsers>(),
-        getCompanyById: get<_i93.GetCompanyById>(),
+        getCompanyById: get<_i94.GetCompanyById>(),
         inputValidator: get<_i8.InputValidator>(),
       ));
-  gh.lazySingleton<_i162.GroupBloc>(() => _i162.GroupBloc(
-        companyProfileBloc: get<_i161.CompanyProfileBloc>(),
-        addGroup: get<_i146.AddGroup>(),
-        updateGroup: get<_i135.UpdateGroup>(),
-        deleteGroup: get<_i153.DeleteGroup>(),
-        getGroupsStream: get<_i156.GetGroupsStream>(),
-        cacheGroups: get<_i151.CacheGroups>(),
-        tryToGetCachedGroups: get<_i124.TryToGetCachedGroups>(),
+  gh.lazySingleton<_i163.GroupBloc>(() => _i163.GroupBloc(
+        companyProfileBloc: get<_i162.CompanyProfileBloc>(),
+        addGroup: get<_i147.AddGroup>(),
+        updateGroup: get<_i136.UpdateGroup>(),
+        deleteGroup: get<_i154.DeleteGroup>(),
+        getGroupsStream: get<_i157.GetGroupsStream>(),
+        cacheGroups: get<_i152.CacheGroups>(),
+        tryToGetCachedGroups: get<_i125.TryToGetCachedGroups>(),
       ));
-  gh.lazySingleton<_i163.InstructionCategoryBloc>(
-      () => _i163.InstructionCategoryBloc(
-            userProfileBloc: get<_i157.UserProfileBloc>(),
+  gh.lazySingleton<_i164.InstructionCategoryBloc>(
+      () => _i164.InstructionCategoryBloc(
+            userProfileBloc: get<_i158.UserProfileBloc>(),
             getInstructionsCategoriesStream:
-                get<_i98.GetInstructionsCategoriesStream>(),
+                get<_i99.GetInstructionsCategoriesStream>(),
           ));
-  gh.factory<_i164.InstructionCategoryManagementBloc>(
-      () => _i164.InstructionCategoryManagementBloc(
-            companyProfileBloc: get<_i161.CompanyProfileBloc>(),
+  gh.factory<_i165.InstructionCategoryManagementBloc>(
+      () => _i165.InstructionCategoryManagementBloc(
+            companyProfileBloc: get<_i162.CompanyProfileBloc>(),
             addInstructionCategory: get<_i38.AddInstructionCategory>(),
             updateInstructionCategory: get<_i26.UpdateInstructionCategory>(),
             deleteInstructionCategory: get<_i79.DeleteInstructionCategory>(),
           ));
-  gh.factory<_i165.InstructionManagementBloc>(
-      () => _i165.InstructionManagementBloc(
-            companyProfileBloc: get<_i161.CompanyProfileBloc>(),
+  gh.factory<_i166.InstructionManagementBloc>(
+      () => _i166.InstructionManagementBloc(
+            companyProfileBloc: get<_i162.CompanyProfileBloc>(),
             addInstruction: get<_i37.AddInstruction>(),
             deleteInstruction: get<_i78.DeleteInstruction>(),
             updateInstruction: get<_i25.UpdateInstruction>(),
           ));
-  gh.factory<_i166.ItemActionManagementBloc>(
-      () => _i166.ItemActionManagementBloc(
-            companyProfileBloc: get<_i161.CompanyProfileBloc>(),
+  gh.factory<_i167.ItemActionManagementBloc>(
+      () => _i167.ItemActionManagementBloc(
+            companyProfileBloc: get<_i162.CompanyProfileBloc>(),
             addItemAction: get<_i40.AddItemAction>(),
             updateItemAction: get<_i28.UpdateItemAction>(),
             deleteItemAction: get<_i81.DeleteItemAction>(),
             moveItemAction: get<_i22.MoveItemAction>(),
           ));
-  gh.lazySingleton<_i167.ItemCategoryBloc>(() => _i167.ItemCategoryBloc(
-        userProfileBloc: get<_i157.UserProfileBloc>(),
-        getItemsCategoriesStream: get<_i101.GetItemsCategoriesStream>(),
+  gh.lazySingleton<_i168.ItemCategoryBloc>(() => _i168.ItemCategoryBloc(
+        userProfileBloc: get<_i158.UserProfileBloc>(),
+        getItemsCategoriesStream: get<_i102.GetItemsCategoriesStream>(),
       ));
-  gh.factory<_i168.ItemCategoryManagementBloc>(
-      () => _i168.ItemCategoryManagementBloc(
-            companyProfileBloc: get<_i161.CompanyProfileBloc>(),
+  gh.factory<_i169.ItemCategoryManagementBloc>(
+      () => _i169.ItemCategoryManagementBloc(
+            companyProfileBloc: get<_i162.CompanyProfileBloc>(),
             addItemCategory: get<_i41.AddItemCategory>(),
             updateItemCategory: get<_i29.UpdateItemCategory>(),
             deleteItemCategory: get<_i82.DeleteItemCategory>(),
           ));
-  gh.factory<_i169.ItemsManagementBloc>(() => _i169.ItemsManagementBloc(
+  gh.factory<_i170.ItemsManagementBloc>(() => _i170.ItemsManagementBloc(
         addItemPhoto: get<_i42.AddItemPhoto>(),
         deleteItemPhoto: get<_i83.DeleteItemPhoto>(),
         updateItemPhoto: get<_i30.UpdateItemPhoto>(),
-        companyProfileBloc: get<_i161.CompanyProfileBloc>(),
+        companyProfileBloc: get<_i162.CompanyProfileBloc>(),
         addItem: get<_i39.AddItem>(),
         deleteItem: get<_i80.DeleteItem>(),
         updateItem: get<_i27.UpdateItem>(),
       ));
-  gh.lazySingleton<_i170.LocationBloc>(() => _i170.LocationBloc(
-        companyProfileBloc: get<_i161.CompanyProfileBloc>(),
-        addLocation: get<_i147.AddLocation>(),
-        cacheLocation: get<_i152.CacheLocation>(),
-        deleteLocation: get<_i154.DeleteLocation>(),
-        fetchAllLocations: get<_i155.FetchAllLocations>(),
-        tryToGetCachedLocation: get<_i125.TryToGetCachedLocation>(),
-        updateLocation: get<_i136.UpdateLocation>(),
+  gh.lazySingleton<_i171.LocationBloc>(() => _i171.LocationBloc(
+        companyProfileBloc: get<_i162.CompanyProfileBloc>(),
+        addLocation: get<_i148.AddLocation>(),
+        cacheLocation: get<_i153.CacheLocation>(),
+        deleteLocation: get<_i155.DeleteLocation>(),
+        fetchAllLocations: get<_i156.FetchAllLocations>(),
+        tryToGetCachedLocation: get<_i126.TryToGetCachedLocation>(),
+        updateLocation: get<_i137.UpdateLocation>(),
       ));
-  gh.factory<_i171.NewUsersBloc>(() => _i171.NewUsersBloc(
-        get<_i161.CompanyProfileBloc>(),
+  gh.factory<_i172.NewUsersBloc>(() => _i172.NewUsersBloc(
+        get<_i162.CompanyProfileBloc>(),
         get<_i87.FetchNewUsers>(),
       ));
-  gh.factory<_i172.SuspendedUsersBloc>(() => _i172.SuspendedUsersBloc(
-        get<_i161.CompanyProfileBloc>(),
+  gh.factory<_i173.SuspendedUsersBloc>(() => _i173.SuspendedUsersBloc(
+        get<_i162.CompanyProfileBloc>(),
         get<_i88.FetchSuspendedUsers>(),
       ));
-  gh.factory<_i173.WorkOrderManagementBloc>(() => _i173.WorkOrderManagementBloc(
-        companyProfileBloc: get<_i161.CompanyProfileBloc>(),
+  gh.factory<_i174.WorkOrderManagementBloc>(() => _i174.WorkOrderManagementBloc(
+        companyProfileBloc: get<_i162.CompanyProfileBloc>(),
         addWorkOrder: get<_i45.AddWorkOrder>(),
         deleteWorkOrder: get<_i84.DeleteWorkOrder>(),
-        updateWorkOrder: get<_i138.UpdateWorkOrder>(),
+        updateWorkOrder: get<_i139.UpdateWorkOrder>(),
         cancelWorkOrder: get<_i61.CancelWorkOrder>(),
       ));
-  gh.factory<_i174.AssetActionManagementBloc>(
-      () => _i174.AssetActionManagementBloc(
-            companyProfileBloc: get<_i161.CompanyProfileBloc>(),
-            addAssetAction: get<_i141.AddAssetAction>(),
-            updateAssetAction: get<_i131.UpdateAssetAction>(),
+  gh.factory<_i175.AssetActionManagementBloc>(
+      () => _i175.AssetActionManagementBloc(
+            companyProfileBloc: get<_i162.CompanyProfileBloc>(),
+            addAssetAction: get<_i142.AddAssetAction>(),
+            updateAssetAction: get<_i132.UpdateAssetAction>(),
             deleteAssetAction: get<_i75.DeleteAssetAction>(),
           ));
-  gh.factory<_i175.AssetCategoryManagementBloc>(
-      () => _i175.AssetCategoryManagementBloc(
-            companyProfileBloc: get<_i161.CompanyProfileBloc>(),
-            addAssetCategory: get<_i142.AddAssetCategory>(),
-            updateAssetCategory: get<_i132.UpdateAssetCategory>(),
+  gh.factory<_i176.AssetCategoryManagementBloc>(
+      () => _i176.AssetCategoryManagementBloc(
+            companyProfileBloc: get<_i162.CompanyProfileBloc>(),
+            addAssetCategory: get<_i143.AddAssetCategory>(),
+            updateAssetCategory: get<_i133.UpdateAssetCategory>(),
             deleteAssetCategory: get<_i76.DeleteAssetCategory>(),
           ));
-  gh.lazySingleton<_i176.ChecklistBloc>(() => _i176.ChecklistBloc(
-        companyProfileBloc: get<_i161.CompanyProfileBloc>(),
-        getChecklistsStream: get<_i92.GetChecklistStream>(),
+  gh.lazySingleton<_i177.ChecklistBloc>(() => _i177.ChecklistBloc(
+        companyProfileBloc: get<_i162.CompanyProfileBloc>(),
+        getChecklistsStream: get<_i93.GetChecklistStream>(),
       ));
-  gh.factory<_i177.ChecklistManagementBloc>(() => _i177.ChecklistManagementBloc(
-        companyProfileBloc: get<_i161.CompanyProfileBloc>(),
-        addChecklist: get<_i143.AddChecklist>(),
-        updateChecklist: get<_i133.UpdateChecklist>(),
+  gh.factory<_i178.ChecklistManagementBloc>(() => _i178.ChecklistManagementBloc(
+        companyProfileBloc: get<_i162.CompanyProfileBloc>(),
+        addChecklist: get<_i144.AddChecklist>(),
+        updateChecklist: get<_i134.UpdateChecklist>(),
         deleteChecklist: get<_i77.DeleteChecklist>(),
       ));
-  gh.factory<_i178.FilterBloc>(() => _i178.FilterBloc(
-        locationBloc: get<_i170.LocationBloc>(),
-        groupBloc: get<_i162.GroupBloc>(),
-        userProfileBloc: get<_i157.UserProfileBloc>(),
+  gh.factory<_i179.FilterBloc>(() => _i179.FilterBloc(
+        locationBloc: get<_i171.LocationBloc>(),
+        groupBloc: get<_i163.GroupBloc>(),
+        userProfileBloc: get<_i158.UserProfileBloc>(),
       ));
-  gh.factory<_i179.InstructionBloc>(() => _i179.InstructionBloc(
-        filterBloc: get<_i178.FilterBloc>(),
-        getInstructionsStream: get<_i99.GetInstructionsStream>(),
+  gh.factory<_i180.InstructionBloc>(() => _i180.InstructionBloc(
+        filterBloc: get<_i179.FilterBloc>(),
+        getInstructionsStream: get<_i100.GetInstructionsStream>(),
       ));
-  gh.factory<_i180.ItemsBloc>(() => _i180.ItemsBloc(
-        filterBloc: get<_i178.FilterBloc>(),
-        getChecklistsStream: get<_i102.GetItemsStream>(),
+  gh.factory<_i181.ItemsBloc>(() => _i181.ItemsBloc(
+        filterBloc: get<_i179.FilterBloc>(),
+        getChecklistsStream: get<_i103.GetItemsStream>(),
       ));
-  gh.factory<_i181.WorkOrderBloc>(() => _i181.WorkOrderBloc(
-        filterBloc: get<_i178.FilterBloc>(),
-        getWorkOrdersStream: get<_i107.GetWorkOrdersStream>(),
+  gh.factory<_i182.WorkOrderArchiveBloc>(() => _i182.WorkOrderArchiveBloc(
+        filterBloc: get<_i179.FilterBloc>(),
+        getArchiveWorkOrdersStream: get<_i89.GetArchiveWorkOrdersStream>(),
       ));
-  gh.factory<_i182.AssetBloc>(() => _i182.AssetBloc(
-        filterBloc: get<_i178.FilterBloc>(),
-        getAssetsStream: get<_i91.GetAssetsStream>(),
+  gh.factory<_i183.WorkOrderBloc>(() => _i183.WorkOrderBloc(
+        filterBloc: get<_i179.FilterBloc>(),
+        getWorkOrdersStream: get<_i108.GetWorkOrdersStream>(),
       ));
-  gh.factory<_i183.DashboardAssetActionBloc>(
-      () => _i183.DashboardAssetActionBloc(
-            filterBloc: get<_i178.FilterBloc>(),
+  gh.factory<_i184.AssetBloc>(() => _i184.AssetBloc(
+        filterBloc: get<_i179.FilterBloc>(),
+        getAssetsStream: get<_i92.GetAssetsStream>(),
+      ));
+  gh.factory<_i185.DashboardAssetActionBloc>(
+      () => _i185.DashboardAssetActionBloc(
+            filterBloc: get<_i179.FilterBloc>(),
             getDashboardAssetActionsStream:
-                get<_i94.GetDashboardAssetActionsStream>(),
+                get<_i95.GetDashboardAssetActionsStream>(),
             getDashboardLastFiveAssetActionsStream:
-                get<_i96.GetDashboardLastFiveAssetActionsStream>(),
+                get<_i97.GetDashboardLastFiveAssetActionsStream>(),
           ));
-  gh.factory<_i184.DashboardItemActionBloc>(() => _i184.DashboardItemActionBloc(
-        filterBloc: get<_i178.FilterBloc>(),
+  gh.factory<_i186.DashboardItemActionBloc>(() => _i186.DashboardItemActionBloc(
+        filterBloc: get<_i179.FilterBloc>(),
         getDashboardItemsActionsStream:
-            get<_i95.GetDashboardItemsActionsStream>(),
+            get<_i96.GetDashboardItemsActionsStream>(),
         getDashboardLastFiveItemsActionsStream:
-            get<_i97.GetDashboardLastFiveItemsActionsStream>(),
+            get<_i98.GetDashboardLastFiveItemsActionsStream>(),
       ));
   return get;
 }
 
-class _$DataConnectionCheckerModule extends _i185.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i187.DataConnectionCheckerModule {}
 
 class _$FirebaseAuthenticationService
-    extends _i185.FirebaseAuthenticationService {}
+    extends _i187.FirebaseAuthenticationService {}
 
-class _$FirebaseFirestoreService extends _i186.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i188.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i186.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i188.FirebaseStorageService {}
 
-class _$SharedPreferencesService extends _i186.SharedPreferencesService {}
+class _$SharedPreferencesService extends _i188.SharedPreferencesService {}

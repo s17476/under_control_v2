@@ -1965,6 +1965,10 @@
     "@work_order_type": {
       "description": "work order type"
     },
+    "work_order_archive": "Work order archive",
+    "@work_order_archive": {
+      "description": "work order archive"
+    },
     "work_order_convert": "Convert to task",
     "@work_order_convert": {
       "description": "work order convert"

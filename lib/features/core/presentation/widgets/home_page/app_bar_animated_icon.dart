@@ -26,6 +26,7 @@ import '../../../../knowledge_base/presentation/blocs/instruction_category_manag
 import '../../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_order/work_order_bloc.dart';
+import '../../../../tasks/presentation/blocs/work_order_archive/work_order_archive_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_order_management/work_order_management_bloc.dart';
 import '../../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 
@@ -302,6 +303,15 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
         BlocListener<WorkOrderManagementBloc, WorkOrderManagementState>(
           listener: (context, state) {
             if (state is WorkOrderManagementLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<WorkOrderArchiveBloc, WorkOrderArchiveState>(
+          listener: (context, state) {
+            if (state is WorkOrderLoadingState) {
               _startAnimation();
             } else {
               _stopAnimation();
