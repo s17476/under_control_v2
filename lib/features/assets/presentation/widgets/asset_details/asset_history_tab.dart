@@ -47,7 +47,7 @@ class _AssetHistoryTabState extends State<AssetHistoryTab> {
           if (state is AssetActionLoadedState) {
             List<AssetAction> actions = [];
             if (state.allActions.allAssetActions.length > 5) {
-              actions = state.allActions.allAssetActions.sublist(0, 4);
+              actions = state.allActions.allAssetActions.sublist(0, 5);
             } else {
               actions = state.allActions.allAssetActions;
             }

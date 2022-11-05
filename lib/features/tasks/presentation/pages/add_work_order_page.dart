@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/data/models/asset_action/asset_action_model.dart';
+import 'package:under_control_v2/features/assets/domain/entities/asset_action/asset_action.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/set_asset_status_card.dart';
 
@@ -109,6 +111,7 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         priority: TaskPriority.fromString(_priority),
         count: _workOrder != null ? _workOrder!.count : 0,
         taskId: '',
+        assetStatus: AssetStatus.fromString(_assetStatus),
         cancelled: false,
       );
 
@@ -261,6 +264,7 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
       _priority = _workOrder!.priority.name;
       _date = _workOrder!.date;
       _assetId = _workOrder!.assetId;
+      _assetStatus = _workOrder!.assetStatus.name;
     }
 
     super.didChangeDependencies();
@@ -312,7 +316,9 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
       KeepAlivePage(
         child: AddVideoCard(
           videoFile: _videoFile,
-          videoUrl: _workOrder?.video,
+          videoUrl: (_workOrder != null && _workOrder!.video.isNotEmpty)
+              ? _workOrder!.video
+              : null,
           updateVideo: _setVideo,
         ),
       ),

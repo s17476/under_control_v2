@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/assets/data/models/asset_action/asset_action_model.dart';
+import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -93,6 +95,57 @@ class WorkOrdersRepositoryImpl extends WorkOrdersRepository {
       final workOrderMap = updatedWorkOrder.toMap();
 
       batch.set(workOrderReference, workOrderMap);
+
+      //
+      //
+      if (params.workOrder.assetId.isNotEmpty) {
+        // asset
+        final assetReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('assets')
+            .doc(params.workOrder.assetId);
+
+        final assetSnapshot = await assetReference.get();
+        final asset = AssetModel.fromMap(
+          assetSnapshot.data() as Map<String, dynamic>,
+          assetSnapshot.id,
+        );
+        final updatedModel = asset.copyWith(
+          currentStatus: params.workOrder.assetStatus,
+        );
+        final assetMap = updatedModel.toMap();
+
+        // action
+        final actionsReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('assetsActions');
+
+        final assetAction = AssetActionModel(
+          id: '',
+          assetId: params.workOrder.assetId,
+          dateTime: params.workOrder.date,
+          userId: params.workOrder.userId,
+          locationId: params.workOrder.locationId,
+          isAssetInUse: asset.isInUse,
+          isCreate: false,
+          assetStatus: params.workOrder.assetStatus,
+          connectedTask: '',
+          connectedWorkOrder: workOrderReference.id,
+        );
+        final actionMap = assetAction.toMap();
+
+        // get action reference
+        final actionReference = await actionsReference.add({'name': ''});
+
+        // add action
+        batch.set(actionReference, actionMap);
+        // update item
+        batch.update(assetReference, assetMap);
+      }
+      //
+      //
 
       batch.commit();
 
@@ -270,6 +323,55 @@ class WorkOrdersRepositoryImpl extends WorkOrdersRepository {
         workOrderMap,
       );
 
+      //
+      if (params.workOrder.assetId.isNotEmpty) {
+        // asset
+        final assetReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('assets')
+            .doc(params.workOrder.assetId);
+
+        final assetSnapshot = await assetReference.get();
+        final asset = AssetModel.fromMap(
+          assetSnapshot.data() as Map<String, dynamic>,
+          assetSnapshot.id,
+        );
+        final updatedModel = asset.copyWith(
+          currentStatus: params.workOrder.assetStatus,
+        );
+        final assetMap = updatedModel.toMap();
+
+        // action
+        final actionsReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('assetsActions');
+
+        final assetAction = AssetActionModel(
+          id: '',
+          assetId: params.workOrder.assetId,
+          dateTime: params.workOrder.date,
+          userId: params.workOrder.userId,
+          locationId: params.workOrder.locationId,
+          isAssetInUse: asset.isInUse,
+          isCreate: false,
+          assetStatus: params.workOrder.assetStatus,
+          connectedTask: '',
+          connectedWorkOrder: workOrderReference.id,
+        );
+        final actionMap = assetAction.toMap();
+
+        // get action reference
+        final actionReference = await actionsReference.add({'name': ''});
+
+        // add action
+        batch.set(actionReference, actionMap);
+        // update item
+        batch.update(assetReference, assetMap);
+      }
+      //
+
       batch.commit();
 
       return Right(VoidResult());
@@ -315,6 +417,55 @@ class WorkOrdersRepositoryImpl extends WorkOrdersRepository {
       );
 
       batch.delete(workOrderReference);
+
+      //
+      if (params.workOrder.assetId.isNotEmpty) {
+        // asset
+        final assetReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('assets')
+            .doc(params.workOrder.assetId);
+
+        final assetSnapshot = await assetReference.get();
+        final asset = AssetModel.fromMap(
+          assetSnapshot.data() as Map<String, dynamic>,
+          assetSnapshot.id,
+        );
+        final updatedModel = asset.copyWith(
+          currentStatus: params.workOrder.assetStatus,
+        );
+        final assetMap = updatedModel.toMap();
+
+        // action
+        final actionsReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('assetsActions');
+
+        final assetAction = AssetActionModel(
+          id: '',
+          assetId: params.workOrder.assetId,
+          dateTime: DateTime.now(),
+          userId: params.workOrder.userId,
+          locationId: params.workOrder.locationId,
+          isAssetInUse: asset.isInUse,
+          isCreate: false,
+          assetStatus: params.workOrder.assetStatus,
+          connectedTask: '',
+          connectedWorkOrder: workOrderReference.id,
+        );
+        final actionMap = assetAction.toMap();
+
+        // get action reference
+        final actionReference = await actionsReference.add({'name': ''});
+
+        // add action
+        batch.set(actionReference, actionMap);
+        // update item
+        batch.update(assetReference, assetMap);
+      }
+      //
 
       batch.commit();
 

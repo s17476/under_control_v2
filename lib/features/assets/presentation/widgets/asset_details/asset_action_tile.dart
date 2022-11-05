@@ -5,6 +5,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/cached_user_avatar.dart';
+import '../../../../tasks/presentation/blocs/work_order/work_order_bloc.dart';
+import '../../../../tasks/presentation/blocs/work_order_archive/work_order_archive_bloc.dart';
+import '../../../../tasks/presentation/pages/work_order_details_page.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../domain/entities/asset_action/asset_action.dart';
 import '../../../utils/get_asset_status_icon.dart';
@@ -52,7 +55,15 @@ class AssetActionTile extends StatelessWidget {
                         arguments: action.assetId,
                       );
                     }
-                  : () {},
+                  : action.connectedWorkOrder.isNotEmpty
+                      ? () {
+                          Navigator.pushNamed(
+                            context,
+                            WorkOrderDetailsPage.routeName,
+                            arguments: action.connectedWorkOrder,
+                          );
+                        }
+                      : () {},
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 padding: const EdgeInsets.only(
@@ -105,8 +116,47 @@ class AssetActionTile extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(action.connectedTask),
                       ),
+                    // connected work order
+                    if (action.connectedWorkOrder.isNotEmpty)
+                      BlocBuilder<WorkOrderBloc, WorkOrderState>(
+                        builder: (context, state) {
+                          if (state is WorkOrderLoadedState) {
+                            final workOrder = state
+                                .getWorkOrderById(action.connectedWorkOrder);
+                            if (workOrder != null) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.work_order} #${workOrder.count}',
+                                ),
+                              );
+                            }
+                          }
+                          return const SizedBox();
+                        },
+                      ),
+                    // connected work order from archive
+                    if (action.connectedWorkOrder.isNotEmpty)
+                      BlocBuilder<WorkOrderArchiveBloc, WorkOrderArchiveState>(
+                        builder: (context, state) {
+                          if (state is WorkOrderArchiveLoadedState) {
+                            final workOrder = state
+                                .getWorkOrderById(action.connectedWorkOrder);
+                            if (workOrder != null) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.work_order} #${workOrder.count}',
+                                ),
+                              );
+                            }
+                          }
+                          return const SizedBox();
+                        },
+                      ),
                     // add/edit action
-                    if (action.connectedTask.isEmpty)
+                    if (action.connectedTask.isEmpty &&
+                        action.connectedWorkOrder.isEmpty)
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(

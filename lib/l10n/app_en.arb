@@ -1969,6 +1969,10 @@
     "@asset_details": {
       "description": "asset - details"
     },
+    "work_order": "Work order",
+    "@work_order": {
+      "description": "work order"
+    },
     "work_orders": "Work orders",
     "@work_orders": {
       "description": "work orders"

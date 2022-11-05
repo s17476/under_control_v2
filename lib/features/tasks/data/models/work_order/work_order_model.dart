@@ -70,8 +70,8 @@ class WorkOrderModel extends WorkOrder {
     result.addAll({'priority': priority.name});
     result.addAll({'count': count});
     result.addAll({'taskId': taskId});
-    result.addAll({'assetStatus': assetStatus});
-    result.addAll({'canceled': cancelled});
+    result.addAll({'assetStatus': assetStatus.name});
+    result.addAll({'cancelled': cancelled});
 
     return result;
   }
