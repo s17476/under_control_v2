@@ -1765,7 +1765,7 @@
     "@asset_status_working_requires_attention": {
       "description": "Asset status"
     },
-    "asset_status_working_requires_attention_comment": "The asset is still working, but not working as usual. Intervention is necessary.",
+    "asset_status_working_requires_attention_comment": "The asset is in use, but not working as usual. Intervention is necessary.",
     "@asset_status_working_requires_attention": {
       "description": "Asset status"
     },

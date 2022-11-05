@@ -76,6 +76,10 @@ class _AddWorkOrderPageState extends State<AddWorkOrderPage> {
         errorMessage =
             AppLocalizations.of(context)!.task_connected_asset_select;
       }
+      // asset selection validation
+      if (errorMessage.isEmpty && _isConnectedToAsset && _assetStatus.isEmpty) {
+        errorMessage = AppLocalizations.of(context)!.asset_status_not_selected;
+      }
       // location validation
       if (errorMessage.isEmpty && _locationId.isEmpty) {
         errorMessage =
