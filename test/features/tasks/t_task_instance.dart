@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
+import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/core/utils/duration_unit.dart';
 import 'package:under_control_v2/features/tasks/data/models/task_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
@@ -96,3 +97,5 @@ final tTaskModelFromMap = {
   'assignedGroups': const [],
   'assignedUsers': const [],
 };
+
+final tTaskParams = TaskParams(task: tTaskModel, companyId: 'companyId');

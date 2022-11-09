@@ -4,6 +4,8 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
+import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart'
+    as customTask;
 
 import '../../assets/data/models/asset_model.dart';
 import '../../assets/domain/entities/asset.dart';
@@ -207,6 +209,23 @@ class WorkOrderParams extends Equatable {
 
   @override
   List<Object> get props => [workOrder, companyId];
+}
+
+class TaskParams extends Equatable {
+  final customTask.Task task;
+  final List<File>? images;
+  final File? video;
+  final String companyId;
+
+  const TaskParams({
+    required this.task,
+    this.images,
+    this.video,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [task, companyId];
 }
 
 class CodeParams extends Equatable {

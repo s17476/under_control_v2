@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../assets/utils/asset_status.dart';
-import '../../../core/utils/duration_unit.dart';
-import 'task_priority.dart';
-import 'task_type.dart';
+import '../../../../assets/utils/asset_status.dart';
+import '../../../../core/utils/duration_unit.dart';
+import '../task_priority.dart';
+import '../task_type.dart';
 
 class Task extends Equatable {
   final String id;

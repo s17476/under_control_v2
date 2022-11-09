@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:under_control_v2/features/tasks/data/models/task_model.dart';
-import 'package:under_control_v2/features/tasks/domain/entities/task.dart';
+import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
 
 import '../../../t_task_instance.dart';
 
