@@ -51,7 +51,7 @@ class WorkOrderArchiveBloc
                 state.getAvailableLocations.map((loc) => loc.id).toList();
           }
 
-          // add(GetWorkOrdersArchiveStreamEvent());
+          add(GetWorkOrdersArchiveStreamEvent());
         }
       },
     );

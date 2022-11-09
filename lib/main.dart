@@ -130,10 +130,6 @@ class App extends StatelessWidget
         ),
         BlocProvider(create: (context) => getIt<NewUsersBloc>()),
         BlocProvider(create: (context) => getIt<SuspendedUsersBloc>()),
-        BlocProvider(
-          create: (context) => getIt<FilterBloc>(),
-          lazy: false,
-        ),
         BlocProvider(create: (context) => getIt<ChecklistBloc>()),
         BlocProvider(
           create: (context) => getIt<ChecklistManagementBloc>(),
@@ -208,6 +204,10 @@ class App extends StatelessWidget
         ),
         BlocProvider(
           create: (context) => getIt<WorkOrderArchiveBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<FilterBloc>(),
+          lazy: false,
         ),
       ],
       child: MaterialApp(

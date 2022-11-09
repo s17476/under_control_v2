@@ -115,6 +115,19 @@ class _WorkOrderInfoTabState extends State<WorkOrderInfoTab> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      if (widget.workOrder.cancelled)
+                        Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            AppLocalizations.of(context)!.cancelled,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).highlightColor,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       // title
                       Text(
                         widget.workOrder.title,

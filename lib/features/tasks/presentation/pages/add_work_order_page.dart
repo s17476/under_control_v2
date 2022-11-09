@@ -3,13 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/data/models/asset_action/asset_action_model.dart';
-import 'package:under_control_v2/features/assets/domain/entities/asset_action/asset_action.dart';
-import 'package:under_control_v2/features/assets/utils/asset_status.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/set_asset_status_card.dart';
 
 import '../../../assets/presentation/widgets/add_asset_images_card.dart';
 import '../../../assets/presentation/widgets/add_asset_location_card.dart';
+import '../../../assets/utils/asset_status.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -25,6 +22,7 @@ import '../widgets/add_video_card.dart';
 import '../widgets/add_work_order/add_work_order_card.dart';
 import '../widgets/add_work_order/add_work_order_set_asset_card.dart';
 import '../widgets/add_work_order/add_work_order_summary_card.dart';
+import '../widgets/set_asset_status_card.dart';
 import '../widgets/set_priority_card.dart';
 
 class AddWorkOrderPage extends StatefulWidget {

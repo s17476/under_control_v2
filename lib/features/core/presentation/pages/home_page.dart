@@ -460,7 +460,9 @@ class _HomePageState extends State<HomePage>
                                   isSortedByCategory: false,
                                 ),
                               ),
-                              const KeepAlivePage(child: DashboardPage()),
+                              const KeepAlivePage(
+                                child: DashboardPage(),
+                              ),
                               KeepAlivePage(
                                 child: AssetsPage(
                                   searchBoxHeight: _searchBoxHeight,
