@@ -44,4 +44,10 @@ abstract class TaskRepository {
   ///Returns [VoidResult] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, VoidResult>> cancelTask(TaskParams params);
+
+  ///Complete task and move it to tasks archive.
+  ///
+  ///Returns [VoidResult] if operation is successful.
+  ///Returns [Failure] if operation is unsuccessful.
+  Future<Either<Failure, VoidResult>> completeTask(TaskParams params);
 }

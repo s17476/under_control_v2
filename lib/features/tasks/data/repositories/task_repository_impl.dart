@@ -233,7 +233,7 @@ class TaskRepositoryImpl extends TaskRepository {
       querySnapshot = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('workOrdersArchive')
+          .collection('tasksArchive')
           .where('locationId', whereIn: params.locations)
           .snapshots();
 
@@ -400,6 +400,99 @@ class TaskRepositoryImpl extends TaskRepository {
       // update task
       final updatedTask = TaskModel.fromTask(params.task).copyWith(
         isCancelled: true,
+      );
+
+      final taskMap = updatedTask.toMap();
+
+      batch.set(
+        taskInArchiveReference,
+        taskMap,
+      );
+
+      batch.delete(taskReference);
+
+      //
+      if (params.task.assetId.isNotEmpty) {
+        // asset
+        final assetReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('assets')
+            .doc(params.task.assetId);
+
+        final assetSnapshot = await assetReference.get();
+        final asset = AssetModel.fromMap(
+          assetSnapshot.data() as Map<String, dynamic>,
+          assetSnapshot.id,
+        );
+        final updatedModel = asset.copyWith(
+          currentStatus: params.task.assetStatus,
+        );
+        final assetMap = updatedModel.toMap();
+
+        // action
+        final actionsReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('assetsActions');
+
+        final assetAction = AssetActionModel(
+          id: '',
+          assetId: params.task.assetId,
+          dateTime: DateTime.now(),
+          userId: params.task.userId,
+          locationId: params.task.locationId,
+          isAssetInUse: asset.isInUse,
+          isCreate: false,
+          assetStatus: params.task.assetStatus,
+          connectedTask: taskReference.id,
+          connectedWorkOrder: '',
+        );
+        final actionMap = assetAction.toMap();
+
+        // get action reference
+        final actionReference = await actionsReference.add({'name': ''});
+
+        // add action
+        batch.set(actionReference, actionMap);
+        // update item
+        batch.update(assetReference, assetMap);
+      }
+      //
+
+      batch.commit();
+
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, VoidResult>> completeTask(TaskParams params) async {
+    try {
+      final taskReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('tasks')
+          .doc(params.task.id);
+
+      final taskInArchiveReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('tasksArchive')
+          .doc(params.task.id);
+
+      // batch
+      final batch = firebaseFirestore.batch();
+
+      // update task
+      final updatedTask = TaskModel.fromTask(params.task).copyWith(
+        isFinished: true,
       );
 
       final taskMap = updatedTask.toMap();
