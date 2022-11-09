@@ -4,13 +4,12 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/tasks/data/models/work_order/work_order_model.dart';
-import 'package:under_control_v2/features/tasks/data/repositories/work_order_repository_impl.dart';
-import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
-import 'package:under_control_v2/features/tasks/domain/entities/work_order/work_orders_stream.dart';
+import 'package:under_control_v2/features/tasks/data/repositories/task_repository_impl.dart';
+import 'package:under_control_v2/features/tasks/domain/entities/task/tasks_stream.dart';
+
+import '../../t_task_instance.dart';
 
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
@@ -19,29 +18,11 @@ void main() {
   late MockFirebaseFirestore badkFirebaseFirestore;
   late MockFirebaseStorage mockFirebaseStorage;
   late CollectionReference mockCollectionReference;
-  late WorkOrdersRepositoryImpl repository;
-  late WorkOrdersRepositoryImpl badRepository;
-  late WorkOrderParams tWorkOrderParams;
+  late TaskRepositoryImpl repository;
+  late TaskRepositoryImpl badRepository;
   late ItemsInLocationsParams tItemsInLocationsParams;
 
   const companyId = 'companyId';
-
-  final tWorkOrderModel = WorkOrderModel(
-    id: 'id',
-    title: 'title',
-    description: 'description',
-    date: DateTime.now(),
-    locationId: 'locationId',
-    userId: 'userId',
-    assetId: 'assetId',
-    images: const [],
-    video: 'video',
-    priority: TaskPriority.low,
-    count: 0,
-    taskId: 'taskId',
-    assetStatus: AssetStatus.ok,
-    cancelled: false,
-  );
 
   setUp(
     () async {
@@ -52,14 +33,15 @@ void main() {
           .doc(companyId)
           .collection('workOrders');
       mockFirebaseStorage = MockFirebaseStorage();
-      repository = WorkOrdersRepositoryImpl(
+      repository = TaskRepositoryImpl(
         firebaseFirestore: fakeFirebaseFirestore,
         firebaseStorage: mockFirebaseStorage,
       );
-      badRepository = WorkOrdersRepositoryImpl(
+      badRepository = TaskRepositoryImpl(
         firebaseFirestore: badkFirebaseFirestore,
         firebaseStorage: mockFirebaseStorage,
       );
+
       await fakeFirebaseFirestore
           .collection('companies')
           .doc(companyId)
@@ -68,15 +50,10 @@ void main() {
           .collection('companies')
           .doc(companyId)
           .collection('assets')
-          .doc(tWorkOrderModel.assetId)
+          .doc(tTaskParams.task.assetId)
           .set({'name': 'name'});
       final documentReference =
-          await mockCollectionReference.add(tWorkOrderModel.toMap());
-
-      tWorkOrderParams = WorkOrderParams(
-        workOrder: tWorkOrderModel.copyWith(id: documentReference.id),
-        companyId: companyId,
-      );
+          await mockCollectionReference.add(tTaskModel.toMap());
 
       tItemsInLocationsParams =
           const ItemsInLocationsParams(locations: [], companyId: companyId);
@@ -84,54 +61,93 @@ void main() {
   );
 
   group(
-    'WorkOrders repository',
+    'Task repository',
     () {
       group('successful DB response', () {
         test(
-          'should return [String] containing work order id when addWorkOrder is called',
+          'should return [String] containing work order id when addTask is called',
           () async {
             // act
-            final result = await repository.addWorkOrder(tWorkOrderParams);
+            final result = await repository.addTask(tTaskParams);
             // assert
             expect(result, isA<Right<Failure, String>>());
           },
         );
         test(
-          'should return [VoidResult]  when cancelWorkOrder is called',
+          'should return [VoidResult]  when cancelTask is called',
           () async {
             // act
-            final result = await repository.cancelWorkOrder(tWorkOrderParams);
+            final result = await repository.cancelTask(tTaskParams);
             // assert
             expect(result, isA<Right<Failure, VoidResult>>());
           },
         );
         test(
-          'should return [WorkOrdersStream] when getWorkOrdersStream is called',
+          'should return [TasksStream] when getTaskStream is called',
           () async {
             // act
             final result =
-                await repository.getWorkOrdersStream(tItemsInLocationsParams);
+                await repository.getTasksStream(tItemsInLocationsParams);
             // assert
-            expect(result, isA<Right<Failure, WorkOrdersStream>>());
+            expect(result, isA<Right<Failure, TasksStream>>());
           },
         );
       });
       group('unsuccessful DB response', () {
         test(
-          'should return [DatabaseFailure] when addWorkOrder is called',
+          'should return [DatabaseFailure] when addTask is called',
           () async {
             // arrange
             when(() => badkFirebaseFirestore.collection(any())).thenThrow(
               FirebaseException(plugin: 'Bad Firebase'),
             );
             // act
-            final result = await badRepository.addWorkOrder(tWorkOrderParams);
+            final result = await badRepository.addTask(tTaskParams);
             // assert
             expect(result, isA<Left<Failure, String>>());
           },
         );
         test(
-          'should return [DatabaseFailure] when updateWorkOrder is called',
+          'should return [DatabaseFailure] when updateTask is called',
+          () async {
+            // arrange
+            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+              FirebaseException(plugin: 'Bad Firebase'),
+            );
+            // act
+            final result = await badRepository.updateTask(tTaskParams);
+            // assert
+            expect(result, isA<Left<Failure, VoidResult>>());
+          },
+        );
+        test(
+          'should return [DatabaseFailure] when deleteTask is called',
+          () async {
+            // arrange
+            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+              FirebaseException(plugin: 'Bad Firebase'),
+            );
+            // act
+            final result = await badRepository.deleteTask(tTaskParams);
+            // assert
+            expect(result, isA<Left<Failure, VoidResult>>());
+          },
+        );
+        test(
+          'should return [DatabaseFailure] when cancelTask is called',
+          () async {
+            // arrange
+            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+              FirebaseException(plugin: 'Bad Firebase'),
+            );
+            // act
+            final result = await badRepository.cancelTask(tTaskParams);
+            // assert
+            expect(result, isA<Left<Failure, VoidResult>>());
+          },
+        );
+        test(
+          'should return [DatabaseFailure] when getTasksStream is called',
           () async {
             // arrange
             when(() => badkFirebaseFirestore.collection(any())).thenThrow(
@@ -139,70 +155,67 @@ void main() {
             );
             // act
             final result =
-                await badRepository.updateWorkOrder(tWorkOrderParams);
+                await badRepository.getTasksStream(tItemsInLocationsParams);
             // assert
-            expect(result, isA<Left<Failure, VoidResult>>());
-          },
-        );
-        test(
-          'should return [DatabaseFailure] when deleteWorkOrder is called',
-          () async {
-            // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
-              FirebaseException(plugin: 'Bad Firebase'),
-            );
-            // act
-            final result =
-                await badRepository.deleteWorkOrder(tWorkOrderParams);
-            // assert
-            expect(result, isA<Left<Failure, VoidResult>>());
-          },
-        );
-        test(
-          'should return [DatabaseFailure] when cancelWorkOrder is called',
-          () async {
-            // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
-              FirebaseException(plugin: 'Bad Firebase'),
-            );
-            // act
-            final result =
-                await badRepository.cancelWorkOrder(tWorkOrderParams);
-            // assert
-            expect(result, isA<Left<Failure, VoidResult>>());
-          },
-        );
-        test(
-          'should return [DatabaseFailure] when getWorkOrdersStream is called',
-          () async {
-            // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
-              FirebaseException(plugin: 'Bad Firebase'),
-            );
-            // act
-            final result = await badRepository
-                .getWorkOrdersStream(tItemsInLocationsParams);
-            // assert
-            expect(result, isA<Left<Failure, WorkOrdersStream>>());
+            expect(result, isA<Left<Failure, TasksStream>>());
           },
         );
       });
       group('unsuspected error', () {
         test(
-          'should return [UnsuspectedFailure]  when addWorkOrder is called',
+          'should return [UnsuspectedFailure]  when addTask is called',
           () async {
             // arrange
             when(() => badkFirebaseFirestore.collection(any())).thenThrow(
               Exception(),
             );
             // act
-            final result = await badRepository.addWorkOrder(tWorkOrderParams);
+            final result = await badRepository.addTask(tTaskParams);
             // assert
             expect(result, isA<Left<Failure, String>>());
           },
         );
         test(
-          'should return [UnsuspectedFailure] when updateWorkOrder is called',
+          'should return [UnsuspectedFailure] when updateTask is called',
+          () async {
+            // arrange
+            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+              Exception(),
+            );
+            // act
+            final result = await badRepository.updateTask(tTaskParams);
+            // assert
+            expect(result, isA<Left<Failure, VoidResult>>());
+          },
+        );
+        test(
+          'should return [UnsuspectedFailure] when deleteTask is called',
+          () async {
+            // arrange
+            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+              Exception(),
+            );
+            // act
+            final result = await badRepository.deleteTask(tTaskParams);
+            // assert
+            expect(result, isA<Left<Failure, VoidResult>>());
+          },
+        );
+        test(
+          'should return [UnsuspectedFailure] when cancelTask is called',
+          () async {
+            // arrange
+            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
+              Exception(),
+            );
+            // act
+            final result = await badRepository.cancelTask(tTaskParams);
+            // assert
+            expect(result, isA<Left<Failure, VoidResult>>());
+          },
+        );
+        test(
+          'should return [UnsuspectedFailure] when getTasksStream is called',
           () async {
             // arrange
             when(() => badkFirebaseFirestore.collection(any())).thenThrow(
@@ -210,51 +223,9 @@ void main() {
             );
             // act
             final result =
-                await badRepository.updateWorkOrder(tWorkOrderParams);
+                await badRepository.getTasksStream(tItemsInLocationsParams);
             // assert
-            expect(result, isA<Left<Failure, VoidResult>>());
-          },
-        );
-        test(
-          'should return [UnsuspectedFailure] when deleteWorkOrder is called',
-          () async {
-            // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
-              Exception(),
-            );
-            // act
-            final result =
-                await badRepository.deleteWorkOrder(tWorkOrderParams);
-            // assert
-            expect(result, isA<Left<Failure, VoidResult>>());
-          },
-        );
-        test(
-          'should return [UnsuspectedFailure] when cancelWorkOrder is called',
-          () async {
-            // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
-              Exception(),
-            );
-            // act
-            final result =
-                await badRepository.cancelWorkOrder(tWorkOrderParams);
-            // assert
-            expect(result, isA<Left<Failure, VoidResult>>());
-          },
-        );
-        test(
-          'should return [UnsuspectedFailure] when getWorkOrdersStream is called',
-          () async {
-            // arrange
-            when(() => badkFirebaseFirestore.collection(any())).thenThrow(
-              Exception(),
-            );
-            // act
-            final result = await badRepository
-                .getWorkOrdersStream(tItemsInLocationsParams);
-            // assert
-            expect(result, isA<Left<Failure, WorkOrdersStream>>());
+            expect(result, isA<Left<Failure, TasksStream>>());
           },
         );
       });
