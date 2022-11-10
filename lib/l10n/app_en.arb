@@ -1969,81 +1969,81 @@
     "@asset_details": {
       "description": "asset - details"
     },
-    "work_order": "Work order",
-    "@work_order": {
-      "description": "work order"
+    "work_request": "Work request",
+    "@work_request": {
+      "description": "work request"
     },
-    "work_orders": "Work orders",
-    "@work_orders": {
-      "description": "work orders"
+    "work_requests": "Work requests",
+    "@work_requests": {
+      "description": "work requests"
     },
-    "work_order_type": "Work order type",
-    "@work_order_type": {
-      "description": "work order type"
+    "work_request_type": "Work request type",
+    "@work_request_type": {
+      "description": "work request type"
     },
-    "work_order_archive": "Work order archive",
-    "@work_order_archive": {
-      "description": "work order archive"
+    "work_request_archive": "Work request archive",
+    "@work_request_archive": {
+      "description": "work request archive"
     },
-    "work_order_convert": "Convert to task",
-    "@work_order_convert": {
-      "description": "work order convert"
+    "work_request_convert": "Convert to task",
+    "@work_request_convert": {
+      "description": "work request convert"
     },
-    "work_order_cancel": "Cancel work order",
-    "@work_order_cancel": {
-      "description": "work order cancel"
+    "work_request_cancel": "Cancel work request",
+    "@work_request_cancel": {
+      "description": "work request cancel"
     },
-    "work_order_details": "Work order details",
-    "@work_order_details": {
-      "description": "work order details"
+    "work_request_details": "Work request details",
+    "@work_request_details": {
+      "description": "work request details"
     },
-    "work_order_confirm_cancel": "Confirm the cancellation",
-    "@work_order_confirm_cancel": {
-      "description": "work order cancel"
+    "work_request_confirm_cancel": "Confirm the cancellation",
+    "@work_request_confirm_cancel": {
+      "description": "work request cancel"
     },
-    "work_order_confirm_cancel_description": "Please enter the reason for cancellation below",
-    "@work_order_confirm_cancel_description": {
-      "description": "work order cancel"
+    "work_request_confirm_cancel_description": "Please enter the reason for cancellation below",
+    "@work_request_confirm_cancel_description": {
+      "description": "work request cancel"
     },
-    "work_order_confirm_cancel_hint": "Min 5 characters",
-    "@work_order_confirm_cancel_hint": {
-      "description": "work order hint"
+    "work_request_confirm_cancel_hint": "Min 5 characters",
+    "@work_request_confirm_cancel_hint": {
+      "description": "work request hint"
     },
-    "work_order_data": "Work order data",
-    "@work_order_data": {
-      "description": "work order"
+    "work_request_data": "Work request data",
+    "@work_request_data": {
+      "description": "work request"
     },
-    "work_order_add": "Add new work order",
-    "@work_order_add": {
-      "description": "work order add"
+    "work_request_add": "Add new work request",
+    "@work_request_add": {
+      "description": "work request add"
     },
-    "work_order_edit": "Edit work order",
-    "@work_order_edit": {
-      "description": "work order edit"
+    "work_request_edit": "Edit work request",
+    "@work_request_edit": {
+      "description": "work request edit"
     },
-    "work_order_msg_added": "New work order added",
-    "@work_order_msg_added": {
-      "description": "work order - added msg"
+    "work_request_msg_added": "New work request added",
+    "@work_request_msg_added": {
+      "description": "work request - added msg"
     },
-    "work_order_msg_not_added": "New work order NOT added",
-    "@work_order_msg_not_added": {
-      "description": "work order - NOT added msg"
+    "work_request_msg_not_added": "New work request NOT added",
+    "@work_request_msg_not_added": {
+      "description": "work request - NOT added msg"
     },
-    "work_order_msg_updated": "Work order updated",
-    "@work_order_msg_updated": {
-      "description": "work order - updated msg"
+    "work_request_msg_updated": "Work request updated",
+    "@work_request_msg_updated": { 
+      "description": "work request - updated msg"
     },
-    "work_order_msg_not_updated": "Work order NOT updated",
-    "@work_order_msg_not_updated": {
-      "description": "work order - NOT updated msg"
+    "work_request_msg_not_updated": "Work request NOT updated",
+    "@work_request_msg_not_updated": {
+      "description": "work request - NOT updated msg"
     },
-    "work_order_msg_deleted": "Work order deleted",
-    "@work_order_msg_deleted": {
-      "description": "work order - deleted msg"
+    "work_request_msg_deleted": "Work request deleted",
+    "@work_request_msg_deleted": {
+      "description": "work request - deleted msg"
     },
-    "work_order_msg_not_deleted": "Work order NOT deleted",
-    "@work_order_msg_not_deleted": {
-      "description": "work order - NOT deleted msg"
+    "work_request_msg_not_deleted": "Work request NOT deleted",
+    "@work_request_msg_not_deleted": {
+      "description": "work request - NOT deleted msg"
     },
     "task_priority": "Taks priority",
     "@task_priority": {
@@ -2063,22 +2063,22 @@
     },
     "task_connected_asset": "Connected asset",
     "@task_connected_asset": {
-      "description": "task/work order connected asset"
+      "description": "task/work request connected asset"
     },
     "task_connected_asset_yes": "Connected to an asset",
     "@task_connected_asset_yes": {
-      "description": "task/work order connected to an asset"
+      "description": "task/work request connected to an asset"
     },
     "task_connected_asset_no": "Not connected to an asset",
     "@task_connected_asset_no": {
-      "description": "task/work order not connected to an asset"
+      "description": "task/work request not connected to an asset"
     },
     "task_connected_asset_select": "Select asset",
     "@task_connected_asset_select": {
-      "description": "task/work order select connected asset"
+      "description": "task/work request select connected asset"
     },
     "task_add_video": "Add video",
     "@task_add_video": {
-      "description": "task/work order add video"
+      "description": "task/work request add video"
     }
 }

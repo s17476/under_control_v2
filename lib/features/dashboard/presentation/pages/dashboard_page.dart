@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:under_control_v2/features/dashboard/presentation/widgets/work_orders_latest.dart';
+import 'package:under_control_v2/features/dashboard/presentation/widgets/work_requests_latest.dart';
 
 import '../widgets/assets_latest_actions.dart';
 import '../widgets/assets_without_inspection.dart';
@@ -17,7 +17,7 @@ class DashboardPage extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: const [
-          WorkOrdersLatest(),
+          WorkRequestsLatest(),
           AssetsWithoutInspection(),
           AssetsLatestActions(),
           InventoryLowLevelItems(),

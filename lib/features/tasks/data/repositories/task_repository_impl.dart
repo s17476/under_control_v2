@@ -65,7 +65,7 @@ class TaskRepositoryImpl extends TaskRepository {
         videoUrl = await fileReference.getDownloadURL();
       }
 
-      // increment work orders counter
+      // increment counter
       int counterValue = 0;
       final companyReference =
           firebaseFirestore.collection('companies').doc(params.companyId);
@@ -130,7 +130,7 @@ class TaskRepositoryImpl extends TaskRepository {
           isCreate: false,
           assetStatus: params.task.assetStatus,
           connectedTask: taskReference.id,
-          connectedWorkOrder: '',
+          connectedWorkRequest: '',
         );
         final actionMap = assetAction.toMap();
 
@@ -292,7 +292,7 @@ class TaskRepositoryImpl extends TaskRepository {
         filesNames.add(fileName);
       }
 
-      // update work order
+      // update work Request
       final updatedTask = TaskModel.fromTask(params.task).copyWith(
         images: images,
         video: videoUrl,
@@ -353,7 +353,7 @@ class TaskRepositoryImpl extends TaskRepository {
           isCreate: false,
           assetStatus: params.task.assetStatus,
           connectedTask: '',
-          connectedWorkOrder: taskReference.id,
+          connectedWorkRequest: taskReference.id,
         );
         final actionMap = assetAction.toMap();
 
@@ -446,7 +446,7 @@ class TaskRepositoryImpl extends TaskRepository {
           isCreate: false,
           assetStatus: params.task.assetStatus,
           connectedTask: taskReference.id,
-          connectedWorkOrder: '',
+          connectedWorkRequest: '',
         );
         final actionMap = assetAction.toMap();
 
@@ -539,7 +539,7 @@ class TaskRepositoryImpl extends TaskRepository {
           isCreate: false,
           assetStatus: params.task.assetStatus,
           connectedTask: taskReference.id,
-          connectedWorkOrder: '',
+          connectedWorkRequest: '',
         );
         final actionMap = assetAction.toMap();
 

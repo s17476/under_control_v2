@@ -5,9 +5,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/cached_user_avatar.dart';
-import '../../../../tasks/presentation/blocs/work_order/work_order_bloc.dart';
-import '../../../../tasks/presentation/blocs/work_order_archive/work_order_archive_bloc.dart';
-import '../../../../tasks/presentation/pages/work_order_details_page.dart';
+import '../../../../tasks/presentation/blocs/work_request/work_request_bloc.dart';
+import '../../../../tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
+import '../../../../tasks/presentation/pages/work_request_details_page.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../domain/entities/asset_action/asset_action.dart';
 import '../../../utils/get_asset_status_icon.dart';
@@ -55,12 +55,12 @@ class AssetActionTile extends StatelessWidget {
                         arguments: action.assetId,
                       );
                     }
-                  : action.connectedWorkOrder.isNotEmpty
+                  : action.connectedWorkRequest.isNotEmpty
                       ? () {
                           Navigator.pushNamed(
                             context,
-                            WorkOrderDetailsPage.routeName,
-                            arguments: action.connectedWorkOrder,
+                            WorkRequestDetailsPage.routeName,
+                            arguments: action.connectedWorkRequest,
                           );
                         }
                       : () {},
@@ -117,17 +117,17 @@ class AssetActionTile extends StatelessWidget {
                         child: Text(action.connectedTask),
                       ),
                     // connected work order
-                    if (action.connectedWorkOrder.isNotEmpty)
-                      BlocBuilder<WorkOrderBloc, WorkOrderState>(
+                    if (action.connectedWorkRequest.isNotEmpty)
+                      BlocBuilder<WorkRequestBloc, WorkRequestState>(
                         builder: (context, state) {
-                          if (state is WorkOrderLoadedState) {
-                            final workOrder = state
-                                .getWorkOrderById(action.connectedWorkOrder);
-                            if (workOrder != null) {
+                          if (state is WorkRequestLoadedState) {
+                            final workRequest = state.getWorkRequestById(
+                                action.connectedWorkRequest);
+                            if (workRequest != null) {
                               return Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
-                                  '${AppLocalizations.of(context)!.work_order} #${workOrder.count}',
+                                  '${AppLocalizations.of(context)!.work_request} #${workRequest.count}',
                                 ),
                               );
                             }
@@ -136,17 +136,18 @@ class AssetActionTile extends StatelessWidget {
                         },
                       ),
                     // connected work order from archive
-                    if (action.connectedWorkOrder.isNotEmpty)
-                      BlocBuilder<WorkOrderArchiveBloc, WorkOrderArchiveState>(
+                    if (action.connectedWorkRequest.isNotEmpty)
+                      BlocBuilder<WorkRequestArchiveBloc,
+                          WorkRequestArchiveState>(
                         builder: (context, state) {
-                          if (state is WorkOrderArchiveLoadedState) {
-                            final workOrder = state
-                                .getWorkOrderById(action.connectedWorkOrder);
-                            if (workOrder != null) {
+                          if (state is WorkRequestArchiveLoadedState) {
+                            final workRequest = state.getWorkRequestById(
+                                action.connectedWorkRequest);
+                            if (workRequest != null) {
                               return Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
-                                  '${AppLocalizations.of(context)!.work_order} #${workOrder.count}',
+                                  '${AppLocalizations.of(context)!.work_request} #${workRequest.count}',
                                 ),
                               );
                             }
@@ -156,7 +157,7 @@ class AssetActionTile extends StatelessWidget {
                       ),
                     // add/edit action
                     if (action.connectedTask.isEmpty &&
-                        action.connectedWorkOrder.isEmpty)
+                        action.connectedWorkRequest.isEmpty)
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(

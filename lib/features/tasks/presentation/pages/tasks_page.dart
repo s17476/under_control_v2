@@ -4,15 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
-import 'package:under_control_v2/features/tasks/domain/entities/work_order/work_order.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/work_order_tile.dart';
+import 'package:under_control_v2/features/tasks/domain/entities/work_request/work_request.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/work_request_tile.dart';
 import 'package:under_control_v2/features/tasks/utils/get_task_priority_icon.dart';
 
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
-import '../blocs/work_order/work_order_bloc.dart';
+import '../blocs/work_request/work_request_bloc.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({
@@ -24,8 +24,8 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage> with ResponsiveSize {
-  List<WorkOrder>? _workOrders;
-  List<WorkOrder>? _filteredWorkOrders;
+  List<WorkRequest>? _workRequests;
+  List<WorkRequest>? _filteredWorkRequests;
   int _index = 0;
 
   void _setIndex(int value) {
@@ -34,28 +34,29 @@ class _TasksPageState extends State<TasksPage> with ResponsiveSize {
     });
   }
 
-  void _filterWorkOrders() {
+  void _filterWorkRequests() {
     switch (_index) {
       case 0:
-        _filteredWorkOrders = _workOrders;
+        _filteredWorkRequests = _workRequests;
         break;
       case 1:
-        _filteredWorkOrders = _workOrders
-            ?.where((workOrder) => workOrder.priority == TaskPriority.low)
+        _filteredWorkRequests = _workRequests
+            ?.where((workRequest) => workRequest.priority == TaskPriority.low)
             .toList();
         break;
       case 2:
-        _filteredWorkOrders = _workOrders
-            ?.where((workOrder) => workOrder.priority == TaskPriority.medium)
+        _filteredWorkRequests = _workRequests
+            ?.where(
+                (workRequest) => workRequest.priority == TaskPriority.medium)
             .toList();
         break;
       case 3:
-        _filteredWorkOrders = _workOrders
-            ?.where((workOrder) => workOrder.priority == TaskPriority.high)
+        _filteredWorkRequests = _workRequests
+            ?.where((workRequest) => workRequest.priority == TaskPriority.high)
             .toList();
         break;
       default:
-        _filteredWorkOrders = _workOrders;
+        _filteredWorkRequests = _workRequests;
         break;
     }
   }
@@ -138,10 +139,10 @@ class _TasksPageState extends State<TasksPage> with ResponsiveSize {
                         ),
                       ),
                       // work orders list
-                      BlocBuilder<WorkOrderBloc, WorkOrderState>(
+                      BlocBuilder<WorkRequestBloc, WorkRequestState>(
                         builder: (context, state) {
-                          if (state is WorkOrderLoadedState) {
-                            if (state.allWorkOrders.allWorkOrders.isEmpty) {
+                          if (state is WorkRequestLoadedState) {
+                            if (state.allWorkRequests.allWorkRequests.isEmpty) {
                               return Column(
                                 children: [
                                   SizedBox(
@@ -154,8 +155,9 @@ class _TasksPageState extends State<TasksPage> with ResponsiveSize {
                                 ],
                               );
                             }
-                            _workOrders = state.allWorkOrders.allWorkOrders;
-                            _filterWorkOrders();
+                            _workRequests =
+                                state.allWorkRequests.allWorkRequests;
+                            _filterWorkRequests();
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -165,7 +167,7 @@ class _TasksPageState extends State<TasksPage> with ResponsiveSize {
                                     vertical: 4,
                                   ),
                                   child: Text(
-                                    AppLocalizations.of(context)!.work_orders,
+                                    AppLocalizations.of(context)!.work_requests,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline4!
@@ -175,7 +177,7 @@ class _TasksPageState extends State<TasksPage> with ResponsiveSize {
                                 ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount: _filteredWorkOrders!.length,
+                                  itemCount: _filteredWorkRequests!.length,
                                   itemBuilder: (context, index) => Padding(
                                     padding: const EdgeInsets.only(
                                       top: 4,
@@ -183,8 +185,9 @@ class _TasksPageState extends State<TasksPage> with ResponsiveSize {
                                       right: 8,
                                       left: 2,
                                     ),
-                                    child: WorkOrderTile(
-                                      workOrder: _filteredWorkOrders![index],
+                                    child: WorkRequestTile(
+                                      workRequest:
+                                          _filteredWorkRequests![index],
                                     ),
                                   ),
                                 ),

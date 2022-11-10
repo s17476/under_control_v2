@@ -52,7 +52,7 @@ void main() {
     isCreate: false,
     assetStatus: AssetStatus.ok,
     connectedTask: 'connectedTask',
-    connectedWorkOrder: 'connectedWorkOrder',
+    connectedWorkRequest: 'connectedWorkRequest',
   );
 
   final tAssetActionParams = AssetActionParams(

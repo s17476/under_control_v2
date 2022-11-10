@@ -25,9 +25,9 @@ import '../../../../knowledge_base/presentation/blocs/instruction_category/instr
 import '../../../../knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart';
 import '../../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
-import '../../../../tasks/presentation/blocs/work_order/work_order_bloc.dart';
-import '../../../../tasks/presentation/blocs/work_order_archive/work_order_archive_bloc.dart';
-import '../../../../tasks/presentation/blocs/work_order_management/work_order_management_bloc.dart';
+import '../../../../tasks/presentation/blocs/work_request/work_request_bloc.dart';
+import '../../../../tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
+import '../../../../tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
 import '../../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 
 class AppBarAnimatedIcon extends StatefulWidget {
@@ -291,27 +291,27 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
             }
           },
         ),
-        BlocListener<WorkOrderBloc, WorkOrderState>(
+        BlocListener<WorkRequestBloc, WorkRequestState>(
           listener: (context, state) {
-            if (state is WorkOrderLoadingState) {
+            if (state is WorkRequestLoadingState) {
               _startAnimation();
             } else {
               _stopAnimation();
             }
           },
         ),
-        BlocListener<WorkOrderManagementBloc, WorkOrderManagementState>(
+        BlocListener<WorkRequestManagementBloc, WorkRequestManagementState>(
           listener: (context, state) {
-            if (state is WorkOrderManagementLoadingState) {
+            if (state is WorkRequestManagementLoadingState) {
               _startAnimation();
             } else {
               _stopAnimation();
             }
           },
         ),
-        BlocListener<WorkOrderArchiveBloc, WorkOrderArchiveState>(
+        BlocListener<WorkRequestArchiveBloc, WorkRequestArchiveState>(
           listener: (context, state) {
-            if (state is WorkOrderLoadingState) {
+            if (state is WorkRequestLoadingState) {
               _startAnimation();
             } else {
               _stopAnimation();

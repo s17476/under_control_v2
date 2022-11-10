@@ -17,7 +17,7 @@ void main() {
     isCreate: false,
     assetStatus: AssetStatus.ok,
     connectedTask: 'connectedTask',
-    connectedWorkOrder: 'connectedWorkOrder',
+    connectedWorkRequest: 'connectedWorkRequest',
   );
 
   final tAssetActionToModelMap = {
@@ -29,7 +29,7 @@ void main() {
     'isCreate': false,
     'assetStatus': AssetStatus.ok.name,
     'connectedTask': 'connectedTask',
-    'connectedWorkOrder': 'connectedWorkOrder',
+    'connectedWorkRequest': 'connectedWorkRequest',
   };
   final tAssetActionFromModelMap = {
     'assetId': 'assetId',
@@ -40,7 +40,7 @@ void main() {
     'isCreate': false,
     'assetStatus': AssetStatus.ok.name,
     'connectedTask': 'connectedTask',
-    'connectedWorkOrder': 'connectedWorkOrder',
+    'connectedWorkRequest': 'connectedWorkRequest',
   };
 
   group('AssetActionModel', () {

@@ -7,8 +7,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:under_control_v2/features/assets/presentation/pages/add_asset_page.dart';
 import 'package:under_control_v2/features/assets/presentation/pages/asset_details_page.dart';
 import 'package:under_control_v2/features/dashboard/presentation/pages/all_low_level_items_page.dart';
-import 'package:under_control_v2/features/tasks/presentation/pages/work_order_archive_page.dart';
-import 'package:under_control_v2/features/tasks/presentation/pages/work_order_details_page.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/work_request_archive_page.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/work_request_details_page.dart';
 
 import 'features/assets/presentation/blocs/asset/asset_bloc.dart';
 import 'features/assets/presentation/blocs/asset_action/asset_action_bloc.dart';
@@ -73,10 +73,10 @@ import 'features/knowledge_base/presentation/pages/instruction_category_manageme
 import 'features/knowledge_base/presentation/pages/instruction_preview_page.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
-import 'features/tasks/presentation/blocs/work_order/work_order_bloc.dart';
-import 'features/tasks/presentation/blocs/work_order_archive/work_order_archive_bloc.dart';
-import 'features/tasks/presentation/blocs/work_order_management/work_order_management_bloc.dart';
-import 'features/tasks/presentation/pages/add_work_order_page.dart';
+import 'features/tasks/presentation/blocs/work_request/work_request_bloc.dart';
+import 'features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
+import 'features/tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
+import 'features/tasks/presentation/pages/add_work_request_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import 'features/user_profile/presentation/pages/add_user_profile_page.dart';
@@ -196,14 +196,14 @@ class App extends StatelessWidget
           lazy: false,
         ),
         BlocProvider(
-          create: (context) => getIt<WorkOrderBloc>(),
+          create: (context) => getIt<WorkRequestBloc>(),
         ),
         BlocProvider(
-          create: (context) => getIt<WorkOrderManagementBloc>(),
+          create: (context) => getIt<WorkRequestManagementBloc>(),
           lazy: false,
         ),
         BlocProvider(
-          create: (context) => getIt<WorkOrderArchiveBloc>(),
+          create: (context) => getIt<WorkRequestArchiveBloc>(),
         ),
         BlocProvider(
           create: (context) => getIt<FilterBloc>(),
@@ -297,11 +297,11 @@ class App extends StatelessWidget
               const AllAssetActionsListPage(),
           AllAssetsWithoutInspectionListPage.routeName: (context) =>
               const AllAssetsWithoutInspectionListPage(),
-          AddWorkOrderPage.routeName: (context) => const AddWorkOrderPage(),
-          WorkOrderDetailsPage.routeName: (context) =>
-              const WorkOrderDetailsPage(),
-          WorkOrderArchivePage.routeName: (context) =>
-              const WorkOrderArchivePage(),
+          AddWorkRequestPage.routeName: (context) => const AddWorkRequestPage(),
+          WorkRequestDetailsPage.routeName: (context) =>
+              const WorkRequestDetailsPage(),
+          WorkRequestArchivePage.routeName: (context) =>
+              const WorkRequestArchivePage(),
         },
         // localization
         localizationsDelegates: const [

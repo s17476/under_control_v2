@@ -59,7 +59,7 @@ class AssetRepositoryImpl extends AssetRepository {
         isCreate: true,
         assetStatus: params.asset.currentStatus,
         connectedTask: '',
-        connectedWorkOrder: '',
+        connectedWorkRequest: '',
       );
 
       final actionMap = assetAction.toMap();
@@ -251,7 +251,7 @@ class AssetRepositoryImpl extends AssetRepository {
         isCreate: false,
         assetStatus: params.asset.currentStatus,
         connectedTask: '',
-        connectedWorkOrder: '',
+        connectedWorkRequest: '',
       );
 
       final actionMap = assetAction.toMap();

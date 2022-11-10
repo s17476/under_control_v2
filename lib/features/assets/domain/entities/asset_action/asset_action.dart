@@ -12,7 +12,7 @@ class AssetAction extends Equatable {
   final bool isCreate;
   final AssetStatus assetStatus;
   final String connectedTask;
-  final String connectedWorkOrder;
+  final String connectedWorkRequest;
 
   const AssetAction({
     required this.id,
@@ -24,7 +24,7 @@ class AssetAction extends Equatable {
     required this.isCreate,
     required this.assetStatus,
     required this.connectedTask,
-    required this.connectedWorkOrder,
+    required this.connectedWorkRequest,
   });
 
   @override
@@ -39,12 +39,12 @@ class AssetAction extends Equatable {
       isCreate,
       assetStatus,
       connectedTask,
-      connectedWorkOrder,
+      connectedWorkRequest,
     ];
   }
 
   @override
   String toString() {
-    return 'AssetAction(id: $id, assetId: $assetId, dateTime: $dateTime, userId: $userId, locationId: $locationId, isAssetInUse: $isAssetInUse, isCreate: $isCreate, assetStatus: $assetStatus, connectedTask: $connectedTask, connectedWorkOrder: $connectedWorkOrder)';
+    return 'AssetAction(id: $id, assetId: $assetId, dateTime: $dateTime, userId: $userId, locationId: $locationId, isAssetInUse: $isAssetInUse, isCreate: $isCreate, assetStatus: $assetStatus, connectedTask: $connectedTask, connectedWorkRequest: $connectedWorkRequest)';
   }
 }

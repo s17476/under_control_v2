@@ -255,10 +255,11 @@ import 'features/locations/domain/usecases/try_to_get_cached_location.dart'
 import 'features/locations/domain/usecases/update_location.dart' as _i146;
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart' as _i180;
 import 'features/tasks/data/repositories/task_repository_impl.dart' as _i26;
-import 'features/tasks/data/repositories/work_order_repository_impl.dart'
+import 'features/tasks/data/repositories/work_request_repository_impl.dart'
     as _i39;
 import 'features/tasks/domain/repositories/task_repository.dart' as _i25;
-import 'features/tasks/domain/repositories/work_order_repository.dart' as _i38;
+import 'features/tasks/domain/repositories/work_request_repository.dart'
+    as _i38;
 import 'features/tasks/domain/usecases/task/add_task.dart' as _i46;
 import 'features/tasks/domain/usecases/task/cancel_task.dart' as _i65;
 import 'features/tasks/domain/usecases/task/complete_task.dart' as _i75;
@@ -267,22 +268,23 @@ import 'features/tasks/domain/usecases/task/get_archive_tasks_stream.dart'
     as _i96;
 import 'features/tasks/domain/usecases/task/get_tasks_stream.dart' as _i114;
 import 'features/tasks/domain/usecases/task/update_task.dart' as _i33;
-import 'features/tasks/domain/usecases/work_order/add_work_order.dart' as _i49;
-import 'features/tasks/domain/usecases/work_order/cancel_work_order.dart'
+import 'features/tasks/domain/usecases/work_order/add_work_request.dart'
+    as _i49;
+import 'features/tasks/domain/usecases/work_order/cancel_work_request.dart'
     as _i66;
-import 'features/tasks/domain/usecases/work_order/delete_work_order.dart'
+import 'features/tasks/domain/usecases/work_order/delete_work_request.dart'
     as _i91;
-import 'features/tasks/domain/usecases/work_order/get_archive_work_orders_stream.dart'
+import 'features/tasks/domain/usecases/work_order/get_archive_work_requests_stream.dart'
     as _i97;
-import 'features/tasks/domain/usecases/work_order/get_work_orders_stream.dart'
+import 'features/tasks/domain/usecases/work_order/get_work_requests_stream.dart'
     as _i117;
-import 'features/tasks/domain/usecases/work_order/update_work_order.dart'
+import 'features/tasks/domain/usecases/work_order/update_work_request.dart'
     as _i148;
-import 'features/tasks/presentation/blocs/work_order/work_order_bloc.dart'
+import 'features/tasks/presentation/blocs/work_request/work_request_bloc.dart'
     as _i192;
-import 'features/tasks/presentation/blocs/work_order_archive/work_order_archive_bloc.dart'
+import 'features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart'
     as _i191;
-import 'features/tasks/presentation/blocs/work_order_management/work_order_management_bloc.dart'
+import 'features/tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart'
     as _i183;
 import 'features/user_profile/data/repositories/user_files_repository_impl.dart'
     as _i35;
@@ -409,8 +411,8 @@ Future<_i1.GetIt> $initGetIt(
   gh.lazySingleton<_i36.UserProfileRepository>(() =>
       _i37.UserProfileRepositoryImpl(
           firebaseFirestore: get<_i5.FirebaseFirestore>()));
-  gh.lazySingleton<_i38.WorkOrdersRepository>(
-      () => _i39.WorkOrdersRepositoryImpl(
+  gh.lazySingleton<_i38.WorkRequestsRepository>(
+      () => _i39.WorkRequestsRepositoryImpl(
             firebaseFirestore: get<_i5.FirebaseFirestore>(),
             firebaseStorage: get<_i6.FirebaseStorage>(),
           ));
@@ -433,8 +435,8 @@ Future<_i1.GetIt> $initGetIt(
       () => _i47.AddUser(repository: get<_i36.UserProfileRepository>()));
   gh.lazySingleton<_i48.AddUserAvatar>(
       () => _i48.AddUserAvatar(repository: get<_i34.UserFilesRepository>()));
-  gh.lazySingleton<_i49.AddWorkOrder>(
-      () => _i49.AddWorkOrder(repository: get<_i38.WorkOrdersRepository>()));
+  gh.lazySingleton<_i49.AddWorkRequest>(() =>
+      _i49.AddWorkRequest(repository: get<_i38.WorkRequestsRepository>()));
   gh.lazySingleton<_i50.ApprovePassiveUser>(() =>
       _i50.ApprovePassiveUser(repository: get<_i36.UserProfileRepository>()));
   gh.lazySingleton<_i51.ApproveUser>(
@@ -467,8 +469,8 @@ Future<_i1.GetIt> $initGetIt(
       authenticationRepository: get<_i62.AuthenticationRepository>()));
   gh.lazySingleton<_i65.CancelTask>(
       () => _i65.CancelTask(repository: get<_i25.TaskRepository>()));
-  gh.lazySingleton<_i66.CancelWorkOrder>(
-      () => _i66.CancelWorkOrder(repository: get<_i38.WorkOrdersRepository>()));
+  gh.lazySingleton<_i66.CancelWorkRequest>(() =>
+      _i66.CancelWorkRequest(repository: get<_i38.WorkRequestsRepository>()));
   gh.lazySingleton<_i67.CheckCodeAvailability>(() =>
       _i67.CheckCodeAvailability(repository: get<_i57.AssetRepository>()));
   gh.lazySingleton<_i68.CheckEmailVerification>(() =>
@@ -515,8 +517,8 @@ Future<_i1.GetIt> $initGetIt(
       () => _i89.DeleteItemPhoto(repository: get<_i17.ItemFilesRepository>()));
   gh.lazySingleton<_i90.DeleteTask>(
       () => _i90.DeleteTask(repository: get<_i25.TaskRepository>()));
-  gh.lazySingleton<_i91.DeleteWorkOrder>(
-      () => _i91.DeleteWorkOrder(repository: get<_i38.WorkOrdersRepository>()));
+  gh.lazySingleton<_i91.DeleteWorkRequest>(() =>
+      _i91.DeleteWorkRequest(repository: get<_i38.WorkRequestsRepository>()));
   gh.lazySingleton<_i92.FetchAllCompanies>(() => _i92.FetchAllCompanies(
       companyManagementRepository: get<_i71.CompanyManagementRepository>()));
   gh.lazySingleton<_i93.FetchAllCompanyUsers>(() => _i93.FetchAllCompanyUsers(
@@ -527,9 +529,9 @@ Future<_i1.GetIt> $initGetIt(
       companyRepository: get<_i73.CompanyRepository>()));
   gh.lazySingleton<_i96.GetArchiveTasksStream>(
       () => _i96.GetArchiveTasksStream(repository: get<_i25.TaskRepository>()));
-  gh.lazySingleton<_i97.GetArchiveWorkOrdersStream>(() =>
-      _i97.GetArchiveWorkOrdersStream(
-          repository: get<_i38.WorkOrdersRepository>()));
+  gh.lazySingleton<_i97.GetArchiveWorkRequestsStream>(() =>
+      _i97.GetArchiveWorkRequestsStream(
+          repository: get<_i38.WorkRequestsRepository>()));
   gh.lazySingleton<_i98.GetAssetActionsStream>(() => _i98.GetAssetActionsStream(
       repository: get<_i53.AssetActionRepository>()));
   gh.lazySingleton<_i99.GetAssetsCategoriesStream>(() =>
@@ -579,8 +581,9 @@ Future<_i1.GetIt> $initGetIt(
       () => _i115.GetUserById(repository: get<_i36.UserProfileRepository>()));
   gh.lazySingleton<_i116.GetUserStreamById>(() => _i116.GetUserStreamById(
       userRepository: get<_i36.UserProfileRepository>()));
-  gh.lazySingleton<_i117.GetWorkOrdersStream>(() =>
-      _i117.GetWorkOrdersStream(repository: get<_i38.WorkOrdersRepository>()));
+  gh.lazySingleton<_i117.GetWorkRequestsStream>(() =>
+      _i117.GetWorkRequestsStream(
+          repository: get<_i38.WorkRequestsRepository>()));
   gh.lazySingleton<_i118.GroupLocalDataSource>(() =>
       _i118.GroupLocalDataSourceImpl(source: get<_i24.SharedPreferences>()));
   gh.lazySingleton<_i119.GroupRepository>(() => _i120.GroupRepositoryImpl(
@@ -650,8 +653,8 @@ Future<_i1.GetIt> $initGetIt(
       locationRepository: get<_i123.LocationRepository>()));
   gh.lazySingleton<_i147.UpdateUserData>(() =>
       _i147.UpdateUserData(repository: get<_i36.UserProfileRepository>()));
-  gh.lazySingleton<_i148.UpdateWorkOrder>(() =>
-      _i148.UpdateWorkOrder(repository: get<_i38.WorkOrdersRepository>()));
+  gh.lazySingleton<_i148.UpdateWorkRequest>(() =>
+      _i148.UpdateWorkRequest(repository: get<_i38.WorkRequestsRepository>()));
   gh.factory<_i149.UserManagementBloc>(() => _i149.UserManagementBloc(
         approveUser: get<_i51.ApproveUser>(),
         approvePassiveUser: get<_i50.ApprovePassiveUser>(),
@@ -822,13 +825,14 @@ Future<_i1.GetIt> $initGetIt(
         get<_i171.CompanyProfileBloc>(),
         get<_i95.FetchSuspendedUsers>(),
       ));
-  gh.factory<_i183.WorkOrderManagementBloc>(() => _i183.WorkOrderManagementBloc(
-        companyProfileBloc: get<_i171.CompanyProfileBloc>(),
-        addWorkOrder: get<_i49.AddWorkOrder>(),
-        deleteWorkOrder: get<_i91.DeleteWorkOrder>(),
-        updateWorkOrder: get<_i148.UpdateWorkOrder>(),
-        cancelWorkOrder: get<_i66.CancelWorkOrder>(),
-      ));
+  gh.factory<_i183.WorkRequestManagementBloc>(
+      () => _i183.WorkRequestManagementBloc(
+            companyProfileBloc: get<_i171.CompanyProfileBloc>(),
+            addWorkRequest: get<_i49.AddWorkRequest>(),
+            deleteWorkRequest: get<_i91.DeleteWorkRequest>(),
+            updateWorkRequest: get<_i148.UpdateWorkRequest>(),
+            cancelWorkRequest: get<_i66.CancelWorkRequest>(),
+          ));
   gh.factory<_i184.AssetActionManagementBloc>(
       () => _i184.AssetActionManagementBloc(
             companyProfileBloc: get<_i171.CompanyProfileBloc>(),
@@ -866,13 +870,13 @@ Future<_i1.GetIt> $initGetIt(
         filterBloc: get<_i188.FilterBloc>(),
         getChecklistsStream: get<_i111.GetItemsStream>(),
       ));
-  gh.factory<_i191.WorkOrderArchiveBloc>(() => _i191.WorkOrderArchiveBloc(
+  gh.factory<_i191.WorkRequestArchiveBloc>(() => _i191.WorkRequestArchiveBloc(
         filterBloc: get<_i188.FilterBloc>(),
-        getArchiveWorkOrdersStream: get<_i97.GetArchiveWorkOrdersStream>(),
+        getArchiveWorkRequestsStream: get<_i97.GetArchiveWorkRequestsStream>(),
       ));
-  gh.factory<_i192.WorkOrderBloc>(() => _i192.WorkOrderBloc(
+  gh.factory<_i192.WorkRequestBloc>(() => _i192.WorkRequestBloc(
         filterBloc: get<_i188.FilterBloc>(),
-        getWorkOrdersStream: get<_i117.GetWorkOrdersStream>(),
+        getWorkRequestsStream: get<_i117.GetWorkRequestsStream>(),
       ));
   gh.factory<_i193.AssetBloc>(() => _i193.AssetBloc(
         filterBloc: get<_i188.FilterBloc>(),

@@ -82,7 +82,7 @@ void main() async {
       isCreate: false,
       assetStatus: AssetStatus.ok,
       connectedTask: 'connectedTask',
-      connectedWorkOrder: 'connectedWorkOrder',
+      connectedWorkRequest: 'connectedWorkRequest',
     );
 
     final actionReference =
