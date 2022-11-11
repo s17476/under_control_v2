@@ -9,7 +9,7 @@ import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../domain/entities/task/tasks_stream.dart';
 import '../../domain/repositories/task_repository.dart';
-import '../models/task_model.dart';
+import '../models/task/task_model.dart';
 
 @LazySingleton(as: TaskRepository)
 class TaskRepositoryImpl extends TaskRepository {

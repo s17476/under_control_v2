@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
 
-import '../../../assets/utils/asset_status.dart';
-import '../../../core/utils/duration_unit.dart';
-import '../../domain/entities/task_priority.dart';
-import '../../domain/entities/task_type.dart';
+import '../../../../assets/utils/asset_status.dart';
+import '../../../../core/utils/duration_unit.dart';
+import '../../../domain/entities/task_priority.dart';
+import '../../../domain/entities/task_type.dart';
 
 class TaskModel extends Task {
   const TaskModel({
