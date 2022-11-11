@@ -59,8 +59,12 @@ class SetAssetStatusCard extends StatelessWidget with ResponsiveSize {
                             ),
                             width: 70,
                             height: 70,
-                            child:
-                                getAssetStatusIcon(context, AssetStatus.ok, 35),
+                            child: getAssetStatusIcon(
+                              context,
+                              AssetStatus.ok,
+                              30,
+                              true,
+                            ),
                           ),
                           iconSize: 50,
                           title: AppLocalizations.of(context)!
@@ -92,8 +96,12 @@ class SetAssetStatusCard extends StatelessWidget with ResponsiveSize {
                             ),
                             width: 70,
                             height: 70,
-                            child: getAssetStatusIcon(context,
-                                AssetStatus.workingRequiresAttention, 35),
+                            child: getAssetStatusIcon(
+                              context,
+                              AssetStatus.workingRequiresAttention,
+                              30,
+                              true,
+                            ),
                           ),
                           iconSize: 50,
                           title: AppLocalizations.of(context)!
@@ -125,8 +133,12 @@ class SetAssetStatusCard extends StatelessWidget with ResponsiveSize {
                             ),
                             width: 70,
                             height: 70,
-                            child: getAssetStatusIcon(context,
-                                AssetStatus.notWorkingRequiresReparation, 35),
+                            child: getAssetStatusIcon(
+                              context,
+                              AssetStatus.notWorkingRequiresReparation,
+                              30,
+                              true,
+                            ),
                           ),
                           iconSize: 50,
                           title: AppLocalizations.of(context)!

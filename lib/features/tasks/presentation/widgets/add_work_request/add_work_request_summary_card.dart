@@ -166,7 +166,8 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                               child: getAssetStatusIcon(
                                 context,
                                 AssetStatus.fromString(assetStatus),
-                                35,
+                                30,
+                                true,
                               ),
                             ),
                             const SizedBox(

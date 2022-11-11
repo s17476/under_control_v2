@@ -134,10 +134,14 @@ flutter:
     - assets/website.png
     - assets/asset.png
     - assets/status_ok.png
+    - assets/status_ok_shadow.png
     - assets/status_working.png
-    - assets/status_working_attention.png
+    - assets/status_working_shadow.png
+    # - assets/status_working_attention.png
     - assets/status_not_working.png
+    - assets/status_not_working_shadow.png
     - assets/status_disposed.png
+    - assets/status_disposed_shadow.png
     - assets/work-order.png
     - assets/task.png
     - assets/priority_low.png

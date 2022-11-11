@@ -395,9 +395,9 @@ class _HomePageState extends State<HomePage>
                 children: [
                   BlocBuilder<FilterBloc, FilterState>(
                     builder: (context, state) {
-                      // locations not selected
                       return Stack(
                         children: [
+                          // locations not selected
                           if (state is FilterLoadedState &&
                               state.locations.isEmpty)
                             Column(

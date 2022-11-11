@@ -6,6 +6,7 @@ Widget getAssetStatusIcon(
   BuildContext context,
   AssetStatus status, [
   double? iconSize,
+  bool shadow = false,
 ]) {
   Widget icon = const Icon(Icons.question_mark);
   String assetPath = '';
@@ -29,7 +30,8 @@ Widget getAssetStatusIcon(
           ),
         ],
       );
-      assetPath = 'assets/status_ok.png';
+      assetPath =
+          shadow ? 'assets/status_ok_shadow.png' : 'assets/status_ok.png';
       break;
     case AssetStatus.workingRequiresAttention:
       icon = Icon(
@@ -37,7 +39,9 @@ Widget getAssetStatusIcon(
         color: Colors.black87,
         size: iconSize,
       );
-      assetPath = 'assets/status_working.png';
+      assetPath = shadow
+          ? 'assets/status_working_shadow.png'
+          : 'assets/status_working.png';
       break;
     case AssetStatus.notWorkingRequiresReparation:
       icon = Icon(
@@ -45,7 +49,9 @@ Widget getAssetStatusIcon(
         color: Colors.black87,
         size: iconSize,
       );
-      assetPath = 'assets/status_not_working.png';
+      assetPath = shadow
+          ? 'assets/status_not_working_shadow.png'
+          : 'assets/status_not_working.png';
       break;
     case AssetStatus.noInspection:
       icon = Icon(
@@ -53,7 +59,9 @@ Widget getAssetStatusIcon(
         color: Colors.black87,
         size: iconSize,
       );
-      assetPath = 'assets/status_not_working.png';
+      assetPath = shadow
+          ? 'assets/status_not_working_shadow.png'
+          : 'assets/status_not_working.png';
       break;
     case AssetStatus.disposed:
       icon = Icon(
@@ -61,7 +69,9 @@ Widget getAssetStatusIcon(
         color: Colors.black87,
         size: iconSize,
       );
-      assetPath = 'assets/status_disposed.png';
+      assetPath = shadow
+          ? 'assets/status_disposed_shadow.png'
+          : 'assets/status_disposed.png';
       break;
     default:
       icon = Icon(
@@ -69,7 +79,9 @@ Widget getAssetStatusIcon(
         color: Colors.black87,
         size: iconSize,
       );
-      assetPath = 'assets/status_disposed.png';
+      assetPath = shadow
+          ? 'assets/status_disposed_shadow.png'
+          : 'assets/status_disposed.png';
       break;
   }
   return Stack(
