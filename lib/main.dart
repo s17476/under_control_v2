@@ -73,9 +73,13 @@ import 'features/knowledge_base/presentation/pages/instruction_category_manageme
 import 'features/knowledge_base/presentation/pages/instruction_preview_page.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
+import 'features/tasks/presentation/blocs/task/task_bloc.dart';
+import 'features/tasks/presentation/blocs/task_archive/task_archive_bloc.dart';
+import 'features/tasks/presentation/blocs/task_management/task_management_bloc.dart';
 import 'features/tasks/presentation/blocs/work_request/work_request_bloc.dart';
 import 'features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
 import 'features/tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
+import 'features/tasks/presentation/pages/add_task_page.dart';
 import 'features/tasks/presentation/pages/add_work_request_page.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -206,6 +210,16 @@ class App extends StatelessWidget
           create: (context) => getIt<WorkRequestArchiveBloc>(),
         ),
         BlocProvider(
+          create: (context) => getIt<TaskBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<TaskManagementBloc>(),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (context) => getIt<TaskArchiveBloc>(),
+        ),
+        BlocProvider(
           create: (context) => getIt<FilterBloc>(),
           lazy: false,
         ),
@@ -302,6 +316,7 @@ class App extends StatelessWidget
               const WorkRequestDetailsPage(),
           WorkRequestArchivePage.routeName: (context) =>
               const WorkRequestArchivePage(),
+          AddTaskPage.routeName: (context) => const AddTaskPage(),
         },
         // localization
         localizationsDelegates: const [

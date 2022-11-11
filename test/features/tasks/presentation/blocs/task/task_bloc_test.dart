@@ -6,7 +6,7 @@ import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task/tasks_stream.dart';
 import 'package:under_control_v2/features/tasks/domain/usecases/task/get_tasks_stream.dart';
-import 'package:under_control_v2/features/tasks/presentation/blocs/task/task.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/task/task_bloc.dart';
 
 class MockFilterBloc extends Mock implements Stream<FilterState>, FilterBloc {}
 

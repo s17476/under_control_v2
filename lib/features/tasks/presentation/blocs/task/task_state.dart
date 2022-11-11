@@ -1,4 +1,4 @@
-part of 'task.dart';
+part of 'task_bloc.dart';
 
 abstract class TaskState extends Equatable {
   final String message;

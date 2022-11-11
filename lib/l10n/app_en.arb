@@ -2045,6 +2045,38 @@
     "@work_request_msg_not_deleted": {
       "description": "work request - NOT deleted msg"
     },
+    "task_add": "Add new task",
+    "@task_add": {
+      "description": "task add"
+    },
+    "task_edit": "Edit task",
+    "@task_edit": {
+      "description": "task edit"
+    },
+    "task_convert": "Convert to task",
+    "@task_convert": {
+      "description": "task convert"
+    },
+    "task_type": "Task type",
+    "@task_type": {
+      "description": "task type"
+    },
+    "task_type_maintenance": "Maintenance",
+    "@task_type_maintenance": {
+      "description": "task type"
+    },
+    "task_type_reparation": "Reparation",
+    "@task_type_reparation": {
+      "description": "task type"
+    },
+    "task_type_inspection": "Inspection",
+    "@task_type_inspection": {
+      "description": "task type"
+    },
+    "task_type_event": "Event",
+    "@task_type_event": {
+      "description": "task type"
+    },
     "task_priority": "Taks priority",
     "@task_priority": {
       "description": "task priority"

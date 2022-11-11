@@ -55,19 +55,19 @@ import 'features/assets/domain/usecases/check_code_availability.dart' as _i67;
 import 'features/assets/domain/usecases/delete_asset.dart' as _i80;
 import 'features/assets/domain/usecases/get_assets_stream.dart' as _i100;
 import 'features/assets/domain/usecases/update_asset.dart' as _i140;
-import 'features/assets/presentation/blocs/asset/asset_bloc.dart' as _i193;
+import 'features/assets/presentation/blocs/asset/asset_bloc.dart' as _i196;
 import 'features/assets/presentation/blocs/asset_action/asset_action_bloc.dart'
     as _i158;
 import 'features/assets/presentation/blocs/asset_action_management/asset_action_management_bloc.dart'
-    as _i184;
+    as _i185;
 import 'features/assets/presentation/blocs/asset_category/asset_category_bloc.dart'
     as _i168;
 import 'features/assets/presentation/blocs/asset_category_management/asset_category_management_bloc.dart'
-    as _i185;
+    as _i186;
 import 'features/assets/presentation/blocs/asset_management/asset_management_bloc.dart'
     as _i169;
 import 'features/assets/presentation/blocs/dashboard_asset_action/dashboard_asset_action_bloc.dart'
-    as _i194;
+    as _i197;
 import 'features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart'
     as _i159;
 import 'features/authentication/data/repositories/authentication_repository_impl.dart'
@@ -75,7 +75,7 @@ import 'features/authentication/data/repositories/authentication_repository_impl
 import 'features/authentication/domain/repositories/authentication_repository.dart'
     as _i62;
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i196;
+    as _i199;
 import 'features/authentication/domain/usecases/auto_signin.dart' as _i64;
 import 'features/authentication/domain/usecases/check_email_verification.dart'
     as _i68;
@@ -98,9 +98,9 @@ import 'features/checklists/domain/usecases/get_checklists_stream.dart'
     as _i101;
 import 'features/checklists/domain/usecases/update_checklist.dart' as _i143;
 import 'features/checklists/presentation/blocs/checklist/checklist_bloc.dart'
-    as _i186;
-import 'features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart'
     as _i187;
+import 'features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart'
+    as _i188;
 import 'features/company_profile/data/repositories/company_management_repository_impl.dart'
     as _i72;
 import 'features/company_profile/data/repositories/company_repository_impl.dart'
@@ -130,10 +130,10 @@ import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dar
     as _i181;
 import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
     as _i182;
-import 'features/core/injectable_modules/injectable_modules.dart' as _i197;
+import 'features/core/injectable_modules/injectable_modules.dart' as _i200;
 import 'features/core/network/network_info.dart' as _i23;
 import 'features/core/utils/input_validator.dart' as _i8;
-import 'features/filter/presentation/blocs/filter/filter_bloc.dart' as _i188;
+import 'features/filter/presentation/blocs/filter/filter_bloc.dart' as _i189;
 import 'features/groups/data/datasources/group_local_data_source.dart' as _i118;
 import 'features/groups/data/datasources/group_remote_data_source.dart' as _i7;
 import 'features/groups/data/repositories/group_repository_impl.dart' as _i120;
@@ -195,7 +195,7 @@ import 'features/inventory/domain/usecases/item_category/update_item_category.da
 import 'features/inventory/domain/usecases/update_item.dart' as _i29;
 import 'features/inventory/domain/usecases/update_item_photo.dart' as _i32;
 import 'features/inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart'
-    as _i195;
+    as _i198;
 import 'features/inventory/presentation/blocs/item_action/item_action_bloc.dart'
     as _i121;
 import 'features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart'
@@ -204,7 +204,7 @@ import 'features/inventory/presentation/blocs/item_category/item_category_bloc.d
     as _i177;
 import 'features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart'
     as _i178;
-import 'features/inventory/presentation/blocs/items/items_bloc.dart' as _i190;
+import 'features/inventory/presentation/blocs/items/items_bloc.dart' as _i191;
 import 'features/inventory/presentation/blocs/items_management/items_management_bloc.dart'
     as _i179;
 import 'features/knowledge_base/data/repositories/instruction_category_repository_impl.dart'
@@ -231,7 +231,7 @@ import 'features/knowledge_base/domain/usecases/item_category/update_instruction
 import 'features/knowledge_base/domain/usecases/update_instruction.dart'
     as _i27;
 import 'features/knowledge_base/presentation/blocs/instruction/instruction_bloc.dart'
-    as _i189;
+    as _i190;
 import 'features/knowledge_base/presentation/blocs/instruction_category/instruction_category_bloc.dart'
     as _i173;
 import 'features/knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart'
@@ -280,12 +280,17 @@ import 'features/tasks/domain/usecases/work_order/get_work_requests_stream.dart'
     as _i117;
 import 'features/tasks/domain/usecases/work_order/update_work_request.dart'
     as _i148;
-import 'features/tasks/presentation/blocs/work_request/work_request_bloc.dart'
+import 'features/tasks/presentation/blocs/task/task_bloc.dart' as _i193;
+import 'features/tasks/presentation/blocs/task_archive/task_archive_bloc.dart'
     as _i192;
-import 'features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart'
-    as _i191;
-import 'features/tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart'
+import 'features/tasks/presentation/blocs/task_management/task_management_bloc.dart'
     as _i183;
+import 'features/tasks/presentation/blocs/work_request/work_request_bloc.dart'
+    as _i195;
+import 'features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart'
+    as _i194;
+import 'features/tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart'
+    as _i184;
 import 'features/user_profile/data/repositories/user_files_repository_impl.dart'
     as _i35;
 import 'features/user_profile/data/repositories/user_profile_repository_impl.dart'
@@ -825,73 +830,88 @@ Future<_i1.GetIt> $initGetIt(
         get<_i171.CompanyProfileBloc>(),
         get<_i95.FetchSuspendedUsers>(),
       ));
-  gh.factory<_i183.WorkRequestManagementBloc>(
-      () => _i183.WorkRequestManagementBloc(
+  gh.factory<_i183.TaskManagementBloc>(() => _i183.TaskManagementBloc(
+        companyProfileBloc: get<_i171.CompanyProfileBloc>(),
+        addTask: get<_i46.AddTask>(),
+        deleteTask: get<_i90.DeleteTask>(),
+        updateTask: get<_i33.UpdateTask>(),
+        cancelTask: get<_i65.CancelTask>(),
+      ));
+  gh.factory<_i184.WorkRequestManagementBloc>(
+      () => _i184.WorkRequestManagementBloc(
             companyProfileBloc: get<_i171.CompanyProfileBloc>(),
             addWorkRequest: get<_i49.AddWorkRequest>(),
             deleteWorkRequest: get<_i91.DeleteWorkRequest>(),
             updateWorkRequest: get<_i148.UpdateWorkRequest>(),
             cancelWorkRequest: get<_i66.CancelWorkRequest>(),
           ));
-  gh.factory<_i184.AssetActionManagementBloc>(
-      () => _i184.AssetActionManagementBloc(
+  gh.factory<_i185.AssetActionManagementBloc>(
+      () => _i185.AssetActionManagementBloc(
             companyProfileBloc: get<_i171.CompanyProfileBloc>(),
             addAssetAction: get<_i151.AddAssetAction>(),
             updateAssetAction: get<_i141.UpdateAssetAction>(),
             deleteAssetAction: get<_i81.DeleteAssetAction>(),
           ));
-  gh.factory<_i185.AssetCategoryManagementBloc>(
-      () => _i185.AssetCategoryManagementBloc(
+  gh.factory<_i186.AssetCategoryManagementBloc>(
+      () => _i186.AssetCategoryManagementBloc(
             companyProfileBloc: get<_i171.CompanyProfileBloc>(),
             addAssetCategory: get<_i152.AddAssetCategory>(),
             updateAssetCategory: get<_i142.UpdateAssetCategory>(),
             deleteAssetCategory: get<_i82.DeleteAssetCategory>(),
           ));
-  gh.lazySingleton<_i186.ChecklistBloc>(() => _i186.ChecklistBloc(
+  gh.lazySingleton<_i187.ChecklistBloc>(() => _i187.ChecklistBloc(
         companyProfileBloc: get<_i171.CompanyProfileBloc>(),
         getChecklistsStream: get<_i101.GetChecklistStream>(),
       ));
-  gh.factory<_i187.ChecklistManagementBloc>(() => _i187.ChecklistManagementBloc(
+  gh.factory<_i188.ChecklistManagementBloc>(() => _i188.ChecklistManagementBloc(
         companyProfileBloc: get<_i171.CompanyProfileBloc>(),
         addChecklist: get<_i153.AddChecklist>(),
         updateChecklist: get<_i143.UpdateChecklist>(),
         deleteChecklist: get<_i83.DeleteChecklist>(),
       ));
-  gh.factory<_i188.FilterBloc>(() => _i188.FilterBloc(
+  gh.factory<_i189.FilterBloc>(() => _i189.FilterBloc(
         locationBloc: get<_i180.LocationBloc>(),
         groupBloc: get<_i172.GroupBloc>(),
         userProfileBloc: get<_i167.UserProfileBloc>(),
       ));
-  gh.factory<_i189.InstructionBloc>(() => _i189.InstructionBloc(
-        filterBloc: get<_i188.FilterBloc>(),
+  gh.factory<_i190.InstructionBloc>(() => _i190.InstructionBloc(
+        filterBloc: get<_i189.FilterBloc>(),
         getInstructionsStream: get<_i108.GetInstructionsStream>(),
       ));
-  gh.factory<_i190.ItemsBloc>(() => _i190.ItemsBloc(
-        filterBloc: get<_i188.FilterBloc>(),
+  gh.factory<_i191.ItemsBloc>(() => _i191.ItemsBloc(
+        filterBloc: get<_i189.FilterBloc>(),
         getChecklistsStream: get<_i111.GetItemsStream>(),
       ));
-  gh.factory<_i191.WorkRequestArchiveBloc>(() => _i191.WorkRequestArchiveBloc(
-        filterBloc: get<_i188.FilterBloc>(),
+  gh.factory<_i192.TaskArchiveBloc>(() => _i192.TaskArchiveBloc(
+        filterBloc: get<_i189.FilterBloc>(),
+        getArchiveTasksStream: get<_i96.GetArchiveTasksStream>(),
+      ));
+  gh.factory<_i193.TaskBloc>(() => _i193.TaskBloc(
+        filterBloc: get<_i189.FilterBloc>(),
+        getTasksStream: get<_i114.GetTasksStream>(),
+      ));
+  gh.factory<_i194.WorkRequestArchiveBloc>(() => _i194.WorkRequestArchiveBloc(
+        filterBloc: get<_i189.FilterBloc>(),
         getArchiveWorkRequestsStream: get<_i97.GetArchiveWorkRequestsStream>(),
       ));
-  gh.factory<_i192.WorkRequestBloc>(() => _i192.WorkRequestBloc(
-        filterBloc: get<_i188.FilterBloc>(),
+  gh.factory<_i195.WorkRequestBloc>(() => _i195.WorkRequestBloc(
+        filterBloc: get<_i189.FilterBloc>(),
         getWorkRequestsStream: get<_i117.GetWorkRequestsStream>(),
       ));
-  gh.factory<_i193.AssetBloc>(() => _i193.AssetBloc(
-        filterBloc: get<_i188.FilterBloc>(),
+  gh.factory<_i196.AssetBloc>(() => _i196.AssetBloc(
+        filterBloc: get<_i189.FilterBloc>(),
         getAssetsStream: get<_i100.GetAssetsStream>(),
       ));
-  gh.factory<_i194.DashboardAssetActionBloc>(
-      () => _i194.DashboardAssetActionBloc(
-            filterBloc: get<_i188.FilterBloc>(),
+  gh.factory<_i197.DashboardAssetActionBloc>(
+      () => _i197.DashboardAssetActionBloc(
+            filterBloc: get<_i189.FilterBloc>(),
             getDashboardAssetActionsStream:
                 get<_i103.GetDashboardAssetActionsStream>(),
             getDashboardLastFiveAssetActionsStream:
                 get<_i105.GetDashboardLastFiveAssetActionsStream>(),
           ));
-  gh.factory<_i195.DashboardItemActionBloc>(() => _i195.DashboardItemActionBloc(
-        filterBloc: get<_i188.FilterBloc>(),
+  gh.factory<_i198.DashboardItemActionBloc>(() => _i198.DashboardItemActionBloc(
+        filterBloc: get<_i189.FilterBloc>(),
         getDashboardItemsActionsStream:
             get<_i104.GetDashboardItemsActionsStream>(),
         getDashboardLastFiveItemsActionsStream:
@@ -900,13 +920,13 @@ Future<_i1.GetIt> $initGetIt(
   return get;
 }
 
-class _$DataConnectionCheckerModule extends _i196.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i199.DataConnectionCheckerModule {}
 
 class _$FirebaseAuthenticationService
-    extends _i196.FirebaseAuthenticationService {}
+    extends _i199.FirebaseAuthenticationService {}
 
-class _$FirebaseFirestoreService extends _i197.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i200.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i197.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i200.FirebaseStorageService {}
 
-class _$SharedPreferencesService extends _i197.SharedPreferencesService {}
+class _$SharedPreferencesService extends _i200.SharedPreferencesService {}
