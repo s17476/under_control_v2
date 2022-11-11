@@ -263,6 +263,7 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
       _date = _workRequest!.date;
       _assetId = _workRequest!.assetId;
       _assetStatus = _workRequest!.assetStatus.name;
+      _isConnectedToAsset = _workRequest!.assetId.isNotEmpty;
     }
 
     super.didChangeDependencies();

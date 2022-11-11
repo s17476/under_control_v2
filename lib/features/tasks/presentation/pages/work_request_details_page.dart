@@ -36,6 +36,8 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
 
   List<Choice> _choices = [];
 
+  int _tabsCount = 1;
+
   @override
   void didChangeDependencies() {
     // gets selected asset
@@ -53,6 +55,10 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
         }
       }
       if (_workRequest != null) {
+        // number of tabs
+        _tabsCount = 1;
+        _tabsCount += _workRequest!.images.isNotEmpty ? 1 : 0;
+        _tabsCount += _workRequest!.video.isNotEmpty ? 1 : 0;
         // popup menu items
         _choices = [
           // convert work order
@@ -114,7 +120,7 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
     appBarTitle = AppLocalizations.of(context)!.work_request_details;
 
     return DefaultTabController(
-      length: 3,
+      length: _tabsCount,
       child: Scaffold(
         appBar: AppBar(
           title: Text(appBarTitle),
@@ -163,20 +169,22 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
                   size: tabBarIconSize,
                 ),
               ),
-              Tab(
-                icon: Icon(
-                  Icons.image,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
+              if (_workRequest!.images.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    Icons.image,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
                 ),
-              ),
-              Tab(
-                icon: Icon(
-                  FontAwesomeIcons.play,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
+              if (_workRequest!.video.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    FontAwesomeIcons.play,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
                 ),
-              ),
             ],
             indicatorColor: tabBarIconColor,
           ),
@@ -194,8 +202,10 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
                 child: TabBarView(
                   children: [
                     WorkRequestInfoTab(workRequest: _workRequest!),
-                    ImagesTab(images: _workRequest!.images),
-                    VideoTab(videoUrl: _workRequest!.video),
+                    if (_workRequest!.images.isNotEmpty)
+                      ImagesTab(images: _workRequest!.images),
+                    if (_workRequest!.video.isNotEmpty)
+                      VideoTab(videoUrl: _workRequest!.video),
                   ],
                 ),
               ),
