@@ -2061,6 +2061,10 @@
     "@task_type": {
       "description": "task type"
     },
+    "task_type_select": "Select task type",
+    "@task_type_select": {
+      "description": "task type selection"
+    },
     "task_type_maintenance": "Maintenance",
     "@task_type_maintenance": {
       "description": "task type"
@@ -2079,6 +2083,10 @@
     },
     "task_priority": "Taks priority",
     "@task_priority": {
+      "description": "task priority"
+    },
+    "task_priority_and_type": "Taks priority and type",
+    "@task_priority_and_type": {
       "description": "task priority"
     },
     "task_priority_low": "Low",

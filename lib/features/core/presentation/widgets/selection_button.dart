@@ -57,9 +57,15 @@ class SelectionButton<T> extends StatelessWidget {
                 if (icon != null)
                   Padding(
                     padding: const EdgeInsets.all(16),
-                    child: FaIcon(
+                    child: Icon(
                       icon,
                       size: iconSize,
+                      shadows: const [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 25,
+                        ),
+                      ],
                     ),
                   ),
                 Expanded(

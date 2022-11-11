@@ -15,7 +15,7 @@ enum TaskType {
         return TaskType.maintenance;
       case 'reparation':
         return TaskType.reparation;
-      case 'insprction':
+      case 'inspection':
         return TaskType.inspection;
       case 'event':
         return TaskType.event;

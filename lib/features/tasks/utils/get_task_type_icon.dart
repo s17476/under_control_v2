@@ -7,6 +7,7 @@ Widget getTaskTypeIcon(
   TaskType type, [
   double iconSize = 36,
   bool shadow = true,
+  Color? color,
 ]) {
   IconData iconData;
   switch (type) {
@@ -29,8 +30,14 @@ Widget getTaskTypeIcon(
   return Icon(
     iconData,
     size: iconSize,
-    // TODO
-    // add shadow
-    shadows: shadow ? [] : null,
+    color: color,
+    shadows: shadow
+        ? [
+            const Shadow(
+              color: Colors.black,
+              blurRadius: 25,
+            ),
+          ]
+        : null,
   );
 }

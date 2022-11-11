@@ -498,6 +498,7 @@
     "task_edit": "Edytuj zadanie",
     "task_convert": "Konwertuj na zadanie",
     "task_type": "Typ zadania",
+    "task_type_select": "Wybierz typ zadania",
     "task_type_maintenance": "Konserwacja",
     "task_type_reparation": "Naprawa",
     "task_type_inspection": "Przegląd techniczny",

@@ -8,6 +8,9 @@ import 'package:under_control_v2/features/tasks/data/models/task/task_model.dart
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_type_card.dart';
 
+import '../../../assets/presentation/widgets/add_asset_images_card.dart';
+import '../../../assets/presentation/widgets/add_asset_instructions.dart';
+import '../../../assets/presentation/widgets/add_asset_location_card.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -18,6 +21,11 @@ import '../../domain/entities/task_priority.dart';
 import '../../domain/entities/work_request/work_request.dart';
 import '../blocs/task/task_bloc.dart';
 import '../widgets/add_task/add_task_card.dart';
+import '../widgets/add_task/add_task_summary_card.dart';
+import '../widgets/add_video_card.dart';
+import '../widgets/add_work_request/add_work_request_set_asset_card.dart';
+import '../widgets/set_asset_status_card.dart';
+import '../widgets/set_priority_card.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -52,10 +60,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   bool _isAddAssetVisible = false;
   bool _isConnectedToAsset = false;
+  bool _isAddInstructionsVisible = false;
 
   DateTime _date = DateTime.now();
 
   List<File> _images = [];
+  List<String> _instructions = [];
 
   File? _videoFile;
 
@@ -132,6 +142,24 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
     //   Navigator.pop(context);
     // }
+  }
+
+  void _toggleAddInstructionsVisibility() {
+    setState(() {
+      _isAddInstructionsVisible = !_isAddInstructionsVisible;
+    });
+  }
+
+  void _toggleInstructionSelection(String instruction) {
+    if (!_instructions.contains(instruction)) {
+      setState(() {
+        _instructions.add(instruction);
+      });
+    } else {
+      setState(() {
+        _instructions.remove(instruction);
+      });
+    }
   }
 
   void _setVideo(File? video) {
@@ -238,6 +266,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
       FocusScope.of(context).unfocus();
       if (_isAddAssetVisible) {
         _toggleAddAssetVisibility();
+      } else if (_isAddInstructionsVisible) {
+        _toggleAddInstructionsVisibility();
       }
     });
     super.initState();
@@ -285,6 +315,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       _assetStatus = _task!.assetStatus.name;
       _isConnectedToAsset = _task!.assetId.isNotEmpty;
       _taskType = _task!.type.name;
+      _instructions = _task!.instructions;
     }
 
     super.didChangeDependencies();
@@ -313,56 +344,63 @@ class _AddTaskPageState extends State<AddTaskPage> {
         setTaskType: _setTaskType,
         taskType: _taskType,
       ),
-      // AddWorkRequestSetAssetCard(
-      //   setIsConnectedToAsset: _setIsConnectedToAsset,
-      //   isConnectedToAsset: _isConnectedToAsset,
-      //   setAssetId: _setAssetId,
-      //   setLocation: _setLocation,
-      //   assetId: _assetId,
-      // ),
-      // if (_isConnectedToAsset)
-      //   SetAssetStatusCard(
-      //     setStatus: _setAssetStatus,
-      //     assetStatus: _assetStatus,
-      //   ),
-      // if (!_isConnectedToAsset)
-      //   KeepAlivePage(
-      //     child: AddAssetLocationCard(
-      //       selectedLocation: _locationId,
-      //       setLocation: _setLocation,
-      //     ),
-      //   ),
-      // AddAssetImagesCard(
-      //   addImage: _addImage,
-      //   removeImage: _removeImage,
-      //   images: _images,
-      //   loading: _loadingImages,
-      // ),
-      // KeepAlivePage(
-      //   child: AddVideoCard(
-      //     videoFile: _videoFile,
-      //     videoUrl: (_workRequest != null && _workRequest!.video.isNotEmpty)
-      //         ? _workRequest!.video
-      //         : null,
-      //     updateVideo: _setVideo,
-      //   ),
-      // ),
-      // SetPriorityCard(
-      //   setPriority: _setPriority,
-      //   priority: _priority,
-      // ),
-      // AddWorkRequestSummaryCard(
-      //   pageController: _pageController,
-      //   titleTextEditingController: _titleTextEditingController,
-      //   descriptionTextEditingController: _descriptionTextEditingController,
-      //   date: _date,
-      //   locationId: _locationId,
-      //   assetId: _assetId,
-      //   priority: _priority,
-      //   assetStatus: _assetStatus,
-      //   isConnectedToAsset: _isConnectedToAsset,
-      //   images: _images,
-      // ),
+      AddWorkRequestSetAssetCard(
+        setIsConnectedToAsset: _setIsConnectedToAsset,
+        isConnectedToAsset: _isConnectedToAsset,
+        setAssetId: _setAssetId,
+        setLocation: _setLocation,
+        assetId: _assetId,
+      ),
+      if (_isConnectedToAsset)
+        SetAssetStatusCard(
+          setStatus: _setAssetStatus,
+          assetStatus: _assetStatus,
+        ),
+      if (!_isConnectedToAsset)
+        KeepAlivePage(
+          child: AddAssetLocationCard(
+            selectedLocation: _locationId,
+            setLocation: _setLocation,
+          ),
+        ),
+      AddAssetImagesCard(
+        addImage: _addImage,
+        removeImage: _removeImage,
+        images: _images,
+        loading: _loadingImages,
+      ),
+      KeepAlivePage(
+        child: AddVideoCard(
+          videoFile: _videoFile,
+          videoUrl: (_workRequest != null && _workRequest!.video.isNotEmpty)
+              ? _workRequest!.video
+              : null,
+          updateVideo: _setVideo,
+        ),
+      ),
+      AddAssetInstructionsCard(
+        toggleSelection: _toggleInstructionSelection,
+        toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
+        instructions: _instructions,
+        isAddInstructionsVisible: _isAddInstructionsVisible,
+      ),
+      SetPriorityCard(
+        setPriority: _setPriority,
+        priority: _priority,
+      ),
+      AddTaskSummaryCard(
+        pageController: _pageController,
+        titleTextEditingController: _titleTextEditingController,
+        descriptionTextEditingController: _descriptionTextEditingController,
+        date: _date,
+        locationId: _locationId,
+        assetId: _assetId,
+        priority: _priority,
+        assetStatus: _assetStatus,
+        isConnectedToAsset: _isConnectedToAsset,
+        images: _images,
+        type: _taskType,
+      ),
     ];
 
     DateTime preBackpress = DateTime.now();
@@ -372,6 +410,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
         if (_isAddAssetVisible) {
           _toggleAddAssetVisibility();
           return false;
+        } else if (_isAddInstructionsVisible) {
+          _toggleAddInstructionsVisibility();
         }
         // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);
