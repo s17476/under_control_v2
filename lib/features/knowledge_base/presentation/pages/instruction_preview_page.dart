@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
+import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/presentation/widgets/user_info_card.dart';
 import '../../../core/utils/choice.dart';
@@ -157,6 +158,14 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
               : AppBar(
                   title: Text(_appBarTitle),
                   centerTitle: true,
+                  leading: Builder(
+                    builder: (context) {
+                      return GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: const AppBarAnimatedIcon(isBackIcon: true),
+                      );
+                    },
+                  ),
                   actions: [
                     // popup menu
                     if (getUserPremission(

@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_documents_tab.dart';
 import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_instructions_tab.dart';
 
+import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/get_user_premission.dart';
@@ -129,6 +130,14 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
         appBar: AppBar(
           title: Text(appBarTitle),
           centerTitle: true,
+          leading: Builder(
+            builder: (context) {
+              return GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: const AppBarAnimatedIcon(isBackIcon: true),
+              );
+            },
+          ),
           actions: [
             // popup menu
             if (getUserPremission(

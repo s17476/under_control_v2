@@ -11,16 +11,16 @@ import '../../../../assets/presentation/blocs/asset_category_management/asset_ca
 import '../../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../../company_profile/presentation/blocs/company_management/company_management_bloc.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../../groups/presentation/blocs/group/group_bloc.dart';
+import '../../../../inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
 import '../../../../inventory/presentation/blocs/item_action/item_action_bloc.dart';
 import '../../../../inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart';
 import '../../../../inventory/presentation/blocs/item_category/item_category_bloc.dart';
 import '../../../../inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart';
-import '../../../../knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
-import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
-import '../../../../inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
 import '../../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../../inventory/presentation/blocs/items_management/items_management_bloc.dart';
+import '../../../../knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
 import '../../../../knowledge_base/presentation/blocs/instruction_category/instruction_category_bloc.dart';
 import '../../../../knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart';
 import '../../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
@@ -34,7 +34,12 @@ import '../../../../tasks/presentation/blocs/work_request_management/work_reques
 import '../../../../user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 
 class AppBarAnimatedIcon extends StatefulWidget {
-  const AppBarAnimatedIcon({Key? key}) : super(key: key);
+  const AppBarAnimatedIcon({
+    Key? key,
+    this.isBackIcon = false,
+  }) : super(key: key);
+
+  final bool isBackIcon;
 
   @override
   State<AppBarAnimatedIcon> createState() => _AppBarAnimatedIconState();
@@ -352,7 +357,11 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
       child: AnimatedBuilder(
         animation: _animationController,
         builder: (context, child) {
-          final child = Image.asset('assets/under_control_menu_icon.png');
+          final child = Image.asset(
+            widget.isBackIcon
+                ? 'assets/under_control_back_icon.png'
+                : 'assets/under_control_menu_icon.png',
+          );
 
           return Transform(
             transform: Matrix4.rotationY(_rotateY.value * 2 * math.pi),

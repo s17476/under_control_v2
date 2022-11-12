@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/get_user_premission.dart';
@@ -115,6 +116,14 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
         appBar: AppBar(
           title: Text(appBarTitle),
           centerTitle: true,
+          leading: Builder(
+            builder: (context) {
+              return GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: const AppBarAnimatedIcon(isBackIcon: true),
+              );
+            },
+          ),
           actions: [
             // popup menu
             if (getUserPremission(

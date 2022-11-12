@@ -112,6 +112,7 @@ flutter:
   assets:
     - assets/under_control_icon.png
     - assets/under_control_menu_icon.png
+    - assets/under_control_back_icon.png
     - assets/undercontrol-adaptive.png
     - assets/undercontrol-without-frame.png
     - assets/person.png
