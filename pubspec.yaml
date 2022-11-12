@@ -86,19 +86,14 @@ dev_dependencies:
   get_it: ^7.2.0
   build_runner:
   injectable_generator: ^1.5.2
-  
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^1.0.0
 
 flutter_icons:
   android: true
   ios: true
+  remove_alpha_ios: true
   image_path: "dev_assets/undercontrol.png"
+  adaptive_icon_background: '#FFFFFF'
   adaptive_icon_foreground: "dev_assets/undercontrol-adaptive.png"
 
 # For information on the generic Dart part of this file, see the

@@ -25,6 +25,9 @@ import '../../../../knowledge_base/presentation/blocs/instruction_category/instr
 import '../../../../knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart';
 import '../../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../../../tasks/presentation/blocs/task/task_bloc.dart';
+import '../../../../tasks/presentation/blocs/task_archive/task_archive_bloc.dart';
+import '../../../../tasks/presentation/blocs/task_management/task_management_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request/work_request_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
@@ -311,7 +314,34 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
         ),
         BlocListener<WorkRequestArchiveBloc, WorkRequestArchiveState>(
           listener: (context, state) {
-            if (state is WorkRequestLoadingState) {
+            if (state is WorkRequestArchiveLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<TaskBloc, TaskState>(
+          listener: (context, state) {
+            if (state is TaskLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<TaskManagementBloc, TaskManagementState>(
+          listener: (context, state) {
+            if (state is TaskManagementLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<TaskArchiveBloc, TaskArchiveState>(
+          listener: (context, state) {
+            if (state is TaskArchiveLoadingState) {
               _startAnimation();
             } else {
               _stopAnimation();
