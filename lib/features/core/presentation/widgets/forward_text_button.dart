@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 
 class ForwardTextButton extends StatelessWidget {
   final Function function;
+  final Function onHoldFunction;
   final IconData icon;
   final Color color;
   final String label;
   const ForwardTextButton({
     Key? key,
+    required this.function,
+    required this.onHoldFunction,
     required this.icon,
     required this.color,
     required this.label,
-    required this.function,
   }) : super(key: key);
 
   @override
@@ -19,6 +21,10 @@ class ForwardTextButton extends StatelessWidget {
       onPressed: () {
         FocusScope.of(context).unfocus();
         function();
+      },
+      onLongPress: () {
+        FocusScope.of(context).unfocus();
+        onHoldFunction();
       },
       child: Row(
         children: [

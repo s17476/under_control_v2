@@ -73,6 +73,25 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
     }
   }
 
+  // fast backward
+  void _fastBackward() {
+    // first page
+    if ((widget.pageController.page! + 0.5).toInt() == 0) {
+      if (widget.firstPageBackwardButtonFunction == null) {
+        Navigator.pop(context);
+      } else {
+        widget.firstPageBackwardButtonFunction!();
+      }
+      // other pages
+    } else {
+      widget.pageController.animateToPage(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
   IconData _getBackwardIcon() {
     // first page
     if (widget.pageController.page == null ||
@@ -120,6 +139,24 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
       // other pages
     } else {
       widget.pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  // fast forward
+  void _fastForward() {
+    // last page
+    if ((widget.pageController.page! + 0.5).toInt() ==
+        widget.pages.length - 1) {
+      if (widget.lastPageForwardButtonFunction != null) {
+        widget.lastPageForwardButtonFunction!();
+      }
+      // other pages
+    } else {
+      widget.pageController.animateToPage(
+        widget.pages.length,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -219,6 +256,7 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
                     ? const SizedBox()
                     : BackwardTextButton(
                         function: _backward,
+                        onHoldFunction: _fastBackward,
                         icon: _getBackwardIcon(),
                         label: _getBackwardLabel(context),
                         color: _getBackwardColor(),
@@ -233,6 +271,7 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
                     ? const SizedBox()
                     : ForwardTextButton(
                         function: _forward,
+                        onHoldFunction: _fastForward,
                         icon: _getForwardIcon(),
                         label: _getForwardLabel(context),
                         color: _getForwardColor(),

@@ -12,7 +12,7 @@ Widget getTaskTypeIcon(
   IconData iconData;
   switch (type) {
     case TaskType.maintenance:
-      iconData = Icons.health_and_safety_outlined;
+      iconData = Icons.settings_suggest;
       break;
     case TaskType.reparation:
       iconData = Icons.build;

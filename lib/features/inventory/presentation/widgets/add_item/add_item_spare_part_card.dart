@@ -81,35 +81,57 @@ class _AddItemSparePartCardState extends State<AddItemSparePartCard>
             ),
           ),
 
-          // bottom navigation
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                BackwardTextButton(
-                  icon: Icons.arrow_back_ios_new,
-                  color: Theme.of(context).textTheme.headline5!.color!,
-                  label: AppLocalizations.of(context)!
-                      .user_profile_add_user_personal_data_back,
-                  function: () => widget.pageController.previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  ),
-                ),
-                ForwardTextButton(
-                  color: Theme.of(context).textTheme.headline5!.color!,
-                  label:
-                      AppLocalizations.of(context)!.user_profile_add_user_next,
-                  function: () => widget.pageController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  ),
-                  icon: Icons.arrow_forward_ios_outlined,
-                ),
-              ],
-            ),
-          ),
+          // // bottom navigation
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       BackwardTextButton(
+          //         icon: Icons.arrow_back_ios_new,
+          //         color: Theme.of(context).textTheme.headline5!.color!,
+          //         label: AppLocalizations.of(context)!
+          //             .user_profile_add_user_personal_data_back,
+          //         function: () {
+          //           FocusScope.of(context).unfocus();
+          //           widget.pageController.previousPage(
+          //           duration: const Duration(milliseconds: 300),
+          //           curve: Curves.easeInOut,
+          //         );
+          //         },
+          //         onHoldFunction: () {
+          //           FocusScope.of(context).unfocus();
+          //           widget.pageController.animateToPage(
+          //             0,
+          //             duration: const Duration(milliseconds: 300),
+          //             curve: Curves.easeInOut,
+          //           );
+          //         },
+          //       ),
+          //       ForwardTextButton(
+          //         color: Theme.of(context).textTheme.headline5!.color!,
+          //         label:
+          //             AppLocalizations.of(context)!.user_profile_add_user_next,
+          //         function: () {
+          //           FocusScope.of(context).unfocus();
+          //           widget.pageController.nextPage(
+          //           duration: const Duration(milliseconds: 300),
+          //           curve: Curves.easeInOut,
+          //         );
+          //         },
+          //         onHoldFunction: () {
+          //           FocusScope.of(context).unfocus();
+          //           widget.pageController.animateToPage(
+          //             widget.,
+          //             duration: const Duration(milliseconds: 300),
+          //             curve: Curves.easeInOut,
+          //           );
+          //         },
+          //         icon: Icons.arrow_forward_ios_outlined,
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );
