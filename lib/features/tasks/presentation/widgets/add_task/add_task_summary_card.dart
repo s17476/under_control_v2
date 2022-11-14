@@ -161,7 +161,7 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
                         ],
                       ),
                       pageController: pageController,
-                      onTapAnimateToPage: 1,
+                      onTapAnimateToPage: 6,
                     ),
                     const SizedBox(
                       height: 8,
@@ -202,7 +202,7 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
                           ],
                         ),
                         pageController: pageController,
-                        onTapAnimateToPage: 3,
+                        onTapAnimateToPage: 2,
                       ),
                     if (isConnectedToAsset)
                       const SizedBox(
@@ -268,7 +268,7 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
                         },
                         child: Text(assetString),
                         pageController: pageController,
-                        onTapAnimateToPage: 2,
+                        onTapAnimateToPage: 1,
                       ),
                     if (isConnectedToAsset)
                       const SizedBox(
@@ -284,7 +284,7 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
                           : null,
                       child: Text(locationString),
                       pageController: pageController,
-                      onTapAnimateToPage: 3,
+                      onTapAnimateToPage: 2,
                     ),
                     const SizedBox(
                       height: 8,
@@ -302,7 +302,7 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
                                 .asset_add_images_not_added,
                       ),
                       pageController: pageController,
-                      onTapAnimateToPage: 4,
+                      onTapAnimateToPage: 3,
                     ),
                     const SizedBox(
                       height: 8,
@@ -315,7 +315,7 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
                         validator: () => null,
                         child: const SizedBox(),
                         pageController: pageController,
-                        onTapAnimateToPage: 5,
+                        onTapAnimateToPage: 4,
                       ),
 
                     const SizedBox(

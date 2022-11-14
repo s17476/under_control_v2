@@ -10,24 +10,28 @@ class DurationUnitDropdownButton extends StatelessWidget {
     Key? key,
     required this.selectedUnit,
     required this.onSelected,
+    this.isEnabled = true,
   }) : super(key: key);
 
   final String selectedUnit;
   final Function(String onSelected) onSelected;
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
-    final dropdownItems = DurationUnit.values
-        .where((unit) => unit.name.isNotEmpty)
-        .map<DropdownMenuItem<String>>(
-          (unit) => DropdownMenuItem(
-            value: unit.name,
-            child: Text(
-              getLocalizedDurationUnitName(context, unit),
-            ),
-          ),
-        )
-        .toList();
+    final dropdownItems = isEnabled
+        ? DurationUnit.values
+            .where((unit) => unit.name.isNotEmpty)
+            .map<DropdownMenuItem<String>>(
+              (unit) => DropdownMenuItem(
+                value: unit.name,
+                child: Text(
+                  getLocalizedDurationUnitName(context, unit),
+                ),
+              ),
+            )
+            .toList()
+        : <DropdownMenuItem<String>>[];
     // adds initial element
     if (selectedUnit.isEmpty) {
       dropdownItems.add(

@@ -2120,5 +2120,21 @@
     "task_add_video": "Add video",
     "@task_add_video": {
       "description": "task/work request add video"
+    },
+    "task_execution_date": "Planned execution date",
+    "@task_execution_date": {
+      "description": "task - palnned execution date"
+    },
+    "task_is_cyclic": "This is a cyclic task",
+    "@task_is_cyclic": {
+      "description": "task - cyclic"
+    },
+    "task_not_is_cyclic": "This is not a cyclic task",
+    "@task_not_is_cyclic": {
+      "description": "task - not cyclic"
+    },
+    "task_interval": "Task interval",
+    "@task_interval": {
+      "description": "task - interval"
     }
 }

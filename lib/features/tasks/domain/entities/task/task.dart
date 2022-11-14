@@ -33,6 +33,7 @@ class Task extends Equatable {
   final List<String> actions;
   final List<String> assignedGroups;
   final List<String> assignedUsers;
+  // add items + amount and reserve parts
 
   const Task({
     required this.id,

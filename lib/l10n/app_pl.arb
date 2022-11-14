@@ -511,5 +511,9 @@
     "task_connected_asset_yes": "Połączone z aktywami",
     "task_connected_asset_no": "Nie połączone z aktywami",
     "task_connected_asset_select": "Wybierz aktywa",
-    "task_add_video": "Dodaj wideo"
+    "task_add_video": "Dodaj wideo",
+    "task_execution_date": "Planowana data wykonania",
+    "task_is_cyclic": "To jest zadanie cykliczne",
+    "task_not_is_cyclic": "To nie jest zadanie cykliczne",
+    "task_interval": "Interwał zadania"
 }

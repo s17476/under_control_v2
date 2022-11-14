@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../domain/entities/task_priority.dart';
 import '../domain/entities/task_type.dart';
 import 'get_task_type_icon.dart';

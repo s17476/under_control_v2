@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 import 'package:under_control_v2/features/tasks/data/models/task/task_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_set_cyclic.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_type_card.dart';
 
 import '../../../assets/presentation/widgets/add_asset_images_card.dart';
@@ -57,12 +58,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
   String _priority = TaskPriority.low.name;
   String _assetStatus = '';
   String _taskType = '';
+  String _durationUnit = '';
+  int _duration = 0;
 
   bool _isAddAssetVisible = false;
   bool _isConnectedToAsset = false;
   bool _isAddInstructionsVisible = false;
+  bool _isCyclicTask = false;
 
   DateTime _date = DateTime.now();
+  DateTime _executionDate = DateTime.now();
 
   List<File> _images = [];
   List<String> _instructions = [];
@@ -165,6 +170,40 @@ class _AddTaskPageState extends State<AddTaskPage> {
   void _setVideo(File? video) {
     setState(() {
       _videoFile = video;
+    });
+  }
+
+  void _setDuration(String value) {
+    setState(() {
+      _duration = int.parse(value);
+    });
+  }
+
+  void _setDurationUnit(String value) {
+    setState(() {
+      _durationUnit = value;
+      _duration = 0;
+    });
+  }
+
+  void _setIsCyclicTask(bool value) {
+    if (value) {
+      setState(() {
+        _isCyclicTask = value;
+      });
+    } else {
+      setState(() {
+        _isCyclicTask = value;
+
+        _durationUnit = '';
+        _duration = 0;
+      });
+    }
+  }
+
+  void _setExecutionDate(DateTime date) {
+    setState(() {
+      _executionDate = date;
     });
   }
 
@@ -316,6 +355,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
       _isConnectedToAsset = _task!.assetId.isNotEmpty;
       _taskType = _task!.type.name;
       _instructions = _task!.instructions;
+      _durationUnit = _task!.durationUnit.name;
+      _duration = _task!.duration;
+      _isCyclicTask = _task!.isCyclictask;
+      _executionDate = _task!.executionDate;
     }
 
     super.didChangeDependencies();
@@ -339,10 +382,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
           titleTextEditingController: _titleTextEditingController,
           descriptionTextEditingController: _descriptionTextEditingController,
         ),
-      ),
-      AddTaskTypeCard(
-        setTaskType: _setTaskType,
-        taskType: _taskType,
       ),
       AddWorkRequestSetAssetCard(
         setIsConnectedToAsset: _setIsConnectedToAsset,
@@ -383,6 +422,20 @@ class _AddTaskPageState extends State<AddTaskPage> {
         toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
         instructions: _instructions,
         isAddInstructionsVisible: _isAddInstructionsVisible,
+      ),
+      AddTaskSetCyclicCard(
+        executionDate: _executionDate,
+        setExecutionDate: _setExecutionDate,
+        isCyclicTask: _isCyclicTask,
+        setIsCyclicTask: _setIsCyclicTask,
+        durationUnit: _durationUnit,
+        setDurationUnit: _setDurationUnit,
+        duration: _duration,
+        setDuration: _setDuration,
+      ),
+      AddTaskTypeCard(
+        setTaskType: _setTaskType,
+        taskType: _taskType,
       ),
       SetPriorityCard(
         setPriority: _setPriority,
