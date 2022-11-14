@@ -515,5 +515,8 @@
     "task_execution_date": "Planowana data wykonania",
     "task_is_cyclic": "To jest zadanie cykliczne",
     "task_not_is_cyclic": "To nie jest zadanie cykliczne",
-    "task_interval": "Interwał zadania"
+    "task_interval": "Interwał zadania",
+    "task_assign_users": "Przypisz użytkowników",
+    "task_assign_groups": "Przypisz grupy",
+    "task_assign_groups_or_users": "Przypisz grupy lub użytkowników"
 }

@@ -2136,5 +2136,17 @@
     "task_interval": "Task interval",
     "@task_interval": {
       "description": "task - interval"
+    },
+    "task_assign_users": "Assign users",
+    "@task_assign_users": {
+      "description": "task - assign users"
+    },
+    "task_assign_groups": "Assign groups",
+    "@task_assign_groups": {
+      "description": "task - assign groups"
+    },
+    "task_assign_groups_or_users": "Assign groups or users",
+    "@task_assign_groups_or_users": {
+      "description": "task - assign groups or users"
     }
 }

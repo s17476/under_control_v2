@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 import 'package:under_control_v2/features/tasks/data/models/task/task_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_assign_card.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_set_cyclic.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_type_card.dart';
 
@@ -64,6 +65,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   bool _isAddAssetVisible = false;
   bool _isConnectedToAsset = false;
   bool _isAddInstructionsVisible = false;
+  bool _isAddGroupsVisible = false;
+  bool _isAddUsersVisible = false;
   bool _isCyclicTask = false;
 
   DateTime _date = DateTime.now();
@@ -71,6 +74,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   List<File> _images = [];
   List<String> _instructions = [];
+  List<String> _assignedGroups = [];
+  List<String> _assignedUsers = [];
 
   File? _videoFile;
 
@@ -155,6 +160,18 @@ class _AddTaskPageState extends State<AddTaskPage> {
     });
   }
 
+  void _toggleAddGroupsVisibility() {
+    setState(() {
+      _isAddGroupsVisible = !_isAddGroupsVisible;
+    });
+  }
+
+  void _toggleAddUsersVisibility() {
+    setState(() {
+      _isAddUsersVisible = !_isAddUsersVisible;
+    });
+  }
+
   void _toggleInstructionSelection(String instruction) {
     if (!_instructions.contains(instruction)) {
       setState(() {
@@ -163,6 +180,36 @@ class _AddTaskPageState extends State<AddTaskPage> {
     } else {
       setState(() {
         _instructions.remove(instruction);
+      });
+    }
+  }
+
+  void _toggleUserSelection(String user) {
+    if (!_assignedUsers.contains(user)) {
+      setState(() {
+        _assignedUsers.add(user);
+        if (_assignedGroups.isNotEmpty) {
+          _assignedGroups.clear();
+        }
+      });
+    } else {
+      setState(() {
+        _assignedUsers.remove(user);
+      });
+    }
+  }
+
+  void _toggleGroupSelection(String group) {
+    if (!_assignedGroups.contains(group)) {
+      setState(() {
+        _assignedGroups.add(group);
+        if (_assignedUsers.isNotEmpty) {
+          _assignedUsers.clear();
+        }
+      });
+    } else {
+      setState(() {
+        _assignedGroups.remove(group);
       });
     }
   }
@@ -307,6 +354,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
         _toggleAddAssetVisibility();
       } else if (_isAddInstructionsVisible) {
         _toggleAddInstructionsVisibility();
+      } else if (_isAddGroupsVisible) {
+        _toggleAddGroupsVisibility();
+      } else if (_isAddUsersVisible) {
+        _toggleAddUsersVisibility();
       }
     });
     super.initState();
@@ -359,6 +410,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
       _duration = _task!.duration;
       _isCyclicTask = _task!.isCyclictask;
       _executionDate = _task!.executionDate;
+      _assignedUsers = _task!.assignedUsers;
+      _assignedGroups = _task!.assignedGroups;
     }
 
     super.didChangeDependencies();
@@ -433,6 +486,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
         duration: _duration,
         setDuration: _setDuration,
       ),
+      AddTaskAssignCard(
+        toggleUserSelection: _toggleUserSelection,
+        toggleGroupSelection: _toggleGroupSelection,
+        toggleAddUsersVisibility: _toggleAddUsersVisibility,
+        toggleAddGroupsVisibility: _toggleAddGroupsVisibility,
+        assignedUsers: _assignedUsers,
+        assignedGroups: _assignedGroups,
+        isAddUsersVisible: _isAddUsersVisible,
+        isAddGroupsVisible: _isAddGroupsVisible,
+      ),
       AddTaskTypeCard(
         setTaskType: _setTaskType,
         taskType: _taskType,
@@ -465,6 +528,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
           return false;
         } else if (_isAddInstructionsVisible) {
           _toggleAddInstructionsVisibility();
+          return false;
+        } else if (_isAddGroupsVisible) {
+          _toggleAddGroupsVisibility();
+          return false;
+        } else if (_isAddUsersVisible) {
+          _toggleAddUsersVisibility();
+          return false;
         }
         // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);
