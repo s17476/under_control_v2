@@ -19,6 +19,8 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.scrollPadding = const EdgeInsets.all(20),
     this.maxLines,
+    this.isDense,
+    this.contentPadding,
     this.textAlign = TextAlign.start,
   }) : super(key: key);
 
@@ -39,6 +41,8 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLines;
   final TextAlign textAlign;
   final AutovalidateMode? autovalidateMode;
+  final bool? isDense;
+  final EdgeInsetsGeometry? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +59,18 @@ class CustomTextFormField extends StatelessWidget {
       maxLines: maxLines,
       onChanged: onChanged,
       decoration: InputDecoration(
+        isDense: isDense,
         prefixIcon: prefixIcon,
         suffix: suffixIcon,
         floatingLabelStyle: TextStyle(
           color: Theme.of(context).textTheme.headline1!.color,
         ),
         labelText: labelText,
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 16,
-        ),
+        contentPadding: contentPadding ??
+            const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 16,
+            ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,

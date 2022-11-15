@@ -15,6 +15,7 @@ class AddTaskSparePartCard extends StatefulWidget {
     Key? key,
     required this.toggleAssetSelection,
     required this.toggleItemSelection,
+    required this.updateSparePartQuantity,
     required this.toggleAddAssetVisibility,
     required this.toggleAddItemVisibility,
     required this.sparePartsAssets,
@@ -25,6 +26,7 @@ class AddTaskSparePartCard extends StatefulWidget {
 
   final Function(String) toggleAssetSelection;
   final Function(SparePartItemModel) toggleItemSelection;
+  final Function(String, double) updateSparePartQuantity;
   final Function() toggleAddAssetVisibility;
   final Function() toggleAddItemVisibility;
   final List<String> sparePartsAssets;
@@ -79,6 +81,8 @@ class _AddTaskSparePartCardState extends State<AddTaskSparePartCard>
                             InventorySparePartsListWithQuantity(
                               items: widget.sparePartsItems,
                               onSelected: widget.toggleItemSelection,
+                              updateSparePartQuantity:
+                                  widget.updateSparePartQuantity,
                             ),
                           ],
                         ),

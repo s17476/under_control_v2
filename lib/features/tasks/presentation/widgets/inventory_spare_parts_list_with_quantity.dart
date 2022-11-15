@@ -13,10 +13,12 @@ class InventorySparePartsListWithQuantity extends StatelessWidget {
     Key? key,
     required this.items,
     required this.onSelected,
+    required this.updateSparePartQuantity,
   }) : super(key: key);
 
   final List<SparePartItemModel> items;
   final Function(SparePartItemModel) onSelected;
+  final Function(String, double) updateSparePartQuantity;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +74,7 @@ class InventorySparePartsListWithQuantity extends StatelessWidget {
                               (i) => i.itemId == filteredItems[index].id),
                           searchQuery: '',
                           onSelected: onSelected,
+                          updateSparePartQuantity: updateSparePartQuantity,
                         );
                       },
                     ),

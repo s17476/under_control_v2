@@ -396,6 +396,22 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
+  void _updateSparePartItemModel(String itemId, double quantity) {
+    final index = _sparePartsItems.indexWhere((part) => part.itemId == itemId);
+    if (index >= 0) {
+      setState(() {
+        _sparePartsItems.removeAt(index);
+        _sparePartsItems.insert(
+          index,
+          SparePartItemModel(
+            itemId: itemId,
+            quantity: quantity,
+          ),
+        );
+      });
+    }
+  }
+
   void _setLocation(String location) async {
     setState(() {
       _locationId = location;
@@ -582,15 +598,18 @@ class _AddTaskPageState extends State<AddTaskPage> {
         isAddUsersVisible: _isAddUsersVisible,
         isAddGroupsVisible: _isAddGroupsVisible,
       ),
-      AddTaskSparePartCard(
-        toggleAssetSelection: _toggleAssetSparePartSelection,
-        toggleItemSelection: _toggleItemSparePartSelection,
-        toggleAddAssetVisibility: _toggleAddAssetVisibility,
-        toggleAddItemVisibility: _toggleAddItemVisibility,
-        sparePartsAssets: _sparePartsAssets,
-        sparePartsItems: _sparePartsItems,
-        isAddAssetVisible: _isAddAssetVisible,
-        isAddItemVisible: _isAddItemVisible,
+      KeepAlivePage(
+        child: AddTaskSparePartCard(
+          toggleAssetSelection: _toggleAssetSparePartSelection,
+          toggleItemSelection: _toggleItemSparePartSelection,
+          updateSparePartQuantity: _updateSparePartItemModel,
+          toggleAddAssetVisibility: _toggleAddAssetVisibility,
+          toggleAddItemVisibility: _toggleAddItemVisibility,
+          sparePartsAssets: _sparePartsAssets,
+          sparePartsItems: _sparePartsItems,
+          isAddAssetVisible: _isAddAssetVisible,
+          isAddItemVisible: _isAddItemVisible,
+        ),
       ),
       AddTaskTypeCard(
         setTaskType: _setTaskType,
