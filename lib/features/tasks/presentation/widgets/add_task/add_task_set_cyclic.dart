@@ -290,7 +290,7 @@ class _AddTaskSetCyclicCardState extends State<AddTaskSetCyclicCard> {
                                 ? AppLocalizations.of(context)!
                                     .asset_next_inspection_tip
                                 : AppLocalizations.of(context)!
-                                    .asset_next_inspection,
+                                    .task_next_execution_date,
                           ),
                         ],
                       ),

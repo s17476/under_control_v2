@@ -516,6 +516,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
         isConnectedToAsset: _isConnectedToAsset,
         images: _images,
         type: _taskType,
+        video: _videoFile,
+        isCyclicTask: _isCyclicTask,
+        executionDate: _executionDate,
+        durationUnit: _durationUnit,
+        duration: _duration,
       ),
     ];
 

@@ -1745,6 +1745,14 @@
     "@duration_unit": {
       "description": "Duration unit"
     },
+    "duration_unit_not_selected": "Duration unit not selected",
+    "@duration_unit_not_selected": {
+      "description": "Duration unit not selected"
+    },
+    "duration_not_selected": "Duration not selected",
+    "@duration_not_selected": {
+      "description": "Duration not selected"
+    },
     "duration": "Duration",
     "@duration": {
       "description": "Duration"
@@ -2124,6 +2132,10 @@
     "task_execution_date": "Planned execution date",
     "@task_execution_date": {
       "description": "task - palnned execution date"
+    },
+    "task_next_execution_date": "Next execution date",
+    "@task_next_execution_date": {
+      "description": "task - next execution date"
     },
     "task_is_cyclic": "This is a cyclic task",
     "@task_is_cyclic": {

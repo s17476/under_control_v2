@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/assets/utils/get_localizad_duration_unit_name.dart';
 
 import 'package:under_control_v2/features/assets/utils/get_localizae_asset_status_name.dart';
 import 'package:under_control_v2/features/tasks/utils/get_task_priority_and_type_icon.dart';
@@ -11,7 +12,9 @@ import 'package:under_control_v2/features/tasks/utils/get_task_priority_and_type
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/utils/asset_status.dart';
 import '../../../../assets/utils/get_asset_status_icon.dart';
+import '../../../../assets/utils/get_next_date.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
+import '../../../../core/utils/duration_unit.dart';
 import '../../../../core/utils/location_selection_helpers.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
@@ -30,12 +33,16 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.titleTextEditingController,
     required this.descriptionTextEditingController,
     required this.date,
+    required this.executionDate,
     required this.locationId,
     required this.assetId,
     required this.priority,
     required this.assetStatus,
     required this.type,
+    required this.durationUnit,
+    required this.duration,
     required this.isConnectedToAsset,
+    required this.isCyclicTask,
     required this.images,
     this.video,
   }) : super(key: key);
@@ -48,14 +55,19 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
   final TextEditingController descriptionTextEditingController;
 
   final DateTime date;
+  final DateTime executionDate;
 
   final String locationId;
   final String assetId;
   final String priority;
   final String assetStatus;
   final String type;
+  final String durationUnit;
+
+  final int duration;
 
   final bool isConnectedToAsset;
+  final bool isCyclicTask;
 
   final List<File> images;
   final File? video;
@@ -290,23 +302,83 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
                       height: 8,
                     ),
 
-                    // images
+                    // cyclic / single task
                     SummaryCard(
-                      title:
-                          AppLocalizations.of(context)!.asset_add_images_title,
-                      validator: () => null,
-                      child: Text(
-                        images.isNotEmpty
-                            ? '${AppLocalizations.of(context)!.asset_add_images_added}: ${images.length}'
-                            : AppLocalizations.of(context)!
-                                .asset_add_images_not_added,
+                      title: isCyclicTask
+                          ? AppLocalizations.of(context)!.task_is_cyclic
+                          : AppLocalizations.of(context)!.task_not_is_cyclic,
+                      validator: () {
+                        if (isCyclicTask) {
+                          if (durationUnit.isEmpty) {
+                            return AppLocalizations.of(context)!
+                                .duration_unit_not_selected;
+                          } else if (duration < 1) {
+                            return AppLocalizations.of(context)!
+                                .duration_not_selected;
+                          }
+                        }
+                        return null;
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${AppLocalizations.of(context)!.task_execution_date}:',
+                          ),
+                          Text(
+                            dateFormat.format(executionDate),
+                          ),
+                          if (isCyclicTask)
+                            Column(
+                              children: [
+                                Text(
+                                  '${AppLocalizations.of(context)!.task_interval}:',
+                                ),
+                                Text(
+                                  '${getLocalizedDurationUnitName(context, DurationUnit.fromString(durationUnit))} - $duration',
+                                ),
+                                Text(
+                                  '${AppLocalizations.of(context)!.task_next_execution_date}:',
+                                ),
+                                Text(
+                                  dateFormat.format(
+                                    getNextDate(
+                                      executionDate,
+                                      DurationUnit.fromString(durationUnit),
+                                      duration,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
                       ),
                       pageController: pageController,
-                      onTapAnimateToPage: 3,
+                      onTapAnimateToPage: 6,
                     ),
                     const SizedBox(
                       height: 8,
                     ),
+
+                    // images
+                    if (images.isNotEmpty)
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!
+                            .asset_add_images_title,
+                        validator: () => null,
+                        child: Text(
+                          images.isNotEmpty
+                              ? '${AppLocalizations.of(context)!.asset_add_images_added}: ${images.length}'
+                              : AppLocalizations.of(context)!
+                                  .asset_add_images_not_added,
+                        ),
+                        pageController: pageController,
+                        onTapAnimateToPage: 3,
+                      ),
+                    if (images.isNotEmpty)
+                      const SizedBox(
+                        height: 8,
+                      ),
 
                     // video
                     if (video != null)
