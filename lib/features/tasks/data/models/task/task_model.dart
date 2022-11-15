@@ -107,7 +107,6 @@ class TaskModel extends Task {
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
-    result.addAll({'id': id});
     result.addAll({'parentId': parentId});
     result.addAll({'count': count});
     result.addAll({'date': date});
@@ -156,7 +155,7 @@ class TaskModel extends Task {
       executionDate = DateTime.now();
     }
     return TaskModel(
-      id: map['id'] ?? '',
+      id: id,
       parentId: map['parentId'] ?? '',
       count: map['count']?.toInt() ?? 0,
       date: date,

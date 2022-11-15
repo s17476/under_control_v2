@@ -42,7 +42,6 @@ final tTaskModel = TaskModel(
 );
 
 final tTaskModelToMap = {
-  'id': 'id',
   'parentId': 'parentId',
   'count': 1,
   'date': tDate,
@@ -76,7 +75,6 @@ final tTaskModelToMap = {
 };
 
 final tTaskModelFromMap = {
-  'id': 'id',
   'parentId': 'parentId',
   'count': 1,
   'date': Timestamp.fromDate(tDate),

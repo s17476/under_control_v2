@@ -3,31 +3,35 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/presentation/blocs/asset/asset_bloc.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
-import 'package:under_control_v2/features/inventory/presentation/blocs/items/items_bloc.dart';
-import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item_model.dart';
-import 'package:under_control_v2/features/tasks/data/models/task/task_model.dart';
-import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_assign_card.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_set_cyclic.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_spare_part_card.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_type_card.dart';
 
+import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../assets/presentation/widgets/add_asset_images_card.dart';
 import '../../../assets/presentation/widgets/add_asset_instructions.dart';
 import '../../../assets/presentation/widgets/add_asset_location_card.dart';
+import '../../../assets/utils/asset_status.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
+import '../../../core/utils/duration_unit.dart';
 import '../../../core/utils/get_cached_firebase_storage_file.dart';
+import '../../../core/utils/show_snack_bar.dart';
+import '../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../data/models/task/spare_part_item_model.dart';
+import '../../data/models/task/task_model.dart';
 import '../../data/models/work_request/work_request_model.dart';
+import '../../domain/entities/task/task.dart';
 import '../../domain/entities/task_priority.dart';
+import '../../domain/entities/task_type.dart';
 import '../../domain/entities/work_request/work_request.dart';
 import '../blocs/task/task_bloc.dart';
+import '../blocs/task_management/task_management_bloc.dart';
+import '../widgets/add_task/add_task_assign_card.dart';
 import '../widgets/add_task/add_task_card.dart';
+import '../widgets/add_task/add_task_set_cyclic.dart';
+import '../widgets/add_task/add_task_spare_part_card.dart';
 import '../widgets/add_task/add_task_summary_card.dart';
+import '../widgets/add_task/add_task_type_card.dart';
 import '../widgets/add_video_card.dart';
 import '../widgets/add_work_request/add_work_request_set_asset_card.dart';
 import '../widgets/set_asset_status_card.dart';
@@ -88,78 +92,121 @@ class _AddTaskPageState extends State<AddTaskPage> {
   File? _videoFile;
 
   _addNewTask(BuildContext context) {
-    showSnackBar(context: context, message: 'save');
-    // String errorMessage = '';
-    // if (!_formKey.currentState!.validate()) {
-    //   if (_titleTextEditingController.text.trim().length < 2) {
-    //     errorMessage =
-    //         '${AppLocalizations.of(context)!.title} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
-    //   }
-    // } else {
-    //   // asset selection validation
-    //   if (errorMessage.isEmpty && _isConnectedToAsset && _assetId.isEmpty) {
-    //     errorMessage =
-    //         AppLocalizations.of(context)!.task_connected_asset_select;
-    //   }
-    //   // asset selection validation
-    //   if (errorMessage.isEmpty && _isConnectedToAsset && _assetStatus.isEmpty) {
-    //     errorMessage = AppLocalizations.of(context)!.asset_status_not_selected;
-    //   }
-    //   // location validation
-    //   if (errorMessage.isEmpty && _locationId.isEmpty) {
-    //     errorMessage =
-    //         AppLocalizations.of(context)!.validation_location_not_selected;
-    //   }
-    // }
+    String errorMessage = '';
+    if (!_formKey.currentState!.validate()) {
+      if (_titleTextEditingController.text.trim().length < 2) {
+        errorMessage =
+            '${AppLocalizations.of(context)!.title} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
+      }
+    } else {
+      // task type validation
+      if (errorMessage.isEmpty && _taskType.isEmpty) {
+        errorMessage = AppLocalizations.of(context)!.task_type_select;
+      }
+      // location validation
+      if (errorMessage.isEmpty && !_isConnectedToAsset && _locationId.isEmpty) {
+        errorMessage =
+            AppLocalizations.of(context)!.validation_location_not_selected;
+      }
+      // asset validation
+      if (errorMessage.isEmpty && _isConnectedToAsset && _assetId.isEmpty) {
+        errorMessage =
+            AppLocalizations.of(context)!.task_connected_asset_select;
+      }
+      // asset status validation
+      if (errorMessage.isEmpty &&
+          _isConnectedToAsset &&
+          _assetId.isNotEmpty &&
+          _assetStatus.isEmpty) {
+        errorMessage = AppLocalizations.of(context)!.asset_status_not_selected;
+      }
+      // cyclic task - duration unit and duration validation
+      if (errorMessage.isEmpty &&
+          _isCyclicTask &&
+          (_durationUnit.isEmpty || _duration == 0)) {
+        errorMessage = AppLocalizations.of(context)!.asset_next_inspection_tip;
+      }
+      // assigned users/groups validation
+      if (errorMessage.isEmpty &&
+          _assignedUsers.isEmpty &&
+          _assignedGroups.isEmpty) {
+        errorMessage =
+            AppLocalizations.of(context)!.task_assign_groups_or_users_error;
+      }
+      if (errorMessage.isEmpty && _sparePartsItems.isNotEmpty) {
+        for (var item in _sparePartsItems) {
+          if (errorMessage.isEmpty && item.quantity <= 0) {
+            errorMessage =
+                AppLocalizations.of(context)!.item_spare_part_quantity_error;
+          }
+        }
+      }
+    }
 
     // // shows SnackBar if validation error occures
-    // if (errorMessage.isNotEmpty) {
-    //   showSnackBar(
-    //     context: context,
-    //     message: errorMessage,
-    //     isErrorMessage: true,
-    //   );
-    //   // saves instruction to DB if no error
-    // } else {
-    //   final newWorkRequest = WorkRequestModel(
-    //     id: _workRequest != null ? _workRequest!.id : '',
-    //     title: _titleTextEditingController.text,
-    //     description: _descriptionTextEditingController.text,
-    //     date: _date,
-    //     locationId: _locationId,
-    //     userId: _userId,
-    //     assetId: _assetId,
-    //     images: const [],
-    //     video: '',
-    //     priority: TaskPriority.fromString(_priority),
-    //     count: _workRequest != null ? _workRequest!.count : 0,
-    //     taskId: '',
-    //     assetStatus: AssetStatus.fromString(_assetStatus),
-    //     cancelled: false,
-    //   );
+    if (errorMessage.isNotEmpty) {
+      showSnackBar(
+        context: context,
+        message: errorMessage,
+        isErrorMessage: true,
+      );
+      // saves instruction to DB if no error
+    } else {
+      showSnackBar(context: context, message: 'save');
+      final newTask = TaskModel(
+        id: _task?.id ?? '',
+        parentId: _task?.parentId ?? '',
+        count: _task?.count ?? 0,
+        date: _date,
+        executionDate: _executionDate,
+        title: _titleTextEditingController.text,
+        description: _descriptionTextEditingController.text,
+        locationId: _locationId,
+        userId: _userId,
+        assetId: _assetId,
+        workOrderId: _workRequest?.id ?? '',
+        images: const [],
+        instructions: _instructions,
+        video: '',
+        priority: TaskPriority.fromString(_priority),
+        type: TaskType.fromString(_taskType),
+        assetStatus: AssetStatus.fromString(_assetStatus),
+        isFinished: false,
+        isCancelled: false,
+        isSuccessful: false,
+        isInProgress: false,
+        isCyclictask: _isCyclicTask,
+        durationUnit: DurationUnit.fromString(_durationUnit),
+        duration: _duration,
+        actions: const [],
+        assignedGroups: _assignedGroups,
+        assignedUsers: _assignedUsers,
+        sparePartsAssets: _sparePartsAssets,
+        sparePartsItems: _sparePartsItems,
+      );
 
-    //   // add new work order
-    //   if (_workRequest == null || _workRequest!.id.isEmpty) {
-    //     context.read<WorkRequestManagementBloc>().add(
-    //           AddWorkRequestEvent(
-    //             workRequest: newWorkRequest,
-    //             images: _images,
-    //             video: _videoFile,
-    //           ),
-    //         );
-    //     // update work order
-    //   } else {
-    //     context.read<WorkRequestManagementBloc>().add(
-    //           UpdateWorkRequestEvent(
-    //             workRequest: newWorkRequest,
-    //             images: _images,
-    //             video: _videoFile,
-    //           ),
-    //         );
-    //   }
+      // add new task
+      if (_task == null || _task!.id.isEmpty) {
+        context.read<TaskManagementBloc>().add(
+              AddTaskEvent(
+                task: newTask,
+                images: _images,
+                video: _videoFile,
+              ),
+            );
+        // update task
+      } else {
+        context.read<TaskManagementBloc>().add(
+              UpdateTaskEvent(
+                task: newTask,
+                images: _images,
+                video: _videoFile,
+              ),
+            );
+      }
 
-    //   Navigator.pop(context);
-    // }
+      Navigator.pop(context);
+    }
   }
 
   void _toggleAddInstructionsVisibility() {

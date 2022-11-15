@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item_model.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/inventory_spare_parts_list_with_quantity.dart';
-
 import '../../../../assets/presentation/widgets/asset_selection/overlay_asset_selection.dart';
 import '../../../../assets/presentation/widgets/assets_spare_parts_list.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
+import '../../../data/models/task/spare_part_item_model.dart';
+import '../inventory_spare_parts_list_with_quantity.dart';
 
 class AddTaskSparePartCard extends StatefulWidget {
   const AddTaskSparePartCard({

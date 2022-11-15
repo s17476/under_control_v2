@@ -328,6 +328,7 @@
     "item_unit": "Jednostka",
     "item_photo": "Zdjęcie przedmiotu (opcjonalne)",
     "item_spare_part": "Część zamienna",
+    "item_spare_part_quantity_error": "Części zamienne - ilość musi być większa od zera",
     "item_spare_parts": "Części zamienne",
     "item_spare_part_not": "To NIE jest część zamienna",
     "item_spare_part_yes": "To jest część zamienna",

@@ -1375,6 +1375,10 @@
     "@item_spare_part": {
       "description": "Spare part"
     },
+    "item_spare_part_quantity_error": "Spare parts - quantity must be greater than zero",
+    "@item_spare_part_quantity_error": {
+      "description": "Spare part quantity"
+    },
     "item_spare_parts": "Spare parts",
     "@item_spare_parts": {
       "description": "Spare parts"

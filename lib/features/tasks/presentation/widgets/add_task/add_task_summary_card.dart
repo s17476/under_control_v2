@@ -797,7 +797,15 @@ class SparePartsSummaryCard extends StatelessWidget {
       children: [
         SummaryCard(
           title: AppLocalizations.of(context)!.item_spare_parts,
-          validator: () => null,
+          validator: () {
+            for (var item in sparePartsItems) {
+              if (item.quantity <= 0) {
+                return AppLocalizations.of(context)!
+                    .item_spare_part_quantity_error;
+              }
+            }
+            return null;
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
