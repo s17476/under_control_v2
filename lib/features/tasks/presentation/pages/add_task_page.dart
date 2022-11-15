@@ -638,6 +638,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
         duration: _duration,
         assignedGroups: _assignedGroups,
         assignedUsers: _assignedUsers,
+        sparePartsAssets: _sparePartsAssets,
+        sparePartsItems: _sparePartsItems,
       ),
     ];
 

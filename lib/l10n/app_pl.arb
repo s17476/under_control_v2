@@ -328,6 +328,7 @@
     "item_unit": "Jednostka",
     "item_photo": "Zdjęcie przedmiotu (opcjonalne)",
     "item_spare_part": "Część zamienna",
+    "item_spare_parts": "Części zamienne",
     "item_spare_part_not": "To NIE jest część zamienna",
     "item_spare_part_yes": "To jest część zamienna",
     "item_add_error_name_to_short": "Nazwa producenta i model muszą zawierać conajmniej 2 znaki",

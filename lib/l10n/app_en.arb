@@ -1375,6 +1375,10 @@
     "@item_spare_part": {
       "description": "Spare part"
     },
+    "item_spare_parts": "Spare parts",
+    "@item_spare_parts": {
+      "description": "Spare parts"
+    },
     "item_spare_part_not": "This is NOT a spare part",
     "@item_spare_part_not": {
       "description": "Not a spare part"

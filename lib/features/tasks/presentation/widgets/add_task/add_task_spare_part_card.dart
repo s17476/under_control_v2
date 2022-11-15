@@ -8,7 +8,6 @@ import '../../../../assets/presentation/widgets/asset_selection/overlay_asset_se
 import '../../../../assets/presentation/widgets/assets_spare_parts_list.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
-import '../../../../inventory/presentation/widgets/inventory_spare_parts_list.dart';
 
 class AddTaskSparePartCard extends StatefulWidget {
   const AddTaskSparePartCard({
@@ -39,7 +38,35 @@ class AddTaskSparePartCard extends StatefulWidget {
 }
 
 class _AddTaskSparePartCardState extends State<AddTaskSparePartCard>
-    with ResponsiveSize {
+    with ResponsiveSize, WidgetsBindingObserver {
+  bool _isVisible = true;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeMetrics() {
+    final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
+    final newValue = bottomInset == 0.0;
+    if (newValue != _isVisible) {
+      setState(() {
+        _isVisible = newValue;
+      });
+    }
+    if (_isVisible) {
+      FocusScope.of(context).unfocus();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -88,90 +115,101 @@ class _AddTaskSparePartCardState extends State<AddTaskSparePartCard>
                         ),
                       ),
                     ),
-                    // add spareparts from assets button
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 4,
-                      ),
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue.shade700,
-                        ),
-                        onPressed: widget.toggleAddAssetVisibility,
-                        icon: SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Stack(
-                            children: const [
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                child: Icon(
-                                  Icons.add,
-                                  size: 15,
+
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 300),
+                      child: SizedBox(
+                        height: _isVisible ? null : 0,
+                        child: Column(
+                          children: [
+                            // add spareparts from assets button
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 4,
+                              ),
+                              child: ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue.shade700,
+                                ),
+                                onPressed: widget.toggleAddAssetVisibility,
+                                icon: SizedBox(
+                                  height: 30,
+                                  width: 30,
+                                  child: Stack(
+                                    children: const [
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Icon(
+                                          Icons.add,
+                                          size: 15,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        child: Icon(
+                                          Icons.precision_manufacturing,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                label: Text(
+                                  AppLocalizations.of(context)!
+                                      .asset_add_spare_parts_assets,
                                 ),
                               ),
-                              Positioned(
-                                bottom: 0,
-                                left: 0,
-                                child: Icon(
-                                  Icons.precision_manufacturing,
-                                  size: 22,
+                            ),
+                            // add spareparts from inventory button
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 4,
+                              ),
+                              child: ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange.shade700,
+                                ),
+                                onPressed: widget.toggleAddItemVisibility,
+                                icon: SizedBox(
+                                  height: 30,
+                                  width: 30,
+                                  child: Stack(
+                                    children: const [
+                                      Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Icon(
+                                          Icons.add,
+                                          size: 15,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        child: Icon(
+                                          Icons.apps,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                label: Text(
+                                  AppLocalizations.of(context)!
+                                      .asset_add_spare_parts_inventory,
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        label: Text(
-                          AppLocalizations.of(context)!
-                              .asset_add_spare_parts_assets,
-                        ),
-                      ),
-                    ),
-                    // add spareparts from inventory button
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 4,
-                      ),
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange.shade700,
-                        ),
-                        onPressed: widget.toggleAddItemVisibility,
-                        icon: SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Stack(
-                            children: const [
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                child: Icon(
-                                  Icons.add,
-                                  size: 15,
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                left: 0,
-                                child: Icon(
-                                  Icons.apps,
-                                  size: 22,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        label: Text(
-                          AppLocalizations.of(context)!
-                              .asset_add_spare_parts_inventory,
+                            ),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 50,
                     ),
                   ],
                 ),

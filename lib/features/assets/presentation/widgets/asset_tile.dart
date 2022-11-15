@@ -57,6 +57,11 @@ class AssetTile extends StatelessWidget {
                         AssetDetailsPage.routeName,
                         arguments: asset.id,
                       ),
+          onLongPress: () => Navigator.pushNamed(
+            context,
+            AssetDetailsPage.routeName,
+            arguments: asset.id,
+          ),
           borderRadius: BorderRadius.circular(borderRadius),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

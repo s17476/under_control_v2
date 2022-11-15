@@ -50,6 +50,11 @@ class ItemTile extends StatelessWidget {
                     ItemDetailsPage.routeName,
                     arguments: item,
                   ),
+          onLongPress: () => Navigator.pushNamed(
+            context,
+            ItemDetailsPage.routeName,
+            arguments: item,
+          ),
           borderRadius: BorderRadius.circular(borderRadius),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
