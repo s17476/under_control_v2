@@ -41,6 +41,7 @@ class _SelectedUsersListState extends State<SelectedUsersList> {
             shrinkWrap: true,
             itemCount: _selectedUsers.length,
             itemBuilder: (context, index) => UserListTile(
+              key: ValueKey(_selectedUsers[index].id),
               user: _selectedUsers[index],
               onTap: (userProfile) => widget.onSelected(
                 userProfile.id,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/groups/domain/entities/group.dart';
+import 'package:under_control_v2/features/groups/presentation/widgets/group_management/group_tile.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../groups/domain/entities/feature.dart';
@@ -12,25 +14,25 @@ import 'glass_layer.dart';
 import 'shimmer_user_list_tile.dart';
 import 'user_list_tile.dart';
 
-class OverlayUsersSelection extends StatefulWidget {
-  const OverlayUsersSelection({
+class OverlayGroupsSelection extends StatefulWidget {
+  const OverlayGroupsSelection({
     Key? key,
-    required this.assignedUsers,
-    required this.toggleUserSelection,
+    required this.assignedGroups,
+    required this.toggleGroupSelection,
     required this.onDismiss,
   }) : super(key: key);
 
-  final List<String> assignedUsers;
-  final Function(String) toggleUserSelection;
+  final List<String> assignedGroups;
+  final Function(String) toggleGroupSelection;
   final Function() onDismiss;
 
   @override
-  State<OverlayUsersSelection> createState() => _OverlayUsersSelectionState();
+  State<OverlayGroupsSelection> createState() => _OverlayGroupsSelectionState();
 }
 
-class _OverlayUsersSelectionState extends State<OverlayUsersSelection>
+class _OverlayGroupsSelectionState extends State<OverlayGroupsSelection>
     with ResponsiveSize {
-  List<UserProfile>? _users;
+  List<Group>? _groups;
 
   String _searchQuery = '';
 
@@ -44,23 +46,19 @@ class _OverlayUsersSelectionState extends State<OverlayUsersSelection>
     });
   }
 
-  // search users according to given query string
-  List<UserProfile> _searchUsers(
-      BuildContext context, List<UserProfile> allUsers, String searchQuery) {
+  // search groups according to given query string
+  List<Group> _searchGroups(
+      BuildContext context, List<Group> allGroups, String searchQuery) {
     if (searchQuery.trim().isNotEmpty) {
-      return allUsers
+      return allGroups
           .where(
-            (user) =>
-                user.firstName
-                    .toLowerCase()
-                    .contains(searchQuery.trim().toLowerCase()) ||
-                user.lastName
-                    .toLowerCase()
-                    .contains(searchQuery.trim().toLowerCase()),
+            (user) => user.name
+                .toLowerCase()
+                .contains(searchQuery.trim().toLowerCase()),
           )
           .toList();
     }
-    return allUsers;
+    return allGroups;
   }
 
   @override
@@ -71,41 +69,15 @@ class _OverlayUsersSelectionState extends State<OverlayUsersSelection>
 
   @override
   void didChangeDependencies() {
-    _users = null;
-    List<String> groups = [];
+    _groups = null;
     final groupsState = context.watch<GroupBloc>().state;
     // gets groups (id's) with premission to create tasks
     if (groupsState is GroupLoadedState) {
-      groups = groupsState.allGroups.allGroups
-          .where((group) {
-            final taskFeature = group.features
-                .firstWhere((feature) => feature.type == FeatureType.tasks);
-            return taskFeature.create;
-          })
-          .map((group) => group.id)
-          .toList();
-    }
-    final companyState = context.watch<CompanyProfileBloc>().state;
-    if (companyState is CompanyProfileLoaded) {
-      for (var usr in companyState.allUsers.where((usr) => usr.isActive)) {
-        if (usr.administrator) {
-          if (_users == null) {
-            _users = [usr];
-          } else if (!_users!.contains(usr)) {
-            _users!.add(usr);
-          }
-        } else {
-          for (var userGroup in usr.userGroups) {
-            if (groups.contains(userGroup)) {
-              if (_users == null) {
-                _users = [usr];
-              } else if (!_users!.contains(usr)) {
-                _users!.add(usr);
-              }
-            }
-          }
-        }
-      }
+      _groups = groupsState.allGroups.allGroups.where((group) {
+        final taskFeature = group.features
+            .firstWhere((feature) => feature.type == FeatureType.tasks);
+        return taskFeature.create;
+      }).toList();
     }
     super.didChangeDependencies();
   }
@@ -120,7 +92,7 @@ class _OverlayUsersSelectionState extends State<OverlayUsersSelection>
           child: Column(
             children: [
               Text(
-                AppLocalizations.of(context)!.task_assign_users,
+                AppLocalizations.of(context)!.task_assign_groups,
                 style: const TextStyle(
                   fontSize: 22,
                 ),
@@ -144,25 +116,26 @@ class _OverlayUsersSelectionState extends State<OverlayUsersSelection>
               ),
               const Divider(),
               Expanded(
-                child: _users != null
+                child: _groups != null
                     ? Builder(builder: (context) {
-                        final filteredUsers = _searchUsers(
+                        final filteredGroups = _searchGroups(
                           context,
-                          _users!,
+                          _groups!,
                           _searchQuery,
                         );
                         return ListView.builder(
                           padding: const EdgeInsets.only(bottom: 50),
                           shrinkWrap: true,
-                          itemCount: filteredUsers.length,
-                          itemBuilder: (context, index) => UserListTile(
-                            key: ValueKey(filteredUsers[index].id),
-                            user: filteredUsers[index],
-                            onTap: (userProfile) =>
-                                widget.toggleUserSelection(userProfile.id),
+                          itemCount: filteredGroups.length,
+                          itemBuilder: (context, index) => GroupTile(
+                            key: ValueKey(filteredGroups[index].id),
+                            group: filteredGroups[index],
+                            onTap: (group) => widget.toggleGroupSelection(
+                              group.id,
+                            ),
                             isSelectionTile: true,
-                            isGroupMember: widget.assignedUsers
-                                .contains(filteredUsers[index].id),
+                            isGroupMember: widget.assignedGroups
+                                .contains(filteredGroups[index].id),
                             searchQuery: _searchQuery,
                           ),
                         );

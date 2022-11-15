@@ -40,6 +40,14 @@ class GroupLoadedState extends GroupState {
           allGroups,
         ]);
 
+  Group? getGroupById(String groupId) {
+    final index = allGroups.allGroups.indexWhere((grp) => grp.id == groupId);
+    if (index >= 0) {
+      return allGroups.allGroups[index];
+    }
+    return null;
+  }
+
   GroupLoadedState copyWith({
     List<Group>? selectedGroups,
     GroupsList? allGroups,

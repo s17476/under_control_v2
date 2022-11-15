@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/overlay_users_selection.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/selected_users_list.dart';
 
+import '../../../../core/presentation/widgets/overlay_groups_selection.dart';
+import '../../../../core/presentation/widgets/overlay_users_selection.dart';
 import '../../../../core/utils/responsive_size.dart';
-import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
+import '../selected_groups_list.dart';
+import '../selected_users_list.dart';
 
 class AddTaskAssignCard extends StatelessWidget with ResponsiveSize {
   const AddTaskAssignCard({
@@ -46,7 +47,8 @@ class AddTaskAssignCard extends StatelessWidget with ResponsiveSize {
                         right: 8,
                       ),
                       child: Text(
-                        AppLocalizations.of(context)!.asset_add_spare_parts,
+                        AppLocalizations.of(context)!
+                            .task_assign_groups_or_users,
                         style: TextStyle(
                           fontSize:
                               Theme.of(context).textTheme.headline5!.fontSize,
@@ -60,25 +62,20 @@ class AddTaskAssignCard extends StatelessWidget with ResponsiveSize {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
+                            // assigned users
                             SelectedUsersList(
                               onSelected: toggleUserSelection,
                               selectedUsers: assignedUsers,
                             ),
-                            // assets
-                            // AssetsSparePartsList(
-                            //   items: widget.spareParts,
-                            //   onSelected: widget.toggleSelection,
-                            // ),
-                            // // inventory
-                            // InventorySparePartsList(
-                            //   items: widget.spareParts,
-                            //   onSelected: widget.toggleSelection,
-                            // ),
+                            // assigned groups
+                            SelectedGroupsList(
+                              onSelected: toggleGroupSelection,
+                              selectedGroups: assignedGroups,
+                            ),
                           ],
                         ),
                       ),
                     ),
-                    // add spareparts from assets button
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -95,7 +92,6 @@ class AddTaskAssignCard extends StatelessWidget with ResponsiveSize {
                         ),
                       ),
                     ),
-                    // add spareparts from inventory button
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -121,12 +117,12 @@ class AddTaskAssignCard extends StatelessWidget with ResponsiveSize {
             ],
           ),
         ),
-        // if (widget.isAddAssetVisible)
-        // OverlayAssetSelection(
-        //   spareParts: widget.spareParts,
-        //   toggleSelection: widget.toggleSelection,
-        //   onDismiss: widget.toggleAddInventoryVisibility,
-        // ),
+        if (isAddGroupsVisible)
+          OverlayGroupsSelection(
+            assignedGroups: assignedGroups,
+            toggleGroupSelection: toggleGroupSelection,
+            onDismiss: toggleAddGroupsVisibility,
+          ),
         if (isAddUsersVisible)
           OverlayUsersSelection(
             assignedUsers: assignedUsers,
