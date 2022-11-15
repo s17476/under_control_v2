@@ -86,17 +86,11 @@ class UserListTile extends StatelessWidget {
                 ],
               ),
             ),
-            if (isSelectionTile && isGroupMember)
-              Icon(
-                Icons.remove,
-                size: 40,
-                color: Theme.of(context).errorColor,
-              ),
-            if (isSelectionTile && !isGroupMember)
-              Icon(
-                Icons.add,
-                size: 40,
-                color: Theme.of(context).primaryColor,
+            if (isSelectionTile)
+              Checkbox(
+                activeColor: Theme.of(context).primaryColor,
+                value: isGroupMember,
+                onChanged: (_) => onTap(user),
               ),
           ],
         ),
