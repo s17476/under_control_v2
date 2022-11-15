@@ -7,6 +7,7 @@ import 'package:under_control_v2/features/company_profile/presentation/blocs/com
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/core/utils/duration_unit.dart';
+import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item_model.dart';
 import 'package:under_control_v2/features/tasks/data/models/task/task_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
@@ -67,6 +68,10 @@ void main() {
     isSuccessful: false,
     parentId: 'parentId',
     type: TaskType.event,
+    sparePartsAssets: const [],
+    sparePartsItems: const [
+      SparePartItemModel(itemId: 'itemId', quantity: 1),
+    ],
   );
 
   final tTaskParams = TaskParams(

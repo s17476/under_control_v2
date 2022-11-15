@@ -52,6 +52,7 @@ void main() {
           .collection('assets')
           .doc(tTaskParams.task.assetId)
           .set({'name': 'name'});
+
       final documentReference =
           await mockCollectionReference.add(tTaskModel.toMap());
 

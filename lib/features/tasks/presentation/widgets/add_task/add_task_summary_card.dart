@@ -186,7 +186,7 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
                         ],
                       ),
                       pageController: pageController,
-                      onTapAnimateToPage: 6,
+                      onTapAnimateToPage: 8,
                     ),
                     const SizedBox(
                       height: 8,

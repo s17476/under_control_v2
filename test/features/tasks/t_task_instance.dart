@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/core/utils/duration_unit.dart';
+import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item_model.dart';
 import 'package:under_control_v2/features/tasks/data/models/task/task_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
@@ -36,6 +37,8 @@ final tTaskModel = TaskModel(
   actions: const [],
   assignedGroups: const [],
   assignedUsers: const [],
+  sparePartsAssets: const [],
+  sparePartsItems: const [SparePartItemModel(itemId: 'itemId', quantity: 1)],
 );
 
 final tTaskModelToMap = {
@@ -66,6 +69,10 @@ final tTaskModelToMap = {
   'actions': const [],
   'assignedGroups': const [],
   'assignedUsers': const [],
+  'sparePartsAssets': const [],
+  'sparePartsItems': const [
+    {'itemId': 'itemId', 'quantity': 1.0},
+  ],
 };
 
 final tTaskModelFromMap = {
@@ -96,6 +103,10 @@ final tTaskModelFromMap = {
   'actions': const [],
   'assignedGroups': const [],
   'assignedUsers': const [],
+  'sparePartsAssets': const [],
+  'sparePartsItems': const [
+    {'itemId': 'itemId', 'quantity': 1.0},
+  ],
 };
 
 final tTaskParams = TaskParams(task: tTaskModel, companyId: 'companyId');

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
 
 import '../../../../assets/utils/asset_status.dart';
@@ -35,6 +36,8 @@ class TaskModel extends Task {
     required super.actions,
     required super.assignedGroups,
     required super.assignedUsers,
+    required super.sparePartsAssets,
+    required super.sparePartsItems,
   });
 
   TaskModel copyWith({
@@ -65,6 +68,8 @@ class TaskModel extends Task {
     List<String>? actions,
     List<String>? assignedGroups,
     List<String>? assignedUsers,
+    List<String>? sparePartsAssets,
+    List<SparePartItemModel>? sparePartsItems,
   }) {
     return TaskModel(
       id: id ?? this.id,
@@ -94,6 +99,8 @@ class TaskModel extends Task {
       actions: actions ?? this.actions,
       assignedGroups: assignedGroups ?? this.assignedGroups,
       assignedUsers: assignedUsers ?? this.assignedUsers,
+      sparePartsAssets: sparePartsAssets ?? this.sparePartsAssets,
+      sparePartsItems: sparePartsItems ?? this.sparePartsItems,
     );
   }
 
@@ -127,6 +134,10 @@ class TaskModel extends Task {
     result.addAll({'actions': actions});
     result.addAll({'assignedGroups': assignedGroups});
     result.addAll({'assignedUsers': assignedUsers});
+    result.addAll({'sparePartsAssets': sparePartsAssets});
+    result.addAll(
+      {'sparePartsItems': sparePartsItems.map((x) => x.toMap()).toList()},
+    );
 
     return result;
   }
@@ -172,6 +183,10 @@ class TaskModel extends Task {
       actions: List<String>.from(map['actions']),
       assignedGroups: List<String>.from(map['assignedGroups']),
       assignedUsers: List<String>.from(map['assignedUsers']),
+      sparePartsAssets: List<String>.from(map['sparePartsAssets']),
+      sparePartsItems: List<SparePartItemModel>.from(
+        map['sparePartsItems']?.map((x) => SparePartItemModel.fromMap(x)) ?? [],
+      ),
     );
   }
 
@@ -182,6 +197,8 @@ class TaskModel extends Task {
       assignedUsers: [...assignedUsers],
       images: [...images],
       instructions: [...instructions],
+      sparePartsAssets: [...sparePartsAssets],
+      sparePartsItems: [...sparePartsItems],
     );
   }
 
@@ -213,5 +230,7 @@ class TaskModel extends Task {
         actions: task.actions,
         assignedGroups: task.assignedGroups,
         assignedUsers: task.assignedUsers,
+        sparePartsAssets: task.sparePartsAssets,
+        sparePartsItems: task.sparePartsItems,
       );
 }
