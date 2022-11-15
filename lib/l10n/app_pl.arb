@@ -520,6 +520,9 @@
     "task_not_is_cyclic": "To nie jest zadanie cykliczne",
     "task_interval": "Interwał zadania",
     "task_assign_users": "Przypisz użytkowników",
+    "task_assigned_users": "Przypisani użytkownicy",
     "task_assign_groups": "Przypisz grupy",
-    "task_assign_groups_or_users": "Przypisz grupy lub użytkowników"
+    "task_assigned_groups": "Przypisane grupy",
+    "task_assign_groups_or_users": "Przypisz grupy lub użytkowników",
+    "task_assign_groups_or_users_error": "Przypisz przynajmniej jedną grupę lub użytkownika do tego zadania"
 }

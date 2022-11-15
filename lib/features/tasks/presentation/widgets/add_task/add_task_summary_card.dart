@@ -4,19 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:under_control_v2/features/assets/utils/get_localizad_duration_unit_name.dart';
 
+import 'package:under_control_v2/features/assets/utils/get_localizad_duration_unit_name.dart';
 import 'package:under_control_v2/features/assets/utils/get_localizae_asset_status_name.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/shimmer_custom_dropdown_button.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/user_list_tile.dart';
+import 'package:under_control_v2/features/groups/domain/entities/group.dart';
 import 'package:under_control_v2/features/tasks/utils/get_task_priority_and_type_icon.dart';
+import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/utils/asset_status.dart';
 import '../../../../assets/utils/get_asset_status_icon.dart';
 import '../../../../assets/utils/get_next_date.dart';
+import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/presentation/widgets/shimmer_user_list_tile.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/duration_unit.dart';
 import '../../../../core/utils/location_selection_helpers.dart';
 import '../../../../core/utils/responsive_size.dart';
+import '../../../../groups/presentation/blocs/group/group_bloc.dart';
+import '../../../../groups/presentation/widgets/group_management/group_tile.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../../domain/entities/task_priority.dart';
 import '../../../domain/entities/task_type.dart';
@@ -43,6 +51,8 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.duration,
     required this.isConnectedToAsset,
     required this.isCyclicTask,
+    required this.assignedUsers,
+    required this.assignedGroups,
     required this.images,
     this.video,
   }) : super(key: key);
@@ -68,6 +78,9 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
 
   final bool isConnectedToAsset;
   final bool isCyclicTask;
+
+  final List<String> assignedUsers;
+  final List<String> assignedGroups;
 
   final List<File> images;
   final File? video;
@@ -359,6 +372,122 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
                     const SizedBox(
                       height: 8,
                     ),
+
+                    // assigned users
+                    if (assignedUsers.isNotEmpty)
+                      SummaryCard(
+                        title:
+                            AppLocalizations.of(context)!.task_assigned_users,
+                        validator: () => null,
+                        child: BlocBuilder<CompanyProfileBloc,
+                            CompanyProfileState>(
+                          builder: (context, state) {
+                            if (state is CompanyProfileLoaded) {
+                              final List<UserProfile> users = [];
+                              for (var userId in assignedUsers) {
+                                final user = state.getUserById(userId);
+                                if (user != null) {
+                                  users.add(user);
+                                }
+                              }
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: users.length,
+                                itemBuilder: (context, index) => UserListTile(
+                                  user: users[index],
+                                  onTap: (_) => pageController.animateToPage(
+                                    7,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  ),
+                                ),
+                              );
+                            }
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: 3,
+                              itemBuilder: (context, index) =>
+                                  const ShimmerUserListTile(),
+                            );
+                          },
+                        ),
+                        pageController: pageController,
+                        onTapAnimateToPage: 7,
+                      ),
+                    if (assignedUsers.isNotEmpty)
+                      const SizedBox(
+                        height: 8,
+                      ),
+
+                    // assigned groups
+                    if (assignedGroups.isNotEmpty)
+                      SummaryCard(
+                        title:
+                            AppLocalizations.of(context)!.task_assigned_groups,
+                        validator: () => null,
+                        child: BlocBuilder<GroupBloc, GroupState>(
+                          builder: (context, state) {
+                            if (state is GroupLoadedState) {
+                              final List<Group> groups = [];
+                              for (var groupId in assignedGroups) {
+                                final group = state.getGroupById(groupId);
+                                if (group != null) {
+                                  groups.add(group);
+                                }
+                              }
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: groups.length,
+                                itemBuilder: (context, index) => GroupTile(
+                                  group: groups[index],
+                                  onTap: (_) => pageController.animateToPage(
+                                    7,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  iconColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 4,
+                                  ),
+                                ),
+                              );
+                            }
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: 3,
+                              itemBuilder: (context, index) =>
+                                  const ShimmerCustomDropdownButton(),
+                            );
+                          },
+                        ),
+                        pageController: pageController,
+                        onTapAnimateToPage: 7,
+                      ),
+                    if (assignedGroups.isNotEmpty)
+                      const SizedBox(
+                        height: 8,
+                      ),
+
+                    // no groups or users assigned
+                    if (assignedGroups.isEmpty && assignedUsers.isEmpty)
+                      SummaryCard(
+                        title: AppLocalizations.of(context)!
+                            .task_assign_groups_or_users,
+                        validator: () => AppLocalizations.of(context)!
+                            .task_assign_groups_or_users_error,
+                        child: const SizedBox(),
+                        pageController: pageController,
+                        onTapAnimateToPage: 7,
+                      ),
+                    if (assignedGroups.isEmpty && assignedUsers.isEmpty)
+                      const SizedBox(
+                        height: 8,
+                      ),
 
                     // images
                     if (images.isNotEmpty)

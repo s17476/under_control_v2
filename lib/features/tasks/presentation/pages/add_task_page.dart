@@ -521,6 +521,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
         executionDate: _executionDate,
         durationUnit: _durationUnit,
         duration: _duration,
+        assignedGroups: _assignedGroups,
+        assignedUsers: _assignedUsers,
       ),
     ];
 

@@ -2153,12 +2153,24 @@
     "@task_assign_users": {
       "description": "task - assign users"
     },
+    "task_assigned_users": "Assigned users",
+    "@task_assigned_users": {
+      "description": "task - assigned users"
+    },
     "task_assign_groups": "Assign groups",
     "@task_assign_groups": {
       "description": "task - assign groups"
     },
+    "task_assigned_groups": "Assigned groups",
+    "@task_assigned_groups": {
+      "description": "task - assigned groups"
+    },
     "task_assign_groups_or_users": "Assign groups or users",
     "@task_assign_groups_or_users": {
       "description": "task - assign groups or users"
+    },
+    "task_assign_groups_or_users_error": "Assign at least one group or user to this task",
+    "@task_assign_groups_or_users_error": {
+      "description": "task - assign groups or users error"
     }
 }
