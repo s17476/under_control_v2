@@ -51,7 +51,15 @@ class _AssetsLatestActionsState extends State<AssetsLatestActions> {
                   vertical: 16,
                 ),
                 decoration: BoxDecoration(
-                    color: Theme.of(context).appBarTheme.backgroundColor,
+                    // color: Theme.of(context).appBarTheme.backgroundColor,
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.blue.shade900.withAlpha(150),
+                        Colors.blue.withAlpha(30),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     boxShadow: const [
                       BoxShadow(
                         offset: Offset(0, 0),

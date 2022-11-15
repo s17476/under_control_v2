@@ -65,7 +65,15 @@ class _InventoryLowLevelItemsState extends State<InventoryLowLevelItems> {
                   vertical: 16,
                 ),
                 decoration: BoxDecoration(
-                    color: Theme.of(context).appBarTheme.backgroundColor,
+                    // color: Theme.of(context).appBarTheme.backgroundColor,
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.orange.shade700.withAlpha(100),
+                        Colors.orange.withAlpha(30),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     boxShadow: const [
                       BoxShadow(
                         offset: Offset(0, 0),

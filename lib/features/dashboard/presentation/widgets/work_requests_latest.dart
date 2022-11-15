@@ -54,13 +54,22 @@ class _WorkRequestsLatestState extends State<WorkRequestsLatest> {
                   vertical: 16,
                 ),
                 decoration: BoxDecoration(
-                    color: Theme.of(context).appBarTheme.backgroundColor,
-                    boxShadow: const [
-                      BoxShadow(
-                        offset: Offset(0, 0),
-                        blurRadius: 4,
-                      )
-                    ]),
+                  // color: Theme.of(context).appBarTheme.backgroundColor,
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.red.shade900.withAlpha(150),
+                      Colors.red.withAlpha(50),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: const [
+                    BoxShadow(
+                      offset: Offset(0, 0),
+                      blurRadius: 4,
+                    )
+                  ],
+                ),
                 child: Row(
                   children: [
                     Expanded(
