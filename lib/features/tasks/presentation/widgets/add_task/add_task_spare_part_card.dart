@@ -1,35 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/utils/responsive_size.dart';
-import '../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
-import '../../../inventory/presentation/widgets/inventory_spare_parts_list.dart';
-import 'asset_selection/overlay_asset_selection.dart';
-import 'assets_spare_parts_list.dart';
+import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item_model.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/inventory_spare_parts_list_with_quantity.dart';
 
-class AddAssetSparePartCard extends StatefulWidget {
-  const AddAssetSparePartCard({
+import '../../../../assets/presentation/widgets/asset_selection/overlay_asset_selection.dart';
+import '../../../../assets/presentation/widgets/assets_spare_parts_list.dart';
+import '../../../../core/utils/responsive_size.dart';
+import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
+import '../../../../inventory/presentation/widgets/inventory_spare_parts_list.dart';
+
+class AddTaskSparePartCard extends StatefulWidget {
+  const AddTaskSparePartCard({
     Key? key,
-    required this.toggleSelection,
+    required this.toggleAssetSelection,
+    required this.toggleItemSelection,
     required this.toggleAddAssetVisibility,
-    required this.toggleAddInventoryVisibility,
-    required this.spareParts,
+    required this.toggleAddItemVisibility,
+    required this.sparePartsAssets,
+    required this.sparePartsItems,
     required this.isAddAssetVisible,
-    required this.isAddInventoryVisible,
+    required this.isAddItemVisible,
   }) : super(key: key);
 
-  final Function(String) toggleSelection;
+  final Function(String) toggleAssetSelection;
+  final Function(SparePartItemModel) toggleItemSelection;
   final Function() toggleAddAssetVisibility;
-  final Function() toggleAddInventoryVisibility;
-  final List<String> spareParts;
+  final Function() toggleAddItemVisibility;
+  final List<String> sparePartsAssets;
+  final List<SparePartItemModel> sparePartsItems;
   final bool isAddAssetVisible;
-  final bool isAddInventoryVisible;
+  final bool isAddItemVisible;
 
   @override
-  State<AddAssetSparePartCard> createState() => _AddAssetSparePartCardState();
+  State<AddTaskSparePartCard> createState() => _AddTaskSparePartCardState();
 }
 
-class _AddAssetSparePartCardState extends State<AddAssetSparePartCard>
+class _AddTaskSparePartCardState extends State<AddTaskSparePartCard>
     with ResponsiveSize {
   @override
   Widget build(BuildContext context) {
@@ -65,13 +72,13 @@ class _AddAssetSparePartCardState extends State<AddAssetSparePartCard>
                           children: [
                             // assets
                             AssetsSparePartsList(
-                              items: widget.spareParts,
-                              onSelected: widget.toggleSelection,
+                              items: widget.sparePartsAssets,
+                              onSelected: widget.toggleAssetSelection,
                             ),
-                            // inventory
-                            InventorySparePartsList(
-                              items: widget.spareParts,
-                              onSelected: widget.toggleSelection,
+                            // // inventory
+                            InventorySparePartsListWithQuantity(
+                              items: widget.sparePartsItems,
+                              onSelected: widget.toggleItemSelection,
                             ),
                           ],
                         ),
@@ -128,7 +135,7 @@ class _AddAssetSparePartCardState extends State<AddAssetSparePartCard>
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.orange.shade700,
                         ),
-                        onPressed: widget.toggleAddInventoryVisibility,
+                        onPressed: widget.toggleAddItemVisibility,
                         icon: SizedBox(
                           height: 30,
                           width: 30,
@@ -170,15 +177,20 @@ class _AddAssetSparePartCardState extends State<AddAssetSparePartCard>
         ),
         if (widget.isAddAssetVisible)
           OverlayAssetSelection(
-            spareParts: widget.spareParts,
-            toggleSelection: widget.toggleSelection,
+            spareParts: widget.sparePartsAssets,
+            toggleSelection: widget.toggleAssetSelection,
             onDismiss: widget.toggleAddAssetVisibility,
           ),
-        if (widget.isAddInventoryVisible)
+        if (widget.isAddItemVisible)
           OverlayInventorySelection(
-            spareParts: widget.spareParts,
-            toggleSelection: widget.toggleSelection,
-            onDismiss: widget.toggleAddInventoryVisibility,
+            spareParts: widget.sparePartsItems.map((e) => e.itemId).toList(),
+            toggleSelection: (itemId) => widget.toggleItemSelection(
+              SparePartItemModel(
+                itemId: itemId,
+                quantity: 0,
+              ),
+            ),
+            onDismiss: widget.toggleAddItemVisibility,
           ),
       ],
     );

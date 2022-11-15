@@ -3,11 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/presentation/blocs/asset/asset_bloc.dart';
 import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
+import 'package:under_control_v2/features/inventory/presentation/blocs/items/items_bloc.dart';
+import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item_model.dart';
 import 'package:under_control_v2/features/tasks/data/models/task/task_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_assign_card.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_set_cyclic.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_spare_part_card.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_type_card.dart';
 
 import '../../../assets/presentation/widgets/add_asset_images_card.dart';
@@ -63,6 +67,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   int _duration = 0;
 
   bool _isAddAssetVisible = false;
+  bool _isAddItemVisible = false;
   bool _isConnectedToAsset = false;
   bool _isAddInstructionsVisible = false;
   bool _isAddGroupsVisible = false;
@@ -76,6 +81,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
   List<String> _instructions = [];
   List<String> _assignedGroups = [];
   List<String> _assignedUsers = [];
+
+  List<String> _sparePartsAssets = [];
+  List<SparePartItemModel> _sparePartsItems = [];
 
   File? _videoFile;
 
@@ -272,6 +280,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
     });
   }
 
+  void _toggleAddItemVisibility() {
+    setState(() {
+      _isAddItemVisible = !_isAddItemVisible;
+    });
+  }
+
   void _setPriority(String value) {
     setState(() {
       _priority = value;
@@ -291,9 +305,51 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   void _setAssetId(String assetId) {
+    List<String> notAssetsSpareParts = [];
+    List<String> sparePartsAssets = [];
+    List<SparePartItemModel> sparePartsItems = [];
+    // update spare parts lists
+    final assetState = context.read<AssetBloc>().state;
+    if (assetState is AssetLoadedState) {
+      // get selected asset
+      final selectedAsset = assetState.getAssetById(assetId);
+      // add spareparts if list is not empty
+      if (selectedAsset != null && selectedAsset.spareParts.isNotEmpty) {
+        for (var sparePartId in selectedAsset.spareParts) {
+          final sparePartAsset = assetState.getAssetById(sparePartId);
+          if (sparePartAsset != null) {
+            // add asset type spare part
+            sparePartsAssets.add(sparePartId);
+          } else {
+            // add item type spare parts to separated list
+            notAssetsSpareParts.add(sparePartId);
+          }
+        }
+        // if items type spare part list is not empty
+        if (notAssetsSpareParts.isNotEmpty) {
+          final itemsState = context.read<ItemsBloc>().state;
+          if (itemsState is ItemsLoadedState) {
+            for (var sparePartId in notAssetsSpareParts) {
+              final sparePartItem = itemsState.getItemById(sparePartId);
+              if (sparePartItem != null) {
+                // add item type spare part
+                sparePartsItems.add(
+                  SparePartItemModel(
+                    itemId: sparePartId,
+                    quantity: 0,
+                  ),
+                );
+              }
+            }
+          }
+        }
+      }
+    }
     setState(() {
       _assetId = assetId;
       _assetStatus = '';
+      _sparePartsAssets = sparePartsAssets;
+      _sparePartsItems = sparePartsItems;
     });
   }
 
@@ -310,6 +366,32 @@ class _AddTaskPageState extends State<AddTaskPage> {
         _assetId = '';
         _locationId = '';
         _assetStatus = '';
+        _sparePartsAssets = [];
+        _sparePartsItems = [];
+      });
+    }
+  }
+
+  void _toggleAssetSparePartSelection(String assetId) {
+    if (_sparePartsAssets.contains(assetId)) {
+      setState(() {
+        _sparePartsAssets.remove(assetId);
+      });
+    } else {
+      setState(() {
+        _sparePartsAssets.add(assetId);
+      });
+    }
+  }
+
+  void _toggleItemSparePartSelection(SparePartItemModel sparePartItemModel) {
+    if (_sparePartsItems.contains(sparePartItemModel)) {
+      setState(() {
+        _sparePartsItems.remove(sparePartItemModel);
+      });
+    } else {
+      setState(() {
+        _sparePartsItems.add(sparePartItemModel);
       });
     }
   }
@@ -352,6 +434,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
       FocusScope.of(context).unfocus();
       if (_isAddAssetVisible) {
         _toggleAddAssetVisibility();
+      } else if (_isAddItemVisible) {
+        _toggleAddItemVisibility();
       } else if (_isAddInstructionsVisible) {
         _toggleAddInstructionsVisibility();
       } else if (_isAddGroupsVisible) {
@@ -412,6 +496,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
       _executionDate = _task!.executionDate;
       _assignedUsers = _task!.assignedUsers;
       _assignedGroups = _task!.assignedGroups;
+      _sparePartsAssets = _task!.sparePartsAssets;
+      _sparePartsItems = _task!.sparePartsItems;
     }
 
     super.didChangeDependencies();
@@ -496,6 +582,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
         isAddUsersVisible: _isAddUsersVisible,
         isAddGroupsVisible: _isAddGroupsVisible,
       ),
+      AddTaskSparePartCard(
+        toggleAssetSelection: _toggleAssetSparePartSelection,
+        toggleItemSelection: _toggleItemSparePartSelection,
+        toggleAddAssetVisibility: _toggleAddAssetVisibility,
+        toggleAddItemVisibility: _toggleAddItemVisibility,
+        sparePartsAssets: _sparePartsAssets,
+        sparePartsItems: _sparePartsItems,
+        isAddAssetVisible: _isAddAssetVisible,
+        isAddItemVisible: _isAddItemVisible,
+      ),
       AddTaskTypeCard(
         setTaskType: _setTaskType,
         taskType: _taskType,
@@ -532,6 +628,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
       onWillPop: () async {
         if (_isAddAssetVisible) {
           _toggleAddAssetVisibility();
+          return false;
+        } else if (_isAddItemVisible) {
+          _toggleAddItemVisibility();
           return false;
         } else if (_isAddInstructionsVisible) {
           _toggleAddInstructionsVisibility();

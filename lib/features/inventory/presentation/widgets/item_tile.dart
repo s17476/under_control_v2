@@ -183,64 +183,79 @@ class ItemTile extends StatelessWidget {
                         if (onSelected != null && isSelected != null)
                           Container(
                             alignment: Alignment.topRight,
-                            padding: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.only(
+                              top: 4,
+                              right: 4,
+                              left: 4,
+                            ),
                             width: 70,
-                            height: 80,
+                            // height: 80,
                             child: Checkbox(
                               value: isSelected,
                               onChanged: (_) => onSelected!(item.id),
                               activeColor: Theme.of(context).primaryColor,
                             ),
                           ),
-                        if (onSelected == null || isSelected == null)
-                          Stack(
-                            children: [
-                              // warning icon
-                              if (item.alertQuantity != null &&
-                                  quantity <= item.alertQuantity!)
-                                Container(
-                                  alignment: Alignment.topRight,
-                                  padding: const EdgeInsets.all(4),
-                                  width: 70,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(borderRadius),
-                                    ),
-                                  ),
-                                  child: const Icon(
-                                    Icons.warning_amber_rounded,
-                                    size: 26,
-                                    color: Colors.amber,
-                                  ),
-                                ),
+                        // if (onSelected == null || isSelected == null)
+                        Stack(
+                          children: [
+                            // warning icon
+                            if (item.alertQuantity != null &&
+                                quantity <= item.alertQuantity!)
                               Container(
-                                alignment: Alignment.center,
+                                alignment: Alignment.topRight,
+                                padding:
+                                    (onSelected != null || isSelected != null)
+                                        ? const EdgeInsets.only(right: 4)
+                                        : const EdgeInsets.all(4),
                                 width: 70,
-                                height: 90,
+                                height:
+                                    (onSelected != null || isSelected != null)
+                                        ? 50
+                                        : 80,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(borderRadius),
                                   ),
                                 ),
-                                child: FittedBox(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      quantity.toStringWithFixedDecimal(),
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        color: (item.alertQuantity != null &&
-                                                quantity <= item.alertQuantity!)
-                                            ? Colors.amber
-                                            : null,
-                                      ),
+                                child: Icon(
+                                  Icons.warning_amber_rounded,
+                                  size:
+                                      (onSelected != null || isSelected != null)
+                                          ? 14
+                                          : 26,
+                                  color: Colors.amber,
+                                ),
+                              ),
+                            Container(
+                              alignment: Alignment.center,
+                              width: 70,
+                              height: (onSelected != null || isSelected != null)
+                                  ? 50
+                                  : 90,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(borderRadius),
+                                ),
+                              ),
+                              child: FittedBox(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    quantity.toStringWithFixedDecimal(),
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      color: (item.alertQuantity != null &&
+                                              quantity <= item.alertQuantity!)
+                                          ? Colors.amber
+                                          : null,
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
                       ],
                     );
                   }),
