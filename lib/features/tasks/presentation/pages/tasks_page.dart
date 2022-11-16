@@ -5,7 +5,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/work_request/work_request.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/work_requests_tab_view.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/work_request_tile.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/tasks_tab_view.dart';
 import 'package:under_control_v2/features/tasks/utils/get_task_priority_icon.dart';
 
 import '../../../core/utils/get_user_premission.dart';
@@ -24,198 +26,43 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage> with ResponsiveSize {
-  List<WorkRequest>? _workRequests;
-  List<WorkRequest>? _filteredWorkRequests;
-  int _index = 0;
-
-  void _setIndex(int value) {
-    setState(() {
-      _index = value;
-    });
-  }
-
-  void _filterWorkRequests() {
-    switch (_index) {
-      case 0:
-        _filteredWorkRequests = _workRequests;
-        break;
-      case 1:
-        _filteredWorkRequests = _workRequests
-            ?.where((workRequest) => workRequest.priority == TaskPriority.low)
-            .toList();
-        break;
-      case 2:
-        _filteredWorkRequests = _workRequests
-            ?.where(
-                (workRequest) => workRequest.priority == TaskPriority.medium)
-            .toList();
-        break;
-      case 3:
-        _filteredWorkRequests = _workRequests
-            ?.where((workRequest) => workRequest.priority == TaskPriority.high)
-            .toList();
-        break;
-      default:
-        _filteredWorkRequests = _workRequests;
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;
-    const double tabBarIconSize = 32;
     final premission = getUserPremission(
       context: context,
       featureType: FeatureType.tasks,
       premissionType: PremissionType.read,
     );
-    return DefaultTabController(
-      length: 4,
-      child: CustomScrollView(
-        slivers: [
-          SliverOverlapInjector(
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-          ),
-          SliverToBoxAdapter(
-            child: !premission
-                ? Column(
-                    children: [
-                      SizedBox(
-                        height: responsiveSizeVerticalPct(small: 40),
+    return CustomScrollView(
+      slivers: [
+        SliverOverlapInjector(
+          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+        ),
+        SliverToBoxAdapter(
+          child: !premission
+              ? Column(
+                  children: [
+                    SizedBox(
+                      height: responsiveSizeVerticalPct(small: 40),
+                    ),
+                    SizedBox(
+                      child: Text(
+                        AppLocalizations.of(context)!.premission_no_premission,
                       ),
-                      SizedBox(
-                        child: Text(
-                          AppLocalizations.of(context)!
-                              .premission_no_premission,
-                        ),
-                      ),
-                    ],
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        color: Theme.of(context).appBarTheme.backgroundColor,
-                        child: TabBar(
-                          tabs: [
-                            Tab(
-                              icon: Icon(
-                                Icons.all_inclusive,
-                                size: tabBarIconSize,
-                                color: tabBarIconColor,
-                              ),
-                            ),
-                            Tab(
-                              icon: getTaskPriorityIcon(
-                                context,
-                                TaskPriority.low,
-                                30,
-                                const EdgeInsets.all(0),
-                                false,
-                              ),
-                            ),
-                            Tab(
-                              icon: getTaskPriorityIcon(
-                                context,
-                                TaskPriority.medium,
-                                30,
-                                const EdgeInsets.all(0),
-                                false,
-                              ),
-                            ),
-                            Tab(
-                              icon: getTaskPriorityIcon(
-                                context,
-                                TaskPriority.high,
-                                30,
-                                const EdgeInsets.all(0),
-                                false,
-                              ),
-                            ),
-                          ],
-                          onTap: _setIndex,
-                          indicatorColor: tabBarIconColor,
-                        ),
-                      ),
-                      // work orders list
-                      BlocBuilder<WorkRequestBloc, WorkRequestState>(
-                        builder: (context, state) {
-                          if (state is WorkRequestLoadedState) {
-                            if (state.allWorkRequests.allWorkRequests.isEmpty) {
-                              return Column(
-                                children: [
-                                  SizedBox(
-                                    height:
-                                        responsiveSizeVerticalPct(small: 40),
-                                  ),
-                                  Text(
-                                    AppLocalizations.of(context)!.item_no_items,
-                                  ),
-                                ],
-                              );
-                            }
-                            _workRequests =
-                                state.allWorkRequests.allWorkRequests;
-                            _filterWorkRequests();
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 4,
-                                  ),
-                                  child: Text(
-                                    AppLocalizations.of(context)!.work_requests,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline4!
-                                        .copyWith(fontSize: 20),
-                                  ),
-                                ),
-                                ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: _filteredWorkRequests!.length,
-                                  itemBuilder: (context, index) => Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 4,
-                                      bottom: 4,
-                                      right: 8,
-                                      left: 2,
-                                    ),
-                                    child: WorkRequestTile(
-                                      workRequest:
-                                          _filteredWorkRequests![index],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          } else {
-                            // shows shimmer when loading
-                            return ListView.separated(
-                              padding: const EdgeInsets.only(top: 4),
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                height: 4,
-                              ),
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: 8,
-                              itemBuilder: (context, index) =>
-                                  // shimmer work order
-                                  const ShimmerAssetActionListTile(),
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-          ),
-        ],
-      ),
+                    ),
+                  ],
+                )
+              : Column(
+                  children: const [
+                    WorkRequestsTabView(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    TasksTabView(),
+                  ],
+                ),
+        ),
+      ],
     );
   }
 }
