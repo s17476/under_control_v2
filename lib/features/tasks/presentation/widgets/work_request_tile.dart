@@ -72,6 +72,11 @@ class WorkRequestTile extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Row(
                         children: [
+                          Icon(
+                            Icons.add,
+                            color: Theme.of(context).textTheme.caption!.color,
+                            size: 12,
+                          ),
                           Expanded(
                             child: Text(
                               dateFormat.format(workRequest.date),

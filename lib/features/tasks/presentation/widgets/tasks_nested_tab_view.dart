@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/task_tile.dart';
-import 'package:under_control_v2/features/tasks/utils/get_task_type_icon.dart';
 
-import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../domain/entities/task/task.dart';
-import '../../domain/entities/task_priority.dart';
-import '../../domain/entities/work_request/work_request.dart';
-import '../../utils/get_task_priority_icon.dart';
-import '../blocs/work_request/work_request_bloc.dart';
-import 'work_request_tile.dart';
+import '../../domain/entities/task_type.dart';
+import '../../utils/get_task_type_icon.dart';
+import 'task_tile.dart';
 
 class TasksNestedTabView extends StatefulWidget {
   const TasksNestedTabView({

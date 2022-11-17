@@ -105,9 +105,17 @@ class _TaskTileState extends State<TaskTile> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Row(
                         children: [
+                          Icon(
+                            Icons.build,
+                            color: Theme.of(context).textTheme.caption!.color,
+                            size: 10,
+                          ),
+                          const SizedBox(
+                            width: 2,
+                          ),
                           Expanded(
                             child: Text(
-                              dateFormat.format(widget.task.date),
+                              dateFormat.format(widget.task.executionDate),
                               style: Theme.of(context).textTheme.caption,
                             ),
                           ),

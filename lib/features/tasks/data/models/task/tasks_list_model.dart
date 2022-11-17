@@ -19,7 +19,7 @@ class TasksListModel extends TasksList {
         )
         .toList()
       ..sort(
-        (a, b) => a.date.compareTo(b.date),
+        (a, b) => a.executionDate.compareTo(b.executionDate),
       );
     return TasksListModel(allTasks: workRequestsList);
   }
