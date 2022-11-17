@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -11,28 +12,31 @@ import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../domain/entities/work_request/work_request.dart';
+import '../../utils/show_task_cancel_dialog.dart';
 import '../../utils/show_work_request_cancel_dialog.dart';
 import '../../utils/work_request_management_bloc_listener.dart';
+import '../blocs/task/task_bloc.dart';
+import '../blocs/task_archive/task_archive_bloc.dart';
 import '../blocs/work_request/work_request_bloc.dart';
 import '../blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../blocs/work_request_management/work_request_management_bloc.dart';
 import '../widgets/work_request_details/images_tab.dart';
 import '../widgets/work_request_details/video_tab.dart';
 import '../widgets/work_request_details/work_request_info_tab.dart';
+import 'add_task_page.dart';
 import 'add_work_request_page.dart';
 
-class WorkRequestDetailsPage extends StatefulWidget {
-  const WorkRequestDetailsPage({Key? key}) : super(key: key);
+class TaskDetailsPage extends StatefulWidget {
+  const TaskDetailsPage({Key? key}) : super(key: key);
 
-  static const routeName = '/work-order-details';
+  static const routeName = '/task-details';
 
   @override
-  State<WorkRequestDetailsPage> createState() => _WorkRequestDetailsPageState();
+  State<TaskDetailsPage> createState() => _TaskDetailsPageState();
 }
 
-class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
-    with ResponsiveSize {
-  WorkRequest? _workRequest;
+class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
+  Task? _task;
   // late UserProfile _currentUser;
 
   List<Choice> _choices = [];
@@ -41,38 +45,34 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
 
   @override
   void didChangeDependencies() {
-    // gets selected asset
-    final workRequestId =
-        (ModalRoute.of(context)?.settings.arguments as String);
-    final workRequestState = context.watch<WorkRequestBloc>().state;
-    if (workRequestState is WorkRequestLoadedState) {
-      _workRequest = workRequestState.getWorkRequestById(workRequestId);
-      if (_workRequest == null) {
-        final workRequestArchiveState =
-            context.watch<WorkRequestArchiveBloc>().state;
-        if (workRequestArchiveState is WorkRequestArchiveLoadedState) {
-          _workRequest =
-              workRequestArchiveState.getWorkRequestById(workRequestId);
+    final taskId = (ModalRoute.of(context)?.settings.arguments as String);
+    final taskState = context.watch<TaskBloc>().state;
+    if (taskState is TaskLoadedState) {
+      _task = taskState.getTaskById(taskId);
+      if (_task == null) {
+        final taskArchiveState = context.watch<TaskArchiveBloc>().state;
+        if (taskArchiveState is TaskArchiveLoadedState) {
+          _task = taskArchiveState.getTaskById(taskId);
         }
       }
-      if (_workRequest != null) {
+      if (_task != null) {
         // number of tabs
         _tabsCount = 1;
-        _tabsCount += _workRequest!.images.isNotEmpty ? 1 : 0;
-        _tabsCount += _workRequest!.video.isNotEmpty ? 1 : 0;
+        _tabsCount += _task!.images.isNotEmpty ? 1 : 0;
+        _tabsCount += _task!.video.isNotEmpty ? 1 : 0;
         // popup menu items
         _choices = [
           // convert work order
-          if (getUserPremission(
-            context: context,
-            featureType: FeatureType.tasks,
-            premissionType: PremissionType.create,
-          ))
-            Choice(
-              title: AppLocalizations.of(context)!.work_request_convert,
-              icon: Icons.add_task,
-              onTap: () {},
-            ),
+          // if (getUserPremission(
+          //   context: context,
+          //   featureType: FeatureType.tasks,
+          //   premissionType: PremissionType.create,
+          // ))
+          //   Choice(
+          //     title: AppLocalizations.of(context)!.work_request_convert,
+          //     icon: Icons.add_task,
+          //     onTap: () {},
+          //   ),
           // edit work order
           if (getUserPremission(
             context: context,
@@ -84,8 +84,8 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
               icon: Icons.edit,
               onTap: () => Navigator.pushNamed(
                 context,
-                AddWorkRequestPage.routeName,
-                arguments: _workRequest,
+                AddTaskPage.routeName,
+                arguments: _task,
               ),
             ),
           // cancel work order
@@ -95,11 +95,13 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
             premissionType: PremissionType.delete,
           ))
             Choice(
+              // TODO
+              // title
               title: AppLocalizations.of(context)!.work_request_cancel,
               icon: Icons.clear,
-              onTap: () async => showWorkRequestCancelDialog(
+              onTap: () async => showTaskCancelDialog(
                 context: context,
-                workRequest: _workRequest!,
+                task: _task!,
               ).then((value) {
                 if (value is bool && value) {
                   Navigator.pop(context);
@@ -117,7 +119,7 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
     String appBarTitle = '';
     final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;
     const double tabBarIconSize = 32;
-
+// TODO
     appBarTitle = AppLocalizations.of(context)!.work_request_details;
 
     return DefaultTabController(
@@ -136,12 +138,12 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
           ),
           actions: [
             // popup menu
-            if (_workRequest != null &&
-                !_workRequest!.cancelled &&
+            if (_task != null &&
+                !_task!.isCancelled &&
                 getUserPremission(
                   context: context,
                   featureType: FeatureType.tasks,
-                  premissionType: PremissionType.create,
+                  premissionType: PremissionType.edit,
                 ))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {
@@ -178,7 +180,7 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
                   size: tabBarIconSize,
                 ),
               ),
-              if (_workRequest!.images.isNotEmpty)
+              if (_task!.images.isNotEmpty)
                 Tab(
                   icon: Icon(
                     Icons.image,
@@ -186,7 +188,7 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
                     size: tabBarIconSize,
                   ),
                 ),
-              if (_workRequest!.video.isNotEmpty)
+              if (_task!.video.isNotEmpty)
                 Tab(
                   icon: Icon(
                     FontAwesomeIcons.play,
@@ -198,7 +200,7 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
             indicatorColor: tabBarIconColor,
           ),
         ),
-        body: _workRequest == null
+        body: _task == null
             ? const LoadingWidget()
             : MultiBlocListener(
                 listeners: [
@@ -210,11 +212,14 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
                 ],
                 child: TabBarView(
                   children: [
-                    WorkRequestInfoTab(workRequest: _workRequest!),
-                    if (_workRequest!.images.isNotEmpty)
-                      ImagesTab(images: _workRequest!.images),
-                    if (_workRequest!.video.isNotEmpty)
-                      VideoTab(videoUrl: _workRequest!.video),
+                    // WorkRequestInfoTab(workRequest: _task!),
+                    SizedBox(
+                      child: Text(_task!.title),
+                    ),
+                    if (_task!.images.isNotEmpty)
+                      ImagesTab(images: _task!.images),
+                    if (_task!.video.isNotEmpty)
+                      VideoTab(videoUrl: _task!.video),
                   ],
                 ),
               ),

@@ -14,6 +14,7 @@ import '../../../groups/presentation/blocs/group/group_bloc.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../domain/entities/task/task.dart';
 import '../../utils/get_task_priority_and_type_icon.dart';
+import '../pages/task_details_page.dart';
 
 class TaskTile extends StatefulWidget {
   const TaskTile({
@@ -79,11 +80,11 @@ class _TaskTileState extends State<TaskTile> {
             borderRadius: BorderRadius.circular(10),
             child: InkWell(
               onTap: () {
-                // Navigator.pushNamed(
-                //   context,
-                //   WorkRequestDetailsPage.routeName,
-                //   arguments: task.id,
-                // );
+                Navigator.pushNamed(
+                  context,
+                  TaskDetailsPage.routeName,
+                  arguments: widget.task.id,
+                );
               },
               borderRadius: BorderRadius.circular(10),
               child: Container(
