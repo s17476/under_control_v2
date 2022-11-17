@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/task_tile.dart';
 import 'package:under_control_v2/features/tasks/utils/get_task_type_icon.dart';
 
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
@@ -88,71 +89,75 @@ class _TasksNestedTabViewState extends State<TasksNestedTabView>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AnimatedSize(
-          duration: const Duration(milliseconds: 300),
-          child: Container(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            child: TabBar(
-              tabs: [
-                const Tab(
-                  icon: Icon(
-                    Icons.all_inclusive,
-                    size: tabBarIconSize,
-                    color: Colors.white,
-                  ),
+        Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: TabBar(
+            tabs: [
+              const Tab(
+                icon: Icon(
+                  Icons.all_inclusive,
+                  size: tabBarIconSize,
+                  color: Colors.white,
                 ),
-                Tab(
-                  icon: getTaskTypeIcon(
-                    context,
-                    TaskType.maintenance,
-                    28,
-                    true,
-                    Colors.white,
-                  ),
+              ),
+              Tab(
+                icon: getTaskTypeIcon(
+                  context,
+                  TaskType.maintenance,
+                  28,
+                  true,
+                  Colors.white,
                 ),
-                Tab(
-                  icon: getTaskTypeIcon(
-                    context,
-                    TaskType.reparation,
-                    28,
-                    true,
-                    Colors.white,
-                  ),
+              ),
+              Tab(
+                icon: getTaskTypeIcon(
+                  context,
+                  TaskType.reparation,
+                  28,
+                  true,
+                  Colors.white,
                 ),
-                Tab(
-                  icon: getTaskTypeIcon(
-                    context,
-                    TaskType.inspection,
-                    28,
-                    true,
-                    Colors.white,
-                  ),
+              ),
+              Tab(
+                icon: getTaskTypeIcon(
+                  context,
+                  TaskType.inspection,
+                  28,
+                  true,
+                  Colors.white,
                 ),
-                Tab(
-                  icon: getTaskTypeIcon(
-                    context,
-                    TaskType.event,
-                    28,
-                    true,
-                    Colors.white,
-                  ),
+              ),
+              Tab(
+                icon: getTaskTypeIcon(
+                  context,
+                  TaskType.event,
+                  28,
+                  true,
+                  Colors.white,
                 ),
-              ],
-              controller: _tabController,
-              onTap: _setIndex,
-              indicatorColor: widget.nestedIndicatorColor,
-            ),
+              ),
+            ],
+            controller: _tabController,
+            onTap: _setIndex,
+            indicatorColor: widget.nestedIndicatorColor,
           ),
         ),
-
-        // shows shimmer when loading
-        ListView.builder(
-          padding: const EdgeInsets.only(top: 4),
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: _filteredTasks.length,
-          itemBuilder: (context, index) => Text(
-            '${_filteredTasks[index].priority.name}  ${_filteredTasks[index].type.name}',
+        AnimatedSize(
+          duration: const Duration(milliseconds: 300),
+          child: ListView.builder(
+            padding: const EdgeInsets.only(top: 4),
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: _filteredTasks.length,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(
+                top: 4,
+                bottom: 4,
+                right: 8,
+                left: 2,
+              ),
+              child: TaskTile(task: _filteredTasks[index]),
+            ),
           ),
         ),
       ],

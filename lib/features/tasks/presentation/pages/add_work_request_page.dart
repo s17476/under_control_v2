@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../assets/presentation/widgets/add_asset_images_card.dart';
-import '../../../assets/presentation/widgets/add_asset_location_card.dart';
+import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
+import '../../../assets/presentation/widgets/add_asset/add_asset_location_card.dart';
 import '../../../assets/utils/asset_status.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -18,12 +18,12 @@ import '../../domain/entities/task_priority.dart';
 import '../../domain/entities/work_request/work_request.dart';
 import '../blocs/work_request/work_request_bloc.dart';
 import '../blocs/work_request_management/work_request_management_bloc.dart';
-import '../widgets/add_video_card.dart';
+import '../widgets/add_work_request/add_video_card.dart';
 import '../widgets/add_work_request/add_work_request_card.dart';
 import '../widgets/add_work_request/add_work_request_set_asset_card.dart';
 import '../widgets/add_work_request/add_work_request_summary_card.dart';
-import '../widgets/set_asset_status_card.dart';
-import '../widgets/set_priority_card.dart';
+import '../widgets/add_work_request/set_asset_status_card.dart';
+import '../widgets/add_work_request/set_priority_card.dart';
 
 class AddWorkRequestPage extends StatefulWidget {
   const AddWorkRequestPage({Key? key}) : super(key: key);

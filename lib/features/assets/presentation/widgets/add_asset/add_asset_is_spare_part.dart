@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/presentation/widgets/selection_button.dart';
-import '../../../core/utils/responsive_size.dart';
+import '../../../../core/presentation/widgets/selection_button.dart';
+import '../../../../core/utils/responsive_size.dart';
 
 class AddAssetIsSparePartCard extends StatelessWidget with ResponsiveSize {
   const AddAssetIsSparePartCard({

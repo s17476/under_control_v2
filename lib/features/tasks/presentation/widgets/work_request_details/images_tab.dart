@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../core/presentation/pages/images_carousel.dart';
+import '../../../../core/presentation/pages/images_carousel.dart';
 
 class ImagesTab extends StatelessWidget {
   const ImagesTab({

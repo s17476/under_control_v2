@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/presentation/widgets/selection_button.dart';
-import '../../../core/utils/responsive_size.dart';
-import '../../domain/entities/task_priority.dart';
-import '../../utils/get_task_priority_icon.dart';
+import '../../../../core/presentation/widgets/selection_button.dart';
+import '../../../../core/utils/responsive_size.dart';
+import '../../../domain/entities/task_priority.dart';
+import '../../../utils/get_task_priority_icon.dart';
 
 class SetPriorityCard extends StatelessWidget with ResponsiveSize {
   const SetPriorityCard({

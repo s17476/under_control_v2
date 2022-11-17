@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
-import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
-import 'package:under_control_v2/features/tasks/domain/entities/work_request/work_request.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/work_requests_tab_view.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/work_request_tile.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/tasks_tab_view.dart';
-import 'package:under_control_v2/features/tasks/utils/get_task_priority_icon.dart';
 
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
-import '../blocs/work_request/work_request_bloc.dart';
+import '../widgets/tasks_tab_view.dart';
+import '../widgets/work_requests_tab_view.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/presentation/widgets/custom_video_player.dart';
+import '../../../../core/presentation/widgets/custom_video_player.dart';
 
 class VideoTab extends StatelessWidget {
   const VideoTab({

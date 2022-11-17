@@ -54,15 +54,15 @@ class _WorkRequestsLatestState extends State<WorkRequestsLatest> {
                   vertical: 16,
                 ),
                 decoration: BoxDecoration(
-                  // color: Theme.of(context).appBarTheme.backgroundColor,
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.red.shade900.withAlpha(150),
-                      Colors.red.withAlpha(50),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  color: Theme.of(context).appBarTheme.backgroundColor,
+                  // gradient: LinearGradient(
+                  //   colors: [
+                  //     Colors.red.shade900.withAlpha(150),
+                  //     Colors.red.withAlpha(50),
+                  //   ],
+                  //   begin: Alignment.topLeft,
+                  //   end: Alignment.bottomRight,
+                  // ),
                   boxShadow: const [
                     BoxShadow(
                       offset: Offset(0, 0),
@@ -90,48 +90,59 @@ class _WorkRequestsLatestState extends State<WorkRequestsLatest> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  if (_workRequests == null)
-                    ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      itemBuilder: (context, index) =>
-                          const ShimmerAssetActionListTile(
-                        isDashboardTile: true,
-                      ),
-                    ),
-                  if (_workRequests != null && _workRequests!.isNotEmpty)
-                    ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _workRequests!.length,
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: WorkRequestTile(
-                          workRequest: _workRequests![index],
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.red.shade800.withAlpha(150),
+                      Theme.of(context).scaffoldBackgroundColor
+                    ],
+                    stops: const [0, 0.005],
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    if (_workRequests == null)
+                      ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 5,
+                        itemBuilder: (context, index) =>
+                            const ShimmerAssetActionListTile(
+                          isDashboardTile: true,
                         ),
                       ),
-                    ),
-                  if (_workRequests != null && _workRequests!.isEmpty)
-                    Container(
-                      alignment: Alignment.center,
-                      height: 50,
-                      child: Text(
-                        AppLocalizations.of(context)!
-                            .no_actions_in_selected_locations,
+                    if (_workRequests != null && _workRequests!.isNotEmpty)
+                      ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _workRequests!.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: WorkRequestTile(
+                            workRequest: _workRequests![index],
+                          ),
+                        ),
                       ),
-                    ),
-                ],
+                    if (_workRequests != null && _workRequests!.isEmpty)
+                      Container(
+                        alignment: Alignment.center,
+                        height: 50,
+                        child: Text(
+                          AppLocalizations.of(context)!
+                              .no_actions_in_selected_locations,
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ],
           );

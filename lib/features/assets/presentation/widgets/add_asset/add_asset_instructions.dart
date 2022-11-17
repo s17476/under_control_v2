@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
-import '../../../knowledge_base/presentation/widgets/instruction_selection/overlay_instruction_selection.dart';
-import '../../../knowledge_base/presentation/widgets/instruction_tile.dart';
-import '../../../knowledge_base/presentation/widgets/shimmer_instruction_tile.dart';
+import '../../../../knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
+import '../../../../knowledge_base/presentation/widgets/instruction_selection/overlay_instruction_selection.dart';
+import '../../../../knowledge_base/presentation/widgets/instruction_tile.dart';
+import '../../../../knowledge_base/presentation/widgets/shimmer_instruction_tile.dart';
 
 class AddAssetInstructionsCard extends StatelessWidget {
   const AddAssetInstructionsCard({

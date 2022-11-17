@@ -51,15 +51,15 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
                   vertical: 16,
                 ),
                 decoration: BoxDecoration(
-                    // color: Theme.of(context).appBarTheme.backgroundColor,
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.orange.shade700.withAlpha(100),
-                        Colors.orange.withAlpha(30),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+                    color: Theme.of(context).appBarTheme.backgroundColor,
+                    // gradient: LinearGradient(
+                    //   colors: [
+                    //     Colors.orange.shade700.withAlpha(100),
+                    //     Colors.orange.withAlpha(30),
+                    //   ],
+                    //   begin: Alignment.topLeft,
+                    //   end: Alignment.bottomRight,
+                    // ),
                     boxShadow: const [
                       BoxShadow(
                         offset: Offset(0, 0),
@@ -107,46 +107,57 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  if (_actions == null)
-                    ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.orange.shade700.withAlpha(150),
+                      Theme.of(context).scaffoldBackgroundColor
+                    ],
+                    stops: const [0, 0.005],
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    if (_actions == null)
+                      ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 5,
+                        itemBuilder: (context, index) =>
+                            const ShimmerItemActionListTile(
+                          isDashboardTile: true,
+                        ),
                       ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      itemBuilder: (context, index) =>
-                          const ShimmerItemActionListTile(
-                        isDashboardTile: true,
+                    if (_actions != null && _actions!.isNotEmpty)
+                      ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _actions!.length,
+                        itemBuilder: (context, index) => ItemActionListTile(
+                          action: _actions![index],
+                          isDashboardTile: true,
+                        ),
                       ),
-                    ),
-                  if (_actions != null && _actions!.isNotEmpty)
-                    ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
+                    if (_actions != null && _actions!.isEmpty)
+                      Container(
+                        alignment: Alignment.center,
+                        height: 50,
+                        child: Text(
+                          AppLocalizations.of(context)!
+                              .no_actions_in_selected_locations,
+                        ),
                       ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _actions!.length,
-                      itemBuilder: (context, index) => ItemActionListTile(
-                        action: _actions![index],
-                        isDashboardTile: true,
-                      ),
-                    ),
-                  if (_actions != null && _actions!.isEmpty)
-                    Container(
-                      alignment: Alignment.center,
-                      height: 50,
-                      child: Text(
-                        AppLocalizations.of(context)!
-                            .no_actions_in_selected_locations,
-                      ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ],
           );

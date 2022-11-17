@@ -17,17 +17,17 @@ import '../../utils/asset_status.dart';
 import '../blocs/asset/asset_bloc.dart';
 import '../blocs/asset_management/asset_management_bloc.dart';
 import '../cubits/cubit/asset_internal_number_cubit.dart';
-import '../widgets/add_asset_card.dart';
-import '../widgets/add_asset_data_card.dart';
-import '../widgets/add_asset_documents.dart';
-import '../widgets/add_asset_images_card.dart';
-import '../widgets/add_asset_instructions.dart';
-import '../widgets/add_asset_is_in_use_card.dart';
-import '../widgets/add_asset_is_spare_part.dart';
-import '../widgets/add_asset_location_card.dart';
-import '../widgets/add_asset_spare_parts.dart';
-import '../widgets/add_asset_status_card.dart';
-import '../widgets/add_asset_summary_card.dart';
+import '../widgets/add_asset/add_asset_card.dart';
+import '../widgets/add_asset/add_asset_data_card.dart';
+import '../widgets/add_asset/add_asset_documents.dart';
+import '../widgets/add_asset/add_asset_images_card.dart';
+import '../widgets/add_asset/add_asset_instructions.dart';
+import '../widgets/add_asset/add_asset_is_in_use_card.dart';
+import '../widgets/add_asset/add_asset_is_spare_part.dart';
+import '../widgets/add_asset/add_asset_location_card.dart';
+import '../widgets/add_asset/add_asset_spare_parts.dart';
+import '../widgets/add_asset/add_asset_status_card.dart';
+import '../widgets/add_asset/add_asset_summary_card.dart';
 
 class AddAssetPage extends StatefulWidget {
   const AddAssetPage({Key? key}) : super(key: key);

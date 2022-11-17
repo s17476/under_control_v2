@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../groups/domain/entities/group.dart';
-import '../../../groups/presentation/blocs/group/group_bloc.dart';
-import '../../../groups/presentation/widgets/group_management/group_tile.dart';
+import '../../../../groups/domain/entities/group.dart';
+import '../../../../groups/presentation/blocs/group/group_bloc.dart';
+import '../../../../groups/presentation/widgets/group_management/group_tile.dart';
 
 class SelectedGroupsList extends StatefulWidget {
   final Function(String) onSelected;

@@ -2061,6 +2061,10 @@
     "@work_request_msg_not_deleted": {
       "description": "work request - NOT deleted msg"
     },
+    "task": "Task",
+    "@task": {
+      "description": "task"
+    },
     "task_add": "Add new task",
     "@task_add": {
       "description": "task add"

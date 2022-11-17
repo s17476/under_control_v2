@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'selectable_location_list.dart';
+import '../selectable_location_list.dart';
 
 class AddAssetLocationCard extends StatelessWidget {
   const AddAssetLocationCard({

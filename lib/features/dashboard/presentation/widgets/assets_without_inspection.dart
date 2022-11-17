@@ -58,15 +58,15 @@ class _AssetsWithoutInspectionState extends State<AssetsWithoutInspection> {
                   vertical: 16,
                 ),
                 decoration: BoxDecoration(
-                    // color: Theme.of(context).appBarTheme.backgroundColor,
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.blue.shade900.withAlpha(150),
-                        Colors.blue.withAlpha(30),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+                    color: Theme.of(context).appBarTheme.backgroundColor,
+                    // gradient: LinearGradient(
+                    //   colors: [
+                    //     Colors.blue.shade900.withAlpha(150),
+                    //     Colors.blue.withAlpha(30),
+                    //   ],
+                    //   begin: Alignment.topLeft,
+                    //   end: Alignment.bottomRight,
+                    // ),
                     boxShadow: const [
                       BoxShadow(
                         offset: Offset(0, 0),
@@ -114,34 +114,46 @@ class _AssetsWithoutInspectionState extends State<AssetsWithoutInspection> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  // loading assets
-                  if (_assets == null)
-                    ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4,
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.blue.shade700.withAlpha(150),
+                      Theme.of(context).scaffoldBackgroundColor
+                    ],
+                    stops: const [0, 0.005],
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    // loading assets
+                    if (_assets == null)
+                      ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                        ),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 5,
+                        itemBuilder: (context, index) =>
+                            const ShimmerItemTile(),
                       ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      itemBuilder: (context, index) => const ShimmerItemTile(),
-                    ),
-                  // assets loaded
-                  if (_assets != null && _assets!.isNotEmpty)
-                    ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4,
+                    // assets loaded
+                    if (_assets != null && _assets!.isNotEmpty)
+                      ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                        ),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _assets!.length,
+                        itemBuilder: (context, index) => AssetTile(
+                          asset: _assets![index],
+                          searchQuery: '',
+                        ),
                       ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _assets!.length,
-                      itemBuilder: (context, index) => AssetTile(
-                        asset: _assets![index],
-                        searchQuery: '',
-                      ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ],
           );

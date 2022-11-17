@@ -5,9 +5,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../core/presentation/widgets/image_viewer.dart';
-import '../../../core/utils/responsive_size.dart';
-import '../../../core/utils/show_snack_bar.dart';
+import '../../../../core/presentation/widgets/image_viewer.dart';
+import '../../../../core/utils/responsive_size.dart';
+import '../../../../core/utils/show_snack_bar.dart';
 
 class AddAssetImagesCard extends StatelessWidget with ResponsiveSize {
   const AddAssetImagesCard({

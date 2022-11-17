@@ -4,14 +4,14 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
-import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
-import '../../../core/presentation/pages/qr_scanner.dart';
-import '../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../../core/presentation/widgets/rounded_button.dart';
-import '../../../core/utils/get_locale_type.dart';
-import '../../../core/utils/show_snack_bar.dart';
-import '../../utils/show_add_asset_category_modal_bottom_sheet.dart';
-import 'asset_category_dropdown_button.dart';
+import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/presentation/pages/qr_scanner.dart';
+import '../../../../core/presentation/widgets/custom_text_form_field.dart';
+import '../../../../core/presentation/widgets/rounded_button.dart';
+import '../../../../core/utils/get_locale_type.dart';
+import '../../../../core/utils/show_snack_bar.dart';
+import '../../../utils/show_add_asset_category_modal_bottom_sheet.dart';
+import '../asset_category_dropdown_button.dart';
 
 class AddAssetDataCard extends StatefulWidget {
   const AddAssetDataCard({

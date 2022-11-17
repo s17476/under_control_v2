@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../assets/utils/asset_status.dart';
-import '../../../assets/utils/get_asset_status_icon.dart';
-import '../../../core/presentation/widgets/selection_button.dart';
-import '../../../core/utils/responsive_size.dart';
+import '../../../../assets/utils/asset_status.dart';
+import '../../../../assets/utils/get_asset_status_icon.dart';
+import '../../../../core/presentation/widgets/selection_button.dart';
+import '../../../../core/utils/responsive_size.dart';
 
 class SetAssetStatusCard extends StatelessWidget with ResponsiveSize {
   const SetAssetStatusCard({

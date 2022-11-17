@@ -51,15 +51,15 @@ class _AssetsLatestActionsState extends State<AssetsLatestActions> {
                   vertical: 16,
                 ),
                 decoration: BoxDecoration(
-                    // color: Theme.of(context).appBarTheme.backgroundColor,
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.blue.shade900.withAlpha(150),
-                        Colors.blue.withAlpha(30),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+                    color: Theme.of(context).appBarTheme.backgroundColor,
+                    // gradient: LinearGradient(
+                    //   colors: [
+                    //     Colors.blue.shade900.withAlpha(150),
+                    //     Colors.blue.withAlpha(30),
+                    //   ],
+                    //   begin: Alignment.topLeft,
+                    //   end: Alignment.bottomRight,
+                    // ),
                     boxShadow: const [
                       BoxShadow(
                         offset: Offset(0, 0),
@@ -107,49 +107,60 @@ class _AssetsLatestActionsState extends State<AssetsLatestActions> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  if (_actions == null)
-                    ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      itemBuilder: (context, index) =>
-                          const ShimmerAssetActionListTile(
-                        isDashboardTile: true,
-                      ),
-                    ),
-                  if (_actions != null && _actions!.isNotEmpty)
-                    ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _actions!.length,
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: AssetActionTile(
-                          action: _actions![index],
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.blue.shade700.withAlpha(150),
+                      Theme.of(context).scaffoldBackgroundColor
+                    ],
+                    stops: const [0, 0.005],
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    if (_actions == null)
+                      ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 5,
+                        itemBuilder: (context, index) =>
+                            const ShimmerAssetActionListTile(
                           isDashboardTile: true,
                         ),
                       ),
-                    ),
-                  if (_actions != null && _actions!.isEmpty)
-                    Container(
-                      alignment: Alignment.center,
-                      height: 50,
-                      child: Text(
-                        AppLocalizations.of(context)!
-                            .no_actions_in_selected_locations,
+                    if (_actions != null && _actions!.isNotEmpty)
+                      ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _actions!.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: AssetActionTile(
+                            action: _actions![index],
+                            isDashboardTile: true,
+                          ),
+                        ),
                       ),
-                    ),
-                ],
+                    if (_actions != null && _actions!.isEmpty)
+                      Container(
+                        alignment: Alignment.center,
+                        height: 50,
+                        child: Text(
+                          AppLocalizations.of(context)!
+                              .no_actions_in_selected_locations,
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ],
           );

@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../assets/presentation/widgets/add_asset_documents.dart';
-import '../../../assets/presentation/widgets/add_asset_instructions.dart';
+import '../../../assets/presentation/widgets/add_asset/add_asset_documents.dart';
+import '../../../assets/presentation/widgets/add_asset/add_asset_instructions.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';

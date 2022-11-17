@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/cached_user_avatar.dart';
+import '../../../../tasks/presentation/blocs/task/task_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request/work_request_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../../../../tasks/presentation/pages/work_request_details_page.dart';
@@ -112,9 +113,23 @@ class AssetActionTile extends StatelessWidget {
                       ),
                     // connected task
                     if (action.connectedTask.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(action.connectedTask),
+                      BlocBuilder<TaskBloc, TaskState>(
+                        builder: (context, state) {
+                          if (state is TaskLoadedState) {
+                            final task = state.getTaskById(
+                              action.connectedTask,
+                            );
+                            if (task != null) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.task} #${task.count}',
+                                ),
+                              );
+                            }
+                          }
+                          return const SizedBox();
+                        },
                       ),
                     // connected work order
                     if (action.connectedWorkRequest.isNotEmpty)
@@ -122,7 +137,8 @@ class AssetActionTile extends StatelessWidget {
                         builder: (context, state) {
                           if (state is WorkRequestLoadedState) {
                             final workRequest = state.getWorkRequestById(
-                                action.connectedWorkRequest);
+                              action.connectedWorkRequest,
+                            );
                             if (workRequest != null) {
                               return Padding(
                                 padding: const EdgeInsets.only(left: 8.0),

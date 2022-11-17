@@ -6,8 +6,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../core/presentation/widgets/pdf_viewer.dart';
-import '../../../core/utils/responsive_size.dart';
+import '../../../../core/presentation/widgets/pdf_viewer.dart';
+import '../../../../core/utils/responsive_size.dart';
 
 class AddAssetDocumentsCard extends StatelessWidget with ResponsiveSize {
   const AddAssetDocumentsCard({

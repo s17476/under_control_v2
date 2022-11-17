@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
-import '../../../assets/presentation/widgets/add_asset_images_card.dart';
-import '../../../assets/presentation/widgets/add_asset_instructions.dart';
-import '../../../assets/presentation/widgets/add_asset_location_card.dart';
+import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
+import '../../../assets/presentation/widgets/add_asset/add_asset_instructions.dart';
+import '../../../assets/presentation/widgets/add_asset/add_asset_location_card.dart';
 import '../../../assets/utils/asset_status.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -32,10 +32,10 @@ import '../widgets/add_task/add_task_set_cyclic.dart';
 import '../widgets/add_task/add_task_spare_part_card.dart';
 import '../widgets/add_task/add_task_summary_card.dart';
 import '../widgets/add_task/add_task_type_card.dart';
-import '../widgets/add_video_card.dart';
+import '../widgets/add_work_request/add_video_card.dart';
 import '../widgets/add_work_request/add_work_request_set_asset_card.dart';
-import '../widgets/set_asset_status_card.dart';
-import '../widgets/set_priority_card.dart';
+import '../widgets/add_work_request/set_asset_status_card.dart';
+import '../widgets/add_work_request/set_priority_card.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
