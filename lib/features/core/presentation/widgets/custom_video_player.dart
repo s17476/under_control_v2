@@ -52,10 +52,12 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       }
 
       await _videoPlayerController!.initialize();
-      setState(() {
-        _isInitialized = true;
-        _isPalyingFromFile = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isInitialized = true;
+          _isPalyingFromFile = false;
+        });
+      }
       // play from choosen file
     } else if (widget.videoFile != null) {
       _videoPlayerController = VideoPlayerController.file(widget.videoFile!);

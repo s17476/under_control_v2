@@ -76,6 +76,7 @@ class _TasksNestedTabViewState extends State<TasksNestedTabView>
 
   @override
   Widget build(BuildContext context) {
+    final Color tabBarIconColor = Theme.of(context).textTheme.headline5!.color!;
     const double tabBarIconSize = 32;
     _filterWorkRequests();
     return Column(
@@ -85,11 +86,11 @@ class _TasksNestedTabViewState extends State<TasksNestedTabView>
           color: Theme.of(context).scaffoldBackgroundColor,
           child: TabBar(
             tabs: [
-              const Tab(
+              Tab(
                 icon: Icon(
                   Icons.all_inclusive,
                   size: tabBarIconSize,
-                  color: Colors.white,
+                  color: tabBarIconColor,
                 ),
               ),
               Tab(
@@ -98,7 +99,7 @@ class _TasksNestedTabViewState extends State<TasksNestedTabView>
                   TaskType.maintenance,
                   28,
                   true,
-                  Colors.white,
+                  tabBarIconColor,
                 ),
               ),
               Tab(
@@ -107,7 +108,7 @@ class _TasksNestedTabViewState extends State<TasksNestedTabView>
                   TaskType.reparation,
                   28,
                   true,
-                  Colors.white,
+                  tabBarIconColor,
                 ),
               ),
               Tab(
@@ -116,7 +117,7 @@ class _TasksNestedTabViewState extends State<TasksNestedTabView>
                   TaskType.inspection,
                   28,
                   true,
-                  Colors.white,
+                  tabBarIconColor,
                 ),
               ),
               Tab(
@@ -125,7 +126,7 @@ class _TasksNestedTabViewState extends State<TasksNestedTabView>
                   TaskType.event,
                   28,
                   true,
-                  Colors.white,
+                  tabBarIconColor,
                 ),
               ),
             ],

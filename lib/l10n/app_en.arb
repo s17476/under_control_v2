@@ -23,6 +23,10 @@
     "@size": {
       "description": "Size"
     },
+    "added_by": "Added by",
+    "@added_by": {
+      "description": "Added by"
+    },
     "details_no_video": "No video added",
     "@details_no_video": {
       "description": "details - no images"
@@ -2064,6 +2068,18 @@
     "task": "Task",
     "@task": {
       "description": "task"
+    },
+    "task_data": "Task data",
+    "@task_data": {
+      "description": "task data"
+    },
+    "task_cancel": "Cancel task",
+    "@task_cancel": {
+      "description": "task cancel"
+    },
+    "task_details": "Task details",
+    "@task_details": {
+      "description": "task details"
     },
     "task_add": "Add new task",
     "@task_add": {

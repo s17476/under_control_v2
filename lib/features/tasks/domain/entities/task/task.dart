@@ -36,7 +36,6 @@ class Task extends Equatable {
   final List<String> assignedUsers;
   final List<String> sparePartsAssets;
   final List<SparePartItemModel> sparePartsItems;
-  // add items + amount and reserve parts
 
   const Task({
     required this.id,

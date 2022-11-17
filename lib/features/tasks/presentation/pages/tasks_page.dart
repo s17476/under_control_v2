@@ -56,7 +56,6 @@ class _TasksPageState extends State<TasksPage>
   @override
   Widget build(BuildContext context) {
     final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;
-    const double tabBarIconSize = 32;
     final premission = getUserPremission(
       context: context,
       featureType: FeatureType.tasks,

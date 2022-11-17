@@ -20,6 +20,7 @@ import '../blocs/task_archive/task_archive_bloc.dart';
 import '../blocs/work_request/work_request_bloc.dart';
 import '../blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../blocs/work_request_management/work_request_management_bloc.dart';
+import '../widgets/task_details/task_info_tab.dart';
 import '../widgets/work_request_details/images_tab.dart';
 import '../widgets/work_request_details/video_tab.dart';
 import '../widgets/work_request_details/work_request_info_tab.dart';
@@ -62,17 +63,6 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
         _tabsCount += _task!.video.isNotEmpty ? 1 : 0;
         // popup menu items
         _choices = [
-          // convert work order
-          // if (getUserPremission(
-          //   context: context,
-          //   featureType: FeatureType.tasks,
-          //   premissionType: PremissionType.create,
-          // ))
-          //   Choice(
-          //     title: AppLocalizations.of(context)!.work_request_convert,
-          //     icon: Icons.add_task,
-          //     onTap: () {},
-          //   ),
           // edit work order
           if (getUserPremission(
             context: context,
@@ -95,9 +85,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
             premissionType: PremissionType.delete,
           ))
             Choice(
-              // TODO
-              // title
-              title: AppLocalizations.of(context)!.work_request_cancel,
+              title: AppLocalizations.of(context)!.task_cancel,
               icon: Icons.clear,
               onTap: () async => showTaskCancelDialog(
                 context: context,
@@ -119,8 +107,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
     String appBarTitle = '';
     final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;
     const double tabBarIconSize = 32;
-// TODO
-    appBarTitle = AppLocalizations.of(context)!.work_request_details;
+    appBarTitle = AppLocalizations.of(context)!.task_details;
 
     return DefaultTabController(
       length: _tabsCount,
@@ -212,10 +199,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
                 ],
                 child: TabBarView(
                   children: [
-                    // WorkRequestInfoTab(workRequest: _task!),
-                    SizedBox(
-                      child: Text(_task!.title),
-                    ),
+                    TaskInfoTab(task: _task!),
                     if (_task!.images.isNotEmpty)
                       ImagesTab(images: _task!.images),
                     if (_task!.video.isNotEmpty)
