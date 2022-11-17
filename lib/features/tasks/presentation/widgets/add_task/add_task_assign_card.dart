@@ -4,8 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/presentation/widgets/overlay_groups_selection.dart';
 import '../../../../core/presentation/widgets/overlay_users_selection.dart';
 import '../../../../core/utils/responsive_size.dart';
-import '../selected_groups_list.dart';
-import '../selected_users_list.dart';
+import 'selected_groups_list.dart';
+import 'selected_users_list.dart';
 
 class AddTaskAssignCard extends StatelessWidget with ResponsiveSize {
   const AddTaskAssignCard({

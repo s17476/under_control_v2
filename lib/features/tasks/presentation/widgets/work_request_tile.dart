@@ -165,20 +165,9 @@ class WorkRequestTile extends StatelessWidget {
                       ),
                     ),
 
-                    // description
-                    if (workRequest.description.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          workRequest.description,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption!
-                              .copyWith(fontSize: 12),
-                        ),
-                      ),
+                    const SizedBox(
+                      height: 4,
+                    ),
 
                     // user
                     if (user != null)
@@ -189,7 +178,6 @@ class WorkRequestTile extends StatelessWidget {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                    top: 4,
                                     right: 4,
                                     left: 8,
                                   ),

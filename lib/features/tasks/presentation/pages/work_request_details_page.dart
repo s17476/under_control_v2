@@ -16,8 +16,8 @@ import '../../utils/work_request_management_bloc_listener.dart';
 import '../blocs/work_request/work_request_bloc.dart';
 import '../blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../blocs/work_request_management/work_request_management_bloc.dart';
-import '../widgets/images_tab.dart';
-import '../widgets/video_tab.dart';
+import '../widgets/work_request_details/images_tab.dart';
+import '../widgets/work_request_details/video_tab.dart';
 import '../widgets/work_request_details/work_request_info_tab.dart';
 import 'add_work_request_page.dart';
 

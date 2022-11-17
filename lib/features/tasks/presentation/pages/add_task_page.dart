@@ -152,7 +152,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
       );
       // saves instruction to DB if no error
     } else {
-      showSnackBar(context: context, message: 'save');
       final newTask = TaskModel(
         id: _task?.id ?? '',
         parentId: _task?.parentId ?? '',

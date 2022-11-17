@@ -150,6 +150,7 @@ class _TasksNestedTabViewState extends State<TasksNestedTabView>
             shrinkWrap: true,
             itemCount: _filteredTasks.length,
             itemBuilder: (context, index) => Padding(
+              key: ValueKey(_filteredTasks[index].id),
               padding: const EdgeInsets.only(
                 top: 4,
                 bottom: 4,

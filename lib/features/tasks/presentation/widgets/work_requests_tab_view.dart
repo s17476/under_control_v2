@@ -79,46 +79,64 @@ class _WorkRequestsTabViewState extends State<WorkRequestsTabView>
       children: [
         Container(
           color: Theme.of(context).appBarTheme.backgroundColor,
-          child: TabBar(
-            tabs: [
-              Tab(
-                icon: Icon(
-                  Icons.all_inclusive,
-                  size: tabBarIconSize,
-                  color: tabBarIconColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 8,
+                  top: 4,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.work_requests,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(fontSize: 16),
                 ),
               ),
-              Tab(
-                icon: getTaskPriorityIcon(
-                  context,
-                  TaskPriority.low,
-                  30,
-                  const EdgeInsets.all(0),
-                  false,
-                ),
-              ),
-              Tab(
-                icon: getTaskPriorityIcon(
-                  context,
-                  TaskPriority.medium,
-                  30,
-                  const EdgeInsets.all(0),
-                  false,
-                ),
-              ),
-              Tab(
-                icon: getTaskPriorityIcon(
-                  context,
-                  TaskPriority.high,
-                  30,
-                  const EdgeInsets.all(0),
-                  false,
-                ),
+              TabBar(
+                tabs: [
+                  Tab(
+                    icon: Icon(
+                      Icons.all_inclusive,
+                      size: tabBarIconSize,
+                      color: tabBarIconColor,
+                    ),
+                  ),
+                  Tab(
+                    icon: getTaskPriorityIcon(
+                      context,
+                      TaskPriority.low,
+                      30,
+                      const EdgeInsets.all(0),
+                      false,
+                    ),
+                  ),
+                  Tab(
+                    icon: getTaskPriorityIcon(
+                      context,
+                      TaskPriority.medium,
+                      30,
+                      const EdgeInsets.all(0),
+                      false,
+                    ),
+                  ),
+                  Tab(
+                    icon: getTaskPriorityIcon(
+                      context,
+                      TaskPriority.high,
+                      30,
+                      const EdgeInsets.all(0),
+                      false,
+                    ),
+                  ),
+                ],
+                controller: _tabController,
+                onTap: _setIndex,
+                indicatorColor: tabBarIconColor,
               ),
             ],
-            controller: _tabController,
-            onTap: _setIndex,
-            indicatorColor: tabBarIconColor,
           ),
         ),
         // work orders list
@@ -139,42 +157,25 @@ class _WorkRequestsTabViewState extends State<WorkRequestsTabView>
               }
               _workRequests = state.allWorkRequests.allWorkRequests;
               _filterWorkRequests();
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 4,
+              return AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: _filteredWorkRequests!.length,
+                  itemBuilder: (context, index) => Padding(
+                    key: ValueKey(_filteredWorkRequests![index].id),
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                      bottom: 4,
+                      right: 8,
+                      left: 2,
                     ),
-                    child: Text(
-                      AppLocalizations.of(context)!.work_requests,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4!
-                          .copyWith(fontSize: 20),
-                    ),
-                  ),
-                  AnimatedSize(
-                    duration: const Duration(milliseconds: 300),
-                    child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: _filteredWorkRequests!.length,
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.only(
-                          top: 4,
-                          bottom: 4,
-                          right: 8,
-                          left: 2,
-                        ),
-                        child: WorkRequestTile(
-                          workRequest: _filteredWorkRequests![index],
-                        ),
-                      ),
+                    child: WorkRequestTile(
+                      workRequest: _filteredWorkRequests![index],
                     ),
                   ),
-                ],
+                ),
               );
             } else {
               // shows shimmer when loading

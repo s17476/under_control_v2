@@ -6,7 +6,7 @@ import '../../../../assets/presentation/widgets/assets_spare_parts_list.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
-import '../inventory_spare_parts_list_with_quantity.dart';
+import 'inventory_spare_parts_list_with_quantity.dart';
 
 class AddTaskSparePartCard extends StatefulWidget {
   const AddTaskSparePartCard({

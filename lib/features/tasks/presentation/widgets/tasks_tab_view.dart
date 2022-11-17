@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../core/utils/responsive_size.dart';
@@ -95,51 +96,91 @@ class _TasksTabViewState extends State<TasksTabView>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AnimatedSize(
-          duration: const Duration(milliseconds: 300),
-          child: Container(
-            color: Theme.of(context).appBarTheme.backgroundColor,
-            child: TabBar(
-              tabs: [
-                Tab(
-                  icon: Icon(
-                    Icons.all_inclusive,
-                    size: tabBarIconSize,
-                    color: tabBarIconColor,
+        SizedBox(
+          height: 25,
+          child: Row(
+            children: [
+              Container(
+                height: 25,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).appBarTheme.backgroundColor,
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(12),
                   ),
                 ),
-                Tab(
-                  icon: getTaskPriorityIcon(
-                    context,
-                    TaskPriority.low,
-                    30,
-                    const EdgeInsets.all(0),
-                    false,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8,
+                    right: 12,
+                    top: 4,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.bottom_bar_title_tasks,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4!
+                        .copyWith(fontSize: 16),
                   ),
                 ),
-                Tab(
-                  icon: getTaskPriorityIcon(
-                    context,
-                    TaskPriority.medium,
-                    30,
-                    const EdgeInsets.all(0),
-                    false,
+              ),
+              Expanded(
+                child: Container(
+                  color: Theme.of(context).appBarTheme.backgroundColor,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(12),
+                      ),
+                    ),
                   ),
                 ),
-                Tab(
-                  icon: getTaskPriorityIcon(
-                    context,
-                    TaskPriority.high,
-                    30,
-                    const EdgeInsets.all(0),
-                    false,
-                  ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          color: Theme.of(context).appBarTheme.backgroundColor,
+          child: TabBar(
+            tabs: [
+              Tab(
+                icon: Icon(
+                  Icons.all_inclusive,
+                  size: tabBarIconSize,
+                  color: tabBarIconColor,
                 ),
-              ],
-              controller: _tabController,
-              onTap: _setIndex,
-              indicatorColor: tabBarIconColor,
-            ),
+              ),
+              Tab(
+                icon: getTaskPriorityIcon(
+                  context,
+                  TaskPriority.low,
+                  30,
+                  const EdgeInsets.all(0),
+                  false,
+                ),
+              ),
+              Tab(
+                icon: getTaskPriorityIcon(
+                  context,
+                  TaskPriority.medium,
+                  30,
+                  const EdgeInsets.all(0),
+                  false,
+                ),
+              ),
+              Tab(
+                icon: getTaskPriorityIcon(
+                  context,
+                  TaskPriority.high,
+                  30,
+                  const EdgeInsets.all(0),
+                  false,
+                ),
+              ),
+            ],
+            controller: _tabController,
+            onTap: _setIndex,
+            indicatorColor: tabBarIconColor,
           ),
         ),
         BlocBuilder<TaskBloc, TaskState>(
