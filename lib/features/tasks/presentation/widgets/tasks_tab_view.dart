@@ -96,49 +96,6 @@ class _TasksTabViewState extends State<TasksTabView>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          height: 25,
-          child: Row(
-            children: [
-              Container(
-                height: 25,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).appBarTheme.backgroundColor,
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(12),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 8,
-                    right: 12,
-                    top: 4,
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context)!.bottom_bar_title_tasks,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4!
-                        .copyWith(fontSize: 16),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  color: Theme.of(context).appBarTheme.backgroundColor,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(12),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
         Container(
           color: Theme.of(context).appBarTheme.backgroundColor,
           child: TabBar(

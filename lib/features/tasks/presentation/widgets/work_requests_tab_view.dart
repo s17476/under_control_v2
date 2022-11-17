@@ -82,19 +82,6 @@ class _WorkRequestsTabViewState extends State<WorkRequestsTabView>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 8,
-                  top: 4,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.work_requests,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4!
-                      .copyWith(fontSize: 16),
-                ),
-              ),
               TabBar(
                 tabs: [
                   Tab(
