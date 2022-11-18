@@ -533,5 +533,7 @@
     "task_assign_groups": "Przypisz grupy",
     "task_assigned_groups": "Przypisane grupy",
     "task_assign_groups_or_users": "Przypisz grupy lub użytkowników",
-    "task_assign_groups_or_users_error": "Przypisz przynajmniej jedną grupę lub użytkownika do tego zadania"
+    "task_assign_groups_or_users_error": "Przypisz przynajmniej jedną grupę lub użytkownika do tego zadania",
+    "task_action_start": "Rozpocznij akcję",
+    "task_action_register": "Zarejestruj akcję"
 }

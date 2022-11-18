@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/task_details/task_actions_tab.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/task_details/task_instructions_tab.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
@@ -59,7 +60,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
       }
       if (_task != null) {
         // number of tabs
-        _tabsCount = 1;
+        _tabsCount = 2;
         _tabsCount += _task!.images.isNotEmpty ? 1 : 0;
         _tabsCount += _task!.video.isNotEmpty ? 1 : 0;
         _tabsCount += _task!.instructions.isNotEmpty ? 1 : 0;
@@ -169,6 +170,13 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
                   size: tabBarIconSize,
                 ),
               ),
+              Tab(
+                icon: Icon(
+                  Icons.work_history,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
               if (_task!.images.isNotEmpty)
                 Tab(
                   icon: Icon(
@@ -210,6 +218,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
                 child: TabBarView(
                   children: [
                     TaskInfoTab(task: _task!),
+                    TaskActionsTab(task: _task!),
                     if (_task!.images.isNotEmpty)
                       ImagesTab(images: _task!.images),
                     if (_task!.video.isNotEmpty)

@@ -2208,5 +2208,13 @@
     "task_assign_groups_or_users_error": "Assign at least one group or user to this task",
     "@task_assign_groups_or_users_error": {
       "description": "task - assign groups or users error"
+    },
+    "task_action_start": "Start action",
+    "@task_action_start": {
+      "description": "task - action start"
+    },
+    "task_action_register": "Register action",
+    "@task_action_register": {
+      "description": "task - action register"
     }
 }
