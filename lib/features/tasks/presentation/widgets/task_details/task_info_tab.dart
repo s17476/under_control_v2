@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
+import '../../../../assets/utils/get_localizad_duration_unit_name.dart';
+import '../../../../assets/utils/get_next_date.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../core/presentation/widgets/user_info_card.dart';
@@ -87,6 +89,7 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
   @override
   Widget build(BuildContext context) {
     final detailedDateFormat = DateFormat('dd-MM-yyyy HH:mm');
+    final dateFormat = DateFormat('dd-MM-yyyy');
     SizeConfig.init(context);
     return WillPopScope(
       onWillPop: () async {
@@ -369,6 +372,13 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                               height: 8,
                             ),
 
+                            // only cyclic task
+                            if (widget.task.isCyclictask)
+                              TaskCycleInfo(
+                                dateFormat: dateFormat,
+                                task: widget.task,
+                              ),
+
                             const Divider(
                               thickness: 1.5,
                             ),
@@ -452,6 +462,104 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
   }
 }
 
+class TaskCycleInfo extends StatelessWidget {
+  const TaskCycleInfo({
+    Key? key,
+    required this.task,
+    required this.dateFormat,
+  }) : super(key: key);
+
+  final Task task;
+  final DateFormat dateFormat;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Divider(
+          thickness: 1.5,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        IconTitleRow(
+          icon: Icons.refresh,
+          iconColor: Colors.white,
+          iconBackground: Colors.black,
+          title: AppLocalizations.of(context)!.task_is_cyclic,
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: IconTitleRow(
+                icon: Icons.av_timer,
+                iconColor: Colors.white,
+                iconBackground: Theme.of(context).primaryColor,
+                title: AppLocalizations.of(context)!.duration_unit,
+              ),
+            ),
+            Text(
+              getLocalizedDurationUnitName(
+                context,
+                task.durationUnit,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: IconTitleRow(
+                icon: Icons.timer_outlined,
+                iconColor: Colors.white,
+                iconBackground: Theme.of(context).primaryColor,
+                title: AppLocalizations.of(context)!.duration,
+              ),
+            ),
+            Text(
+              task.duration.toString(),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: IconTitleRow(
+                icon: Icons.today,
+                iconColor: Colors.white,
+                iconBackground: Theme.of(context).primaryColor,
+                title: AppLocalizations.of(context)!.task_next_execution_date,
+              ),
+            ),
+            Text(
+              dateFormat.format(
+                getNextDate(
+                  task.executionDate,
+                  task.durationUnit,
+                  task.duration,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+      ],
+    );
+  }
+}
+
 class AssignedGroups extends StatelessWidget {
   const AssignedGroups({
     Key? key,
@@ -469,7 +577,7 @@ class AssignedGroups extends StatelessWidget {
           icon: Icons.group,
           iconColor: Colors.white,
           iconBackground: Colors.black,
-          title: AppLocalizations.of(context)!.task_assigned_users,
+          title: AppLocalizations.of(context)!.task_assigned_groups,
         ),
         const SizedBox(
           height: 6,

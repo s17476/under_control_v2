@@ -120,6 +120,16 @@ class _TaskTileState extends State<TaskTile> {
                               style: Theme.of(context).textTheme.caption,
                             ),
                           ),
+                          if (widget.task.isCyclictask)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Icon(
+                                Icons.refresh,
+                                size: 14,
+                                color:
+                                    Theme.of(context).textTheme.caption!.color,
+                              ),
+                            ),
                           Text(
                             '#${widget.task.count}',
                             style: Theme.of(context).textTheme.caption,
