@@ -112,9 +112,12 @@ class _AssetsLatestActionsState extends State<AssetsLatestActions> {
                   gradient: LinearGradient(
                     colors: [
                       Colors.blue.shade700.withAlpha(150),
-                      Theme.of(context).scaffoldBackgroundColor
+                      Theme.of(context).scaffoldBackgroundColor,
                     ],
-                    stops: const [0, 0.005],
+                    stops: const [
+                      0,
+                      0.005,
+                    ],
                   ),
                 ),
                 child: Column(

@@ -6,6 +6,7 @@ import '../widgets/assets_latest_actions.dart';
 import '../widgets/assets_without_inspection.dart';
 import '../widgets/inventory_latest_actions.dart';
 import '../widgets/inventory_low_level_items.dart';
+import '../widgets/tasks_latest.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({
@@ -18,6 +19,7 @@ class DashboardPage extends StatelessWidget {
       child: Column(
         children: const [
           WorkRequestsLatest(),
+          TasksLatest(),
           AssetsWithoutInspection(),
           AssetsLatestActions(),
           InventoryLowLevelItems(),

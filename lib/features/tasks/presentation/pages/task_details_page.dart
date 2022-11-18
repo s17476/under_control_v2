@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/task_details/task_instructions_tab.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -61,6 +62,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
         _tabsCount = 1;
         _tabsCount += _task!.images.isNotEmpty ? 1 : 0;
         _tabsCount += _task!.video.isNotEmpty ? 1 : 0;
+        _tabsCount += _task!.instructions.isNotEmpty ? 1 : 0;
         // popup menu items
         _choices = [
           // edit work order
@@ -183,6 +185,14 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
                     size: tabBarIconSize,
                   ),
                 ),
+              if (_task!.instructions.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    Icons.menu_book,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
+                ),
             ],
             indicatorColor: tabBarIconColor,
           ),
@@ -204,6 +214,8 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
                       ImagesTab(images: _task!.images),
                     if (_task!.video.isNotEmpty)
                       VideoTab(videoUrl: _task!.video),
+                    if (_task!.instructions.isNotEmpty)
+                      TaskInstructionsTab(task: _task!),
                   ],
                 ),
               ),

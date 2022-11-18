@@ -205,7 +205,7 @@ class _WorkRequestInfoTabState extends State<WorkRequestInfoTab> {
                                       return Padding(
                                         padding: const EdgeInsets.only(
                                           bottom: 8.0,
-                                          top: 16,
+                                          top: 12,
                                         ),
                                         child: TaskTile(task: task),
                                       );
