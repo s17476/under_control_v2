@@ -195,7 +195,9 @@ class ItemInfoTab extends StatelessWidget with ResponsiveSize {
                       if (item.price > 0) PriceRow(price: item.price),
                       // alarm quantity
                       const SizedBox(height: 16),
-                      if (item.alertQuantity != null) AlarmRow(item: item),
+                      if (item.alertQuantity != null &&
+                          item.alertQuantity! >= 0)
+                        AlarmRow(item: item),
                     ],
                   ),
                 ),

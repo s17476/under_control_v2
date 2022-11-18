@@ -135,12 +135,16 @@ class _AddItemPageState extends State<AddItemPage> {
         }
 
         // alert quantity validation
-        if (_isAlertQuantitySet && errorMessage.isEmpty) {
+        if (errorMessage.isEmpty) {
           try {
-            alertQuantity =
-                double.parse(_alertQuantityTextEditingController.text);
-            if (alertQuantity < 0) {
-              errorMessage = AppLocalizations.of(context)!.quantity_to_small;
+            if (_isAlertQuantitySet) {
+              alertQuantity =
+                  double.parse(_alertQuantityTextEditingController.text);
+              if (alertQuantity < 0) {
+                errorMessage = AppLocalizations.of(context)!.quantity_to_small;
+              }
+            } else {
+              alertQuantity = -1;
             }
           } catch (e) {
             errorMessage = AppLocalizations.of(context)!.quantity_format_error;
@@ -290,7 +294,7 @@ class _AddItemPageState extends State<AddItemPage> {
       _codeTextEditingController.text = _item!.itemCode;
       _barCodeTextEditingController.text = _item!.itemBarCode;
       _priceTextEditingController.text = _item!.price.toString();
-      if (_item!.alertQuantity != null) {
+      if (_item!.alertQuantity != null && _item!.alertQuantity! >= 0) {
         _alertQuantityTextEditingController.text =
             _item!.alertQuantity.toString();
         _isAlertQuantitySet = true;

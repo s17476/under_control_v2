@@ -45,7 +45,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
 
   List<Choice> _choices = [];
 
-  int _tabsCount = 1;
+  int _tabsCount = 2;
 
   @override
   void didChangeDependencies() {

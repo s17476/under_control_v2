@@ -44,6 +44,8 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
 
   List<Choice> _choices = [];
 
+  int _tabsCount = 3;
+
   @override
   void didChangeDependencies() {
     // gets current user
@@ -61,6 +63,12 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
         setState(() {
           _item = itemsState.allItems.allItems[index];
         });
+
+        // number of tabs
+        _tabsCount = 3;
+        _tabsCount += _item!.instructions.isNotEmpty ? 1 : 0;
+        _tabsCount += _item!.documents.isNotEmpty ? 1 : 0;
+
         // popup menu items
         _choices = [
           // edit item
@@ -125,7 +133,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
     appBarTitle = AppLocalizations.of(context)!.item_details_title;
 
     return DefaultTabController(
-      length: 5,
+      length: _tabsCount,
       child: Scaffold(
         appBar: AppBar(
           title: Text(appBarTitle),
@@ -194,20 +202,22 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                   size: tabBarIconSize,
                 ),
               ),
-              Tab(
-                icon: Icon(
-                  Icons.menu_book,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
+              if (_item!.instructions.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    Icons.menu_book,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
                 ),
-              ),
-              Tab(
-                icon: Icon(
-                  FontAwesomeIcons.filePdf,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
+              if (_item!.documents.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    FontAwesomeIcons.filePdf,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
                 ),
-              ),
             ],
             indicatorColor: tabBarIconColor,
           ),
@@ -231,8 +241,10 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                     ItemInfoTab(item: _item!),
                     ItemActionsTab(item: _item!),
                     ItemLocationsTab(item: _item!),
-                    ItemInstructionsTab(item: _item!),
-                    ItemDocumentsTab(item: _item!),
+                    if (_item!.instructions.isNotEmpty)
+                      ItemInstructionsTab(item: _item!),
+                    if (_item!.documents.isNotEmpty)
+                      ItemDocumentsTab(item: _item!),
                   ],
                 ),
               ),
