@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
 
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
+import '../../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
 import '../../../../assets/utils/get_localizad_duration_unit_name.dart';
 import '../../../../assets/utils/get_next_date.dart';
@@ -24,6 +26,7 @@ import '../../../domain/entities/task/task.dart';
 import '../../../utils/get_localized_task_priority_name.dart';
 import '../../../utils/get_localized_task_type_name.dart';
 import '../../../utils/get_task_priority_and_type_icon.dart';
+import '../work_request_tile.dart';
 
 class TaskInfoTab extends StatefulWidget {
   const TaskInfoTab({
@@ -377,6 +380,57 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                               TaskCycleInfo(
                                 dateFormat: dateFormat,
                                 task: widget.task,
+                              ),
+
+                            // if task is converted from a work request
+                            if (widget.task.workOrderId.isNotEmpty)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Divider(
+                                    thickness: 1.5,
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  IconTitleRow(
+                                    icon: Icons.done,
+                                    iconColor: Colors.white,
+                                    iconBackground:
+                                        Theme.of(context).primaryColor,
+                                    title: AppLocalizations.of(context)!
+                                        .task_converted,
+                                  ),
+                                  BlocBuilder<WorkRequestArchiveBloc,
+                                      WorkRequestArchiveState>(
+                                    builder: (context, state) {
+                                      if (state
+                                          is WorkRequestArchiveLoadedState) {
+                                        final workRequest =
+                                            state.getWorkRequestById(
+                                                widget.task.workOrderId);
+                                        if (workRequest != null) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                              bottom: 8.0,
+                                              top: 12,
+                                            ),
+                                            child: WorkRequestTile(
+                                              workRequest: workRequest,
+                                            ),
+                                          );
+                                        }
+                                      }
+                                      return const Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom: 8.0,
+                                          top: 16,
+                                        ),
+                                        child: ShimmerAssetActionListTile(),
+                                      );
+                                    },
+                                  )
+                                ],
                               ),
 
                             const Divider(

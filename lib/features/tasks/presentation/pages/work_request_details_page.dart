@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/add_task_page.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -71,7 +72,11 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
             Choice(
               title: AppLocalizations.of(context)!.work_request_convert,
               icon: Icons.add_task,
-              onTap: () {},
+              onTap: () => Navigator.pushReplacementNamed(
+                context,
+                AddTaskPage.routeName,
+                arguments: _workRequest,
+              ),
             ),
           // edit work order
           if (getUserPremission(

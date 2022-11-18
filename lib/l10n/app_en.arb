@@ -2009,6 +2009,10 @@
     "@work_request_convert": {
       "description": "work request convert"
     },
+    "work_request_converted": "Converted to a task",
+    "@work_request_converted": {
+      "description": "work request converted"
+    },
     "work_request_cancel": "Cancel work request",
     "@work_request_cancel": {
       "description": "work request cancel"
@@ -2092,6 +2096,10 @@
     "task_convert": "Convert to task",
     "@task_convert": {
       "description": "task convert"
+    },
+    "task_converted": "Converted from work request",
+    "@task_converted": {
+      "description": "task converted"
     },
     "task_type": "Task type",
     "@task_type": {

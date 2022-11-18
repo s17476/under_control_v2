@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/task_tile.dart';
 
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
@@ -17,6 +19,7 @@ import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../domain/entities/work_request/work_request.dart';
 import '../../../utils/get_localized_task_priority_name.dart';
 import '../../../utils/get_task_priority_icon.dart';
+import '../../blocs/task/task_bloc.dart';
 
 class WorkRequestInfoTab extends StatefulWidget {
   const WorkRequestInfoTab({
@@ -173,8 +176,58 @@ class _WorkRequestInfoTabState extends State<WorkRequestInfoTab> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // if work request is converted to a task
+                      if (widget.workRequest.taskId.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Divider(
+                                thickness: 1.5,
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              IconTitleRow(
+                                icon: Icons.done,
+                                iconColor: Colors.white,
+                                iconBackground: Theme.of(context).primaryColor,
+                                title: AppLocalizations.of(context)!
+                                    .work_request_converted,
+                              ),
+                              BlocBuilder<TaskBloc, TaskState>(
+                                builder: (context, state) {
+                                  if (state is TaskLoadedState) {
+                                    final task = state
+                                        .getTaskById(widget.workRequest.taskId);
+                                    if (task != null) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 8.0,
+                                          top: 16,
+                                        ),
+                                        child: TaskTile(task: task),
+                                      );
+                                    }
+                                  }
+                                  return const Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: 8.0,
+                                      top: 16,
+                                    ),
+                                    child: ShimmerAssetActionListTile(),
+                                  );
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+
                       const Divider(
                         thickness: 1.5,
+                        indent: 8,
+                        endIndent: 8,
                       ),
 
                       // type

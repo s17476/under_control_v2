@@ -10,6 +10,7 @@ import '../../../core/usecases/usecase.dart';
 import '../../domain/entities/task/tasks_stream.dart';
 import '../../domain/repositories/task_repository.dart';
 import '../models/task/task_model.dart';
+import '../models/work_request/work_request_model.dart';
 
 @LazySingleton(as: TaskRepository)
 class TaskRepositoryImpl extends TaskRepository {
@@ -142,6 +143,48 @@ class TaskRepositoryImpl extends TaskRepository {
         // update item
         batch.update(assetReference, assetMap);
       }
+
+      // if task is converted from work request
+      if (params.task.workOrderId.isNotEmpty) {
+        final workRequestReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('workRequests')
+            .doc(params.task.workOrderId);
+
+        final workRequestInArchiveReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('workRequestsArchive')
+            .doc(params.task.workOrderId);
+
+        //
+        WorkRequestModel workRequestModel;
+        final workRequestSnapshot = await workRequestReference.get();
+        if (workRequestSnapshot.exists) {
+          workRequestModel = WorkRequestModel.fromMap(
+            workRequestSnapshot.data() as Map<String, dynamic>,
+            workRequestSnapshot.id,
+          );
+        } else {
+          throw Exception('Work request not found');
+        }
+
+        // update work Request
+        final updatedWorkRequest = workRequestModel.copyWith(
+          taskId: taskReference.id,
+        );
+
+        final workRequestMap = updatedWorkRequest.toMap();
+
+        batch.set(
+          workRequestInArchiveReference,
+          workRequestMap,
+        );
+
+        batch.delete(workRequestReference);
+      }
+
       //
       //
 

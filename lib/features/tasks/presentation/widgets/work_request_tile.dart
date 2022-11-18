@@ -254,6 +254,21 @@ class WorkRequestTile extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+        if (!workRequest.cancelled && workRequest.taskId.isNotEmpty)
+          Positioned(
+            right: 0,
+            child: Checkbox(
+              value: true,
+              onChanged: (_) {
+                Navigator.pushNamed(
+                  context,
+                  WorkRequestDetailsPage.routeName,
+                  arguments: workRequest.id,
+                );
+              },
+              activeColor: Theme.of(context).primaryColor,
+            ),
           )
       ],
     );
