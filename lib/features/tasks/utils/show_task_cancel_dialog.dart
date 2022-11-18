@@ -30,8 +30,6 @@ Future<dynamic> showTaskCancelDialog({
               borderRadius: BorderRadius.circular(15),
             ),
             title: Text(
-              // TODO
-
               AppLocalizations.of(context)!.work_request_confirm_cancel,
             ),
             content: Column(

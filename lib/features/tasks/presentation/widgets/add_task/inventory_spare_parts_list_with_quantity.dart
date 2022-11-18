@@ -11,13 +11,13 @@ class InventorySparePartsListWithQuantity extends StatelessWidget {
   const InventorySparePartsListWithQuantity({
     Key? key,
     required this.items,
-    required this.onSelected,
-    required this.updateSparePartQuantity,
+    this.onSelected,
+    this.updateSparePartQuantity,
   }) : super(key: key);
 
   final List<SparePartItemModel> items;
-  final Function(SparePartItemModel) onSelected;
-  final Function(String, double) updateSparePartQuantity;
+  final Function(SparePartItemModel)? onSelected;
+  final Function(String, double)? updateSparePartQuantity;
 
   @override
   Widget build(BuildContext context) {

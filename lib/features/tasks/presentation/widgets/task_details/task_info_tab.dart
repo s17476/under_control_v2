@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:under_control_v2/features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
 
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
@@ -26,6 +25,7 @@ import '../../../domain/entities/task/task.dart';
 import '../../../utils/get_localized_task_priority_name.dart';
 import '../../../utils/get_localized_task_type_name.dart';
 import '../../../utils/get_task_priority_and_type_icon.dart';
+import '../../blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../work_request_tile.dart';
 
 class TaskInfoTab extends StatefulWidget {

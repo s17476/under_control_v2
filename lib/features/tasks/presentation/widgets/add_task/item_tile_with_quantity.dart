@@ -6,19 +6,10 @@ import '../../../../core/utils/double_apis.dart';
 import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../inventory/domain/entities/item.dart';
 import '../../../../inventory/presentation/widgets/item_tile.dart';
+import '../../../../inventory/utils/get_item_total_quantity.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
 
 class ItemTileWithQuantity extends StatefulWidget {
-  final Item item;
-  final SparePartItemModel sparePartItemModel;
-  final double borderRadius;
-  final Color color;
-  final EdgeInsetsGeometry margin;
-  final String searchQuery;
-  final Function(SparePartItemModel) onSelected;
-  final Function(String, double) updateSparePartQuantity;
-  final bool? isSelected;
-
   const ItemTileWithQuantity({
     Key? key,
     required this.item,
@@ -27,10 +18,20 @@ class ItemTileWithQuantity extends StatefulWidget {
     this.color = Colors.black,
     this.margin = const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
     required this.searchQuery,
-    required this.onSelected,
-    required this.updateSparePartQuantity,
+    this.onSelected,
+    this.updateSparePartQuantity,
     this.isSelected,
   }) : super(key: key);
+
+  final Item item;
+  final SparePartItemModel sparePartItemModel;
+  final double borderRadius;
+  final Color color;
+  final EdgeInsetsGeometry margin;
+  final String searchQuery;
+  final Function(SparePartItemModel)? onSelected;
+  final Function(String, double)? updateSparePartQuantity;
+  final bool? isSelected;
 
   @override
   State<ItemTileWithQuantity> createState() => _ItemTileWithQuantityState();
@@ -48,7 +49,7 @@ class _ItemTileWithQuantityState extends State<ItemTileWithQuantity> {
       setState(() {
         _quantityTextEditingController.text =
             increasedValue.toStringWithFixedDecimal();
-        widget.updateSparePartQuantity(widget.item.id, increasedValue);
+        widget.updateSparePartQuantity!(widget.item.id, increasedValue);
       });
     } catch (e) {
       _showFormatErrorSnackBar();
@@ -63,7 +64,7 @@ class _ItemTileWithQuantityState extends State<ItemTileWithQuantity> {
       setState(() {
         _quantityTextEditingController.text =
             decreasedValue.toStringWithFixedDecimal();
-        widget.updateSparePartQuantity(widget.item.id, decreasedValue);
+        widget.updateSparePartQuantity!(widget.item.id, decreasedValue);
       });
     } catch (e) {
       _showFormatErrorSnackBar();
@@ -126,9 +127,7 @@ class _ItemTileWithQuantityState extends State<ItemTileWithQuantity> {
                   borderRadius: 15,
                   item: widget.item,
                   searchQuery: '',
-                  onSelected: (_) =>
-                      widget.onSelected(widget.sparePartItemModel),
-                  isSelected: true,
+                  isSelected: widget.onSelected != null ? true : null,
                 ),
               ),
             ),
@@ -140,46 +139,65 @@ class _ItemTileWithQuantityState extends State<ItemTileWithQuantity> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // decrease button
-                IconButton(
-                  onPressed: _increaseQuantity,
-                  icon: const Icon(
-                    Icons.add,
-                  ),
-                ),
-                // text field
-                SizedBox(
-                  width: 125,
-                  child: CustomTextFormField(
-                    maxLines: 1,
-                    isDense: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 2,
+                if (widget.updateSparePartQuantity != null)
+                  IconButton(
+                    onPressed: _increaseQuantity,
+                    icon: const Icon(
+                      Icons.add,
                     ),
-                    fieldKey: 'quantity',
-                    labelText: '',
-                    controller: _quantityTextEditingController,
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.number,
-                    onChanged: (val) {
-                      double quantity;
-                      try {
-                        quantity =
-                            double.parse(_quantityTextEditingController.text);
-                      } catch (e) {
-                        quantity = 0;
-                      }
-                      widget.updateSparePartQuantity(widget.item.id, quantity);
-                    },
                   ),
-                ),
+                // text field
+                if (widget.updateSparePartQuantity == null)
+                  FittedBox(
+                    child: Text(
+                      widget.sparePartItemModel.quantity
+                          .toStringWithFixedDecimal(),
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: widget.sparePartItemModel.quantity >
+                                getItemTotalQuantity(widget.item)
+                            ? Theme.of(context).highlightColor
+                            : null,
+                      ),
+                    ),
+                  ),
+                if (widget.updateSparePartQuantity != null)
+                  SizedBox(
+                    width: 125,
+                    child: CustomTextFormField(
+                      maxLines: 1,
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 2,
+                      ),
+                      fieldKey: 'quantity',
+                      labelText: '',
+                      controller: _quantityTextEditingController,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      enabled: widget.updateSparePartQuantity != null,
+                      onChanged: (val) {
+                        double quantity;
+                        try {
+                          quantity =
+                              double.parse(_quantityTextEditingController.text);
+                        } catch (e) {
+                          quantity = 0;
+                        }
+                        widget.updateSparePartQuantity!(
+                            widget.item.id, quantity);
+                      },
+                    ),
+                  ),
                 // decrease button
-                IconButton(
-                  onPressed: doubleQuantity >= 1 ? _decreaseQuantity : null,
-                  icon: const Icon(
-                    Icons.remove,
+                if (widget.updateSparePartQuantity != null)
+                  IconButton(
+                    onPressed: doubleQuantity >= 1 ? _decreaseQuantity : null,
+                    icon: const Icon(
+                      Icons.remove,
+                    ),
                   ),
-                ),
               ],
             ),
           ),

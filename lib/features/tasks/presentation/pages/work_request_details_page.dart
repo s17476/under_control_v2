@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/tasks/presentation/pages/add_task_page.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -20,6 +19,7 @@ import '../blocs/work_request_management/work_request_management_bloc.dart';
 import '../widgets/work_request_details/images_tab.dart';
 import '../widgets/work_request_details/video_tab.dart';
 import '../widgets/work_request_details/work_request_info_tab.dart';
+import 'add_task_page.dart';
 import 'add_work_request_page.dart';
 
 class WorkRequestDetailsPage extends StatefulWidget {

@@ -10,11 +10,11 @@ class AssetsSparePartsList extends StatelessWidget {
   const AssetsSparePartsList({
     Key? key,
     required this.items,
-    required this.onSelected,
+    this.onSelected,
   }) : super(key: key);
 
   final List<String> items;
-  final Function(String) onSelected;
+  final Function(String)? onSelected;
 
   @override
   Widget build(BuildContext context) {

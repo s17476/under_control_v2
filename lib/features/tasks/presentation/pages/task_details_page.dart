@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/task_details/task_actions_tab.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/task_details/task_instructions_tab.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/task_details/task_spare_part_tab.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -64,6 +65,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
         _tabsCount += _task!.images.isNotEmpty ? 1 : 0;
         _tabsCount += _task!.video.isNotEmpty ? 1 : 0;
         _tabsCount += _task!.instructions.isNotEmpty ? 1 : 0;
+        _tabsCount += (_task!.sparePartsAssets.isNotEmpty ||
+                _task!.sparePartsItems.isNotEmpty)
+            ? 1
+            : 0;
         // popup menu items
         _choices = [
           // edit work order
@@ -201,6 +206,15 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
                     size: tabBarIconSize,
                   ),
                 ),
+              if (_task!.sparePartsAssets.isNotEmpty ||
+                  _task!.sparePartsItems.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    Icons.settings_applications,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
+                ),
             ],
             indicatorColor: tabBarIconColor,
           ),
@@ -225,6 +239,12 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
                       VideoTab(videoUrl: _task!.video),
                     if (_task!.instructions.isNotEmpty)
                       TaskInstructionsTab(task: _task!),
+                    if (_task!.sparePartsAssets.isNotEmpty ||
+                        _task!.sparePartsItems.isNotEmpty)
+                      TaskSparePartTab(
+                        sparePartsAssets: _task!.sparePartsAssets,
+                        sparePartsItems: _task!.sparePartsItems,
+                      ),
                   ],
                 ),
               ),
