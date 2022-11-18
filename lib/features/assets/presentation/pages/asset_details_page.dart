@@ -42,6 +42,8 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
 
   List<Choice> _choices = [];
 
+  int _tabsCount = 2;
+
   @override
   void didChangeDependencies() {
     // gets current user
@@ -57,6 +59,12 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
         _asset = assetsState.getAssetById(assetId);
       });
       if (_asset != null) {
+        // number of tabs
+        _tabsCount = 2;
+        _tabsCount += _asset!.images.isNotEmpty ? 1 : 0;
+        _tabsCount += _asset!.spareParts.isNotEmpty ? 1 : 0;
+        _tabsCount += _asset!.instructions.isNotEmpty ? 1 : 0;
+        _tabsCount += _asset!.documents.isNotEmpty ? 1 : 0;
         // popup menu items
         _choices = [
           // edit item
@@ -111,7 +119,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
     appBarTitle = AppLocalizations.of(context)!.asset_details;
 
     return DefaultTabController(
-      length: 6,
+      length: _tabsCount,
       child: Scaffold(
         appBar: AppBar(
           title: Text(appBarTitle),
@@ -173,34 +181,38 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
                   size: tabBarIconSize,
                 ),
               ),
-              Tab(
-                icon: Icon(
-                  Icons.image,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
+              if (_asset!.images.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    Icons.image,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
                 ),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.settings_applications_sharp,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
+              if (_asset!.spareParts.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    Icons.settings_applications_sharp,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
                 ),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.menu_book,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
+              if (_asset!.instructions.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    Icons.menu_book,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
                 ),
-              ),
-              Tab(
-                icon: Icon(
-                  FontAwesomeIcons.filePdf,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
+              if (_asset!.documents.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    FontAwesomeIcons.filePdf,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
                 ),
-              ),
             ],
             indicatorColor: tabBarIconColor,
           ),
@@ -218,10 +230,14 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
                   children: [
                     AssetInfoTab(asset: _asset!),
                     AssetHistoryTab(asset: _asset!),
-                    AssetImagesTab(asset: _asset!),
-                    AssetsSparePartsTab(asset: _asset!),
-                    AssetsInstructionsTab(asset: _asset!),
-                    AssetDocumentsTab(asset: _asset!),
+                    if (_asset!.images.isNotEmpty)
+                      AssetImagesTab(asset: _asset!),
+                    if (_asset!.spareParts.isNotEmpty)
+                      AssetsSparePartsTab(asset: _asset!),
+                    if (_asset!.instructions.isNotEmpty)
+                      AssetsInstructionsTab(asset: _asset!),
+                    if (_asset!.documents.isNotEmpty)
+                      AssetDocumentsTab(asset: _asset!),
                   ],
                 ),
               ),
