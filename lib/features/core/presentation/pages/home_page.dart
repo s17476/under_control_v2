@@ -16,8 +16,10 @@ import '../../../inventory/utils/item_management_bloc_listener.dart';
 import '../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import '../../../knowledge_base/presentation/pages/knowledge_base_page.dart';
 import '../../../knowledge_base/utils/instruction_management_bloc_listener.dart';
+import '../../../tasks/presentation/blocs/task_management/task_management_bloc.dart';
 import '../../../tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
 import '../../../tasks/presentation/pages/tasks_page.dart';
+import '../../../tasks/utils/task_management_bloc_listener.dart';
 import '../../../tasks/utils/work_request_management_bloc_listener.dart';
 import '../../utils/get_user_premission.dart';
 import '../../utils/premission.dart';
@@ -366,6 +368,10 @@ class _HomePageState extends State<HomePage>
           BlocListener<WorkRequestManagementBloc, WorkRequestManagementState>(
             listener: (context, state) =>
                 workRequestManagementBlocListener(context, state),
+          ),
+          BlocListener<TaskManagementBloc, TaskManagementState>(
+            listener: (context, state) =>
+                taskManagementBlocListener(context, state),
           ),
         ],
         child: Scaffold(

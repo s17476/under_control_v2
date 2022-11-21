@@ -2216,5 +2216,29 @@
     "task_action_register": "Register action",
     "@task_action_register": {
       "description": "task - action register"
+    },
+    "task_msg_added": "New task added",
+    "@task_msg_added": {
+      "description": "task - added msg"
+    },
+    "task_msg_not_added": "New task NOT added",
+    "@task_msg_not_added": {
+      "description": "task - NOT added msg"
+    },
+    "task_msg_updated": "Task updated",
+    "@task_msg_updated": { 
+      "description": "task - updated msg"
+    },
+    "task_msg_not_updated": "Task NOT updated",
+    "@task_msg_not_updated": {
+      "description": "task - NOT updated msg"
+    },
+    "task_msg_deleted": "Task deleted",
+    "@task_msg_deleted": {
+      "description": "task - deleted msg"
+    },
+    "task_msg_not_deleted": "Task NOT deleted",
+    "@task_msg_not_deleted": {
+      "description": "task - NOT deleted msg"
     }
 }

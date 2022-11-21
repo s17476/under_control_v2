@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/task_details/task_actions_tab.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/task_details/task_instructions_tab.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/task_details/task_spare_part_tab.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -14,21 +10,19 @@ import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
-import '../../domain/entities/work_request/work_request.dart';
+import '../../domain/entities/task/task.dart';
 import '../../utils/show_task_cancel_dialog.dart';
-import '../../utils/show_work_request_cancel_dialog.dart';
 import '../../utils/work_request_management_bloc_listener.dart';
 import '../blocs/task/task_bloc.dart';
 import '../blocs/task_archive/task_archive_bloc.dart';
-import '../blocs/work_request/work_request_bloc.dart';
-import '../blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../blocs/work_request_management/work_request_management_bloc.dart';
+import '../widgets/task_details/task_actions_tab.dart';
 import '../widgets/task_details/task_info_tab.dart';
+import '../widgets/task_details/task_instructions_tab.dart';
+import '../widgets/task_details/task_spare_part_tab.dart';
 import '../widgets/work_request_details/images_tab.dart';
 import '../widgets/work_request_details/video_tab.dart';
-import '../widgets/work_request_details/work_request_info_tab.dart';
 import 'add_task_page.dart';
-import 'add_work_request_page.dart';
 
 class TaskDetailsPage extends StatefulWidget {
   const TaskDetailsPage({Key? key}) : super(key: key);
