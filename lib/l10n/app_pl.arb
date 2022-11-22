@@ -541,5 +541,6 @@
     "task_msg_updated": "Zaktualizowano zadanie",
     "task_msg_not_updated": "Zadanie nie zostało zaktualizowane",
     "task_msg_deleted": "Usunięto zadanie",
-    "task_msg_not_deleted": "Zadanie nie zostało usunięte"
+    "task_msg_not_deleted": "Zadanie nie zostało usunięte",
+    "task_owner": "Właściciel zadania"
 }

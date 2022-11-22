@@ -31,7 +31,7 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
   List<Task>? allTasks;
   List<WorkRequest>? allRequests;
 
-  TaskFilterEvent lastEvent = TaskFilterResetEvent();
+  TaskFilterEvent lastEvent = const TaskFilterResetEvent();
 
   TaskFilterBloc(
     this.userProfileBloc,
@@ -74,16 +74,21 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
     });
 
     on<TaskFilterSelectEvent>((event, emit) {
-      lastEvent = event;
+      lastEvent = TaskFilterSelectEvent(
+        taskOrRequest: event.taskOrRequest ?? lastEvent.taskOrRequest,
+        taskOwner: event.taskOwner ?? lastEvent.taskOwner,
+        taskPriority: event.taskPriority ?? lastEvent.taskPriority,
+        taskType: event.taskType ?? lastEvent.taskType,
+      );
       // nothing is selected
-      if (event == (TaskFilterResetEvent as TaskFilterEvent)) {
+      if (lastEvent == const TaskFilterResetEvent()) {
         emit(TaskFilterNothingSelectedState(
           tasks: allTasks ?? [],
           workRequests: allRequests ?? [],
         ));
         // options selected
       } else {
-        emit(_filterTasks(event));
+        emit(_filterTasks());
       }
     });
   }
@@ -96,12 +101,12 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
     return super.close();
   }
 
-  TaskFilterState _filterTasks(TaskFilterEvent event) {
+  TaskFilterState _filterTasks() {
     List<Task> filteredTasks = [];
     List<WorkRequest> filteredRequests = [];
 
     // task or requests
-    switch (event.taskOrRequest) {
+    switch (lastEvent.taskOrRequest) {
       case TaskOrRequest.all:
         filteredTasks = allTasks ?? [];
         filteredRequests = allRequests ?? [];
@@ -119,7 +124,7 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
 
     // task owner
     if (filteredTasks.isNotEmpty) {
-      switch (event.taskOwner) {
+      switch (lastEvent.taskOwner) {
         // user tasks
         case TaskOwner.user:
           filteredTasks = filteredTasks
@@ -146,15 +151,15 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
         case TaskOwner.userAndGroup:
           filteredTasks = filteredTasks
               .where(
-                (task) => task.assignedGroups.any(
-                  (groupId) =>
-                      userProfile!.userGroups.contains(
+                (task) =>
+                    task.assignedGroups.any(
+                      (groupId) => userProfile!.userGroups.contains(
                         groupId,
-                      ) ||
-                      task.assignedUsers.contains(
-                        userProfile!.id,
                       ),
-                ),
+                    ) ||
+                    task.assignedUsers.contains(
+                      userProfile!.id,
+                    ),
               )
               .toList();
           break;
@@ -164,25 +169,27 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
     }
 
     // filter priority
-    if (event.taskPriority != TaskPriority.unknown) {
+    if (lastEvent.taskPriority != TaskPriority.unknown) {
       filteredTasks = filteredTasks
-          .where((task) => task.priority == event.taskPriority)
+          .where((task) => task.priority == lastEvent.taskPriority)
           .toList();
       filteredRequests = filteredRequests
-          .where((request) => request.priority == event.taskPriority)
+          .where((request) => request.priority == lastEvent.taskPriority)
           .toList();
     }
 
     // filter task type
-    if (event.taskType != TaskType.unknown) {
-      filteredTasks =
-          filteredTasks.where((task) => task.type == event.taskType).toList();
+    if (lastEvent.taskType != TaskType.unknown) {
+      filteredTasks = filteredTasks
+          .where((task) => task.type == lastEvent.taskType)
+          .toList();
     }
 
     return TaskFilterSelectedState(
-      taskOwner: event.taskOwner,
-      taskPriority: event.taskPriority,
-      taskType: event.taskType,
+      taskOrRequest: lastEvent.taskOrRequest!,
+      taskOwner: lastEvent.taskOwner!,
+      taskPriority: lastEvent.taskPriority!,
+      taskType: lastEvent.taskType!,
       tasks: filteredTasks,
       workRequests: filteredRequests,
     );

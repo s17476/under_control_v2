@@ -2,7 +2,7 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/home_page/app_bar_tasks_filter.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/app_bar_tasks_filter/app_bar_tasks_filter.dart';
 
 import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../assets/presentation/pages/assets_page.dart';

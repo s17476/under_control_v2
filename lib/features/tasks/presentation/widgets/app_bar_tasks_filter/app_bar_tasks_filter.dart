@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/app_bar_tasks_filter/task_owner_tab_bar.dart';
 
-import '../../../utils/show_snack_bar.dart';
-import '../../pages/qr_scanner.dart';
-import '../custom_text_form_field.dart';
-import '../rounded_button.dart';
+import '../../../../core/utils/show_snack_bar.dart';
+import '../../../../core/presentation/pages/qr_scanner.dart';
+import '../../../../core/presentation/widgets/custom_text_form_field.dart';
+import '../../../../core/presentation/widgets/rounded_button.dart';
 
 class AppBarTasksFilter extends StatelessWidget {
   const AppBarTasksFilter({
@@ -18,6 +19,8 @@ class AppBarTasksFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;
+    const double tabBarIconSize = 32;
     if (!isTaskFilterVisible) {
       return const SizedBox();
     } else {
@@ -47,8 +50,21 @@ class AppBarTasksFilter extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Text('Tasks filter'),
+                  padding: const EdgeInsets.only(
+                    top: 12,
+                    left: 8,
+                    right: 8,
+                    bottom: 8,
+                  ),
+                  child: Column(
+                    children: [
+                      TaskOwnerTabBar(
+                        iconSize: tabBarIconSize,
+                        color: tabBarIconColor,
+                        indicatorColor: tabBarIconColor,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

@@ -1,28 +1,42 @@
 part of 'task_filter_bloc.dart';
 
 abstract class TaskFilterEvent extends Equatable {
-  final TaskOrRequest taskOrRequest;
-  final TaskOwner taskOwner;
-  final TaskPriority taskPriority;
-  final TaskType taskType;
+  final TaskOrRequest? taskOrRequest;
+  final TaskOwner? taskOwner;
+  final TaskPriority? taskPriority;
+  final TaskType? taskType;
+  final List properties;
   const TaskFilterEvent({
-    this.taskOrRequest = TaskOrRequest.all,
-    this.taskOwner = TaskOwner.all,
-    this.taskPriority = TaskPriority.unknown,
-    this.taskType = TaskType.unknown,
+    this.taskOrRequest,
+    this.taskOwner,
+    this.taskPriority,
+    this.taskType,
+    this.properties = const [],
   });
 
   @override
-  List<Object> get props => [taskOrRequest, taskOwner, taskPriority, taskType];
+  List<Object> get props => [properties];
 }
 
-class TaskFilterResetEvent extends TaskFilterEvent {}
+class TaskFilterResetEvent extends TaskFilterEvent {
+  const TaskFilterResetEvent({
+    super.taskOrRequest = TaskOrRequest.all,
+    super.taskOwner = TaskOwner.all,
+    super.taskPriority = TaskPriority.unknown,
+    super.taskType = TaskType.unknown,
+  });
+}
 
 class TaskFilterSelectEvent extends TaskFilterEvent {
-  const TaskFilterSelectEvent({
+  TaskFilterSelectEvent({
     super.taskOrRequest,
     super.taskOwner,
     super.taskPriority,
     super.taskType,
-  });
+  }) : super(properties: [
+          taskOrRequest,
+          taskOwner,
+          taskPriority,
+          taskType,
+        ]);
 }

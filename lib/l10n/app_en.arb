@@ -2240,5 +2240,9 @@
     "task_msg_not_deleted": "Task NOT deleted",
     "@task_msg_not_deleted": {
       "description": "task - NOT deleted msg"
+    },
+    "task_owner": "Task owner",
+    "@task_owner": {
+      "description": "task owner"
     }
 }

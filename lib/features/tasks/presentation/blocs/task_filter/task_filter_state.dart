@@ -1,6 +1,7 @@
 part of 'task_filter_bloc.dart';
 
 abstract class TaskFilterState extends Equatable {
+  final TaskOrRequest taskOrRequest;
   final TaskOwner taskOwner;
   final TaskPriority taskPriority;
   final TaskType taskType;
@@ -8,6 +9,7 @@ abstract class TaskFilterState extends Equatable {
   final List<WorkRequest> workRequests;
 
   const TaskFilterState({
+    this.taskOrRequest = TaskOrRequest.all,
     this.taskOwner = TaskOwner.all,
     this.taskPriority = TaskPriority.unknown,
     this.taskType = TaskType.unknown,
@@ -28,6 +30,7 @@ class TaskFilterInitialState extends TaskFilterState {
 
 class TaskFilterSelectedState extends TaskFilterState {
   const TaskFilterSelectedState({
+    required super.taskOrRequest,
     required super.taskOwner,
     required super.taskPriority,
     required super.taskType,
