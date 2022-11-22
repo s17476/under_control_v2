@@ -75,7 +75,7 @@ import 'features/authentication/data/repositories/authentication_repository_impl
 import 'features/authentication/domain/repositories/authentication_repository.dart'
     as _i62;
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i199;
+    as _i200;
 import 'features/authentication/domain/usecases/auto_signin.dart' as _i64;
 import 'features/authentication/domain/usecases/check_email_verification.dart'
     as _i68;
@@ -130,7 +130,7 @@ import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dar
     as _i181;
 import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
     as _i182;
-import 'features/core/injectable_modules/injectable_modules.dart' as _i200;
+import 'features/core/injectable_modules/injectable_modules.dart' as _i201;
 import 'features/core/network/network_info.dart' as _i23;
 import 'features/core/utils/input_validator.dart' as _i8;
 import 'features/filter/presentation/blocs/filter/filter_bloc.dart' as _i189;
@@ -283,6 +283,8 @@ import 'features/tasks/domain/usecases/work_order/update_work_request.dart'
 import 'features/tasks/presentation/blocs/task/task_bloc.dart' as _i193;
 import 'features/tasks/presentation/blocs/task_archive/task_archive_bloc.dart'
     as _i192;
+import 'features/tasks/presentation/blocs/task_filter/task_filter_bloc.dart'
+    as _i199;
 import 'features/tasks/presentation/blocs/task_management/task_management_bloc.dart'
     as _i183;
 import 'features/tasks/presentation/blocs/work_request/work_request_bloc.dart'
@@ -917,16 +919,21 @@ Future<_i1.GetIt> $initGetIt(
         getDashboardLastFiveItemsActionsStream:
             get<_i106.GetDashboardLastFiveItemsActionsStream>(),
       ));
+  gh.factory<_i199.TaskFilterBloc>(() => _i199.TaskFilterBloc(
+        get<_i167.UserProfileBloc>(),
+        get<_i193.TaskBloc>(),
+        get<_i195.WorkRequestBloc>(),
+      ));
   return get;
 }
 
-class _$DataConnectionCheckerModule extends _i199.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i200.DataConnectionCheckerModule {}
 
 class _$FirebaseAuthenticationService
-    extends _i199.FirebaseAuthenticationService {}
+    extends _i200.FirebaseAuthenticationService {}
 
-class _$FirebaseFirestoreService extends _i200.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i201.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i200.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i201.FirebaseStorageService {}
 
-class _$SharedPreferencesService extends _i200.SharedPreferencesService {}
+class _$SharedPreferencesService extends _i201.SharedPreferencesService {}

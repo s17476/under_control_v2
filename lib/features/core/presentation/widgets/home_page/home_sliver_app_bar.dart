@@ -18,6 +18,8 @@ class HomeSliverAppBar extends StatelessWidget {
     required this.toggleIsSearchBarExpanded,
     required this.isMenuVisible,
     required this.toggleIsMenuVisible,
+    required this.isTaskFilterVisible,
+    required this.toggleIsTaskFilterVisible,
   }) : super(key: key);
 
   final int pageIndex;
@@ -27,6 +29,8 @@ class HomeSliverAppBar extends StatelessWidget {
   final VoidCallback toggleIsSearchBarExpanded;
   final bool isMenuVisible;
   final VoidCallback toggleIsMenuVisible;
+  final bool isTaskFilterVisible;
+  final VoidCallback toggleIsTaskFilterVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +72,9 @@ class HomeSliverAppBar extends StatelessWidget {
               if (isFilterExpanded) {
                 toggleIsFilterExpanded();
               }
+              if (isTaskFilterVisible) {
+                toggleIsTaskFilterVisible();
+              }
               if (isMenuVisible) {
                 toggleIsMenuVisible();
               }
@@ -85,6 +92,21 @@ class HomeSliverAppBar extends StatelessWidget {
                 : _appBarTitles[pageIndex],
       ),
       actions: [
+        // tasks and work requests filter
+        if (pageIndex == 0 &&
+            getUserPremission(
+              context: context,
+              featureType: FeatureType.tasks,
+              premissionType: PremissionType.read,
+            ))
+          IconButton(
+            onPressed: () => toggleIsTaskFilterVisible(),
+            icon: Icon(
+              Icons.filter_list_outlined,
+              color:
+                  isTaskFilterVisible ? Theme.of(context).primaryColor : null,
+            ),
+          ),
         // search button
         if ((pageIndex == 1 &&
                 getUserPremission(

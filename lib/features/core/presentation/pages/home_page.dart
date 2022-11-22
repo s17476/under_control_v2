@@ -2,6 +2,7 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/home_page/app_bar_tasks_filter.dart';
 
 import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../assets/presentation/pages/assets_page.dart';
@@ -45,6 +46,7 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   // search box height
   final double _searchBoxHeight = 70;
+  final double _tasksFilterHeight = 150;
 
   final _scrollController = ScrollController();
 
@@ -62,6 +64,7 @@ class _HomePageState extends State<HomePage>
   bool _isInstructionsSearchBarExpanded = false;
   bool _isControlsVisible = true;
   bool _isMenuVisible = false;
+  bool _isTaskFilterVisible = false;
   bool _isBottomNavigationAnimating = false;
 
   // inventory search
@@ -143,6 +146,9 @@ class _HomePageState extends State<HomePage>
   void _toggleIsFilterExpanded() {
     setState(() {
       _isFilterExpanded = !_isFilterExpanded;
+      if (_isTaskFilterVisible) {
+        _isTaskFilterVisible = !_isTaskFilterVisible;
+      }
     });
   }
 
@@ -152,6 +158,9 @@ class _HomePageState extends State<HomePage>
       // closes menu and filter
       if (_isMenuVisible) {
         _toggleIsMenuVisible();
+      }
+      if (_isTaskFilterVisible) {
+        _toggleIsTaskFilterVisible();
       }
       if (_isFilterExpanded) {
         _toggleIsFilterExpanded();
@@ -242,6 +251,15 @@ class _HomePageState extends State<HomePage>
     }
   }
 
+  void _toggleIsTaskFilterVisible() {
+    setState(() {
+      _isTaskFilterVisible = !_isTaskFilterVisible;
+      if (_isFilterExpanded) {
+        _isFilterExpanded = !_isFilterExpanded;
+      }
+    });
+  }
+
   @override
   void initState() {
     // bottom bar navigation
@@ -319,6 +337,11 @@ class _HomePageState extends State<HomePage>
           _toggleIsMenuVisible();
           return false;
         }
+        // hides tasks filter if visible
+        if (_isTaskFilterVisible) {
+          _toggleIsTaskFilterVisible();
+          return false;
+        }
         // hides search box if visible
         if (_isAssetsSearchBarExpanded ||
             _isInstructionsSearchBarExpanded ||
@@ -393,6 +416,8 @@ class _HomePageState extends State<HomePage>
                     toggleIsMenuVisible: _toggleIsMenuVisible,
                     isSearchBarExpanded: _getFlagForPageIndex(_pageIndex),
                     toggleIsSearchBarExpanded: _toggleIsSearchBarExpanded,
+                    isTaskFilterVisible: _isTaskFilterVisible,
+                    toggleIsTaskFilterVisible: _toggleIsTaskFilterVisible,
                   ),
                 )
               ],
@@ -456,7 +481,12 @@ class _HomePageState extends State<HomePage>
                               }
                             },
                             children: [
-                              const TasksPage(),
+                              KeepAlivePage(
+                                child: TasksPage(
+                                  isTasksFilterVisible: _isTaskFilterVisible,
+                                  tasksFilterHeight: _tasksFilterHeight,
+                                ),
+                              ),
                               KeepAlivePage(
                                 child: InventoryPage(
                                   searchBoxHeight: _searchBoxHeight,
@@ -535,6 +565,11 @@ class _HomePageState extends State<HomePage>
                     onChanged: _searchInInstructions,
                     searchTextEditingController:
                         _instructionsSearchTextEditingController,
+                  ),
+                  // tasks filter
+                  AppBarTasksFilter(
+                    isTaskFilterVisible: _isTaskFilterVisible,
+                    tasksFilterHeight: _tasksFilterHeight,
                   ),
                 ],
               ),
