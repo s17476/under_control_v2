@@ -1,9 +1,9 @@
 enum TaskType {
+  unknown(''),
   maintenance('maintenence'),
   reparation('reparation'),
   inspection('inspection'),
-  event('event'),
-  unknown('');
+  event('event');
 
   final String name;
 

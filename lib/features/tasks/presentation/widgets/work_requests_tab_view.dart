@@ -22,25 +22,41 @@ class WorkRequestsTabView extends StatelessWidget with ResponsiveSize {
         ),
       );
     } else {
-      return AnimatedSize(
-        duration: const Duration(milliseconds: 300),
-        child: ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: workRequests.length,
-          itemBuilder: (context, index) => Padding(
-            key: ValueKey(workRequests[index].id),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
             padding: const EdgeInsets.only(
-              top: 8,
-              bottom: 4,
-              right: 8,
-              left: 2,
+              left: 8,
+              top: 4,
             ),
-            child: WorkRequestTile(
-              workRequest: workRequests[index],
+            child: Text(
+              AppLocalizations.of(context)!.work_requests,
+              style:
+                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
             ),
           ),
-        ),
+          AnimatedSize(
+            duration: const Duration(milliseconds: 300),
+            child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: workRequests.length,
+              itemBuilder: (context, index) => Padding(
+                key: ValueKey(workRequests[index].id),
+                padding: const EdgeInsets.only(
+                  top: 4,
+                  bottom: 4,
+                  right: 8,
+                  left: 2,
+                ),
+                child: WorkRequestTile(
+                  workRequest: workRequests[index],
+                ),
+              ),
+            ),
+          ),
+        ],
       );
     }
   }

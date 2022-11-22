@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/home_page/filter_icon.dart';
 
 import '../../../../groups/domain/entities/feature.dart';
+import '../../../../tasks/presentation/blocs/task_filter/task_filter_bloc.dart';
 import '../../../utils/get_user_premission.dart';
 import '../../../utils/premission.dart';
 import 'app_bar_animated_icon.dart';
+import 'filter_icon.dart';
 
 class HomeSliverAppBar extends StatelessWidget {
   const HomeSliverAppBar({
@@ -101,10 +103,30 @@ class HomeSliverAppBar extends StatelessWidget {
             ))
           IconButton(
             onPressed: () => toggleIsTaskFilterVisible(),
-            icon: Icon(
-              Icons.filter_list_outlined,
-              color:
-                  isTaskFilterVisible ? Theme.of(context).primaryColor : null,
+            icon: Stack(
+              children: [
+                Icon(
+                  Icons.filter_list_outlined,
+                  color: isTaskFilterVisible
+                      ? Theme.of(context).primaryColor
+                      : null,
+                ),
+                BlocBuilder<TaskFilterBloc, TaskFilterState>(
+                  builder: (context, state) {
+                    if (state is TaskFilterSelectedState) {
+                      return const Positioned(
+                        top: 0,
+                        left: 0,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.amber,
+                          radius: 5,
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  },
+                ),
+              ],
             ),
           ),
         // search button

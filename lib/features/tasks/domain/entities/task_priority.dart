@@ -1,8 +1,8 @@
 enum TaskPriority implements Comparable {
+  unknown(''),
   low('low'),
   medium('medium'),
-  high('high'),
-  unknown('');
+  high('high');
 
   final String name;
 

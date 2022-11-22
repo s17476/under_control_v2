@@ -2244,5 +2244,13 @@
     "task_owner": "Task owner",
     "@task_owner": {
       "description": "task owner"
+    },
+    "task_and_request": "Tasks and work requests",
+    "@task_and_request": {
+      "description": "task and request"
+    },
+    "task_filter_reset": "Reset filter",
+    "@task_filter_reset": {
+      "description": "task - reset filter"
     }
 }

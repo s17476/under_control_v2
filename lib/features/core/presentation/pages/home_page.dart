@@ -2,7 +2,6 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/app_bar_tasks_filter/app_bar_tasks_filter.dart';
 
 import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../assets/presentation/pages/assets_page.dart';
@@ -20,6 +19,7 @@ import '../../../knowledge_base/utils/instruction_management_bloc_listener.dart'
 import '../../../tasks/presentation/blocs/task_management/task_management_bloc.dart';
 import '../../../tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
 import '../../../tasks/presentation/pages/tasks_page.dart';
+import '../../../tasks/presentation/widgets/app_bar_tasks_filter/app_bar_tasks_filter.dart';
 import '../../../tasks/utils/task_management_bloc_listener.dart';
 import '../../../tasks/utils/work_request_management_bloc_listener.dart';
 import '../../utils/get_user_premission.dart';
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   // search box height
   final double _searchBoxHeight = 70;
-  final double _tasksFilterHeight = 150;
+  final double _tasksFilterHeight = 350;
 
   final _scrollController = ScrollController();
 

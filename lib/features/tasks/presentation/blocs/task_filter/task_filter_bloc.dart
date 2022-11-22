@@ -81,7 +81,10 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
         taskType: event.taskType ?? lastEvent.taskType,
       );
       // nothing is selected
-      if (lastEvent == const TaskFilterResetEvent()) {
+      if (lastEvent.taskOrRequest == TaskOrRequest.all &&
+          lastEvent.taskOwner == TaskOwner.all &&
+          lastEvent.taskPriority == TaskPriority.unknown &&
+          lastEvent.taskType == TaskType.unknown) {
         emit(TaskFilterNothingSelectedState(
           tasks: allTasks ?? [],
           workRequests: allRequests ?? [],

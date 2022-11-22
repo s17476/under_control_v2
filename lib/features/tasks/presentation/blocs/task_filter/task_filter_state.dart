@@ -19,6 +19,10 @@ abstract class TaskFilterState extends Equatable {
 
   @override
   List<Object> get props => [
+        taskOrRequest,
+        taskOwner,
+        taskPriority,
+        taskType,
         tasks,
         workRequests,
       ];

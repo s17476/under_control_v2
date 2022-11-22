@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/app_bar_tasks_filter/task_owner_tab_bar.dart';
 
-import '../../../../core/utils/show_snack_bar.dart';
-import '../../../../core/presentation/pages/qr_scanner.dart';
-import '../../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../../../core/presentation/widgets/rounded_button.dart';
+import '../../blocs/task_filter/task_filter_bloc.dart';
+import 'task_or_request_tab_bar.dart';
+import 'task_owner_tab_bar.dart';
+import 'task_priority_tab_bar.dart';
+import 'task_type_tab_bar.dart';
 
 class AppBarTasksFilter extends StatelessWidget {
   const AppBarTasksFilter({
@@ -54,14 +55,49 @@ class AppBarTasksFilter extends StatelessWidget {
                     top: 12,
                     left: 8,
                     right: 8,
-                    bottom: 8,
+                    // bottom: 8,
                   ),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      TaskOrRequestTabBar(
+                        iconSize: tabBarIconSize,
+                        color: tabBarIconColor,
+                        indicatorColor: tabBarIconColor,
+                      ),
                       TaskOwnerTabBar(
                         iconSize: tabBarIconSize,
                         color: tabBarIconColor,
                         indicatorColor: tabBarIconColor,
+                      ),
+                      TaskPriorityTabBar(
+                        iconSize: tabBarIconSize,
+                        color: tabBarIconColor,
+                        indicatorColor: tabBarIconColor,
+                      ),
+                      TaskTypeTabBar(
+                        iconSize: tabBarIconSize,
+                        color: tabBarIconColor,
+                        indicatorColor: tabBarIconColor,
+                      ),
+                      TextButton.icon(
+                        style: TextButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 30),
+                        ),
+                        onPressed: () => context
+                            .read<TaskFilterBloc>()
+                            .add(const TaskFilterResetEvent()),
+                        label: Text(
+                          AppLocalizations.of(context)!.task_filter_reset,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(fontSize: 18),
+                        ),
+                        icon: Icon(
+                          Icons.refresh,
+                          color: Theme.of(context).textTheme.headline4!.color,
+                        ),
                       ),
                     ],
                   ),
