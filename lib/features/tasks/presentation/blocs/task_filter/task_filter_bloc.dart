@@ -33,6 +33,11 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
 
   TaskFilterEvent lastEvent = const TaskFilterResetEvent();
 
+  final double filterFullHeight = 350;
+  final double filterFullHeightOnlyRequests = 200;
+  final double filterMiniHeight = 180;
+  final double filterMiniHeightOnlyRequests = 90;
+
   TaskFilterBloc(
     this.userProfileBloc,
     this.taskBloc,
@@ -68,6 +73,9 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
     on<TaskFilterResetEvent>((event, emit) {
       lastEvent = event;
       emit(TaskFilterNothingSelectedState(
+        filterHeight: filterFullHeight,
+        isFilterVisible: state.isFilterVisible,
+        isMiniSize: state.isMiniSize,
         tasks: allTasks ?? [],
         workRequests: allRequests ?? [],
       ));
@@ -86,12 +94,85 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
           lastEvent.taskPriority == TaskPriority.unknown &&
           lastEvent.taskType == TaskType.unknown) {
         emit(TaskFilterNothingSelectedState(
+          filterHeight: state.isMiniSize ? filterMiniHeight : filterFullHeight,
+          isFilterVisible: state.isFilterVisible,
+          isMiniSize: state.isMiniSize,
           tasks: allTasks ?? [],
           workRequests: allRequests ?? [],
         ));
         // options selected
       } else {
         emit(_filterTasks());
+      }
+    });
+
+    on<TaskFilterShowEvent>((event, emit) {
+      TaskFilterState? newState;
+      if (state is TaskFilterSelectedState) {
+        newState = (state as TaskFilterSelectedState).copyWith(
+          filterHeight: filterFullHeight,
+          isFilterVisible: true,
+          isMiniSize: false,
+        );
+      } else if (state is TaskFilterNothingSelectedState) {
+        newState = (state as TaskFilterNothingSelectedState).copyWith(
+          filterHeight: filterFullHeight,
+          isFilterVisible: true,
+          isMiniSize: false,
+        );
+      }
+      if (newState != null) {
+        emit(newState);
+      }
+    });
+
+    on<TaskFilterHideEvent>((event, emit) {
+      TaskFilterState? newState;
+      if (state is TaskFilterSelectedState) {
+        newState =
+            (state as TaskFilterSelectedState).copyWith(isFilterVisible: false);
+      } else if (state is TaskFilterNothingSelectedState) {
+        newState = (state as TaskFilterNothingSelectedState)
+            .copyWith(isFilterVisible: false);
+      }
+      if (newState != null) {
+        emit(newState);
+      }
+    });
+
+    on<TaskFilterSetMiniSizeEvent>((event, emit) {
+      TaskFilterState? newState;
+      if (state is TaskFilterSelectedState) {
+        newState = (state as TaskFilterSelectedState).copyWith(
+          filterHeight: filterMiniHeight,
+          isMiniSize: true,
+        );
+      } else if (state is TaskFilterNothingSelectedState) {
+        newState = (state as TaskFilterNothingSelectedState).copyWith(
+          filterHeight: filterMiniHeight,
+          isMiniSize: true,
+        );
+      }
+      if (newState != null) {
+        emit(newState);
+      }
+    });
+
+    on<TaskFilterSetFullSizeEvent>((event, emit) {
+      TaskFilterState? newState;
+      if (state is TaskFilterSelectedState) {
+        newState = (state as TaskFilterSelectedState).copyWith(
+          filterHeight: filterFullHeight,
+          isMiniSize: false,
+        );
+      } else if (state is TaskFilterNothingSelectedState) {
+        newState = (state as TaskFilterNothingSelectedState).copyWith(
+          filterHeight: filterFullHeight,
+          isMiniSize: false,
+        );
+      }
+      if (newState != null) {
+        emit(newState);
       }
     });
   }
@@ -188,7 +269,27 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
           .toList();
     }
 
+    final isOnlyRequestFilter =
+        lastEvent.taskOrRequest == TaskOrRequest.request;
+    double newSize;
+    if (isOnlyRequestFilter) {
+      if (state.isMiniSize) {
+        newSize = filterMiniHeightOnlyRequests;
+      } else {
+        newSize = filterFullHeightOnlyRequests;
+      }
+    } else {
+      if (state.isMiniSize) {
+        newSize = filterMiniHeight;
+      } else {
+        newSize = filterFullHeight;
+      }
+    }
+
     return TaskFilterSelectedState(
+      filterHeight: newSize,
+      isFilterVisible: state.isFilterVisible,
+      isMiniSize: state.isMiniSize,
       taskOrRequest: lastEvent.taskOrRequest!,
       taskOwner: lastEvent.taskOwner!,
       taskPriority: lastEvent.taskPriority!,

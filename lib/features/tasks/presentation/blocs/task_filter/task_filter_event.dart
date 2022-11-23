@@ -40,3 +40,11 @@ class TaskFilterSelectEvent extends TaskFilterEvent {
           taskType,
         ]);
 }
+
+class TaskFilterShowEvent extends TaskFilterEvent {}
+
+class TaskFilterSetMiniSizeEvent extends TaskFilterEvent {}
+
+class TaskFilterSetFullSizeEvent extends TaskFilterEvent {}
+
+class TaskFilterHideEvent extends TaskFilterEvent {}

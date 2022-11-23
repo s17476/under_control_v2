@@ -16,6 +16,7 @@ import '../../../inventory/utils/item_management_bloc_listener.dart';
 import '../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import '../../../knowledge_base/presentation/pages/knowledge_base_page.dart';
 import '../../../knowledge_base/utils/instruction_management_bloc_listener.dart';
+import '../../../tasks/presentation/blocs/task_filter/task_filter_bloc.dart';
 import '../../../tasks/presentation/blocs/task_management/task_management_bloc.dart';
 import '../../../tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
 import '../../../tasks/presentation/pages/tasks_page.dart';
@@ -46,8 +47,6 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   // search box height
   final double _searchBoxHeight = 70;
-  // filter height
-  double _tasksFilterHeight = 350;
 
   final _scrollController = ScrollController();
 
@@ -65,8 +64,8 @@ class _HomePageState extends State<HomePage>
   bool _isInstructionsSearchBarExpanded = false;
   bool _isControlsVisible = true;
   bool _isMenuVisible = false;
-  bool _isTaskFilterVisible = false;
   bool _isBottomNavigationAnimating = false;
+  bool _isTaskFilterVisible = false;
 
   // inventory search
   final _inventorySearchTextEditingController = TextEditingController();
@@ -131,7 +130,6 @@ class _HomePageState extends State<HomePage>
       _animationController!.reverse();
       setState(() {
         _isControlsVisible = true;
-        _tasksFilterHeight = 330;
       });
     }
   }
@@ -142,8 +140,8 @@ class _HomePageState extends State<HomePage>
       _animationController!.forward();
       setState(() {
         _isControlsVisible = false;
-        _tasksFilterHeight = 150;
       });
+      context.read<TaskFilterBloc>().add(TaskFilterSetMiniSizeEvent());
     }
   }
 
@@ -151,10 +149,8 @@ class _HomePageState extends State<HomePage>
   void _toggleIsFilterExpanded() {
     setState(() {
       _isFilterExpanded = !_isFilterExpanded;
-      if (_isTaskFilterVisible) {
-        _isTaskFilterVisible = !_isTaskFilterVisible;
-      }
     });
+    context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
   }
 
   // show/hide search bar widget
@@ -165,7 +161,7 @@ class _HomePageState extends State<HomePage>
         _toggleIsMenuVisible();
       }
       if (_isTaskFilterVisible) {
-        _toggleIsTaskFilterVisible();
+        context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
       }
       if (_isFilterExpanded) {
         _toggleIsFilterExpanded();
@@ -256,15 +252,6 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  void _toggleIsTaskFilterVisible() {
-    setState(() {
-      _isTaskFilterVisible = !_isTaskFilterVisible;
-      if (_isFilterExpanded) {
-        _isFilterExpanded = !_isFilterExpanded;
-      }
-    });
-  }
-
   @override
   void initState() {
     // bottom bar navigation
@@ -278,6 +265,9 @@ class _HomePageState extends State<HomePage>
 
     // triggers hide/show bottom navigation bar
     _scrollController.addListener(() {
+      if (_isTaskFilterVisible && _scrollController.offset < 5) {
+        context.read<TaskFilterBloc>().add(TaskFilterSetFullSizeEvent());
+      }
       if (_isControlsVisible &&
           _scrollController.offset > _currentScrollOffset) {
         _hideControls();
@@ -298,7 +288,7 @@ class _HomePageState extends State<HomePage>
         _toggleIsSearchBarExpanded();
       }
       if (_isTaskFilterVisible) {
-        _toggleIsTaskFilterVisible();
+        context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
       }
     });
 
@@ -307,6 +297,11 @@ class _HomePageState extends State<HomePage>
 
   @override
   void didChangeDependencies() {
+    final taskFilterState = context.watch<TaskFilterBloc>().state;
+    if (taskFilterState is TaskFilterSelectedState ||
+        taskFilterState is TaskFilterNothingSelectedState) {
+      _isTaskFilterVisible = taskFilterState.isFilterVisible;
+    }
     if (MediaQuery.of(context).viewInsets.bottom == 0 && !_isControlsVisible) {
       _showControls();
     } else if (MediaQuery.of(context).viewInsets.bottom != 0 &&
@@ -347,7 +342,7 @@ class _HomePageState extends State<HomePage>
         }
         // hides tasks filter if visible
         if (_isTaskFilterVisible) {
-          _toggleIsTaskFilterVisible();
+          context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
           return false;
         }
         // hides search box if visible
@@ -410,7 +405,7 @@ class _HomePageState extends State<HomePage>
           body: SafeArea(
             child: NestedScrollView(
               controller: _scrollController,
-              physics: const NeverScrollableScrollPhysics(),
+              // physics: const NeverScrollableScrollPhysics(),
               // AppBar
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
                 SliverOverlapAbsorber(
@@ -425,7 +420,6 @@ class _HomePageState extends State<HomePage>
                     isSearchBarExpanded: _getFlagForPageIndex(_pageIndex),
                     toggleIsSearchBarExpanded: _toggleIsSearchBarExpanded,
                     isTaskFilterVisible: _isTaskFilterVisible,
-                    toggleIsTaskFilterVisible: _toggleIsTaskFilterVisible,
                   ),
                 )
               ],
@@ -489,12 +483,8 @@ class _HomePageState extends State<HomePage>
                               }
                             },
                             children: [
-                              KeepAlivePage(
-                                child: TasksPage(
-                                  isTasksFilterVisible: _isTaskFilterVisible,
-                                  tasksFilterHeight: _tasksFilterHeight,
-                                  isControlsVisible: _isControlsVisible,
-                                ),
+                              const KeepAlivePage(
+                                child: TasksPage(),
                               ),
                               KeepAlivePage(
                                 child: InventoryPage(
@@ -578,8 +568,6 @@ class _HomePageState extends State<HomePage>
                   // tasks filter
                   AppBarTasksFilter(
                     isTaskFilterVisible: _isTaskFilterVisible,
-                    tasksFilterHeight: _tasksFilterHeight,
-                    isControlsVisible: _isControlsVisible,
                   ),
                 ],
               ),

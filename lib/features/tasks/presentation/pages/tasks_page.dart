@@ -14,14 +14,7 @@ import '../widgets/work_requests_tab_view.dart';
 class TasksPage extends StatelessWidget with ResponsiveSize {
   const TasksPage({
     Key? key,
-    required this.isTasksFilterVisible,
-    required this.isControlsVisible,
-    required this.tasksFilterHeight,
   }) : super(key: key);
-
-  final bool isTasksFilterVisible;
-  final bool isControlsVisible;
-  final double tasksFilterHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +44,19 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
                 )
               : Column(
                   children: [
-                    AnimatedContainer(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      duration: const Duration(milliseconds: 300),
-                      height: isTasksFilterVisible ? tasksFilterHeight : 0,
+                    BlocBuilder<TaskFilterBloc, TaskFilterState>(
+                      builder: (context, state) {
+                        if (state is TaskFilterNothingSelectedState ||
+                            state is TaskFilterSelectedState) {
+                          return AnimatedContainer(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            duration: const Duration(milliseconds: 300),
+                            height:
+                                state.isFilterVisible ? state.filterHeight : 0,
+                          );
+                        }
+                        return const SizedBox();
+                      },
                     ),
                     BlocBuilder<TaskFilterBloc, TaskFilterState>(
                       builder: (context, state) {

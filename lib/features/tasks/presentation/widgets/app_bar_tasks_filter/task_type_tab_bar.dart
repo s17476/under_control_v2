@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
-
 import '../../../domain/entities/task_priority.dart';
+import '../../../domain/entities/task_type.dart';
 import '../../../utils/get_task_type_icon.dart';
 import '../../blocs/task_filter/task_filter_bloc.dart';
 

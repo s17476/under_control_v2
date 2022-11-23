@@ -21,7 +21,6 @@ class HomeSliverAppBar extends StatelessWidget {
     required this.isMenuVisible,
     required this.toggleIsMenuVisible,
     required this.isTaskFilterVisible,
-    required this.toggleIsTaskFilterVisible,
   }) : super(key: key);
 
   final int pageIndex;
@@ -32,7 +31,6 @@ class HomeSliverAppBar extends StatelessWidget {
   final bool isMenuVisible;
   final VoidCallback toggleIsMenuVisible;
   final bool isTaskFilterVisible;
-  final VoidCallback toggleIsTaskFilterVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +73,7 @@ class HomeSliverAppBar extends StatelessWidget {
                 toggleIsFilterExpanded();
               }
               if (isTaskFilterVisible) {
-                toggleIsTaskFilterVisible();
+                context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
               }
               if (isMenuVisible) {
                 toggleIsMenuVisible();
@@ -102,7 +100,13 @@ class HomeSliverAppBar extends StatelessWidget {
               premissionType: PremissionType.read,
             ))
           IconButton(
-            onPressed: () => toggleIsTaskFilterVisible(),
+            onPressed: () {
+              if (isTaskFilterVisible) {
+                context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
+              } else {
+                context.read<TaskFilterBloc>().add(TaskFilterShowEvent());
+              }
+            },
             icon: Stack(
               children: [
                 Icon(
