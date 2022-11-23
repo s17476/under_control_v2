@@ -46,7 +46,8 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   // search box height
   final double _searchBoxHeight = 70;
-  final double _tasksFilterHeight = 350;
+  // filter height
+  double _tasksFilterHeight = 350;
 
   final _scrollController = ScrollController();
 
@@ -122,12 +123,15 @@ class _HomePageState extends State<HomePage>
     _isBottomNavigationAnimating = false;
   }
 
+  // TODO
+
   // show BottomNavigationTabBar
   void _showControls() {
     if (!_isControlsVisible) {
       _animationController!.reverse();
       setState(() {
         _isControlsVisible = true;
+        _tasksFilterHeight = 330;
       });
     }
   }
@@ -138,6 +142,7 @@ class _HomePageState extends State<HomePage>
       _animationController!.forward();
       setState(() {
         _isControlsVisible = false;
+        _tasksFilterHeight = 150;
       });
     }
   }
@@ -291,6 +296,9 @@ class _HomePageState extends State<HomePage>
           _isAssetsSearchBarExpanded ||
           _isInstructionsSearchBarExpanded) {
         _toggleIsSearchBarExpanded();
+      }
+      if (_isTaskFilterVisible) {
+        _toggleIsTaskFilterVisible();
       }
     });
 
@@ -485,6 +493,7 @@ class _HomePageState extends State<HomePage>
                                 child: TasksPage(
                                   isTasksFilterVisible: _isTaskFilterVisible,
                                   tasksFilterHeight: _tasksFilterHeight,
+                                  isControlsVisible: _isControlsVisible,
                                 ),
                               ),
                               KeepAlivePage(
@@ -570,6 +579,7 @@ class _HomePageState extends State<HomePage>
                   AppBarTasksFilter(
                     isTaskFilterVisible: _isTaskFilterVisible,
                     tasksFilterHeight: _tasksFilterHeight,
+                    isControlsVisible: _isControlsVisible,
                   ),
                 ],
               ),

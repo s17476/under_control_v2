@@ -15,10 +15,12 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
   const TasksPage({
     Key? key,
     required this.isTasksFilterVisible,
+    required this.isControlsVisible,
     required this.tasksFilterHeight,
   }) : super(key: key);
 
   final bool isTasksFilterVisible;
+  final bool isControlsVisible;
   final double tasksFilterHeight;
 
   @override

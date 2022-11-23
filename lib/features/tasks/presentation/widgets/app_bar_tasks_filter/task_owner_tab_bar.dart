@@ -11,11 +11,13 @@ class TaskOwnerTabBar extends StatefulWidget {
     this.iconSize,
     this.color,
     this.indicatorColor,
+    required this.isMini,
   }) : super(key: key);
 
   final double? iconSize;
   final Color? color;
   final Color? indicatorColor;
+  final bool isMini;
 
   @override
   State<TaskOwnerTabBar> createState() => _TaskOwnerTabBarState();
@@ -76,42 +78,49 @@ class _TaskOwnerTabBarState extends State<TaskOwnerTabBar>
 
   @override
   Widget build(BuildContext context) {
+    double? tabHeight = widget.isMini ? 30 : null;
+    double? iconSize = widget.isMini ? 20 : widget.iconSize;
     return SizedBox(
-      height: 64,
+      height: widget.isMini ? 32 : 64,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            AppLocalizations.of(context)!.task_owner,
-            style: Theme.of(context).textTheme.caption,
-          ),
+          if (!widget.isMini)
+            Text(
+              AppLocalizations.of(context)!.task_owner,
+              style: Theme.of(context).textTheme.caption,
+            ),
           TabBar(
             tabs: [
               Tab(
+                height: tabHeight,
                 icon: Icon(
                   Icons.all_inclusive,
-                  size: widget.iconSize,
+                  size: iconSize,
                   color: widget.color,
                 ),
               ),
               Tab(
+                height: tabHeight,
                 icon: Icon(
                   Icons.person,
-                  size: widget.iconSize,
+                  size: iconSize,
                   color: widget.color,
                 ),
               ),
               Tab(
+                height: tabHeight,
                 icon: Icon(
                   Icons.group,
-                  size: widget.iconSize,
+                  size: iconSize,
                   color: widget.color,
                 ),
               ),
               Tab(
+                height: tabHeight,
                 icon: SizedBox(
-                  width: widget.iconSize != null ? widget.iconSize! * 2 : 64,
-                  height: widget.iconSize,
+                  width: iconSize != null ? iconSize * 2 : 64,
+                  height: iconSize,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -119,21 +128,7 @@ class _TaskOwnerTabBarState extends State<TaskOwnerTabBar>
                         left: 0,
                         child: Icon(
                           Icons.person,
-                          size: widget.iconSize != null
-                              ? widget.iconSize! * 0.8
-                              : 28,
-                          color: widget.color,
-                        ),
-                      ),
-                      Positioned(
-                        left: widget.iconSize != null
-                            ? widget.iconSize! * 0.55
-                            : 18,
-                        child: Icon(
-                          Icons.add,
-                          size: widget.iconSize != null
-                              ? widget.iconSize! * 0.7
-                              : 28,
+                          size: iconSize != null ? iconSize * 0.8 : 28,
                           color: widget.color,
                         ),
                       ),
@@ -141,9 +136,7 @@ class _TaskOwnerTabBarState extends State<TaskOwnerTabBar>
                         right: 0,
                         child: Icon(
                           Icons.group,
-                          size: widget.iconSize != null
-                              ? widget.iconSize! * 0.9
-                              : 28,
+                          size: iconSize != null ? iconSize * 0.9 : 28,
                           color: widget.color,
                         ),
                       ),

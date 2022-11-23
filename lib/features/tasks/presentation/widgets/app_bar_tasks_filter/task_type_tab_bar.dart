@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
 
 import '../../../domain/entities/task_priority.dart';
-import '../../../utils/get_task_priority_icon.dart';
 import '../../../utils/get_task_type_icon.dart';
 import '../../blocs/task_filter/task_filter_bloc.dart';
 
@@ -14,11 +14,13 @@ class TaskTypeTabBar extends StatefulWidget {
     this.iconSize,
     this.color,
     this.indicatorColor,
+    required this.isMini,
   }) : super(key: key);
 
   final double? iconSize;
   final Color? color;
   final Color? indicatorColor;
+  final bool isMini;
 
   @override
   State<TaskTypeTabBar> createState() => _TaskTypeTabBarState();
@@ -100,56 +102,64 @@ class _TaskTypeTabBarState extends State<TaskTypeTabBar>
 
   @override
   Widget build(BuildContext context) {
+    double? tabHeight = widget.isMini ? 30 : null;
+    double? iconSize = widget.isMini ? 20 : widget.iconSize;
     return SizedBox(
-      height: 64,
+      height: widget.isMini ? 32 : 64,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            AppLocalizations.of(context)!.task_type,
-            style: Theme.of(context).textTheme.caption,
-          ),
+          if (!widget.isMini)
+            Text(
+              AppLocalizations.of(context)!.task_type,
+              style: Theme.of(context).textTheme.caption,
+            ),
           TabBar(
             tabs: [
               Tab(
+                height: tabHeight,
                 icon: Icon(
                   Icons.all_inclusive,
-                  size: widget.iconSize,
+                  size: iconSize,
                   color: widget.color,
                 ),
               ),
               Tab(
+                height: tabHeight,
                 icon: getTaskTypeIcon(
                   context,
                   TaskType.maintenance,
-                  28,
+                  iconSize ?? 28,
                   true,
                   widget.color,
                 ),
               ),
               Tab(
+                height: tabHeight,
                 icon: getTaskTypeIcon(
                   context,
                   TaskType.reparation,
-                  28,
+                  iconSize ?? 28,
                   true,
                   widget.color,
                 ),
               ),
               Tab(
+                height: tabHeight,
                 icon: getTaskTypeIcon(
                   context,
                   TaskType.inspection,
-                  28,
+                  iconSize ?? 28,
                   true,
                   widget.color,
                 ),
               ),
               Tab(
+                height: tabHeight,
                 icon: getTaskTypeIcon(
                   context,
                   TaskType.event,
-                  28,
+                  iconSize ?? 28,
                   true,
                   widget.color,
                 ),

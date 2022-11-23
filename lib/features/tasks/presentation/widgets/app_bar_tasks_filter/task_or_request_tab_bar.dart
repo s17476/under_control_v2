@@ -11,11 +11,13 @@ class TaskOrRequestTabBar extends StatefulWidget {
     this.iconSize,
     this.color,
     this.indicatorColor,
+    required this.isMini,
   }) : super(key: key);
 
   final double? iconSize;
   final Color? color;
   final Color? indicatorColor;
+  final bool isMini;
 
   @override
   State<TaskOrRequestTabBar> createState() => _TaskOrRequestTabBarState();
@@ -73,41 +75,51 @@ class _TaskOrRequestTabBarState extends State<TaskOrRequestTabBar>
 
   @override
   Widget build(BuildContext context) {
+    double? tabHeight = widget.isMini ? 30 : null;
+    double? iconSize = widget.isMini ? 20 : widget.iconSize;
     return SizedBox(
-      height: 64,
+      height: widget.isMini ? 32 : 64,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            AppLocalizations.of(context)!.task_and_request,
-            style: Theme.of(context).textTheme.caption,
-          ),
+          if (!widget.isMini)
+            Text(
+              AppLocalizations.of(context)!.task_and_request,
+              style: Theme.of(context).textTheme.caption,
+            ),
           TabBar(
             tabs: [
               Tab(
+                height: tabHeight,
                 icon: Icon(
                   Icons.all_inclusive,
-                  size: widget.iconSize,
+                  size: iconSize,
                   color: widget.color,
                 ),
               ),
               Tab(
-                icon: Text(
-                  AppLocalizations.of(context)!.work_requests,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: widget.indicatorColor,
-                    fontSize: 14,
+                height: tabHeight,
+                icon: FittedBox(
+                  child: Text(
+                    AppLocalizations.of(context)!.work_requests,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: widget.indicatorColor,
+                      fontSize: widget.isMini ? 12 : 14,
+                    ),
                   ),
                 ),
               ),
               Tab(
-                icon: Text(
-                  AppLocalizations.of(context)!.bottom_bar_title_tasks,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: widget.indicatorColor,
-                    fontSize: 14,
+                height: tabHeight,
+                icon: FittedBox(
+                  child: Text(
+                    AppLocalizations.of(context)!.bottom_bar_title_tasks,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: widget.indicatorColor,
+                      fontSize: widget.isMini ? 12 : 14,
+                    ),
                   ),
                 ),
               ),
