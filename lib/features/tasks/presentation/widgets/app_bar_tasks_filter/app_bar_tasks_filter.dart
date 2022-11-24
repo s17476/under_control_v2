@@ -55,107 +55,83 @@ class _AppBarTasksFilterState extends State<AppBarTasksFilter> {
           builder: (context, Offset offset, child) {
             return FractionalTranslation(
               translation: offset,
-              child: AnimatedSize(
+              child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                child: GestureDetector(
-                  onPanUpdate: (details) {
-                    if (details.delta.dy < 0) {
-                      context
-                          .read<TaskFilterBloc>()
-                          .add(TaskFilterSetFullSizeEvent());
-                    }
-                  },
-                  child: Container(
-                    height: _filterHeight,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          offset: const Offset(0, 0.5),
-                          color: Colors.grey.shade700,
-                          blurRadius: 3,
-                        )
-                      ],
-                      color: Theme.of(context).appBarTheme.backgroundColor,
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25),
+                height: _filterHeight,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      offset: const Offset(0, 0.5),
+                      color: Colors.grey.shade700,
+                      blurRadius: 3,
+                    )
+                  ],
+                  color: Theme.of(context).appBarTheme.backgroundColor,
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: _isMini ? 0 : 12,
+                    left: 8,
+                    right: 8,
+                    // bottom: 8,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TaskOrRequestTabBar(
+                        iconSize: tabBarIconSize,
+                        color: tabBarIconColor,
+                        indicatorColor: tabBarIconColor,
+                        isMini: _isMini,
                       ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: _isMini ? 0 : 12,
-                        left: 8,
-                        right: 8,
-                        // bottom: 8,
+                      TaskOwnerTabBar(
+                        iconSize: tabBarIconSize,
+                        color: tabBarIconColor,
+                        indicatorColor: tabBarIconColor,
+                        isMini: _isMini,
+                        isVisible: !_isOnlyRequestsFilter,
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TaskOrRequestTabBar(
-                            iconSize: tabBarIconSize,
-                            color: tabBarIconColor,
-                            indicatorColor: tabBarIconColor,
-                            isMini: _isMini,
+                      TaskPriorityTabBar(
+                        iconSize: tabBarIconSize,
+                        color: tabBarIconColor,
+                        indicatorColor: tabBarIconColor,
+                        isMini: _isMini,
+                      ),
+                      TaskTypeTabBar(
+                        iconSize: tabBarIconSize,
+                        color: tabBarIconColor,
+                        indicatorColor: tabBarIconColor,
+                        isMini: _isMini,
+                        isVisible: !_isOnlyRequestsFilter,
+                      ),
+                      TextButton.icon(
+                        style: TextButton.styleFrom(
+                          minimumSize: const Size(
+                            double.infinity,
+                            0,
                           ),
-                          if (!_isOnlyRequestsFilter)
-                            TaskOwnerTabBar(
-                              iconSize: tabBarIconSize,
-                              color: tabBarIconColor,
-                              indicatorColor: tabBarIconColor,
-                              isMini: _isMini,
-                            ),
-                          TaskPriorityTabBar(
-                            iconSize: tabBarIconSize,
-                            color: tabBarIconColor,
-                            indicatorColor: tabBarIconColor,
-                            isMini: _isMini,
-                          ),
-                          if (!_isOnlyRequestsFilter)
-                            TaskTypeTabBar(
-                              iconSize: tabBarIconSize,
-                              color: tabBarIconColor,
-                              indicatorColor: tabBarIconColor,
-                              isMini: _isMini,
-                            ),
-                          if (_isMini)
-                            const Padding(
-                              padding: EdgeInsets.only(bottom: 2),
-                              child: Divider(
-                                thickness: 1.5,
-                                indent: 24,
-                                endIndent: 24,
-                              ),
-                            ),
-                          if (!_isMini)
-                            TextButton.icon(
-                              style: TextButton.styleFrom(
-                                minimumSize: const Size(
-                                  double.infinity,
-                                  20,
-                                ),
-                              ),
-                              onPressed: () => context
-                                  .read<TaskFilterBloc>()
-                                  .add(const TaskFilterResetEvent()),
-                              label: Text(
-                                AppLocalizations.of(context)!.task_filter_reset,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(fontSize: 14),
-                              ),
-                              icon: Icon(
-                                Icons.refresh,
-                                size: 20,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .color,
-                              ),
-                            ),
-                        ],
+                        ),
+                        onPressed: () => context
+                            .read<TaskFilterBloc>()
+                            .add(const TaskFilterResetEvent()),
+                        label: Text(
+                          AppLocalizations.of(context)!.task_filter_reset,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(fontSize: _isMini ? 10 : 14),
+                        ),
+                        icon: Icon(
+                          Icons.refresh,
+                          size: _isMini ? 12 : 20,
+                          color: Theme.of(context).textTheme.headline4!.color,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),

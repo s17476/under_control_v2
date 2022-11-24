@@ -35,7 +35,7 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
 
   final double filterFullHeight = 350;
   final double filterFullHeightOnlyRequests = 200;
-  final double filterMiniHeight = 180;
+  final double filterMiniHeight = 170;
   final double filterMiniHeightOnlyRequests = 90;
 
   TaskFilterBloc(

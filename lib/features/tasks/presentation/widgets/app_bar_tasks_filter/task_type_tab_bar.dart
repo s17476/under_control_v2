@@ -14,12 +14,14 @@ class TaskTypeTabBar extends StatefulWidget {
     this.color,
     this.indicatorColor,
     required this.isMini,
+    required this.isVisible,
   }) : super(key: key);
 
   final double? iconSize;
   final Color? color;
   final Color? indicatorColor;
   final bool isMini;
+  final bool isVisible;
 
   @override
   State<TaskTypeTabBar> createState() => _TaskTypeTabBarState();
@@ -103,72 +105,79 @@ class _TaskTypeTabBarState extends State<TaskTypeTabBar>
   Widget build(BuildContext context) {
     double? tabHeight = widget.isMini ? 30 : null;
     double? iconSize = widget.isMini ? 20 : widget.iconSize;
-    return SizedBox(
-      height: widget.isMini ? 32 : 64,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (!widget.isMini)
-            Text(
-              AppLocalizations.of(context)!.task_type,
-              style: Theme.of(context).textTheme.caption,
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 300),
+      child: SizedBox(
+        height: !widget.isVisible
+            ? 0
+            : widget.isMini
+                ? 32
+                : 64,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (!widget.isMini)
+              Text(
+                AppLocalizations.of(context)!.task_type,
+                style: Theme.of(context).textTheme.caption,
+              ),
+            TabBar(
+              tabs: [
+                Tab(
+                  height: tabHeight,
+                  icon: Icon(
+                    Icons.all_inclusive,
+                    size: iconSize,
+                    color: widget.color,
+                  ),
+                ),
+                Tab(
+                  height: tabHeight,
+                  icon: getTaskTypeIcon(
+                    context,
+                    TaskType.maintenance,
+                    iconSize ?? 28,
+                    true,
+                    widget.color,
+                  ),
+                ),
+                Tab(
+                  height: tabHeight,
+                  icon: getTaskTypeIcon(
+                    context,
+                    TaskType.reparation,
+                    iconSize ?? 28,
+                    true,
+                    widget.color,
+                  ),
+                ),
+                Tab(
+                  height: tabHeight,
+                  icon: getTaskTypeIcon(
+                    context,
+                    TaskType.inspection,
+                    iconSize ?? 28,
+                    true,
+                    widget.color,
+                  ),
+                ),
+                Tab(
+                  height: tabHeight,
+                  icon: getTaskTypeIcon(
+                    context,
+                    TaskType.event,
+                    iconSize ?? 28,
+                    true,
+                    widget.color,
+                  ),
+                ),
+              ],
+              controller: _typeTabController,
+              onTap: _setIndex,
+              indicatorColor: indicatorColor,
             ),
-          TabBar(
-            tabs: [
-              Tab(
-                height: tabHeight,
-                icon: Icon(
-                  Icons.all_inclusive,
-                  size: iconSize,
-                  color: widget.color,
-                ),
-              ),
-              Tab(
-                height: tabHeight,
-                icon: getTaskTypeIcon(
-                  context,
-                  TaskType.maintenance,
-                  iconSize ?? 28,
-                  true,
-                  widget.color,
-                ),
-              ),
-              Tab(
-                height: tabHeight,
-                icon: getTaskTypeIcon(
-                  context,
-                  TaskType.reparation,
-                  iconSize ?? 28,
-                  true,
-                  widget.color,
-                ),
-              ),
-              Tab(
-                height: tabHeight,
-                icon: getTaskTypeIcon(
-                  context,
-                  TaskType.inspection,
-                  iconSize ?? 28,
-                  true,
-                  widget.color,
-                ),
-              ),
-              Tab(
-                height: tabHeight,
-                icon: getTaskTypeIcon(
-                  context,
-                  TaskType.event,
-                  iconSize ?? 28,
-                  true,
-                  widget.color,
-                ),
-              ),
-            ],
-            controller: _typeTabController,
-            onTap: _setIndex,
-            indicatorColor: indicatorColor,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
