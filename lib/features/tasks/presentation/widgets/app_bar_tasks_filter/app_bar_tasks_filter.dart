@@ -73,8 +73,7 @@ class _AppBarTasksFilterState extends State<AppBarTasksFilter> {
                   ),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(
-                    top: _isMini ? 0 : 12,
+                  padding: const EdgeInsets.only(
                     left: 8,
                     right: 8,
                     // bottom: 8,
@@ -82,6 +81,12 @@ class _AppBarTasksFilterState extends State<AppBarTasksFilter> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      AnimatedSize(
+                        duration: const Duration(milliseconds: 300),
+                        child: SizedBox(
+                          height: _isMini ? 0 : 4,
+                        ),
+                      ),
                       TaskOrRequestTabBar(
                         iconSize: tabBarIconSize,
                         color: tabBarIconColor,
@@ -108,29 +113,39 @@ class _AppBarTasksFilterState extends State<AppBarTasksFilter> {
                         isMini: _isMini,
                         isVisible: !_isOnlyRequestsFilter,
                       ),
-                      TextButton.icon(
-                        style: TextButton.styleFrom(
-                          minimumSize: const Size(
-                            double.infinity,
-                            0,
+                      if (_isMini)
+                        const SizedBox(
+                          height: 20,
+                          child: Divider(
+                            thickness: 1.5,
+                            indent: 16,
+                            endIndent: 16,
                           ),
                         ),
-                        onPressed: () => context
-                            .read<TaskFilterBloc>()
-                            .add(const TaskFilterResetEvent()),
-                        label: Text(
-                          AppLocalizations.of(context)!.task_filter_reset,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline4!
-                              .copyWith(fontSize: _isMini ? 10 : 14),
+                      if (!_isMini)
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size(
+                              double.infinity,
+                              0,
+                            ),
+                          ),
+                          onPressed: () => context
+                              .read<TaskFilterBloc>()
+                              .add(const TaskFilterResetEvent()),
+                          label: Text(
+                            AppLocalizations.of(context)!.task_filter_reset,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline4!
+                                .copyWith(fontSize: 12),
+                          ),
+                          icon: Icon(
+                            Icons.refresh,
+                            size: 16,
+                            color: Theme.of(context).textTheme.headline4!.color,
+                          ),
                         ),
-                        icon: Icon(
-                          Icons.refresh,
-                          size: _isMini ? 12 : 20,
-                          color: Theme.of(context).textTheme.headline4!.color,
-                        ),
-                      ),
                     ],
                   ),
                 ),

@@ -81,62 +81,65 @@ class _TaskPriorityTabBarState extends State<TaskPriorityTabBar>
   Widget build(BuildContext context) {
     double? tabHeight = widget.isMini ? 30 : null;
     double? iconSize = widget.isMini ? 20 : widget.iconSize;
-    return SizedBox(
-      height: widget.isMini ? 32 : 64,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (!widget.isMini)
-            Text(
-              AppLocalizations.of(context)!.task_priority,
-              style: Theme.of(context).textTheme.caption,
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 300),
+      child: SizedBox(
+        height: widget.isMini ? 32 : 64,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (!widget.isMini)
+              Text(
+                AppLocalizations.of(context)!.task_priority,
+                style: Theme.of(context).textTheme.caption,
+              ),
+            TabBar(
+              tabs: [
+                Tab(
+                  height: tabHeight,
+                  icon: Icon(
+                    Icons.all_inclusive,
+                    size: iconSize,
+                    color: widget.color,
+                  ),
+                ),
+                Tab(
+                  height: tabHeight,
+                  icon: getTaskPriorityIcon(
+                    context,
+                    TaskPriority.low,
+                    iconSize ?? 30,
+                    const EdgeInsets.all(0),
+                    false,
+                  ),
+                ),
+                Tab(
+                  height: tabHeight,
+                  icon: getTaskPriorityIcon(
+                    context,
+                    TaskPriority.medium,
+                    iconSize ?? 30,
+                    const EdgeInsets.all(0),
+                    false,
+                  ),
+                ),
+                Tab(
+                  height: tabHeight,
+                  icon: getTaskPriorityIcon(
+                    context,
+                    TaskPriority.high,
+                    iconSize ?? 30,
+                    const EdgeInsets.all(0),
+                    false,
+                  ),
+                ),
+              ],
+              controller: _typeTabController,
+              onTap: _setIndex,
+              indicatorColor: widget.indicatorColor,
             ),
-          TabBar(
-            tabs: [
-              Tab(
-                height: tabHeight,
-                icon: Icon(
-                  Icons.all_inclusive,
-                  size: iconSize,
-                  color: widget.color,
-                ),
-              ),
-              Tab(
-                height: tabHeight,
-                icon: getTaskPriorityIcon(
-                  context,
-                  TaskPriority.low,
-                  iconSize ?? 30,
-                  const EdgeInsets.all(0),
-                  false,
-                ),
-              ),
-              Tab(
-                height: tabHeight,
-                icon: getTaskPriorityIcon(
-                  context,
-                  TaskPriority.medium,
-                  iconSize ?? 30,
-                  const EdgeInsets.all(0),
-                  false,
-                ),
-              ),
-              Tab(
-                height: tabHeight,
-                icon: getTaskPriorityIcon(
-                  context,
-                  TaskPriority.high,
-                  iconSize ?? 30,
-                  const EdgeInsets.all(0),
-                  false,
-                ),
-              ),
-            ],
-            controller: _typeTabController,
-            onTap: _setIndex,
-            indicatorColor: widget.indicatorColor,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

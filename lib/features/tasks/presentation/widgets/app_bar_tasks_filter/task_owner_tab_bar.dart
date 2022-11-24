@@ -83,7 +83,9 @@ class _TaskOwnerTabBarState extends State<TaskOwnerTabBar>
     double? tabHeight = widget.isMini ? 30 : null;
     double? iconSize = widget.isMini ? 20 : widget.iconSize;
     return AnimatedSize(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(
+        milliseconds: 300,
+      ),
       child: SizedBox(
         height: !widget.isVisible
             ? 0

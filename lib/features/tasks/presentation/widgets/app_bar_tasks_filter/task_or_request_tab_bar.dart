@@ -77,58 +77,61 @@ class _TaskOrRequestTabBarState extends State<TaskOrRequestTabBar>
   Widget build(BuildContext context) {
     double? tabHeight = widget.isMini ? 30 : null;
     double? iconSize = widget.isMini ? 20 : widget.iconSize;
-    return SizedBox(
-      height: widget.isMini ? 32 : 64,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (!widget.isMini)
-            Text(
-              AppLocalizations.of(context)!.task_and_request,
-              style: Theme.of(context).textTheme.caption,
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 300),
+      child: SizedBox(
+        height: widget.isMini ? 32 : 64,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (!widget.isMini)
+              Text(
+                AppLocalizations.of(context)!.task_and_request,
+                style: Theme.of(context).textTheme.caption,
+              ),
+            TabBar(
+              tabs: [
+                Tab(
+                  height: tabHeight,
+                  icon: Icon(
+                    Icons.all_inclusive,
+                    size: iconSize,
+                    color: widget.color,
+                  ),
+                ),
+                Tab(
+                  height: tabHeight,
+                  icon: FittedBox(
+                    child: Text(
+                      AppLocalizations.of(context)!.work_requests,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: widget.indicatorColor,
+                        fontSize: widget.isMini ? 12 : 14,
+                      ),
+                    ),
+                  ),
+                ),
+                Tab(
+                  height: tabHeight,
+                  icon: FittedBox(
+                    child: Text(
+                      AppLocalizations.of(context)!.bottom_bar_title_tasks,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: widget.indicatorColor,
+                        fontSize: widget.isMini ? 12 : 14,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+              controller: _typeTabController,
+              onTap: _setIndex,
+              indicatorColor: widget.indicatorColor,
             ),
-          TabBar(
-            tabs: [
-              Tab(
-                height: tabHeight,
-                icon: Icon(
-                  Icons.all_inclusive,
-                  size: iconSize,
-                  color: widget.color,
-                ),
-              ),
-              Tab(
-                height: tabHeight,
-                icon: FittedBox(
-                  child: Text(
-                    AppLocalizations.of(context)!.work_requests,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: widget.indicatorColor,
-                      fontSize: widget.isMini ? 12 : 14,
-                    ),
-                  ),
-                ),
-              ),
-              Tab(
-                height: tabHeight,
-                icon: FittedBox(
-                  child: Text(
-                    AppLocalizations.of(context)!.bottom_bar_title_tasks,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: widget.indicatorColor,
-                      fontSize: widget.isMini ? 12 : 14,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-            controller: _typeTabController,
-            onTap: _setIndex,
-            indicatorColor: widget.indicatorColor,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

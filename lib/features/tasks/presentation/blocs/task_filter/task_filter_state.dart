@@ -12,7 +12,7 @@ abstract class TaskFilterState extends Equatable {
   final List<WorkRequest> workRequests;
 
   const TaskFilterState({
-    this.filterHeight = 350,
+    this.filterHeight = 335,
     this.isFilterVisible = false,
     this.isMiniSize = false,
     this.taskOrRequest = TaskOrRequest.all,

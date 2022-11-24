@@ -33,10 +33,10 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
 
   TaskFilterEvent lastEvent = const TaskFilterResetEvent();
 
-  final double filterFullHeight = 350;
-  final double filterFullHeightOnlyRequests = 200;
-  final double filterMiniHeight = 170;
-  final double filterMiniHeightOnlyRequests = 90;
+  final double filterFullHeight = 335;
+  final double filterFullHeightOnlyRequests = 180;
+  final double filterMiniHeight = 180;
+  final double filterMiniHeightOnlyRequests = 113;
 
   TaskFilterBloc(
     this.userProfileBloc,
@@ -75,7 +75,7 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
       emit(TaskFilterNothingSelectedState(
         filterHeight: filterFullHeight,
         isFilterVisible: state.isFilterVisible,
-        isMiniSize: state.isMiniSize,
+        isMiniSize: false,
         tasks: allTasks ?? [],
         workRequests: allRequests ?? [],
       ));
@@ -110,15 +110,11 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
       TaskFilterState? newState;
       if (state is TaskFilterSelectedState) {
         newState = (state as TaskFilterSelectedState).copyWith(
-          filterHeight: filterFullHeight,
           isFilterVisible: true,
-          isMiniSize: false,
         );
       } else if (state is TaskFilterNothingSelectedState) {
         newState = (state as TaskFilterNothingSelectedState).copyWith(
-          filterHeight: filterFullHeight,
           isFilterVisible: true,
-          isMiniSize: false,
         );
       }
       if (newState != null) {
@@ -144,7 +140,9 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
       TaskFilterState? newState;
       if (state is TaskFilterSelectedState) {
         newState = (state as TaskFilterSelectedState).copyWith(
-          filterHeight: filterMiniHeight,
+          filterHeight: state.taskOrRequest == TaskOrRequest.request
+              ? filterMiniHeightOnlyRequests
+              : filterMiniHeight,
           isMiniSize: true,
         );
       } else if (state is TaskFilterNothingSelectedState) {
@@ -162,7 +160,9 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
       TaskFilterState? newState;
       if (state is TaskFilterSelectedState) {
         newState = (state as TaskFilterSelectedState).copyWith(
-          filterHeight: filterFullHeight,
+          filterHeight: state.taskOrRequest == TaskOrRequest.request
+              ? filterFullHeightOnlyRequests
+              : filterFullHeight,
           isMiniSize: false,
         );
       } else if (state is TaskFilterNothingSelectedState) {
