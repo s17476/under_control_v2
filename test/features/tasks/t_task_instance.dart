@@ -4,6 +4,7 @@ import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/core/utils/duration_unit.dart';
 import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item_model.dart';
 import 'package:under_control_v2/features/tasks/data/models/task/task_model.dart';
+import 'package:under_control_v2/features/tasks/data/models/task_action/task_action_model.dart';
 import 'package:under_control_v2/features/tasks/data/models/task_action/user_action_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
@@ -126,4 +127,41 @@ final tUserActionModelFromMap = {
   'userId': 'userId',
   'startTime': Timestamp.fromDate(tDate),
   'stopTime': Timestamp.fromDate(tDate),
+};
+
+final tTaskActionModel = TaskActionModel(
+  id: 'id',
+  taskId: 'taskId',
+  comment: 'comment',
+  startTime: tDate,
+  stopTime: tDate,
+  images: const [],
+  removedPartsAssets: const [],
+  addedPartsAssets: const [],
+  sparePartsItems: const [],
+  usersActions: const [],
+);
+
+final tTaskActionModelToMap = {
+  'taskId': 'taskId',
+  'comment': 'comment',
+  'startTime': tDate,
+  'stopTime': tDate,
+  'images': const [],
+  'removedPartsAssets': const [],
+  'addedPartsAssets': const [],
+  'sparePartsItems': const [],
+  'usersActions': const [],
+};
+
+final tTaskActionModelFromMap = {
+  'taskId': 'taskId',
+  'comment': 'comment',
+  'startTime': Timestamp.fromDate(tDate),
+  'stopTime': Timestamp.fromDate(tDate),
+  'images': const [],
+  'removedPartsAssets': const [],
+  'addedPartsAssets': const [],
+  'sparePartsItems': const [],
+  'usersActions': const [],
 };
