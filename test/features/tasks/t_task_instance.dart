@@ -165,3 +165,8 @@ final tTaskActionModelFromMap = {
   'sparePartsItems': const [],
   'usersActions': const [],
 };
+
+final tTaskActionParams = TaskActionParams(
+  taskAction: tTaskActionModel,
+  companyId: 'companyId',
+);

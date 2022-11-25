@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart'
     as customTask;
+import 'package:under_control_v2/features/tasks/domain/entities/task_action/task_action.dart';
 
 import '../../assets/data/models/asset_model.dart';
 import '../../assets/domain/entities/asset.dart';
@@ -226,6 +227,19 @@ class TaskParams extends Equatable {
 
   @override
   List<Object> get props => [task, companyId];
+}
+
+class TaskActionParams extends Equatable {
+  final TaskAction taskAction;
+  final String companyId;
+
+  const TaskActionParams({
+    required this.taskAction,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [taskAction, companyId];
 }
 
 class CodeParams extends Equatable {
