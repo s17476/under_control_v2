@@ -68,9 +68,11 @@ void main() async {
   );
   await configureInjection();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    systemNavigationBarColor: Colors.black,
+    // statusBarColor: Colors.transparent,
+    statusBarBrightness: Brightness.dark,
     systemNavigationBarIconBrightness: Brightness.dark,
+    // systemNavigationBarColor: Colors.black,
+    // systemNavigationBarIconBrightness: Brightness.light,
   ));
   runApp(const App());
 }

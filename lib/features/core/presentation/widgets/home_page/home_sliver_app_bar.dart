@@ -43,9 +43,9 @@ class HomeSliverAppBar extends StatelessWidget {
     ];
     return SliverAppBar(
       scrolledUnderElevation: 0,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Theme.of(context).appBarTheme.backgroundColor,
-      ),
+      // systemOverlayStyle: SystemUiOverlayStyle(
+      //   statusBarColor: Theme.of(context).appBarTheme.backgroundColor,
+      // ),
       floating: true,
       pinned: true,
       snap: true,
