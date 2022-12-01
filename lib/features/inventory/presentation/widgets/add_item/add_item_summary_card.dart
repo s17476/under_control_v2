@@ -118,9 +118,9 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                               ? AppLocalizations.of(context)!
                                   .validation_min_two_characters
                               : null,
-                      child: Text(producerTextEditingController.text.trim()),
                       pageController: pageController,
                       onTapAnimateToPage: 0,
+                      child: Text(producerTextEditingController.text.trim()),
                     ),
 
                     const SizedBox(
@@ -134,9 +134,9 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                               ? AppLocalizations.of(context)!
                                   .validation_min_two_characters
                               : null,
-                      child: Text(titleTextEditingController.text.trim()),
                       pageController: pageController,
                       onTapAnimateToPage: 0,
+                      child: Text(titleTextEditingController.text.trim()),
                     ),
 
                     const SizedBox(
@@ -148,10 +148,10 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                       SummaryCard(
                         title: AppLocalizations.of(context)!.item_description,
                         validator: () => null,
-                        child:
-                            Text(descriptionTextEditingController.text.trim()),
                         pageController: pageController,
                         onTapAnimateToPage: 0,
+                        child:
+                            Text(descriptionTextEditingController.text.trim()),
                       ),
                     if (descriptionTextEditingController.text.isNotEmpty)
                       const SizedBox(
@@ -165,9 +165,9 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                           ? AppLocalizations.of(context)!
                               .item_add_error_category_not_selected
                           : null,
-                      child: Text(categoryName),
                       pageController: pageController,
                       onTapAnimateToPage: 1,
+                      child: Text(categoryName),
                     ),
 
                     const SizedBox(
@@ -181,6 +181,8 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                           ? AppLocalizations.of(context)!
                               .item_add_error_unit_not_selected
                           : null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 1,
                       child: Text(
                         getLocalizedUnitName(
                           context,
@@ -189,8 +191,6 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                           ),
                         ),
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 1,
                     ),
 
                     const SizedBox(
@@ -216,9 +216,9 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                           }
                           return null;
                         },
-                        child: Text(priceString),
                         pageController: pageController,
                         onTapAnimateToPage: 1,
+                        child: Text(priceString),
                       ),
 
                     if (priceString.isNotEmpty && priceString != '0')
@@ -232,9 +232,9 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                         title: AppLocalizations.of(context)!
                             .item_internal_code_optional,
                         validator: () => null,
-                        child: Text(codeTextEditingController.text.trim()),
                         pageController: pageController,
                         onTapAnimateToPage: 1,
+                        child: Text(codeTextEditingController.text.trim()),
                       ),
 
                     if (codeTextEditingController.text.trim().isNotEmpty)
@@ -248,9 +248,9 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                         title: AppLocalizations.of(context)!
                             .item_bar_code_optional,
                         validator: () => null,
-                        child: Text(barCodeTextEditingController.text.trim()),
                         pageController: pageController,
                         onTapAnimateToPage: 1,
+                        child: Text(barCodeTextEditingController.text.trim()),
                       ),
 
                     if (barCodeTextEditingController.text.trim().isNotEmpty)
@@ -263,12 +263,12 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                       SummaryCard(
                         title: AppLocalizations.of(context)!.alert_quantity,
                         validator: () => '',
-                        child: Text(
-                          AppLocalizations.of(context)!.no_alert_quantity,
-                        ),
                         pageController: pageController,
                         onTapAnimateToPage: 2,
                         errorColor: Colors.orange.withAlpha(210),
+                        child: Text(
+                          AppLocalizations.of(context)!.no_alert_quantity,
+                        ),
                       ),
 
                     // alert quantity set
@@ -289,11 +289,11 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                           }
                           return null;
                         },
+                        pageController: pageController,
+                        onTapAnimateToPage: 2,
                         child: Text(
                           alertQuantityString,
                         ),
-                        pageController: pageController,
-                        onTapAnimateToPage: 2,
                       ),
 
                     const SizedBox(
@@ -305,6 +305,8 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                       SummaryCard(
                         title: AppLocalizations.of(context)!.item_photo,
                         validator: () => null,
+                        pageController: pageController,
+                        onTapAnimateToPage: 3,
                         child: SizedBox(
                           width: responsiveSizePct(small: 100),
                           height: responsiveSizePct(small: 100),
@@ -313,8 +315,6 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                             fit: BoxFit.fitWidth,
                           ),
                         ),
-                        pageController: pageController,
-                        onTapAnimateToPage: 3,
                       ),
 
                     // instructions
@@ -322,14 +322,14 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                       title: AppLocalizations.of(context)!
                           .asset_add_instructions_title,
                       validator: () => null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 4,
                       child: Text(
                         instructions.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_add_instructions_added}: ${instructions.length}'
                             : AppLocalizations.of(context)!
                                 .asset_add_instructions_not_added,
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 4,
                     ),
                     const SizedBox(
                       height: 8,
@@ -340,14 +340,14 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                       title: AppLocalizations.of(context)!
                           .asset_add_documents_title,
                       validator: () => null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 5,
                       child: Text(
                         documents.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_add_documents_added}: ${documents.length}'
                             : AppLocalizations.of(context)!
                                 .asset_add_documents_not_added,
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 5,
                     ),
                     const SizedBox(
                       height: 8,

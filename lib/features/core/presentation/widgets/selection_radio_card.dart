@@ -29,7 +29,7 @@ class SelectionRadioCard<T> extends StatelessWidget {
               activeColor: Theme.of(context).primaryColor,
               value: value,
               groupValue: groupValue,
-              onChanged: (val) => onTap(val!),
+              onChanged: (val) => onTap(val as T),
             ),
           ],
         ),

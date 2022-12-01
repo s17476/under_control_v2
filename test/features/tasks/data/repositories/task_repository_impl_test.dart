@@ -53,8 +53,7 @@ void main() {
           .doc(tTaskParams.task.assetId)
           .set({'name': 'name'});
 
-      final documentReference =
-          await mockCollectionReference.add(tTaskModel.toMap());
+      await mockCollectionReference.add(tTaskModel.toMap());
 
       tItemsInLocationsParams =
           const ItemsInLocationsParams(locations: [], companyId: companyId);

@@ -11,7 +11,7 @@ Future<void> showAddCheckpointModalBottomSheet({
           CheckpointModel? oldCheckpoint, CheckpointModel newCheckpoint)
       onSave,
 }) {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> formKey = GlobalKey();
 
   CheckpointModel checkpoint = currentCheckpoint ??
       const CheckpointModel(
@@ -59,7 +59,7 @@ Future<void> showAddCheckpointModalBottomSheet({
               const Divider(),
               Expanded(
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -133,10 +133,10 @@ Future<void> showAddCheckpointModalBottomSheet({
                         ),
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          if (!_formKey.currentState!.validate()) {
+                          if (!formKey.currentState!.validate()) {
                             return;
                           }
-                          _formKey.currentState!.save();
+                          formKey.currentState!.save();
 
                           onSave(currentCheckpoint, checkpoint);
 

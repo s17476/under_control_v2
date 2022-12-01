@@ -122,8 +122,6 @@ class _HomePageState extends State<HomePage>
     _isBottomNavigationAnimating = false;
   }
 
-  // TODO
-
   // show BottomNavigationTabBar
   void _showControls() {
     if (!_isControlsVisible) {

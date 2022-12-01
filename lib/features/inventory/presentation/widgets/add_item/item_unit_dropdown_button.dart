@@ -32,8 +32,8 @@ class ItemUnitDropdownButton extends StatelessWidget {
     if (selectedUnit.isEmpty) {
       dropdownItems.add(
         DropdownMenuItem(
-          child: Text(AppLocalizations.of(context)!.item_select_unit),
           value: '',
+          child: Text(AppLocalizations.of(context)!.item_select_unit),
         ),
       );
     }

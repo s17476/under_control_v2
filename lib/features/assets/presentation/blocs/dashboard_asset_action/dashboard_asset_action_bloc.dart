@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -56,8 +56,6 @@ class DashboardAssetActionBloc
 
     on<GetDashboardAssetActionsEvent>((event, emit) async {
       // avoids loading same data multiple times
-      // TODO
-      //  != ??
       if (filterBloc.state is FilterLoadedState &&
           _locations !=
               filterBloc.state.locations.map((loc) => loc.id).toList() &&
@@ -214,7 +212,6 @@ class DashboardAssetActionBloc
             ...assetActionsList.allAssetActions,
           ]..sort((a, b) => b.dateTime.compareTo(a.dateTime));
           // limit list
-          // TODO
           if (event.limit > 0 && tmpList.length > event.limit) {
             tmpList = tmpList.sublist(0, event.limit);
           }

@@ -32,10 +32,10 @@ class CategoryDropdownButton extends StatelessWidget {
           if (selectedValue.isEmpty) {
             dropdownItems.add(
               DropdownMenuItem(
+                value: '',
                 child: Text(
                   AppLocalizations.of(context)!.item_select_category,
                 ),
-                value: '',
               ),
             );
           }

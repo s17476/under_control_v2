@@ -112,9 +112,9 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
                               ? AppLocalizations.of(context)!
                                   .validation_location_not_selected
                               : null,
-                          child: Text(_selectedLocation),
                           pageController: widget.pageController,
                           onTapAnimateToPage: 0,
+                          child: Text(_selectedLocation),
                         ),
 
                         const SizedBox(
@@ -139,9 +139,9 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
                             }
                             return null;
                           },
-                          child: Text(_quantityString),
                           pageController: widget.pageController,
                           onTapAnimateToPage: 1,
+                          child: Text(_quantityString),
                         ),
 
                         const SizedBox(
@@ -152,9 +152,9 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
                         SummaryCard(
                           title: AppLocalizations.of(context)!.selected_date,
                           validator: () => _dateTime.isEmpty ? '' : null,
-                          child: Text(_dateTime),
                           pageController: widget.pageController,
                           onTapAnimateToPage: 2,
+                          child: Text(_dateTime),
                         ),
 
                         const SizedBox(
@@ -168,9 +168,9 @@ class _AddToItemSummaryCardState extends State<AddToItemSummaryCard> {
                               ? AppLocalizations.of(context)!
                                   .validation_min_two_characters
                               : null,
-                          child: Text(description),
                           pageController: widget.pageController,
                           onTapAnimateToPage: 2,
+                          child: Text(description),
                         ),
                         const SizedBox(
                           height: 50,

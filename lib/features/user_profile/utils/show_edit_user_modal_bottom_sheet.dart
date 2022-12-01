@@ -11,7 +11,7 @@ Future<void> showEditUserModalBottomSheet({
   required BuildContext context,
   required UserProfile user,
 }) {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> formKey = GlobalKey();
 
   UserProfileModel updatedUser = user as UserProfileModel;
 
@@ -53,7 +53,7 @@ Future<void> showEditUserModalBottomSheet({
               const Divider(),
               Expanded(
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -169,10 +169,10 @@ Future<void> showEditUserModalBottomSheet({
                         ),
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          if (!_formKey.currentState!.validate()) {
+                          if (!formKey.currentState!.validate()) {
                             return;
                           }
-                          _formKey.currentState!.save();
+                          formKey.currentState!.save();
 
                           context.read<UserManagementBloc>().add(
                                 UpdateUserDataEvent(userProfile: updatedUser),

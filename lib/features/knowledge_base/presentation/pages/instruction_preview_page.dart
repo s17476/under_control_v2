@@ -93,7 +93,7 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
               onTap: () async {
                 final result = await showInstructionDeleteDialog(
                     context: context, instruction: _instruction!);
-                if (result != null && result) {
+                if (result != null && result && mounted) {
                   Navigator.pop(context);
                 }
               },

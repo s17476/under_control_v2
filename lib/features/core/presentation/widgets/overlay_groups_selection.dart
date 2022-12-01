@@ -4,15 +4,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/groups/domain/entities/group.dart';
 import 'package:under_control_v2/features/groups/presentation/widgets/group_management/group_tile.dart';
 
-import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../groups/presentation/blocs/group/group_bloc.dart';
-import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../utils/responsive_size.dart';
 import 'custom_text_form_field.dart';
 import 'glass_layer.dart';
 import 'shimmer_user_list_tile.dart';
-import 'user_list_tile.dart';
 
 class OverlayGroupsSelection extends StatefulWidget {
   const OverlayGroupsSelection({

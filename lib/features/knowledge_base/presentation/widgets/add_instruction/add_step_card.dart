@@ -46,7 +46,7 @@ class AddStepCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // popup menu elements
-    List<Choice> _choices = [
+    List<Choice> choices = [
       // insert step before
       if (step.contentType != ContentType.unknown)
         Choice(
@@ -133,7 +133,7 @@ class AddStepCard extends StatelessWidget {
                                 choice.onTap();
                               },
                               itemBuilder: (BuildContext context) {
-                                return _choices.map((Choice choice) {
+                                return choices.map((Choice choice) {
                                   return PopupMenuItem<Choice>(
                                     value: choice,
                                     child: Row(

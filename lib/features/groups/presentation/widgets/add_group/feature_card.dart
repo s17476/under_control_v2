@@ -39,7 +39,6 @@ class _FeatureCardState extends State<FeatureCard> {
                 Container(
                   width: 50,
                   height: 50,
-                  child: Icon(getIcon(widget.feature)),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: const [
@@ -51,6 +50,7 @@ class _FeatureCardState extends State<FeatureCard> {
                     ],
                     color: getColor(widget.feature),
                   ),
+                  child: Icon(getIcon(widget.feature)),
                 ),
                 Expanded(
                   child: Column(

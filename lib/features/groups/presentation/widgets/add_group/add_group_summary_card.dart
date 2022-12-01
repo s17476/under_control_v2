@@ -67,9 +67,9 @@ class AddGroupSummaryCard extends StatelessWidget {
                               ? AppLocalizations.of(context)!
                                   .validation_min_two_characters
                               : null,
-                      child: Text(nameTexEditingController.text.trim()),
                       pageController: pageController,
                       onTapAnimateToPage: 0,
+                      child: Text(nameTexEditingController.text.trim()),
                     ),
 
                     const SizedBox(
@@ -82,10 +82,10 @@ class AddGroupSummaryCard extends StatelessWidget {
                         title: AppLocalizations.of(context)!
                             .group_management_add_card_description,
                         validator: () => null,
-                        child:
-                            Text(descriptionTexEditingController.text.trim()),
                         pageController: pageController,
                         onTapAnimateToPage: 0,
+                        child:
+                            Text(descriptionTexEditingController.text.trim()),
                       ),
 
                     const SizedBox(
@@ -100,14 +100,14 @@ class AddGroupSummaryCard extends StatelessWidget {
                           ? AppLocalizations.of(context)!
                               .group_management_add_error_no_location_selected
                           : null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 1,
                       child: Text(
                         totalSelectedLocations.length.toString(),
                         style: const TextStyle(
                           fontSize: 18,
                         ),
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 1,
                     ),
 
                     const SizedBox(
@@ -122,6 +122,8 @@ class AddGroupSummaryCard extends StatelessWidget {
                           ? AppLocalizations.of(context)!
                               .group_management_add_error_no_premission_selected
                           : null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 2,
                       child: ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -129,8 +131,6 @@ class AddGroupSummaryCard extends StatelessWidget {
                         itemBuilder: (context, index) =>
                             FeatureSummaryCard(feature: features[index]),
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 2,
                     ),
                     const SizedBox(
                       height: 50,

@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart'
-    as customTask;
+    as custom_task;
 import 'package:under_control_v2/features/tasks/domain/entities/task_action/task_action.dart';
 
 import '../../assets/data/models/asset_model.dart';
@@ -213,7 +213,7 @@ class WorkRequestParams extends Equatable {
 }
 
 class TaskParams extends Equatable {
-  final customTask.Task task;
+  final custom_task.Task task;
   final List<File>? images;
   final File? video;
   final String companyId;

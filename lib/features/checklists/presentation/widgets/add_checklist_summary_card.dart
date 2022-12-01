@@ -61,9 +61,9 @@ class AddChecklistSummaryCard extends StatelessWidget {
                               ? AppLocalizations.of(context)!
                                   .validation_min_two_characters
                               : null,
-                      child: Text(titleTexEditingController.text.trim()),
                       pageController: pageController,
                       onTapAnimateToPage: 0,
+                      child: Text(titleTexEditingController.text.trim()),
                     ),
 
                     const SizedBox(
@@ -76,10 +76,10 @@ class AddChecklistSummaryCard extends StatelessWidget {
                         title:
                             AppLocalizations.of(context)!.checklist_description,
                         validator: () => null,
-                        child:
-                            Text(descriptionTexEditingController.text.trim()),
                         pageController: pageController,
                         onTapAnimateToPage: 0,
+                        child:
+                            Text(descriptionTexEditingController.text.trim()),
                       ),
 
                     const SizedBox(
@@ -94,6 +94,8 @@ class AddChecklistSummaryCard extends StatelessWidget {
                           ? AppLocalizations.of(context)!
                               .checklist_add_checkpoints_empty
                           : null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 1,
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -119,8 +121,6 @@ class AddChecklistSummaryCard extends StatelessWidget {
                           );
                         },
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 1,
                     ),
                     const SizedBox(
                       height: 50,

@@ -12,7 +12,7 @@ Future<void> showAddLocationModalBottomSheet({
   Location? parentLocation,
   Location? currentLocation,
 }) {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> formKey = GlobalKey();
   LocationModel location = LocationModel.initial();
   final String parentNameInitialValue = parentLocation != null
       ? parentLocation.name
@@ -71,7 +71,7 @@ Future<void> showAddLocationModalBottomSheet({
               const Divider(),
               Expanded(
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -281,10 +281,10 @@ Future<void> showAddLocationModalBottomSheet({
                         ),
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          if (!_formKey.currentState!.validate()) {
+                          if (!formKey.currentState!.validate()) {
                             return;
                           }
-                          _formKey.currentState!.save();
+                          formKey.currentState!.save();
                           if (currentLocation != null) {
                             location =
                                 location.copyWith(id: currentLocation.id);

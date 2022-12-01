@@ -136,7 +136,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
             onTap: () async {
               final result =
                   await showGroupDeleteDialog(context: context, group: _group);
-              if (result != null && result) {
+              if (result != null && result && mounted) {
                 Navigator.pop(context);
               }
             },

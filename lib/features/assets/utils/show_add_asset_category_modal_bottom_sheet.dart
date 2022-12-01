@@ -11,7 +11,7 @@ Future<void> showAddAssetCategoryModalBottomSheet({
   required BuildContext context,
   AssetCategoryModel? assetCategory,
 }) {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> formKey = GlobalKey();
 
   AssetCategoryModel assetCategoryModel =
       assetCategory ?? const AssetCategoryModel(id: '', name: '');
@@ -55,7 +55,7 @@ Future<void> showAddAssetCategoryModalBottomSheet({
               const Divider(),
               Expanded(
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -141,10 +141,10 @@ Future<void> showAddAssetCategoryModalBottomSheet({
                         ),
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          if (!_formKey.currentState!.validate()) {
+                          if (!formKey.currentState!.validate()) {
                             return;
                           }
-                          _formKey.currentState!.save();
+                          formKey.currentState!.save();
 
                           // add new category
                           if (assetCategory == null) {

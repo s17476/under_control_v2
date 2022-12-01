@@ -52,7 +52,7 @@ String getBreadcrumbsForLocation(String locationId, List<Location> locations) {
     String result = locations[index].name;
     index = locations.indexWhere((loc) => loc.id == locations[index].parentId);
     while (index >= 0) {
-      result = locations[index].name + ' > ' + result;
+      result = '${locations[index].name} > $result';
       index =
           locations.indexWhere((loc) => loc.id == locations[index].parentId);
     }

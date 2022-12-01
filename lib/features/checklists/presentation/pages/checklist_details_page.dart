@@ -64,7 +64,7 @@ class _ChecklistDetailsPageState extends State<ChecklistDetailsPage> {
               context: context,
               checklist: _checklist,
             );
-            if (result != null && result) {
+            if (result != null && result && mounted) {
               Navigator.pop(context);
             }
           },

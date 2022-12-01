@@ -155,9 +155,9 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                               ? AppLocalizations.of(context)!
                                   .validation_min_two_characters
                               : null,
-                      child: Text(producerTextEditingController.text.trim()),
                       pageController: pageController,
                       onTapAnimateToPage: 0,
+                      child: Text(producerTextEditingController.text.trim()),
                     ),
 
                     const SizedBox(
@@ -171,9 +171,9 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                               ? AppLocalizations.of(context)!
                                   .validation_min_two_characters
                               : null,
-                      child: Text(modelTextEditingController.text.trim()),
                       pageController: pageController,
                       onTapAnimateToPage: 0,
+                      child: Text(modelTextEditingController.text.trim()),
                     ),
 
                     const SizedBox(
@@ -186,10 +186,10 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                         title:
                             AppLocalizations.of(context)!.description_optional,
                         validator: () => null,
-                        child:
-                            Text(descriptionTextEditingController.text.trim()),
                         pageController: pageController,
                         onTapAnimateToPage: 0,
+                        child:
+                            Text(descriptionTextEditingController.text.trim()),
                       ),
                     if (descriptionTextEditingController.text.isNotEmpty)
                       const SizedBox(
@@ -202,9 +202,9 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                       validator: () => category.isEmpty
                           ? AppLocalizations.of(context)!.category_no_select
                           : null,
-                      child: Text(categoryName),
                       pageController: pageController,
                       onTapAnimateToPage: 1,
+                      child: Text(categoryName),
                     ),
                     const SizedBox(
                       height: 8,
@@ -229,9 +229,9 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                           }
                           return null;
                         },
-                        child: Text(priceString),
                         pageController: pageController,
                         onTapAnimateToPage: 1,
+                        child: Text(priceString),
                       ),
 
                     if (priceString.isNotEmpty && priceString != '0')
@@ -261,10 +261,10 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                                 .validation_min_two_characters
                             : null;
                       },
-                      child:
-                          Text(internalCodeTextEditingController.text.trim()),
                       pageController: pageController,
                       onTapAnimateToPage: 1,
+                      child:
+                          Text(internalCodeTextEditingController.text.trim()),
                     ),
                     const SizedBox(
                       height: 8,
@@ -276,9 +276,9 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                         title: AppLocalizations.of(context)!
                             .item_bar_code_optional,
                         validator: () => null,
-                        child: Text(barCodeTextEditingController.text.trim()),
                         pageController: pageController,
                         onTapAnimateToPage: 1,
+                        child: Text(barCodeTextEditingController.text.trim()),
                       ),
 
                     if (barCodeTextEditingController.text.trim().isNotEmpty)
@@ -290,9 +290,9 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                     SummaryCard(
                       title: AppLocalizations.of(context)!.add_date,
                       validator: () => null,
-                      child: Text(dateFormat.format(addDate)),
                       pageController: pageController,
                       onTapAnimateToPage: 1,
+                      child: Text(dateFormat.format(addDate)),
                     ),
                     const SizedBox(
                       height: 8,
@@ -305,9 +305,9 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                           ? AppLocalizations.of(context)!
                               .validation_location_not_selected
                           : null,
-                      child: Text(locationString),
                       pageController: pageController,
                       onTapAnimateToPage: 2,
+                      child: Text(locationString),
                     ),
 
                     const SizedBox(
@@ -319,9 +319,9 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                       title: AppLocalizations.of(context)!
                           .asset_last_inspection_date,
                       validator: () => null,
-                      child: Text(dateFormat.format(lastInspectionDate)),
                       pageController: pageController,
                       onTapAnimateToPage: 3,
+                      child: Text(dateFormat.format(lastInspectionDate)),
                     ),
                     const SizedBox(
                       height: 8,
@@ -334,6 +334,8 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                           ? AppLocalizations.of(context)!
                               .asset_status_not_selected
                           : null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 3,
                       child: Text(
                         getLocalizedAssetStatusName(
                           context,
@@ -342,8 +344,6 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                           ),
                         ),
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 3,
                     ),
 
                     const SizedBox(
@@ -358,6 +358,8 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                           ? AppLocalizations.of(context)!
                               .asset_next_inspection_tip
                           : null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 3,
                       child: (durationUnit.isNotEmpty || duration != 0)
                           ? Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -382,8 +384,6 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                               ],
                             )
                           : const SizedBox(),
-                      pageController: pageController,
-                      onTapAnimateToPage: 3,
                     ),
                     const SizedBox(
                       height: 8,
@@ -393,14 +393,14 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                     SummaryCard(
                       title: AppLocalizations.of(context)!.asset_type,
                       validator: () => null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 4,
                       child: Text(
                         isSparePart
                             ? AppLocalizations.of(context)!.asset_spare_part
                             : AppLocalizations.of(context)!
                                 .asset_not_spare_part,
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 4,
                     ),
                     const SizedBox(
                       height: 8,
@@ -410,13 +410,13 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                     SummaryCard(
                       title: AppLocalizations.of(context)!.asset_is_in_use,
                       validator: () => null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 5,
                       child: Text(
                         isInUse
                             ? AppLocalizations.of(context)!.asset_in_use
                             : AppLocalizations.of(context)!.asset_not_in_use,
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 5,
                     ),
                     const SizedBox(
                       height: 8,
@@ -433,6 +433,8 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                           }
                           return null;
                         },
+                        pageController: pageController,
+                        onTapAnimateToPage: 5,
                         child: BlocBuilder<AssetBloc, AssetState>(
                           builder: (context, state) {
                             if (state is AssetLoadedState) {
@@ -449,8 +451,6 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                             );
                           },
                         ),
-                        pageController: pageController,
-                        onTapAnimateToPage: 5,
                       ),
                     const SizedBox(
                       height: 8,
@@ -460,14 +460,14 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                     SummaryCard(
                       title: AppLocalizations.of(context)!.asset_spare_parts,
                       validator: () => null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 6,
                       child: Text(
                         spareParts.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_spare_parts_added}: ${spareParts.length}'
                             : AppLocalizations.of(context)!
                                 .asset_spare_parts_not_added,
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 6,
                     ),
                     const SizedBox(
                       height: 8,
@@ -478,14 +478,14 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                       title: AppLocalizations.of(context)!
                           .asset_add_instructions_title,
                       validator: () => null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 7,
                       child: Text(
                         instructions.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_add_instructions_added}: ${instructions.length}'
                             : AppLocalizations.of(context)!
                                 .asset_add_instructions_not_added,
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 7,
                     ),
                     const SizedBox(
                       height: 8,
@@ -496,14 +496,14 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                       title:
                           AppLocalizations.of(context)!.asset_add_images_title,
                       validator: () => null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 8,
                       child: Text(
                         images.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_add_images_added}: ${images.length}'
                             : AppLocalizations.of(context)!
                                 .asset_add_images_not_added,
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 8,
                     ),
                     const SizedBox(
                       height: 8,
@@ -514,14 +514,14 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                       title: AppLocalizations.of(context)!
                           .asset_add_documents_title,
                       validator: () => null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 9,
                       child: Text(
                         documents.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_add_documents_added}: ${documents.length}'
                             : AppLocalizations.of(context)!
                                 .asset_add_documents_not_added,
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 9,
                     ),
                     const SizedBox(
                       height: 8,

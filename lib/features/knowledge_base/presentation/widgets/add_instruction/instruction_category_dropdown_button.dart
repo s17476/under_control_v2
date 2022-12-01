@@ -34,10 +34,10 @@ class InstructionCategoryDropdownButton extends StatelessWidget {
           if (selectedValue.isEmpty) {
             dropdownItems.add(
               DropdownMenuItem(
+                value: '',
                 child: Text(
                   AppLocalizations.of(context)!.category_select,
                 ),
-                value: '',
               ),
             );
           }

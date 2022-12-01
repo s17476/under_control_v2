@@ -70,6 +70,10 @@ dependencies:
   video_compress: ^3.1.1
   flutter_cache_manager_firebase: ^2.0.1
   vibration: ^1.7.6
+  injectable: ^2.1.0
+  get_it: ^7.2.0
+  collection: ^1.16.0
+  flutter_chat_types: ^3.6.0
   
 
 
@@ -82,11 +86,9 @@ dev_dependencies:
       url: https://github.com/Davenchy/flutter_launcher_icons.git
       ref: fixMinSdkParseFlutter2.8
   bloc_test: ^9.0.3
-  injectable: ^1.5.3
-  get_it: ^7.2.0
   build_runner:
-  injectable_generator: ^1.5.2
-  flutter_lints: ^1.0.0
+  injectable_generator: ^2.1.2
+  flutter_lints: ^2.0.1
 
 flutter_icons:
   android: true

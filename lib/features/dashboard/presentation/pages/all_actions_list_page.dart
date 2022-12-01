@@ -77,8 +77,6 @@ class _AllActionsListPageState extends State<AllActionsListPage>
     super.didChangeDependencies();
   }
 
-  // TODO
-  // add date sliders ti limit actions
   @override
   Widget build(BuildContext context) {
     final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;

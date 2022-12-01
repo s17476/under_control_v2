@@ -88,14 +88,14 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                     SummaryCard(
                       title: AppLocalizations.of(context)!.save_mode,
                       validator: () => isPublished ? null : '',
+                      pageController: pageController,
+                      onTapAnimateToPage: steps.length + 3,
+                      errorColor: Colors.orange.withAlpha(210),
                       child: Text(
                         isPublished
                             ? AppLocalizations.of(context)!.publish
                             : AppLocalizations.of(context)!.draft,
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: steps.length + 3,
-                      errorColor: Colors.orange.withAlpha(210),
                     ),
                     const SizedBox(
                       height: 8,
@@ -108,9 +108,9 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                               ? AppLocalizations.of(context)!
                                   .validation_min_two_characters
                               : null,
-                      child: Text(titleTexEditingController.text.trim()),
                       pageController: pageController,
                       onTapAnimateToPage: 0,
+                      child: Text(titleTexEditingController.text.trim()),
                     ),
 
                     const SizedBox(
@@ -123,10 +123,10 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                         title:
                             AppLocalizations.of(context)!.description_optional,
                         validator: () => null,
-                        child:
-                            Text(descriptionTextEditingController.text.trim()),
                         pageController: pageController,
                         onTapAnimateToPage: 0,
+                        child:
+                            Text(descriptionTextEditingController.text.trim()),
                       ),
                     if (descriptionTextEditingController.text.isNotEmpty)
                       const SizedBox(
@@ -139,9 +139,9 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                       validator: () => category.isEmpty
                           ? AppLocalizations.of(context)!.category_no_select
                           : null,
-                      child: Text(categoryName),
                       pageController: pageController,
                       onTapAnimateToPage: 0,
+                      child: Text(categoryName),
                     ),
                     const SizedBox(
                       height: 8,
@@ -154,14 +154,14 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                           ? AppLocalizations.of(context)!
                               .group_management_add_error_no_location_selected
                           : null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 1,
                       child: Text(
                         totalSelectedLocations.length.toString(),
                         style: const TextStyle(
                           fontSize: 18,
                         ),
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 1,
                     ),
 
                     const SizedBox(
@@ -174,11 +174,11 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                       validator: () => steps.isEmpty
                           ? AppLocalizations.of(context)!.instruction_no_steps
                           : null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 2,
                       child: Text(
                         '${AppLocalizations.of(context)!.instruction_step_total}: ${steps.length}',
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 2,
                     ),
                     const SizedBox(
                       height: 8,
@@ -192,6 +192,8 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                             title:
                                 '${AppLocalizations.of(context)!.instruction_step} ${step.id + 1}',
                             validator: () => validateStep(context, step),
+                            pageController: pageController,
+                            onTapAnimateToPage: step.id + 2,
                             child: step.contentType == ContentType.unknown
                                 ? const SizedBox()
                                 : Column(
@@ -234,8 +236,6 @@ class AddInstructionSummaryCard extends StatelessWidget with ResponsiveSize {
                                         ),
                                     ],
                                   ),
-                            pageController: pageController,
-                            onTapAnimateToPage: step.id + 2,
                           ),
                           const SizedBox(
                             height: 8,

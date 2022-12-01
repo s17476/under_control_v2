@@ -122,6 +122,8 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                       validator: () => priority.isEmpty
                           ? AppLocalizations.of(context)!.task_priority
                           : null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 5,
                       child: Row(
                         children: [
                           getTaskPriorityIcon(
@@ -143,8 +145,6 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                           ),
                         ],
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 5,
                     ),
                     const SizedBox(
                       height: 8,
@@ -158,6 +158,8 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                             ? AppLocalizations.of(context)!
                                 .asset_status_not_selected
                             : null,
+                        pageController: pageController,
+                        onTapAnimateToPage: 2,
                         child: Row(
                           children: [
                             SizedBox(
@@ -184,8 +186,6 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                             ),
                           ],
                         ),
-                        pageController: pageController,
-                        onTapAnimateToPage: 2,
                       ),
                     if (isConnectedToAsset)
                       const SizedBox(
@@ -200,9 +200,9 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                               ? AppLocalizations.of(context)!
                                   .validation_min_two_characters
                               : null,
-                      child: Text(titleTextEditingController.text.trim()),
                       pageController: pageController,
                       onTapAnimateToPage: 0,
+                      child: Text(titleTextEditingController.text.trim()),
                     ),
 
                     const SizedBox(
@@ -215,10 +215,10 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                         title:
                             AppLocalizations.of(context)!.description_optional,
                         validator: () => null,
-                        child:
-                            Text(descriptionTextEditingController.text.trim()),
                         pageController: pageController,
                         onTapAnimateToPage: 0,
+                        child:
+                            Text(descriptionTextEditingController.text.trim()),
                       ),
                     if (descriptionTextEditingController.text.isNotEmpty)
                       const SizedBox(
@@ -229,9 +229,9 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                     SummaryCard(
                       title: AppLocalizations.of(context)!.add_date,
                       validator: () => null,
-                      child: Text(dateFormat.format(date)),
                       pageController: pageController,
                       onTapAnimateToPage: 0,
+                      child: Text(dateFormat.format(date)),
                     ),
                     const SizedBox(
                       height: 8,
@@ -249,9 +249,9 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                           }
                           return null;
                         },
-                        child: Text(assetString),
                         pageController: pageController,
                         onTapAnimateToPage: 1,
+                        child: Text(assetString),
                       ),
                     if (isConnectedToAsset)
                       const SizedBox(
@@ -265,9 +265,9 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                           ? AppLocalizations.of(context)!
                               .validation_location_not_selected
                           : null,
-                      child: Text(locationString),
                       pageController: pageController,
                       onTapAnimateToPage: 2,
+                      child: Text(locationString),
                     ),
                     const SizedBox(
                       height: 8,
@@ -278,14 +278,14 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                       title:
                           AppLocalizations.of(context)!.asset_add_images_title,
                       validator: () => null,
+                      pageController: pageController,
+                      onTapAnimateToPage: 3,
                       child: Text(
                         images.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_add_images_added}: ${images.length}'
                             : AppLocalizations.of(context)!
                                 .asset_add_images_not_added,
                       ),
-                      pageController: pageController,
-                      onTapAnimateToPage: 3,
                     ),
                     const SizedBox(
                       height: 8,
@@ -296,9 +296,9 @@ class AddWorkRequestSummaryCard extends StatelessWidget with ResponsiveSize {
                       SummaryCard(
                         title: AppLocalizations.of(context)!.content_video,
                         validator: () => null,
-                        child: const SizedBox(),
                         pageController: pageController,
                         onTapAnimateToPage: 4,
+                        child: const SizedBox(),
                       ),
 
                     const SizedBox(

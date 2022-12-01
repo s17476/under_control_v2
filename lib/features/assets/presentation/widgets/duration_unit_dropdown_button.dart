@@ -36,8 +36,8 @@ class DurationUnitDropdownButton extends StatelessWidget {
     if (selectedUnit.isEmpty) {
       dropdownItems.add(
         DropdownMenuItem(
-          child: Text(AppLocalizations.of(context)!.duration_unit_select),
           value: '',
+          child: Text(AppLocalizations.of(context)!.duration_unit_select),
         ),
       );
     }

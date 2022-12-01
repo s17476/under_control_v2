@@ -36,11 +36,11 @@ Future<void> launchYoutubeVideo(String youtubeUrl) async {
   if (youtubeUrl.isNotEmpty) {
     final uri = Uri.parse(youtubeUrl);
     if (await canLaunchUrl(uri)) {
-      final bool _nativeAppLaunchSucceeded = await launchUrl(
+      final bool nativeAppLaunchSucceeded = await launchUrl(
         uri,
         mode: LaunchMode.externalNonBrowserApplication,
       );
-      if (!_nativeAppLaunchSucceeded) {
+      if (!nativeAppLaunchSucceeded) {
         await launchUrl(
           uri,
           mode: LaunchMode.externalApplication,

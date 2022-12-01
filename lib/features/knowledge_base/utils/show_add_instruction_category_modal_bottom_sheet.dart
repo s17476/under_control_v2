@@ -11,7 +11,7 @@ Future<void> showAddInstructionCategoryModalBottomSheet({
   required BuildContext context,
   InstructionCategoryModel? instructionCategory,
 }) {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> formKey = GlobalKey();
 
   InstructionCategoryModel instructionCategoryModel =
       instructionCategory ?? const InstructionCategoryModel(id: '', name: '');
@@ -55,7 +55,7 @@ Future<void> showAddInstructionCategoryModalBottomSheet({
               const Divider(),
               Expanded(
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -143,10 +143,10 @@ Future<void> showAddInstructionCategoryModalBottomSheet({
                         ),
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          if (!_formKey.currentState!.validate()) {
+                          if (!formKey.currentState!.validate()) {
                             return;
                           }
-                          _formKey.currentState!.save();
+                          formKey.currentState!.save();
 
                           // add new category
                           if (instructionCategory == null) {

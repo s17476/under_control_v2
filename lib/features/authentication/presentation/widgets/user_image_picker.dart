@@ -18,7 +18,7 @@ class UserImagePicker extends StatefulWidget {
   ) imagePickFn;
 
   @override
-  _UserImagePickerState createState() => _UserImagePickerState();
+  State<UserImagePicker> createState() => _UserImagePickerState();
 }
 
 class _UserImagePickerState extends State<UserImagePicker> with ResponsiveSize {

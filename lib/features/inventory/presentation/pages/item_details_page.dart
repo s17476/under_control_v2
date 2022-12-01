@@ -105,7 +105,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                 } else {
                   final result = await showItemDeleteDialog(
                       context: context, item: _item!);
-                  if (result != null && result) {
+                  if (result != null && result && mounted) {
                     Navigator.pop(context);
                   }
                 }

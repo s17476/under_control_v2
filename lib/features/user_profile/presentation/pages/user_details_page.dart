@@ -138,7 +138,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
               onTap: () async {
                 final result =
                     await showUserSuspendDialog(context: context, user: _user!);
-                if (result != null && result) {
+                if (result != null && result && mounted) {
                   Navigator.pop(context);
                 }
               },

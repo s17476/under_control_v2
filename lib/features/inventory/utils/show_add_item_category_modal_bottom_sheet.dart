@@ -11,7 +11,7 @@ Future<void> showAddItemCategoryModalBottomSheet({
   required BuildContext context,
   ItemCategoryModel? itemCategory,
 }) {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> formKey = GlobalKey();
 
   ItemCategoryModel itemCategoryModel =
       itemCategory ?? const ItemCategoryModel(id: '', name: '');
@@ -55,7 +55,7 @@ Future<void> showAddItemCategoryModalBottomSheet({
               const Divider(),
               Expanded(
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -141,10 +141,10 @@ Future<void> showAddItemCategoryModalBottomSheet({
                         ),
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          if (!_formKey.currentState!.validate()) {
+                          if (!formKey.currentState!.validate()) {
                             return;
                           }
-                          _formKey.currentState!.save();
+                          formKey.currentState!.save();
 
                           // add new category
                           if (itemCategory == null) {

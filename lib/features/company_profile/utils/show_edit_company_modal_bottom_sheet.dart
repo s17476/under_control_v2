@@ -11,7 +11,7 @@ Future<void> showEditCompanyModalBottomSheet({
   required BuildContext context,
   required Company company,
 }) {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> formKey = GlobalKey();
 
   CompanyModel updatedCompany = company as CompanyModel;
 
@@ -52,7 +52,7 @@ Future<void> showEditCompanyModalBottomSheet({
               const Divider(),
               Expanded(
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -124,10 +124,10 @@ Future<void> showEditCompanyModalBottomSheet({
                         ),
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          if (!_formKey.currentState!.validate()) {
+                          if (!formKey.currentState!.validate()) {
                             return;
                           }
-                          _formKey.currentState!.save();
+                          formKey.currentState!.save();
 
                           context.read<CompanyManagementBloc>().add(
                                 UpdateCompanyDataEvent(

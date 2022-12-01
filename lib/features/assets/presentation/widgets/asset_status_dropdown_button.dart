@@ -32,8 +32,8 @@ class AssetStatusDropdownButton extends StatelessWidget {
     if (assetStatus.isEmpty) {
       dropdownItems.add(
         DropdownMenuItem(
-          child: Text(AppLocalizations.of(context)!.asset_status_select),
           value: '',
+          child: Text(AppLocalizations.of(context)!.asset_status_select),
         ),
       );
     }

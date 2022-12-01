@@ -77,7 +77,7 @@ class SelectionButton<T> extends StatelessWidget {
                   activeColor: Colors.white,
                   value: value,
                   groupValue: groupValue,
-                  onChanged: (val) => onSelected(val!),
+                  onChanged: (val) => onSelected(val as T),
                 ),
               ],
             ),

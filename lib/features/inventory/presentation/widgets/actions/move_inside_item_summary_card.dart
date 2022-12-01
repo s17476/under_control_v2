@@ -137,9 +137,9 @@ class _MoveInsideItemSummaryCardState extends State<MoveInsideItemSummaryCard> {
                               ? AppLocalizations.of(context)!
                                   .validation_location_not_selected
                               : null,
-                          child: Text(_selectedFromLocation),
                           pageController: widget.pageController,
                           onTapAnimateToPage: 0,
+                          child: Text(_selectedFromLocation),
                         ),
 
                         const SizedBox(
@@ -154,9 +154,9 @@ class _MoveInsideItemSummaryCardState extends State<MoveInsideItemSummaryCard> {
                               ? AppLocalizations.of(context)!
                                   .validation_location_not_selected
                               : null,
-                          child: Text(_selectedToLocation),
                           pageController: widget.pageController,
                           onTapAnimateToPage: 1,
+                          child: Text(_selectedToLocation),
                         ),
 
                         const SizedBox(
@@ -181,9 +181,9 @@ class _MoveInsideItemSummaryCardState extends State<MoveInsideItemSummaryCard> {
                             }
                             return null;
                           },
-                          child: Text(_quantityString),
                           pageController: widget.pageController,
                           onTapAnimateToPage: 2,
+                          child: Text(_quantityString),
                         ),
 
                         const SizedBox(
@@ -194,9 +194,9 @@ class _MoveInsideItemSummaryCardState extends State<MoveInsideItemSummaryCard> {
                         SummaryCard(
                           title: AppLocalizations.of(context)!.selected_date,
                           validator: () => _dateTime.isEmpty ? '' : null,
-                          child: Text(_dateTime),
                           pageController: widget.pageController,
                           onTapAnimateToPage: 3,
+                          child: Text(_dateTime),
                         ),
 
                         const SizedBox(
@@ -210,9 +210,9 @@ class _MoveInsideItemSummaryCardState extends State<MoveInsideItemSummaryCard> {
                               ? AppLocalizations.of(context)!
                                   .validation_min_two_characters
                               : null,
-                          child: Text(description),
                           pageController: widget.pageController,
                           onTapAnimateToPage: 3,
+                          child: Text(description),
                         ),
                         const SizedBox(
                           height: 50,

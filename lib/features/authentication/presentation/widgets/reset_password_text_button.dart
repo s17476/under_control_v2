@@ -19,7 +19,7 @@ class ResetPasswordTextButton extends StatelessWidget {
       position: _slideAnimation!,
       child: TextButton(
         onPressed: () {
-          final _textEditingController = TextEditingController();
+          final textEditingController = TextEditingController();
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -27,7 +27,7 @@ class ResetPasswordTextButton extends StatelessWidget {
                 AppLocalizations.of(context)!.password_reset_dialog,
               ),
               content: TextFormField(
-                controller: _textEditingController,
+                controller: textEditingController,
                 key: const ValueKey('password-reset'),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
@@ -58,7 +58,7 @@ class ResetPasswordTextButton extends StatelessWidget {
                   onPressed: () {
                     context.read<AuthenticationBloc>().add(
                           SendPasswordResetEmailEvent(
-                            email: _textEditingController.text,
+                            email: textEditingController.text,
                           ),
                         );
                     Navigator.pop(context);

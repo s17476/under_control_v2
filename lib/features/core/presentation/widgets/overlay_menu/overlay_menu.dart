@@ -23,25 +23,25 @@ class OverlayMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Choice> _menuItems;
+    List<Choice> menuItems;
     switch (pageIndex) {
       case 0:
-        _menuItems = tasksOverlayMenuItems(context);
+        menuItems = tasksOverlayMenuItems(context);
         break;
       case 1:
-        _menuItems = inventoryOverlayMenuItems(context);
+        menuItems = inventoryOverlayMenuItems(context);
         break;
       case 2:
-        _menuItems = dashboardOverlayMenuItems(context);
+        menuItems = dashboardOverlayMenuItems(context);
         break;
       case 3:
-        _menuItems = assetsOverlayMenuItems(context);
+        menuItems = assetsOverlayMenuItems(context);
         break;
       case 4:
-        _menuItems = knowledgeBaseOverlayMenuItems(context);
+        menuItems = knowledgeBaseOverlayMenuItems(context);
         break;
       default:
-        _menuItems = dashboardOverlayMenuItems(context);
+        menuItems = dashboardOverlayMenuItems(context);
         break;
     }
     if (!isVisible) {
@@ -53,7 +53,7 @@ class OverlayMenu extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ..._menuItems
+              ...menuItems
                   .map(
                     (chice) => OverlayMenuItem(
                       choice: chice,

@@ -42,8 +42,8 @@ class DurationDropdownButton extends StatelessWidget {
     for (int i = 1; i <= valuesCount; i++) {
       values.add(
         DropdownMenuItem(
-          child: Text(i.toString()),
           value: i.toString(),
+          child: Text(i.toString()),
         ),
       );
     }
@@ -59,8 +59,8 @@ class DurationDropdownButton extends StatelessWidget {
     if (duration == 0) {
       dropdownItems.add(
         DropdownMenuItem(
-          child: Text(AppLocalizations.of(context)!.duration_select),
           value: '',
+          child: Text(AppLocalizations.of(context)!.duration_select),
         ),
       );
     }

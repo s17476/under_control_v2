@@ -287,6 +287,8 @@ class PriorityAndTypeSummaryCard extends StatelessWidget {
           validator: () => type.isEmpty
               ? AppLocalizations.of(context)!.task_type_select
               : null,
+          pageController: pageController,
+          onTapAnimateToPage: 9,
           child: Row(
             children: [
               getTaskPriorityAndTypeIcon(
@@ -318,8 +320,6 @@ class PriorityAndTypeSummaryCard extends StatelessWidget {
               ),
             ],
           ),
-          pageController: pageController,
-          onTapAnimateToPage: 9,
         ),
         const SizedBox(
           height: 8,
@@ -348,6 +348,8 @@ class AssetStatusSummaryCard extends StatelessWidget {
           validator: () => assetStatus.isEmpty
               ? AppLocalizations.of(context)!.asset_status_not_selected
               : null,
+          pageController: pageController,
+          onTapAnimateToPage: 2,
           child: Row(
             children: [
               SizedBox(
@@ -374,8 +376,6 @@ class AssetStatusSummaryCard extends StatelessWidget {
               ),
             ],
           ),
-          pageController: pageController,
-          onTapAnimateToPage: 2,
         ),
         const SizedBox(
           height: 8,
@@ -404,9 +404,9 @@ class TitleSummaryCard extends StatelessWidget {
           validator: () => titleTextEditingController.text.trim().length < 2
               ? AppLocalizations.of(context)!.validation_min_two_characters
               : null,
-          child: Text(titleTextEditingController.text.trim()),
           pageController: pageController,
           onTapAnimateToPage: 0,
+          child: Text(titleTextEditingController.text.trim()),
         ),
         const SizedBox(
           height: 8,
@@ -433,9 +433,9 @@ class DescriptionSummaryCard extends StatelessWidget {
         SummaryCard(
           title: AppLocalizations.of(context)!.description_optional,
           validator: () => null,
-          child: Text(descriptionTextEditingController.text.trim()),
           pageController: pageController,
           onTapAnimateToPage: 0,
+          child: Text(descriptionTextEditingController.text.trim()),
         ),
         const SizedBox(
           height: 8,
@@ -464,9 +464,9 @@ class AddDateSummaryCard extends StatelessWidget {
         SummaryCard(
           title: AppLocalizations.of(context)!.add_date,
           validator: () => null,
-          child: Text(dateFormat.format(date)),
           pageController: pageController,
           onTapAnimateToPage: 0,
+          child: Text(dateFormat.format(date)),
         ),
         const SizedBox(
           height: 8,
@@ -500,9 +500,9 @@ class ConnectedAssetSummaryCard extends StatelessWidget {
             }
             return null;
           },
-          child: Text(assetString),
           pageController: pageController,
           onTapAnimateToPage: 1,
+          child: Text(assetString),
         ),
         const SizedBox(
           height: 8,
@@ -531,9 +531,9 @@ class LocationSummaryCard extends StatelessWidget {
           validator: () => locationString.isEmpty
               ? AppLocalizations.of(context)!.validation_location_not_selected
               : null,
-          child: Text(locationString),
           pageController: pageController,
           onTapAnimateToPage: 2,
+          child: Text(locationString),
         ),
         const SizedBox(
           height: 8,
@@ -579,6 +579,8 @@ class SingleOrCyclicTaskSummaryCard extends StatelessWidget {
             }
             return null;
           },
+          pageController: pageController,
+          onTapAnimateToPage: 6,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -614,8 +616,6 @@ class SingleOrCyclicTaskSummaryCard extends StatelessWidget {
                 ),
             ],
           ),
-          pageController: pageController,
-          onTapAnimateToPage: 6,
         ),
         const SizedBox(
           height: 8,
@@ -642,6 +642,8 @@ class AssignedUsersSummaryCard extends StatelessWidget {
         SummaryCard(
           title: AppLocalizations.of(context)!.task_assigned_users,
           validator: () => null,
+          pageController: pageController,
+          onTapAnimateToPage: 7,
           child: BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
             builder: (context, state) {
               if (state is CompanyProfileLoaded) {
@@ -674,8 +676,6 @@ class AssignedUsersSummaryCard extends StatelessWidget {
               );
             },
           ),
-          pageController: pageController,
-          onTapAnimateToPage: 7,
         ),
         const SizedBox(
           height: 8,
@@ -702,6 +702,8 @@ class AssignedGroupsSummaryCard extends StatelessWidget {
         SummaryCard(
           title: AppLocalizations.of(context)!.task_assigned_groups,
           validator: () => null,
+          pageController: pageController,
+          onTapAnimateToPage: 7,
           child: BlocBuilder<GroupBloc, GroupState>(
             builder: (context, state) {
               if (state is GroupLoadedState) {
@@ -740,8 +742,6 @@ class AssignedGroupsSummaryCard extends StatelessWidget {
               );
             },
           ),
-          pageController: pageController,
-          onTapAnimateToPage: 7,
         ),
         const SizedBox(
           height: 8,
@@ -767,9 +767,9 @@ class NotAssignedSummaryCard extends StatelessWidget {
           title: AppLocalizations.of(context)!.task_assign_groups_or_users,
           validator: () =>
               AppLocalizations.of(context)!.task_assign_groups_or_users_error,
-          child: const SizedBox(),
           pageController: pageController,
           onTapAnimateToPage: 7,
+          child: const SizedBox(),
         ),
         const SizedBox(
           height: 8,
@@ -806,6 +806,8 @@ class SparePartsSummaryCard extends StatelessWidget {
             }
             return null;
           },
+          pageController: pageController,
+          onTapAnimateToPage: 8,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -882,8 +884,6 @@ class SparePartsSummaryCard extends StatelessWidget {
                 ),
             ],
           ),
-          pageController: pageController,
-          onTapAnimateToPage: 8,
         ),
         const SizedBox(
           height: 8,
@@ -910,13 +910,13 @@ class ImagesSummaryCard extends StatelessWidget {
         SummaryCard(
           title: AppLocalizations.of(context)!.asset_add_images_title,
           validator: () => null,
+          pageController: pageController,
+          onTapAnimateToPage: 3,
           child: Text(
             images.isNotEmpty
                 ? '${AppLocalizations.of(context)!.asset_add_images_added}: ${images.length}'
                 : AppLocalizations.of(context)!.asset_add_images_not_added,
           ),
-          pageController: pageController,
-          onTapAnimateToPage: 3,
         ),
         const SizedBox(
           height: 8,
@@ -939,9 +939,9 @@ class VideoSummaryCard extends StatelessWidget {
     return SummaryCard(
       title: AppLocalizations.of(context)!.content_video,
       validator: () => null,
-      child: const SizedBox(),
       pageController: pageController,
       onTapAnimateToPage: 4,
+      child: const SizedBox(),
     );
   }
 }

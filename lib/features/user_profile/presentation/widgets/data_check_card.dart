@@ -53,14 +53,14 @@ class DataCheckCard extends StatelessWidget with ResponsiveSize {
                             }
                             return null;
                           },
+                          pageController: pageController,
+                          onTapAnimateToPage: 2,
                           child: image != null
                               ? CircleAvatar(
                                   radius: responsiveSizePct(small: 45),
                                   backgroundImage: FileImage(image!),
                                 )
                               : const SizedBox(),
-                          pageController: pageController,
-                          onTapAnimateToPage: 2,
                         ),
 
                         const SizedBox(
@@ -81,10 +81,10 @@ class DataCheckCard extends StatelessWidget with ResponsiveSize {
                               return null;
                             }
                           },
-                          child:
-                              Text(firstNameTexEditingController.text.trim()),
                           pageController: pageController,
                           onTapAnimateToPage: 1,
+                          child:
+                              Text(firstNameTexEditingController.text.trim()),
                         ),
 
                         const SizedBox(
@@ -105,9 +105,9 @@ class DataCheckCard extends StatelessWidget with ResponsiveSize {
                               return null;
                             }
                           },
-                          child: Text(lastNameTexEditingController.text.trim()),
                           pageController: pageController,
                           onTapAnimateToPage: 1,
+                          child: Text(lastNameTexEditingController.text.trim()),
                         ),
                         const SizedBox(
                           height: 16,
@@ -128,11 +128,11 @@ class DataCheckCard extends StatelessWidget with ResponsiveSize {
                             }
                             return null;
                           },
+                          pageController: pageController,
+                          onTapAnimateToPage: 1,
                           child: Text(
                             phoneNumberTexEditingController.text.trim(),
                           ),
-                          pageController: pageController,
-                          onTapAnimateToPage: 1,
                         ),
 
                         const SizedBox(

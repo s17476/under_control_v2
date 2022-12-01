@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -28,11 +28,11 @@ class ItemActionBloc extends Bloc<ItemActionEvent, ItemActionState> {
     on<GetItemActionsEvent>((event, emit) async {
       emit(ItemActionLoadingState());
 
-      final _itemParams =
+      final itemParams =
           ItemParams(item: event.item, companyId: event.companyId);
 
       final failureOrItemActionsStream =
-          await getItemsActionsStream(_itemParams);
+          await getItemsActionsStream(itemParams);
       await failureOrItemActionsStream.fold(
         (failure) async => emit(ItemActionErrorState(message: failure.message)),
         (actionsStream) async {
@@ -49,11 +49,11 @@ class ItemActionBloc extends Bloc<ItemActionEvent, ItemActionState> {
     on<GetLastFiveItemActionsEvent>((event, emit) async {
       emit(ItemActionLoadingState());
 
-      final _itemParams =
+      final itemParams =
           ItemParams(item: event.item, companyId: event.companyId);
 
       final failureOrItemActionsStream =
-          await getLastFiveItemsActionsStream(_itemParams);
+          await getLastFiveItemsActionsStream(itemParams);
       await failureOrItemActionsStream.fold(
         (failure) async => emit(ItemActionErrorState(message: failure.message)),
         (actionsStream) async {

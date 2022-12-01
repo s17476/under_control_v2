@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -34,7 +33,7 @@ class HomeSliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> _appBarTitles = [
+    final List<String> appBarTitles = [
       AppLocalizations.of(context)!.bottom_bar_title_tasks,
       AppLocalizations.of(context)!.bottom_bar_title_inventory,
       AppLocalizations.of(context)!.bottom_bar_title_dashboard,
@@ -50,6 +49,7 @@ class HomeSliverAppBar extends StatelessWidget {
       pinned: true,
       snap: true,
       bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(3.0),
         child: Container(
           height: 3.0,
           decoration: BoxDecoration(
@@ -63,7 +63,6 @@ class HomeSliverAppBar extends StatelessWidget {
             ),
           ),
         ),
-        preferredSize: const Size.fromHeight(3.0),
       ),
       leading: Builder(
         builder: (context) {
@@ -89,7 +88,7 @@ class HomeSliverAppBar extends StatelessWidget {
             ? AppLocalizations.of(context)!.search
             : isFilterExpanded
                 ? AppLocalizations.of(context)!.filter
-                : _appBarTitles[pageIndex],
+                : appBarTitles[pageIndex],
       ),
       actions: [
         // tasks and work requests filter
