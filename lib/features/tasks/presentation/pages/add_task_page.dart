@@ -382,6 +382,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 sparePartsItems.add(
                   SparePartItemModel(
                     itemId: sparePartId,
+                    locationId: '',
                     quantity: 0,
                   ),
                 );
@@ -451,6 +452,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           index,
           SparePartItemModel(
             itemId: itemId,
+            locationId: '',
             quantity: quantity,
           ),
         );

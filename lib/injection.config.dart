@@ -478,7 +478,10 @@ Future<_i1.GetIt> $initGetIt(
     preResolve: true,
   );
   gh.lazySingleton<_i25.TaskActionRepository>(
-      () => _i26.TaskActionRepositoryImpl());
+      () => _i26.TaskActionRepositoryImpl(
+            firebaseFirestore: gh<_i5.FirebaseFirestore>(),
+            firebaseStorage: gh<_i6.FirebaseStorage>(),
+          ));
   gh.lazySingleton<_i27.TaskRepository>(() => _i28.TaskRepositoryImpl(
         firebaseFirestore: gh<_i5.FirebaseFirestore>(),
         firebaseStorage: gh<_i6.FirebaseStorage>(),

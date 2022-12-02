@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 
 import '../../../domain/entities/task_action/task_action.dart';
 import '../task/spare_part_item_model.dart';
@@ -25,7 +26,7 @@ class TaskActionModel extends TaskAction {
     DateTime? startTime,
     DateTime? stopTime,
     List<String>? images,
-    List<String>? removedPartsAssets,
+    List<AssetModel>? removedPartsAssets,
     List<String>? addedPartsAssets,
     List<SparePartItemModel>? sparePartsItems,
     List<UserActionModel>? usersActions,
@@ -52,7 +53,11 @@ class TaskActionModel extends TaskAction {
     result.addAll({'startTime': startTime});
     result.addAll({'stopTime': stopTime});
     result.addAll({'images': images});
-    result.addAll({'removedPartsAssets': removedPartsAssets});
+    result.addAll({
+      'removedPartsAssets': removedPartsAssets
+          .map((x) => x.toMap()..addAll({'id': x.id}))
+          .toList()
+    });
     result.addAll({'addedPartsAssets': addedPartsAssets});
     result.addAll(
         {'sparePartsItems': sparePartsItems.map((x) => x.toMap()).toList()});
@@ -82,7 +87,14 @@ class TaskActionModel extends TaskAction {
       startTime: startTime,
       stopTime: stopTime,
       images: List<String>.from(map['images']),
-      removedPartsAssets: List<String>.from(map['removedPartsAssets']),
+      removedPartsAssets: List<AssetModel>.from(
+        map['removedPartsAssets']?.map(
+          (x) => AssetModel.fromMap(
+            x,
+            x['id'],
+          ),
+        ),
+      ),
       addedPartsAssets: List<String>.from(map['addedPartsAssets']),
       sparePartsItems: List<SparePartItemModel>.from(
         map['sparePartsItems']?.map(
@@ -94,6 +106,21 @@ class TaskActionModel extends TaskAction {
           (x) => UserActionModel.fromMap(x),
         ),
       ),
+    );
+  }
+
+  factory TaskActionModel.fromTaskAction(TaskAction taskAction) {
+    return TaskActionModel(
+      id: taskAction.id,
+      startTime: taskAction.startTime,
+      stopTime: taskAction.stopTime,
+      addedPartsAssets: taskAction.addedPartsAssets,
+      comment: taskAction.comment,
+      images: taskAction.images,
+      removedPartsAssets: taskAction.removedPartsAssets,
+      sparePartsItems: taskAction.sparePartsItems,
+      taskId: taskAction.taskId,
+      usersActions: taskAction.usersActions,
     );
   }
 }

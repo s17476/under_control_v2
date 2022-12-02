@@ -7,6 +7,7 @@ import 'package:under_control_v2/features/knowledge_base/data/models/instruction
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart'
     as custom_task;
 import 'package:under_control_v2/features/tasks/domain/entities/task_action/task_action.dart';
+import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 
 import '../../assets/data/models/asset_model.dart';
 import '../../assets/domain/entities/asset.dart';
@@ -231,15 +232,19 @@ class TaskParams extends Equatable {
 
 class TaskActionParams extends Equatable {
   final TaskAction taskAction;
-  final String companyId;
+  final custom_task.Task task;
+  final List<File>? images;
+  final UserProfile userProfile;
 
   const TaskActionParams({
     required this.taskAction,
-    required this.companyId,
+    required this.task,
+    this.images,
+    required this.userProfile,
   });
 
   @override
-  List<Object> get props => [taskAction, companyId];
+  List<Object> get props => [taskAction, userProfile];
 }
 
 class CodeParams extends Equatable {

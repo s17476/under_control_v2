@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 
 import '../../../data/models/task/spare_part_item_model.dart';
 import '../../../data/models/task_action/user_action_model.dart';
@@ -10,7 +11,7 @@ class TaskAction extends Equatable {
   final DateTime startTime;
   final DateTime stopTime;
   final List<String> images;
-  final List<String> removedPartsAssets;
+  final List<AssetModel> removedPartsAssets;
   final List<String> addedPartsAssets;
   final List<SparePartItemModel> sparePartsItems;
   final List<UserActionModel> usersActions;

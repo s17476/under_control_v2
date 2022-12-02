@@ -70,7 +70,8 @@ void main() {
     type: TaskType.event,
     sparePartsAssets: const [],
     sparePartsItems: const [
-      SparePartItemModel(itemId: 'itemId', quantity: 1),
+      SparePartItemModel(
+          itemId: 'itemId', locationId: 'locationId', quantity: 1),
     ],
   );
 

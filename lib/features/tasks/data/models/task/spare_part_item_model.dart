@@ -3,6 +3,7 @@ import 'package:under_control_v2/features/tasks/domain/entities/task/spare_part_
 class SparePartItemModel extends SparePartItem {
   const SparePartItemModel({
     required super.itemId,
+    required super.locationId,
     required super.quantity,
   });
 
@@ -10,6 +11,7 @@ class SparePartItemModel extends SparePartItem {
     final result = <String, dynamic>{};
 
     result.addAll({'itemId': itemId});
+    result.addAll({'locationId': itemId});
     result.addAll({'quantity': quantity});
 
     return result;
@@ -18,6 +20,7 @@ class SparePartItemModel extends SparePartItem {
   factory SparePartItemModel.fromMap(Map<String, dynamic> map) {
     return SparePartItemModel(
       itemId: map['itemId'] ?? '',
+      locationId: map['locationId'] ?? '',
       quantity: map['quantity']?.toDouble() ?? 0.0,
     );
   }

@@ -228,6 +228,7 @@ class _AddTaskSparePartCardState extends State<AddTaskSparePartCard>
             toggleSelection: (itemId) => widget.toggleItemSelection(
               SparePartItemModel(
                 itemId: itemId,
+                locationId: '',
                 quantity: 0,
               ),
             ),

@@ -8,6 +8,7 @@ import 'package:under_control_v2/features/tasks/data/models/task_action/task_act
 import 'package:under_control_v2/features/tasks/data/models/task_action/user_action_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
+import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 
 final tDate = DateTime(2022);
 
@@ -40,7 +41,9 @@ final tTaskModel = TaskModel(
   assignedGroups: const [],
   assignedUsers: const [],
   sparePartsAssets: const [],
-  sparePartsItems: const [SparePartItemModel(itemId: 'itemId', quantity: 1)],
+  sparePartsItems: const [
+    SparePartItemModel(itemId: 'itemId', locationId: 'locationId', quantity: 1)
+  ],
 );
 
 final tTaskModelToMap = {
@@ -168,5 +171,22 @@ final tTaskActionModelFromMap = {
 
 final tTaskActionParams = TaskActionParams(
   taskAction: tTaskActionModel,
-  companyId: 'companyId',
+  task: tTaskModel,
+  userProfile: UserProfile(
+    id: 'id',
+    firstName: 'firstName',
+    lastName: 'lastName',
+    email: 'email',
+    phoneNumber: 'phoneNumber',
+    avatarUrl: 'avatarUrl',
+    userGroups: const [],
+    locations: const [],
+    companyId: 'companyId',
+    approved: true,
+    rejected: false,
+    suspended: false,
+    isActive: true,
+    administrator: false,
+    joinDate: tDate,
+  ),
 );
