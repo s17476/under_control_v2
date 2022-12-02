@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -105,7 +107,23 @@ class _ImagesCarouselState extends State<ImagesCarousel> {
           children: _pages,
         ),
         Positioned(
-          bottom: 16,
+          top: 56,
+          left: 16,
+          child: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              shadows: [
+                Shadow(
+                  color: Colors.black,
+                  blurRadius: 25,
+                )
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: Platform.isIOS ? 24 : 16,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

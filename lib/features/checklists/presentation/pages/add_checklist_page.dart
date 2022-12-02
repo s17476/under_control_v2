@@ -50,7 +50,7 @@ class _AddChecklistPageState extends State<AddChecklistPage> {
         errorMessage =
             AppLocalizations.of(context)!.checklist_add_checkpoints_empty;
         // checklist name validation
-      } else {
+      } else if (_checklist == null) {
         final currentState = context.read<ChecklistBloc>().state;
         if (currentState is ChecklistLoadedState) {
           final tmpChecklists = currentState.allChecklists.allChecklists.where(

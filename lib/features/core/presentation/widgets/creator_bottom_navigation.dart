@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import 'backward_text_button.dart';
 import 'forward_text_button.dart';
@@ -55,6 +58,24 @@ class CreatorBottomNavigation extends StatefulWidget {
 class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
     with WidgetsBindingObserver {
   bool _isVisible = true;
+
+  DateTime? _currentBackPressTime;
+
+  void _exitOnDoubleTap() {
+    DateTime now = DateTime.now();
+    if (_currentBackPressTime == null ||
+        now.difference(_currentBackPressTime!) > const Duration(seconds: 5)) {
+      _currentBackPressTime = now;
+      showSnackBar(
+        context: context,
+        message: AppLocalizations.of(context)!.back_to_exit_creator,
+        isErrorMessage: true,
+      );
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
   // backward
   void _backward() {
     // first page
@@ -236,7 +257,12 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
     return AnimatedSize(
       duration: const Duration(milliseconds: 300),
       child: Container(
-        height: _isVisible ? 45 : 0,
+        padding: Platform.isIOS ? const EdgeInsets.only(bottom: 8) : null,
+        height: _isVisible
+            ? Platform.isIOS
+                ? 53
+                : 45
+            : 0,
         width: MediaQuery.of(context).size.width,
         color:
             widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
@@ -253,7 +279,13 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
                                 (widget.pageController.page! + 0.5).toInt() ==
                                     0))
                     // first page and first page function is null
-                    ? const SizedBox()
+                    ? BackwardTextButton(
+                        function: _exitOnDoubleTap,
+                        onHoldFunction: () {},
+                        icon: _getBackwardIcon(),
+                        label: _getBackwardLabel(context),
+                        color: _getBackwardColor(),
+                      )
                     : BackwardTextButton(
                         function: _backward,
                         onHoldFunction: _fastBackward,

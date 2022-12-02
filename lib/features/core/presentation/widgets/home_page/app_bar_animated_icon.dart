@@ -357,11 +357,16 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
       child: AnimatedBuilder(
         animation: _animationController,
         builder: (context, child) {
-          final child = Image.asset(
-            widget.isBackIcon
-                ? 'assets/under_control_back_icon.png'
-                : 'assets/under_control_menu_icon.png',
-          );
+          // final child = Image.asset(
+          //   widget.isBackIcon
+          //       ? 'assets/under_control_back_icon.png'
+          //       : 'assets/under_control_menu_icon.png',
+          // );
+          final child = widget.isBackIcon
+              ? const Icon(Icons.arrow_back_ios_new)
+              : Image.asset(
+                  'assets/under_control_menu_icon.png',
+                );
 
           return Transform(
             transform: Matrix4.rotationY(_rotateY.value * 2 * math.pi),

@@ -12,7 +12,7 @@ import '../../../domain/usecases/get_checklists_stream.dart';
 part 'checklist_event.dart';
 part 'checklist_state.dart';
 
-@lazySingleton
+@injectable
 class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
   late StreamSubscription _companyProfileStreamSubscription;
   StreamSubscription? _checklistsStreamSubscription;

@@ -109,7 +109,7 @@ import 'package:under_control_v2/features/checklists/domain/usecases/get_checkli
     as _i106;
 import 'package:under_control_v2/features/checklists/domain/usecases/update_checklist.dart'
     as _i150;
-import 'package:under_control_v2/features/checklists/presentation/blocs/Checklist/checklist_bloc.dart'
+import 'package:under_control_v2/features/checklists/presentation/blocs/checklist/checklist_bloc.dart'
     as _i194;
 import 'package:under_control_v2/features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart'
     as _i195;
@@ -957,7 +957,7 @@ Future<_i1.GetIt> $initGetIt(
             updateAssetCategory: gh<_i149.UpdateAssetCategory>(),
             deleteAssetCategory: gh<_i86.DeleteAssetCategory>(),
           ));
-  gh.lazySingleton<_i194.ChecklistBloc>(() => _i194.ChecklistBloc(
+  gh.factory<_i194.ChecklistBloc>(() => _i194.ChecklistBloc(
         companyProfileBloc: gh<_i178.CompanyProfileBloc>(),
         getChecklistsStream: gh<_i106.GetChecklistStream>(),
       ));

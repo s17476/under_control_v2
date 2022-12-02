@@ -55,7 +55,7 @@ class _AddTaskSparePartCardState extends State<AddTaskSparePartCard>
         _isVisible = newValue;
       });
     }
-    if (_isVisible) {
+    if (_isVisible && mounted) {
       FocusScope.of(context).unfocus();
     }
   }
