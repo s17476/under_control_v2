@@ -11,7 +11,7 @@ class SparePartItemModel extends SparePartItem {
     final result = <String, dynamic>{};
 
     result.addAll({'itemId': itemId});
-    result.addAll({'locationId': itemId});
+    result.addAll({'locationId': locationId});
     result.addAll({'quantity': quantity});
 
     return result;

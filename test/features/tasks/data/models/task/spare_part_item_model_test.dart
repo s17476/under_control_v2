@@ -5,11 +5,13 @@ import 'package:under_control_v2/features/tasks/domain/entities/task/spare_part_
 void main() {
   const tSparePartItemModel = SparePartItemModel(
     itemId: 'itemId',
+    locationId: 'locationId',
     quantity: 1,
   );
 
   const tSparePartItemModelMap = {
     'itemId': 'itemId',
+    'locationId': 'locationId',
     'quantity': 1,
   };
 

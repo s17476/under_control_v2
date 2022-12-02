@@ -5,6 +5,7 @@ import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
+import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/tasks/data/repositories/task_action_repository_impl.dart';
 
 import '../../t_task_instance.dart';
@@ -34,7 +35,7 @@ void main() {
       firebaseStorage: mockFirebaseStorage,
     );
     badRepository = TaskActionRepositoryImpl(
-      firebaseFirestore: fakeFirebaseFirestore,
+      firebaseFirestore: badFirebaseFirestore,
       firebaseStorage: mockFirebaseStorage,
     );
 
@@ -62,6 +63,47 @@ void main() {
           final result = await repository.addTaskAction(tTaskActionParams);
           // assert
           expect(result, isA<Right<Failure, String>>());
+        },
+      );
+      test(
+        'should return [Voidresult] when deleteTaskAction is called',
+        () async {
+          // act
+          final result = await repository.deleteTaskAction(tTaskActionParams);
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+    });
+
+    group('unsuccessful DB response', () {
+      test(
+        'should return [DatabaseFailure] when addTaskAction is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            FirebaseException(plugin: 'Bad Firebase'),
+          );
+          // act
+          final result = await badRepository.addTaskAction(tTaskActionParams);
+          // assert
+          expect(result, isA<Left<Failure, String>>());
+        },
+      );
+    });
+
+    group('unsuspected error', () {
+      test(
+        'should return [UnsuspectedFailure] when addTaskAction is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            Exception(),
+          );
+          // act
+          final result = await badRepository.addTaskAction(tTaskActionParams);
+          // assert
+          expect(result, isA<Left<Failure, String>>());
         },
       );
     });

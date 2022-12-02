@@ -2,12 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
+import 'package:under_control_v2/features/inventory/data/models/item_amount_in_location_model.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
+import 'package:under_control_v2/features/inventory/domain/entities/item_amount_in_location.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_action/task_actions_stream.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 
 import '../../../assets/data/models/asset_action/asset_action_model.dart';
 import '../../../assets/data/models/asset_model.dart';
+import '../../../inventory/data/models/item_model.dart';
 import '../../domain/repositories/task_action_repository.dart';
 import '../models/task_action/task_action_model.dart';
 
@@ -174,9 +179,62 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
       final addedItems = params.taskAction.sparePartsItems;
       if (addedItems.isNotEmpty) {
         for (var addedItem in addedItems) {
-          //
-          //
-          //
+          // item
+          final itemReference = firebaseFirestore
+              .collection('companies')
+              .doc(params.userProfile.companyId)
+              .collection('items')
+              .doc(addedItem.itemId);
+
+          final itemSnapshot = await itemReference.get();
+          final fetchedItem = ItemModel.fromMap(
+            itemSnapshot.data() as Map<String, dynamic>,
+            itemSnapshot.id,
+          );
+
+          final amountInLocation = fetchedItem.amountInLocations.firstWhere(
+              (element) => element.locationId == addedItem.locationId);
+          final updatedAmountInLocation = ItemAmountInLocationModel(
+              amount: amountInLocation.amount - addedItem.quantity,
+              locationId: addedItem.locationId);
+          final updatedAmountInLocations = [...fetchedItem.amountInLocations]
+            ..removeWhere(
+                (element) => element.locationId == addedItem.locationId)
+            ..add(updatedAmountInLocation);
+
+          final updatedItem = fetchedItem.copyWith(
+            amountInLocations: updatedAmountInLocations,
+          );
+
+          // update item in DB
+          final itemMap = updatedItem.toMap();
+          batch.update(itemReference, itemMap);
+
+          // add item action
+          final actionsReference = firebaseFirestore
+              .collection('companies')
+              .doc(params.userProfile.companyId)
+              .collection('actions');
+
+          final itemAction = ItemActionModel(
+            id: '',
+            type: ItemActionType.remove,
+            description: '',
+            ammount: addedItem.quantity,
+            itemUnit: updatedItem.itemUnit,
+            locationId: addedItem.locationId,
+            date: params.taskAction.stopTime,
+            itemId: addedItem.itemId,
+            userId: params.userProfile.id,
+            taskId: params.task.id,
+          );
+
+          final actionMap = itemAction.toMap();
+
+          // get action reference
+          final actionReference = await actionsReference.add({'name': ''});
+
+          batch.set(actionReference, actionMap);
         }
       }
 
@@ -196,9 +254,27 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
 
   @override
   Future<Either<Failure, VoidResult>> deleteTaskAction(
-      TaskActionParams params) {
-    // TODO: implement deleteTaskAction
-    throw UnimplementedError();
+      TaskActionParams params) async {
+    try {
+      // batch
+      final batch = firebaseFirestore.batch();
+
+      // storage reference
+      final storageReference = firebaseStorage
+          .ref()
+          .child(params.userProfile.id)
+          .child('taskActions');
+
+      return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(
+        DatabaseFailure(message: e.message ?? 'Database Failure'),
+      );
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
   }
 
   @override
