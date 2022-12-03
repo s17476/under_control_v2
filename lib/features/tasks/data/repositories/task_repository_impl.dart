@@ -214,20 +214,22 @@ class TaskRepositoryImpl extends TaskRepository {
       // batch
       final batch = firebaseFirestore.batch();
 
-      // storage reference
-      final storageReference =
-          firebaseStorage.ref().child(params.companyId).child('tasks');
+      if (params.task.images.isNotEmpty || params.task.video.isNotEmpty) {
+        // storage reference
+        final storageReference =
+            firebaseStorage.ref().child(params.companyId).child('tasks');
 
-      final allFilesInDirectory = await storageReference.listAll();
+        final allFilesInDirectory = await storageReference.listAll();
 
-      final filesForTask = allFilesInDirectory.items.where(
-        (file) => file.name.contains(
-          params.task.id,
-        ),
-      );
+        final filesForTask = allFilesInDirectory.items.where(
+          (file) => file.name.contains(
+            params.task.id,
+          ),
+        );
 
-      for (var file in filesForTask) {
-        storageReference.child(file.name).delete();
+        for (var file in filesForTask) {
+          storageReference.child(file.name).delete();
+        }
       }
 
       // deletes item

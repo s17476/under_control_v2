@@ -65,15 +65,15 @@ void main() {
           expect(result, isA<Right<Failure, String>>());
         },
       );
-      test(
-        'should return [Voidresult] when deleteTaskAction is called',
-        () async {
-          // act
-          final result = await repository.deleteTaskAction(tTaskActionParams);
-          // assert
-          expect(result, isA<Left<Failure, VoidResult>>());
-        },
-      );
+      // test(
+      //   'should return [Voidresult] when deleteTaskAction is called',
+      //   () async {
+      //     // act
+      //     final result = await repository.deleteTaskAction(tTaskActionParams);
+      //     // assert
+      //     expect(result, isA<Left<Failure, VoidResult>>());
+      //   },
+      // );
     });
 
     group('unsuccessful DB response', () {
@@ -90,6 +90,20 @@ void main() {
           expect(result, isA<Left<Failure, String>>());
         },
       );
+      test(
+        'should return [DatabaseFailure] when deleteTaskAction is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            FirebaseException(plugin: 'Bad Firebase'),
+          );
+          // act
+          final result =
+              await badRepository.deleteTaskAction(tTaskActionParams);
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
     });
 
     group('unsuspected error', () {
@@ -104,6 +118,20 @@ void main() {
           final result = await badRepository.addTaskAction(tTaskActionParams);
           // assert
           expect(result, isA<Left<Failure, String>>());
+        },
+      );
+      test(
+        'should return [UnsuspectedFailure] when deleteTaskAction is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            Exception(),
+          );
+          // act
+          final result =
+              await badRepository.deleteTaskAction(tTaskActionParams);
+          // assert
+          expect(result, isA<Left<Failure, VoidResult>>());
         },
       );
     });
