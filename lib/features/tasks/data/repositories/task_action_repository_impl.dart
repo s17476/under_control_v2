@@ -734,15 +734,223 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
       //
 
       List<SparePartItemModel> itemsToReturn = [];
+      List<SparePartItemModel> itemsToUpdate = [];
+
       for (var item in oldTaskAction.sparePartsItems) {
-        if (!params.taskAction.sparePartsItems.contains(item)) {
+        if (params.taskAction.sparePartsItems
+            .where((element) =>
+                element.itemId == item.itemId &&
+                element.locationId == item.locationId)
+            .toList()
+            .isEmpty) {
           itemsToReturn.add(item);
+        } else {
+          itemsToUpdate.add(item);
         }
       }
 
-      for (var item in itemsToReturn) {}
+      for (var item in itemsToReturn) {
+        // item
+        final itemReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.userProfile.companyId)
+            .collection('items')
+            .doc(item.itemId);
 
-      // TODO: update items
+        final itemSnapshot = await itemReference.get();
+        final fetchedItem = ItemModel.fromMap(
+          itemSnapshot.data() as Map<String, dynamic>,
+          itemSnapshot.id,
+        );
+
+        final amountInLocation = fetchedItem.amountInLocations
+            .firstWhere((element) => element.locationId == item.locationId);
+        final updatedAmountInLocation = ItemAmountInLocationModel(
+          amount: amountInLocation.amount + item.quantity,
+          locationId: item.locationId,
+        );
+        final updatedAmountInLocations = [...fetchedItem.amountInLocations]
+          ..removeWhere((element) => element.locationId == item.locationId)
+          ..add(updatedAmountInLocation);
+
+        final updatedItem = fetchedItem.copyWith(
+          amountInLocations: updatedAmountInLocations,
+        );
+
+        // update item in DB
+        final itemMap = updatedItem.toMap();
+        batch.update(itemReference, itemMap);
+
+        // add item action
+        final actionsReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.userProfile.companyId)
+            .collection('actions');
+
+        final itemAction = ItemActionModel(
+          id: '',
+          type: ItemActionType.add,
+          description: '',
+          ammount: item.quantity,
+          itemUnit: updatedItem.itemUnit,
+          locationId: item.locationId,
+          date: params.taskAction.stopTime,
+          itemId: item.itemId,
+          userId: params.userProfile.id,
+          taskId: params.task.id,
+        );
+
+        final actionMap = itemAction.toMap();
+
+        // get action reference
+        final actionReference = await actionsReference.add({'name': ''});
+
+        batch.set(actionReference, actionMap);
+      }
+
+      for (var item in itemsToUpdate) {
+        // item
+        final itemReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.userProfile.companyId)
+            .collection('items')
+            .doc(item.itemId);
+
+        final itemSnapshot = await itemReference.get();
+        final fetchedItem = ItemModel.fromMap(
+          itemSnapshot.data() as Map<String, dynamic>,
+          itemSnapshot.id,
+        );
+
+        final newQuantity = params.taskAction.sparePartsItems
+            .firstWhere((element) =>
+                element.itemId == item.itemId &&
+                element.locationId == item.locationId)
+            .quantity;
+
+        final quantityDifference = newQuantity - item.quantity;
+
+        if (quantityDifference != 0) {
+          final amountInLocation = fetchedItem.amountInLocations
+              .firstWhere((element) => element.locationId == item.locationId);
+          final updatedAmountInLocation = ItemAmountInLocationModel(
+            amount: amountInLocation.amount + quantityDifference,
+            locationId: item.locationId,
+          );
+          final updatedAmountInLocations = [...fetchedItem.amountInLocations]
+            ..removeWhere((element) => element.locationId == item.locationId)
+            ..add(updatedAmountInLocation);
+
+          final updatedItem = fetchedItem.copyWith(
+            amountInLocations: updatedAmountInLocations,
+          );
+
+          // update item in DB
+          final itemMap = updatedItem.toMap();
+          batch.update(itemReference, itemMap);
+
+          // add item action
+          final actionsReference = firebaseFirestore
+              .collection('companies')
+              .doc(params.userProfile.companyId)
+              .collection('actions');
+
+          final itemAction = ItemActionModel(
+            id: '',
+            type: quantityDifference > 0
+                ? ItemActionType.add
+                : ItemActionType.remove,
+            description: '',
+            ammount: item.quantity,
+            itemUnit: updatedItem.itemUnit,
+            locationId: item.locationId,
+            date: params.taskAction.stopTime,
+            itemId: item.itemId,
+            userId: params.userProfile.id,
+            taskId: params.task.id,
+          );
+
+          final actionMap = itemAction.toMap();
+
+          // get action reference
+          final actionReference = await actionsReference.add({'name': ''});
+
+          batch.set(actionReference, actionMap);
+        }
+      }
+
+      // add new items
+      List<SparePartItemModel> itemsToAdd = [];
+      for (var item in params.taskAction.sparePartsItems) {
+        if (oldTaskAction.sparePartsItems
+            .where((element) =>
+                element.itemId == item.itemId &&
+                element.locationId == item.locationId)
+            .toList()
+            .isEmpty) {
+          itemsToAdd.add(item);
+        }
+      }
+
+      for (var addedItem in itemsToAdd) {
+        // item
+        final itemReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.userProfile.companyId)
+            .collection('items')
+            .doc(addedItem.itemId);
+
+        final itemSnapshot = await itemReference.get();
+        final fetchedItem = ItemModel.fromMap(
+          itemSnapshot.data() as Map<String, dynamic>,
+          itemSnapshot.id,
+        );
+
+        final amountInLocation = fetchedItem.amountInLocations.firstWhere(
+            (element) => element.locationId == addedItem.locationId);
+        final updatedAmountInLocation = ItemAmountInLocationModel(
+            amount: amountInLocation.amount - addedItem.quantity,
+            locationId: addedItem.locationId);
+        final updatedAmountInLocations = [...fetchedItem.amountInLocations]
+          ..removeWhere((element) => element.locationId == addedItem.locationId)
+          ..add(updatedAmountInLocation);
+
+        final updatedItem = fetchedItem.copyWith(
+          amountInLocations: updatedAmountInLocations,
+        );
+
+        // update item in DB
+        final itemMap = updatedItem.toMap();
+        batch.update(itemReference, itemMap);
+
+        // add item action
+        final actionsReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.userProfile.companyId)
+            .collection('actions');
+
+        final itemAction = ItemActionModel(
+          id: '',
+          type: ItemActionType.remove,
+          description: '',
+          ammount: addedItem.quantity,
+          itemUnit: updatedItem.itemUnit,
+          locationId: addedItem.locationId,
+          date: params.taskAction.stopTime,
+          itemId: addedItem.itemId,
+          userId: params.userProfile.id,
+          taskId: params.task.id,
+        );
+
+        final actionMap = itemAction.toMap();
+
+        // get action reference
+        final actionReference = await actionsReference.add({'name': ''});
+
+        batch.set(actionReference, actionMap);
+      }
+
+      batch.commit();
 
       return Right(VoidResult());
     } on FirebaseException catch (e) {
