@@ -8,7 +8,7 @@ import '../../repositories/task_action_repository.dart';
 
 @lazySingleton
 class GetLatestTaskActionsStream
-    extends FutureUseCase<TaskActionsStream, NoParams> {
+    extends FutureUseCase<TaskActionsStream, ItemsInLocationsParams> {
   final TaskActionRepository repository;
 
   GetLatestTaskActionsStream({
@@ -17,7 +17,7 @@ class GetLatestTaskActionsStream
 
   @override
   Future<Either<Failure, TaskActionsStream>> call(
-    NoParams params,
+    ItemsInLocationsParams params,
   ) async =>
       repository.getLatestTaskActionsStream(params);
 }

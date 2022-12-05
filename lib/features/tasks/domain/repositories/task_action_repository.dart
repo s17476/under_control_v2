@@ -13,12 +13,12 @@ abstract class TaskActionRepository {
     TaskParams params,
   );
 
-  ///Gets stream of latest five task actions.
+  ///Gets stream of latest five task actions in selected locations.
   ///
   ///Returns [TaskActionsStream] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, TaskActionsStream>> getLatestTaskActionsStream(
-    NoParams params,
+    ItemsInLocationsParams params,
   );
 
   ///Adds new task action to the DB.

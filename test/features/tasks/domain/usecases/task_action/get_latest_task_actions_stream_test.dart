@@ -13,8 +13,13 @@ void main() {
   late GetLatestTaskActionsStream usecase;
   late MockTaskActionRepository repository;
 
+  const tItemsInLocations = ItemsInLocationsParams(
+    locations: ['loc1', 'loc2'],
+    companyId: 'companyId',
+  );
+
   setUpAll(() {
-    registerFallbackValue(NoParams());
+    registerFallbackValue(tItemsInLocations);
   });
 
   setUp(() {
@@ -31,7 +36,7 @@ void main() {
             (_) async => Right(
                 TaskActionsStream(allTaskActions: Stream.fromIterable([]))));
         // act
-        final result = await usecase(NoParams());
+        final result = await usecase(tItemsInLocations);
         // assert
         expect(result, isA<Right<Failure, TaskActionsStream>>());
       },

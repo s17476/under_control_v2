@@ -423,16 +423,46 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
 
   @override
   Future<Either<Failure, TaskActionsStream>> getLatestTaskActionsStream(
-      NoParams params) {
-    // TODO: implement getLatestTaskActionsStream
-    throw UnimplementedError();
+      ItemsInLocationsParams params) async {
+    try {
+      final Stream<QuerySnapshot> querySnapshot;
+      querySnapshot = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('taskActions')
+          .where('locationId', whereIn: params.locations)
+          .snapshots();
+
+      return Right(TaskActionsStream(allTaskActions: querySnapshot));
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
   }
 
   @override
   Future<Either<Failure, TaskActionsStream>> getTaskActionsForTaskStream(
-      TaskParams params) {
-    // TODO: implement getTaskActionsForTaskStream
-    throw UnimplementedError();
+      TaskParams params) async {
+    try {
+      final Stream<QuerySnapshot> querySnapshot;
+      querySnapshot = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('taskActions')
+          .where('taskId', isEqualTo: params.task.id)
+          .snapshots();
+
+      return Right(TaskActionsStream(allTaskActions: querySnapshot));
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
   }
 
   @override

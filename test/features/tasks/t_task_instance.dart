@@ -75,7 +75,7 @@ final tTaskModelToMap = {
   'assignedUsers': const [],
   'sparePartsAssets': const [],
   'sparePartsItems': const [
-    {'itemId': 'itemId', 'quantity': 1.0},
+    {'itemId': 'itemId', 'locationId': 'locationId', 'quantity': 1.0},
   ],
 };
 
@@ -108,7 +108,7 @@ final tTaskModelFromMap = {
   'assignedUsers': const [],
   'sparePartsAssets': const [],
   'sparePartsItems': const [
-    {'itemId': 'itemId', 'quantity': 1.0},
+    {'itemId': 'itemId', 'locationId': 'locationId', 'quantity': 1.0},
   ],
 };
 
@@ -189,4 +189,9 @@ final tTaskActionParams = TaskActionParams(
     administrator: false,
     joinDate: tDate,
   ),
+);
+
+const tItemInLocations = ItemsInLocationsParams(
+  locations: ['loc1', 'loc2'],
+  companyId: 'companyId',
 );

@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/tasks/data/repositories/task_action_repository_impl.dart';
+import 'package:under_control_v2/features/tasks/domain/entities/task_action/task_actions_stream.dart';
 
 import '../../t_task_instance.dart';
 
@@ -83,6 +84,26 @@ void main() {
           expect(result, isA<Left<Failure, VoidResult>>());
         },
       );
+      test(
+        'should return [TaskActionsStream] when getTaskActionsForTaskStream is called',
+        () async {
+          // act
+          final result =
+              await repository.getTaskActionsForTaskStream(tTaskParams);
+          // assert
+          expect(result, isA<Right<Failure, TaskActionsStream>>());
+        },
+      );
+      test(
+        'should return [TaskActionsStream] when getLatestTaskActionsStream is called',
+        () async {
+          // act
+          final result =
+              await repository.getLatestTaskActionsStream(tItemInLocations);
+          // assert
+          expect(result, isA<Right<Failure, TaskActionsStream>>());
+        },
+      );
     });
 
     group('unsuccessful DB response', () {
@@ -127,6 +148,34 @@ void main() {
           expect(result, isA<Left<Failure, VoidResult>>());
         },
       );
+      test(
+        'should return [DatabaseFailure] when getTaskActionsForTaskStream is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            FirebaseException(plugin: 'Bad Firebase'),
+          );
+          // act
+          final result =
+              await badRepository.getTaskActionsForTaskStream(tTaskParams);
+          // assert
+          expect(result, isA<Left<Failure, TaskActionsStream>>());
+        },
+      );
+      test(
+        'should return [DatabaseFailure] when getLatestTaskActionsStream is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            FirebaseException(plugin: 'Bad Firebase'),
+          );
+          // act
+          final result =
+              await badRepository.getLatestTaskActionsStream(tItemInLocations);
+          // assert
+          expect(result, isA<Left<Failure, TaskActionsStream>>());
+        },
+      );
     });
 
     group('unsuspected error', () {
@@ -169,6 +218,34 @@ void main() {
               await badRepository.updateTaskAction(tTaskActionParams);
           // assert
           expect(result, isA<Left<Failure, VoidResult>>());
+        },
+      );
+      test(
+        'should return [UnsuspectedFailure] when getTaskActionsForTaskStream is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            Exception(),
+          );
+          // act
+          final result =
+              await badRepository.getTaskActionsForTaskStream(tTaskParams);
+          // assert
+          expect(result, isA<Left<Failure, TaskActionsStream>>());
+        },
+      );
+      test(
+        'should return [UnsuspectedFailure] when getLatestTaskActionsStream is called',
+        () async {
+          // arrange
+          when(() => badFirebaseFirestore.collection(any())).thenThrow(
+            Exception(),
+          );
+          // act
+          final result =
+              await badRepository.getLatestTaskActionsStream(tItemInLocations);
+          // assert
+          expect(result, isA<Left<Failure, TaskActionsStream>>());
         },
       );
     });
