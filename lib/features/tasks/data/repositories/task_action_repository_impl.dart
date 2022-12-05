@@ -431,6 +431,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           .doc(params.companyId)
           .collection('taskActions')
           .where('locationId', whereIn: params.locations)
+          .limit(5)
           .snapshots();
 
       return Right(TaskActionsStream(allTaskActions: querySnapshot));

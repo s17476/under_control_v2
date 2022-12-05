@@ -609,4 +609,27 @@ class TaskRepositoryImpl extends TaskRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, TasksStream>> getArchiveLatestTasksStream(
+      ItemsInLocationsParams params) async {
+    try {
+      final Stream<QuerySnapshot> querySnapshot;
+      querySnapshot = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('tasksArchive')
+          .where('locationId', whereIn: params.locations)
+          .limit(5)
+          .snapshots();
+
+      return Right(TasksStream(allTasks: querySnapshot));
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
 }
