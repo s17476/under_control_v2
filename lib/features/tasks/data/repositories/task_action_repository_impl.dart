@@ -8,6 +8,7 @@ import 'package:under_control_v2/features/inventory/data/models/item_action/item
 import 'package:under_control_v2/features/inventory/data/models/item_amount_in_location_model.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_amount_in_location.dart';
+import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_action/task_actions_stream.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
@@ -454,16 +455,16 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
         taskActionSnapshot.id,
       );
 
+      // storage reference
+      final storageReference = firebaseStorage
+          .ref()
+          .child(params.userProfile.id)
+          .child('taskActions');
+
       // delete files
       final isImagesListEqual = const DeepCollectionEquality.unordered()
           .equals(params.taskAction.images, oldTaskAction.images);
       if (params.taskAction.images.isNotEmpty && !isImagesListEqual) {
-        // storage reference
-        final storageReference = firebaseStorage
-            .ref()
-            .child(params.userProfile.id)
-            .child('taskActions');
-
         final allFilesInDirectory = await storageReference.listAll();
 
         final filesForTask = allFilesInDirectory.items.where(
@@ -476,6 +477,32 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           storageReference.child(file.name).delete();
         }
       }
+
+      // link to stored images
+      List<String> images = [];
+
+      // save images
+      if (params.images != null && params.images!.isNotEmpty) {
+        for (var image in params.images!) {
+          final fileName =
+              '${taskActionReference.id}-${DateTime.now().toIso8601String()}.jpg';
+
+          final fileReference = storageReference.child(fileName);
+          await fileReference.putFile(image);
+          final imageUrl = await fileReference.getDownloadURL();
+          images.add(imageUrl);
+        }
+      }
+
+      // update task action
+      final updatedTaskAction =
+          TaskActionModel.fromTaskAction(params.taskAction).copyWith(
+        images: images,
+      );
+
+      final taskActionMap = updatedTaskAction.toMap();
+
+      batch.set(taskActionReference, taskActionMap);
 
       // update replaced assets
       List<AssetModel> assetsToReturn = [];
@@ -578,7 +605,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
         }
       }
 
-      // update added assets
+      // update added assets to return
       List<String> addedAssetsToReturn = [];
       for (var asset in oldTaskAction.addedPartsAssets) {
         if (!params.taskAction.addedPartsAssets.contains(asset)) {
@@ -613,12 +640,109 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
         if (assetActionQuerySnapshot.docs.isNotEmpty) {
           final documentSnapshot =
               assetActionQuerySnapshot.docs[0] as Map<String, dynamic>;
-          locationId = documentSnapshot['locationId'] ?? '';
+          locationId = documentSnapshot['locationId'] ?? params.task.locationId;
         }
-        // TODO: update asset location + add asset action
 
-        // TODO: update items
+        final updatedAssetModel = fetchedAsset.copyWith(
+          locationId: locationId,
+        );
+        final assetMap = updatedAssetModel.toMap();
+
+        // asset action
+        final actionsReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.userProfile.companyId)
+            .collection('assetsActions');
+
+        final assetAction = AssetActionModel(
+          id: '',
+          assetId: updatedAssetModel.id,
+          dateTime: params.taskAction.stopTime,
+          userId: params.userProfile.id,
+          locationId: locationId,
+          isAssetInUse: true,
+          isCreate: false,
+          assetStatus: updatedAssetModel.currentStatus,
+          connectedTask: params.task.id,
+          connectedWorkRequest: '',
+        );
+        final actionMap = assetAction.toMap();
+
+        // get action reference
+        final actionReference = await actionsReference.add({'name': ''});
+
+        // add action
+        batch.set(actionReference, actionMap);
+        // update asset
+        batch.update(assetReference, assetMap);
       }
+
+      // update added assets
+      final addedAssetsIds = params.taskAction.addedPartsAssets;
+      if (addedAssetsIds.isNotEmpty) {
+        for (var addedAssetId in addedAssetsIds) {
+          final assetReference = firebaseFirestore
+              .collection('companies')
+              .doc(params.userProfile.companyId)
+              .collection('assets')
+              .doc(addedAssetId);
+
+          final assetSnapshot = await assetReference.get();
+          final fetchedAsset = AssetModel.fromMap(
+            assetSnapshot.data() as Map<String, dynamic>,
+            assetSnapshot.id,
+          );
+
+          final updatedAssetModel = fetchedAsset.copyWith(
+            locationId: params.task.locationId,
+            isInUse: true,
+          );
+          final assetMap = updatedAssetModel.toMap();
+
+          // action
+          final actionsReference = firebaseFirestore
+              .collection('companies')
+              .doc(params.userProfile.companyId)
+              .collection('assetsActions');
+
+          final assetAction = AssetActionModel(
+            id: '',
+            assetId: updatedAssetModel.id,
+            dateTime: updatedTaskAction.stopTime,
+            userId: params.userProfile.id,
+            locationId: updatedAssetModel.locationId,
+            isAssetInUse: true,
+            isCreate: false,
+            assetStatus: updatedAssetModel.currentStatus,
+            connectedTask: updatedTaskAction.taskId,
+            connectedWorkRequest: '',
+          );
+          final actionMap = assetAction.toMap();
+
+          // get action reference
+          final actionReference = await actionsReference.add({'name': ''});
+
+          // add action
+          batch.set(actionReference, actionMap);
+          // update item
+          batch.update(assetReference, assetMap);
+        }
+      }
+
+      //
+      //
+      //
+
+      List<SparePartItemModel> itemsToReturn = [];
+      for (var item in oldTaskAction.sparePartsItems) {
+        if (!params.taskAction.sparePartsItems.contains(item)) {
+          itemsToReturn.add(item);
+        }
+      }
+
+      for (var item in itemsToReturn) {}
+
+      // TODO: update items
 
       return Right(VoidResult());
     } on FirebaseException catch (e) {
