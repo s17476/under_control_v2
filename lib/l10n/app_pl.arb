@@ -545,5 +545,7 @@
     "task_msg_not_deleted": "Zadanie nie zostało usunięte",
     "task_owner": "Właściciel zadania",
     "task_and_request": "Zadania i zlecenia",
-    "task_filter_reset": "Resetuj filtr"
+    "task_filter_reset": "Resetuj filtr",
+    "task_action_new": "Zarejestruj nową akcję",
+    "task_action_edit": "Edytuj akcję"
 }

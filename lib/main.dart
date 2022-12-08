@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/register_task_action_page.dart';
 
 import 'custom_multi_bloc_provider.dart';
 import 'features/assets/presentation/pages/add_asset_page.dart';
@@ -178,6 +179,8 @@ class App extends StatelessWidget
               const WorkRequestArchivePage(),
           AddTaskPage.routeName: (context) => const AddTaskPage(),
           TaskDetailsPage.routeName: (context) => const TaskDetailsPage(),
+          RegisterTaskActionPage.routeName: (context) =>
+              const RegisterTaskActionPage(),
         },
         // localization
         localizationsDelegates: const [

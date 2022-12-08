@@ -151,6 +151,7 @@ flutter:
     - assets/priority_medium_shadow.png
     - assets/priority_high.png
     - assets/priority_high_shadow.png
+    - assets/task_action.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

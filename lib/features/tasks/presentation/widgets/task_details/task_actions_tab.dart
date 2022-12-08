@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/register_task_action_page.dart';
 
 import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../../core/utils/get_user_premission.dart';
@@ -83,11 +84,11 @@ class TaskActionsTab extends StatelessWidget {
                           );
                         }
                       : () {
-                          // Navigator.pushNamed(
-                          //   context,
-                          //   MoveInsideItemPage.routeName,
-                          //   arguments: task,
-                          // );
+                          Navigator.pushNamed(
+                            context,
+                            RegisterTaskActionPage.routeName,
+                            arguments: task,
+                          );
                         },
                   icon: Icons.check_circle_outline,
                   iconSize: 40,

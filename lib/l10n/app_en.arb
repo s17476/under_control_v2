@@ -2256,5 +2256,13 @@
     "task_filter_reset": "Reset filter",
     "@task_filter_reset": {
       "description": "task - reset filter"
+    },
+    "task_action_new": "Register new action",
+    "@task_action_new": {
+      "description": "task action - new"
+    },
+    "task_action_edit": "Edit action",
+    "@task_action_edit": {
+      "description": "task action - edit"
     }
 }
