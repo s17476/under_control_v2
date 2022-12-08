@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// shows SnackBar
 ///
@@ -11,15 +12,28 @@ void showSnackBar({
   required BuildContext context,
   required String message,
   bool isErrorMessage = false,
+  bool showExitButton = false,
 }) async {
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(
       SnackBar(
-        content: Text(
-          message,
-          style: const TextStyle(color: Colors.white),
+        content: SizedBox(
+          child: Text(
+            message,
+            style: const TextStyle(color: Colors.white),
+            maxLines: 6,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.justify,
+          ),
         ),
+        action: showExitButton
+            ? SnackBarAction(
+                label: AppLocalizations.of(context)!.exit,
+                onPressed: () => Navigator.pop(context),
+                textColor: Colors.white,
+              )
+            : null,
         backgroundColor: isErrorMessage
             ? Theme.of(context).errorColor
             : const Color.fromARGB(255, 28, 154, 97),

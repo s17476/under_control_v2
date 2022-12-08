@@ -156,6 +156,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
             context: context,
             message: AppLocalizations.of(context)!.back_to_exit_creator,
             isErrorMessage: true,
+            showExitButton: true,
           );
           return false;
         } else {

@@ -12,7 +12,7 @@ class GlassLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TweenAnimationBuilder(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 700),
       tween: Tween<double>(begin: 0.0, end: 0.5),
       child: child,
       builder: (context, double value, child) {
@@ -22,8 +22,8 @@ class GlassLayer extends StatelessWidget {
               onTap: () => onDismiss(),
               child: BackdropFilter(
                 filter: ImageFilter.blur(
-                  sigmaX: 5.0,
-                  sigmaY: 5.0,
+                  sigmaX: 15.0,
+                  sigmaY: 15.0,
                 ),
                 child: Container(
                   width: double.infinity,

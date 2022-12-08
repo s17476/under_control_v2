@@ -7,6 +7,10 @@
     "@no": {
       "description": "No"
     },
+    "exit": "EXIT",
+    "@exit": {
+      "description": "Exit"
+    },
     "all": "All",
     "@all": {
       "description": "All"

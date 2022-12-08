@@ -210,6 +210,7 @@ class _AddItemPageState extends State<AddToItemPage> {
             context: context,
             message: AppLocalizations.of(context)!.back_to_exit_creator,
             isErrorMessage: true,
+            showExitButton: true,
           );
           return false;
         } else {

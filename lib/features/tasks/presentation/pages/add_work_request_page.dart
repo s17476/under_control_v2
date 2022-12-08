@@ -354,10 +354,9 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
         if (cantExit) {
           showSnackBar(
             context: context,
-            message: _workRequest != null
-                ? AppLocalizations.of(context)!.back_to_exit_edit
-                : AppLocalizations.of(context)!.back_to_exit_creator,
+            message: AppLocalizations.of(context)!.back_to_exit_creator,
             isErrorMessage: true,
+            showExitButton: true,
           );
           return false;
         } else {

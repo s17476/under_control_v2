@@ -592,6 +592,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
                 ? AppLocalizations.of(context)!.back_to_exit_edit
                 : AppLocalizations.of(context)!.back_to_exit_creator,
             isErrorMessage: true,
+            showExitButton: true,
           );
           return false;
         } else {

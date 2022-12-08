@@ -70,6 +70,7 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
         context: context,
         message: AppLocalizations.of(context)!.back_to_exit_creator,
         isErrorMessage: true,
+        showExitButton: true,
       );
     } else {
       Navigator.pop(context);

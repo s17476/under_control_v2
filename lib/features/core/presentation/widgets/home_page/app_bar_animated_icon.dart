@@ -26,6 +26,8 @@ import '../../../../knowledge_base/presentation/blocs/instruction_category_manag
 import '../../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../../../tasks/presentation/blocs/task/task_bloc.dart';
+import '../../../../tasks/presentation/blocs/task_action/task_action_bloc.dart';
+import '../../../../tasks/presentation/blocs/task_action_management/task_action_management_bloc.dart';
 import '../../../../tasks/presentation/blocs/task_archive/task_archive_bloc.dart';
 import '../../../../tasks/presentation/blocs/task_management/task_management_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request/work_request_bloc.dart';
@@ -338,6 +340,24 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
         BlocListener<TaskManagementBloc, TaskManagementState>(
           listener: (context, state) {
             if (state is TaskManagementLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<TaskActionBloc, TaskActionState>(
+          listener: (context, state) {
+            if (state is TaskActionLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<TaskActionManagementBloc, TaskActionManagementState>(
+          listener: (context, state) {
+            if (state is TaskActionManagementLoadingState) {
               _startAnimation();
             } else {
               _stopAnimation();

@@ -31,6 +31,8 @@ import 'features/knowledge_base/presentation/blocs/instruction_category_manageme
 import 'features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
 import 'features/tasks/presentation/blocs/task/task_bloc.dart';
+import 'features/tasks/presentation/blocs/task_action/task_action_bloc.dart';
+import 'features/tasks/presentation/blocs/task_action_management/task_action_management_bloc.dart';
 import 'features/tasks/presentation/blocs/task_archive/task_archive_bloc.dart';
 import 'features/tasks/presentation/blocs/task_archive_latest/task_archive_latest_bloc.dart';
 import 'features/tasks/presentation/blocs/task_filter/task_filter_bloc.dart';
@@ -152,6 +154,13 @@ class CustomMultiBlocProvider extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<TaskManagementBloc>(),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (context) => getIt<TaskActionBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<TaskActionManagementBloc>(),
           lazy: false,
         ),
         BlocProvider(
