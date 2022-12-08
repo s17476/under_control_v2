@@ -421,8 +421,8 @@ import 'package:under_control_v2/features/user_profile/presentation/blocs/user_p
     as _i176;
 
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i212;
-import 'features/core/injectable_modules/injectable_modules.dart' as _i211;
+    as _i211;
+import 'features/core/injectable_modules/injectable_modules.dart' as _i212;
 
 /// ignore_for_file: unnecessary_lambdas
 /// ignore_for_file: lines_longer_than_80_chars
@@ -1049,13 +1049,13 @@ Future<_i1.GetIt> $initGetIt(
   return getIt;
 }
 
-class _$FirebaseFirestoreService extends _i211.FirebaseFirestoreService {}
-
-class _$FirebaseStorageService extends _i211.FirebaseStorageService {}
-
-class _$SharedPreferencesService extends _i211.SharedPreferencesService {}
-
 class _$FirebaseAuthenticationService
-    extends _i212.FirebaseAuthenticationService {}
+    extends _i211.FirebaseAuthenticationService {}
 
-class _$DataConnectionCheckerModule extends _i212.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i211.DataConnectionCheckerModule {}
+
+class _$FirebaseFirestoreService extends _i212.FirebaseFirestoreService {}
+
+class _$FirebaseStorageService extends _i212.FirebaseStorageService {}
+
+class _$SharedPreferencesService extends _i212.SharedPreferencesService {}

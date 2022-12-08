@@ -224,7 +224,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   @override
   void didChangeDependencies() {
     final userState = context.watch<UserProfileBloc>().state;
-    if (userState is Approved) {
+    if (_participants.isEmpty && userState is Approved) {
       _userId = userState.userProfile.id;
       _participants.add(
         UserActionModel(
