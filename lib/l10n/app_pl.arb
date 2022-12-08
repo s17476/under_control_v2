@@ -6,6 +6,8 @@
     "add": "Dodaj",
     "skip": "Pomiń",
     "size": "Rozmiar",
+    "from": "Od",
+    "to": "Do",
     "added_by": "Dodane przez",
     "details_no_video": "Nie dodano wideo",
     "details_no_images": "Nie dodano obrazów",
@@ -547,5 +549,6 @@
     "task_and_request": "Zadania i zlecenia",
     "task_filter_reset": "Resetuj filtr",
     "task_action_new": "Zarejestruj nową akcję",
-    "task_action_edit": "Edytuj akcję"
+    "task_action_edit": "Edytuj akcję",
+    "task_action_add_participants": "Dodaj uczestników"
 }

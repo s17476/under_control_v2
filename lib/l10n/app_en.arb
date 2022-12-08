@@ -27,6 +27,14 @@
     "@size": {
       "description": "Size"
     },
+    "from": "From",
+    "@from": {
+      "description": "from"
+    },
+    "to": "To",
+    "@to": {
+      "description": "to"
+    },
     "added_by": "Added by",
     "@added_by": {
       "description": "Added by"
@@ -2264,5 +2272,9 @@
     "task_action_edit": "Edit action",
     "@task_action_edit": {
       "description": "task action - edit"
+    },
+    "task_action_add_participants": "Add participants",
+    "@task_action_add_participants": {
+      "description": "task action - add participants"
     }
 }

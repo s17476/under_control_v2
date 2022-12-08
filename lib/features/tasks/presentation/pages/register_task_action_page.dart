@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/data/models/task_action/user_action_model.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_add_participants_card.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -40,10 +42,14 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
   String _userId = '';
 
-  DateTime _startDate = DateTime.now();
-  DateTime _stopDate = DateTime.now();
+  DateTime _startTime = DateTime.now().subtract(Duration(minutes: 5));
+  DateTime _stopTime = DateTime.now();
+
+  List<UserActionModel> _participants = [];
 
   List<File> _images = [];
+
+  bool _isAddUsersVisible = false;
 
   _addNewTaskAction(BuildContext context) {
     // String errorMessage = '';
@@ -162,6 +168,39 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     // }
   }
 
+  void _updateParticipant(UserActionModel userActionModel) {
+    final index = _participants
+        .indexWhere((element) => element.userId == userActionModel.userId);
+    if (index >= 0) {
+      setState(() {
+        _participants.removeAt(index);
+        _participants.insert(index, userActionModel);
+      });
+    }
+  }
+
+  void _toggleParticipantSelection(String userId) {
+    final index =
+        _participants.indexWhere((element) => element.userId == userId);
+    if (index >= 0) {
+      setState(() {
+        _participants.removeAt(index);
+      });
+    } else {
+      final userAction = UserActionModel(
+          userId: userId, startTime: _startTime, stopTime: _stopTime);
+      setState(() {
+        _participants.add(userAction);
+      });
+    }
+  }
+
+  void _toggleAddUsersVisibility() {
+    setState(() {
+      _isAddUsersVisible = !_isAddUsersVisible;
+    });
+  }
+
   @override
   void initState() {
     _pageController.addListener(() {
@@ -174,9 +213,10 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
       //   _toggleAddInstructionsVisibility();
       // } else if (_isAddGroupsVisible) {
       //   _toggleAddGroupsVisibility();
-      // } else if (_isAddUsersVisible) {
-      //   _toggleAddUsersVisibility();
-      // }
+      // } else
+      if (_isAddUsersVisible) {
+        _toggleAddUsersVisibility();
+      }
     });
     super.initState();
   }
@@ -186,6 +226,13 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     final userState = context.watch<UserProfileBloc>().state;
     if (userState is Approved) {
       _userId = userState.userProfile.id;
+      _participants.add(
+        UserActionModel(
+          userId: _userId,
+          startTime: _startTime,
+          stopTime: _stopTime,
+        ),
+      );
     }
 
     final arguments = ModalRoute.of(context)!.settings.arguments;
@@ -216,6 +263,13 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
           descriptionTextEditingController: _descriptionTextEditingController,
         ),
       ),
+      AddTaskActionAddParticipantsCard(
+        toggleParticipantSelection: _toggleParticipantSelection,
+        updateParticipant: _updateParticipant,
+        toggleIsAddUserVisible: _toggleAddUsersVisibility,
+        participants: _participants,
+        isAddUsersVisible: _isAddUsersVisible,
+      ),
     ];
 
     DateTime preBackpress = DateTime.now();
@@ -234,10 +288,11 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         // } else if (_isAddGroupsVisible) {
         //   _toggleAddGroupsVisibility();
         //   return false;
-        // } else if (_isAddUsersVisible) {
-        //   _toggleAddUsersVisibility();
-        //   return false;
-        // }
+        // } else
+        if (_isAddUsersVisible) {
+          _toggleAddUsersVisibility();
+          return false;
+        }
         // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);
         final cantExit = timegap >= const Duration(seconds: 2);
