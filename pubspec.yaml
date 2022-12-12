@@ -115,43 +115,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/under_control_icon.png
-    - assets/under_control_menu_icon.png
-    - assets/under_control_back_icon.png
-    - assets/undercontrol-adaptive.png
-    - assets/undercontrol-without-frame.png
-    - assets/person.png
-    - assets/company.png
-    - assets/validation.png
-    - assets/workgroup.png
-    - assets/uc-loading.gif
-    - assets/check-list.png
-    - assets/new_item.png
-    - assets/photo.png
-    - assets/instruction.png
-    - assets/video.png
-    - assets/youtube.png
-    - assets/pdf.png
-    - assets/website.png
-    - assets/asset.png
-    - assets/status_ok.png
-    - assets/status_ok_shadow.png
-    - assets/status_working.png
-    - assets/status_working_shadow.png
-    # - assets/status_working_attention.png
-    - assets/status_not_working.png
-    - assets/status_not_working_shadow.png
-    - assets/status_disposed.png
-    - assets/status_disposed_shadow.png
-    - assets/work-order.png
-    - assets/task.png
-    - assets/priority_low.png
-    - assets/priority_low_shadow.png
-    - assets/priority_medium.png
-    - assets/priority_medium_shadow.png
-    - assets/priority_high.png
-    - assets/priority_high_shadow.png
-    - assets/task_action.png
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

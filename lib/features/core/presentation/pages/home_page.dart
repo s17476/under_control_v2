@@ -258,7 +258,7 @@ class _HomePageState extends State<HomePage>
         systemNavigationBarColor: Theme.of(context).appBarTheme.backgroundColor,
         systemNavigationBarIconBrightness: Brightness.light,
         statusBarColor: Theme.of(context).appBarTheme.backgroundColor,
-        statusBarBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
       ));
     });
 

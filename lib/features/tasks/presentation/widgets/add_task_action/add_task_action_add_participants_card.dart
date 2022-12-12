@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
@@ -13,6 +14,7 @@ import 'package:under_control_v2/features/user_profile/domain/entities/user_prof
 import '../../../../core/presentation/widgets/overlay_groups_selection.dart';
 import '../../../../core/presentation/widgets/overlay_users_selection.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
+import '../../../../core/utils/get_locale_type.dart';
 import '../../../../core/utils/responsive_size.dart';
 
 class AddTaskActionAddParticipantsCard extends StatefulWidget
@@ -44,6 +46,12 @@ class _AddTaskActionAddParticipantsCardState
   void _selectUser(UserProfile user) {
     setState(() {
       _selectedUser = user;
+    });
+  }
+
+  void _resetSelectedUser() {
+    setState(() {
+      _selectedUser = null;
     });
   }
 
@@ -138,7 +146,10 @@ class _AddTaskActionAddParticipantsCardState
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Theme.of(context).primaryColor,
                         ),
-                        onPressed: widget.toggleIsAddUserVisible,
+                        onPressed: () {
+                          _resetSelectedUser();
+                          widget.toggleIsAddUserVisible();
+                        },
                         icon: const Icon(Icons.person_add),
                         label: Text(
                           AppLocalizations.of(context)!.task_assign_users,
@@ -178,6 +189,59 @@ class SelectedUserBox extends StatelessWidget {
   final Function(String) toggleParticipantSelection;
   final Function(UserActionModel) updateParticipant;
   final List<UserActionModel> participants;
+
+  void _pickStartDate(BuildContext context, UserActionModel participant) async {
+    FocusScope.of(context).unfocus();
+    DatePicker.showDateTimePicker(
+      context,
+      showTitleActions: true,
+      // minTime: DateTime(2021, 1, 1),
+      maxTime: participant.stopTime.subtract(const Duration(minutes: 5)),
+      onConfirm: (date) {
+        updateParticipant(participant.copyWith(startTime: date));
+      },
+      currentTime: participant.startTime.isBefore(
+              participant.stopTime.subtract(const Duration(minutes: 5)))
+          ? participant.startTime
+          : participant.stopTime.subtract(const Duration(minutes: 5)),
+      locale: getLocaleType(context),
+      theme: DatePickerTheme(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        // headerColor: Theme.of,
+        itemStyle: Theme.of(context).textTheme.headline6!,
+        cancelStyle: Theme.of(context).textTheme.headline6!,
+        doneStyle: Theme.of(context).textTheme.headline6!.copyWith(
+              color: Colors.amber,
+            ),
+        itemHeight: 40,
+      ),
+    );
+  }
+
+  void _pickStopDate(BuildContext context, UserActionModel participant) async {
+    FocusScope.of(context).unfocus();
+    DatePicker.showDateTimePicker(
+      context,
+      showTitleActions: true,
+      // minTime: participant.startTime,
+      maxTime: DateTime.now(),
+      onConfirm: (date) {
+        updateParticipant(participant.copyWith(stopTime: date));
+      },
+      currentTime: participant.stopTime,
+      locale: getLocaleType(context),
+      theme: DatePickerTheme(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        // headerColor: Theme.of,
+        itemStyle: Theme.of(context).textTheme.headline6!,
+        cancelStyle: Theme.of(context).textTheme.headline6!,
+        doneStyle: Theme.of(context).textTheme.headline6!.copyWith(
+              color: Colors.amber,
+            ),
+        itemHeight: 40,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -224,9 +288,14 @@ class SelectedUserBox extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(
-                                  Icons.play_arrow,
-                                  size: 36,
+                                SizedBox(
+                                  width: 40,
+                                  height: 30,
+                                  child: FittedBox(
+                                    child: Text(
+                                      AppLocalizations.of(context)!.from,
+                                    ),
+                                  ),
                                 ),
                                 Column(
                                   children: [
@@ -246,7 +315,8 @@ class SelectedUserBox extends StatelessWidget {
                                 RoundedButton(
                                   iconSize: 30,
                                   padding: const EdgeInsets.all(9),
-                                  onPressed: () {},
+                                  onPressed: () => _pickStartDate(
+                                      context, selectedParticipant),
                                   icon: Icons.timer_sharp,
                                   gradient: LinearGradient(colors: [
                                     Theme.of(context).primaryColor,
@@ -263,9 +333,14 @@ class SelectedUserBox extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(
-                                  Icons.stop,
-                                  size: 36,
+                                SizedBox(
+                                  width: 40,
+                                  height: 30,
+                                  child: FittedBox(
+                                    child: Text(
+                                      AppLocalizations.of(context)!.to,
+                                    ),
+                                  ),
                                 ),
                                 Column(
                                   children: [
@@ -285,7 +360,8 @@ class SelectedUserBox extends StatelessWidget {
                                 RoundedButton(
                                   iconSize: 30,
                                   padding: const EdgeInsets.all(9),
-                                  onPressed: () {},
+                                  onPressed: () => _pickStopDate(
+                                      context, selectedParticipant),
                                   icon: Icons.timer_sharp,
                                   gradient: LinearGradient(colors: [
                                     Theme.of(context).primaryColor,

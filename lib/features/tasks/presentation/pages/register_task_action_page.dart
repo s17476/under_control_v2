@@ -168,6 +168,8 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     // }
   }
 
+  // TODO: update start/stop times
+
   void _updateParticipant(UserActionModel userActionModel) {
     final index = _participants
         .indexWhere((element) => element.userId == userActionModel.userId);
