@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../utils/material_color_generator.dart';
 
 class Themes with MaterialColorGenerator {
@@ -17,8 +18,13 @@ class Themes with MaterialColorGenerator {
         scaffoldBackgroundColor: const Color.fromARGB(255, 30, 30, 30),
         cardColor: const Color.fromARGB(255, 50, 50, 50),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color.fromARGB(255, 40, 40, 40),
-        ),
+            backgroundColor: Color.fromARGB(255, 40, 40, 40),
+            systemOverlayStyle: SystemUiOverlayStyle(
+              systemNavigationBarColor: Color.fromRGBO(40, 40, 40, 1),
+              systemNavigationBarIconBrightness: Brightness.light,
+              statusBarColor: Color.fromRGBO(40, 40, 40, 1),
+              statusBarBrightness: Brightness.dark,
+            )),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,

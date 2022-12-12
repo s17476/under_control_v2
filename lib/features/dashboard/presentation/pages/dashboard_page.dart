@@ -15,17 +15,24 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: const [
-          WorkRequestsLatest(),
-          TasksLatest(),
-          AssetsWithoutInspection(),
-          AssetsLatestActions(),
-          InventoryLowLevelItems(),
-          InventoryLatestActions(),
-        ],
-      ),
+    return CustomScrollView(
+      slivers: [
+        SliverOverlapInjector(
+          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+        ),
+        SliverToBoxAdapter(
+          child: Column(
+            children: const [
+              WorkRequestsLatest(),
+              TasksLatest(),
+              AssetsWithoutInspection(),
+              AssetsLatestActions(),
+              InventoryLowLevelItems(),
+              InventoryLatestActions(),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

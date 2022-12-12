@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../widgets/logo_widget.dart';
 
@@ -18,7 +19,6 @@ class _LoadingPageState extends State<LoadingPage>
 
   @override
   void initState() {
-    super.initState();
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
@@ -33,6 +33,16 @@ class _LoadingPageState extends State<LoadingPage>
         curve: Curves.linear,
       ),
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: Theme.of(context).appBarTheme.backgroundColor,
+        systemNavigationBarIconBrightness: Brightness.light,
+        statusBarColor: Theme.of(context).appBarTheme.backgroundColor,
+        statusBarBrightness: Brightness.dark,
+      ));
+    });
+    super.initState();
   }
 
   @override

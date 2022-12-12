@@ -253,15 +253,6 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Theme.of(context).appBarTheme.backgroundColor,
-        systemNavigationBarIconBrightness: Brightness.light,
-        statusBarColor: Theme.of(context).appBarTheme.backgroundColor,
-        statusBarBrightness: Brightness.dark,
-      ));
-    });
-
     // bottom bar navigation
     _animationController = AnimationController(
       vsync: this,
@@ -409,175 +400,182 @@ class _HomePageState extends State<HomePage>
           ),
         ],
         child: Scaffold(
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           drawer: const MainDrawer(),
+          // safe area
           body: SafeArea(
-            child: NestedScrollView(
-              controller: _scrollController,
-              // physics: const NeverScrollableScrollPhysics(),
-              // AppBar
-              headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                SliverOverlapAbsorber(
-                  handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  sliver: HomeSliverAppBar(
-                    pageIndex: _pageIndex,
-                    isFilterExpanded: _isFilterExpanded,
-                    toggleIsFilterExpanded: _toggleIsFilterExpanded,
-                    isMenuVisible: _isMenuVisible,
-                    toggleIsMenuVisible: _toggleIsMenuVisible,
-                    isSearchBarExpanded: _getFlagForPageIndex(_pageIndex),
-                    toggleIsSearchBarExpanded: _toggleIsSearchBarExpanded,
-                    isTaskFilterVisible: _isTaskFilterVisible,
-                  ),
-                )
-              ],
-              // body
-              body: Stack(
-                children: [
-                  BlocBuilder<FilterBloc, FilterState>(
-                    builder: (context, state) {
-                      return Stack(
-                        children: [
-                          // locations not selected
-                          if (state is FilterLoadedState &&
-                              state.locations.isEmpty)
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 16,
-                                    top: 8,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          AppLocalizations.of(context)!
-                                              .home_screen_filter_select_locations,
-                                          style: const TextStyle(fontSize: 18),
+            bottom: _isControlsVisible,
+            child: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: NestedScrollView(
+                controller: _scrollController,
+                // physics: const NeverScrollableScrollPhysics(),
+                // AppBar
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  SliverOverlapAbsorber(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                    sliver: HomeSliverAppBar(
+                      pageIndex: _pageIndex,
+                      isFilterExpanded: _isFilterExpanded,
+                      toggleIsFilterExpanded: _toggleIsFilterExpanded,
+                      isMenuVisible: _isMenuVisible,
+                      toggleIsMenuVisible: _toggleIsMenuVisible,
+                      isSearchBarExpanded: _getFlagForPageIndex(_pageIndex),
+                      toggleIsSearchBarExpanded: _toggleIsSearchBarExpanded,
+                      isTaskFilterVisible: _isTaskFilterVisible,
+                    ),
+                  )
+                ],
+                // body
+                body: Stack(
+                  children: [
+                    BlocBuilder<FilterBloc, FilterState>(
+                      builder: (context, state) {
+                        return Stack(
+                          children: [
+                            // locations not selected
+                            if (state is FilterLoadedState &&
+                                state.locations.isEmpty)
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 16,
+                                      top: 8,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .home_screen_filter_select_locations,
+                                            style:
+                                                const TextStyle(fontSize: 18),
+                                          ),
                                         ),
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_upward,
-                                        size: 50,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Expanded(
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.location_off,
-                                      size: 100,
+                                        const Icon(
+                                          Icons.arrow_upward,
+                                          size: 50,
+                                        ),
+                                      ],
                                     ),
                                   ),
+                                  const Expanded(
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.location_off,
+                                        size: 100,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 36,
+                                  ),
+                                ],
+                              ),
+                            // tabs
+                            // if (state is FilterLoadedState &&
+                            //     state.locations.isNotEmpty)
+                            PageView(
+                              controller: _pageController,
+                              onPageChanged: (index) {
+                                if (!_isBottomNavigationAnimating) {
+                                  setState(() {
+                                    _pageIndex = index;
+                                  });
+                                  _navigationController.value = index;
+                                }
+                              },
+                              children: [
+                                const KeepAlivePage(
+                                  child: TasksPage(),
                                 ),
-                                const SizedBox(
-                                  height: 36,
+                                KeepAlivePage(
+                                  child: InventoryPage(
+                                    searchBoxHeight: _searchBoxHeight,
+                                    isSearchBoxExpanded:
+                                        _isInventorySearchBarExpanded,
+                                    searchQuery: _inventorySearchQuery,
+                                    isSortedByCategory: false,
+                                  ),
+                                ),
+                                const KeepAlivePage(
+                                  child: DashboardPage(),
+                                ),
+                                KeepAlivePage(
+                                  child: AssetsPage(
+                                    searchBoxHeight: _searchBoxHeight,
+                                    isSearchBoxExpanded:
+                                        _isAssetsSearchBarExpanded,
+                                    searchQuery: _assetsSearchQuery,
+                                  ),
+                                ),
+                                KeepAlivePage(
+                                  child: KnowledgeBasePage(
+                                    searchBoxHeight: _searchBoxHeight,
+                                    isSearchBoxExpanded:
+                                        _isInstructionsSearchBarExpanded,
+                                    searchQuery: _instructionsSearchQuery,
+                                  ),
                                 ),
                               ],
                             ),
-                          // tabs
-                          // if (state is FilterLoadedState &&
-                          //     state.locations.isNotEmpty)
-                          PageView(
-                            controller: _pageController,
-                            onPageChanged: (index) {
-                              if (!_isBottomNavigationAnimating) {
-                                setState(() {
-                                  _pageIndex = index;
-                                });
-                                _navigationController.value = index;
-                              }
-                            },
-                            children: [
-                              const KeepAlivePage(
-                                child: TasksPage(),
-                              ),
-                              KeepAlivePage(
-                                child: InventoryPage(
-                                  searchBoxHeight: _searchBoxHeight,
-                                  isSearchBoxExpanded:
-                                      _isInventorySearchBarExpanded,
-                                  searchQuery: _inventorySearchQuery,
-                                  isSortedByCategory: false,
-                                ),
-                              ),
-                              const KeepAlivePage(
-                                child: DashboardPage(),
-                              ),
-                              KeepAlivePage(
-                                child: AssetsPage(
-                                  searchBoxHeight: _searchBoxHeight,
-                                  isSearchBoxExpanded:
-                                      _isAssetsSearchBarExpanded,
-                                  searchQuery: _assetsSearchQuery,
-                                ),
-                              ),
-                              KeepAlivePage(
-                                child: KnowledgeBasePage(
-                                  searchBoxHeight: _searchBoxHeight,
-                                  isSearchBoxExpanded:
-                                      _isInstructionsSearchBarExpanded,
-                                  searchQuery: _instructionsSearchQuery,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                  // bottom navigation bar
-                  HomeBottomNavigationBar(
-                    animationController: _animationController!,
-                    navigationController: _navigationController,
-                    pageController: _pageController,
-                    setPageIndex: _setPageIndex,
-                    toggleShowMenu: _toggleIsMenuVisible,
-                  ),
-                  // location and group selection filter
-                  HomePageFilter(
-                    isFilterExpanded: _isFilterExpanded,
-                    onDismiss: _toggleIsFilterExpanded,
-                  ),
-                  OverlayMenu(
-                    isVisible: _isMenuVisible,
-                    onDismiss: _toggleIsMenuVisible,
-                    pageIndex: _pageIndex,
-                  ),
-                  // inventory search box
-                  AppBarSearchBox(
-                    title: AppLocalizations.of(context)!.search_item,
-                    searchBoxHeight: _searchBoxHeight,
-                    isSearchBoxExpanded: _isInventorySearchBarExpanded,
-                    onChanged: _searchInInventory,
-                    searchTextEditingController:
-                        _inventorySearchTextEditingController,
-                  ),
-                  // assets search box
-                  AppBarSearchBox(
-                    title: AppLocalizations.of(context)!.search,
-                    searchBoxHeight: _searchBoxHeight,
-                    isSearchBoxExpanded: _isAssetsSearchBarExpanded,
-                    onChanged: _searchInAssets,
-                    searchTextEditingController:
-                        _assetsSearchTextEditingController,
-                  ),
-                  // instructions search box
-                  AppBarSearchBox(
-                    title: AppLocalizations.of(context)!.search,
-                    searchBoxHeight: _searchBoxHeight,
-                    isSearchBoxExpanded: _isInstructionsSearchBarExpanded,
-                    onChanged: _searchInInstructions,
-                    searchTextEditingController:
-                        _instructionsSearchTextEditingController,
-                  ),
-                  // tasks filter
-                  AppBarTasksFilter(
-                    isTaskFilterVisible: _isTaskFilterVisible,
-                  ),
-                ],
+                          ],
+                        );
+                      },
+                    ),
+                    // bottom navigation bar
+                    HomeBottomNavigationBar(
+                      animationController: _animationController!,
+                      navigationController: _navigationController,
+                      pageController: _pageController,
+                      setPageIndex: _setPageIndex,
+                      toggleShowMenu: _toggleIsMenuVisible,
+                    ),
+                    // location and group selection filter
+                    HomePageFilter(
+                      isFilterExpanded: _isFilterExpanded,
+                      onDismiss: _toggleIsFilterExpanded,
+                    ),
+                    OverlayMenu(
+                      isVisible: _isMenuVisible,
+                      onDismiss: _toggleIsMenuVisible,
+                      pageIndex: _pageIndex,
+                    ),
+                    // inventory search box
+                    AppBarSearchBox(
+                      title: AppLocalizations.of(context)!.search_item,
+                      searchBoxHeight: _searchBoxHeight,
+                      isSearchBoxExpanded: _isInventorySearchBarExpanded,
+                      onChanged: _searchInInventory,
+                      searchTextEditingController:
+                          _inventorySearchTextEditingController,
+                    ),
+                    // assets search box
+                    AppBarSearchBox(
+                      title: AppLocalizations.of(context)!.search,
+                      searchBoxHeight: _searchBoxHeight,
+                      isSearchBoxExpanded: _isAssetsSearchBarExpanded,
+                      onChanged: _searchInAssets,
+                      searchTextEditingController:
+                          _assetsSearchTextEditingController,
+                    ),
+                    // instructions search box
+                    AppBarSearchBox(
+                      title: AppLocalizations.of(context)!.search,
+                      searchBoxHeight: _searchBoxHeight,
+                      isSearchBoxExpanded: _isInstructionsSearchBarExpanded,
+                      onChanged: _searchInInstructions,
+                      searchTextEditingController:
+                          _instructionsSearchTextEditingController,
+                    ),
+                    // tasks filter
+                    AppBarTasksFilter(
+                      isTaskFilterVisible: _isTaskFilterVisible,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

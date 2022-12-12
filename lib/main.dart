@@ -68,14 +68,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await configureInjection();
-  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-  //   // statusBarColor: Colors.transparent,
-  //   statusBarBrightness: Brightness.dark,
-  //   systemNavigationBarIconBrightness: Brightness.dark,
-
-  //   // systemNavigationBarColor: Colors.black,
-  //   // systemNavigationBarIconBrightness: Brightness.light,
-  // ));
   runApp(const App());
 }
 
