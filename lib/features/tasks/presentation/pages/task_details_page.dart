@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -6,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
+import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
@@ -54,6 +56,15 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
         }
       }
       if (_task != null) {
+        // precache images
+        for (var imageUrl in _task!.images) {
+          precacheImage(CachedNetworkImageProvider(imageUrl), context);
+        }
+        // precache video
+        if (_task!.video.isNotEmpty) {
+          getCachedFirebaseStorageFile(_task!.video);
+        }
+
         // number of tabs
         _tabsCount = 2;
         _tabsCount += _task!.images.isNotEmpty ? 1 : 0;

@@ -207,6 +207,20 @@ class _HomePageState extends State<HomePage>
 
   // show overlay menu
   void _toggleIsMenuVisible() {
+    // hides filter widget if expanded
+    if (_isFilterExpanded) {
+      _toggleIsFilterExpanded();
+    }
+    // hides tasks filter if visible
+    if (_isTaskFilterVisible) {
+      context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
+    }
+    // hides search box if visible
+    if (_isAssetsSearchBarExpanded ||
+        _isInstructionsSearchBarExpanded ||
+        _isInventorySearchBarExpanded) {
+      _toggleIsSearchBarExpanded();
+    }
     bool premision = true;
     // no inventory read premission
     if (_pageIndex == 0 &&

@@ -15,7 +15,7 @@ class CreatorBottomNavigation extends StatefulWidget {
     this.firstPageBackwardButtonFunction,
     this.lastPageForwardButtonIconData,
     this.forwardButtonIconData = Icons.arrow_forward_ios,
-    this.backwardButtonIconData = Icons.arrow_back_ios,
+    this.backwardButtonIconData = Icons.arrow_back_ios_new,
     this.firstPageBackwardButtonIconData,
     this.forwardButtonLabel,
     this.lastPageForwardButtonLabel,

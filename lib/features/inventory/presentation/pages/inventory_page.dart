@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/shimmer_item_tile.dart';
 
+import '../widgets/shimmer_item_tile.dart';
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
+import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../domain/entities/item.dart';
 import '../blocs/item_category/item_category_bloc.dart';
@@ -85,59 +86,69 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
                     ),
                   ],
                 )
-              : Column(
-                  children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      height: isSearchBoxExpanded ? searchBoxHeight : 0,
-                    ),
-                    BlocBuilder<ItemsBloc, ItemsState>(
-                      builder: (context, state) {
-                        if (state is ItemsLoadedState) {
-                          if (state.allItems.allItems.isEmpty) {
-                            return Column(
-                              children: [
-                                SizedBox(
-                                  height: responsiveSizeVerticalPct(small: 40),
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!.item_no_items,
-                                ),
-                              ],
-                            );
-                          }
-                          final filteredItems = _searchItems(
-                            context,
-                            state.allItems.allItems,
-                            searchQuery,
-                          );
-                          return ListView.builder(
-                            padding: const EdgeInsets.only(top: 2),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: filteredItems.length,
-                            itemBuilder: (context, index) {
-                              return ItemTile(
-                                item: filteredItems[index],
-                                searchQuery: searchQuery,
-                              );
+              : BlocBuilder<FilterBloc, FilterState>(
+                  builder: (context, state) {
+                    if (state is FilterLoadedState &&
+                        state.locations.isNotEmpty) {
+                      return Column(
+                        children: [
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            height: isSearchBoxExpanded ? searchBoxHeight : 0,
+                          ),
+                          BlocBuilder<ItemsBloc, ItemsState>(
+                            builder: (context, state) {
+                              if (state is ItemsLoadedState) {
+                                if (state.allItems.allItems.isEmpty) {
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: responsiveSizeVerticalPct(
+                                            small: 40),
+                                      ),
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .item_no_items,
+                                      ),
+                                    ],
+                                  );
+                                }
+                                final filteredItems = _searchItems(
+                                  context,
+                                  state.allItems.allItems,
+                                  searchQuery,
+                                );
+                                return ListView.builder(
+                                  padding: const EdgeInsets.only(top: 2),
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: filteredItems.length,
+                                  itemBuilder: (context, index) {
+                                    return ItemTile(
+                                      item: filteredItems[index],
+                                      searchQuery: searchQuery,
+                                    );
+                                  },
+                                );
+                              } else {
+                                // loading shimmer animation
+                                return ListView.builder(
+                                  padding: const EdgeInsets.only(top: 2),
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: 6,
+                                  itemBuilder: (context, index) {
+                                    return const ShimmerItemTile();
+                                  },
+                                );
+                              }
                             },
-                          );
-                        } else {
-                          // loading shimmer animation
-                          return ListView.builder(
-                            padding: const EdgeInsets.only(top: 2),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 6,
-                            itemBuilder: (context, index) {
-                              return const ShimmerItemTile();
-                            },
-                          );
-                        }
-                      },
-                    )
-                  ],
+                          )
+                        ],
+                      );
+                    }
+                    return const SizedBox();
+                  },
                 ),
         ),
       ],

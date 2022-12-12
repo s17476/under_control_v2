@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/get_cached_firebase_storage_file.dart';
+import 'package:under_control_v2/features/knowledge_base/domain/entities/content_type.dart';
 
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
@@ -65,6 +68,24 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
           _instruction =
               instructionsState.allInstructions.allInstructions[index];
         });
+        // precache images
+        final imagesToPrecache = _instruction!.steps
+            .where((stp) => stp.contentType == ContentType.image)
+            .map((stp) => stp.contentUrl);
+        for (var imageUrl in imagesToPrecache) {
+          if (imageUrl != null) {
+            precacheImage(CachedNetworkImageProvider(imageUrl), context);
+          }
+        }
+        // precache video
+        final videosToPrecache = _instruction!.steps
+            .where((stp) => stp.contentType == ContentType.video)
+            .map((stp) => stp.contentUrl);
+        for (var videoUrl in videosToPrecache) {
+          if (videoUrl != null) {
+            getCachedFirebaseStorageFile(videoUrl);
+          }
+        }
         // popup menu items
         _choices = [
           // edit item
@@ -211,6 +232,10 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
               // bottom navigation
               if (orientation == Orientation.portrait)
                 CreatorBottomNavigation(
+                  firstPageBackwardButtonFunction: () => Navigator.pop(context),
+                  firstPageBackwardButtonIconData: Icons.arrow_back_ios_new,
+                  firstPageBackwardButtonLabel: AppLocalizations.of(context)!
+                      .user_profile_add_user_personal_data_back,
                   lastPageForwardButtonFunction: () => Navigator.pop(context),
                   lastPageForwardButtonIconData: Icons.done,
                   lastPageForwardButtonLabel:

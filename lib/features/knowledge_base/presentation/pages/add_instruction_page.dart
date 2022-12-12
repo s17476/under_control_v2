@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -6,6 +7,7 @@ import '../../../core/data/models/last_edit_model.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
+import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/location_selection_helpers.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../groups/presentation/widgets/add_group/add_group_locations_card.dart';
@@ -471,6 +473,18 @@ class _AddInstructionPageState extends State<AddInstructionPage> {
         arguments is InstructionModel &&
         _instruction == null) {
       _instruction = arguments.deepCopy();
+
+      // precache images and videos
+      final filesToPrecache = _instruction!.steps
+          .where((stp) =>
+              stp.contentType == ContentType.image ||
+              stp.contentType == ContentType.video)
+          .map((stp) => stp.contentUrl);
+      for (var fileUrl in filesToPrecache) {
+        if (fileUrl != null) {
+          getCachedFirebaseStorageFile(fileUrl);
+        }
+      }
 
       _isPublished = _instruction!.isPublished;
       _titleTexEditingController.text = _instruction!.name;

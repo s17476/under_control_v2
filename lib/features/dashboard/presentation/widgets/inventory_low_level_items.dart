@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,10 +26,15 @@ class InventoryLowLevelItems extends StatefulWidget {
 class _InventoryLowLevelItemsState extends State<InventoryLowLevelItems> {
   List<Item>? _items;
 
+  late StreamSubscription _filterStreamSubscription;
+
   @override
   void didChangeDependencies() {
-    context.watch<FilterBloc>().stream.listen((event) {
-      setState(() {});
+    _filterStreamSubscription =
+        context.watch<FilterBloc>().stream.listen((event) {
+      if (mounted) {
+        setState(() {});
+      }
     });
     final itemsState = context.watch<ItemsBloc>().state;
     if (itemsState is ItemsLoadedState) {
@@ -46,6 +53,12 @@ class _InventoryLowLevelItemsState extends State<InventoryLowLevelItems> {
       }
     }
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _filterStreamSubscription.cancel();
+    super.dispose();
   }
 
   @override

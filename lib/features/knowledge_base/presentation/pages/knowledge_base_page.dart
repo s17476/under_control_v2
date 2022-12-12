@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/premission.dart';
 import '../../../core/utils/responsive_size.dart';
+import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/instruction.dart';
@@ -78,141 +79,159 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
                     ),
                   ],
                 )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      height: isSearchBoxExpanded ? searchBoxHeight + 4 : 0,
-                    ),
-                    // instructions list
-                    BlocBuilder<InstructionBloc, InstructionState>(
-                      builder: (context, state) {
-                        if (state is InstructionLoadedState) {
-                          if (state.allInstructions.allInstructions.isEmpty) {
-                            return Column(
-                              children: [
-                                SizedBox(
-                                  height: responsiveSizeVerticalPct(small: 40),
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!.item_no_items,
-                                ),
-                              ],
-                            );
-                          }
-                          final filteredInstructions = _search(
-                            context,
-                            state.allInstructions.allInstructions,
-                            searchQuery,
-                          );
-                          final List<Instruction> published = [];
-                          final List<Instruction> drafts = [];
-                          for (var instruction in filteredInstructions) {
-                            if (instruction.isPublished) {
-                              published.add(instruction);
-                            } else if (userState is Approved &&
-                                userState.userProfile.id ==
-                                    instruction.userId &&
-                                !instruction.isPublished) {
-                              drafts.add(instruction);
-                            }
-                          }
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // drafts
-                              if (drafts.isNotEmpty)
-                                Column(
+              : BlocBuilder<FilterBloc, FilterState>(
+                  builder: (context, state) {
+                    if (state is FilterLoadedState &&
+                        state.locations.isNotEmpty) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            height:
+                                isSearchBoxExpanded ? searchBoxHeight + 4 : 0,
+                          ),
+                          // instructions list
+                          BlocBuilder<InstructionBloc, InstructionState>(
+                            builder: (context, state) {
+                              if (state is InstructionLoadedState) {
+                                if (state
+                                    .allInstructions.allInstructions.isEmpty) {
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: responsiveSizeVerticalPct(
+                                            small: 40),
+                                      ),
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .item_no_items,
+                                      ),
+                                    ],
+                                  );
+                                }
+                                final filteredInstructions = _search(
+                                  context,
+                                  state.allInstructions.allInstructions,
+                                  searchQuery,
+                                );
+                                final List<Instruction> published = [];
+                                final List<Instruction> drafts = [];
+                                for (var instruction in filteredInstructions) {
+                                  if (instruction.isPublished) {
+                                    published.add(instruction);
+                                  } else if (userState is Approved &&
+                                      userState.userProfile.id ==
+                                          instruction.userId &&
+                                      !instruction.isPublished) {
+                                    drafts.add(instruction);
+                                  }
+                                }
+                                return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 4,
+                                    // drafts
+                                    if (drafts.isNotEmpty)
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 16,
+                                              vertical: 4,
+                                            ),
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .drafts,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline4!
+                                                  .copyWith(fontSize: 20),
+                                            ),
+                                          ),
+                                          ListView.separated(
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    const SizedBox(
+                                              height: 4,
+                                            ),
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemCount: drafts.length,
+                                            itemBuilder: (context, index) =>
+                                                InstructionTile(
+                                              instruction: drafts[index],
+                                              searchQuery: searchQuery,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.drafts,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline4!
-                                            .copyWith(fontSize: 20),
-                                      ),
-                                    ),
-                                    ListView.separated(
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(
-                                        height: 4,
-                                      ),
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: drafts.length,
-                                      itemBuilder: (context, index) =>
-                                          InstructionTile(
-                                        instruction: drafts[index],
-                                        searchQuery: searchQuery,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              // published instructions
-                              if (published.isNotEmpty)
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                                    // published instructions
                                     if (published.isNotEmpty)
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                          vertical: 4,
-                                        ),
-                                        child: Text(
-                                          AppLocalizations.of(context)!
-                                              .published,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline4!
-                                              .copyWith(fontSize: 20),
-                                        ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (published.isNotEmpty)
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 16,
+                                                vertical: 4,
+                                              ),
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .published,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline4!
+                                                    .copyWith(fontSize: 20),
+                                              ),
+                                            ),
+                                          ListView.separated(
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    const SizedBox(
+                                              height: 4,
+                                            ),
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemCount: published.length,
+                                            itemBuilder: (context, index) =>
+                                                InstructionTile(
+                                              instruction: published[index],
+                                              searchQuery: searchQuery,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ListView.separated(
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(
-                                        height: 4,
-                                      ),
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: published.length,
-                                      itemBuilder: (context, index) =>
-                                          InstructionTile(
-                                        instruction: published[index],
-                                        searchQuery: searchQuery,
-                                      ),
-                                    ),
                                   ],
-                                ),
-                            ],
-                          );
-                        } else {
-                          // shows shimmer when loading
-                          return ListView.separated(
-                            padding: const EdgeInsets.only(top: 4),
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                              height: 4,
-                            ),
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: 8,
-                            itemBuilder: (context, index) =>
-                                const ShimmerInstructionTile(),
-                          );
-                        }
-                      },
-                    ),
-                  ],
+                                );
+                              } else {
+                                // shows shimmer when loading
+                                return ListView.separated(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    height: 4,
+                                  ),
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: 8,
+                                  itemBuilder: (context, index) =>
+                                      const ShimmerInstructionTile(),
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      );
+                    }
+                    return const SizedBox();
+                  },
                 ),
         ),
       ],

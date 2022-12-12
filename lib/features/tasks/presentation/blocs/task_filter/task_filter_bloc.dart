@@ -137,6 +137,9 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
     });
 
     on<TaskFilterSetMiniSizeEvent>((event, emit) {
+      if (!state.isFilterVisible) {
+        return;
+      }
       TaskFilterState? newState;
       if (state is TaskFilterSelectedState) {
         newState = (state as TaskFilterSelectedState).copyWith(

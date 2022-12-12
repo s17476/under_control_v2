@@ -14,9 +14,10 @@ class OverlayMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        onDissmis();
+      onTap: () async {
         choice.onTap();
+        await Future.delayed(const Duration(milliseconds: 500));
+        onDissmis();
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
