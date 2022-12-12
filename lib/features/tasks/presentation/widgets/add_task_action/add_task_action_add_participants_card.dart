@@ -4,18 +4,17 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/loading_widget.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/user_list_tile.dart';
-import 'package:under_control_v2/features/tasks/data/models/task_action/user_action_model.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
-
-import '../../../../core/presentation/widgets/overlay_groups_selection.dart';
+import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/presentation/widgets/cached_user_avatar.dart';
+import '../../../../core/presentation/widgets/loading_widget.dart';
 import '../../../../core/presentation/widgets/overlay_users_selection.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
+import '../../../../core/presentation/widgets/user_list_tile.dart';
+import '../../../../core/utils/duration_apis.dart';
 import '../../../../core/utils/get_locale_type.dart';
 import '../../../../core/utils/responsive_size.dart';
+import '../../../../user_profile/domain/entities/user_profile.dart';
+import '../../../data/models/task_action/user_action_model.dart';
 
 class AddTaskActionAddParticipantsCard extends StatefulWidget
     with ResponsiveSize {
@@ -104,14 +103,14 @@ class _AddTaskActionAddParticipantsCardState
                           if (state is CompanyProfileLoaded) {
                             return Column(
                               children: [
-                                if (_selectedUser != null)
-                                  SelectedUserBox(
-                                    selectedUser: _selectedUser,
-                                    participants: widget.participants,
-                                    toggleParticipantSelection:
-                                        widget.toggleParticipantSelection,
-                                    updateParticipant: widget.updateParticipant,
-                                  ),
+                                // if (_selectedUser != null)
+                                SelectedUserBox(
+                                  selectedUser: _selectedUser,
+                                  participants: widget.participants,
+                                  toggleParticipantSelection:
+                                      widget.toggleParticipantSelection,
+                                  updateParticipant: widget.updateParticipant,
+                                ),
                                 ListView.builder(
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 8),
@@ -119,11 +118,63 @@ class _AddTaskActionAddParticipantsCardState
                                   itemCount: widget.participants.length,
                                   itemBuilder: (context, index) {
                                     final user = state.getUserById(
-                                        widget.participants[index].userId);
+                                      widget.participants[index].userId,
+                                    );
                                     if (user != null) {
-                                      return UserListTile(
-                                        user: user,
-                                        onTap: _selectUser,
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 4.0),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: UserListTile(
+                                                user: user,
+                                                onTap: _selectUser,
+                                              ),
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                IconButton(
+                                                  onPressed: widget.participants
+                                                              .length >
+                                                          1
+                                                      ? () {
+                                                          if (_selectedUser !=
+                                                                  null &&
+                                                              _selectedUser!
+                                                                      .id ==
+                                                                  user.id) {
+                                                            _resetSelectedUser();
+                                                          }
+                                                          widget
+                                                              .toggleParticipantSelection(
+                                                                  user.id);
+                                                        }
+                                                      : null,
+                                                  icon:
+                                                      const Icon(Icons.delete),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    right: 8.0,
+                                                    bottom: 4,
+                                                  ),
+                                                  child: Text(
+                                                    widget.participants[index]
+                                                        .totalTime
+                                                        .toFormatedString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .caption,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
                                       );
                                     } else {
                                       return const SizedBox();
@@ -198,7 +249,13 @@ class SelectedUserBox extends StatelessWidget {
       // minTime: DateTime(2021, 1, 1),
       maxTime: participant.stopTime.subtract(const Duration(minutes: 5)),
       onConfirm: (date) {
-        updateParticipant(participant.copyWith(startTime: date));
+        updateParticipant(
+          participant.copyWith(
+            startTime: date.subtract(
+              Duration(seconds: date.second),
+            ),
+          ),
+        );
       },
       currentTime: participant.startTime.isBefore(
               participant.stopTime.subtract(const Duration(minutes: 5)))
@@ -226,7 +283,22 @@ class SelectedUserBox extends StatelessWidget {
       // minTime: participant.startTime,
       maxTime: DateTime.now(),
       onConfirm: (date) {
-        updateParticipant(participant.copyWith(stopTime: date));
+        if (date.isBefore(participant.startTime)) {
+          updateParticipant(
+            participant.copyWith(
+              stopTime: date.subtract(Duration(seconds: date.second)),
+              startTime: date.subtract(
+                Duration(minutes: 5, seconds: date.second),
+              ),
+            ),
+          );
+        } else {
+          updateParticipant(participant.copyWith(
+            stopTime: date.subtract(
+              Duration(seconds: date.second),
+            ),
+          ));
+        }
       },
       currentTime: participant.stopTime,
       locale: getLocaleType(context),
@@ -247,14 +319,24 @@ class SelectedUserBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final timeFormat = DateFormat('HH:mm');
     final dateFormat = DateFormat('dd-MM-yyyy');
-    final selectedParticipant = participants.firstWhere(
-      (element) => element.userId == selectedUser!.id,
-    );
+    UserActionModel? selectedParticipant;
+    String totalTime = '';
+    if (selectedUser != null) {
+      selectedParticipant = participants.firstWhere(
+        (element) => element.userId == selectedUser!.id,
+      );
+      totalTime = selectedParticipant.stopTime
+          .difference(selectedParticipant.startTime)
+          .toFormatedString();
+    } else {
+      selectedParticipant = null;
+    }
     return AnimatedSize(
       duration: const Duration(milliseconds: 300),
       child: SizedBox(
-        height: selectedUser != null ? null : 0,
-        child: selectedUser != null
+        width: double.infinity,
+        height: selectedParticipant != null ? null : 0,
+        child: selectedParticipant != null
             ? Column(
                 children: [
                   Row(
@@ -283,102 +365,133 @@ class SelectedUserBox extends StatelessWidget {
                         width: 16,
                       ),
                       Expanded(
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: 40,
-                                  height: 30,
-                                  child: FittedBox(
-                                    child: Text(
-                                      AppLocalizations.of(context)!.from,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 40,
+                                    height: 30,
+                                    child: FittedBox(
+                                      child: Text(
+                                        AppLocalizations.of(context)!.from,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      timeFormat.format(
-                                          selectedParticipant.startTime),
-                                      style: const TextStyle(fontSize: 24),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        timeFormat.format(
+                                            selectedParticipant.startTime),
+                                        style: const TextStyle(fontSize: 24),
+                                      ),
+                                      Text(
+                                        dateFormat.format(
+                                            selectedParticipant.startTime),
+                                        style:
+                                            Theme.of(context).textTheme.caption,
+                                      ),
+                                    ],
+                                  ),
+                                  RoundedButton(
+                                    iconSize: 30,
+                                    padding: const EdgeInsets.all(9),
+                                    onPressed: () => _pickStartDate(
+                                      context,
+                                      selectedParticipant!,
                                     ),
-                                    Text(
-                                      dateFormat.format(
-                                          selectedParticipant.startTime),
-                                      style:
-                                          Theme.of(context).textTheme.caption,
-                                    ),
-                                  ],
-                                ),
-                                RoundedButton(
-                                  iconSize: 30,
-                                  padding: const EdgeInsets.all(9),
-                                  onPressed: () => _pickStartDate(
-                                      context, selectedParticipant),
-                                  icon: Icons.timer_sharp,
-                                  gradient: LinearGradient(colors: [
-                                    Theme.of(context).primaryColor,
-                                    Theme.of(context)
-                                        .primaryColor
-                                        .withAlpha(60),
-                                  ]),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: 40,
-                                  height: 30,
-                                  child: FittedBox(
-                                    child: Text(
-                                      AppLocalizations.of(context)!.to,
+                                    icon: Icons.timer_sharp,
+                                    gradient: LinearGradient(colors: [
+                                      Theme.of(context).primaryColor,
+                                      Theme.of(context)
+                                          .primaryColor
+                                          .withAlpha(60),
+                                    ]),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 40,
+                                    height: 30,
+                                    child: FittedBox(
+                                      child: Text(
+                                        AppLocalizations.of(context)!.to,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      timeFormat
-                                          .format(selectedParticipant.stopTime),
-                                      style: const TextStyle(fontSize: 24),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        timeFormat.format(
+                                            selectedParticipant.stopTime),
+                                        style: const TextStyle(fontSize: 24),
+                                      ),
+                                      Text(
+                                        dateFormat.format(
+                                            selectedParticipant.stopTime),
+                                        style:
+                                            Theme.of(context).textTheme.caption,
+                                      ),
+                                    ],
+                                  ),
+                                  RoundedButton(
+                                    iconSize: 30,
+                                    padding: const EdgeInsets.all(9),
+                                    onPressed: () => _pickStopDate(
+                                      context,
+                                      selectedParticipant!,
                                     ),
-                                    Text(
-                                      dateFormat
-                                          .format(selectedParticipant.stopTime),
-                                      style:
-                                          Theme.of(context).textTheme.caption,
-                                    ),
-                                  ],
-                                ),
-                                RoundedButton(
-                                  iconSize: 30,
-                                  padding: const EdgeInsets.all(9),
-                                  onPressed: () => _pickStopDate(
-                                      context, selectedParticipant),
-                                  icon: Icons.timer_sharp,
-                                  gradient: LinearGradient(colors: [
-                                    Theme.of(context).primaryColor,
-                                    Theme.of(context)
-                                        .primaryColor
-                                        .withAlpha(60),
-                                  ]),
-                                ),
-                              ],
-                            ),
-                          ],
+                                    icon: Icons.timer_sharp,
+                                    gradient: LinearGradient(colors: [
+                                      Theme.of(context).primaryColor,
+                                      Theme.of(context)
+                                          .primaryColor
+                                          .withAlpha(60),
+                                    ]),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 8,
-                      ),
+                      // const SizedBox(
+                      //   width: 8,
+                      // ),
                     ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 8.0,
+                      right: 8.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (totalTime.isNotEmpty)
+                          Text(
+                            '${AppLocalizations.of(context)!.total_time}: $totalTime',
+                          ),
+                        if (totalTime.isEmpty)
+                          Text(
+                            AppLocalizations.of(context)!.total_time_negative,
+                            style: TextStyle(
+                              color: Theme.of(context).highlightColor,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                   const Divider(
                     thickness: 1.5,

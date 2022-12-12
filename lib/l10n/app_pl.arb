@@ -1,4 +1,6 @@
 {
+    "total_time": "Czas łącznie",
+    "total_time_negative": "Łączny czas nie może być ujemny",
     "yes": "Tak",
     "no": "Nie",
     "exit": "WYJDŹ",

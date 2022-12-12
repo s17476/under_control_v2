@@ -1,4 +1,12 @@
 {
+    "total_time": "Total time",
+    "@total_time": {
+      "description": "Total time"
+    },
+    "total_time_negative": "Total time cannot be negative",
+    "@total_time_negative": {
+      "description": "Negative total time"
+    },
     "yes": "Yes",
     "@yes": {
       "description": "Yes"

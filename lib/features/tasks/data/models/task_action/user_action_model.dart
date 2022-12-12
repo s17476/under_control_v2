@@ -8,6 +8,8 @@ class UserActionModel extends UserAction {
     required super.stopTime,
   });
 
+  Duration get totalTime => stopTime.difference(startTime);
+
   UserActionModel copyWith({
     String? userId,
     DateTime? startTime,
