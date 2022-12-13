@@ -6,9 +6,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/data/models/task_action/user_action_model.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_add_participants_card.dart';
 
+import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
+import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/task/task_model.dart';
@@ -170,6 +172,37 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
   // TODO: update start/stop times
 
+  void _addImage(File image) {
+    setState(() {
+      _images.add(image);
+    });
+  }
+
+  void _removeImage(File image) {
+    setState(() {
+      _images.remove(image);
+    });
+  }
+
+  void fetchImages(List<String> urls) async {
+    setState(() {
+      _loadingImages = true;
+    });
+    List<File> result = [];
+    for (var url in urls) {
+      final image = await getCachedFirebaseStorageFile(url);
+      if (image != null) {
+        result.add(image);
+      }
+    }
+    if (mounted) {
+      setState(() {
+        _images = result;
+        _loadingImages = false;
+      });
+    }
+  }
+
   void _updateParticipant(UserActionModel userActionModel) {
     final index = _participants
         .indexWhere((element) => element.userId == userActionModel.userId);
@@ -271,6 +304,12 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         toggleIsAddUserVisible: _toggleAddUsersVisibility,
         participants: _participants,
         isAddUsersVisible: _isAddUsersVisible,
+      ),
+      AddAssetImagesCard(
+        addImage: _addImage,
+        removeImage: _removeImage,
+        images: _images,
+        loading: _loadingImages,
       ),
     ];
 

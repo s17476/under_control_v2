@@ -114,6 +114,7 @@ class _AddTaskActionAddParticipantsCardState
                                       widget.toggleParticipantSelection,
                                   updateParticipant: widget.updateParticipant,
                                 ),
+                                // show info participants list is empty
                                 if (widget.participants.isEmpty) ...[
                                   const Icon(
                                     Icons.person_add,
