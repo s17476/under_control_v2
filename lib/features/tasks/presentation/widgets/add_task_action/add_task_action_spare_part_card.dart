@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/loading_widget.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/item_tile_with_quantity.dart';
 
 import '../../../../core/utils/responsive_size.dart';
+import '../../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
 import '../add_task/inventory_spare_parts_list_with_quantity.dart';
@@ -88,18 +92,34 @@ class _AddTaskActionSparePartCardState extends State<AddTaskActionSparePartCard>
                       thickness: 1.5,
                     ),
                     Expanded(
-                      child: ListView.builder(
-                        itemCount: widget.sparePartsItems.length,
-                        itemBuilder: (context, index) {
-                          return Text(widget.sparePartsItems[index].itemId);
+                      child: BlocBuilder<ItemsBloc, ItemsState>(
+                        builder: (context, state) {
+                          if (state is ItemsLoadedState) {
+                            return ListView.builder(
+                              itemCount: widget.sparePartsItems.length,
+                              itemBuilder: (context, index) {
+                                final item = state.getItemById(
+                                    widget.sparePartsItems[index].itemId);
+                                if (item != null) {
+                                  return ItemTileWithQuantity(
+                                    item: item,
+                                    sparePartItemModel:
+                                        widget.sparePartsItems[index],
+                                    searchQuery: '',
+                                    onSelected: widget.removeItem,
+                                  );
+                                }
+                                return const SizedBox();
+                              },
+                            );
+                          }
+                          return const LoadingWidget();
                         },
                       ),
-                      // SingleChildScrollView(
+                      //     SingleChildScrollView(
                       //   child: InventorySparePartsListWithQuantity(
                       //     items: widget.sparePartsItems,
                       //     onSelected: widget.removeItem,
-                      //     updateSparePartQuantity:
-                      //         widget.updateSparePartQuantity,
                       //   ),
                       // ),
                     ),

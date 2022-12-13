@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:under_control_v2/features/core/utils/location_selection_helpers.dart';
 
 import '../../../core/presentation/widgets/highlighted_text.dart';
 import '../../../core/presentation/widgets/icon_title_mini_row.dart';
 import '../../../core/utils/double_apis.dart';
+import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../domain/entities/item.dart';
 import '../../utils/get_item_quantity_in_locations.dart';
 import '../../utils/get_localized_unit_name.dart';
@@ -21,6 +24,7 @@ class ItemTile extends StatelessWidget {
     required this.searchQuery,
     this.onSelected,
     this.isSelected,
+    this.locationId,
   }) : super(key: key);
 
   final Item item;
@@ -30,6 +34,7 @@ class ItemTile extends StatelessWidget {
   final String searchQuery;
   final Function(String)? onSelected;
   final bool? isSelected;
+  final String? locationId;
 
   @override
   Widget build(BuildContext context) {
@@ -266,40 +271,62 @@ class ItemTile extends StatelessWidget {
                   }),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Wrap(
-                  direction: Axis.horizontal,
-                  spacing: 8,
-                  runSpacing: 4,
-                  children: [
-                    // category
-                    ItemCategoryMiniRow(
-                      categoryId: item.category,
-                      searchQuery: searchQuery,
-                    ),
-                    // unit
-                    IconTitleMiniRow(
-                      title: getLocalizedUnitName(context, item.itemUnit),
-                      icon: Icons.balance,
-                    ),
-                    // qr/bar code
-                    if (item.itemBarCode.isNotEmpty)
-                      IconTitleMiniRow(
-                        title: item.itemBarCode,
-                        icon: Icons.qr_code,
-                        searchQuery: searchQuery,
-                      ),
-                    // internal code
-                    if (item.itemCode.isNotEmpty)
-                      IconTitleMiniRow(
-                        title: item.itemCode,
-                        icon: Icons.numbers,
-                        searchQuery: searchQuery,
-                      ),
-                  ],
+              if (locationId != null && locationId!.isNotEmpty)
+                BlocBuilder<LocationBloc, LocationState>(
+                  builder: (context, state) {
+                    if (state is LocationLoadedState) {
+                      final breadcrumbs = getBreadcrumbsForLocation(
+                          locationId!, state.allLocations.allLocations);
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 8,
+                          left: 8,
+                          right: 8,
+                        ),
+                        child: Text(
+                          breadcrumbs,
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  },
                 ),
-              ),
+              if (locationId == null || locationId!.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    spacing: 8,
+                    runSpacing: 4,
+                    children: [
+                      // category
+                      ItemCategoryMiniRow(
+                        categoryId: item.category,
+                        searchQuery: searchQuery,
+                      ),
+                      // unit
+                      IconTitleMiniRow(
+                        title: getLocalizedUnitName(context, item.itemUnit),
+                        icon: Icons.balance,
+                      ),
+                      // qr/bar code
+                      if (item.itemBarCode.isNotEmpty)
+                        IconTitleMiniRow(
+                          title: item.itemBarCode,
+                          icon: Icons.qr_code,
+                          searchQuery: searchQuery,
+                        ),
+                      // internal code
+                      if (item.itemCode.isNotEmpty)
+                        IconTitleMiniRow(
+                          title: item.itemCode,
+                          icon: Icons.numbers,
+                          searchQuery: searchQuery,
+                        ),
+                    ],
+                  ),
+                ),
             ],
           ),
         ),

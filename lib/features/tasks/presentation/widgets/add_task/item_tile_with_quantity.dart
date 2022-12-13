@@ -21,6 +21,7 @@ class ItemTileWithQuantity extends StatefulWidget {
     this.onSelected,
     this.updateSparePartQuantity,
     this.isSelected,
+    this.showBreadcrumbs = false,
   }) : super(key: key);
 
   final Item item;
@@ -32,6 +33,7 @@ class ItemTileWithQuantity extends StatefulWidget {
   final Function(SparePartItemModel)? onSelected;
   final Function(String, double)? updateSparePartQuantity;
   final bool? isSelected;
+  final bool showBreadcrumbs;
 
   @override
   State<ItemTileWithQuantity> createState() => _ItemTileWithQuantityState();
@@ -127,7 +129,11 @@ class _ItemTileWithQuantityState extends State<ItemTileWithQuantity> {
                   borderRadius: 15,
                   item: widget.item,
                   searchQuery: '',
+                  onSelected: widget.onSelected != null
+                      ? (_) => widget.onSelected!(widget.sparePartItemModel)
+                      : null,
                   isSelected: widget.onSelected != null ? true : null,
+                  locationId: widget.sparePartItemModel.locationId,
                 ),
               ),
             ),
