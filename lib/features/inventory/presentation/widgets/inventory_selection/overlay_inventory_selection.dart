@@ -20,11 +20,13 @@ class OverlayInventorySelection extends StatefulWidget {
     required this.spareParts,
     required this.toggleSelection,
     required this.onDismiss,
+    this.isMultiselection = false,
   }) : super(key: key);
 
   final List<String> spareParts;
   final Function(String) toggleSelection;
   final Function() onDismiss;
+  final bool isMultiselection;
 
   @override
   State<OverlayInventorySelection> createState() =>
@@ -177,9 +179,16 @@ class _OverlayInventorySelectionState extends State<OverlayInventorySelection>
                               margin: const EdgeInsets.symmetric(vertical: 4),
                               item: filteredItems[index],
                               searchQuery: _searchQuery,
-                              isSelected: widget.spareParts
-                                  .contains(filteredItems[index].id),
-                              onSelected: widget.toggleSelection,
+                              isSelected: widget.isMultiselection
+                                  ? null
+                                  : widget.spareParts
+                                      .contains(filteredItems[index].id),
+                              onSelected: widget.isMultiselection
+                                  ? (itemId) {
+                                      widget.toggleSelection(itemId);
+                                      widget.onDismiss();
+                                    }
+                                  : widget.toggleSelection,
                             );
                           },
                         );

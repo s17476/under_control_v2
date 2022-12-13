@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/data/models/task_action/user_action_model.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_add_participants_card.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_spare_part_card.dart';
 
 import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
 import '../../../core/presentation/pages/loading_page.dart';
@@ -13,11 +14,13 @@ import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
+import '../../data/models/task/spare_part_item_model.dart';
 import '../../data/models/task/task_model.dart';
 import '../../domain/entities/task/task.dart';
 import '../../domain/entities/task_action/task_action.dart';
 import '../blocs/task/task_bloc.dart';
 import '../widgets/add_task_action/add_task_action_card.dart';
+import 'subtract_item_from_location_page.dart';
 
 class RegisterTaskActionPage extends StatefulWidget {
   const RegisterTaskActionPage({Key? key}) : super(key: key);
@@ -33,6 +36,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   Task? _task;
 
   bool _loadingImages = false;
+  bool _isAddItemVisible = false;
 
   // pageview
   List<Widget> _pages = [];
@@ -50,6 +54,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   List<UserActionModel> _participants = [];
 
   List<File> _images = [];
+  List<SparePartItemModel> _sparePartsItems = [];
 
   bool _isAddUsersVisible = false;
 
@@ -236,15 +241,55 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     });
   }
 
+  void _addItem(SparePartItemModel sparePartItemModel) async {
+    final result = await Navigator.pushNamed(
+      context,
+      SubtractItemFromLocationPage.routeName,
+      arguments: sparePartItemModel,
+    );
+    if (result is SparePartItemModel) {
+      setState(() {
+        _sparePartsItems.add(result);
+      });
+    }
+  }
+
+  void _removeItem(SparePartItemModel sparePartItemModel) {
+    setState(() {
+      _sparePartsItems.remove(sparePartItemModel);
+    });
+  }
+
+  void _updateSparePartItemModel(SparePartItemModel item) {
+    final index = _sparePartsItems.indexWhere((part) => part == item);
+    if (index >= 0) {
+      setState(() {
+        _sparePartsItems.removeAt(index);
+        _sparePartsItems.insert(
+          index,
+          item,
+        );
+      });
+    }
+  }
+
+  void _toggleAddItemVisibility() {
+    setState(() {
+      _isAddItemVisible = !_isAddItemVisible;
+    });
+  }
+
   @override
   void initState() {
     _pageController.addListener(() {
       FocusScope.of(context).unfocus();
       // if (_isAddAssetVisible) {
       //   _toggleAddAssetVisibility();
-      // } else if (_isAddItemVisible) {
-      //   _toggleAddItemVisibility();
-      // } else if (_isAddInstructionsVisible) {
+      // } else
+      if (_isAddItemVisible) {
+        _toggleAddItemVisibility();
+      } else
+      //if (_isAddInstructionsVisible) {
       //   _toggleAddInstructionsVisibility();
       // } else if (_isAddGroupsVisible) {
       //   _toggleAddGroupsVisibility();
@@ -275,6 +320,8 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     // new task action
     if (arguments != null && arguments is Task && _task == null) {
       _task = TaskModel.fromTask(arguments).deepCopy();
+
+      _sparePartsItems = _task!.sparePartsItems;
     }
 
     // TODO: add edit case
@@ -311,6 +358,14 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         images: _images,
         loading: _loadingImages,
       ),
+      AddTaskActionSparePartCard(
+        addItem: _addItem,
+        removeItem: _removeItem,
+        updateSparePartQuantity: _updateSparePartItemModel,
+        toggleAddItemVisibility: _toggleAddItemVisibility,
+        sparePartsItems: _sparePartsItems,
+        isAddItemVisible: _isAddItemVisible,
+      ),
     ];
 
     DateTime preBackpress = DateTime.now();
@@ -320,10 +375,12 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         // if (_isAddAssetVisible) {
         //   _toggleAddAssetVisibility();
         //   return false;
-        // } else if (_isAddItemVisible) {
-        //   _toggleAddItemVisibility();
-        //   return false;
-        // } else if (_isAddInstructionsVisible) {
+        // } else
+        if (_isAddItemVisible) {
+          _toggleAddItemVisibility();
+          return false;
+        }
+        //else if (_isAddInstructionsVisible) {
         //   _toggleAddInstructionsVisibility();
         //   return false;
         // } else if (_isAddGroupsVisible) {
