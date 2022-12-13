@@ -2284,5 +2284,9 @@
     "task_action_add_participants": "Add participants",
     "@task_action_add_participants": {
       "description": "task action - add participants"
+    },
+    "task_action_add_participants_no_selected": "Add at least one participant",
+    "@task_action_add_participants_no_selected": {
+      "description": "task action - no participants selected"
     }
 }

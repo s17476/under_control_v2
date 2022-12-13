@@ -102,6 +102,9 @@ class _AddTaskActionAddParticipantsCardState
                         builder: (context, state) {
                           if (state is CompanyProfileLoaded) {
                             return Column(
+                              mainAxisAlignment: widget.participants.isEmpty
+                                  ? MainAxisAlignment.center
+                                  : MainAxisAlignment.start,
                               children: [
                                 // if (_selectedUser != null)
                                 SelectedUserBox(
@@ -111,76 +114,91 @@ class _AddTaskActionAddParticipantsCardState
                                       widget.toggleParticipantSelection,
                                   updateParticipant: widget.updateParticipant,
                                 ),
-                                ListView.builder(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  shrinkWrap: true,
-                                  itemCount: widget.participants.length,
-                                  itemBuilder: (context, index) {
-                                    final user = state.getUserById(
-                                      widget.participants[index].userId,
-                                    );
-                                    if (user != null) {
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 4.0),
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: UserListTile(
-                                                user: user,
-                                                onTap: _selectUser,
-                                              ),
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                IconButton(
-                                                  onPressed: widget.participants
-                                                              .length >
-                                                          1
-                                                      ? () {
-                                                          if (_selectedUser !=
-                                                                  null &&
-                                                              _selectedUser!
-                                                                      .id ==
-                                                                  user.id) {
-                                                            _resetSelectedUser();
-                                                          }
-                                                          widget
-                                                              .toggleParticipantSelection(
-                                                                  user.id);
-                                                        }
-                                                      : null,
-                                                  icon:
-                                                      const Icon(Icons.delete),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    right: 8.0,
-                                                    bottom: 4,
-                                                  ),
-                                                  child: Text(
-                                                    widget.participants[index]
-                                                        .totalTime
-                                                        .toFormatedString(),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .caption,
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
+                                if (widget.participants.isEmpty) ...[
+                                  const Icon(
+                                    Icons.person_add,
+                                    size: 50,
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .task_action_add_participants_no_selected,
+                                  ),
+                                ],
+                                if (widget.participants.isNotEmpty)
+                                  ListView.builder(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    shrinkWrap: true,
+                                    itemCount: widget.participants.length,
+                                    itemBuilder: (context, index) {
+                                      final user = state.getUserById(
+                                        widget.participants[index].userId,
                                       );
-                                    } else {
-                                      return const SizedBox();
-                                    }
-                                  },
-                                ),
+                                      if (user != null) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 4.0),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: UserListTile(
+                                                  user: user,
+                                                  onTap: _selectUser,
+                                                ),
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  IconButton(
+                                                    onPressed: widget
+                                                                .participants
+                                                                .length >
+                                                            1
+                                                        ? () {
+                                                            if (_selectedUser !=
+                                                                    null &&
+                                                                _selectedUser!
+                                                                        .id ==
+                                                                    user.id) {
+                                                              _resetSelectedUser();
+                                                            }
+                                                            widget
+                                                                .toggleParticipantSelection(
+                                                                    user.id);
+                                                          }
+                                                        : null,
+                                                    icon: const Icon(
+                                                        Icons.delete),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      right: 8.0,
+                                                      bottom: 4,
+                                                    ),
+                                                    child: Text(
+                                                      widget.participants[index]
+                                                          .totalTime
+                                                          .toFormatedString(),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .caption,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      } else {
+                                        return const SizedBox();
+                                      }
+                                    },
+                                  ),
                               ],
                             );
                           }
