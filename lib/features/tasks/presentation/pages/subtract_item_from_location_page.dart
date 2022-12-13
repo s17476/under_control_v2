@@ -12,6 +12,7 @@ import '../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../inventory/presentation/widgets/actions/add_quantity_card.dart';
 import '../../../inventory/presentation/widgets/actions/add_to_location_card.dart';
 import '../../data/models/task/spare_part_item_model.dart';
+import '../blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
 
 class SubtractItemFromLocationPage extends StatefulWidget {
   const SubtractItemFromLocationPage({
@@ -42,11 +43,16 @@ class _SubtractItemFromLocationPageState
   double _maxQuantity = 0;
 
   void _setLocation(String location) async {
+    double reservedQuantity = 0;
+    final state = context.read<ReservedSparePartsBloc>().state;
+    if (state is ReservedSparePartsActiveState) {
+      reservedQuantity = state.getReservedQuantity(_item!.id, location);
+    }
     setState(() {
       _selectedLocation = location;
       final amountInLocation = _item!.amountInLocations
           .firstWhere((element) => element.locationId == location);
-      _maxQuantity = amountInLocation.amount;
+      _maxQuantity = amountInLocation.amount - reservedQuantity;
     });
     await Future.delayed(
       const Duration(milliseconds: 500),

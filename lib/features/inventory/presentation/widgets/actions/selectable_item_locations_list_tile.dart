@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
 
 import '../../../../core/utils/double_apis.dart';
 import '../../../../core/utils/get_user_premission.dart';
@@ -83,7 +85,14 @@ class _SelectableItemLocationslistTileState
     );
 
     if (index >= 0) {
-      _amountInLocation = widget.item.amountInLocations[index].amount;
+      double reservedQuantity = 0;
+      final state = context.read<ReservedSparePartsBloc>().state;
+      if (state is ReservedSparePartsActiveState) {
+        reservedQuantity =
+            state.getReservedQuantity(widget.item.id, widget.location.id);
+      }
+      _amountInLocation =
+          widget.item.amountInLocations[index].amount - reservedQuantity;
     }
 
     _totalAmount = _amountInLocation;
@@ -93,7 +102,15 @@ class _SelectableItemLocationslistTileState
       );
 
       if (index >= 0) {
-        _totalAmount += widget.item.amountInLocations[index].amount;
+        double reservedQuantity = 0;
+        final state = context.read<ReservedSparePartsBloc>().state;
+        if (state is ReservedSparePartsActiveState) {
+          reservedQuantity =
+              state.getReservedQuantity(widget.item.id, child.id);
+        }
+
+        _totalAmount +=
+            widget.item.amountInLocations[index].amount - reservedQuantity;
       }
     }
     _isAvailable = getUserPremission(

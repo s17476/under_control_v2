@@ -186,7 +186,11 @@ class ItemTile extends StatelessWidget {
                     ),
                   ),
                   Builder(builder: (context) {
-                    final quantity = getItemQuantityInLocations(context, item);
+                    final quantity = getItemQuantityInLocations(
+                      context,
+                      item,
+                      onSelected != null,
+                    );
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [

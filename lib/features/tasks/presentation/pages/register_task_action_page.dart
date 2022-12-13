@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/data/models/task_action/user_action_model.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_add_participants_card.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_spare_part_card.dart';
 
@@ -251,6 +252,11 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
       setState(() {
         _sparePartsItems.add(result);
       });
+      if (mounted) {
+        context.read<ReservedSparePartsBloc>().add(
+              ReservedSparePartsUpdateEvent(spareParts: _sparePartsItems),
+            );
+      }
     }
   }
 
@@ -258,6 +264,11 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     setState(() {
       _sparePartsItems.remove(sparePartItemModel);
     });
+    if (mounted) {
+      context.read<ReservedSparePartsBloc>().add(
+            ReservedSparePartsUpdateEvent(spareParts: _sparePartsItems),
+          );
+    }
   }
 
   void _updateSparePartItemModel(SparePartItemModel item) {
@@ -270,6 +281,11 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
           item,
         );
       });
+      if (mounted) {
+        context.read<ReservedSparePartsBloc>().add(
+              ReservedSparePartsUpdateEvent(spareParts: _sparePartsItems),
+            );
+      }
     }
   }
 
@@ -281,6 +297,9 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
   @override
   void initState() {
+    context.read<ReservedSparePartsBloc>().add(
+          ReservedSparePartsResetEvent(),
+        );
     _pageController.addListener(() {
       FocusScope.of(context).unfocus();
       // if (_isAddAssetVisible) {
@@ -404,6 +423,9 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
           );
           return false;
         } else {
+          context.read<ReservedSparePartsBloc>().add(
+                ReservedSparePartsResetEvent(),
+              );
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           return true;
         }

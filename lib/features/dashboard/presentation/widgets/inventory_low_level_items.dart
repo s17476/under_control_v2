@@ -46,7 +46,8 @@ class _InventoryLowLevelItemsState extends State<InventoryLowLevelItems> {
       //     .toList();
       _items = _items!
           .where((item) =>
-              item.alertQuantity! >= getItemQuantityInLocations(context, item))
+              item.alertQuantity! >=
+              getItemQuantityInLocations(context, item, false))
           .toList();
       if (_items != null && _items!.length > 5) {
         _items = _items!.sublist(0, 5);

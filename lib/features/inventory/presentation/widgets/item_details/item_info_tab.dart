@@ -48,7 +48,7 @@ class ItemInfoTab extends StatelessWidget with ResponsiveSize {
                   ),
                   OverlayQuantityInfoBox(
                     item: item,
-                    quantity: getItemQuantityInLocations(context, item),
+                    quantity: getItemQuantityInLocations(context, item, false),
                     title:
                         AppLocalizations.of(context)!.item_in_selected_quantity,
                     quantityStyle: const TextStyle(
@@ -135,7 +135,7 @@ class ItemInfoTab extends StatelessWidget with ResponsiveSize {
                 ),
                 if (item.alertQuantity != null &&
                     item.alertQuantity! >=
-                        getItemQuantityInLocations(context, item))
+                        getItemQuantityInLocations(context, item, false))
                   Column(
                     children: [
                       Container(

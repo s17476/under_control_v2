@@ -28,8 +28,15 @@ class _AllLowLevelItemsPageState extends State<AllLowLevelItemsPage> {
           .where((item) => item.alertQuantity != null)
           .toList();
       _items = _items!
-          .where((item) =>
-              item.alertQuantity! >= getItemQuantityInLocations(context, item))
+          .where(
+            (item) =>
+                item.alertQuantity! >=
+                getItemQuantityInLocations(
+                  context,
+                  item,
+                  false,
+                ),
+          )
           .toList();
       if (_items != null && _items!.length > 5) {
         _items = _items!.sublist(0, 5);
