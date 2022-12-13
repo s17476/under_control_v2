@@ -26,6 +26,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
   String _companyId = '';
   bool _isAdmin = false;
+  List<String> _userGroups = const [];
 
   FilterBloc({
     required this.locationBloc,
@@ -43,8 +44,16 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
     // group stream
     _groupStreamSubscription = groupBloc.stream.listen((state) {
-      if (state is GroupLoadedState) {
-        add(UpdateGroupsEvent(groups: state.selectedGroups));
+      if (state is GroupLoadedState && userProfileBloc.state is Approved) {
+        if (!_isAdmin) {
+          add(
+            UpdateGroupsEvent(
+              groups: state.getGroupsById(_userGroups),
+            ),
+          );
+        } else {
+          add(UpdateGroupsEvent(groups: state.selectedGroups));
+        }
       }
     });
 
@@ -52,6 +61,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       if (state is Approved) {
         _companyId = state.userProfile.companyId;
         _isAdmin = state.userProfile.administrator;
+        _userGroups = state.userProfile.userGroups;
       }
     });
 
@@ -59,10 +69,17 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       (event, emit) async {
         emit(FilterLoadingState());
         List<Group> updatedGroups = [];
+        List<Group> selectedGroups = [];
         if (groupBloc.state is GroupLoadedState) {
+          if (!_isAdmin) {
+            selectedGroups = (groupBloc.state as GroupLoadedState)
+                .getGroupsById(_userGroups);
+          } else {
+            selectedGroups =
+                (groupBloc.state as GroupLoadedState).selectedGroups;
+          }
           for (var location in event.locations) {
-            for (var group
-                in (groupBloc.state as GroupLoadedState).selectedGroups) {
+            for (var group in selectedGroups) {
               if (group.locations.contains(location.id) &&
                   !updatedGroups.contains(group)) {
                 updatedGroups.add(group);

@@ -7,7 +7,6 @@ import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_amount_in_location_model.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_amount_in_location.dart';
 import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_action/task_actions_stream.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';

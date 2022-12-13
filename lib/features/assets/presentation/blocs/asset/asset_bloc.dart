@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
@@ -45,9 +46,13 @@ class AssetBloc extends Bloc<AssetEvent, AssetState> {
           if (state.isAdmin && state.groups.isEmpty) {
             _locations = state.locations.map((loc) => loc.id).toList();
           } else {
-            _locations =
-                state.getAvailableLocations.map((loc) => loc.id).toList();
+            _locations = state
+                .getAvailableLocations(FeatureType.assets)
+                .map((loc) => loc.id)
+                .toList();
           }
+          //
+          //
 
           add(GetAssetsStreamEvent());
         }

@@ -48,6 +48,17 @@ class GroupLoadedState extends GroupState {
     return null;
   }
 
+  List<Group> getGroupsById(List<String> groupsIds) {
+    List<Group> groups = [];
+    for (var groupId in groupsIds) {
+      final group = getGroupById(groupId);
+      if (group != null) {
+        groups.add(group);
+      }
+    }
+    return groups;
+  }
+
   GroupLoadedState copyWith({
     List<Group>? selectedGroups,
     GroupsList? allGroups,
