@@ -538,6 +538,20 @@ class _HomePageState extends State<HomePage>
                         );
                       },
                     ),
+                    Container(
+                      height: 10,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.grey.shade700,
+                            Colors.grey.shade700.withOpacity(0.1),
+                            Colors.transparent,
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                    ),
                     // bottom navigation bar
                     HomeBottomNavigationBar(
                       animationController: _animationController!,

@@ -7,7 +7,9 @@ import '../../../../tasks/presentation/blocs/task_filter/task_filter_bloc.dart';
 import '../../../utils/get_user_premission.dart';
 import '../../../utils/premission.dart';
 import 'app_bar_animated_icon.dart';
-import 'filter_icon.dart';
+import 'filter_button.dart';
+import 'search_button.dart';
+import 'task_filter_button.dart';
 
 class HomeSliverAppBar extends StatelessWidget {
   const HomeSliverAppBar({
@@ -51,17 +53,18 @@ class HomeSliverAppBar extends StatelessWidget {
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(3.0),
         child: Container(
-          height: 3.0,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.grey.shade700,
-                Colors.transparent,
-              ],
-            ),
-          ),
+          height: 1.0,
+          color: Colors.grey.shade700,
+          // decoration: BoxDecoration(
+          //   gradient: LinearGradient(
+          //     begin: Alignment.topCenter,
+          //     end: Alignment.bottomCenter,
+          //     colors: [
+          //       Colors.grey.shade700,
+          //       Colors.transparent,
+          //     ],
+          //   ),
+          // ),
         ),
       ),
       leading: Builder(
@@ -98,40 +101,8 @@ class HomeSliverAppBar extends StatelessWidget {
               featureType: FeatureType.tasks,
               premissionType: PremissionType.read,
             ))
-          IconButton(
-            onPressed: () {
-              if (isTaskFilterVisible) {
-                context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
-              } else {
-                context.read<TaskFilterBloc>().add(TaskFilterShowEvent());
-              }
-            },
-            icon: Stack(
-              children: [
-                Icon(
-                  Icons.filter_list_outlined,
-                  color: isTaskFilterVisible
-                      ? Theme.of(context).primaryColor
-                      : null,
-                ),
-                BlocBuilder<TaskFilterBloc, TaskFilterState>(
-                  builder: (context, state) {
-                    if (state is TaskFilterSelectedState) {
-                      return const Positioned(
-                        top: 0,
-                        left: 0,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.amber,
-                          radius: 5,
-                        ),
-                      );
-                    }
-                    return const SizedBox();
-                  },
-                ),
-              ],
-            ),
-          ),
+          TaskFilterButton(isTaskFilterVisible: isTaskFilterVisible),
+
         // search button
         if ((pageIndex == 1 &&
                 getUserPremission(
@@ -151,31 +122,21 @@ class HomeSliverAppBar extends StatelessWidget {
                   featureType: FeatureType.knowledgeBase,
                   premissionType: PremissionType.read,
                 )))
-          IconButton(
-            onPressed: () {
-              toggleIsSearchBarExpanded();
-            },
-            icon: Icon(
-              Icons.search,
-              color: isSearchBarExpanded
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).iconTheme.color,
-            ),
+          SearchButton(
+            isSearchBarExpanded: isSearchBarExpanded,
+            toggleIsSearchBarExpanded: toggleIsSearchBarExpanded,
           ),
         // filter
-        IconButton(
-          onPressed: () {
-            if (isMenuVisible) {
-              toggleIsMenuVisible();
-            }
-            if (isSearchBarExpanded) {
-              toggleIsSearchBarExpanded();
-            }
-            toggleIsFilterExpanded();
-          },
-          icon: FilterIcon(
-            isFilterExpanded: isFilterExpanded,
-          ),
+        FilterButton(
+          isFilterExpanded: isFilterExpanded,
+          toggleIsFilterExpanded: toggleIsFilterExpanded,
+          isSearchBarExpanded: isSearchBarExpanded,
+          toggleIsSearchBarExpanded: toggleIsSearchBarExpanded,
+          isMenuVisible: isMenuVisible,
+          toggleIsMenuVisible: toggleIsMenuVisible,
+        ),
+        const SizedBox(
+          width: 8,
         ),
       ],
       centerTitle: true,
