@@ -55,16 +55,6 @@ class HomeSliverAppBar extends StatelessWidget {
         child: Container(
           height: 1.0,
           color: Colors.grey.shade700,
-          // decoration: BoxDecoration(
-          //   gradient: LinearGradient(
-          //     begin: Alignment.topCenter,
-          //     end: Alignment.bottomCenter,
-          //     colors: [
-          //       Colors.grey.shade700,
-          //       Colors.transparent,
-          //     ],
-          //   ),
-          // ),
         ),
       ),
       leading: Builder(
@@ -82,7 +72,10 @@ class HomeSliverAppBar extends StatelessWidget {
               }
               Scaffold.of(context).openDrawer();
             },
-            child: const AppBarAnimatedIcon(),
+            child: const Padding(
+              padding: EdgeInsets.only(top: 2.0),
+              child: AppBarAnimatedIcon(),
+            ),
           );
         },
       ),
@@ -101,7 +94,9 @@ class HomeSliverAppBar extends StatelessWidget {
               featureType: FeatureType.tasks,
               premissionType: PremissionType.read,
             ))
-          TaskFilterButton(isTaskFilterVisible: isTaskFilterVisible),
+          TaskFilterButton(
+            isTaskFilterVisible: isTaskFilterVisible,
+          ),
 
         // search button
         if ((pageIndex == 1 &&

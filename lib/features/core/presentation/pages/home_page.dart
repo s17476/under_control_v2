@@ -411,6 +411,17 @@ class _HomePageState extends State<HomePage>
             listener: (context, state) =>
                 taskManagementBlocListener(context, state),
           ),
+          BlocListener<TaskFilterBloc, TaskFilterState>(
+              listener: (context, state) {
+            if ((state is TaskFilterSelectedState ||
+                    state is TaskFilterNothingSelectedState) &&
+                state.isFilterVisible &&
+                _isFilterExpanded) {
+              setState(() {
+                _isFilterExpanded = false;
+              });
+            }
+          }),
         ],
         child: Scaffold(
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
