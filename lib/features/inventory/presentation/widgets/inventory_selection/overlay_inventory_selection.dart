@@ -143,6 +143,13 @@ class _OverlayInventorySelectionState extends State<OverlayInventorySelection>
                       Theme.of(context).primaryColor.withAlpha(60),
                     ]),
                   ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  IconButton(
+                    onPressed: widget.onDismiss,
+                    icon: const Icon(Icons.done),
+                  ),
                 ],
               ),
               const Divider(),

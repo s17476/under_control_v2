@@ -35,33 +35,33 @@ class AddTaskActionSparePartCard extends StatefulWidget {
 
 class _AddTaskActionSparePartCardState extends State<AddTaskActionSparePartCard>
     with ResponsiveSize, WidgetsBindingObserver {
-  bool _isVisible = true;
+  // bool _isVisible = true;
 
-  @override
-  void initState() {
-    WidgetsBinding.instance.addObserver(this);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   WidgetsBinding.instance.addObserver(this);
+  //   super.initState();
+  // }
 
-  @override
-  void didChangeMetrics() {
-    final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
-    final newValue = bottomInset == 0.0;
-    if (newValue != _isVisible) {
-      setState(() {
-        _isVisible = newValue;
-      });
-    }
-    if (_isVisible && mounted) {
-      FocusScope.of(context).unfocus();
-    }
-  }
+  // @override
+  // void didChangeMetrics() {
+  //   final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
+  //   final newValue = bottomInset == 0.0;
+  //   if (newValue != _isVisible) {
+  //     setState(() {
+  //       _isVisible = newValue;
+  //     });
+  //   }
+  //   if (_isVisible && mounted) {
+  //     // FocusScope.of(context).unfocus();
+  //   }
+  // }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   WidgetsBinding.instance.removeObserver(this);
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +127,7 @@ class _AddTaskActionSparePartCardState extends State<AddTaskActionSparePartCard>
                     AnimatedSize(
                       duration: const Duration(milliseconds: 300),
                       child: SizedBox(
-                        height: _isVisible ? null : 0,
+                        // height: _isVisible ? null : 0,
                         child: Column(
                           children: [
                             // add spareparts from inventory button

@@ -7,6 +7,7 @@ import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../inventory/domain/entities/item.dart';
 import '../../../../inventory/presentation/widgets/item_tile.dart';
 import '../../../../inventory/utils/get_item_total_quantity.dart';
+import '../../../../inventory/utils/show_spare_part_item_delete_dialog.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
 
 class ItemTileWithQuantity extends StatefulWidget {
@@ -130,7 +131,12 @@ class _ItemTileWithQuantityState extends State<ItemTileWithQuantity> {
                   item: widget.item,
                   searchQuery: '',
                   onSelected: widget.onSelected != null
-                      ? (_) => widget.onSelected!(widget.sparePartItemModel)
+                      ? (_) => showSparePartItemDeleteDialog(
+                            context: context,
+                            item: widget.item,
+                            onDelete: () =>
+                                widget.onSelected!(widget.sparePartItemModel),
+                          )
                       : null,
                   isSelected: widget.onSelected != null ? true : null,
                   locationId: widget.sparePartItemModel.locationId,

@@ -378,6 +378,7 @@
     "item_no_items": "Nie dodano jeszcze żadnych przedmiotów",
     "item_no_barcode": "Zeskanowany kod jest niepoprawny. Spróbuj ponownie!",
     "item_delete_question": "Czy na pewno chcesz usunąć {item}? Ta operacja usunie również historię wszystkich akcji i nie może zostać cofnięta.",
+    "item_delete_spare_part_question": "Czy na pewno chcesz usunąć {item} z listy?",
     "no_actions_in_selected_locations": "Brak akcji w wybranych lokalizacjach",
     "premission_no_premission": "Nie posiadasz uprawnień dostępu do tych zasobów",
     "premission_no_action": "Nie posiadasz uprawnień do wykonania tej akcji",

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/utils/show_spare_part_asset_delete_dialog.dart';
 
 import '../../../inventory/presentation/widgets/shimmer_item_tile.dart';
 import '../blocs/asset/asset_bloc.dart';
@@ -65,7 +66,13 @@ class AssetsSparePartsList extends StatelessWidget {
                         return AssetTile(
                           asset: filteredAssets[index],
                           searchQuery: '',
-                          onSelected: onSelected,
+                          onSelected: onSelected != null
+                              ? (assetId) => showSparePartAssetDeleteDialog(
+                                    context: context,
+                                    asset: filteredAssets[index],
+                                    onDelete: () => onSelected!(assetId),
+                                  )
+                              : null,
                           isSelected: true,
                         );
                       },
