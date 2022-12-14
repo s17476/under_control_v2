@@ -84,72 +84,85 @@ class _OverlayGroupsSelectionState extends State<OverlayGroupsSelection>
     return SafeArea(
       child: GlassLayer(
         onDismiss: widget.onDismiss,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Text(
-                AppLocalizations.of(context)!.task_assign_groups,
-                style: const TextStyle(
-                  fontSize: 22,
-                ),
-              ),
-              const Divider(),
-              // search field
-              CustomTextFormField(
-                fieldKey: 'search',
-                controller: _searchTextEditingController,
-                keyboardType: TextInputType.name,
-                labelText: AppLocalizations.of(context)!.search,
-                onChanged: (value) => setState(() {
-                  _searchQuery = value!;
-                }),
-                suffixIcon: InkWell(
-                  onTap: () => _clearSearchQuery(),
-                  child: const Icon(
-                    Icons.cancel,
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.task_assign_groups,
+                    style: const TextStyle(
+                      fontSize: 22,
+                    ),
                   ),
-                ),
-              ),
-              const Divider(),
-              Expanded(
-                child: _groups != null
-                    ? Builder(builder: (context) {
-                        final filteredGroups = _searchGroups(
-                          context,
-                          _groups!,
-                          _searchQuery,
-                        );
-                        return ListView.builder(
-                          padding: const EdgeInsets.only(bottom: 50),
-                          shrinkWrap: true,
-                          itemCount: filteredGroups.length,
-                          itemBuilder: (context, index) => GroupTile(
-                            key: ValueKey(filteredGroups[index].id),
-                            group: filteredGroups[index],
-                            onTap: (group) => widget.toggleGroupSelection(
-                              group.id,
-                            ),
-                            isSelectionTile: true,
-                            isGroupMember: widget.assignedGroups
-                                .contains(filteredGroups[index].id),
-                            searchQuery: _searchQuery,
-                          ),
-                        );
-                      })
-                    : ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 50),
-                        shrinkWrap: true,
-                        itemCount: 20,
-                        itemBuilder: (context, index) => const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 4),
-                          child: ShimmerUserListTile(),
-                        ),
+                  const Divider(),
+                  // search field
+                  CustomTextFormField(
+                    fieldKey: 'search',
+                    controller: _searchTextEditingController,
+                    keyboardType: TextInputType.name,
+                    labelText: AppLocalizations.of(context)!.search,
+                    onChanged: (value) => setState(() {
+                      _searchQuery = value!;
+                    }),
+                    suffixIcon: InkWell(
+                      onTap: () => _clearSearchQuery(),
+                      child: const Icon(
+                        Icons.cancel,
                       ),
+                    ),
+                  ),
+                  const Divider(),
+                  Expanded(
+                    child: _groups != null
+                        ? Builder(builder: (context) {
+                            final filteredGroups = _searchGroups(
+                              context,
+                              _groups!,
+                              _searchQuery,
+                            );
+                            return ListView.builder(
+                              padding: const EdgeInsets.only(bottom: 50),
+                              shrinkWrap: true,
+                              itemCount: filteredGroups.length,
+                              itemBuilder: (context, index) => GroupTile(
+                                key: ValueKey(filteredGroups[index].id),
+                                group: filteredGroups[index],
+                                onTap: (group) => widget.toggleGroupSelection(
+                                  group.id,
+                                ),
+                                isSelectionTile: true,
+                                isGroupMember: widget.assignedGroups
+                                    .contains(filteredGroups[index].id),
+                                searchQuery: _searchQuery,
+                              ),
+                            );
+                          })
+                        : ListView.builder(
+                            padding: const EdgeInsets.only(bottom: 50),
+                            shrinkWrap: true,
+                            itemCount: 20,
+                            itemBuilder: (context, index) => const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 4),
+                              child: ShimmerUserListTile(),
+                            ),
+                          ),
+                  ),
+                  Container(),
+                ],
               ),
-              Container(),
-            ],
-          ),
+            ),
+            Positioned(
+              top: 8,
+              right: 8,
+              child: IconButton(
+                onPressed:
+                    widget.assignedGroups.isNotEmpty ? widget.onDismiss : null,
+                icon: const Icon(Icons.done),
+              ),
+            ),
+          ],
         ),
       ),
     );

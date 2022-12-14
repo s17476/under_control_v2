@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/inventory/utils/show_spare_part_item_delete_dialog.dart';
 
 import '../blocs/items/items_bloc.dart';
 import 'item_tile.dart';
@@ -66,7 +67,11 @@ class InventorySparePartsList extends StatelessWidget {
                         return ItemTile(
                           item: filteredItems[index],
                           searchQuery: '',
-                          onSelected: onSelected,
+                          onSelected: (itemId) => showSparePartItemDeleteDialog(
+                            context: context,
+                            item: filteredItems[index],
+                            onDelete: () => onSelected(itemId),
+                          ),
                           isSelected: true,
                         );
                       },

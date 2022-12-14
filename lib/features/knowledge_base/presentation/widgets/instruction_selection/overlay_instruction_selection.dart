@@ -81,20 +81,33 @@ class _OverlayInstructionSelectionState
           child: Column(
             children: [
               // search field
-              CustomTextFormField(
-                fieldKey: 'search',
-                controller: _searchTextEditingController,
-                keyboardType: TextInputType.name,
-                labelText: AppLocalizations.of(context)!.search,
-                onChanged: (value) => setState(() {
-                  _searchQuery = value!;
-                }),
-                suffixIcon: InkWell(
-                  onTap: () => _clearSearchQuery(),
-                  child: const Icon(
-                    Icons.cancel,
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomTextFormField(
+                      fieldKey: 'search',
+                      controller: _searchTextEditingController,
+                      keyboardType: TextInputType.name,
+                      labelText: AppLocalizations.of(context)!.search,
+                      onChanged: (value) => setState(() {
+                        _searchQuery = value!;
+                      }),
+                      suffixIcon: InkWell(
+                        onTap: () => _clearSearchQuery(),
+                        child: const Icon(
+                          Icons.cancel,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  IconButton(
+                    onPressed: widget.onDismiss,
+                    icon: const Icon(Icons.done),
+                  )
+                ],
               ),
               const Divider(),
 

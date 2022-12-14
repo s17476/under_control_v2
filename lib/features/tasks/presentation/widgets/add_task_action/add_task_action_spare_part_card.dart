@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/loading_widget.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/item_tile_with_quantity.dart';
 
+import '../../../../core/presentation/widgets/loading_widget.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
-import '../add_task/inventory_spare_parts_list_with_quantity.dart';
+import '../add_task/item_tile_with_quantity.dart';
 
 class AddTaskActionSparePartCard extends StatefulWidget {
   const AddTaskActionSparePartCard({
