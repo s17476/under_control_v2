@@ -3,15 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
-import 'package:under_control_v2/features/assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
-import 'package:under_control_v2/features/tasks/data/models/task_action/user_action_model.dart';
-import 'package:under_control_v2/features/tasks/presentation/blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_add_participants_card.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_add_spare_part_card.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_remove_asset_card.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_spare_part_card.dart';
 
+import '../../../assets/data/models/asset_model.dart';
+import '../../../assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -21,10 +15,16 @@ import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/task/spare_part_item_model.dart';
 import '../../data/models/task/task_model.dart';
+import '../../data/models/task_action/user_action_model.dart';
 import '../../domain/entities/task/task.dart';
 import '../../domain/entities/task_action/task_action.dart';
+import '../blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
 import '../blocs/task/task_bloc.dart';
+import '../widgets/add_task_action/add_task_action_add_participants_card.dart';
+import '../widgets/add_task_action/add_task_action_add_spare_part_card.dart';
 import '../widgets/add_task_action/add_task_action_card.dart';
+import '../widgets/add_task_action/add_task_action_remove_asset_card.dart';
+import '../widgets/add_task_action/add_task_action_spare_part_card.dart';
 import 'subtract_item_from_location_page.dart';
 
 class RegisterTaskActionPage extends StatefulWidget {
@@ -57,7 +57,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   DateTime _startTime = DateTime.now().subtract(Duration(minutes: 5));
   DateTime _stopTime = DateTime.now();
 
-  List<UserActionModel> _participants = [];
+  final List<UserActionModel> _participants = [];
 
   List<File> _images = [];
   List<SparePartItemModel> _sparePartsItems = [];
@@ -345,13 +345,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         _toggleAddAssetVisibility();
       } else if (_isAddItemVisible) {
         _toggleAddItemVisibility();
-      } else
-      //if (_isAddInstructionsVisible) {
-      //   _toggleAddInstructionsVisibility();
-      // } else if (_isAddGroupsVisible) {
-      //   _toggleAddGroupsVisibility();
-      // } else
-      if (_isAddUsersVisible) {
+      } else if (_isAddUsersVisible) {
         _toggleAddUsersVisibility();
       }
     });
@@ -360,7 +354,6 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
   @override
   void didChangeDependencies() {
-    // final TODO: get spare parts assets
     final userState = context.watch<UserProfileBloc>().state;
     if (_participants.isEmpty && userState is Approved) {
       _userId = userState.userProfile.id;
@@ -450,7 +443,6 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         sparePartsAssets: _addedPartsAssets,
         isAddAssetVisible: _isAddAssetVisible,
       ),
-// TODO: get spare part assets
     ];
 
     DateTime preBackpress = DateTime.now();
@@ -463,15 +455,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         } else if (_isAddItemVisible) {
           _toggleAddItemVisibility();
           return false;
-        }
-        //else if (_isAddInstructionsVisible) {
-        //   _toggleAddInstructionsVisibility();
-        //   return false;
-        // } else if (_isAddGroupsVisible) {
-        //   _toggleAddGroupsVisibility();
-        //   return false;
-        // } else
-        if (_isAddUsersVisible) {
+        } else if (_isAddUsersVisible) {
           _toggleAddUsersVisibility();
           return false;
         }

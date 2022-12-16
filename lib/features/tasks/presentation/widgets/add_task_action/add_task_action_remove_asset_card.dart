@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
-import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_tile.dart';
-
+import '../../../../assets/data/models/asset_model.dart';
 import '../../../../assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
-import '../../../../core/utils/responsive_size.dart';
+import '../../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
+import '../../../../assets/presentation/widgets/asset_tile.dart';
 
-class AddTaskActionRemoveAssetCard extends StatefulWidget {
+class AddTaskActionRemoveAssetCard extends StatelessWidget {
   const AddTaskActionRemoveAssetCard({
     Key? key,
     required this.toggleRemovedAssets,
@@ -19,42 +16,6 @@ class AddTaskActionRemoveAssetCard extends StatefulWidget {
 
   final Function(AssetModel) toggleRemovedAssets;
   final List<AssetModel> assetsToRemove;
-
-  @override
-  State<AddTaskActionRemoveAssetCard> createState() =>
-      _AddTaskActionRemoveAssetCardState();
-}
-
-class _AddTaskActionRemoveAssetCardState
-    extends State<AddTaskActionRemoveAssetCard>
-    with ResponsiveSize, WidgetsBindingObserver {
-  // bool _isVisible = true;
-
-  // @override
-  // void initState() {
-  //   WidgetsBinding.instance.addObserver(this);
-  //   super.initState();
-  // }
-
-  // @override
-  // void didChangeMetrics() {
-  //   final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
-  //   final newValue = bottomInset == 0.0;
-  //   if (newValue != _isVisible) {
-  //     setState(() {
-  //       _isVisible = newValue;
-  //     });
-  //   }
-  //   if (_isVisible && mounted) {
-  //     // FocusScope.of(context).unfocus();
-  //   }
-  // }
-
-  // @override
-  // void dispose() {
-  //   WidgetsBinding.instance.removeObserver(this);
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -95,9 +56,8 @@ class _AddTaskActionRemoveAssetCardState
                                   state.allAssetParts.allAssets[index];
                               return AssetToRemoveTile(
                                 asset: AssetModel.fromAsset(asset),
-                                toggleRemovedAssets: widget.toggleRemovedAssets,
-                                isRemoved:
-                                    widget.assetsToRemove.contains(asset),
+                                toggleRemovedAssets: toggleRemovedAssets,
+                                isRemoved: assetsToRemove.contains(asset),
                               );
                             },
                           );
@@ -110,7 +70,6 @@ class _AddTaskActionRemoveAssetCardState
                         }
                       },
                     ),
-                    // TODO: assets list
                   ],
                 ),
               ),

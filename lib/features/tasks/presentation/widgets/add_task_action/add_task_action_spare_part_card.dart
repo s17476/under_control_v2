@@ -3,13 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/presentation/widgets/loading_widget.dart';
-import '../../../../core/utils/responsive_size.dart';
 import '../../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
 import '../add_task/item_tile_with_quantity.dart';
 
-class AddTaskActionSparePartCard extends StatefulWidget {
+class AddTaskActionSparePartCard extends StatelessWidget {
   const AddTaskActionSparePartCard({
     Key? key,
     required this.addItem,
@@ -28,46 +27,11 @@ class AddTaskActionSparePartCard extends StatefulWidget {
   final bool isAddItemVisible;
 
   @override
-  State<AddTaskActionSparePartCard> createState() =>
-      _AddTaskActionSparePartCardState();
-}
-
-class _AddTaskActionSparePartCardState extends State<AddTaskActionSparePartCard>
-    with ResponsiveSize, WidgetsBindingObserver {
-  // bool _isVisible = true;
-
-  // @override
-  // void initState() {
-  //   WidgetsBinding.instance.addObserver(this);
-  //   super.initState();
-  // }
-
-  // @override
-  // void didChangeMetrics() {
-  //   final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
-  //   final newValue = bottomInset == 0.0;
-  //   if (newValue != _isVisible) {
-  //     setState(() {
-  //       _isVisible = newValue;
-  //     });
-  //   }
-  //   if (_isVisible && mounted) {
-  //     // FocusScope.of(context).unfocus();
-  //   }
-  // }
-
-  // @override
-  // void dispose() {
-  //   WidgetsBinding.instance.removeObserver(this);
-  //   super.dispose();
-  // }
-
-  @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SafeArea(
-          child: Column(
+    return SafeArea(
+      child: Stack(
+        children: [
+          Column(
             children: [
               Expanded(
                 child: Column(
@@ -95,17 +59,16 @@ class _AddTaskActionSparePartCardState extends State<AddTaskActionSparePartCard>
                         builder: (context, state) {
                           if (state is ItemsLoadedState) {
                             return ListView.builder(
-                              itemCount: widget.sparePartsItems.length,
+                              itemCount: sparePartsItems.length,
                               itemBuilder: (context, index) {
-                                final item = state.getItemById(
-                                    widget.sparePartsItems[index].itemId);
+                                final item = state
+                                    .getItemById(sparePartsItems[index].itemId);
                                 if (item != null) {
                                   return ItemTileWithQuantity(
                                     item: item,
-                                    sparePartItemModel:
-                                        widget.sparePartsItems[index],
+                                    sparePartItemModel: sparePartsItems[index],
                                     searchQuery: '',
-                                    onSelected: widget.removeItem,
+                                    onSelected: removeItem,
                                   );
                                 }
                                 return const SizedBox();
@@ -115,88 +78,50 @@ class _AddTaskActionSparePartCardState extends State<AddTaskActionSparePartCard>
                           return const LoadingWidget();
                         },
                       ),
-                      //     SingleChildScrollView(
-                      //   child: InventorySparePartsListWithQuantity(
-                      //     items: widget.sparePartsItems,
-                      //     onSelected: widget.removeItem,
-                      //   ),
-                      // ),
-                    ),
-
-                    AnimatedSize(
-                      duration: const Duration(milliseconds: 300),
-                      child: SizedBox(
-                        // height: _isVisible ? null : 0,
-                        child: Column(
-                          children: [
-                            // add spareparts from inventory button
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 4,
-                              ),
-                              child: ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange.shade700,
-                                ),
-                                onPressed: widget.toggleAddItemVisibility,
-                                icon: SizedBox(
-                                  height: 30,
-                                  width: 30,
-                                  child: Stack(
-                                    children: const [
-                                      Positioned(
-                                        top: 0,
-                                        right: 0,
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 15,
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        left: 0,
-                                        child: Icon(
-                                          Icons.apps,
-                                          size: 22,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                label: Text(
-                                  AppLocalizations.of(context)!
-                                      .asset_add_spare_parts_inventory,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 50,
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-        ),
-        if (widget.isAddItemVisible)
-          OverlayInventorySelection(
-            isMultiselection: true,
-            spareParts: widget.sparePartsItems.map((e) => e.itemId).toList(),
-            toggleSelection: (itemId) => widget.addItem(
-              SparePartItemModel(
-                itemId: itemId,
-                locationId: '',
-                quantity: 0,
+          Positioned(
+            bottom: 20,
+            right: 16,
+            child: FloatingActionButton.extended(
+              backgroundColor: Colors.orange.shade700,
+              onPressed: () {},
+              label: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.apps,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!
+                        .asset_add_spare_parts_inventory,
+                  ),
+                ],
               ),
             ),
-            onDismiss: widget.toggleAddItemVisibility,
           ),
-      ],
+          if (isAddItemVisible)
+            OverlayInventorySelection(
+              isMultiselection: true,
+              spareParts: sparePartsItems.map((e) => e.itemId).toList(),
+              toggleSelection: (itemId) => addItem(
+                SparePartItemModel(
+                  itemId: itemId,
+                  locationId: '',
+                  quantity: 0,
+                ),
+              ),
+              onDismiss: toggleAddItemVisibility,
+            ),
+        ],
+      ),
     );
   }
 }

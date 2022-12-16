@@ -71,129 +71,144 @@ class AddAssetImagesCard extends StatelessWidget with ResponsiveSize {
       );
     }
     return SafeArea(
-      child: Column(
+      child: Stack(
         children: [
-          Expanded(
-            child: Column(
-              children: [
-                // title
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 12,
-                    left: 8,
-                    right: 8,
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context)!.asset_add_photos,
-                    style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+          Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    // title
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 12,
+                        left: 8,
+                        right: 8,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.asset_add_photos,
+                        style: TextStyle(
+                          fontSize:
+                              Theme.of(context).textTheme.headline5!.fontSize,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const Divider(
-                  thickness: 1.5,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      children: images
-                          .map(
-                            (img) => InkWell(
-                              key: ValueKey(img.path),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ImageViewer(
-                                      imageProvider: FileImage(img),
-                                      title: '',
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Hero(
-                                tag: img.path,
-                                child: Stack(
-                                  children: [
-                                    SizedBox.expand(
-                                      child: Image.file(
-                                        img,
-                                        fit: BoxFit.fitWidth,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 0,
-                                      left: 0,
-                                      child: IconButton(
-                                        onPressed: () => removeImage(img),
-                                        icon: const Icon(
-                                          Icons.delete,
-                                          size: 30,
-                                          shadows: [
-                                            Shadow(
-                                              color: Colors.black,
-                                              blurRadius: 25,
-                                            ),
-                                          ],
+                    const Divider(
+                      thickness: 1.5,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: GridView.count(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          children: images
+                              .map(
+                                (img) => InkWell(
+                                  key: ValueKey(img.path),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ImageViewer(
+                                          imageProvider: FileImage(img),
+                                          title: '',
                                         ),
                                       ),
+                                    );
+                                  },
+                                  child: Hero(
+                                    tag: img.path,
+                                    child: Stack(
+                                      children: [
+                                        SizedBox.expand(
+                                          child: Image.file(
+                                            img,
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: 0,
+                                          left: 0,
+                                          child: IconButton(
+                                            onPressed: () => removeImage(img),
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              size: 30,
+                                              shadows: [
+                                                Shadow(
+                                                  color: Colors.black,
+                                                  blurRadius: 25,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                              )
+                              .toList(),
+                        ),
+                      ),
                     ),
-                  ),
+
+                    const SizedBox(
+                      height: 50,
+                    ),
+                  ],
                 ),
-                // take photo
-                if (images.length < 10)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 4,
-                    ),
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ),
-                      onPressed: () => _pickImage(context, ImageSource.camera),
-                      icon: const Icon(Icons.camera),
-                      label: Text(
-                        AppLocalizations.of(context)!.take_photo,
-                      ),
-                    ),
-                  ),
-                // pick from gallery
-                if (images.length < 10)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 4,
-                    ),
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue.shade700,
-                      ),
-                      onPressed: () => _pickImage(context, ImageSource.gallery),
-                      icon: const Icon(Icons.photo_size_select_actual_rounded),
-                      label: Text(
-                        AppLocalizations.of(context)!
-                            .user_profile_add_user_personal_data_gallery,
-                      ),
-                    ),
-                  ),
-                const SizedBox(
-                  height: 50,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+          if (images.length < 10)
+            Positioned(
+              bottom: 20,
+              right: 16,
+              child: FloatingActionButton.extended(
+                onPressed: () => _pickImage(context, ImageSource.camera),
+                label: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.camera,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.take_photo,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          if (images.length < 10)
+            Positioned(
+              bottom: 20,
+              left: 16,
+              child: FloatingActionButton.extended(
+                backgroundColor: Colors.blue.shade700,
+                onPressed: () => _pickImage(context, ImageSource.gallery),
+                label: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.photo_size_select_actual_rounded,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!
+                          .user_profile_add_user_personal_data_gallery,
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );
