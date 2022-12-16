@@ -322,6 +322,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
   @override
   void didChangeDependencies() {
+    // final TODO: get spare parts assets
     final userState = context.watch<UserProfileBloc>().state;
     if (_participants.isEmpty && userState is Approved) {
       _userId = userState.userProfile.id;
@@ -385,6 +386,8 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         sparePartsItems: _sparePartsItems,
         isAddItemVisible: _isAddItemVisible,
       ),
+      // if(_task!.assetId.isNotEmpty)
+// TODO: get spare part assets
     ];
 
     DateTime preBackpress = DateTime.now();

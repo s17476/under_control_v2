@@ -50,6 +50,7 @@ class HomeSliverAppBar extends StatelessWidget {
       floating: true,
       pinned: true,
       snap: true,
+      elevation: 0,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(3.0),
         child: Container(
@@ -134,8 +135,6 @@ class HomeSliverAppBar extends StatelessWidget {
           width: 8,
         ),
       ],
-      centerTitle: true,
-      elevation: 0,
     );
   }
 }

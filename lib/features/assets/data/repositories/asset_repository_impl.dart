@@ -361,4 +361,26 @@ class AssetRepositoryImpl extends AssetRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, AssetsStream>> getAssetPartsForParent(
+      AssetParams params) async {
+    try {
+      final Stream<QuerySnapshot> querySnapshot;
+      querySnapshot = firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('assets')
+          .where('currentParentId', isEqualTo: params.asset.id)
+          .snapshots();
+
+      return Right(AssetsStream(allAssets: querySnapshot));
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
 }

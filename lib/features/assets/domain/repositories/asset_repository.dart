@@ -36,4 +36,11 @@ abstract class AssetRepository {
   ///Returns [bool] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, bool>> checkCodeAvailability(CodeParams params);
+
+  ///Gets stream of asset's being a part of parent asset.
+  ///
+  ///Returns [AssetsStream] if operation is successful.
+  ///Returns [Failure] if operation is unsuccessful.
+  Future<Either<Failure, AssetsStream>> getAssetPartsForParent(
+      AssetParams params);
 }
