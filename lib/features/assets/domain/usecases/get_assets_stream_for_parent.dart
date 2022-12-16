@@ -7,8 +7,7 @@ import '../entities/assets_stream.dart';
 import '../repositories/asset_repository.dart';
 
 @lazySingleton
-class GetAssetsStreamForParent
-    extends FutureUseCase<AssetsStream, AssetParams> {
+class GetAssetsStreamForParent extends FutureUseCase<AssetsStream, IdParams> {
   final AssetRepository repository;
 
   GetAssetsStreamForParent({
@@ -16,6 +15,6 @@ class GetAssetsStreamForParent
   });
 
   @override
-  Future<Either<Failure, AssetsStream>> call(AssetParams params) async =>
+  Future<Either<Failure, AssetsStream>> call(IdParams params) async =>
       repository.getAssetPartsForParent(params);
 }

@@ -15,6 +15,7 @@ class AssetTile extends StatelessWidget {
     required this.asset,
     this.borderRadius = 15,
     this.color = Colors.black,
+    this.backgroundColor,
     this.margin = const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
     required this.searchQuery,
     this.onSelected,
@@ -26,6 +27,7 @@ class AssetTile extends StatelessWidget {
   final Asset asset;
   final double borderRadius;
   final Color color;
+  final Color? backgroundColor;
   final EdgeInsetsGeometry margin;
   final String searchQuery;
   final Function(String)? onSelected;
@@ -39,11 +41,12 @@ class AssetTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),
-        color: Theme.of(context).cardColor,
+        color: backgroundColor ?? Theme.of(context).cardColor,
       ),
       margin: margin,
       child: Material(
         borderRadius: BorderRadius.circular(borderRadius),
+        color: Colors.transparent,
         child: InkWell(
           // multi selection
           onTap: onSelected != null

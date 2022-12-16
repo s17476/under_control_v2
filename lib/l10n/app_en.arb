@@ -2298,5 +2298,9 @@
     "task_action_add_participants_no_selected": "Add at least one participant",
     "@task_action_add_participants_no_selected": {
       "description": "task action - no participants selected"
+    },
+    "task_action_remove_assets": "Remove broken subassets",
+    "@task_action_remove_assets": {
+      "description": "task action - remove assets"
     }
 }

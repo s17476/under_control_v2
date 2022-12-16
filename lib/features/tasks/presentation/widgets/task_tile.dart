@@ -491,13 +491,15 @@ class ConnectedAsset extends StatelessWidget {
                   const SizedBox(
                     width: 4,
                   ),
-                  Text(
-                    '${asset.internalCode} - ${asset.producer} - ${asset.model}',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).highlightColor,
+                  Expanded(
+                    child: Text(
+                      '${asset.internalCode} - ${asset.producer} - ${asset.model}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).highlightColor,
+                      ),
                     ),
                   ),
                 ],

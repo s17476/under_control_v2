@@ -19,19 +19,28 @@ class AssetPartsBloc extends Bloc<AssetPartsEvent, AssetPartsState> {
   final CompanyProfileBloc companyProfileBloc;
   final GetAssetsStreamForParent getAssetsStreamForParent;
 
+  late StreamSubscription _companyProfileStreamSubscription;
   StreamSubscription? _streamSubscription;
+
+  String _companyId = '';
 
   AssetPartsBloc({
     required this.companyProfileBloc,
     required this.getAssetsStreamForParent,
   }) : super(AssetPartsEmptyState()) {
+    _companyProfileStreamSubscription =
+        companyProfileBloc.stream.listen((state) {
+      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
+        _companyId = state.company.id;
+      }
+    });
+
     on<GetAssetsForParentEvent>((event, emit) async {
       emit(AssetPartsLoadingState());
-      final companyState = companyProfileBloc.state;
-      if (companyState is CompanyProfileLoaded) {
-        final params = AssetParams(
-          asset: event.parentAsset,
-          companyId: companyState.company.id,
+      if (_companyId.isNotEmpty) {
+        final params = IdParams(
+          id: event.parentAssetId,
+          companyId: _companyId,
         );
         final failureOrAssets = await getAssetsStreamForParent(params);
         await failureOrAssets.fold(
@@ -44,7 +53,7 @@ class AssetPartsBloc extends Bloc<AssetPartsEvent, AssetPartsState> {
               add(
                 UpdateAssetPartsListEvent(
                   snapshot: snapshot,
-                  parentAssetId: event.parentAsset.id,
+                  parentAssetId: event.parentAssetId,
                 ),
               );
             });
@@ -73,6 +82,7 @@ class AssetPartsBloc extends Bloc<AssetPartsEvent, AssetPartsState> {
   @override
   Future<void> close() {
     _streamSubscription?.cancel();
+    _companyProfileStreamSubscription.cancel();
     return super.close();
   }
 }

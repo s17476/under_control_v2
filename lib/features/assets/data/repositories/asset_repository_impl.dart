@@ -364,14 +364,14 @@ class AssetRepositoryImpl extends AssetRepository {
 
   @override
   Future<Either<Failure, AssetsStream>> getAssetPartsForParent(
-      AssetParams params) async {
+      IdParams params) async {
     try {
       final Stream<QuerySnapshot> querySnapshot;
       querySnapshot = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
           .collection('assets')
-          .where('currentParentId', isEqualTo: params.asset.id)
+          .where('currentParentId', isEqualTo: params.id)
           .snapshots();
 
       return Right(AssetsStream(allAssets: querySnapshot));

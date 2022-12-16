@@ -41,6 +41,5 @@ abstract class AssetRepository {
   ///
   ///Returns [AssetsStream] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
-  Future<Either<Failure, AssetsStream>> getAssetPartsForParent(
-      AssetParams params);
+  Future<Either<Failure, AssetsStream>> getAssetPartsForParent(IdParams params);
 }

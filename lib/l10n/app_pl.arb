@@ -554,5 +554,6 @@
     "task_action_new": "Zarejestruj nową akcję",
     "task_action_edit": "Edytuj akcję",
     "task_action_add_participants": "Dodaj uczestników",
-    "task_action_add_participants_no_selected": "Dodaj przynajmniej jednego uczestnika"
+    "task_action_add_participants_no_selected": "Dodaj przynajmniej jednego uczestnika",
+    "task_action_remove_assets": "Usuń uszkodzone części"
 }

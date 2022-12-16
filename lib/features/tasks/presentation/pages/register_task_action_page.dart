@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
+import 'package:under_control_v2/features/assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
 import 'package:under_control_v2/features/tasks/data/models/task_action/user_action_model.dart';
 import 'package:under_control_v2/features/tasks/presentation/blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_add_participants_card.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_remove_asset_card.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_spare_part_card.dart';
 
 import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
@@ -56,8 +59,11 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
   List<File> _images = [];
   List<SparePartItemModel> _sparePartsItems = [];
+  final List<AssetModel> _removedPartsAssets = [];
 
   bool _isAddUsersVisible = false;
+
+  bool _hasChildrenAssets = false;
 
   _addNewTaskAction(BuildContext context) {
     // String errorMessage = '';
@@ -236,6 +242,19 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     }
   }
 
+  void _toggleRemovedAsset(AssetModel asset) {
+    if (_removedPartsAssets.contains(asset)) {
+      setState(() {
+        _removedPartsAssets.remove(asset);
+      });
+    } else {
+      setState(() {
+        _removedPartsAssets.add(asset);
+      });
+    }
+    print(_removedPartsAssets);
+  }
+
   void _toggleAddUsersVisibility() {
     setState(() {
       _isAddUsersVisible = !_isAddUsersVisible;
@@ -340,10 +359,25 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     // new task action
     if (arguments != null && arguments is Task && _task == null) {
       _task = TaskModel.fromTask(arguments).deepCopy();
-
+      if (_task!.assetId.isNotEmpty) {
+        context.read<AssetPartsBloc>().add(
+              GetAssetsForParentEvent(
+                parentAssetId: _task!.assetId,
+              ),
+            );
+      }
       _sparePartsItems = _task!.sparePartsItems;
     }
 
+    final assetPartsState = context.watch<AssetPartsBloc>().state;
+
+    if (_task != null && _task!.assetId.isNotEmpty) {
+      _hasChildrenAssets = assetPartsState is AssetPartsLoadedState &&
+          assetPartsState.parentId == _task!.assetId &&
+          assetPartsState.allAssetParts.allAssets.isNotEmpty;
+    } else {
+      _hasChildrenAssets = false;
+    }
     // TODO: add edit case
 
     super.didChangeDependencies();
@@ -386,7 +420,11 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         sparePartsItems: _sparePartsItems,
         isAddItemVisible: _isAddItemVisible,
       ),
-      // if(_task!.assetId.isNotEmpty)
+      if (_hasChildrenAssets)
+        AddTaskActionRemoveAssetCard(
+          assetsToRemove: _removedPartsAssets,
+          toggleRemovedAssets: _toggleRemovedAsset,
+        ),
 // TODO: get spare part assets
     ];
 

@@ -7,6 +7,7 @@ import 'features/assets/presentation/blocs/asset_action_management/asset_action_
 import 'features/assets/presentation/blocs/asset_category/asset_category_bloc.dart';
 import 'features/assets/presentation/blocs/asset_category_management/asset_category_management_bloc.dart';
 import 'features/assets/presentation/blocs/asset_management/asset_management_bloc.dart';
+import 'features/assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
 import 'features/assets/presentation/blocs/dashboard_asset_action/dashboard_asset_action_bloc.dart';
 import 'features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
@@ -181,6 +182,10 @@ class CustomMultiBlocProvider extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<ReservedSparePartsBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<AssetPartsBloc>(),
+          lazy: false,
         ),
       ],
       child: child,

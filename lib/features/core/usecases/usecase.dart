@@ -260,6 +260,18 @@ class CodeParams extends Equatable {
   List<Object> get props => [internalCode, companyId];
 }
 
+class IdParams extends Equatable {
+  final String id;
+  final String companyId;
+  const IdParams({
+    required this.id,
+    required this.companyId,
+  });
+
+  @override
+  List<Object> get props => [id, companyId];
+}
+
 class AssetParams extends Equatable {
   final AssetModel asset;
   final List<File>? images;

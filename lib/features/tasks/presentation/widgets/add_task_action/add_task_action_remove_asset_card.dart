@@ -2,30 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../../core/presentation/widgets/loading_widget.dart';
+import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
+import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/asset_tile.dart';
+
+import '../../../../assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
 import '../../../../core/utils/responsive_size.dart';
-import '../../../../inventory/presentation/blocs/items/items_bloc.dart';
-import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
-import '../../../data/models/task/spare_part_item_model.dart';
-import '../add_task/item_tile_with_quantity.dart';
 
 class AddTaskActionRemoveAssetCard extends StatefulWidget {
   const AddTaskActionRemoveAssetCard({
     Key? key,
-    required this.addItem,
-    required this.removeItem,
-    required this.updateSparePartQuantity,
-    required this.sparePartsItems,
-    required this.toggleAddItemVisibility,
-    required this.isAddItemVisible,
+    required this.toggleRemovedAssets,
+    required this.assetsToRemove,
   }) : super(key: key);
 
-  final Function(SparePartItemModel) addItem;
-  final Function(SparePartItemModel) removeItem;
-  final Function(SparePartItemModel) updateSparePartQuantity;
-  final List<SparePartItemModel> sparePartsItems;
-  final Function() toggleAddItemVisibility;
-  final bool isAddItemVisible;
+  final Function(AssetModel) toggleRemovedAssets;
+  final List<AssetModel> assetsToRemove;
 
   @override
   State<AddTaskActionRemoveAssetCard> createState() =>
@@ -81,7 +74,7 @@ class _AddTaskActionRemoveAssetCardState
                         right: 8,
                       ),
                       child: Text(
-                        AppLocalizations.of(context)!.asset_add_spare_parts,
+                        AppLocalizations.of(context)!.task_action_remove_assets,
                         style: TextStyle(
                           fontSize:
                               Theme.of(context).textTheme.headline5!.fontSize,
@@ -91,111 +84,96 @@ class _AddTaskActionRemoveAssetCardState
                     const Divider(
                       thickness: 1.5,
                     ),
-                    Expanded(
-                      child: BlocBuilder<ItemsBloc, ItemsState>(
-                        builder: (context, state) {
-                          if (state is ItemsLoadedState) {
-                            return ListView.builder(
-                              itemCount: widget.sparePartsItems.length,
-                              itemBuilder: (context, index) {
-                                final item = state.getItemById(
-                                    widget.sparePartsItems[index].itemId);
-                                if (item != null) {
-                                  return ItemTileWithQuantity(
-                                    item: item,
-                                    sparePartItemModel:
-                                        widget.sparePartsItems[index],
-                                    searchQuery: '',
-                                    onSelected: widget.removeItem,
-                                  );
-                                }
-                                return const SizedBox();
-                              },
-                            );
-                          }
-                          return const LoadingWidget();
-                        },
-                      ),
-                      //     SingleChildScrollView(
-                      //   child: InventorySparePartsListWithQuantity(
-                      //     items: widget.sparePartsItems,
-                      //     onSelected: widget.removeItem,
-                      //   ),
-                      // ),
+                    BlocBuilder<AssetPartsBloc, AssetPartsState>(
+                      builder: (context, state) {
+                        if (state is AssetPartsLoadedState) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: state.allAssetParts.allAssets.length,
+                            itemBuilder: (context, index) {
+                              final asset =
+                                  state.allAssetParts.allAssets[index];
+                              return AssetToRemoveTile(
+                                asset: AssetModel.fromAsset(asset),
+                                toggleRemovedAssets: widget.toggleRemovedAssets,
+                                isRemoved:
+                                    widget.assetsToRemove.contains(asset),
+                              );
+                            },
+                          );
+                        } else {
+                          return ListView.builder(
+                            itemCount: 10,
+                            itemBuilder: (context, index) =>
+                                const ShimmerAssetActionListTile(),
+                          );
+                        }
+                      },
                     ),
-
-                    AnimatedSize(
-                      duration: const Duration(milliseconds: 300),
-                      child: SizedBox(
-                        // height: _isVisible ? null : 0,
-                        child: Column(
-                          children: [
-                            // add spareparts from inventory button
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 4,
-                              ),
-                              child: ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange.shade700,
-                                ),
-                                onPressed: widget.toggleAddItemVisibility,
-                                icon: SizedBox(
-                                  height: 30,
-                                  width: 30,
-                                  child: Stack(
-                                    children: const [
-                                      Positioned(
-                                        top: 0,
-                                        right: 0,
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 15,
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        left: 0,
-                                        child: Icon(
-                                          Icons.apps,
-                                          size: 22,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                label: Text(
-                                  AppLocalizations.of(context)!
-                                      .asset_add_spare_parts_inventory,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 50,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    // TODO: assets list
                   ],
                 ),
               ),
             ],
           ),
         ),
-        if (widget.isAddItemVisible)
-          OverlayInventorySelection(
-            isMultiselection: true,
-            spareParts: widget.sparePartsItems.map((e) => e.itemId).toList(),
-            toggleSelection: (itemId) => widget.addItem(
-              SparePartItemModel(
-                itemId: itemId,
-                locationId: '',
-                quantity: 0,
+      ],
+    );
+  }
+}
+
+class AssetToRemoveTile extends StatelessWidget {
+  const AssetToRemoveTile({
+    Key? key,
+    required this.asset,
+    required this.toggleRemovedAssets,
+    required this.isRemoved,
+  }) : super(key: key);
+
+  final AssetModel asset;
+  final Function(AssetModel) toggleRemovedAssets;
+  final bool isRemoved;
+
+  @override
+  Widget build(BuildContext context) {
+    const borderRadius = 15.0;
+    const margin = EdgeInsets.symmetric(vertical: 4, horizontal: 8);
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        AnimatedContainer(
+          margin: margin,
+          duration: const Duration(milliseconds: 300),
+          decoration: BoxDecoration(
+            color:
+                isRemoved ? Colors.red.shade900 : Theme.of(context).cardColor,
+            borderRadius: BorderRadius.circular(borderRadius),
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(borderRadius),
+            onTap: () => toggleRemovedAssets(asset),
+            child: IgnorePointer(
+              child: AssetTile(
+                asset: asset,
+                searchQuery: '',
+                backgroundColor: Colors.transparent,
+                borderRadius: borderRadius,
+                margin: EdgeInsets.zero,
               ),
             ),
-            onDismiss: widget.toggleAddItemVisibility,
+          ),
+        ),
+        if (isRemoved)
+          Icon(
+            Icons.delete,
+            size: 80,
+            color: Colors.grey.shade200,
+            shadows: const [
+              Shadow(
+                color: Colors.black,
+                blurRadius: 25,
+              )
+            ],
           ),
       ],
     );

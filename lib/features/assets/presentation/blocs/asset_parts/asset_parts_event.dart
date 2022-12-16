@@ -10,10 +10,10 @@ abstract class AssetPartsEvent extends Equatable {
 }
 
 class GetAssetsForParentEvent extends AssetPartsEvent {
-  final AssetModel parentAsset;
+  final String parentAssetId;
   GetAssetsForParentEvent({
-    required this.parentAsset,
-  }) : super(properties: [parentAsset]);
+    required this.parentAssetId,
+  }) : super(properties: [parentAssetId]);
 }
 
 class UpdateAssetPartsListEvent extends AssetPartsEvent {
