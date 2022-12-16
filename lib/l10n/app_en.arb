@@ -2302,5 +2302,9 @@
     "task_action_remove_assets": "Remove broken subassets",
     "@task_action_remove_assets": {
       "description": "task action - remove assets"
+    },
+    "task_action_add_assets": "Add subassets",
+    "@task_action_add_assets": {
+      "description": "task action - add assets"
     }
 }

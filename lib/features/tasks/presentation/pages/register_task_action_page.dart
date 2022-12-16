@@ -8,6 +8,7 @@ import 'package:under_control_v2/features/assets/presentation/blocs/asset_parts/
 import 'package:under_control_v2/features/tasks/data/models/task_action/user_action_model.dart';
 import 'package:under_control_v2/features/tasks/presentation/blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_add_participants_card.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_add_spare_part_card.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_remove_asset_card.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_spare_part_card.dart';
 
@@ -41,6 +42,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
   bool _loadingImages = false;
   bool _isAddItemVisible = false;
+  bool _isAddAssetVisible = false;
 
   // pageview
   List<Widget> _pages = [];
@@ -60,6 +62,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   List<File> _images = [];
   List<SparePartItemModel> _sparePartsItems = [];
   final List<AssetModel> _removedPartsAssets = [];
+  final List<String> _addedPartsAssets = [];
 
   bool _isAddUsersVisible = false;
 
@@ -252,7 +255,6 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         _removedPartsAssets.add(asset);
       });
     }
-    print(_removedPartsAssets);
   }
 
   void _toggleAddUsersVisibility() {
@@ -314,6 +316,24 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     });
   }
 
+  void _toggleAddAssetVisibility() {
+    setState(() {
+      _isAddAssetVisible = !_isAddAssetVisible;
+    });
+  }
+
+  void _toggleAssetSelection(String assetId) {
+    if (_addedPartsAssets.contains(assetId)) {
+      setState(() {
+        _addedPartsAssets.remove(assetId);
+      });
+    } else {
+      setState(() {
+        _addedPartsAssets.add(assetId);
+      });
+    }
+  }
+
   @override
   void initState() {
     context.read<ReservedSparePartsBloc>().add(
@@ -321,10 +341,9 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         );
     _pageController.addListener(() {
       FocusScope.of(context).unfocus();
-      // if (_isAddAssetVisible) {
-      //   _toggleAddAssetVisibility();
-      // } else
-      if (_isAddItemVisible) {
+      if (_isAddAssetVisible) {
+        _toggleAddAssetVisibility();
+      } else if (_isAddItemVisible) {
         _toggleAddItemVisibility();
       } else
       //if (_isAddInstructionsVisible) {
@@ -425,6 +444,12 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
           assetsToRemove: _removedPartsAssets,
           toggleRemovedAssets: _toggleRemovedAsset,
         ),
+      AddTaskActionAddSparePartCard(
+        toggleAssetSelection: _toggleAssetSelection,
+        toggleAddAssetVisibility: _toggleAddAssetVisibility,
+        sparePartsAssets: _addedPartsAssets,
+        isAddAssetVisible: _isAddAssetVisible,
+      ),
 // TODO: get spare part assets
     ];
 
@@ -432,11 +457,10 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
     return WillPopScope(
       onWillPop: () async {
-        // if (_isAddAssetVisible) {
-        //   _toggleAddAssetVisibility();
-        //   return false;
-        // } else
-        if (_isAddItemVisible) {
+        if (_isAddAssetVisible) {
+          _toggleAddAssetVisibility();
+          return false;
+        } else if (_isAddItemVisible) {
           _toggleAddItemVisibility();
           return false;
         }

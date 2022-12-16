@@ -9,6 +9,7 @@ import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../inventory/presentation/widgets/shimmer_item_tile.dart';
+import '../../../domain/entities/asset.dart';
 import '../../../utils/search_assets.dart';
 import '../../blocs/asset/asset_bloc.dart';
 import '../asset_tile.dart';
@@ -19,11 +20,13 @@ class OverlayAssetSelection extends StatefulWidget {
     required this.spareParts,
     required this.toggleSelection,
     required this.onDismiss,
+    this.onlyUnusedParts = false,
   }) : super(key: key);
 
   final List<String> spareParts;
   final Function(String) toggleSelection;
   final Function() onDismiss;
+  final bool onlyUnusedParts;
 
   @override
   State<OverlayAssetSelection> createState() => _OverlayAssetSelectionState();
@@ -137,12 +140,19 @@ class _OverlayAssetSelectionState extends State<OverlayAssetSelection>
                         final spareParts = state.allAssets.allAssets
                             .where((asset) => asset.isSparePart)
                             .toList();
-                        final filteredAssets = searchAssets(
+
+                        List<Asset> filteredAssets = searchAssets(
                           context,
                           // state.allAssets.allAssets,
                           spareParts,
                           _searchQuery,
                         );
+                        if (widget.onlyUnusedParts) {
+                          filteredAssets = filteredAssets
+                              .where((asset) =>
+                                  asset.isSparePart && !asset.isInUse)
+                              .toList();
+                        }
                         return ListView.builder(
                           padding: const EdgeInsets.only(top: 2),
                           shrinkWrap: true,
