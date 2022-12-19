@@ -2306,5 +2306,9 @@
     "task_action_add_assets": "Used parts",
     "@task_action_add_assets": {
       "description": "task action - add assets"
+    },
+    "task_action_used_items": "Used items",
+    "@task_action_used_items": {
+      "description": "task action - used items"
     }
 }

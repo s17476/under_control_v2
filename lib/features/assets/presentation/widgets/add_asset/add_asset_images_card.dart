@@ -70,10 +70,10 @@ class AddAssetImagesCard extends StatelessWidget with ResponsiveSize {
         ),
       );
     }
-    return SafeArea(
-      child: Stack(
-        children: [
-          Column(
+    return Stack(
+      children: [
+        SafeArea(
+          child: Column(
             children: [
               Expanded(
                 child: Column(
@@ -163,54 +163,54 @@ class AddAssetImagesCard extends StatelessWidget with ResponsiveSize {
               ),
             ],
           ),
-          if (images.length < 10)
-            Positioned(
-              bottom: 20,
-              right: 16,
-              child: FloatingActionButton.extended(
-                onPressed: () => _pickImage(context, ImageSource.camera),
-                label: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.camera,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!.take_photo,
-                    ),
-                  ],
-                ),
+        ),
+        if (images.length < 10)
+          Positioned(
+            bottom: 58,
+            right: 16,
+            child: FloatingActionButton.extended(
+              onPressed: () => _pickImage(context, ImageSource.camera),
+              label: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.camera,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.take_photo,
+                  ),
+                ],
               ),
             ),
-          if (images.length < 10)
-            Positioned(
-              bottom: 20,
-              left: 16,
-              child: FloatingActionButton.extended(
-                backgroundColor: Colors.blue.shade700,
-                onPressed: () => _pickImage(context, ImageSource.gallery),
-                label: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.photo_size_select_actual_rounded,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!
-                          .user_profile_add_user_personal_data_gallery,
-                    ),
-                  ],
-                ),
+          ),
+        if (images.length < 10)
+          Positioned(
+            bottom: 58,
+            left: 16,
+            child: FloatingActionButton.extended(
+              backgroundColor: Colors.blue.shade700,
+              onPressed: () => _pickImage(context, ImageSource.gallery),
+              label: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.photo_size_select_actual_rounded,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!
+                        .user_profile_add_user_personal_data_gallery,
+                  ),
+                ],
               ),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }

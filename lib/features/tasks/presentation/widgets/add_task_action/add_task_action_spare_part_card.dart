@@ -28,10 +28,10 @@ class AddTaskActionSparePartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Stack(
-        children: [
-          Column(
+    return Stack(
+      children: [
+        SafeArea(
+          child: Column(
             children: [
               Expanded(
                 child: Column(
@@ -44,7 +44,7 @@ class AddTaskActionSparePartCard extends StatelessWidget {
                         right: 8,
                       ),
                       child: Text(
-                        AppLocalizations.of(context)!.asset_add_spare_parts,
+                        AppLocalizations.of(context)!.task_action_used_items,
                         style: TextStyle(
                           fontSize:
                               Theme.of(context).textTheme.headline5!.fontSize,
@@ -59,8 +59,13 @@ class AddTaskActionSparePartCard extends StatelessWidget {
                         builder: (context, state) {
                           if (state is ItemsLoadedState) {
                             return ListView.builder(
-                              itemCount: sparePartsItems.length,
+                              itemCount: sparePartsItems.length + 1,
                               itemBuilder: (context, index) {
+                                if (index == sparePartsItems.length) {
+                                  return const SizedBox(
+                                    height: 100,
+                                  );
+                                }
                                 final item = state
                                     .getItemById(sparePartsItems[index].itemId);
                                 if (item != null) {
@@ -84,44 +89,43 @@ class AddTaskActionSparePartCard extends StatelessWidget {
               ),
             ],
           ),
-          Positioned(
-            bottom: 20,
-            right: 16,
-            child: FloatingActionButton.extended(
-              backgroundColor: Colors.orange.shade700,
-              onPressed: () {},
-              label: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.apps,
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    AppLocalizations.of(context)!
-                        .asset_add_spare_parts_inventory,
-                  ),
-                ],
-              ),
+        ),
+        Positioned(
+          bottom: 58,
+          right: 16,
+          child: FloatingActionButton.extended(
+            backgroundColor: Colors.orange.shade700,
+            onPressed: toggleAddItemVisibility,
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.apps,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.asset_add_spare_parts_inventory,
+                ),
+              ],
             ),
           ),
-          if (isAddItemVisible)
-            OverlayInventorySelection(
-              isMultiselection: true,
-              spareParts: sparePartsItems.map((e) => e.itemId).toList(),
-              toggleSelection: (itemId) => addItem(
-                SparePartItemModel(
-                  itemId: itemId,
-                  locationId: '',
-                  quantity: 0,
-                ),
+        ),
+        if (isAddItemVisible)
+          OverlayInventorySelection(
+            isMultiselection: true,
+            spareParts: sparePartsItems.map((e) => e.itemId).toList(),
+            toggleSelection: (itemId) => addItem(
+              SparePartItemModel(
+                itemId: itemId,
+                locationId: '',
+                quantity: 0,
               ),
-              onDismiss: toggleAddItemVisibility,
             ),
-        ],
-      ),
+            onDismiss: toggleAddItemVisibility,
+          ),
+      ],
     );
   }
 }

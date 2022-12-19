@@ -68,10 +68,10 @@ class _AddTaskActionAddParticipantsCardState
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Stack(
-        children: [
-          Column(
+    return Stack(
+      children: [
+        SafeArea(
+          child: Column(
             children: [
               Expanded(
                 child: Column(
@@ -215,36 +215,36 @@ class _AddTaskActionAddParticipantsCardState
               ),
             ],
           ),
-          Positioned(
-            bottom: 20,
-            right: 16,
-            child: FloatingActionButton.extended(
-              onPressed: () {
-                _resetSelectedUser();
-                widget.toggleIsAddUserVisible();
-              },
-              label: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.person_add),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    AppLocalizations.of(context)!.task_assign_users,
-                  ),
-                ],
-              ),
+        ),
+        Positioned(
+          bottom: 58,
+          right: 16,
+          child: FloatingActionButton.extended(
+            onPressed: () {
+              _resetSelectedUser();
+              widget.toggleIsAddUserVisible();
+            },
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.person_add),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.task_assign_users,
+                ),
+              ],
             ),
           ),
-          if (widget.isAddUsersVisible)
-            OverlayUsersSelection(
-              assignedUsers: widget.participants.map((p) => p.userId).toList(),
-              toggleUserSelection: widget.toggleParticipantSelection,
-              onDismiss: widget.toggleIsAddUserVisible,
-            ),
-        ],
-      ),
+        ),
+        if (widget.isAddUsersVisible)
+          OverlayUsersSelection(
+            assignedUsers: widget.participants.map((p) => p.userId).toList(),
+            toggleUserSelection: widget.toggleParticipantSelection,
+            onDismiss: widget.toggleIsAddUserVisible,
+          ),
+      ],
     );
   }
 }

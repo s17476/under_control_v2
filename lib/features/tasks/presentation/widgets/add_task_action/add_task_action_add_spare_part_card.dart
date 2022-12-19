@@ -20,10 +20,10 @@ class AddTaskActionAddSparePartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Stack(
-        children: [
-          Column(
+    return Stack(
+      children: [
+        SafeArea(
+          child: Column(
             children: [
               Expanded(
                 child: Column(
@@ -59,37 +59,37 @@ class AddTaskActionAddSparePartCard extends StatelessWidget {
               ),
             ],
           ),
-          Positioned(
-            bottom: 20,
-            right: 16,
-            child: FloatingActionButton.extended(
-              backgroundColor: Colors.blue.shade700,
-              onPressed: () {},
-              label: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.precision_manufacturing,
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    AppLocalizations.of(context)!.asset_add_spare_parts_assets,
-                  ),
-                ],
-              ),
+        ),
+        Positioned(
+          bottom: 58,
+          right: 16,
+          child: FloatingActionButton.extended(
+            backgroundColor: Colors.blue.shade700,
+            onPressed: toggleAddAssetVisibility,
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.precision_manufacturing,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.asset_add_spare_parts_assets,
+                ),
+              ],
             ),
           ),
-          if (isAddAssetVisible)
-            OverlayAssetSelection(
-              spareParts: sparePartsAssets,
-              toggleSelection: toggleAssetSelection,
-              onDismiss: toggleAddAssetVisibility,
-              onlyUnusedParts: true,
-            ),
-        ],
-      ),
+        ),
+        if (isAddAssetVisible)
+          OverlayAssetSelection(
+            spareParts: sparePartsAssets,
+            toggleSelection: toggleAssetSelection,
+            onDismiss: toggleAddAssetVisibility,
+            onlyUnusedParts: true,
+          ),
+      ],
     );
   }
 }
