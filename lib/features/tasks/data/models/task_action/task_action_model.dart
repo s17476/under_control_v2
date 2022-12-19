@@ -9,6 +9,7 @@ class TaskActionModel extends TaskAction {
   const TaskActionModel({
     required super.id,
     required super.taskId,
+    required super.replacementAssetId,
     required super.comment,
     required super.startTime,
     required super.stopTime,
@@ -22,6 +23,7 @@ class TaskActionModel extends TaskAction {
   TaskActionModel copyWith({
     String? id,
     String? taskId,
+    String? replacementAssetId,
     String? comment,
     DateTime? startTime,
     DateTime? stopTime,
@@ -34,6 +36,7 @@ class TaskActionModel extends TaskAction {
     return TaskActionModel(
       id: id ?? this.id,
       taskId: taskId ?? this.taskId,
+      replacementAssetId: replacementAssetId ?? this.replacementAssetId,
       comment: comment ?? this.comment,
       startTime: startTime ?? this.startTime,
       stopTime: stopTime ?? this.stopTime,
@@ -49,6 +52,7 @@ class TaskActionModel extends TaskAction {
     final result = <String, dynamic>{};
 
     result.addAll({'taskId': taskId});
+    result.addAll({'replacementAssetId': replacementAssetId});
     result.addAll({'comment': comment});
     result.addAll({'startTime': startTime});
     result.addAll({'stopTime': stopTime});
@@ -83,6 +87,7 @@ class TaskActionModel extends TaskAction {
     return TaskActionModel(
       id: id,
       taskId: map['taskId'] ?? '',
+      replacementAssetId: map['replacementAssetId'] ?? '',
       comment: map['comment'] ?? '',
       startTime: startTime,
       stopTime: stopTime,
@@ -120,6 +125,7 @@ class TaskActionModel extends TaskAction {
       removedPartsAssets: taskAction.removedPartsAssets,
       sparePartsItems: taskAction.sparePartsItems,
       taskId: taskAction.taskId,
+      replacementAssetId: taskAction.replacementAssetId,
       usersActions: taskAction.usersActions,
     );
   }

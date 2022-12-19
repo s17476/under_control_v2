@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/loading_widget.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';

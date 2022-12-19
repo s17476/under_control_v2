@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/select_new_assets_data_page.dart';
 
 import '../../../../assets/data/models/asset_model.dart';
 import '../../../../assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
@@ -26,6 +27,7 @@ class AddTaskActionRemoveAssetCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // title
                     Padding(
@@ -45,6 +47,26 @@ class AddTaskActionRemoveAssetCard extends StatelessWidget {
                     const Divider(
                       thickness: 1.5,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context)!.task_connected_asset,
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption!
+                            .copyWith(fontSize: 18),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context)!.asset_spare_parts,
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption!
+                            .copyWith(fontSize: 18),
+                      ),
+                    ),
                     BlocBuilder<AssetPartsBloc, AssetPartsState>(
                       builder: (context, state) {
                         if (state is AssetPartsLoadedState) {
@@ -57,7 +79,9 @@ class AddTaskActionRemoveAssetCard extends StatelessWidget {
                               return AssetToRemoveTile(
                                 asset: AssetModel.fromAsset(asset),
                                 toggleRemovedAssets: toggleRemovedAssets,
-                                isRemoved: assetsToRemove.contains(asset),
+                                isRemoved: assetsToRemove
+                                    .map((e) => e.id)
+                                    .contains(asset.id),
                               );
                             },
                           );
@@ -93,6 +117,22 @@ class AssetToRemoveTile extends StatelessWidget {
   final Function(AssetModel) toggleRemovedAssets;
   final bool isRemoved;
 
+  void selectNewDataAndRemove(BuildContext context) async {
+    if (isRemoved) {
+      toggleRemovedAssets(asset);
+    } else {
+      final updatedAsset = await Navigator.pushNamed(
+        context,
+        SelectNewAssetDataPage.routeName,
+        arguments: asset,
+      );
+      await Future.delayed(const Duration(milliseconds: 300));
+      if (updatedAsset != null && updatedAsset is AssetModel) {
+        toggleRemovedAssets(updatedAsset);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     const borderRadius = 15.0;
@@ -110,7 +150,7 @@ class AssetToRemoveTile extends StatelessWidget {
           ),
           child: InkWell(
             borderRadius: BorderRadius.circular(borderRadius),
-            onTap: () => toggleRemovedAssets(asset),
+            onTap: () => selectNewDataAndRemove(context),
             child: IgnorePointer(
               child: AssetTile(
                 asset: asset,

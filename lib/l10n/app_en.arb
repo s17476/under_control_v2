@@ -27,6 +27,10 @@
     "@add": {
       "description": "Add"
     },
+    "remove": "Remove",
+    "@remove": {
+      "description": "Remove"
+    },
     "skip": "Skip",
     "@skip": {
       "description": "Skip"

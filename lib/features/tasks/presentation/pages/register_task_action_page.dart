@@ -43,6 +43,8 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   bool _loadingImages = false;
   bool _isAddItemVisible = false;
   bool _isAddAssetVisible = false;
+  bool _isAddUsersVisible = false;
+  bool _hasChildrenAssets = false;
 
   // pageview
   List<Widget> _pages = [];
@@ -64,9 +66,8 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   final List<AssetModel> _removedPartsAssets = [];
   final List<String> _addedPartsAssets = [];
 
-  bool _isAddUsersVisible = false;
-
-  bool _hasChildrenAssets = false;
+  AssetModel? _replacedAsset;
+  AssetModel? _replacementAsset;
 
   _addNewTaskAction(BuildContext context) {
     // String errorMessage = '';
@@ -187,6 +188,21 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
   // TODO: update start/stop times
 
+  void _replaceConnectedAsset(AssetModel? asset) {
+    setState(() {
+      _replacedAsset = asset;
+      if (asset == null) {
+        _replacementAsset = null;
+      }
+    });
+  }
+
+  void _setReplacementAsset(AssetModel? asset) {
+    setState(() {
+      _replacedAsset = asset;
+    });
+  }
+
   void _addImage(File image) {
     setState(() {
       _images.add(image);
@@ -246,9 +262,11 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   }
 
   void _toggleRemovedAsset(AssetModel asset) {
-    if (_removedPartsAssets.contains(asset)) {
+    if (_removedPartsAssets.map((e) => e.id).contains(asset.id)) {
       setState(() {
-        _removedPartsAssets.remove(asset);
+        _removedPartsAssets.removeWhere(
+          (element) => element.id == asset.id,
+        );
       });
     } else {
       setState(() {

@@ -8,7 +8,6 @@ import 'package:injectable/injectable.dart';
 import '../../../../assets/data/models/assets_list_model.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../../../data/models/asset_model.dart';
 import '../../../domain/usecases/get_assets_stream_for_parent.dart';
 
 part 'asset_parts_event.dart';
