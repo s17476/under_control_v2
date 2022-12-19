@@ -73,49 +73,60 @@ class AddTaskAssignCard extends StatelessWidget with ResponsiveSize {
                               onSelected: toggleGroupSelection,
                               selectedGroups: assignedGroups,
                             ),
+                            const SizedBox(
+                              height: 100,
+                            )
                           ],
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 4,
-                      ),
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).primaryColor,
-                        ),
-                        onPressed: toggleAddUsersVisibility,
-                        icon: const Icon(Icons.person_add),
-                        label: Text(
-                          AppLocalizations.of(context)!.task_assign_users,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 4,
-                      ),
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue.shade700,
-                        ),
-                        onPressed: toggleAddGroupsVisibility,
-                        icon: const Icon(Icons.group_add),
-                        label: Text(
-                          AppLocalizations.of(context)!.task_assign_groups,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 50,
                     ),
                   ],
                 ),
               ),
             ],
+          ),
+        ),
+        Positioned(
+          bottom: 58,
+          right: 16,
+          child: FloatingActionButton.extended(
+            onPressed: toggleAddUsersVisibility,
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.person_add,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.task_assign_users,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 58,
+          left: 16,
+          child: FloatingActionButton.extended(
+            backgroundColor: Colors.blue.shade700,
+            onPressed: toggleAddGroupsVisibility,
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.group_add,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.task_assign_groups,
+                ),
+              ],
+            ),
           ),
         ),
         if (isAddGroupsVisible)

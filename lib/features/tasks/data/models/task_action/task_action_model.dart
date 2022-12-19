@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
+import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 
 import '../../../domain/entities/task_action/task_action.dart';
 import '../task/spare_part_item_model.dart';
@@ -9,6 +10,8 @@ class TaskActionModel extends TaskAction {
   const TaskActionModel({
     required super.id,
     required super.taskId,
+    required super.replacedAssetStatus,
+    required super.replacedAssetLocationId,
     required super.replacementAssetId,
     required super.comment,
     required super.startTime,
@@ -23,6 +26,8 @@ class TaskActionModel extends TaskAction {
   TaskActionModel copyWith({
     String? id,
     String? taskId,
+    AssetStatus? replacedAssetStatus,
+    String? replacedAssetLocationId,
     String? replacementAssetId,
     String? comment,
     DateTime? startTime,
@@ -36,6 +41,9 @@ class TaskActionModel extends TaskAction {
     return TaskActionModel(
       id: id ?? this.id,
       taskId: taskId ?? this.taskId,
+      replacedAssetStatus: replacedAssetStatus ?? this.replacedAssetStatus,
+      replacedAssetLocationId:
+          replacedAssetLocationId ?? this.replacedAssetLocationId,
       replacementAssetId: replacementAssetId ?? this.replacementAssetId,
       comment: comment ?? this.comment,
       startTime: startTime ?? this.startTime,
@@ -52,6 +60,8 @@ class TaskActionModel extends TaskAction {
     final result = <String, dynamic>{};
 
     result.addAll({'taskId': taskId});
+    result.addAll({'replacedAssetStatus': replacedAssetStatus.name});
+    result.addAll({'replacedAssetLocationId': replacedAssetLocationId});
     result.addAll({'replacementAssetId': replacementAssetId});
     result.addAll({'comment': comment});
     result.addAll({'startTime': startTime});
@@ -87,6 +97,9 @@ class TaskActionModel extends TaskAction {
     return TaskActionModel(
       id: id,
       taskId: map['taskId'] ?? '',
+      replacedAssetStatus:
+          AssetStatus.fromString(map['replacedAssetStatus'] ?? ''),
+      replacedAssetLocationId: map['replacedAssetLocationId'] ?? '',
       replacementAssetId: map['replacementAssetId'] ?? '',
       comment: map['comment'] ?? '',
       startTime: startTime,
@@ -126,6 +139,8 @@ class TaskActionModel extends TaskAction {
       sparePartsItems: taskAction.sparePartsItems,
       taskId: taskAction.taskId,
       replacementAssetId: taskAction.replacementAssetId,
+      replacedAssetLocationId: taskAction.replacedAssetLocationId,
+      replacedAssetStatus: taskAction.replacedAssetStatus,
       usersActions: taskAction.usersActions,
     );
   }

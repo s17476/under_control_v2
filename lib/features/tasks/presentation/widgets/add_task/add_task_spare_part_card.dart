@@ -110,101 +110,8 @@ class _AddTaskSparePartCardState extends State<AddTaskSparePartCard>
                               updateSparePartQuantity:
                                   widget.updateSparePartQuantity,
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    AnimatedSize(
-                      duration: const Duration(milliseconds: 300),
-                      child: SizedBox(
-                        // height: _isVisible ? null : 0,
-                        child: Column(
-                          children: [
-                            // add spareparts from assets button
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 4,
-                              ),
-                              child: ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue.shade700,
-                                ),
-                                onPressed: widget.toggleAddAssetVisibility,
-                                icon: SizedBox(
-                                  height: 30,
-                                  width: 30,
-                                  child: Stack(
-                                    children: const [
-                                      Positioned(
-                                        top: 0,
-                                        right: 0,
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 15,
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        left: 0,
-                                        child: Icon(
-                                          Icons.precision_manufacturing,
-                                          size: 22,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                label: Text(
-                                  AppLocalizations.of(context)!
-                                      .asset_add_spare_parts_assets,
-                                ),
-                              ),
-                            ),
-                            // add spareparts from inventory button
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 4,
-                              ),
-                              child: ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange.shade700,
-                                ),
-                                onPressed: widget.toggleAddItemVisibility,
-                                icon: SizedBox(
-                                  height: 30,
-                                  width: 30,
-                                  child: Stack(
-                                    children: const [
-                                      Positioned(
-                                        top: 0,
-                                        right: 0,
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 15,
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        left: 0,
-                                        child: Icon(
-                                          Icons.apps,
-                                          size: 22,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                label: Text(
-                                  AppLocalizations.of(context)!
-                                      .asset_add_spare_parts_inventory,
-                                ),
-                              ),
-                            ),
                             const SizedBox(
-                              height: 50,
+                              height: 100,
                             ),
                           ],
                         ),
@@ -214,6 +121,50 @@ class _AddTaskSparePartCardState extends State<AddTaskSparePartCard>
                 ),
               ),
             ],
+          ),
+        ),
+        Positioned(
+          bottom: 58,
+          right: 16,
+          child: FloatingActionButton.extended(
+            backgroundColor: Colors.orange.shade700,
+            onPressed: widget.toggleAddItemVisibility,
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.apps,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.bottom_bar_title_inventory,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 58,
+          left: 16,
+          child: FloatingActionButton.extended(
+            backgroundColor: Colors.blue.shade700,
+            onPressed: widget.toggleAddAssetVisibility,
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.precision_manufacturing,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.bottom_bar_title_assets,
+                ),
+              ],
+            ),
           ),
         ),
         if (widget.isAddAssetVisible)

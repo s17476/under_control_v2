@@ -60,97 +60,109 @@ class AddAssetDocumentsCard extends StatelessWidget with ResponsiveSize {
         ),
       );
     }
-    return SafeArea(
-      child: Column(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                // title
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 12,
-                    left: 8,
-                    right: 8,
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context)!.asset_add_documents,
-                    style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+    return Stack(
+      children: [
+        SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    // title
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 12,
+                        left: 8,
+                        right: 8,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.asset_add_documents,
+                        style: TextStyle(
+                          fontSize:
+                              Theme.of(context).textTheme.headline5!.fontSize,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const Divider(
-                  thickness: 1.5,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: documents.length,
-                      itemBuilder: (context, index) => Stack(
-                        key: ValueKey(documents[index].path),
-                        children: [
-                          AspectRatio(
-                            aspectRatio: 2 / 3,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 16,
-                              ),
-                              child: PdfViewer(path: documents[index].path),
-                            ),
-                          ),
-                          Positioned(
-                            top: 16,
-                            left: 16,
-                            child: IconButton(
-                              onPressed: () => removeDocument(documents[index]),
-                              icon: const Icon(
-                                Icons.delete,
-                                size: 30,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.black,
-                                    blurRadius: 25,
+                    const Divider(
+                      thickness: 1.5,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: documents.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == documents.length) {
+                              return const SizedBox(height: 100);
+                            }
+                            return Stack(
+                              key: ValueKey(documents[index].path),
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 2 / 3,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 8,
+                                      horizontal: 16,
+                                    ),
+                                    child:
+                                        PdfViewer(path: documents[index].path),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                                ),
+                                Positioned(
+                                  top: 16,
+                                  left: 16,
+                                  child: IconButton(
+                                    onPressed: () =>
+                                        removeDocument(documents[index]),
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      size: 30,
+                                      shadows: [
+                                        Shadow(
+                                          color: Colors.black,
+                                          blurRadius: 25,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-
-                // pick pfd
-                if (documents.length < 10)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 4,
-                    ),
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue.shade700,
-                      ),
-                      onPressed: () => _pickPdfFile(context),
-                      icon: const FaIcon(FontAwesomeIcons.filePdf),
-                      label: Text(
-                        AppLocalizations.of(context)!.asset_add_pdf,
-                      ),
-                    ),
-                  ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 58,
+          right: 16,
+          child: FloatingActionButton.extended(
+            backgroundColor: Colors.blue.shade700,
+            onPressed: () => _pickPdfFile(context),
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const FaIcon(
+                  FontAwesomeIcons.filePdf,
+                ),
                 const SizedBox(
-                  height: 50,
+                  width: 8,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.asset_add_pdf,
                 ),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

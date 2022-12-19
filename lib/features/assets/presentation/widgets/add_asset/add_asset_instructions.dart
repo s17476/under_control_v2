@@ -44,19 +44,35 @@ class AddAssetInstructionsCard extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    // add spareparts from inventory button
-                    AddInstructionsButton(
-                      toggleAddInstructionsVisibility:
-                          toggleAddInstructionsVisibility,
-                    ),
                     const SizedBox(
-                      height: 50,
+                      height: 100,
                     ),
                   ],
                 ),
               ),
             ],
+          ),
+        ),
+        Positioned(
+          bottom: 58,
+          right: 16,
+          child: FloatingActionButton.extended(
+            backgroundColor: Colors.deepPurple.shade700,
+            onPressed: toggleAddInstructionsVisibility,
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.menu_book,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.asset_add_instructions,
+                ),
+              ],
+            ),
           ),
         ),
         if (isAddInstructionsVisible)
@@ -157,58 +173,6 @@ class InstructionsList extends StatelessWidget {
           );
         }
       },
-    );
-  }
-}
-
-class AddInstructionsButton extends StatelessWidget {
-  const AddInstructionsButton({
-    Key? key,
-    required this.toggleAddInstructionsVisibility,
-  }) : super(key: key);
-
-  final Function() toggleAddInstructionsVisibility;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 4,
-      ),
-      child: ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.deepPurple.shade700,
-        ),
-        onPressed: toggleAddInstructionsVisibility,
-        icon: SizedBox(
-          height: 30,
-          width: 30,
-          child: Stack(
-            children: const [
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Icon(
-                  Icons.add,
-                  size: 15,
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                child: Icon(
-                  Icons.menu_book,
-                  size: 22,
-                ),
-              ),
-            ],
-          ),
-        ),
-        label: Text(
-          AppLocalizations.of(context)!.asset_add_instructions,
-        ),
-      ),
     );
   }
 }
