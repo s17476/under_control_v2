@@ -44,7 +44,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   bool _isAddItemVisible = false;
   bool _isAddAssetVisible = false;
   bool _isAddUsersVisible = false;
-  bool _hasChildrenAssets = false;
+  // bool _hasChildrenAssets = false;
 
   // pageview
   List<Widget> _pages = [];
@@ -188,16 +188,20 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
   // TODO: update start/stop times
 
-  void _replaceConnectedAsset(AssetModel? asset) {
-    setState(() {
-      _replacedAsset = asset;
-      if (asset == null) {
+  void _toggleReplaceConnectedAsset(AssetModel asset) {
+    if (_replacedAsset != null) {
+      setState(() {
+        _replacedAsset = null;
         _replacementAsset = null;
-      }
-    });
+      });
+    } else {
+      setState(() {
+        _replacedAsset = asset;
+      });
+    }
   }
 
-  void _setReplacementAsset(AssetModel? asset) {
+  void _toggleReplacementAsset(AssetModel? asset) {
     setState(() {
       _replacedAsset = asset;
     });
@@ -401,13 +405,13 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
     final assetPartsState = context.watch<AssetPartsBloc>().state;
 
-    if (_task != null && _task!.assetId.isNotEmpty) {
-      _hasChildrenAssets = assetPartsState is AssetPartsLoadedState &&
-          assetPartsState.parentId == _task!.assetId &&
-          assetPartsState.allAssetParts.allAssets.isNotEmpty;
-    } else {
-      _hasChildrenAssets = false;
-    }
+    // if (_task != null && _task!.assetId.isNotEmpty) {
+    //   _hasChildrenAssets = assetPartsState is AssetPartsLoadedState &&
+    //       assetPartsState.parentId == _task!.assetId &&
+    //       assetPartsState.allAssetParts.allAssets.isNotEmpty;
+    // } else {
+    //   _hasChildrenAssets = false;
+    // }
     // TODO: add edit case
 
     super.didChangeDependencies();
@@ -450,11 +454,15 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         sparePartsItems: _sparePartsItems,
         isAddItemVisible: _isAddItemVisible,
       ),
-      if (_hasChildrenAssets)
+      if (_task!.assetId.isNotEmpty)
         AddTaskActionRemoveAssetCard(
           assetsToRemove: _removedPartsAssets,
           toggleRemovedAssets: _toggleRemovedAsset,
+          replaceConnectedAssets: _toggleReplaceConnectedAsset,
+          connectedAssetId: _task!.assetId,
+          replacedAsset: _replacedAsset,
         ),
+      // TODO
       AddTaskActionAddSparePartCard(
         toggleAssetSelection: _toggleAssetSelection,
         toggleAddAssetVisibility: _toggleAddAssetVisibility,

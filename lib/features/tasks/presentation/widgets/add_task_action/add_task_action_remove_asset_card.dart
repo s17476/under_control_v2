@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:under_control_v2/features/inventory/presentation/widgets/shimmer_item_tile.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/select_new_assets_data_page.dart';
 
 import '../../../../assets/data/models/asset_model.dart';
+import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
@@ -11,12 +14,18 @@ import '../../../../assets/presentation/widgets/asset_tile.dart';
 class AddTaskActionRemoveAssetCard extends StatelessWidget {
   const AddTaskActionRemoveAssetCard({
     Key? key,
+    required this.replaceConnectedAssets,
     required this.toggleRemovedAssets,
     required this.assetsToRemove,
+    required this.connectedAssetId,
+    required this.replacedAsset,
   }) : super(key: key);
 
+  final Function(AssetModel) replaceConnectedAssets;
   final Function(AssetModel) toggleRemovedAssets;
   final List<AssetModel> assetsToRemove;
+  final String connectedAssetId;
+  final AssetModel? replacedAsset;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +36,6 @@ class AddTaskActionRemoveAssetCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // title
                     Padding(
@@ -47,7 +55,8 @@ class AddTaskActionRemoveAssetCard extends StatelessWidget {
                     const Divider(
                       thickness: 1.5,
                     ),
-                    Padding(
+                    Container(
+                      alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         AppLocalizations.of(context)!.task_connected_asset,
@@ -57,7 +66,23 @@ class AddTaskActionRemoveAssetCard extends StatelessWidget {
                             .copyWith(fontSize: 18),
                       ),
                     ),
-                    Padding(
+                    BlocBuilder<AssetBloc, AssetState>(
+                      builder: (context, state) {
+                        if (state is AssetLoadedState) {
+                          final asset = state.getAssetById(connectedAssetId);
+
+                          return AssetToRemoveTile(
+                            asset: AssetModel.fromAsset(asset!),
+                            toggleRemovedAssets: replaceConnectedAssets,
+                            isRemoved: replacedAsset != null,
+                          );
+                        } else {
+                          return const ShimmerItemTile();
+                        }
+                      },
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         AppLocalizations.of(context)!.asset_spare_parts,
