@@ -81,34 +81,40 @@ class AddTaskActionRemoveAssetCard extends StatelessWidget {
                         }
                       },
                     ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        AppLocalizations.of(context)!.asset_spare_parts,
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(fontSize: 18),
-                      ),
-                    ),
                     BlocBuilder<AssetPartsBloc, AssetPartsState>(
                       builder: (context, state) {
                         if (state is AssetPartsLoadedState) {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: state.allAssetParts.allAssets.length,
-                            itemBuilder: (context, index) {
-                              final asset =
-                                  state.allAssetParts.allAssets[index];
-                              return AssetToRemoveTile(
-                                asset: AssetModel.fromAsset(asset),
-                                toggleRemovedAssets: toggleRemovedAssets,
-                                isRemoved: assetsToRemove
-                                    .map((e) => e.id)
-                                    .contains(asset.id),
-                              );
-                            },
+                          return Column(
+                            children: [
+                              if (state.allAssetParts.allAssets.isNotEmpty)
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .asset_spare_parts,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .caption!
+                                        .copyWith(fontSize: 18),
+                                  ),
+                                ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: state.allAssetParts.allAssets.length,
+                                itemBuilder: (context, index) {
+                                  final asset =
+                                      state.allAssetParts.allAssets[index];
+                                  return AssetToRemoveTile(
+                                    asset: AssetModel.fromAsset(asset),
+                                    toggleRemovedAssets: toggleRemovedAssets,
+                                    isRemoved: assetsToRemove
+                                        .map((e) => e.id)
+                                        .contains(asset.id),
+                                  );
+                                },
+                              ),
+                            ],
                           );
                         } else {
                           return ListView.builder(

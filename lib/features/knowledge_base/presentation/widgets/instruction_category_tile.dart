@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../data/models/inventory_category/instruction_category_model.dart';
 import '../../domain/entities/instruction_category/instruction_category.dart';
@@ -52,7 +52,7 @@ class InstructionCategoryTile extends StatelessWidget {
                   if (getUserPremission(
                     context: context,
                     featureType: FeatureType.inventory,
-                    premissionType: PremissionType.edit,
+                    premissionType: PermissionType.edit,
                   ))
                     IconButton(
                       onPressed: () {
@@ -71,7 +71,7 @@ class InstructionCategoryTile extends StatelessWidget {
                   if (getUserPremission(
                     context: context,
                     featureType: FeatureType.inventory,
-                    premissionType: PremissionType.delete,
+                    premissionType: PermissionType.delete,
                   ))
                     IconButton(
                       onPressed: () {

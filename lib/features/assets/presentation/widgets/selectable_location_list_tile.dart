@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/utils/get_user_premission.dart';
 import '../../../core/utils/location_selection_helpers.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../locations/domain/entities/location.dart';
@@ -44,7 +44,7 @@ class _SelectableLocationsListTileState
     _isAvailable = getUserPremission(
       context: context,
       featureType: FeatureType.assets,
-      premissionType: PremissionType.create,
+      premissionType: PermissionType.create,
       locationId: widget.location.id,
     );
     super.initState();

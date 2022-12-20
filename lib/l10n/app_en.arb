@@ -2314,5 +2314,13 @@
     "task_action_used_items": "Used items",
     "@task_action_used_items": {
       "description": "task action - used items"
+    },
+    "task_action_add_replacement_asset": "Add replacement asset",
+    "@task_action_add_assets": {
+      "description": "task action - add replacement"
+    },
+    "task_action_asset_already_in_use_err_msg": "This asset is already in use",
+    "@task_action_asset_already_in_use_err_msg": {
+      "description": "task action - asset already in use"
     }
 }

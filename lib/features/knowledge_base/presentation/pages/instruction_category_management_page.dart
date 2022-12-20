@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -82,7 +82,7 @@ class _InstructionCategoryManagementPageState
       floatingActionButton: getUserPremission(
         context: context,
         featureType: FeatureType.inventory,
-        premissionType: PremissionType.create,
+        premissionType: PermissionType.create,
       )
           ? context.watch<InstructionCategoryBloc>().state
                   is InstructionCategoryLoadedState

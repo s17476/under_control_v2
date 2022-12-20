@@ -24,7 +24,7 @@ import '../../../tasks/presentation/widgets/app_bar_tasks_filter/app_bar_tasks_f
 import '../../../tasks/utils/task_management_bloc_listener.dart';
 import '../../../tasks/utils/work_request_management_bloc_listener.dart';
 import '../../utils/get_user_premission.dart';
-import '../../utils/premission.dart';
+import '../../utils/permission.dart';
 import '../../utils/show_snack_bar.dart';
 import '../../utils/size_config.dart';
 import '../widgets/home_page/app_bar_search_box.dart';
@@ -226,28 +226,28 @@ class _HomePageState extends State<HomePage>
         !getUserPremission(
           context: context,
           featureType: FeatureType.tasks,
-          premissionType: PremissionType.read,
+          premissionType: PermissionType.read,
         )) {
       premision = false;
     } else if (_pageIndex == 1 &&
         !getUserPremission(
           context: context,
           featureType: FeatureType.inventory,
-          premissionType: PremissionType.read,
+          premissionType: PermissionType.read,
         )) {
       premision = false;
     } else if (_pageIndex == 3 &&
         !getUserPremission(
           context: context,
           featureType: FeatureType.assets,
-          premissionType: PremissionType.read,
+          premissionType: PermissionType.read,
         )) {
       premision = false;
     } else if (_pageIndex == 4 &&
         !getUserPremission(
           context: context,
           featureType: FeatureType.knowledgeBase,
-          premissionType: PremissionType.read,
+          premissionType: PermissionType.read,
         )) {
       premision = false;
     }

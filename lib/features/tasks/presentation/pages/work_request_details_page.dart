@@ -9,7 +9,7 @@ import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../domain/entities/work_request/work_request.dart';
@@ -78,7 +78,7 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
           if (getUserPremission(
             context: context,
             featureType: FeatureType.tasks,
-            premissionType: PremissionType.create,
+            premissionType: PermissionType.create,
           ))
             Choice(
               title: AppLocalizations.of(context)!.work_request_convert,
@@ -93,7 +93,7 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
           if (getUserPremission(
             context: context,
             featureType: FeatureType.tasks,
-            premissionType: PremissionType.edit,
+            premissionType: PermissionType.edit,
           ))
             Choice(
               title: AppLocalizations.of(context)!.edit,
@@ -108,7 +108,7 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
           if (getUserPremission(
             context: context,
             featureType: FeatureType.tasks,
-            premissionType: PremissionType.delete,
+            premissionType: PermissionType.delete,
           ))
             Choice(
               title: AppLocalizations.of(context)!.work_request_cancel,
@@ -157,7 +157,7 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
                 getUserPremission(
                   context: context,
                   featureType: FeatureType.tasks,
-                  premissionType: PremissionType.create,
+                  premissionType: PermissionType.create,
                 ))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {

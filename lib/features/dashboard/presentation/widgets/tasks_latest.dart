@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../tasks/domain/entities/task/task.dart';
 import '../../../tasks/presentation/blocs/task/task_bloc.dart';
@@ -40,7 +40,7 @@ class _TasksLatestState extends State<TasksLatest> {
     final premission = getUserPremission(
       context: context,
       featureType: FeatureType.tasks,
-      premissionType: PremissionType.read,
+      premissionType: PermissionType.read,
     );
     return !premission
         ? const SizedBox()

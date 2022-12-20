@@ -8,7 +8,7 @@ import '../../../assets/presentation/widgets/asset_tile.dart';
 import '../../../assets/utils/asset_status.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../inventory/presentation/widgets/shimmer_item_tile.dart';
 import '../pages/all_assets_without_inspection_list_page.dart';
@@ -43,7 +43,7 @@ class _AssetsWithoutInspectionState extends State<AssetsWithoutInspection> {
     final premission = getUserPremission(
       context: context,
       featureType: FeatureType.assets,
-      premissionType: PremissionType.read,
+      premissionType: PermissionType.read,
     );
     if (_assets != null && _assets!.isEmpty) {
       return const SizedBox();

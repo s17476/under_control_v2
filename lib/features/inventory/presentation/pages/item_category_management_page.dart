@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
@@ -131,7 +131,7 @@ class _ItemCategoryManagementPageState
       floatingActionButton: getUserPremission(
         context: context,
         featureType: FeatureType.inventory,
-        premissionType: PremissionType.create,
+        premissionType: PermissionType.create,
       )
           ? context.watch<ItemCategoryBloc>().state is ItemCategoryLoadedState
               ? FloatingActionButton.extended(

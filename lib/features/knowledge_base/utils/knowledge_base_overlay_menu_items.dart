@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/utils/choice.dart';
 import '../../core/utils/get_user_premission.dart';
-import '../../core/utils/premission.dart';
+import '../../core/utils/permission.dart';
 import '../../groups/domain/entities/feature.dart';
 import '../presentation/pages/add_instruction_page.dart';
 import '../presentation/pages/instruction_category_management_page.dart';
@@ -13,7 +13,7 @@ List<Choice> knowledgeBaseOverlayMenuItems(BuildContext context) {
     if (getUserPremission(
       context: context,
       featureType: FeatureType.knowledgeBase,
-      premissionType: PremissionType.create,
+      premissionType: PermissionType.create,
     ))
       Choice(
         title: AppLocalizations.of(context)!.instruction_add,

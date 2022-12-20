@@ -9,7 +9,7 @@ import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../domain/entities/task/task.dart';
@@ -80,7 +80,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
           if (getUserPremission(
             context: context,
             featureType: FeatureType.tasks,
-            premissionType: PremissionType.edit,
+            premissionType: PermissionType.edit,
           ))
             Choice(
               title: AppLocalizations.of(context)!.edit,
@@ -95,7 +95,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
           if (getUserPremission(
             context: context,
             featureType: FeatureType.tasks,
-            premissionType: PremissionType.delete,
+            premissionType: PermissionType.delete,
           ))
             Choice(
               title: AppLocalizations.of(context)!.task_cancel,
@@ -143,7 +143,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
                 getUserPremission(
                   context: context,
                   featureType: FeatureType.tasks,
-                  premissionType: PremissionType.edit,
+                  premissionType: PermissionType.edit,
                 ))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {

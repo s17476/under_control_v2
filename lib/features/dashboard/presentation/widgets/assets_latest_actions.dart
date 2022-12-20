@@ -8,7 +8,7 @@ import '../../../assets/presentation/widgets/asset_details/asset_action_tile.dar
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../pages/all_asset_actions_page.dart';
 
@@ -39,7 +39,7 @@ class _AssetsLatestActionsState extends State<AssetsLatestActions> {
     final premission = getUserPremission(
       context: context,
       featureType: FeatureType.assets,
-      premissionType: PremissionType.read,
+      premissionType: PermissionType.read,
     );
     return !premission
         ? const SizedBox()

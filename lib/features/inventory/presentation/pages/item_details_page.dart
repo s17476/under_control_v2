@@ -9,7 +9,7 @@ import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart'
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../groups/domain/entities/feature.dart';
@@ -75,7 +75,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
           if (getUserPremission(
             context: context,
             featureType: FeatureType.inventory,
-            premissionType: PremissionType.edit,
+            premissionType: PermissionType.edit,
           ))
             Choice(
               title: AppLocalizations.of(context)!.edit,
@@ -89,7 +89,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
           if (getUserPremission(
             context: context,
             featureType: FeatureType.inventory,
-            premissionType: PremissionType.delete,
+            premissionType: PermissionType.delete,
           ))
             Choice(
               title: AppLocalizations.of(context)!.delete,
@@ -151,7 +151,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
             if (getUserPremission(
               context: context,
               featureType: FeatureType.inventory,
-              premissionType: PremissionType.edit,
+              premissionType: PermissionType.edit,
             ))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {

@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../inventory/domain/entities/item.dart';
@@ -67,7 +67,7 @@ class _InventoryLowLevelItemsState extends State<InventoryLowLevelItems> {
     final premission = getUserPremission(
       context: context,
       featureType: FeatureType.inventory,
-      premissionType: PremissionType.read,
+      premissionType: PermissionType.read,
     );
     return !premission
         ? const SizedBox()

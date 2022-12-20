@@ -11,7 +11,7 @@ import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/presentation/widgets/user_info_card.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../domain/entities/instruction.dart';
@@ -92,7 +92,7 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
           if (getUserPremission(
             context: context,
             featureType: FeatureType.knowledgeBase,
-            premissionType: PremissionType.edit,
+            premissionType: PermissionType.edit,
           ))
             Choice(
               title: AppLocalizations.of(context)!.edit,
@@ -106,7 +106,7 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
           if (getUserPremission(
             context: context,
             featureType: FeatureType.knowledgeBase,
-            premissionType: PremissionType.delete,
+            premissionType: PermissionType.delete,
           ))
             Choice(
               title: AppLocalizations.of(context)!.delete,
@@ -192,7 +192,7 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
                     if (getUserPremission(
                       context: context,
                       featureType: FeatureType.knowledgeBase,
-                      premissionType: PremissionType.edit,
+                      premissionType: PermissionType.edit,
                     ))
                       PopupMenuButton<Choice>(
                         onSelected: (Choice choice) {

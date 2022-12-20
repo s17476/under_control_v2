@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../blocs/task_filter/task_filter_bloc.dart';
@@ -21,7 +21,7 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
     final premission = getUserPremission(
       context: context,
       featureType: FeatureType.tasks,
-      premissionType: PremissionType.read,
+      premissionType: PermissionType.read,
     );
     return CustomScrollView(
       slivers: [

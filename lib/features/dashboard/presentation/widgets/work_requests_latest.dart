@@ -8,7 +8,7 @@ import 'package:under_control_v2/features/tasks/presentation/widgets/work_reques
 
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../tasks/domain/entities/work_request/work_request.dart';
 
@@ -42,7 +42,7 @@ class _WorkRequestsLatestState extends State<WorkRequestsLatest> {
     final premission = getUserPremission(
       context: context,
       featureType: FeatureType.tasks,
-      premissionType: PremissionType.read,
+      premissionType: PermissionType.read,
     );
     return !premission
         ? const SizedBox()

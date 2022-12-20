@@ -7,7 +7,7 @@ import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart'
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
@@ -71,7 +71,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
           if (getUserPremission(
             context: context,
             featureType: FeatureType.assets,
-            premissionType: PremissionType.edit,
+            premissionType: PermissionType.edit,
           ))
             Choice(
               title: AppLocalizations.of(context)!.edit,
@@ -86,7 +86,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
           if (getUserPremission(
             context: context,
             featureType: FeatureType.assets,
-            premissionType: PremissionType.create,
+            premissionType: PermissionType.create,
           ))
             Choice(
               title: AppLocalizations.of(context)!.copy,
@@ -137,7 +137,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
             if (getUserPremission(
               context: context,
               featureType: FeatureType.assets,
-              premissionType: PremissionType.edit,
+              premissionType: PermissionType.edit,
             ))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {

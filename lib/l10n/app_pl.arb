@@ -558,5 +558,7 @@
     "task_action_add_participants_no_selected": "Dodaj przynajmniej jednego uczestnika",
     "task_action_remove_assets": "Usuń uszkodzone części",
     "task_action_add_assets": "Użyte części",
-    "task_action_used_items": "Użyte materiały"
+    "task_action_used_items": "Użyte materiały",
+    "task_action_add_replacement_asset": "Dodaj zamiennik zasobu",
+    "task_action_asset_already_in_use_err_msg": "Ten zasób jest ju w użyciu"
 }

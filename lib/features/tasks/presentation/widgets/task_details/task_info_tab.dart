@@ -27,6 +27,7 @@ import '../../../utils/get_localized_task_type_name.dart';
 import '../../../utils/get_task_priority_and_type_icon.dart';
 import '../../blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../work_request_tile.dart';
+import 'task_actions_buttons.dart';
 
 class TaskInfoTab extends StatefulWidget {
   const TaskInfoTab({
@@ -226,6 +227,13 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const Divider(
+                        thickness: 1.5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TaskActionsButtons(task: widget.task),
+                      ),
                       const Divider(
                         thickness: 1.5,
                       ),

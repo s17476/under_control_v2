@@ -1,4 +1,4 @@
-enum PremissionType {
+enum PermissionType {
   read,
   create,
   edit,

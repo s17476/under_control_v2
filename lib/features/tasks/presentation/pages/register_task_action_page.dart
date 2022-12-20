@@ -203,7 +203,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
   void _toggleReplacementAsset(AssetModel? asset) {
     setState(() {
-      _replacedAsset = asset;
+      _replacementAsset = asset;
     });
   }
 
@@ -400,10 +400,9 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
               ),
             );
       }
-      _sparePartsItems = _task!.sparePartsItems;
     }
 
-    final assetPartsState = context.watch<AssetPartsBloc>().state;
+    // final assetPartsState = context.watch<AssetPartsBloc>().state;
 
     // if (_task != null && _task!.assetId.isNotEmpty) {
     //   _hasChildrenAssets = assetPartsState is AssetPartsLoadedState &&
@@ -468,6 +467,9 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         toggleAddAssetVisibility: _toggleAddAssetVisibility,
         sparePartsAssets: _addedPartsAssets,
         isAddAssetVisible: _isAddAssetVisible,
+        replacementAsset: _replacementAsset,
+        isConnectedAssetReplaced: _replacedAsset != null,
+        toggleReplacementAsset: _toggleReplacementAsset,
       ),
     ];
 

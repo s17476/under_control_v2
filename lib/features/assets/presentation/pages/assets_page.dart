@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../groups/domain/entities/feature.dart';
@@ -91,7 +91,7 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
     final premission = getUserPremission(
       context: context,
       featureType: FeatureType.assets,
-      premissionType: PremissionType.read,
+      premissionType: PermissionType.read,
     );
     return DefaultTabController(
       length: 5,

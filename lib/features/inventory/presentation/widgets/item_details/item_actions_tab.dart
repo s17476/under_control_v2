@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../../core/utils/get_user_premission.dart';
-import '../../../../core/utils/premission.dart';
+import '../../../../core/utils/permission.dart';
 import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../groups/domain/entities/feature.dart';
 import '../../../domain/entities/item.dart';
@@ -56,7 +56,7 @@ class ItemActionsTab extends StatelessWidget {
                         onPressed: !getUserPremission(
                           context: context,
                           featureType: FeatureType.inventory,
-                          premissionType: PremissionType.create,
+                          premissionType: PermissionType.create,
                         )
                             ? () {
                                 showSnackBar(
@@ -83,7 +83,7 @@ class ItemActionsTab extends StatelessWidget {
                           colors: !getUserPremission(
                             context: context,
                             featureType: FeatureType.inventory,
-                            premissionType: PremissionType.create,
+                            premissionType: PermissionType.create,
                           )
                               ? inactiveColors
                               : [
@@ -104,7 +104,7 @@ class ItemActionsTab extends StatelessWidget {
                         onPressed: !getUserPremission(
                           context: context,
                           featureType: FeatureType.inventory,
-                          premissionType: PremissionType.create,
+                          premissionType: PermissionType.create,
                         )
                             ? () {
                                 showSnackBar(
@@ -133,7 +133,7 @@ class ItemActionsTab extends StatelessWidget {
                           colors: !getUserPremission(
                             context: context,
                             featureType: FeatureType.inventory,
-                            premissionType: PremissionType.create,
+                            premissionType: PermissionType.create,
                           )
                               ? inactiveColors
                               : getItemTotalQuantity(item) > 0
@@ -157,7 +157,7 @@ class ItemActionsTab extends StatelessWidget {
                         onPressed: !getUserPremission(
                           context: context,
                           featureType: FeatureType.inventory,
-                          premissionType: PremissionType.create,
+                          premissionType: PermissionType.create,
                         )
                             ? () {
                                 showSnackBar(
@@ -186,7 +186,7 @@ class ItemActionsTab extends StatelessWidget {
                           colors: !getUserPremission(
                             context: context,
                             featureType: FeatureType.inventory,
-                            premissionType: PremissionType.create,
+                            premissionType: PermissionType.create,
                           )
                               ? inactiveColors
                               : getItemTotalQuantity(item) > 0

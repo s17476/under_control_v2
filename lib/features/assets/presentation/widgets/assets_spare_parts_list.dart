@@ -46,9 +46,7 @@ class AssetsSparePartsList extends StatelessWidget {
                   children: [
                     if (filteredAssets.isNotEmpty)
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                        ),
+                        padding: const EdgeInsets.all(8.0),
                         child: Text(
                           AppLocalizations.of(context)!.bottom_bar_title_assets,
                           style: Theme.of(context)

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../data/models/asset_category/asset_category_model.dart';
 import '../../domain/entities/asset_category/asset_category.dart';
@@ -52,7 +52,7 @@ class AssetCategoryTile extends StatelessWidget {
                   if (getUserPremission(
                     context: context,
                     featureType: FeatureType.assets,
-                    premissionType: PremissionType.edit,
+                    premissionType: PermissionType.edit,
                   ))
                     IconButton(
                       onPressed: () {
@@ -70,7 +70,7 @@ class AssetCategoryTile extends StatelessWidget {
                   if (getUserPremission(
                     context: context,
                     featureType: FeatureType.assets,
-                    premissionType: PremissionType.delete,
+                    premissionType: PermissionType.delete,
                   ))
                     IconButton(
                       onPressed: () {

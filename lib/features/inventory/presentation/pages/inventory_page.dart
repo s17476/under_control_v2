@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../widgets/shimmer_item_tile.dart';
 import '../../../core/utils/get_user_premission.dart';
-import '../../../core/utils/premission.dart';
+import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../groups/domain/entities/feature.dart';
@@ -65,7 +65,7 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
     final premission = getUserPremission(
       context: context,
       featureType: FeatureType.inventory,
-      premissionType: PremissionType.read,
+      premissionType: PermissionType.read,
     );
     return CustomScrollView(
       slivers: [

@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../groups/domain/entities/feature.dart';
 import '../../../../tasks/presentation/blocs/task_filter/task_filter_bloc.dart';
 import '../../../utils/get_user_premission.dart';
-import '../../../utils/premission.dart';
+import '../../../utils/permission.dart';
 import 'app_bar_animated_icon.dart';
 import 'filter_button.dart';
 import 'search_button.dart';
@@ -93,7 +93,7 @@ class HomeSliverAppBar extends StatelessWidget {
             getUserPremission(
               context: context,
               featureType: FeatureType.tasks,
-              premissionType: PremissionType.read,
+              premissionType: PermissionType.read,
             ))
           TaskFilterButton(
             isTaskFilterVisible: isTaskFilterVisible,
@@ -104,19 +104,19 @@ class HomeSliverAppBar extends StatelessWidget {
                 getUserPremission(
                   context: context,
                   featureType: FeatureType.inventory,
-                  premissionType: PremissionType.read,
+                  premissionType: PermissionType.read,
                 )) ||
             (pageIndex == 3 &&
                 getUserPremission(
                   context: context,
                   featureType: FeatureType.assets,
-                  premissionType: PremissionType.read,
+                  premissionType: PermissionType.read,
                 )) ||
             (pageIndex == 4 &&
                 getUserPremission(
                   context: context,
                   featureType: FeatureType.knowledgeBase,
-                  premissionType: PremissionType.read,
+                  premissionType: PermissionType.read,
                 )))
           SearchButton(
             isSearchBarExpanded: isSearchBarExpanded,

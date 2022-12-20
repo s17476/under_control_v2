@@ -5,12 +5,12 @@ import '../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../groups/data/models/feature_model.dart';
 import '../../groups/domain/entities/feature.dart';
 import '../../groups/domain/entities/group.dart';
-import 'premission.dart';
+import 'permission.dart';
 
 bool getUserPremission({
   required BuildContext context,
   required FeatureType featureType,
-  required PremissionType premissionType,
+  required PermissionType premissionType,
   String locationId = '',
 }) {
   final state = context.read<FilterBloc>().state;
@@ -60,16 +60,16 @@ bool getUserPremission({
 
       // check premission
       for (var feature in features) {
-        if (premissionType == PremissionType.read && feature.read) {
+        if (premissionType == PermissionType.read && feature.read) {
           premission = true;
         }
-        if (premissionType == PremissionType.create && feature.create) {
+        if (premissionType == PermissionType.create && feature.create) {
           premission = true;
         }
-        if (premissionType == PremissionType.edit && feature.edit) {
+        if (premissionType == PermissionType.edit && feature.edit) {
           premission = true;
         }
-        if (premissionType == PremissionType.delete && feature.delete) {
+        if (premissionType == PermissionType.delete && feature.delete) {
           premission = true;
         }
       }
