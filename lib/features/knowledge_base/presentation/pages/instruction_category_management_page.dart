@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/loading_widget.dart';
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
@@ -79,10 +79,10 @@ class _InstructionCategoryManagementPageState
           },
         ),
       ),
-      floatingActionButton: getUserPremission(
+      floatingActionButton: getUserPermission(
         context: context,
         featureType: FeatureType.inventory,
-        premissionType: PermissionType.create,
+        permissionType: PermissionType.create,
       )
           ? context.watch<InstructionCategoryBloc>().state
                   is InstructionCategoryLoadedState

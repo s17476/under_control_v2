@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/presentation/widgets/rounded_button.dart';
-import '../../../../core/utils/get_user_premission.dart';
+import '../../../../core/utils/get_user_permission.dart';
 import '../../../../core/utils/permission.dart';
 import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../groups/domain/entities/feature.dart';
@@ -24,16 +24,16 @@ class TaskActionsButtons extends StatelessWidget {
         // start button
         Expanded(
           child: RoundedButton(
-            onPressed: !getUserPremission(
+            onPressed: !getUserPermission(
               context: context,
               featureType: FeatureType.tasks,
-              premissionType: PermissionType.create,
+              permissionType: PermissionType.create,
             )
                 ? () {
                     showSnackBar(
                       context: context,
                       message:
-                          AppLocalizations.of(context)!.premission_no_action,
+                          AppLocalizations.of(context)!.permission_no_action,
                       isErrorMessage: true,
                     );
                   }
@@ -66,16 +66,16 @@ class TaskActionsButtons extends StatelessWidget {
         // register button
         Expanded(
           child: RoundedButton(
-            onPressed: !getUserPremission(
+            onPressed: !getUserPermission(
               context: context,
               featureType: FeatureType.tasks,
-              premissionType: PermissionType.create,
+              permissionType: PermissionType.create,
             )
                 ? () {
                     showSnackBar(
                       context: context,
                       message:
-                          AppLocalizations.of(context)!.premission_no_action,
+                          AppLocalizations.of(context)!.permission_no_action,
                       isErrorMessage: true,
                     );
                   }

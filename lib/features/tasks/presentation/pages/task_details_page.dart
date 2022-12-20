@@ -8,7 +8,7 @@ import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart'
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/get_cached_firebase_storage_file.dart';
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
@@ -77,10 +77,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
         // popup menu items
         _choices = [
           // edit work order
-          if (getUserPremission(
+          if (getUserPermission(
             context: context,
             featureType: FeatureType.tasks,
-            premissionType: PermissionType.edit,
+            permissionType: PermissionType.edit,
           ))
             Choice(
               title: AppLocalizations.of(context)!.edit,
@@ -92,10 +92,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
               ),
             ),
           // cancel work order
-          if (getUserPremission(
+          if (getUserPermission(
             context: context,
             featureType: FeatureType.tasks,
-            premissionType: PermissionType.delete,
+            permissionType: PermissionType.delete,
           ))
             Choice(
               title: AppLocalizations.of(context)!.task_cancel,
@@ -140,10 +140,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
             // popup menu
             if (_task != null &&
                 !_task!.isCancelled &&
-                getUserPremission(
+                getUserPermission(
                   context: context,
                   featureType: FeatureType.tasks,
-                  premissionType: PermissionType.edit,
+                  permissionType: PermissionType.edit,
                 ))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {

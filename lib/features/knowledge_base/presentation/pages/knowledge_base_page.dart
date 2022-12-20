@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
@@ -54,10 +54,10 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
 
   @override
   Widget build(BuildContext context) {
-    final premission = getUserPremission(
+    final permission = getUserPermission(
       context: context,
       featureType: FeatureType.knowledgeBase,
-      premissionType: PermissionType.read,
+      permissionType: PermissionType.read,
     );
     final userState = context.read<UserProfileBloc>().state;
     return CustomScrollView(
@@ -66,7 +66,7 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
           handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
         ),
         SliverToBoxAdapter(
-          child: !premission
+          child: !permission
               ? Column(
                   children: [
                     SizedBox(
@@ -74,7 +74,7 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
                     ),
                     SizedBox(
                       child: Text(
-                        AppLocalizations.of(context)!.premission_no_premission,
+                        AppLocalizations.of(context)!.permission_no_permission,
                       ),
                     ),
                   ],
@@ -205,6 +205,9 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
                                               instruction: published[index],
                                               searchQuery: searchQuery,
                                             ),
+                                          ),
+                                          const SizedBox(
+                                            height: 50,
                                           ),
                                         ],
                                       ),

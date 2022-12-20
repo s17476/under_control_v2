@@ -114,13 +114,13 @@ class AddGroupSummaryCard extends StatelessWidget {
                       height: 8,
                     ),
 
-                    // premissions
+                    // permissions
                     SummaryCard(
                       title: AppLocalizations.of(context)!
                           .group_management_add_card_permissions,
                       validator: () => !isAtLeastOneFeatureSelected
                           ? AppLocalizations.of(context)!
-                              .group_management_add_error_no_premission_selected
+                              .group_management_add_error_no_permission_selected
                           : null,
                       pageController: pageController,
                       onTapAnimateToPage: 2,

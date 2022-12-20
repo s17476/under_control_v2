@@ -165,7 +165,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
         errorMessage = AppLocalizations.of(context)!
             .group_management_add_error_no_location_selected;
       } else {
-        // premissions validation
+        // permissions validation
         bool isAtLeastOneFeatureSelected = false;
         for (var feature in _features) {
           if (feature.create ||
@@ -177,7 +177,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
         }
         if (!isAtLeastOneFeatureSelected) {
           errorMessage = AppLocalizations.of(context)!
-              .group_management_add_error_no_premission_selected;
+              .group_management_add_error_no_permission_selected;
           // group name validation
         } else if (group == null) {
           final currentState = context.read<GroupBloc>().state;

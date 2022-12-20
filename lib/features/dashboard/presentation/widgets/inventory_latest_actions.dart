@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/icon_title_row.dart';
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../inventory/domain/entities/item_action/item_action.dart';
@@ -36,12 +36,12 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
 
   @override
   Widget build(BuildContext context) {
-    final premission = getUserPremission(
+    final permission = getUserPermission(
       context: context,
       featureType: FeatureType.inventory,
-      premissionType: PermissionType.read,
+      permissionType: PermissionType.read,
     );
-    return !premission
+    return !permission
         ? const SizedBox()
         : Column(
             children: [

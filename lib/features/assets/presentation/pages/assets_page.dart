@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
@@ -88,10 +88,10 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
   Widget build(BuildContext context) {
     final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;
     const double tabBarIconSize = 32;
-    final premission = getUserPremission(
+    final permission = getUserPermission(
       context: context,
       featureType: FeatureType.assets,
-      premissionType: PermissionType.read,
+      permissionType: PermissionType.read,
     );
     return DefaultTabController(
       length: 5,
@@ -101,7 +101,7 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
           ),
           SliverToBoxAdapter(
-            child: !premission
+            child: !permission
                 ? Column(
                     children: [
                       SizedBox(
@@ -110,7 +110,7 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                       SizedBox(
                         child: Text(
                           AppLocalizations.of(context)!
-                              .premission_no_premission,
+                              .permission_no_permission,
                         ),
                       ),
                     ],
@@ -308,6 +308,9 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                                   );
                                 }
                               },
+                            ),
+                            const SizedBox(
+                              height: 50,
                             ),
                           ],
                         );

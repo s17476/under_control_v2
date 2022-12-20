@@ -8,7 +8,7 @@ import 'package:under_control_v2/features/inventory/presentation/widgets/item_de
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/show_snack_bar.dart';
@@ -72,10 +72,10 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
         // popup menu items
         _choices = [
           // edit item
-          if (getUserPremission(
+          if (getUserPermission(
             context: context,
             featureType: FeatureType.inventory,
-            premissionType: PermissionType.edit,
+            permissionType: PermissionType.edit,
           ))
             Choice(
               title: AppLocalizations.of(context)!.edit,
@@ -86,10 +86,10 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
                 arguments: _item,
               ),
             ),
-          if (getUserPremission(
+          if (getUserPermission(
             context: context,
             featureType: FeatureType.inventory,
-            premissionType: PermissionType.delete,
+            permissionType: PermissionType.delete,
           ))
             Choice(
               title: AppLocalizations.of(context)!.delete,
@@ -148,10 +148,10 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
           ),
           actions: [
             // popup menu
-            if (getUserPremission(
+            if (getUserPermission(
               context: context,
               featureType: FeatureType.inventory,
-              premissionType: PermissionType.edit,
+              permissionType: PermissionType.edit,
             ))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {

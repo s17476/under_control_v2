@@ -7,20 +7,20 @@ import '../../groups/domain/entities/feature.dart';
 import '../../groups/domain/entities/group.dart';
 import 'permission.dart';
 
-bool getUserPremission({
+bool getUserPermission({
   required BuildContext context,
   required FeatureType featureType,
-  required PermissionType premissionType,
+  required PermissionType permissionType,
   String locationId = '',
 }) {
   final state = context.read<FilterBloc>().state;
 
   if (state is FilterLoadedState) {
     List<Group> groups = [];
-    bool premission = false;
+    bool permission = false;
     // user is an admin and all possible groups are selected
     if (state.isAdmin && state.groups.isEmpty) {
-      premission = true;
+      permission = true;
       // user is not an admin
     } else {
       if (state.isAdmin) {
@@ -58,23 +58,23 @@ bool getUserPremission({
       // print('features');
       // print(features);
 
-      // check premission
+      // check permission
       for (var feature in features) {
-        if (premissionType == PermissionType.read && feature.read) {
-          premission = true;
+        if (permissionType == PermissionType.read && feature.read) {
+          permission = true;
         }
-        if (premissionType == PermissionType.create && feature.create) {
-          premission = true;
+        if (permissionType == PermissionType.create && feature.create) {
+          permission = true;
         }
-        if (premissionType == PermissionType.edit && feature.edit) {
-          premission = true;
+        if (permissionType == PermissionType.edit && feature.edit) {
+          permission = true;
         }
-        if (premissionType == PermissionType.delete && feature.delete) {
-          premission = true;
+        if (permissionType == PermissionType.delete && feature.delete) {
+          permission = true;
         }
       }
     }
-    return premission;
+    return permission;
   } else {
     return false;
   }

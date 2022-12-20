@@ -525,7 +525,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                     iconColor: Colors.grey.shade300,
                                     iconBackground: Colors.black,
                                     title: AppLocalizations.of(context)!
-                                        .user_details_premissions,
+                                        .user_details_permissions,
                                     titleFontSize: 16,
                                   ),
                                   const SizedBox(

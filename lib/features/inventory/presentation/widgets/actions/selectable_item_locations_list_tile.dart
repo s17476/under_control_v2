@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/presentation/blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
 
 import '../../../../core/utils/double_apis.dart';
-import '../../../../core/utils/get_user_premission.dart';
+import '../../../../core/utils/get_user_permission.dart';
 import '../../../../core/utils/location_selection_helpers.dart';
 import '../../../../core/utils/permission.dart';
 import '../../../../core/utils/show_snack_bar.dart';
@@ -113,10 +113,10 @@ class _SelectableItemLocationslistTileState
             widget.item.amountInLocations[index].amount - reservedQuantity;
       }
     }
-    _isAvailable = getUserPremission(
+    _isAvailable = getUserPermission(
       context: context,
       featureType: FeatureType.inventory,
-      premissionType: PermissionType.create,
+      permissionType: PermissionType.create,
       locationId: widget.location.id,
     );
     super.initState();
@@ -156,7 +156,7 @@ class _SelectableItemLocationslistTileState
                 showSnackBar(
                   context: context,
                   message: AppLocalizations.of(context)!
-                      .premission_no_write_in_location,
+                      .permission_no_write_in_location,
                   isErrorMessage: true,
                 );
               }
@@ -229,7 +229,7 @@ class _SelectableItemLocationslistTileState
                             showSnackBar(
                               context: context,
                               message: AppLocalizations.of(context)!
-                                  .premission_no_write_in_location,
+                                  .permission_no_write_in_location,
                               isErrorMessage: true,
                             );
                           }

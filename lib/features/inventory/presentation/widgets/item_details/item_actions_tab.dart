@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
-import '../../../../core/utils/get_user_premission.dart';
+import '../../../../core/utils/get_user_permission.dart';
 import '../../../../core/utils/permission.dart';
 import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../groups/domain/entities/feature.dart';
@@ -53,16 +53,16 @@ class ItemActionsTab extends StatelessWidget {
                     // add button
                     Expanded(
                       child: RoundedButton(
-                        onPressed: !getUserPremission(
+                        onPressed: !getUserPermission(
                           context: context,
                           featureType: FeatureType.inventory,
-                          premissionType: PermissionType.create,
+                          permissionType: PermissionType.create,
                         )
                             ? () {
                                 showSnackBar(
                                   context: context,
                                   message: AppLocalizations.of(context)!
-                                      .premission_no_action,
+                                      .permission_no_action,
                                   isErrorMessage: true,
                                 );
                               }
@@ -80,10 +80,10 @@ class ItemActionsTab extends StatelessWidget {
                         foregroundColor: Colors.grey.shade200,
                         padding: const EdgeInsets.all(16),
                         gradient: LinearGradient(
-                          colors: !getUserPremission(
+                          colors: !getUserPermission(
                             context: context,
                             featureType: FeatureType.inventory,
-                            premissionType: PermissionType.create,
+                            permissionType: PermissionType.create,
                           )
                               ? inactiveColors
                               : [
@@ -101,16 +101,16 @@ class ItemActionsTab extends StatelessWidget {
                     // move button
                     Expanded(
                       child: RoundedButton(
-                        onPressed: !getUserPremission(
+                        onPressed: !getUserPermission(
                           context: context,
                           featureType: FeatureType.inventory,
-                          premissionType: PermissionType.create,
+                          permissionType: PermissionType.create,
                         )
                             ? () {
                                 showSnackBar(
                                   context: context,
                                   message: AppLocalizations.of(context)!
-                                      .premission_no_action,
+                                      .permission_no_action,
                                   isErrorMessage: true,
                                 );
                               }
@@ -130,10 +130,10 @@ class ItemActionsTab extends StatelessWidget {
                         foregroundColor: Colors.grey.shade200,
                         padding: const EdgeInsets.all(16),
                         gradient: LinearGradient(
-                          colors: !getUserPremission(
+                          colors: !getUserPermission(
                             context: context,
                             featureType: FeatureType.inventory,
-                            premissionType: PermissionType.create,
+                            permissionType: PermissionType.create,
                           )
                               ? inactiveColors
                               : getItemTotalQuantity(item) > 0
@@ -154,16 +154,16 @@ class ItemActionsTab extends StatelessWidget {
                     // subtract button
                     Expanded(
                       child: RoundedButton(
-                        onPressed: !getUserPremission(
+                        onPressed: !getUserPermission(
                           context: context,
                           featureType: FeatureType.inventory,
-                          premissionType: PermissionType.create,
+                          permissionType: PermissionType.create,
                         )
                             ? () {
                                 showSnackBar(
                                   context: context,
                                   message: AppLocalizations.of(context)!
-                                      .premission_no_action,
+                                      .permission_no_action,
                                   isErrorMessage: true,
                                 );
                               }
@@ -183,10 +183,10 @@ class ItemActionsTab extends StatelessWidget {
                         foregroundColor: Colors.grey.shade200,
                         padding: const EdgeInsets.all(16),
                         gradient: LinearGradient(
-                          colors: !getUserPremission(
+                          colors: !getUserPermission(
                             context: context,
                             featureType: FeatureType.inventory,
-                            premissionType: PermissionType.create,
+                            permissionType: PermissionType.create,
                           )
                               ? inactiveColors
                               : getItemTotalQuantity(item) > 0

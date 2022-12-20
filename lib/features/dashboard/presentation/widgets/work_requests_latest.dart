@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
-import 'package:under_control_v2/features/tasks/presentation/blocs/work_request/work_request_bloc.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/work_request_tile.dart';
-
+import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../tasks/domain/entities/work_request/work_request.dart';
+import '../../../tasks/presentation/blocs/work_request/work_request_bloc.dart';
+import '../../../tasks/presentation/widgets/work_request_tile.dart';
 
 class WorkRequestsLatest extends StatefulWidget {
   const WorkRequestsLatest({
@@ -39,12 +38,12 @@ class _WorkRequestsLatestState extends State<WorkRequestsLatest> {
 
   @override
   Widget build(BuildContext context) {
-    final premission = getUserPremission(
+    final permission = getUserPermission(
       context: context,
       featureType: FeatureType.tasks,
-      premissionType: PermissionType.read,
+      permissionType: PermissionType.read,
     );
-    return !premission
+    return !permission
         ? const SizedBox()
         : Column(
             children: [

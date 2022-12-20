@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../data/models/inventory_category/instruction_category_model.dart';
@@ -49,10 +49,10 @@ class InstructionCategoryTile extends StatelessWidget {
               Row(
                 children: [
                   // edit button
-                  if (getUserPremission(
+                  if (getUserPermission(
                     context: context,
                     featureType: FeatureType.inventory,
-                    premissionType: PermissionType.edit,
+                    permissionType: PermissionType.edit,
                   ))
                     IconButton(
                       onPressed: () {
@@ -68,10 +68,10 @@ class InstructionCategoryTile extends StatelessWidget {
                       ),
                     ),
                   // delete button
-                  if (getUserPremission(
+                  if (getUserPermission(
                     context: context,
                     featureType: FeatureType.inventory,
-                    premissionType: PermissionType.delete,
+                    permissionType: PermissionType.delete,
                   ))
                     IconButton(
                       onPressed: () {

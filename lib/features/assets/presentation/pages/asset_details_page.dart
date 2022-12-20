@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
@@ -68,10 +68,10 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
         // popup menu items
         _choices = [
           // edit item
-          if (getUserPremission(
+          if (getUserPermission(
             context: context,
             featureType: FeatureType.assets,
-            premissionType: PermissionType.edit,
+            permissionType: PermissionType.edit,
           ))
             Choice(
               title: AppLocalizations.of(context)!.edit,
@@ -83,10 +83,10 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
               ),
             ),
           // copy asset
-          if (getUserPremission(
+          if (getUserPermission(
             context: context,
             featureType: FeatureType.assets,
-            premissionType: PermissionType.create,
+            permissionType: PermissionType.create,
           ))
             Choice(
               title: AppLocalizations.of(context)!.copy,
@@ -134,10 +134,10 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
           ),
           actions: [
             // popup menu
-            if (getUserPremission(
+            if (getUserPermission(
               context: context,
               featureType: FeatureType.assets,
-              premissionType: PermissionType.edit,
+              permissionType: PermissionType.edit,
             ))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {

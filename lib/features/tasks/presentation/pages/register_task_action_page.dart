@@ -461,7 +461,6 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
           connectedAssetId: _task!.assetId,
           replacedAsset: _replacedAsset,
         ),
-      // TODO
       AddTaskActionAddSparePartCard(
         toggleAssetSelection: _toggleAssetSelection,
         toggleAddAssetVisibility: _toggleAddAssetVisibility,

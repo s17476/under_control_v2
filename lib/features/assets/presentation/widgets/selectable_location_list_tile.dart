@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/location_selection_helpers.dart';
 import '../../../core/utils/permission.dart';
 import '../../../core/utils/show_snack_bar.dart';
@@ -41,10 +41,10 @@ class _SelectableLocationsListTileState
         .where((element) => element.parentId == widget.location.id)
         .toList();
 
-    _isAvailable = getUserPremission(
+    _isAvailable = getUserPermission(
       context: context,
       featureType: FeatureType.assets,
-      premissionType: PermissionType.create,
+      permissionType: PermissionType.create,
       locationId: widget.location.id,
     );
     super.initState();
@@ -84,7 +84,7 @@ class _SelectableLocationsListTileState
                 showSnackBar(
                   context: context,
                   message: AppLocalizations.of(context)!
-                      .premission_no_write_in_location,
+                      .permission_no_write_in_location,
                   isErrorMessage: true,
                 );
               }
@@ -139,7 +139,7 @@ class _SelectableLocationsListTileState
                             showSnackBar(
                               context: context,
                               message: AppLocalizations.of(context)!
-                                  .premission_no_write_in_location,
+                                  .permission_no_write_in_location,
                               isErrorMessage: true,
                             );
                           }

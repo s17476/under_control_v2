@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
@@ -18,10 +18,10 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
 
   @override
   Widget build(BuildContext context) {
-    final premission = getUserPremission(
+    final permission = getUserPermission(
       context: context,
       featureType: FeatureType.tasks,
-      premissionType: PermissionType.read,
+      permissionType: PermissionType.read,
     );
     return CustomScrollView(
       slivers: [
@@ -29,7 +29,7 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
           handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
         ),
         SliverToBoxAdapter(
-          child: !premission
+          child: !permission
               ? Column(
                   children: [
                     SizedBox(
@@ -37,7 +37,7 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
                     ),
                     SizedBox(
                       child: Text(
-                        AppLocalizations.of(context)!.premission_no_premission,
+                        AppLocalizations.of(context)!.permission_no_permission,
                       ),
                     ),
                   ],
@@ -91,6 +91,9 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
                               TasksTabView(
                                 tasks: state.tasks,
                               ),
+                            const SizedBox(
+                              height: 50,
+                            ),
                           ],
                         );
                       },

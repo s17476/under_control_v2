@@ -34,6 +34,9 @@ class DashboardPage extends StatelessWidget {
                     AssetsLatestActions(),
                     InventoryLowLevelItems(),
                     InventoryLatestActions(),
+                    SizedBox(
+                      height: 50,
+                    ),
                   ],
                 );
               }

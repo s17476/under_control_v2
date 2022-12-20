@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../widgets/shimmer_item_tile.dart';
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
@@ -62,10 +62,10 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
 
   @override
   Widget build(BuildContext context) {
-    final premission = getUserPremission(
+    final permission = getUserPermission(
       context: context,
       featureType: FeatureType.inventory,
-      premissionType: PermissionType.read,
+      permissionType: PermissionType.read,
     );
     return CustomScrollView(
       slivers: [
@@ -73,7 +73,7 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
           handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
         ),
         SliverToBoxAdapter(
-          child: !premission
+          child: !permission
               ? Column(
                   children: [
                     SizedBox(
@@ -81,7 +81,7 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
                     ),
                     SizedBox(
                       child: Text(
-                        AppLocalizations.of(context)!.premission_no_premission,
+                        AppLocalizations.of(context)!.permission_no_permission,
                       ),
                     ),
                   ],
@@ -143,7 +143,10 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
                                 );
                               }
                             },
-                          )
+                          ),
+                          const SizedBox(
+                            height: 50,
+                          ),
                         ],
                       );
                     }

@@ -7,7 +7,7 @@ import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../assets/presentation/widgets/asset_tile.dart';
 import '../../../assets/utils/asset_status.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../inventory/presentation/widgets/shimmer_item_tile.dart';
@@ -40,15 +40,15 @@ class _AssetsWithoutInspectionState extends State<AssetsWithoutInspection> {
 
   @override
   Widget build(BuildContext context) {
-    final premission = getUserPremission(
+    final permission = getUserPermission(
       context: context,
       featureType: FeatureType.assets,
-      premissionType: PermissionType.read,
+      permissionType: PermissionType.read,
     );
     if (_assets != null && _assets!.isEmpty) {
       return const SizedBox();
     }
-    return !premission
+    return !permission
         ? const SizedBox()
         : Column(
             children: [

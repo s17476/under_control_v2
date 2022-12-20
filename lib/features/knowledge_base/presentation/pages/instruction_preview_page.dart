@@ -10,7 +10,7 @@ import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart'
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/presentation/widgets/user_info_card.dart';
 import '../../../core/utils/choice.dart';
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
@@ -89,10 +89,10 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
         // popup menu items
         _choices = [
           // edit item
-          if (getUserPremission(
+          if (getUserPermission(
             context: context,
             featureType: FeatureType.knowledgeBase,
-            premissionType: PermissionType.edit,
+            permissionType: PermissionType.edit,
           ))
             Choice(
               title: AppLocalizations.of(context)!.edit,
@@ -103,10 +103,10 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
                 arguments: _instruction,
               ),
             ),
-          if (getUserPremission(
+          if (getUserPermission(
             context: context,
             featureType: FeatureType.knowledgeBase,
-            premissionType: PermissionType.delete,
+            permissionType: PermissionType.delete,
           ))
             Choice(
               title: AppLocalizations.of(context)!.delete,
@@ -189,10 +189,10 @@ class _InstructionPreviewPageState extends State<InstructionPreviewPage> {
                   ),
                   actions: [
                     // popup menu
-                    if (getUserPremission(
+                    if (getUserPermission(
                       context: context,
                       featureType: FeatureType.knowledgeBase,
-                      premissionType: PermissionType.edit,
+                      permissionType: PermissionType.edit,
                     ))
                       PopupMenuButton<Choice>(
                         onSelected: (Choice choice) {

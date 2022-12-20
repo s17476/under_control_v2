@@ -223,9 +223,10 @@ class AddReplacementAssetButton extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.add,
                     size: 36,
+                    color: Theme.of(context).highlightColor,
                   ),
                   const SizedBox(
                     width: 16,
@@ -233,7 +234,10 @@ class AddReplacementAssetButton extends StatelessWidget {
                   Text(
                     AppLocalizations.of(context)!
                         .task_action_add_replacement_asset,
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).highlightColor,
+                    ),
                   ),
                 ],
               ),

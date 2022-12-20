@@ -23,7 +23,7 @@ import '../../../tasks/presentation/pages/tasks_page.dart';
 import '../../../tasks/presentation/widgets/app_bar_tasks_filter/app_bar_tasks_filter.dart';
 import '../../../tasks/utils/task_management_bloc_listener.dart';
 import '../../../tasks/utils/work_request_management_bloc_listener.dart';
-import '../../utils/get_user_premission.dart';
+import '../../utils/get_user_permission.dart';
 import '../../utils/permission.dart';
 import '../../utils/show_snack_bar.dart';
 import '../../utils/size_config.dart';
@@ -221,33 +221,33 @@ class _HomePageState extends State<HomePage>
       _toggleIsSearchBarExpanded();
     }
     bool premision = true;
-    // no inventory read premission
+    // no inventory read permission
     if (_pageIndex == 0 &&
-        !getUserPremission(
+        !getUserPermission(
           context: context,
           featureType: FeatureType.tasks,
-          premissionType: PermissionType.read,
+          permissionType: PermissionType.read,
         )) {
       premision = false;
     } else if (_pageIndex == 1 &&
-        !getUserPremission(
+        !getUserPermission(
           context: context,
           featureType: FeatureType.inventory,
-          premissionType: PermissionType.read,
+          permissionType: PermissionType.read,
         )) {
       premision = false;
     } else if (_pageIndex == 3 &&
-        !getUserPremission(
+        !getUserPermission(
           context: context,
           featureType: FeatureType.assets,
-          premissionType: PermissionType.read,
+          permissionType: PermissionType.read,
         )) {
       premision = false;
     } else if (_pageIndex == 4 &&
-        !getUserPremission(
+        !getUserPermission(
           context: context,
           featureType: FeatureType.knowledgeBase,
-          premissionType: PermissionType.read,
+          permissionType: PermissionType.read,
         )) {
       premision = false;
     }
@@ -258,7 +258,7 @@ class _HomePageState extends State<HomePage>
     } else {
       showSnackBar(
         context: context,
-        message: AppLocalizations.of(context)!.premission_no_premission,
+        message: AppLocalizations.of(context)!.permission_no_permission,
         isErrorMessage: true,
       );
     }

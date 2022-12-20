@@ -891,9 +891,9 @@
     "@group_management_add_error_no_location_selected": {
       "description": "Group management - no location selected"
     },
-    "group_management_add_error_no_premission_selected": "Select at least one premission for this group!",
-    "@group_management_add_error_no_premission_selected": {
-      "description": "Group management - no premission selected"
+    "group_management_add_error_no_permission_selected": "Select at least one permission for this group!",
+    "@group_management_add_error_no_permission_selected": {
+      "description": "Group management - no permission selected"
     },
     "group_management_add_error_name_exists": "Group with selected name already exists!",
     "@group_management_add_error_name_exists": {
@@ -977,9 +977,9 @@
     "@user_details_user_unassigned": {
       "description": "User removed from the group"
     },
-    "user_details_premissions": "User premissions",
-    "@user_details_premissions": {
-      "description": "User details premissions"
+    "user_details_permissions": "User permissions",
+    "@user_details_permissions": {
+      "description": "User details permissions"
     },
     "user_details_join_date": "Join date",
     "@user_details_join_date": {
@@ -1599,16 +1599,16 @@
     "@no_actions_in_selected_locations": {
       "description": "No actions in locations"
     },
-    "premission_no_premission": "You are not authorized to access these resources",
-    "@premission_no_premission": {
+    "permission_no_permission": "You are not authorized to access these resources",
+    "@permission_no_permission": {
       "description": "You are not authorized to access these resources"
     },
-    "premission_no_action": "You are not authorized to perform this action",
-    "@premission_no_action": {
+    "permission_no_action": "You are not authorized to perform this action",
+    "@permission_no_action": {
       "description": "You are not authorized to perform this action"
     },
-    "premission_no_write_in_location": "You are not authorized to modify the data at this location",
-    "@premission_no_write_in_location": {
+    "permission_no_write_in_location": "You are not authorized to modify the data at this location",
+    "@permission_no_write_in_location": {
       "description": "You are not authorized to modify the data at this location"
     },
     "instruction_category": "Instruction category",
@@ -2303,7 +2303,7 @@
     "@task_action_add_participants_no_selected": {
       "description": "task action - no participants selected"
     },
-    "task_action_remove_assets": "Remove broken subassets",
+    "task_action_remove_assets": "Remove broken assets",
     "@task_action_remove_assets": {
       "description": "task action - remove assets"
     },

@@ -8,7 +8,7 @@ import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart'
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/get_cached_firebase_storage_file.dart';
-import '../../../core/utils/get_user_premission.dart';
+import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
@@ -75,10 +75,10 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
         // popup menu items
         _choices = [
           // convert work order
-          if (getUserPremission(
+          if (getUserPermission(
             context: context,
             featureType: FeatureType.tasks,
-            premissionType: PermissionType.create,
+            permissionType: PermissionType.create,
           ))
             Choice(
               title: AppLocalizations.of(context)!.work_request_convert,
@@ -90,10 +90,10 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
               ),
             ),
           // edit work order
-          if (getUserPremission(
+          if (getUserPermission(
             context: context,
             featureType: FeatureType.tasks,
-            premissionType: PermissionType.edit,
+            permissionType: PermissionType.edit,
           ))
             Choice(
               title: AppLocalizations.of(context)!.edit,
@@ -105,10 +105,10 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
               ),
             ),
           // cancel work order
-          if (getUserPremission(
+          if (getUserPermission(
             context: context,
             featureType: FeatureType.tasks,
-            premissionType: PermissionType.delete,
+            permissionType: PermissionType.delete,
           ))
             Choice(
               title: AppLocalizations.of(context)!.work_request_cancel,
@@ -154,10 +154,10 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
             // popup menu
             if (_workRequest != null &&
                 !_workRequest!.cancelled &&
-                getUserPremission(
+                getUserPermission(
                   context: context,
                   featureType: FeatureType.tasks,
-                  premissionType: PermissionType.create,
+                  permissionType: PermissionType.create,
                 ))
               PopupMenuButton<Choice>(
                 onSelected: (Choice choice) {
