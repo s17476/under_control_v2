@@ -425,12 +425,19 @@ class _HomePageState extends State<HomePage>
         ],
         child: Scaffold(
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+
           drawer: const MainDrawer(),
           // safe area
           body: SafeArea(
             bottom: _isControlsVisible,
             child: Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
+              decoration: BoxDecoration(
+                image: const DecorationImage(
+                  image: AssetImage('assets/scaffold_background.png'),
+                  fit: BoxFit.cover,
+                ),
+                color: Theme.of(context).scaffoldBackgroundColor,
+              ),
               child: NestedScrollView(
                 controller: _scrollController,
                 // physics: const NeverScrollableScrollPhysics(),
