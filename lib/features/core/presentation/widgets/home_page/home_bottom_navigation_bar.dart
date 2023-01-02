@@ -9,7 +9,7 @@ import '../animated_floating_menu.dart';
 class HomeBottomNavigationBar extends StatefulWidget {
   final AnimationController animationController;
   final CircularBottomNavigationController navigationController;
-  final PageController pageController;
+  // final PageController pageController;
   final Function setPageIndex;
   final Function toggleShowMenu;
 
@@ -17,7 +17,7 @@ class HomeBottomNavigationBar extends StatefulWidget {
     Key? key,
     required this.animationController,
     required this.navigationController,
-    required this.pageController,
+    // required this.pageController,
     required this.setPageIndex,
     required this.toggleShowMenu,
   }) : super(key: key);

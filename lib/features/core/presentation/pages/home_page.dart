@@ -69,20 +69,20 @@ class _HomePageState extends State<HomePage>
 
   // inventory search
   final _inventorySearchTextEditingController = TextEditingController();
+  String _inventorySearchQuery = '';
 
   // assets search
   final _assetsSearchTextEditingController = TextEditingController();
+  String _assetsSearchQuery = '';
 
   // instructions search
   final _instructionsSearchTextEditingController = TextEditingController();
+  String _instructionsSearchQuery = '';
 
   // scroll controller current offset
   double _currentScrollOffset = 0;
 
   // search
-  String _inventorySearchQuery = '';
-  String _assetsSearchQuery = '';
-  String _instructionsSearchQuery = '';
 
   // bottom navigation show/hide animation
   AnimationController? _animationController;
@@ -574,7 +574,7 @@ class _HomePageState extends State<HomePage>
                     HomeBottomNavigationBar(
                       animationController: _animationController!,
                       navigationController: _navigationController,
-                      pageController: _pageController,
+                      // pageController: _pageController,
                       setPageIndex: _setPageIndex,
                       toggleShowMenu: _toggleIsMenuVisible,
                     ),

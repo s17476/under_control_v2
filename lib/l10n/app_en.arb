@@ -2342,5 +2342,9 @@
     "task_action_asset_already_in_use_err_msg": "This asset is already in use",
     "@task_action_asset_already_in_use_err_msg": {
       "description": "task action - asset already in use"
+    },
+    "task_action_duration_to_short": "Total duration must be at least 5 minutes",
+    "@task_action_duration_to_short": {
+      "description": "task action - duration error"
     }
 }

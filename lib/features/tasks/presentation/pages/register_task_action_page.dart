@@ -70,66 +70,96 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   AssetModel? _replacementAsset;
 
   _addNewTaskAction(BuildContext context) {
-    // String errorMessage = '';
-    // if (!_formKey.currentState!.validate()) {
-    //   if (_titleTextEditingController.text.trim().length < 2) {
-    //     errorMessage =
-    //         '${AppLocalizations.of(context)!.title} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
-    //   }
-    // } else {
-    //   // task type validation
-    //   if (errorMessage.isEmpty && _taskType.isEmpty) {
-    //     errorMessage = AppLocalizations.of(context)!.task_type_select;
-    //   }
-    //   // location validation
-    //   if (errorMessage.isEmpty && !_isConnectedToAsset && _locationId.isEmpty) {
-    //     errorMessage =
-    //         AppLocalizations.of(context)!.validation_location_not_selected;
-    //   }
-    //   // asset validation
-    //   if (errorMessage.isEmpty && _isConnectedToAsset && _assetId.isEmpty) {
-    //     errorMessage =
-    //         AppLocalizations.of(context)!.task_connected_asset_select;
-    //   }
-    //   // asset status validation
-    //   if (errorMessage.isEmpty &&
-    //       _isConnectedToAsset &&
-    //       _assetId.isNotEmpty &&
-    //       _assetStatus.isEmpty) {
-    //     errorMessage = AppLocalizations.of(context)!.asset_status_not_selected;
-    //   }
-    //   // cyclic task - duration unit and duration validation
-    //   if (errorMessage.isEmpty &&
-    //       _isCyclicTask &&
-    //       (_durationUnit.isEmpty || _duration == 0)) {
-    //     errorMessage = AppLocalizations.of(context)!.asset_next_inspection_tip;
-    //   }
-    //   // assigned users/groups validation
-    //   if (errorMessage.isEmpty &&
-    //       _assignedUsers.isEmpty &&
-    //       _assignedGroups.isEmpty) {
-    //     errorMessage =
-    //         AppLocalizations.of(context)!.task_assign_groups_or_users_error;
-    //   }
-    //   if (errorMessage.isEmpty && _sparePartsItems.isNotEmpty) {
-    //     for (var item in _sparePartsItems) {
-    //       if (errorMessage.isEmpty && item.quantity <= 0) {
-    //         errorMessage =
-    //             AppLocalizations.of(context)!.item_spare_part_quantity_error;
-    //       }
-    //     }
-    //   }
-    // }
+    String errorMessage = '';
+    if (!_formKey.currentState!.validate()) {
+      if (_descriptionTextEditingController.text.trim().length < 2) {
+        errorMessage =
+            '${AppLocalizations.of(context)!.description} - ${AppLocalizations.of(context)!.validation_min_two_characters}';
+      }
+    } else {
+      // participants list validation
+      if (errorMessage.isEmpty) {
+        if (_participants.isEmpty) {
+          errorMessage = AppLocalizations.of(context)!
+              .task_action_add_participants_no_selected;
+        } else {
+          //validate duration - min. 5 minutes
+          Duration totalDuration = const Duration();
+          for (var participant in _participants) {
+            totalDuration +=
+                participant.stopTime.difference(participant.startTime);
+          }
+          if (totalDuration.inMinutes < 5) {
+            errorMessage =
+                AppLocalizations.of(context)!.task_action_duration_to_short;
+          } else {
+            DateTime? minTime;
+            DateTime? maxTime;
+            for (var participant in _participants) {
+              if (minTime == null || minTime.isAfter(participant.startTime)) {
+                minTime = participant.startTime;
+              }
+              if (maxTime == null || maxTime.isBefore(participant.stopTime)) {
+                maxTime = participant.stopTime;
+              }
+            }
+          }
+        }
+      }
+      //   // task type validation
+      //   if (errorMessage.isEmpty && _taskType.isEmpty) {
+      //     errorMessage = AppLocalizations.of(context)!.task_type_select;
+      //   }
+      //   // location validation
+      //   if (errorMessage.isEmpty && !_isConnectedToAsset && _locationId.isEmpty) {
+      //     errorMessage =
+      //         AppLocalizations.of(context)!.validation_location_not_selected;
+      //   }
+      //   // asset validation
+      //   if (errorMessage.isEmpty && _isConnectedToAsset && _assetId.isEmpty) {
+      //     errorMessage =
+      //         AppLocalizations.of(context)!.task_connected_asset_select;
+      //   }
+      //   // asset status validation
+      //   if (errorMessage.isEmpty &&
+      //       _isConnectedToAsset &&
+      //       _assetId.isNotEmpty &&
+      //       _assetStatus.isEmpty) {
+      //     errorMessage = AppLocalizations.of(context)!.asset_status_not_selected;
+      //   }
+      //   // cyclic task - duration unit and duration validation
+      //   if (errorMessage.isEmpty &&
+      //       _isCyclicTask &&
+      //       (_durationUnit.isEmpty || _duration == 0)) {
+      //     errorMessage = AppLocalizations.of(context)!.asset_next_inspection_tip;
+      //   }
+      //   // assigned users/groups validation
+      //   if (errorMessage.isEmpty &&
+      //       _assignedUsers.isEmpty &&
+      //       _assignedGroups.isEmpty) {
+      //     errorMessage =
+      //         AppLocalizations.of(context)!.task_assign_groups_or_users_error;
+      //   }
+      //   if (errorMessage.isEmpty && _sparePartsItems.isNotEmpty) {
+      //     for (var item in _sparePartsItems) {
+      //       if (errorMessage.isEmpty && item.quantity <= 0) {
+      //         errorMessage =
+      //             AppLocalizations.of(context)!.item_spare_part_quantity_error;
+      //       }
+      //     }
+      //   }
+    }
 
-    // // // shows SnackBar if validation error occures
-    // if (errorMessage.isNotEmpty) {
-    //   showSnackBar(
-    //     context: context,
-    //     message: errorMessage,
-    //     isErrorMessage: true,
-    //   );
-    //   // saves instruction to DB if no error
-    // } else {
+    // shows SnackBar if validation error occures
+    if (errorMessage.isNotEmpty) {
+      showSnackBar(
+        context: context,
+        message: errorMessage,
+        isErrorMessage: true,
+      );
+      // saves instruction to DB if no error
+    }
+    //else {
     //   final newTask = TaskModel(
     //     id: _task?.id ?? '',
     //     parentId: _task?.parentId ?? '',

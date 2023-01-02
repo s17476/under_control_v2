@@ -59,6 +59,13 @@ class AddTaskActionCard extends StatelessWidget {
                         textCapitalization: TextCapitalization.sentences,
                         labelText: AppLocalizations.of(context)!.description,
                         scrollPadding: const EdgeInsets.only(bottom: 100),
+                        validator: (value) {
+                          if (value!.length < 2) {
+                            return AppLocalizations.of(context)!
+                                .validation_min_two_characters;
+                          }
+                          return null;
+                        },
                       ),
 
                       const SizedBox(
