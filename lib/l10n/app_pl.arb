@@ -1,4 +1,9 @@
 {
+    "language": "Język",
+    "language_select": "Wybierz język",
+    "language_dk": "Duński",
+    "language_pl": "Polski",
+    "language_en": "Angielski",
     "total_time": "Czas łącznie",
     "total_time_negative": "Łączny czas nie może być ujemny",
     "yes": "Tak",

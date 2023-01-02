@@ -1,4 +1,24 @@
 {
+    "language": "Language",
+    "@language": {
+      "description": "App language"
+    },
+    "language_select": "Select language",
+    "@language_select": {
+      "description": "App language"
+    },
+    "language_dk": "Danish",
+    "@language_dk": {
+      "description": "App language"
+    },
+    "language_pl": "Polish",
+    "@language_pl": {
+      "description": "App language"
+    },
+    "language_en": "English",
+    "@language_en": {
+      "description": "App language"
+    },
     "total_time": "Total time",
     "@total_time": {
       "description": "Total time"

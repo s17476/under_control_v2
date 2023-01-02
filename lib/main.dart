@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:under_control_v2/features/settings/presentation/blocs/language/language_cubit.dart';
+import 'package:under_control_v2/features/settings/presentation/pages/language_settings_page.dart';
 import 'package:under_control_v2/features/settings/presentation/pages/settings_page.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/register_task_action_page.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/select_new_assets_data_page.dart';
@@ -191,6 +192,8 @@ class App extends StatelessWidget
               SelectNewAssetDataPage.routeName: (context) =>
                   const SelectNewAssetDataPage(),
               SettingsPage.routeName: (context) => const SettingsPage(),
+              LanguageSettingsPage.routeName: (context) =>
+                  const LanguageSettingsPage(),
             },
             // localization
             localizationsDelegates: const [
