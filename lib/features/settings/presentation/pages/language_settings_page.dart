@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/settings/presentation/blocs/language/language_cubit.dart';
-import 'package:under_control_v2/features/settings/utils/get_localizaed_language_name.dart';
+
+import '../../utils/get_localizaed_language_name.dart';
+import '../blocs/language/language_cubit.dart';
 
 class LanguageSettingsPage extends StatelessWidget {
   const LanguageSettingsPage({super.key});
@@ -13,7 +12,10 @@ class LanguageSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final systemLocales = WidgetsBinding.instance.window.locales;
+    final systemLocales = WidgetsBinding.instance.window.locales
+      ..sort(
+        (a, b) => a.languageCode.compareTo(b.languageCode),
+      );
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -47,7 +49,7 @@ class LanguageButton extends StatelessWidget {
       onTap: () => context.read<LanguageCubit>().changeLanguage(languageCode),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
-        child: BlocBuilder<LanguageCubit, Locale?>(
+        child: BlocBuilder<LanguageCubit, Locale>(
           builder: (context, locale) {
             return Row(
               children: [
@@ -60,7 +62,10 @@ class LanguageButton extends StatelessWidget {
                     style: const TextStyle(fontSize: 18),
                   ),
                 ),
-                if (languageCode == locale?.languageCode) const Icon(Icons.done)
+                if (languageCode == locale.languageCode)
+                  const Icon(
+                    Icons.done,
+                  )
               ],
             );
           },

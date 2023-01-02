@@ -163,7 +163,7 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
               ),
               // settings
               CustomMenuItem(
-                onTap: () => Navigator.pushNamed(
+                onTap: () => Navigator.popAndPushNamed(
                   context,
                   SettingsPage.routeName,
                 ),

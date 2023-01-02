@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/settings/presentation/blocs/language/language_cubit.dart';
-import 'package:under_control_v2/features/settings/presentation/pages/language_settings_page.dart';
 
 import '../../utils/get_localizaed_language_name.dart';
+import '../blocs/language/language_cubit.dart';
+import '../pages/language_settings_page.dart';
 
 class LanguageSettingsTile extends StatelessWidget {
   const LanguageSettingsTile({

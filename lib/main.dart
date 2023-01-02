@@ -83,7 +83,7 @@ class App extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return CustomMultiBlocProvider(
-      child: BlocBuilder<LanguageCubit, Locale?>(
+      child: BlocBuilder<LanguageCubit, Locale>(
         builder: (context, locale) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
