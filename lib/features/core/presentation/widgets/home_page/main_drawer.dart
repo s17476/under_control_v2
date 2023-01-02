@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/settings/presentation/pages/settings_page.dart';
 
 import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../../../checklists/presentation/pages/checklist_management_page.dart';
@@ -162,7 +163,10 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
               ),
               // settings
               CustomMenuItem(
-                onTap: () {},
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  SettingsPage.routeName,
+                ),
                 icon: Icons.settings,
                 // iconBackgroundColor: Colors.deepPurple,
                 label: AppLocalizations.of(context)!.drawer_item_settings,

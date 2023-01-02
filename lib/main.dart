@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/settings/presentation/pages/settings_page.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/register_task_action_page.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/select_new_assets_data_page.dart';
 
@@ -83,7 +84,7 @@ class App extends StatelessWidget
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'UnderControl',
-
+        // locale: const Locale('pl'),
         theme: Themes().darkTheme(),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
@@ -180,6 +181,7 @@ class App extends StatelessWidget
               const SubtractItemFromLocationPage(),
           SelectNewAssetDataPage.routeName: (context) =>
               const SelectNewAssetDataPage(),
+          SettingsPage.routeName: (context) => const SettingsPage(),
         },
         // localization
         localizationsDelegates: const [
