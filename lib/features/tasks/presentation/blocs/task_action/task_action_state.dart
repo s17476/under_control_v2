@@ -41,4 +41,14 @@ class TaskActionLoadedState extends TaskActionState {
     }
     return null;
   }
+
+  Duration get getTotalDuration {
+    Duration totalDuration = const Duration();
+    for (var action in allActions.allTaskActions) {
+      for (var participant in action.usersActions) {
+        totalDuration += participant.totalTime;
+      }
+    }
+    return totalDuration;
+  }
 }

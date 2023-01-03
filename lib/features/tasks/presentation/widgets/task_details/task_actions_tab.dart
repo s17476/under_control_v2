@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/duration_apis.dart';
 
 import '../../../domain/entities/task/task.dart';
 import '../../blocs/task_action/task_action_bloc.dart';
+import 'task_action_tile.dart';
 import 'task_actions_buttons.dart';
 
 class TaskActionsTab extends StatelessWidget {
@@ -26,10 +29,37 @@ class TaskActionsTab extends StatelessWidget {
             builder: (context, state) {
               if (state is TaskActionLoadedState) {
                 final actions = state.allActions.allTaskActions;
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: actions.length,
-                  itemBuilder: (context, index) => Text(actions[index].comment),
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 16,
+                        left: 16,
+                        right: 16,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '${AppLocalizations.of(context)!.total_time}:',
+                            ),
+                          ),
+                          Text(state.getTotalDuration.toFormatedString()),
+                        ],
+                      ),
+                    ),
+                    ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: actions.length,
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 2,
+                        width: double.infinity,
+                      ),
+                      itemBuilder: (context, index) => TaskActionTile(
+                        taskAction: actions[index],
+                      ),
+                    ),
+                  ],
                 );
               }
               return CircularProgressIndicator();
