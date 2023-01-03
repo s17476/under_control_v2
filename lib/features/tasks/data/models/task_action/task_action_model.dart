@@ -144,4 +144,14 @@ class TaskActionModel extends TaskAction {
       usersActions: taskAction.usersActions,
     );
   }
+
+  TaskActionModel deepCopy() {
+    return copyWith(
+      images: [...images],
+      removedPartsAssets: [...removedPartsAssets],
+      addedPartsAssets: [...addedPartsAssets],
+      sparePartsItems: [...sparePartsItems],
+      usersActions: [...usersActions],
+    );
+  }
 }

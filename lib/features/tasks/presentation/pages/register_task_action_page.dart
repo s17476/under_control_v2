@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/data/models/task_action/task_action_model.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_summary_card.dart';
 
 import '../../../assets/data/models/asset_model.dart';
+import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
 import '../../../core/presentation/pages/loading_page.dart';
@@ -122,6 +124,22 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         context: context,
         message: 'OK',
       );
+
+      // final taskAction = TaskActionModel(
+      //   id: id,
+      //   taskId: taskId,
+      //   replacedAssetStatus: replacedAssetStatus,
+      //   replacedAssetLocationId: replacedAssetLocationId,
+      //   replacementAssetId: replacementAssetId,
+      //   comment: comment,
+      //   startTime: startTime,
+      //   stopTime: stopTime,
+      //   images: images,
+      //   removedPartsAssets: removedPartsAssets,
+      //   addedPartsAssets: addedPartsAssets,
+      //   sparePartsItems: sparePartsItems,
+      //   usersActions: usersActions,
+      // );
     }
     //else {
     //   final newTask = TaskModel(
@@ -211,7 +229,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     });
   }
 
-  void fetchImages(List<String> urls) async {
+  void _fetchImages(List<String> urls) async {
     setState(() {
       _loadingImages = true;
     });
@@ -410,6 +428,46 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
                 parentAssetId: _task!.assetId,
               ),
             );
+      }
+    }
+
+    if (arguments != null && arguments is TaskAction && _taskAction == null) {
+      _taskAction = TaskActionModel.fromTaskAction(arguments).deepCopy();
+      final tasksState = context.read<TaskBloc>().state;
+      if (tasksState is TaskLoadedState) {
+        _task = tasksState.getTaskById(_taskAction!.taskId);
+        if (_task != null && _task!.assetId.isNotEmpty) {
+          context.read<AssetPartsBloc>().add(
+                GetAssetsForParentEvent(
+                  parentAssetId: _task!.assetId,
+                ),
+              );
+        }
+      }
+      _descriptionTextEditingController.text = _taskAction!.comment;
+      _participants.addAll(_taskAction!.usersActions);
+      _fetchImages(_taskAction!.images);
+      _sparePartsItems.addAll(_taskAction!.sparePartsItems);
+      _removedPartsAssets.addAll(_taskAction!.removedPartsAssets);
+      _addedPartsAssets.addAll(_taskAction!.addedPartsAssets);
+
+      _updateStartAndStopTime();
+
+      if (_task!.assetId.isNotEmpty) {
+        final assetsState = context.watch<AssetBloc>().state;
+        if (assetsState is AssetLoadedState) {
+          if (_taskAction!.replacedAssetLocationId.isNotEmpty) {
+            final replacedAsset = assetsState.getAssetById(_task!.assetId);
+            if (replacedAsset != null) {
+              _replacedAsset = AssetModel.fromAsset(replacedAsset);
+            }
+            final replacementAsset =
+                assetsState.getAssetById(_taskAction!.replacementAssetId);
+            if (replacementAsset != null) {
+              _replacementAsset = AssetModel.fromAsset(replacementAsset);
+            }
+          }
+        }
       }
     }
 

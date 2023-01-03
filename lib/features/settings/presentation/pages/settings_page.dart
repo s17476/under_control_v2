@@ -21,7 +21,7 @@ class SettingsPage extends StatelessWidget {
           children: const [
             LanguageSettingsTile(),
             Divider(
-              height: 1.5,
+              thickness: 1.5,
             ),
           ],
         ),

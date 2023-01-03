@@ -25,7 +25,7 @@ class LanguageSettingsPage extends StatelessWidget {
       body: ListView.separated(
         itemCount: systemLocales.length,
         separatorBuilder: (context, index) => const Divider(
-          height: 1.5,
+          thickness: 1.5,
         ),
         itemBuilder: (context, index) => LanguageButton(
           languageCode: systemLocales[index].languageCode,
