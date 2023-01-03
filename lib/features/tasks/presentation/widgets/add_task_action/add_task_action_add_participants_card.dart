@@ -54,6 +54,14 @@ class _AddTaskActionAddParticipantsCardState
     });
   }
 
+  String _getTotalActionTime() {
+    Duration totalDuration = const Duration();
+    for (var participant in widget.participants) {
+      totalDuration += participant.totalTime;
+    }
+    return totalDuration.toFormatedString();
+  }
+
   @override
   void didChangeDependencies() {
     if (_selectedUser != null) {
@@ -106,6 +114,25 @@ class _AddTaskActionAddParticipantsCardState
                                   ? MainAxisAlignment.center
                                   : MainAxisAlignment.start,
                               children: [
+                                if (widget.participants.isNotEmpty) ...[
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .task_action_total_duration,
+                                          ),
+                                        ),
+                                        Text(_getTotalActionTime()),
+                                      ],
+                                    ),
+                                  ),
+                                  const Divider(
+                                    thickness: 1.5,
+                                  )
+                                ],
                                 // if (_selectedUser != null)
                                 SelectedUserBox(
                                   selectedUser: _selectedUser,

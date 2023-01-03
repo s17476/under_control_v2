@@ -566,5 +566,7 @@
     "task_action_used_items": "Użyte materiały",
     "task_action_add_replacement_asset": "Dodaj zamiennik zasobu",
     "task_action_asset_already_in_use_err_msg": "Ten zasób jest już w użyciu",
-    "task_action_duration_to_short": "Całkowita długość trwania akcji musi wynosić przynajmniej 5 minut"
+    "task_action_duration_to_short": "Całkowita długość trwania akcji musi wynosić przynajmniej 5 minut",
+    "task_action_total_duration": "Czas łącznie",
+    "task_action_replaced_asset_err": "Połączony zasób został usunięty, ale nie dodano adnego zamiennika"
 }

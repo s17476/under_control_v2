@@ -2346,5 +2346,13 @@
     "task_action_duration_to_short": "Total duration must be at least 5 minutes",
     "@task_action_duration_to_short": {
       "description": "task action - duration error"
+    },
+    "task_action_total_duration": "Total duration",
+    "@task_action_total_duration": {
+      "description": "task action - total duration"
+    },
+    "task_action_replaced_asset_err": "Connected asset has been removed, but no replacement is added",
+    "@task_action_replaced_asset_err": {
+      "description": "task action - replaced asset err"
     }
 }

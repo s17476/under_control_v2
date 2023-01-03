@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:under_control_v2/features/inventory/presentation/widgets/shimmer_item_tile.dart';
-import 'package:under_control_v2/features/tasks/presentation/pages/select_new_assets_data_page.dart';
-
 import '../../../../assets/data/models/asset_model.dart';
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
+import '../../../../inventory/presentation/widgets/shimmer_item_tile.dart';
+import '../../pages/select_new_assets_data_page.dart';
 
 class AddTaskActionRemoveAssetCard extends StatelessWidget {
   const AddTaskActionRemoveAssetCard({
@@ -168,44 +167,43 @@ class AssetToRemoveTile extends StatelessWidget {
   Widget build(BuildContext context) {
     const borderRadius = 15.0;
     const margin = EdgeInsets.symmetric(vertical: 4, horizontal: 8);
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        AnimatedContainer(
-          margin: margin,
-          duration: const Duration(milliseconds: 300),
-          decoration: BoxDecoration(
-            color:
-                isRemoved ? Colors.red.shade900 : Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(borderRadius),
-          ),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(borderRadius),
-            onTap: () => selectNewDataAndRemove(context),
-            child: IgnorePointer(
-              child: AssetTile(
+    return AnimatedContainer(
+      margin: margin,
+      duration: const Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        color: isRemoved ? Colors.red.shade900 : Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(borderRadius),
+        onTap: () => selectNewDataAndRemove(context),
+        child: IgnorePointer(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              AssetTile(
                 asset: asset,
                 searchQuery: '',
                 backgroundColor: Colors.transparent,
                 borderRadius: borderRadius,
                 margin: EdgeInsets.zero,
               ),
-            ),
-          ),
-        ),
-        if (isRemoved)
-          Icon(
-            Icons.delete,
-            size: 80,
-            color: Colors.grey.shade200,
-            shadows: const [
-              Shadow(
-                color: Colors.black,
-                blurRadius: 25,
-              )
+              if (isRemoved)
+                Icon(
+                  Icons.delete,
+                  size: 80,
+                  color: Colors.grey.shade200,
+                  shadows: const [
+                    Shadow(
+                      color: Colors.black,
+                      blurRadius: 25,
+                    )
+                  ],
+                ),
             ],
           ),
-      ],
+        ),
+      ),
     );
   }
 }

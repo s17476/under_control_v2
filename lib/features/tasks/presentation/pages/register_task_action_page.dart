@@ -56,7 +56,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
 
   String _userId = '';
 
-  DateTime _startTime = DateTime.now().subtract(Duration(minutes: 5));
+  DateTime _startTime = DateTime.now().subtract(const Duration(minutes: 5));
   DateTime _stopTime = DateTime.now();
 
   final List<UserActionModel> _participants = [];
@@ -92,19 +92,16 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
           if (totalDuration.inMinutes < 5) {
             errorMessage =
                 AppLocalizations.of(context)!.task_action_duration_to_short;
-          } else {
-            DateTime? minTime;
-            DateTime? maxTime;
-            for (var participant in _participants) {
-              if (minTime == null || minTime.isAfter(participant.startTime)) {
-                minTime = participant.startTime;
-              }
-              if (maxTime == null || maxTime.isBefore(participant.stopTime)) {
-                maxTime = participant.stopTime;
-              }
-            }
           }
         }
+      }
+      // connected asset replacement validation
+      // if connected asset is replaced, replacement asset has to be added
+      if (errorMessage.isEmpty &&
+          _replacedAsset != null &&
+          _replacementAsset == null) {
+        errorMessage =
+            AppLocalizations.of(context)!.task_action_replaced_asset_err;
       }
       //   // task type validation
       //   if (errorMessage.isEmpty && _taskType.isEmpty) {
@@ -158,6 +155,8 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         isErrorMessage: true,
       );
       // saves instruction to DB if no error
+    } else {
+      print('OK');
     }
     //else {
     //   final newTask = TaskModel(
@@ -268,6 +267,23 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     }
   }
 
+  void _updateStartAndStopTime() {
+    DateTime? minTime;
+    DateTime? maxTime;
+    for (var participant in _participants) {
+      if (minTime == null || minTime.isAfter(participant.startTime)) {
+        minTime = participant.startTime;
+      }
+      if (maxTime == null || maxTime.isBefore(participant.stopTime)) {
+        maxTime = participant.stopTime;
+      }
+    }
+    if (minTime != null && maxTime != null) {
+      _startTime = minTime;
+      _stopTime = maxTime;
+    }
+  }
+
   void _updateParticipant(UserActionModel userActionModel) {
     final index = _participants
         .indexWhere((element) => element.userId == userActionModel.userId);
@@ -276,6 +292,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         _participants.removeAt(index);
         _participants.insert(index, userActionModel);
       });
+      _updateStartAndStopTime();
     }
   }
 
@@ -293,6 +310,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         _participants.add(userAction);
       });
     }
+    _updateStartAndStopTime();
   }
 
   void _toggleRemovedAsset(AssetModel asset) {
