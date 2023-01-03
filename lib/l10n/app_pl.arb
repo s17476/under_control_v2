@@ -530,6 +530,7 @@
     "task_type_inspection": "Przegląd techniczny",
     "task_type_event": "Wydarzenie",
     "task_priority": "Priorytet zadania",
+    "task_priority_and_type": "Priorytet i typ zadania",
     "task_priority_low": "Niski",
     "task_priority_medium": "Sredni",
     "task_priority_high": "Wysoki",

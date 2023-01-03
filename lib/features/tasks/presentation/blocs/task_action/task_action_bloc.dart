@@ -25,6 +25,7 @@ class TaskActionBloc extends Bloc<TaskActionEvent, TaskActionState> {
   }) : super(TaskActionEmptyState()) {
     on<GetTaskActionsForTaskStreamEvent>(
       (event, emit) async {
+        print('get task actions');
         emit(TaskActionLoadingState());
         final taskParams = TaskParams(
           task: event.task,

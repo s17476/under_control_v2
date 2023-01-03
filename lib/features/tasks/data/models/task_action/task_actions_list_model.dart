@@ -18,7 +18,7 @@ class TaskActionsListModel extends TaskActionsList {
         )
         .toList()
       ..sort(
-        (a, b) => a.stopTime.compareTo(b.stopTime),
+        (a, b) => b.stopTime.compareTo(a.stopTime),
       );
     return TaskActionsListModel(allTaskActions: taskActionsList);
   }

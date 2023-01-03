@@ -12,7 +12,10 @@ class LanguageSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final systemLocales = WidgetsBinding.instance.window.locales
+    final systemLocales = context
+        .findAncestorWidgetOfExactType<MaterialApp>()!
+        .supportedLocales
+        .toList()
       ..sort(
         (a, b) => a.languageCode.compareTo(b.languageCode),
       );
@@ -62,7 +65,7 @@ class LanguageButton extends StatelessWidget {
                     style: const TextStyle(fontSize: 18),
                   ),
                 ),
-                if (languageCode == locale.languageCode)
+                if (languageCode == locale.languageCode.split('_')[0])
                   const Icon(
                     Icons.done,
                   )

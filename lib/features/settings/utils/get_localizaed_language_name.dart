@@ -22,6 +22,6 @@ String getLocalizedLanguageName(
     case 'dk':
       return trans.language_dk;
     default:
-      return trans.account_exist;
+      return langCode;
   }
 }

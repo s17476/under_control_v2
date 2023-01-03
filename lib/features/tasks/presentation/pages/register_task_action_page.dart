@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/data/models/task_action/task_action_model.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/task_action_management/task_action_management_bloc.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_summary_card.dart';
 
 import '../../../assets/data/models/asset_model.dart';
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
+import '../../../assets/utils/asset_status.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -23,6 +25,7 @@ import '../../domain/entities/task/task.dart';
 import '../../domain/entities/task_action/task_action.dart';
 import '../blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
 import '../blocs/task/task_bloc.dart';
+import '../blocs/task_action/task_action_bloc.dart';
 import '../widgets/add_task_action/add_task_action_add_participants_card.dart';
 import '../widgets/add_task_action/add_task_action_add_spare_part_card.dart';
 import '../widgets/add_task_action/add_task_action_card.dart';
@@ -125,77 +128,43 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         message: 'OK',
       );
 
-      // final taskAction = TaskActionModel(
-      //   id: id,
-      //   taskId: taskId,
-      //   replacedAssetStatus: replacedAssetStatus,
-      //   replacedAssetLocationId: replacedAssetLocationId,
-      //   replacementAssetId: replacementAssetId,
-      //   comment: comment,
-      //   startTime: startTime,
-      //   stopTime: stopTime,
-      //   images: images,
-      //   removedPartsAssets: removedPartsAssets,
-      //   addedPartsAssets: addedPartsAssets,
-      //   sparePartsItems: sparePartsItems,
-      //   usersActions: usersActions,
-      // );
+      final taskAction = TaskActionModel(
+        id: '',
+        taskId: _task!.id,
+        replacedAssetStatus:
+            _replacedAsset?.currentStatus ?? AssetStatus.unknown,
+        replacedAssetLocationId: _replacedAsset?.locationId ?? '',
+        replacementAssetId: _replacementAsset?.id ?? '',
+        comment: _descriptionTextEditingController.text,
+        startTime: _startTime,
+        stopTime: _stopTime,
+        images: const [],
+        removedPartsAssets: _removedPartsAssets,
+        addedPartsAssets: _addedPartsAssets,
+        sparePartsItems: _sparePartsItems,
+        usersActions: _participants,
+      );
+
+      if (_taskAction == null) {
+        context.read<TaskActionManagementBloc>().add(
+              AddTaskActionEvent(
+                taskAction: taskAction,
+                task: _task!,
+                images: _images,
+              ),
+            );
+      } else {
+        context.read<TaskActionManagementBloc>().add(
+              UpdateTaskActionEvent(
+                taskAction: taskAction,
+                task: _task!,
+                images: _images,
+              ),
+            );
+      }
+
+      // Navigator.pop(context);
     }
-    //else {
-    //   final newTask = TaskModel(
-    //     id: _task?.id ?? '',
-    //     parentId: _task?.parentId ?? '',
-    //     count: _task?.count ?? 0,
-    //     date: _date,
-    //     executionDate: _executionDate,
-    //     title: _titleTextEditingController.text,
-    //     description: _descriptionTextEditingController.text,
-    //     locationId: _locationId,
-    //     userId: _userId,
-    //     assetId: _assetId,
-    //     workOrderId: _workRequest?.id ?? '',
-    //     images: const [],
-    //     instructions: _instructions,
-    //     video: '',
-    //     priority: TaskPriority.fromString(_priority),
-    //     type: TaskType.fromString(_taskType),
-    //     assetStatus: AssetStatus.fromString(_assetStatus),
-    //     isFinished: false,
-    //     isCancelled: false,
-    //     isSuccessful: false,
-    //     isInProgress: false,
-    //     isCyclictask: _isCyclicTask,
-    //     durationUnit: DurationUnit.fromString(_durationUnit),
-    //     duration: _duration,
-    //     actions: const [],
-    //     assignedGroups: _assignedGroups,
-    //     assignedUsers: _assignedUsers,
-    //     sparePartsAssets: _sparePartsAssets,
-    //     sparePartsItems: _sparePartsItems,
-    //   );
-
-    //   // add new task
-    //   if (_task == null || _task!.id.isEmpty) {
-    //     context.read<TaskManagementBloc>().add(
-    //           AddTaskEvent(
-    //             task: newTask,
-    //             images: _images,
-    //             video: _videoFile,
-    //           ),
-    //         );
-    //     // update task
-    //   } else {
-    //     context.read<TaskManagementBloc>().add(
-    //           UpdateTaskEvent(
-    //             task: newTask,
-    //             images: _images,
-    //             video: _videoFile,
-    //           ),
-    //         );
-    //   }
-
-    //   Navigator.pop(context);
-    // }
   }
 
   void _toggleReplaceConnectedAsset(AssetModel asset) {

@@ -12,10 +12,12 @@ import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../domain/entities/task/task.dart';
 import '../../utils/show_task_cancel_dialog.dart';
 import '../../utils/work_request_management_bloc_listener.dart';
 import '../blocs/task/task_bloc.dart';
+import '../blocs/task_action/task_action_bloc.dart';
 import '../blocs/task_archive/task_archive_bloc.dart';
 import '../blocs/work_request_management/work_request_management_bloc.dart';
 import '../widgets/task_details/task_actions_tab.dart';
@@ -37,7 +39,7 @@ class TaskDetailsPage extends StatefulWidget {
 
 class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
   Task? _task;
-  // late UserProfile _currentUser;
+  late TaskActionBloc _taskActionBloc;
 
   List<Choice> _choices = [];
 
@@ -45,6 +47,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
 
   @override
   void didChangeDependencies() {
+    _taskActionBloc = context.read<TaskActionBloc>();
     final taskId = (ModalRoute.of(context)?.settings.arguments as String);
     final taskState = context.watch<TaskBloc>().state;
     if (taskState is TaskLoadedState) {
@@ -56,6 +59,16 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
         }
       }
       if (_task != null) {
+        // fetch actions
+        final userState = context.read<UserProfileBloc>().state;
+        if (userState is Approved) {
+          context.read<TaskActionBloc>().add(
+                GetTaskActionsForTaskStreamEvent(
+                  companyId: userState.userProfile.companyId,
+                  task: _task!,
+                ),
+              );
+        }
         // precache images
         for (var imageUrl in _task!.images) {
           precacheImage(CachedNetworkImageProvider(imageUrl), context);
@@ -113,6 +126,12 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
       }
     }
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _taskActionBloc.add(ResetTaskActionsEvent());
+    super.dispose();
   }
 
   @override

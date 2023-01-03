@@ -7,13 +7,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @injectable
 class LanguageCubit extends Cubit<Locale> {
-  LanguageCubit() : super(Locale(Platform.localeName));
+  LanguageCubit() : super(Locale(Platform.localeName.split('_')[0]));
 
   void getInitLanguage() async {
     final prefs = await SharedPreferences.getInstance();
     final langCode = prefs.getString('UC-lang');
     if (langCode != null) {
-      emit(Locale(langCode));
+      emit(Locale(langCode.split('_')[0]));
+    } else {
+      emit(Locale(Platform.localeName.split('_')[0]));
     }
   }
 

@@ -3,19 +3,20 @@ import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/assets/utils/asset_status.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_action/item_action_model.dart';
-import 'package:under_control_v2/features/inventory/data/models/item_amount_in_location_model.dart';
-import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_action.dart';
-import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item_model.dart';
-import 'package:under_control_v2/features/tasks/domain/entities/task_action/task_actions_stream.dart';
-import 'package:under_control_v2/features/core/usecases/usecase.dart';
-import 'package:under_control_v2/features/core/error/failures.dart';
 
 import '../../../assets/data/models/asset_action/asset_action_model.dart';
 import '../../../assets/data/models/asset_model.dart';
+import '../../../assets/utils/asset_status.dart';
+import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
+import '../../../inventory/data/models/item_action/item_action_model.dart';
+import '../../../inventory/data/models/item_amount_in_location_model.dart';
 import '../../../inventory/data/models/item_model.dart';
+import '../../../inventory/domain/entities/item_action/item_action.dart';
+import '../../domain/entities/task_action/task_actions_stream.dart';
 import '../../domain/repositories/task_action_repository.dart';
+import '../models/task/spare_part_item_model.dart';
+import '../models/task/task_model.dart';
 import '../models/task_action/task_action_model.dart';
 
 @LazySingleton(as: TaskActionRepository)
@@ -35,6 +36,11 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           .collection('companies')
           .doc(params.userProfile.companyId)
           .collection('taskActions');
+
+      final assetActionsReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.userProfile.companyId)
+          .collection('assetsActions');
 
       // start batch
       final batch = firebaseFirestore.batch();
@@ -74,6 +80,110 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
 
       batch.set(taskActionReference, taskActionMap);
 
+      // replace connected asset
+      if (updatedTaskAction.replacedAssetLocationId.isNotEmpty) {
+        // get connected task
+        final taskReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.userProfile.companyId)
+            .collection('tasks')
+            .doc(updatedTaskAction.taskId);
+
+        final taskSnapshot = await taskReference.get();
+        final fetchedTask = TaskModel.fromMap(
+          taskSnapshot.data() as Map<String, dynamic>,
+          taskSnapshot.id,
+        );
+
+        // get connected asset
+        final assetsReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.userProfile.companyId)
+            .collection('assets');
+
+        // replaced asset
+        final replacedAssetSnapshot =
+            await assetsReference.doc(fetchedTask.assetId).get();
+        final replacedAsset = AssetModel.fromMap(
+          replacedAssetSnapshot.data() as Map<String, dynamic>,
+          replacedAssetSnapshot.id,
+        );
+
+        final updatedReplacedAsset = replacedAsset.copyWith(
+          locationId: updatedTaskAction.replacedAssetLocationId,
+          currentStatus: updatedTaskAction.replacedAssetStatus,
+        );
+
+        final replacedAssetMap = updatedReplacedAsset.toMap();
+
+        final replacedAssetAction = AssetActionModel(
+          id: '',
+          assetId: replacedAsset.id,
+          dateTime: updatedTaskAction.stopTime,
+          userId: params.userProfile.id,
+          locationId: updatedReplacedAsset.locationId,
+          isAssetInUse: false,
+          isCreate: false,
+          assetStatus: updatedReplacedAsset.currentStatus,
+          connectedTask: updatedTaskAction.taskId,
+          connectedWorkRequest: '',
+        );
+        final replacedAssetActionMap = replacedAssetAction.toMap();
+
+        // get action reference
+        final replacedAssetActionReference =
+            await assetActionsReference.add({'name': ''});
+
+        // add action
+        batch.set(replacedAssetActionReference, replacedAssetActionMap);
+        // update replaced asset
+        batch.update(
+          assetsReference.doc(updatedReplacedAsset.id),
+          replacedAssetMap,
+        );
+
+        // repplacement asset
+        final replacementAssetSnapshot = await assetsReference
+            .doc(params.taskAction.replacementAssetId)
+            .get();
+        final replacementAsset = AssetModel.fromMap(
+          replacementAssetSnapshot.data() as Map<String, dynamic>,
+          replacementAssetSnapshot.id,
+        );
+
+        final updatedReplacementAsset = replacementAsset.copyWith(
+          locationId: params.task.locationId,
+        );
+
+        final replacementAssetMap = updatedReplacementAsset.toMap();
+
+        final replacementAssetAction = AssetActionModel(
+          id: '',
+          assetId: replacementAsset.id,
+          dateTime: updatedTaskAction.stopTime,
+          userId: params.userProfile.id,
+          locationId: params.task.locationId,
+          isAssetInUse: true,
+          isCreate: false,
+          assetStatus: updatedReplacementAsset.currentStatus,
+          connectedTask: updatedTaskAction.taskId,
+          connectedWorkRequest: '',
+        );
+        final replacementAssetActionMap = replacementAssetAction.toMap();
+
+        // get action reference
+        final replacementAssetActionReference =
+            await assetActionsReference.add({'name': ''});
+
+        // add action
+        batch.set(replacementAssetActionReference, replacementAssetActionMap);
+        // update replacement asset
+        batch.update(
+          assetsReference.doc(updatedReplacementAsset.id),
+          replacementAssetMap,
+        );
+      }
+
       // update replaced assets
       final replacedAssets = params.taskAction.removedPartsAssets;
       if (replacedAssets.isNotEmpty) {
@@ -96,10 +206,6 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final assetMap = updatedAssetModel.toMap();
 
           // action
-          final actionsReference = firebaseFirestore
-              .collection('companies')
-              .doc(params.userProfile.companyId)
-              .collection('assetsActions');
 
           final assetAction = AssetActionModel(
             id: '',
@@ -116,7 +222,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final actionMap = assetAction.toMap();
 
           // get action reference
-          final actionReference = await actionsReference.add({'name': ''});
+          final actionReference = await assetActionsReference.add({'name': ''});
 
           // add action
           batch.set(actionReference, actionMap);
@@ -221,7 +327,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final itemAction = ItemActionModel(
             id: '',
             type: ItemActionType.remove,
-            description: '',
+            description: 'TASK#${params.task.count}',
             ammount: addedItem.quantity,
             itemUnit: updatedItem.itemUnit,
             locationId: addedItem.locationId,
@@ -242,12 +348,16 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
 
       batch.commit();
 
+      print('poszło');
+
       return Right(taskActionReference.id);
     } on FirebaseException catch (e) {
+      print('nie poszło');
       return Left(
         DatabaseFailure(message: e.message ?? 'Database Failure'),
       );
     } catch (e) {
+      print('nie poszło');
       return const Left(
         UnsuspectedFailure(message: 'Unsuspected error'),
       );
@@ -465,6 +575,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
     }
   }
 
+// TODO update replaced/replacement asset
   @override
   Future<Either<Failure, VoidResult>> updateTaskAction(
       TaskActionParams params) async {
