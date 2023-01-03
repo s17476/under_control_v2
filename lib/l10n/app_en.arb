@@ -2315,6 +2315,10 @@
     "@task_action_edit": {
       "description": "task action - edit"
     },
+    "task_action_participants": "Participants",
+    "@task_action_participants": {
+      "description": "task action - participants"
+    },
     "task_action_add_participants": "Add participants",
     "@task_action_add_participants": {
       "description": "task action - add participants"
@@ -2346,6 +2350,10 @@
     "task_action_duration_to_short": "Total duration must be at least 5 minutes",
     "@task_action_duration_to_short": {
       "description": "task action - duration error"
+    },
+    "task_action_user_duration_to_short": "Duration per user must be at least 5 minutes",
+    "@task_action_user_duration_to_short": {
+      "description": "task action - user duration error"
     },
     "task_action_total_duration": "Total duration",
     "@task_action_total_duration": {

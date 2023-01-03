@@ -559,6 +559,7 @@
     "task_filter_reset": "Resetuj filtr",
     "task_action_new": "Zarejestruj nową akcję",
     "task_action_edit": "Edytuj akcję",
+    "task_action_participants": "Uczestnicy",
     "task_action_add_participants": "Dodaj uczestników",
     "task_action_add_participants_no_selected": "Dodaj przynajmniej jednego uczestnika",
     "task_action_remove_assets": "Usuń uszkodzone części",
@@ -567,6 +568,7 @@
     "task_action_add_replacement_asset": "Dodaj zamiennik zasobu",
     "task_action_asset_already_in_use_err_msg": "Ten zasób jest już w użyciu",
     "task_action_duration_to_short": "Całkowita długość trwania akcji musi wynosić przynajmniej 5 minut",
+    "task_action_user_duration_to_short": "Długość trwania akcji dla kadego uczestnika musi wynosić przynajmniej 5 minut",
     "task_action_total_duration": "Czas łącznie",
     "task_action_replaced_asset_err": "Połączony zasób został usunięty, ale nie dodano adnego zamiennika"
 }

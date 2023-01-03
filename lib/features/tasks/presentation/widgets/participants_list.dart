@@ -120,14 +120,18 @@ class _ParticipantsListState extends State<ParticipantsList> {
               ],
               if (widget.participants.isNotEmpty)
                 Expanded(
+                  flex: widget.isEnabled ? 1 : 0,
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
+                    physics: widget.isEnabled
+                        ? null
+                        : const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: widget.participants.length + 1,
                     itemBuilder: (context, index) {
                       if (index == widget.participants.length) {
-                        return const SizedBox(
-                          height: 80,
+                        return SizedBox(
+                          height: widget.isEnabled ? 80 : 0,
                         );
                       }
                       final user = state.getUserById(

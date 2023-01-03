@@ -86,6 +86,10 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
           //validate duration - min. 5 minutes
           Duration totalDuration = const Duration();
           for (var participant in _participants) {
+            if (participant.totalTime.inMinutes < 5) {
+              errorMessage = AppLocalizations.of(context)!
+                  .task_action_user_duration_to_short;
+            }
             totalDuration +=
                 participant.stopTime.difference(participant.startTime);
           }

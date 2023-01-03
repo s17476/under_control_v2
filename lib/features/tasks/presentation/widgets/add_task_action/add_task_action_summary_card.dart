@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:under_control_v2/features/core/utils/double_apis.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/participants_list.dart';
 
 import '../../../../assets/data/models/asset_model.dart';
 import '../../../../assets/domain/entities/asset.dart';
@@ -87,10 +88,22 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
                     ),
 
                     // description
-                    if (descriptionTextEditingController.text.isNotEmpty)
-                      DescriptionSummaryCard(
-                        descriptionTextEditingController:
-                            descriptionTextEditingController,
+                    DescriptionSummaryCard(
+                      descriptionTextEditingController:
+                          descriptionTextEditingController,
+                      pageController: pageController,
+                    ),
+
+                    // participants
+                    ParticipantsSummaryCard(
+                      participants: participants,
+                      pageController: pageController,
+                    ),
+
+                    // images
+                    if (images.isNotEmpty)
+                      ImagesSummaryCard(
+                        images: images,
                         pageController: pageController,
                       ),
 
@@ -102,13 +115,6 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
                     //     sparePartsItems: sparePartsItems,
                     //     pageController: pageController,
                     //   ),
-
-                    // images
-                    if (images.isNotEmpty)
-                      ImagesSummaryCard(
-                        images: images,
-                        pageController: pageController,
-                      ),
 
                     const SizedBox(
                       height: 50,
@@ -140,10 +146,70 @@ class DescriptionSummaryCard extends StatelessWidget {
       children: [
         SummaryCard(
           title: AppLocalizations.of(context)!.description,
-          validator: () => null,
+          validator: () =>
+              descriptionTextEditingController.text.trim().length < 2
+                  ? AppLocalizations.of(context)!.validation_min_two_characters
+                  : null,
           pageController: pageController,
           onTapAnimateToPage: 0,
           child: Text(descriptionTextEditingController.text.trim()),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+      ],
+    );
+  }
+}
+
+class ParticipantsSummaryCard extends StatelessWidget {
+  const ParticipantsSummaryCard({
+    Key? key,
+    required this.participants,
+    required this.pageController,
+  }) : super(key: key);
+
+  final List<UserActionModel> participants;
+  final PageController pageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SummaryCard(
+          title: AppLocalizations.of(context)!.task_action_participants,
+          validator: () {
+            if (participants.isEmpty) {
+              return AppLocalizations.of(context)!
+                  .task_action_add_participants_no_selected;
+            } else {
+              //validate duration - min. 5 minutes
+              Duration totalDuration = const Duration();
+              for (var participant in participants) {
+                if (participant.totalTime.inMinutes < 5) {
+                  return AppLocalizations.of(context)!
+                      .task_action_user_duration_to_short;
+                }
+                totalDuration +=
+                    participant.stopTime.difference(participant.startTime);
+              }
+              if (totalDuration.inMinutes < 5) {
+                return AppLocalizations.of(context)!
+                    .task_action_duration_to_short;
+              }
+              return null;
+            }
+          },
+          pageController: pageController,
+          onTapAnimateToPage: 1,
+          child: IgnorePointer(
+            child: ParticipantsList(
+              participants: participants,
+              toggleParticipantSelection: (_) {},
+              updateParticipant: (_) {},
+              isEnabled: false,
+            ),
+          ),
         ),
         const SizedBox(
           height: 8,
