@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_summary_card.dart';
 
 import '../../../assets/data/models/asset_model.dart';
 import '../../../assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
@@ -44,7 +45,6 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   bool _isAddItemVisible = false;
   bool _isAddAssetVisible = false;
   bool _isAddUsersVisible = false;
-  // bool _hasChildrenAssets = false;
 
   // pageview
   List<Widget> _pages = [];
@@ -62,7 +62,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   final List<UserActionModel> _participants = [];
 
   List<File> _images = [];
-  List<SparePartItemModel> _sparePartsItems = [];
+  final List<SparePartItemModel> _sparePartsItems = [];
   final List<AssetModel> _removedPartsAssets = [];
   final List<String> _addedPartsAssets = [];
 
@@ -103,48 +103,6 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         errorMessage =
             AppLocalizations.of(context)!.task_action_replaced_asset_err;
       }
-      //   // task type validation
-      //   if (errorMessage.isEmpty && _taskType.isEmpty) {
-      //     errorMessage = AppLocalizations.of(context)!.task_type_select;
-      //   }
-      //   // location validation
-      //   if (errorMessage.isEmpty && !_isConnectedToAsset && _locationId.isEmpty) {
-      //     errorMessage =
-      //         AppLocalizations.of(context)!.validation_location_not_selected;
-      //   }
-      //   // asset validation
-      //   if (errorMessage.isEmpty && _isConnectedToAsset && _assetId.isEmpty) {
-      //     errorMessage =
-      //         AppLocalizations.of(context)!.task_connected_asset_select;
-      //   }
-      //   // asset status validation
-      //   if (errorMessage.isEmpty &&
-      //       _isConnectedToAsset &&
-      //       _assetId.isNotEmpty &&
-      //       _assetStatus.isEmpty) {
-      //     errorMessage = AppLocalizations.of(context)!.asset_status_not_selected;
-      //   }
-      //   // cyclic task - duration unit and duration validation
-      //   if (errorMessage.isEmpty &&
-      //       _isCyclicTask &&
-      //       (_durationUnit.isEmpty || _duration == 0)) {
-      //     errorMessage = AppLocalizations.of(context)!.asset_next_inspection_tip;
-      //   }
-      //   // assigned users/groups validation
-      //   if (errorMessage.isEmpty &&
-      //       _assignedUsers.isEmpty &&
-      //       _assignedGroups.isEmpty) {
-      //     errorMessage =
-      //         AppLocalizations.of(context)!.task_assign_groups_or_users_error;
-      //   }
-      //   if (errorMessage.isEmpty && _sparePartsItems.isNotEmpty) {
-      //     for (var item in _sparePartsItems) {
-      //       if (errorMessage.isEmpty && item.quantity <= 0) {
-      //         errorMessage =
-      //             AppLocalizations.of(context)!.item_spare_part_quantity_error;
-      //       }
-      //     }
-      //   }
     }
 
     // shows SnackBar if validation error occures
@@ -156,7 +114,10 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
       );
       // saves instruction to DB if no error
     } else {
-      print('OK');
+      showSnackBar(
+        context: context,
+        message: 'OK',
+      );
     }
     //else {
     //   final newTask = TaskModel(
@@ -214,8 +175,6 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     //   Navigator.pop(context);
     // }
   }
-
-  // TODO: update start/stop times
 
   void _toggleReplaceConnectedAsset(AssetModel asset) {
     if (_replacedAsset != null) {
@@ -517,6 +476,16 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         replacementAsset: _replacementAsset,
         isConnectedAssetReplaced: _replacedAsset != null,
         toggleReplacementAsset: _toggleReplacementAsset,
+      ),
+      AddTaskActionSummaryCard(
+        pageController: _pageController,
+        descriptionTextEditingController: _descriptionTextEditingController,
+        startTime: _startTime,
+        stopTime: _stopTime,
+        participants: _participants,
+        images: _images,
+        removedPartsAssets: _removedPartsAssets,
+        addedPartsAssets: _addedPartsAssets,
       ),
     ];
 
