@@ -114,7 +114,9 @@ class ItemActionListTile extends StatelessWidget {
                               ),
                               // description
                               Text(
-                                action.description,
+                                action.description.contains('TASK#')
+                                    ? '${AppLocalizations.of(context)!.task} ${action.description.substring(4)}'
+                                    : action.description,
                                 style: Theme.of(context).textTheme.caption,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 6,

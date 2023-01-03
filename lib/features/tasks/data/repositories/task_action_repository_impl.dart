@@ -330,7 +330,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
             description: 'TASK#${params.task.count}',
             ammount: addedItem.quantity,
             itemUnit: updatedItem.itemUnit,
-            locationId: addedItem.locationId,
+            locationId: params.task.locationId,
             date: params.taskAction.stopTime,
             itemId: addedItem.itemId,
             userId: params.userProfile.id,

@@ -163,7 +163,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
             );
       }
 
-      // Navigator.pop(context);
+      Navigator.pop(context);
     }
   }
 
