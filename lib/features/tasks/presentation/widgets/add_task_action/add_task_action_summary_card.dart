@@ -3,19 +3,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
-import 'package:under_control_v2/features/core/utils/double_apis.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/participants_list.dart';
 
 import '../../../../assets/data/models/asset_model.dart';
 import '../../../../assets/domain/entities/asset.dart';
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
+import '../../../../assets/presentation/widgets/asset_tile.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
+import '../../../../core/utils/double_apis.dart';
 import '../../../../core/utils/responsive_size.dart';
 import '../../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../../inventory/utils/get_localized_unit_name.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
 import '../../../data/models/task_action/user_action_model.dart';
+import '../participants_list.dart';
 
 class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
   const AddTaskActionSummaryCard({
@@ -26,10 +26,11 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.stopTime,
     required this.participants,
     required this.images,
+    required this.sparePartsItems,
     required this.removedPartsAssets,
     required this.addedPartsAssets,
-    this.replacedAsset,
-    this.replacementAsset,
+    required this.replacedAsset,
+    required this.replacementAsset,
   }) : super(key: key);
 
   final PageController pageController;
@@ -42,6 +43,7 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
   final List<UserActionModel> participants;
   final List<File> images;
 
+  final List<SparePartItemModel> sparePartsItems;
   final List<AssetModel> removedPartsAssets;
   final List<String> addedPartsAssets;
 
@@ -50,9 +52,6 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd-MM-yyyy  HH:mm');
-    final timeFormat = DateFormat('HH:mm');
-
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -107,14 +106,27 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
                         pageController: pageController,
                       ),
 
-                    // // spare parts
-                    // if (sparePartsAssets.isNotEmpty ||
-                    //     sparePartsItems.isNotEmpty)
-                    //   SparePartsSummaryCard(
-                    //     sparePartsAssets: sparePartsAssets,
-                    //     sparePartsItems: sparePartsItems,
-                    //     pageController: pageController,
-                    //   ),
+                    // used items
+                    if (sparePartsItems.isNotEmpty)
+                      UsedItemsSummaryCard(
+                        sparePartsItems: sparePartsItems,
+                        pageController: pageController,
+                      ),
+
+                    // spare parts
+                    SparePartsSummaryCard(
+                      removedPartsAssets: removedPartsAssets,
+                      addedPartsAssets: addedPartsAssets,
+                      pageController: pageController,
+                    ),
+
+                    // connected asset
+                    if (replacedAsset != null)
+                      ConnectedAssetSummaryCard(
+                        replacedAsset: replacedAsset,
+                        replacementAsset: replacementAsset,
+                        pageController: pageController,
+                      ),
 
                     const SizedBox(
                       height: 50,
@@ -219,15 +231,13 @@ class ParticipantsSummaryCard extends StatelessWidget {
   }
 }
 
-class SparePartsSummaryCard extends StatelessWidget {
-  const SparePartsSummaryCard({
+class UsedItemsSummaryCard extends StatelessWidget {
+  const UsedItemsSummaryCard({
     Key? key,
-    required this.sparePartsAssets,
     required this.sparePartsItems,
     required this.pageController,
   }) : super(key: key);
 
-  final List<String> sparePartsAssets;
   final List<SparePartItemModel> sparePartsItems;
   final PageController pageController;
 
@@ -236,7 +246,8 @@ class SparePartsSummaryCard extends StatelessWidget {
     return Column(
       children: [
         SummaryCard(
-          title: AppLocalizations.of(context)!.item_spare_parts,
+          title:
+              '${AppLocalizations.of(context)!.item_spare_parts} - ${AppLocalizations.of(context)!.bottom_bar_title_inventory}',
           validator: () {
             for (var item in sparePartsItems) {
               if (item.quantity <= 0) {
@@ -247,82 +258,33 @@ class SparePartsSummaryCard extends StatelessWidget {
             return null;
           },
           pageController: pageController,
-          onTapAnimateToPage: 8,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (sparePartsAssets.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${AppLocalizations.of(context)!.bottom_bar_title_assets}:',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    BlocBuilder<AssetBloc, AssetState>(
-                      builder: (context, state) {
-                        if (state is AssetLoadedState) {
-                          final List<Asset> assets = [];
-                          for (var assetId in sparePartsAssets) {
-                            final asset = state.getAssetById(assetId);
-                            if (asset != null) {
-                              assets.add(asset);
-                            }
-                          }
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: assets.length,
-                            itemBuilder: (context, index) => Text(
-                              '- ${assets[index].producer} ${assets[index].model}',
-                            ),
-                          );
-                        }
-                        return const SizedBox();
-                      },
-                    )
-                  ],
-                ),
-              if (sparePartsItems.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${AppLocalizations.of(context)!.bottom_bar_title_inventory}:',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: sparePartsItems.length,
-                      itemBuilder: (context, index) =>
-                          BlocBuilder<ItemsBloc, ItemsState>(
-                        builder: (context, state) {
-                          if (state is ItemsLoadedState) {
-                            final item = state
-                                .getItemById(sparePartsItems[index].itemId);
-                            if (item != null) {
-                              return Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      '- ${item.producer} ${item.name}',
-                                    ),
-                                  ),
-                                  Text(
-                                      '${sparePartsItems[index].quantity.toStringWithFixedDecimal()}  [${getLocalizedUnitName(context, item.itemUnit)}]')
-                                ],
-                              );
-                            }
-                          }
+          onTapAnimateToPage: 3,
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: sparePartsItems.length,
+            itemBuilder: (context, index) => BlocBuilder<ItemsBloc, ItemsState>(
+              builder: (context, state) {
+                if (state is ItemsLoadedState) {
+                  final item = state.getItemById(sparePartsItems[index].itemId);
+                  if (item != null) {
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '- ${item.producer} ${item.name}',
+                          ),
+                        ),
+                        Text(
+                            '${sparePartsItems[index].quantity.toStringWithFixedDecimal()}  [${getLocalizedUnitName(context, item.itemUnit)}]')
+                      ],
+                    );
+                  }
+                }
 
-                          return const SizedBox();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-            ],
+                return const SizedBox();
+              },
+            ),
           ),
         ),
         const SizedBox(
@@ -351,11 +313,163 @@ class ImagesSummaryCard extends StatelessWidget {
           title: AppLocalizations.of(context)!.asset_add_images_title,
           validator: () => null,
           pageController: pageController,
-          onTapAnimateToPage: 3,
+          onTapAnimateToPage: 2,
           child: Text(
             images.isNotEmpty
                 ? '${AppLocalizations.of(context)!.asset_add_images_added}: ${images.length}'
                 : AppLocalizations.of(context)!.asset_add_images_not_added,
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+      ],
+    );
+  }
+}
+
+class SparePartsSummaryCard extends StatelessWidget {
+  const SparePartsSummaryCard({
+    Key? key,
+    required this.removedPartsAssets,
+    required this.addedPartsAssets,
+    required this.pageController,
+  }) : super(key: key);
+
+  final List<AssetModel> removedPartsAssets;
+  final List<String> addedPartsAssets;
+  final PageController pageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SummaryCard(
+          title: AppLocalizations.of(context)!.item_spare_parts,
+          validator: () => null,
+          pageController: pageController,
+          onTapAnimateToPage: 4,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (removedPartsAssets.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${AppLocalizations.of(context)!.asset_removed}:',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: removedPartsAssets.length,
+                      itemBuilder: (context, index) => Text(
+                        '- ${removedPartsAssets[index].producer} ${removedPartsAssets[index].model}',
+                      ),
+                    ),
+                  ],
+                ),
+              if (addedPartsAssets.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      '${AppLocalizations.of(context)!.asset_used}:',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    BlocBuilder<AssetBloc, AssetState>(
+                      builder: (context, state) {
+                        if (state is AssetLoadedState) {
+                          final List<Asset> assets = [];
+                          for (var assetId in addedPartsAssets) {
+                            final asset = state.getAssetById(assetId);
+                            if (asset != null) {
+                              assets.add(asset);
+                            }
+                          }
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: assets.length,
+                            itemBuilder: (context, index) => Text(
+                              '+ ${assets[index].producer} ${assets[index].model}',
+                            ),
+                          );
+                        }
+                        return const SizedBox();
+                      },
+                    )
+                  ],
+                ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+      ],
+    );
+  }
+}
+
+class ConnectedAssetSummaryCard extends StatelessWidget {
+  const ConnectedAssetSummaryCard({
+    Key? key,
+    required this.replacedAsset,
+    required this.replacementAsset,
+    required this.pageController,
+  }) : super(key: key);
+
+  final AssetModel? replacedAsset;
+  final AssetModel? replacementAsset;
+  final PageController pageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SummaryCard(
+          title: AppLocalizations.of(context)!.task_connected_asset,
+          validator: () {
+            if (replacementAsset == null) {
+              return AppLocalizations.of(context)!
+                  .task_action_replaced_asset_err;
+            }
+            return null;
+          },
+          pageController: pageController,
+          onTapAnimateToPage: 5,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (replacedAsset != null)
+                IgnorePointer(
+                  child: AssetTile(
+                    margin: EdgeInsets.zero,
+                    asset: replacedAsset!,
+                    searchQuery: '',
+                  ),
+                ),
+              if (replacementAsset != null) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    '${AppLocalizations.of(context)!.asset_replaced_with}:',
+                  ),
+                ),
+                IgnorePointer(
+                  child: AssetTile(
+                    margin: EdgeInsets.zero,
+                    asset: replacementAsset!,
+                    searchQuery: '',
+                  ),
+                )
+              ],
+            ],
           ),
         ),
         const SizedBox(

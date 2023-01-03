@@ -490,6 +490,9 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         images: _images,
         removedPartsAssets: _removedPartsAssets,
         addedPartsAssets: _addedPartsAssets,
+        sparePartsItems: _sparePartsItems,
+        replacedAsset: _replacedAsset,
+        replacementAsset: _replacementAsset,
       ),
     ];
 

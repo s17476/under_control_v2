@@ -2043,6 +2043,18 @@
     "@asset_details": {
       "description": "asset - details"
     },
+    "asset_removed": "Removed assets",
+    "@asset_removed": {
+      "description": "asset - removed"
+    },
+    "asset_used": "Used assets",
+    "@asset_used": {
+      "description": "asset - used"
+    },
+    "asset_replaced_with": "Replaced with",
+    "@asset_replaced_with": {
+      "description": "asset - replaced with"
+    },
     "work_request": "Work request",
     "@work_request": {
       "description": "work request"
