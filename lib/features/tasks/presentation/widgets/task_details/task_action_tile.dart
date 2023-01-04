@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
 
+import 'package:under_control_v2/features/tasks/data/models/task_action/task_action_model.dart';
+import 'package:under_control_v2/features/tasks/domain/entities/task_action/user_action.dart';
+
+import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../domain/entities/task_action/task_action.dart';
 
 class TaskActionTile extends StatelessWidget {
@@ -28,6 +35,7 @@ class TaskActionTile extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (isSameDate)
                   SameDateRow(
@@ -42,11 +50,95 @@ class TaskActionTile extends StatelessWidget {
                     taskAction: taskAction,
                     captionStyle: captionStyle!,
                   ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4.0,
+                    vertical: 4,
+                  ),
+                  child: Text(
+                    taskAction.comment,
+                    style: const TextStyle(fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4.0,
+                  ),
+                  child: Text(
+                    '${AppLocalizations.of(context)!.total_time}: ${TaskActionModel.fromTaskAction(taskAction).getTotalDuration}',
+                    style: captionStyle!.copyWith(fontSize: 14),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 6,
+                    left: 6,
+                    right: 6,
+                    bottom: 4,
+                  ),
+                  child: ParticipantsAvatars(
+                    participants: taskAction.usersActions,
+                  ),
+                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class ParticipantsAvatars extends StatelessWidget {
+  const ParticipantsAvatars({
+    Key? key,
+    required this.participants,
+  }) : super(key: key);
+
+  final List<UserAction> participants;
+
+  final avatarSize = 30.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
+      builder: (context, state) {
+        if (state is CompanyProfileLoaded) {
+          List<Widget> avatars = [];
+          for (var participant in participants) {
+            final user = state.getUserById(participant.userId);
+            if (user != null) {
+              final avatar = Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      right: 4,
+                    ),
+                    child: CachedUserAvatar(
+                      size: 20,
+                      imageUrl: user.avatarUrl,
+                    ),
+                  ),
+                  Text(
+                    user.firstName,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ],
+              );
+              avatars.add(avatar);
+            }
+          }
+          return Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            children: avatars,
+          );
+        }
+        return const CircularProgressIndicator();
+      },
     );
   }
 }
@@ -69,6 +161,9 @@ class SameDateRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        const SizedBox(
+          width: 4,
+        ),
         Text(
           dateFormat.format(taskAction.startTime),
           style: captionStyle,

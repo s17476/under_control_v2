@@ -31,32 +31,35 @@ class TaskActionsTab extends StatelessWidget {
                 final actions = state.allActions.allTaskActions;
                 return Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 16,
-                        left: 16,
-                        right: 16,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              '${AppLocalizations.of(context)!.total_time}:',
+                    if (actions.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 16,
+                          left: 16,
+                          right: 16,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '${AppLocalizations.of(context)!.total_time}:',
+                              ),
                             ),
-                          ),
-                          Text(state.getTotalDuration.toFormatedString()),
-                        ],
+                            Text(state.getTotalDuration.toFormatedString()),
+                          ],
+                        ),
                       ),
-                    ),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: actions.length,
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 2,
-                        width: double.infinity,
-                      ),
-                      itemBuilder: (context, index) => TaskActionTile(
-                        taskAction: actions[index],
+                    Expanded(
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: actions.length,
+                        separatorBuilder: (context, index) => const SizedBox(
+                          height: 4,
+                          width: double.infinity,
+                        ),
+                        itemBuilder: (context, index) => TaskActionTile(
+                          taskAction: actions[index],
+                        ),
                       ),
                     ),
                   ],

@@ -114,11 +114,13 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
                       ),
 
                     // spare parts
-                    SparePartsSummaryCard(
-                      removedPartsAssets: removedPartsAssets,
-                      addedPartsAssets: addedPartsAssets,
-                      pageController: pageController,
-                    ),
+                    if (removedPartsAssets.isNotEmpty ||
+                        addedPartsAssets.isNotEmpty)
+                      SparePartsSummaryCard(
+                        removedPartsAssets: removedPartsAssets,
+                        addedPartsAssets: addedPartsAssets,
+                        pageController: pageController,
+                      ),
 
                     // connected asset
                     if (replacedAsset != null)

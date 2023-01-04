@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
+import 'package:under_control_v2/features/core/utils/duration_apis.dart';
 
 import '../../../domain/entities/task_action/task_action.dart';
 import '../task/spare_part_item_model.dart';
@@ -153,5 +154,13 @@ class TaskActionModel extends TaskAction {
       sparePartsItems: [...sparePartsItems],
       usersActions: [...usersActions],
     );
+  }
+
+  String get getTotalDuration {
+    Duration totalDuration = const Duration();
+    for (var participant in usersActions) {
+      totalDuration += participant.totalTime;
+    }
+    return totalDuration.toFormatedString();
   }
 }
