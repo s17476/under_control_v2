@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/duration_apis.dart';
 
+import '../../../../core/utils/duration_apis.dart';
 import '../../../domain/entities/task/task.dart';
 import '../../blocs/task_action/task_action_bloc.dart';
+import 'shimmer_task_action_tile.dart';
 import 'task_action_tile.dart';
 import 'task_actions_buttons.dart';
 
@@ -54,7 +55,7 @@ class TaskActionsTab extends StatelessWidget {
                         shrinkWrap: true,
                         itemCount: actions.length,
                         separatorBuilder: (context, index) => const SizedBox(
-                          height: 4,
+                          height: 6,
                           width: double.infinity,
                         ),
                         itemBuilder: (context, index) => TaskActionTile(
@@ -65,7 +66,19 @@ class TaskActionsTab extends StatelessWidget {
                   ],
                 );
               }
-              return CircularProgressIndicator();
+              // loading widget
+              return Expanded(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: 5,
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 6,
+                    width: double.infinity,
+                  ),
+                  itemBuilder: (context, index) =>
+                      const ShimmerTaskActionTile(),
+                ),
+              );
             },
           ),
         ),

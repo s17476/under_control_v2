@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/task_action_details_page.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/cached_user_avatar.dart';
@@ -30,7 +31,11 @@ class TaskActionTile extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(
+            context,
+            TaskActionDetailsPage.routeName,
+            arguments: taskAction,
+          ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

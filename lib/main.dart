@@ -52,6 +52,7 @@ import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/tasks/presentation/pages/add_task_page.dart';
 import 'features/tasks/presentation/pages/add_work_request_page.dart';
 import 'features/tasks/presentation/pages/subtract_item_from_location_page.dart';
+import 'features/tasks/presentation/pages/task_action_details_page.dart';
 import 'features/tasks/presentation/pages/task_details_page.dart';
 import 'features/tasks/presentation/pages/work_request_archive_page.dart';
 import 'features/tasks/presentation/pages/work_request_details_page.dart';
@@ -194,6 +195,8 @@ class App extends StatelessWidget
               SettingsPage.routeName: (context) => const SettingsPage(),
               LanguageSettingsPage.routeName: (context) =>
                   const LanguageSettingsPage(),
+              TaskActionDetailsPage.routeName: (context) =>
+                  const TaskActionDetailsPage(),
             },
             // localization
             localizationsDelegates: const [
