@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/cached_user_avatar.dart';
-
-import 'package:under_control_v2/features/tasks/data/models/task_action/task_action_model.dart';
-import 'package:under_control_v2/features/tasks/domain/entities/task_action/user_action.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import '../../../../core/presentation/widgets/cached_user_avatar.dart';
+import '../../../data/models/task_action/task_action_model.dart';
 import '../../../domain/entities/task_action/task_action.dart';
+import '../../../domain/entities/task_action/user_action.dart';
 
 class TaskActionTile extends StatelessWidget {
   const TaskActionTile({
@@ -66,17 +65,74 @@ class TaskActionTile extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                     horizontal: 4.0,
                   ),
-                  child: Text(
-                    '${AppLocalizations.of(context)!.total_time}: ${TaskActionModel.fromTaskAction(taskAction).getTotalDuration}',
-                    style: captionStyle!.copyWith(fontSize: 14),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${AppLocalizations.of(context)!.total_time}: ${TaskActionModel.fromTaskAction(taskAction).getTotalDuration}',
+                          style: captionStyle!.copyWith(fontSize: 14),
+                        ),
+                      ),
+                      if (taskAction.sparePartsItems.isNotEmpty) ...[
+                        Icon(
+                          Icons.api,
+                          size: 22,
+                          color: captionStyle.color,
+                        ),
+                        const SizedBox(
+                          width: 2,
+                        ),
+                      ],
+                      if (taskAction.addedPartsAssets.isNotEmpty) ...[
+                        Icon(
+                          Icons.precision_manufacturing,
+                          size: 22,
+                          color: captionStyle.color,
+                        ),
+                        const SizedBox(
+                          width: 2,
+                        ),
+                      ],
+                      if (taskAction.images.isNotEmpty) ...[
+                        Icon(
+                          Icons.image,
+                          size: 22,
+                          color: captionStyle.color,
+                        ),
+                        const SizedBox(
+                          width: 2,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 4,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.task_action_participants,
+                        style: captionStyle,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      const Expanded(
+                        child: Divider(
+                          thickness: 1.5,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                    top: 6,
+                    top: 2,
                     left: 6,
                     right: 6,
-                    bottom: 4,
                   ),
                   child: ParticipantsAvatars(
                     participants: taskAction.usersActions,
@@ -113,18 +169,9 @@ class ParticipantsAvatars extends StatelessWidget {
               final avatar = Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      right: 4,
-                    ),
-                    child: CachedUserAvatar(
-                      size: 20,
-                      imageUrl: user.avatarUrl,
-                    ),
-                  ),
-                  Text(
-                    user.firstName,
-                    style: Theme.of(context).textTheme.caption,
+                  CachedUserAvatar(
+                    size: avatarSize,
+                    imageUrl: user.avatarUrl,
                   ),
                 ],
               );

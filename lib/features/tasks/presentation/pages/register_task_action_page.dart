@@ -123,11 +123,6 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
       );
       // saves instruction to DB if no error
     } else {
-      showSnackBar(
-        context: context,
-        message: 'OK',
-      );
-
       final taskAction = TaskActionModel(
         id: '',
         taskId: _task!.id,

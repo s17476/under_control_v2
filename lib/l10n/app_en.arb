@@ -2374,5 +2374,29 @@
     "task_action_replaced_asset_err": "Connected asset has been removed, but no replacement is added",
     "@task_action_replaced_asset_err": {
       "description": "task action - replaced asset err"
+    },
+    "task_action_msg_updated": "Action updated",
+    "@task_action_msg_updated": {
+      "description": "item action - updated msg"
+    },
+    "task_action_msg_not_updated": "Action NOT updated",
+    "@task_action_msg_not_updated": {
+      "description": "item action - NOT updated msg"
+    },
+    "task_action_msg_added": "Action added",
+    "@task_action_msg_added": {
+      "description": "item action - added msg"
+    },
+    "task_action_msg_not_added": "Action NOT added",
+    "@task_action_msg_not_added": {
+      "description": "item action - NOT added msg"
+    },
+    "task_action_msg_deleted": "Action deleted",
+    "@task_action_msg_deleted": {
+      "description": "item action - deleted msg"
+    },
+    "task_action_msg_not_deleted": "Action NOT deleted",
+    "@task_action_msg_not_deleted": {
+      "description": "item action - NOT deleted msg"
     }
 }

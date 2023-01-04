@@ -574,5 +574,11 @@
     "task_action_duration_to_short": "Całkowita długość trwania akcji musi wynosić przynajmniej 5 minut",
     "task_action_user_duration_to_short": "Długość trwania akcji dla kadego uczestnika musi wynosić przynajmniej 5 minut",
     "task_action_total_duration": "Czas łącznie",
-    "task_action_replaced_asset_err": "Połączony zasób został usunięty, ale nie dodano adnego zamiennika"
+    "task_action_replaced_asset_err": "Połączony zasób został usunięty, ale nie dodano adnego zamiennika",
+    "task_action_msg_updated": "Akcja zaktualizowana",
+    "task_action_msg_not_updated": "Akcja NIE została zaktualizowana",
+    "task_action_msg_added": "Akcja dodana",
+    "task_action_msg_not_added": "Akcja NIE została dodana",
+    "task_action_msg_deleted": "Akcja usunięta",
+    "task_action_msg_not_deleted": "Akcja NIE została usunięta"
 }
