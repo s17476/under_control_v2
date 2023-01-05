@@ -3,9 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
+import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
+import '../../../assets/presentation/widgets/asset_tile.dart';
+import '../../../assets/utils/get_asset_status_icon.dart';
+import '../../../assets/utils/get_localizae_asset_status_name.dart';
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../core/presentation/widgets/user_info_card.dart';
+import '../../../core/utils/location_selection_helpers.dart';
+import '../../../inventory/presentation/widgets/shimmer_item_tile.dart';
+import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../data/models/task_action/task_action_model.dart';
 import '../../data/models/task_action/user_action_model.dart';
@@ -113,6 +120,27 @@ class _TaskActionDetailsPageState extends State<TaskActionDetailsPage> {
                           ),
                           UsedItems(taskAction: _taskAction!),
                         ],
+                        // removed assets spare parts
+                        if (_taskAction!.removedPartsAssets.isNotEmpty) ...[
+                          const Divider(
+                            thickness: 1.5,
+                          ),
+                          RemovedAssets(taskAction: _taskAction!)
+                        ],
+                        // added assets spare parts
+                        if (_taskAction!.addedPartsAssets.isNotEmpty) ...[
+                          const Divider(
+                            thickness: 1.5,
+                          ),
+                          AddedAssets(taskAction: _taskAction!)
+                        ],
+                        // replacement asset
+                        if (_taskAction!.replacementAssetId.isNotEmpty) ...[
+                          const Divider(
+                            thickness: 1.5,
+                          ),
+                          ReplacementAsset(taskAction: _taskAction!)
+                        ],
                         const SizedBox(
                           height: 50,
                         ),
@@ -128,6 +156,275 @@ class _TaskActionDetailsPageState extends State<TaskActionDetailsPage> {
                   ),
               ],
             ),
+    );
+  }
+}
+
+class ReplacementAsset extends StatelessWidget {
+  const ReplacementAsset({
+    Key? key,
+    required this.taskAction,
+  }) : super(key: key);
+
+  final TaskActionModel taskAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
+          child: IconTitleRow(
+            icon: Icons.precision_manufacturing,
+            iconColor: Colors.white,
+            iconBackground: Colors.black,
+            title: AppLocalizations.of(context)!.task_connected_asset_replaced,
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconTitleRow(
+                icon: Icons.location_on,
+                iconColor: Colors.white,
+                iconBackground: Theme.of(context).primaryColor,
+                title: AppLocalizations.of(context)!
+                    .task_connected_asset_replaced_location,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              BlocBuilder<LocationBloc, LocationState>(
+                builder: (context, state) {
+                  if (state is LocationLoadedState) {
+                    return Text(
+                      getBreadcrumbsForLocation(
+                        taskAction.replacedAssetLocationId,
+                        state.allLocations.allLocations,
+                      ),
+                    );
+                  }
+                  return const SizedBox();
+                },
+              )
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 6,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
+          child: Column(
+            children: [
+              IconTitleRow(
+                icon: Icons.health_and_safety_outlined,
+                iconColor: Colors.white,
+                iconBackground: Theme.of(context).primaryColor,
+                title: AppLocalizations.of(context)!
+                    .task_connected_asset_replaced_status,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      getLocalizedAssetStatusName(
+                        context,
+                        taskAction.replacedAssetStatus,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: getAssetStatusIcon(
+                      context,
+                      taskAction.replacedAssetStatus,
+                      20,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 8,
+            right: 8,
+          ),
+          child: IconTitleRow(
+            icon: Icons.precision_manufacturing,
+            iconColor: Colors.white,
+            iconBackground: Theme.of(context).primaryColor,
+            title:
+                AppLocalizations.of(context)!.task_connected_asset_replaced_by,
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        BlocBuilder<AssetBloc, AssetState>(
+          builder: (context, state) {
+            if (state is AssetLoadedState) {
+              final replacementAssets =
+                  state.getAssetById(taskAction.replacementAssetId);
+              if (replacementAssets != null) {
+                return AssetTile(asset: replacementAssets, searchQuery: '');
+              }
+            }
+            return const ShimmerItemTile();
+          },
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconTitleRow(
+                icon: Icons.info_outline,
+                iconColor: Colors.white,
+                iconBackground: Theme.of(context).primaryColor,
+                title: AppLocalizations.of(context)!.important,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                AppLocalizations.of(context)!.asset_replaced_info,
+                textAlign: TextAlign.justify,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class AddedAssets extends StatelessWidget {
+  const AddedAssets({
+    Key? key,
+    required this.taskAction,
+  }) : super(key: key);
+
+  final TaskActionModel taskAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
+          child: IconTitleRow(
+            icon: Icons.precision_manufacturing,
+            iconColor: Colors.white,
+            iconBackground: Colors.black,
+            title: AppLocalizations.of(context)!.asset_used,
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        BlocBuilder<AssetBloc, AssetState>(
+          builder: (context, state) {
+            if (state is AssetLoadedState) {
+              final addedAssets = state.allAssets.allAssets
+                  .where(
+                    (asset) => taskAction.addedPartsAssets.contains(asset.id),
+                  )
+                  .toList();
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: addedAssets.length,
+                itemBuilder: (context, index) => AssetTile(
+                  asset: addedAssets[index],
+                  searchQuery: '',
+                ),
+              );
+            }
+            return const ShimmerItemTile();
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class RemovedAssets extends StatelessWidget {
+  const RemovedAssets({
+    Key? key,
+    required this.taskAction,
+  }) : super(key: key);
+
+  final TaskActionModel taskAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
+          child: IconTitleRow(
+            icon: Icons.precision_manufacturing,
+            iconColor: Colors.white,
+            iconBackground: Colors.red.shade900,
+            title: AppLocalizations.of(context)!.asset_removed,
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        ListView.builder(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: taskAction.removedPartsAssets.length,
+          itemBuilder: (context, index) => AssetTile(
+            asset: taskAction.removedPartsAssets[index],
+            searchQuery: '',
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+      ],
     );
   }
 }
@@ -163,6 +460,9 @@ class UsedItems extends StatelessWidget {
         InventorySparePartsListWithQuantity(
           items: taskAction.sparePartsItems,
           showTitle: false,
+        ),
+        const SizedBox(
+          height: 8,
         ),
       ],
     );

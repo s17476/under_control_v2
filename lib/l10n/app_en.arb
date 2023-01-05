@@ -1,4 +1,8 @@
 {
+    "important": "Important",
+    "@important": {
+      "description": "Important"
+    },
     "server_error": "Server error",
     "@server_error": {
       "description": "Server error"
@@ -2059,6 +2063,10 @@
     "@asset_replaced_with": {
       "description": "asset - replaced with"
     },
+    "asset_replaced_info": "This task can no longer continue because the asset linked to it has been replaced. To continue working, create a new task for the resource above.",
+    "@asset_replaced_info": {
+      "description": "asset - replaced info"
+    },
     "work_request": "Work request",
     "@work_request": {
       "description": "work request"
@@ -2217,6 +2225,22 @@
     },
     "task_connected_asset": "Connected asset",
     "@task_connected_asset": {
+      "description": "task/work request connected asset"
+    },
+    "task_connected_asset_replaced": "Connected asset was replaced",
+    "@task_connected_asset_replaced": {
+      "description": "task/work request connected asset"
+    },
+    "task_connected_asset_replaced_by": "Replaced by",
+    "@task_connected_asset_replaced_by": {
+      "description": "task/work request connected asset"
+    },
+    "task_connected_asset_replaced_location": "Moved to",
+    "@task_connected_asset_replaced_location": {
+      "description": "task/work request connected asset"
+    },
+    "task_connected_asset_replaced_status": "New status",
+    "@task_connected_asset_replaced_status": {
       "description": "task/work request connected asset"
     },
     "task_connected_asset_yes": "Connected to an asset",
