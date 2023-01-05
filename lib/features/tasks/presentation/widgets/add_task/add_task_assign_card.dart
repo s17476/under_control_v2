@@ -101,7 +101,7 @@ class AddTaskAssignCard extends StatelessWidget with ResponsiveSize {
                   width: 8,
                 ),
                 Text(
-                  AppLocalizations.of(context)!.task_assign_users,
+                  AppLocalizations.of(context)!.drawer_item_users,
                 ),
               ],
             ),
@@ -123,7 +123,7 @@ class AddTaskAssignCard extends StatelessWidget with ResponsiveSize {
                   width: 8,
                 ),
                 Text(
-                  AppLocalizations.of(context)!.task_assign_groups,
+                  AppLocalizations.of(context)!.drawer_item_groups,
                 ),
               ],
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../inventory/domain/entities/item.dart';
 import '../../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../../inventory/presentation/widgets/shimmer_item_tile.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
@@ -13,11 +14,13 @@ class InventorySparePartsListWithQuantity extends StatelessWidget {
     required this.items,
     this.onSelected,
     this.updateSparePartQuantity,
+    this.showTitle = true,
   }) : super(key: key);
 
   final List<SparePartItemModel> items;
   final Function(SparePartItemModel)? onSelected;
   final Function(String, double)? updateSparePartQuantity;
+  final bool showTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +41,18 @@ class InventorySparePartsListWithQuantity extends StatelessWidget {
                     ],
                   );
                 }
-                final filteredItems = state.allItems.allItems
-                    .where(
-                      (item) => items.map((e) => e.itemId).contains(item.id),
-                    )
-                    .toList();
+                List<Item> filteredItems = [];
+                for (var item in items) {
+                  final index = state.allItems.allItems
+                      .indexWhere((itm) => itm.id == item.itemId);
+                  if (index >= 0) {
+                    filteredItems.add(state.allItems.allItems[index]);
+                  }
+                }
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (filteredItems.isNotEmpty)
+                    if (filteredItems.isNotEmpty && showTitle)
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8.0,
@@ -69,8 +75,7 @@ class InventorySparePartsListWithQuantity extends StatelessWidget {
                         return ItemTileWithQuantity(
                           key: ValueKey(filteredItems[index].id),
                           item: filteredItems[index],
-                          sparePartItemModel: items.firstWhere(
-                              (i) => i.itemId == filteredItems[index].id),
+                          sparePartItemModel: items[index],
                           searchQuery: '',
                           onSelected: onSelected,
                           updateSparePartQuantity: updateSparePartQuantity,

@@ -26,7 +26,7 @@ class TaskSparePartTab extends StatelessWidget {
                 AssetsSparePartsList(
                   items: sparePartsAssets,
                 ),
-                // // inventory
+                // inventory
                 InventorySparePartsListWithQuantity(
                   items: sparePartsItems,
                 ),

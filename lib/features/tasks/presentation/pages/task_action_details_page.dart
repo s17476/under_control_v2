@@ -10,6 +10,7 @@ import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../data/models/task_action/task_action_model.dart';
 import '../../data/models/task_action/user_action_model.dart';
 import '../blocs/task_action/task_action_bloc.dart';
+import '../widgets/add_task/inventory_spare_parts_list_with_quantity.dart';
 import '../widgets/participants_list.dart';
 import '../widgets/work_request_details/images_tab.dart';
 
@@ -110,8 +111,11 @@ class _TaskActionDetailsPageState extends State<TaskActionDetailsPage> {
                           const Divider(
                             thickness: 1.5,
                           ),
-                          // ActionImages(taskAction: _taskAction!),
+                          UsedItems(taskAction: _taskAction!),
                         ],
+                        const SizedBox(
+                          height: 50,
+                        ),
                       ],
                     ),
                   ),
@@ -124,6 +128,43 @@ class _TaskActionDetailsPageState extends State<TaskActionDetailsPage> {
                   ),
               ],
             ),
+    );
+  }
+}
+
+class UsedItems extends StatelessWidget {
+  const UsedItems({
+    Key? key,
+    required this.taskAction,
+  }) : super(key: key);
+
+  final TaskActionModel taskAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
+          child: IconTitleRow(
+            icon: Icons.api,
+            iconColor: Colors.white,
+            iconBackground: Colors.black,
+            title: AppLocalizations.of(context)!.task_action_used_items,
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        InventorySparePartsListWithQuantity(
+          items: taskAction.sparePartsItems,
+          showTitle: false,
+        ),
+      ],
     );
   }
 }
