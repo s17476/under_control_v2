@@ -202,9 +202,17 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                       ],
                     ),
                     const SizedBox(
-                      height: 8,
+                      height: 24,
                     ),
                   ],
+                ),
+                IconButton(
+                  onPressed: widget.onDismiss,
+                  icon: Icon(
+                    Icons.clear_rounded,
+                    size: 40,
+                    color: Theme.of(context).textTheme.caption!.color,
+                  ),
                 ),
               ],
             ),

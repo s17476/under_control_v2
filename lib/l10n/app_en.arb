@@ -1,4 +1,8 @@
 {
+    "server_error": "Server error",
+    "@server_error": {
+      "description": "Server error"
+    },
     "language": "Language",
     "@language": {
       "description": "App language"
@@ -2402,5 +2406,13 @@
     "task_action_details": "Action details",
     "@task_action_details": {
       "description": "task action - NOT deleted msg"
+    },
+    "task_action_no_actions": "No actions have been added to this task yet",
+    "@task_action_no_actions": {
+      "description": "task action - an actions"
+    },
+    "task_action_duration": "Duration",
+    "@task_action_duration": {
+      "description": "task action - task duration"
     }
 }

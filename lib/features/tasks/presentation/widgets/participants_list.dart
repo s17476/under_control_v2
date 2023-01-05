@@ -21,6 +21,8 @@ class ParticipantsList extends StatefulWidget {
     required this.toggleParticipantSelection,
     required this.updateParticipant,
     required this.isEnabled,
+    this.isExtendedTimeInfo = false,
+    this.showTotalTime = true,
   }) : super(key: key);
 
   final List<UserActionModel> participants;
@@ -29,6 +31,8 @@ class ParticipantsList extends StatefulWidget {
   final Function(UserActionModel) updateParticipant;
 
   final bool isEnabled;
+  final bool isExtendedTimeInfo;
+  final bool showTotalTime;
 
   @override
   State<ParticipantsList> createState() => _ParticipantsListState();
@@ -71,6 +75,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
 
   @override
   Widget build(BuildContext context) {
+    final timeFormat = DateFormat('HH:mm');
     return BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
       builder: (context, state) {
         if (state is CompanyProfileLoaded) {
@@ -79,7 +84,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
                 ? MainAxisAlignment.center
                 : MainAxisAlignment.start,
             children: [
-              if (widget.participants.isNotEmpty) ...[
+              if (widget.participants.isNotEmpty && widget.showTotalTime) ...[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -145,8 +150,10 @@ class _ParticipantsListState extends State<ParticipantsList> {
                               Expanded(
                                 child: UserListTile(
                                   user: user,
-                                  onTap:
-                                      widget.isEnabled ? _selectUser : (_) {},
+                                  onTap: widget.isEnabled
+                                      ? _selectUser
+                                      : (usr) => widget
+                                          .toggleParticipantSelection(usr.id),
                                 ),
                               ),
                               Column(
@@ -169,8 +176,9 @@ class _ParticipantsListState extends State<ParticipantsList> {
                                       icon: const Icon(Icons.delete),
                                     ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                      right: 8.0,
+                                    padding: EdgeInsets.only(
+                                      right:
+                                          widget.isExtendedTimeInfo ? 0 : 8.0,
                                       bottom: 4,
                                     ),
                                     child: Text(
@@ -180,6 +188,55 @@ class _ParticipantsListState extends State<ParticipantsList> {
                                           Theme.of(context).textTheme.caption,
                                     ),
                                   ),
+                                  if (widget.isExtendedTimeInfo)
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.play_arrow,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .caption!
+                                                  .color,
+                                              size: 15,
+                                            ),
+                                            Text(
+                                              timeFormat.format(
+                                                widget.participants[index]
+                                                    .startTime,
+                                              ),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .caption,
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.stop,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .caption!
+                                                  .color,
+                                              size: 15,
+                                            ),
+                                            Text(
+                                              timeFormat.format(
+                                                widget.participants[index]
+                                                    .stopTime,
+                                              ),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .caption,
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                 ],
                               )
                             ],

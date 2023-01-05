@@ -1,4 +1,5 @@
 {
+    "server_error": "Błąd serwera",
     "language": "Język",
     "language_select": "Wybierz język",
     "language_dk": "Duński",
@@ -581,5 +582,7 @@
     "task_action_msg_not_added": "Akcja NIE została dodana",
     "task_action_msg_deleted": "Akcja usunięta",
     "task_action_msg_not_deleted": "Akcja NIE została usunięta",
-    "task_action_details": "Szczegóły akcji"
+    "task_action_details": "Szczegóły akcji",
+    "task_action_no_actions": "Do tego zadania nie dodano jeszcze w żadnych akcji",
+    "task_action_duration": "Czas trwania"
 }

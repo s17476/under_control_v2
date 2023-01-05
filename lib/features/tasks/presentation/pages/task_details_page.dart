@@ -130,11 +130,11 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
     super.didChangeDependencies();
   }
 
-  @override
-  void dispose() {
-    _taskActionBloc.add(ResetTaskActionsEvent());
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _taskActionBloc.add(ResetTaskActionsEvent());
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

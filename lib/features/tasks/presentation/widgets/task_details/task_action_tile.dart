@@ -34,7 +34,7 @@ class TaskActionTile extends StatelessWidget {
           onTap: () => Navigator.pushNamed(
             context,
             TaskActionDetailsPage.routeName,
-            arguments: taskAction,
+            arguments: taskAction.id,
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),

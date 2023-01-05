@@ -30,6 +30,20 @@ class TaskActionsTab extends StatelessWidget {
             builder: (context, state) {
               if (state is TaskActionLoadedState) {
                 final actions = state.allActions.allTaskActions;
+                if (actions.isEmpty) {
+                  // actions list is empty
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                      top: 32,
+                      left: 16,
+                      right: 16,
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.task_action_no_actions,
+                      textAlign: TextAlign.justify,
+                    ),
+                  );
+                }
                 return Column(
                   children: [
                     if (actions.isNotEmpty)
