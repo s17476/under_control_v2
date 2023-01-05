@@ -9,15 +9,19 @@ class ImagesTab extends StatelessWidget {
   const ImagesTab({
     Key? key,
     required this.images,
+    this.isScrollable = true,
   }) : super(key: key);
 
   final List<String> images;
+  final bool isScrollable;
 
   @override
   Widget build(BuildContext context) {
     if (images.isNotEmpty) {
       return GridView.count(
         padding: const EdgeInsets.all(16),
+        physics: isScrollable ? null : const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
         crossAxisCount: 2,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,

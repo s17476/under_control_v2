@@ -11,6 +11,7 @@ import '../../data/models/task_action/task_action_model.dart';
 import '../../data/models/task_action/user_action_model.dart';
 import '../blocs/task_action/task_action_bloc.dart';
 import '../widgets/participants_list.dart';
+import '../widgets/work_request_details/images_tab.dart';
 
 class TaskActionDetailsPage extends StatefulWidget {
   const TaskActionDetailsPage({super.key});
@@ -97,6 +98,20 @@ class _TaskActionDetailsPageState extends State<TaskActionDetailsPage> {
                           showUserInfoCard: _showUserInfoCard,
                           isUserInfoCardVisible: _isUserInfoCardVisible,
                         ),
+                        // images
+                        if (_taskAction!.images.isNotEmpty) ...[
+                          const Divider(
+                            thickness: 1.5,
+                          ),
+                          ActionImages(taskAction: _taskAction!),
+                        ],
+                        // materials
+                        if (_taskAction!.sparePartsItems.isNotEmpty) ...[
+                          const Divider(
+                            thickness: 1.5,
+                          ),
+                          // ActionImages(taskAction: _taskAction!),
+                        ],
                       ],
                     ),
                   ),
@@ -109,6 +124,40 @@ class _TaskActionDetailsPageState extends State<TaskActionDetailsPage> {
                   ),
               ],
             ),
+    );
+  }
+}
+
+class ActionImages extends StatelessWidget {
+  const ActionImages({
+    Key? key,
+    required this.taskAction,
+  }) : super(key: key);
+
+  final TaskActionModel taskAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
+          child: IconTitleRow(
+            icon: Icons.image,
+            iconColor: Colors.white,
+            iconBackground: Colors.black,
+            title: AppLocalizations.of(context)!.asset_add_images_added,
+          ),
+        ),
+        ImagesTab(
+          images: taskAction.images,
+          isScrollable: false,
+        ),
+      ],
     );
   }
 }
