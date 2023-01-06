@@ -11,6 +11,8 @@ class RoundedButton extends StatelessWidget {
     this.titleSize,
     this.padding,
     this.foregroundColor,
+    this.isLoading = false,
+    this.axis = Axis.vertical,
     required this.gradient,
   }) : super(key: key);
 
@@ -22,11 +24,13 @@ class RoundedButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Color? foregroundColor;
   final Gradient gradient;
+  final bool isLoading;
+  final Axis axis;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPressed,
+      onTap: isLoading ? null : onPressed,
       borderRadius: BorderRadius.circular(15),
       child: Container(
         padding: padding,
@@ -41,24 +45,39 @@ class RoundedButton extends StatelessWidget {
             )
           ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FaIcon(
-              icon,
-              color: foregroundColor,
-              size: iconSize,
-            ),
-            if (title != null)
-              Text(
-                title!,
-                style: TextStyle(
-                  color: foregroundColor,
-                  fontSize: titleSize,
+        child: Center(
+          child: Wrap(
+            spacing: axis == Axis.horizontal ? 8 : 0,
+            direction: axis,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            alignment: WrapAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isLoading)
+                SizedBox(
+                  height: iconSize ?? 30,
+                  width: iconSize ?? 30,
+                  child: const CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
                 ),
-                overflow: TextOverflow.ellipsis,
-              ),
-          ],
+              if (!isLoading)
+                FaIcon(
+                  icon,
+                  color: foregroundColor,
+                  size: iconSize,
+                ),
+              if (title != null)
+                Text(
+                  title!,
+                  style: TextStyle(
+                    color: foregroundColor,
+                    fontSize: titleSize,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+            ],
+          ),
         ),
       ),
     );
