@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/assets/utils/get_next_date.dart';
 
 import '../../../assets/data/models/asset_action/asset_action_model.dart';
 import '../../../assets/data/models/asset_model.dart';
@@ -540,7 +541,6 @@ class TaskRepositoryImpl extends TaskRepository {
         isFinished: true,
         executionDate: DateTime.now(),
       );
-
       final taskMap = updatedTask.toMap();
 
       batch.set(
@@ -549,6 +549,52 @@ class TaskRepositoryImpl extends TaskRepository {
       );
 
       batch.delete(taskReference);
+
+      // cyclic task
+      if (params.task.isCyclictask) {
+        // increment counter
+        int counterValue = 0;
+        final companyReference =
+            firebaseFirestore.collection('companies').doc(params.companyId);
+
+        await firebaseFirestore.runTransaction((transaction) async {
+          final companySnapshot = await transaction.get(companyReference);
+
+          if (!companySnapshot.exists) {
+            throw Exception("Comapny does not exist!");
+          }
+
+          counterValue = companySnapshot.data()!['tasksCounter'] ?? 0;
+          counterValue++;
+
+          transaction.update(companyReference, {'tasksCounter': counterValue});
+        });
+
+        final nextTask = TaskModel.fromTask(params.task).copyWith(
+          assetId: '',
+          count: counterValue,
+          date: DateTime.now(),
+          isCancelled: false,
+          isFinished: false,
+          isInProgress: false,
+          isSuccessful: false,
+          parentId: updatedTask.id,
+          executionDate: getNextDate(
+            updatedTask.executionDate,
+            updatedTask.durationUnit,
+            updatedTask.duration,
+          ),
+        );
+        final nextTaskMap = nextTask.toMap();
+
+        final nextTaskReference = await firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('tasks')
+            .add({'name': ''});
+
+        batch.set(nextTaskReference, nextTaskMap);
+      }
 
       //
       // if (params.task.assetId.isNotEmpty) {
