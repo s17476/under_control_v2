@@ -103,36 +103,158 @@ class _TaskTileState extends State<TaskTile> {
                   children: [
                     // date
                     Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
+                      padding: const EdgeInsets.only(left: 4.0),
                       child: Row(
                         children: [
-                          Icon(
-                            Icons.build,
-                            color: Theme.of(context).textTheme.caption!.color,
-                            size: 10,
-                          ),
+                          // scheduled task, but not started yet
+                          if (!widget.task.isFinished &&
+                              !widget.task.isInProgress)
+                            Icon(
+                              Icons.schedule_rounded,
+                              size: 40,
+                              color: widget.task.executionDate
+                                      .isBefore(DateTime.now())
+                                  ? Theme.of(context)
+                                      .highlightColor
+                                      .withAlpha(200)
+                                  : Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .color!
+                                      .withAlpha(120),
+                            ),
+                          // done sucessfully
+                          if (widget.task.isFinished &&
+                              widget.task.isSuccessful)
+                            Icon(
+                              Icons.check_circle_outline_rounded,
+                              size: 40,
+                              color:
+                                  Theme.of(context).primaryColor.withAlpha(120),
+                            ),
+                          // done unsuccessfully
+                          if (widget.task.isFinished &&
+                              !widget.task.isSuccessful)
+                            Icon(
+                              Icons.cancel_outlined,
+                              size: 40,
+                              color:
+                                  Theme.of(context).errorColor.withAlpha(160),
+                            ),
+                          // task in progress
+                          if (!widget.task.isFinished &&
+                              widget.task.isInProgress)
+                            Icon(
+                              Icons.run_circle_outlined,
+                              size: 40,
+                              color: widget.task.executionDate
+                                      .isBefore(DateTime.now())
+                                  ? Theme.of(context)
+                                      .highlightColor
+                                      .withAlpha(200)
+                                  : Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .color!
+                                      .withAlpha(120),
+                            ),
                           const SizedBox(
-                            width: 2,
+                            width: 8,
                           ),
                           Expanded(
-                            child: Text(
-                              dateFormat.format(widget.task.executionDate),
-                              style: Theme.of(context).textTheme.caption,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.build,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .color,
+                                      size: 10,
+                                    ),
+                                    const SizedBox(
+                                      width: 2,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        dateFormat
+                                            .format(widget.task.executionDate),
+                                        style:
+                                            Theme.of(context).textTheme.caption,
+                                      ),
+                                    ),
+                                    if (widget.task.isCyclictask)
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 4),
+                                        child: Icon(
+                                          Icons.refresh,
+                                          size: 14,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .caption!
+                                              .color,
+                                        ),
+                                      ),
+                                    Text(
+                                      '#${widget.task.count}',
+                                      style:
+                                          Theme.of(context).textTheme.caption,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                // scheduled task, but not started yet
+                                if (!widget.task.isFinished &&
+                                    !widget.task.isInProgress)
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .task_progress_scheduled,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .caption!
+                                        .copyWith(fontSize: 14),
+                                  ),
+                                // done sucessfully
+                                if (widget.task.isFinished &&
+                                    widget.task.isSuccessful)
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .task_progress_finished_successfully,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .caption!
+                                        .copyWith(fontSize: 14),
+                                  ),
+                                // done unsuccessfully
+                                if (widget.task.isFinished &&
+                                    !widget.task.isSuccessful)
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .task_progress_finished_unsuccessfully,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .caption!
+                                        .copyWith(fontSize: 14),
+                                  ),
+                                // task in progress
+                                if (!widget.task.isFinished &&
+                                    widget.task.isInProgress)
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .task_progress_in_progress,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .caption!
+                                        .copyWith(fontSize: 14),
+                                  ),
+                              ],
                             ),
-                          ),
-                          if (widget.task.isCyclictask)
-                            Padding(
-                              padding: const EdgeInsets.only(right: 4),
-                              child: Icon(
-                                Icons.refresh,
-                                size: 14,
-                                color:
-                                    Theme.of(context).textTheme.caption!.color,
-                              ),
-                            ),
-                          Text(
-                            '#${widget.task.count}',
-                            style: Theme.of(context).textTheme.caption,
                           ),
                         ],
                       ),
@@ -202,53 +324,12 @@ class _TaskTileState extends State<TaskTile> {
             ),
           ),
         ),
-        Column(
-          children: [
-            // // scheduled task, but not started yet
-            if (!widget.task.isFinished && !widget.task.isInProgress)
-              Icon(
-                Icons.schedule_rounded,
-                size: 50,
-                color: widget.task.executionDate.isBefore(DateTime.now())
-                    ? Theme.of(context).errorColor.withAlpha(160)
-                    : Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .color!
-                        .withAlpha(120),
-              ),
-            // done sucessfully
-            if (widget.task.isFinished && widget.task.isSuccessful)
-              Icon(
-                Icons.check_circle_outline_rounded,
-                size: 50,
-                color: Theme.of(context).primaryColor.withAlpha(120),
-              ),
-            // done unsuccessfully
-            if (widget.task.isFinished && !widget.task.isSuccessful)
-              Icon(
-                Icons.cancel_outlined,
-                size: 50,
-                color: Theme.of(context).errorColor.withAlpha(160),
-              ),
-            // task in progress
-            if (!widget.task.isFinished && widget.task.isInProgress)
-              Icon(
-                Icons.run_circle_outlined,
-                size: 50,
-                color: Theme.of(context).highlightColor.withAlpha(150),
-              ),
-            const SizedBox(
-              height: 8,
-            ),
-            getTaskPriorityAndTypeIcon(
-              context: context,
-              priority: widget.task.priority,
-              type: widget.task.type,
-              backgroundSize: 50,
-              iconSize: 20,
-            ),
-          ],
+        getTaskPriorityAndTypeIcon(
+          context: context,
+          priority: widget.task.priority,
+          type: widget.task.type,
+          backgroundSize: 50,
+          iconSize: 20,
         ),
         if (widget.task.isCancelled)
           Positioned(

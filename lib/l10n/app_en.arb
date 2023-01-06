@@ -2359,6 +2359,22 @@
     "@task_msg_completed": {
       "description": "task - completed msg"
     },
+    "task_progress_scheduled": "Scheduled",
+    "@task_progress_scheduled": {
+      "description": "task progress"
+    },
+    "task_progress_in_progress": "In progress",
+    "@task_progress_in_progress": {
+      "description": "task progress"
+    },
+    "task_progress_finished_successfully": "Finished successfully",
+    "@task_progress_finished_successfully": {
+      "description": "task progress"
+    },
+    "task_progress_finished_unsuccessfully": "Finished unsuccessfully",
+    "@task_progress_finished_unsuccessfully": {
+      "description": "task progress"
+    },
     "task_owner": "Task owner",
     "@task_owner": {
       "description": "task owner"
