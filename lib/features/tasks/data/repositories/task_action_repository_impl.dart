@@ -80,21 +80,25 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
 
       batch.set(taskActionReference, taskActionMap);
 
+      // update connected task
+      final taskReference = firebaseFirestore
+          .collection('companies')
+          .doc(params.userProfile.companyId)
+          .collection('tasks')
+          .doc(params.task.id);
+
+      final updatedTask = TaskModel.fromTask(params.task).copyWith(
+        // TODO - update asset status while adding action
+        // assetStatus:
+        isInProgress: true,
+      );
+
+      final updatedTaskMap = updatedTask.toMap();
+
+      batch.update(taskReference, updatedTaskMap);
+
       // replace connected asset
       if (updatedTaskAction.replacedAssetLocationId.isNotEmpty) {
-        // get connected task
-        final taskReference = firebaseFirestore
-            .collection('companies')
-            .doc(params.userProfile.companyId)
-            .collection('tasks')
-            .doc(updatedTaskAction.taskId);
-
-        final taskSnapshot = await taskReference.get();
-        final fetchedTask = TaskModel.fromMap(
-          taskSnapshot.data() as Map<String, dynamic>,
-          taskSnapshot.id,
-        );
-
         // get connected asset
         final assetsReference = firebaseFirestore
             .collection('companies')
@@ -103,7 +107,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
 
         // replaced asset
         final replacedAssetSnapshot =
-            await assetsReference.doc(fetchedTask.assetId).get();
+            await assetsReference.doc(params.task.assetId).get();
         final replacedAsset = AssetModel.fromMap(
           replacedAssetSnapshot.data() as Map<String, dynamic>,
           replacedAssetSnapshot.id,

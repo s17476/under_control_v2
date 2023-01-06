@@ -202,12 +202,53 @@ class _TaskTileState extends State<TaskTile> {
             ),
           ),
         ),
-        getTaskPriorityAndTypeIcon(
-          context: context,
-          priority: widget.task.priority,
-          type: widget.task.type,
-          backgroundSize: 50,
-          iconSize: 20,
+        Column(
+          children: [
+            // // scheduled task, but not started yet
+            if (!widget.task.isFinished && !widget.task.isInProgress)
+              Icon(
+                Icons.schedule_rounded,
+                size: 50,
+                color: widget.task.executionDate.isBefore(DateTime.now())
+                    ? Theme.of(context).errorColor.withAlpha(160)
+                    : Theme.of(context)
+                        .textTheme
+                        .caption!
+                        .color!
+                        .withAlpha(120),
+              ),
+            // done sucessfully
+            if (widget.task.isFinished && widget.task.isSuccessful)
+              Icon(
+                Icons.check_circle_outline_rounded,
+                size: 50,
+                color: Theme.of(context).primaryColor.withAlpha(120),
+              ),
+            // done unsuccessfully
+            if (widget.task.isFinished && !widget.task.isSuccessful)
+              Icon(
+                Icons.cancel_outlined,
+                size: 50,
+                color: Theme.of(context).errorColor.withAlpha(160),
+              ),
+            // task in progress
+            if (!widget.task.isFinished && widget.task.isInProgress)
+              Icon(
+                Icons.run_circle_outlined,
+                size: 50,
+                color: Theme.of(context).highlightColor.withAlpha(150),
+              ),
+            const SizedBox(
+              height: 8,
+            ),
+            getTaskPriorityAndTypeIcon(
+              context: context,
+              priority: widget.task.priority,
+              type: widget.task.type,
+              backgroundSize: 50,
+              iconSize: 20,
+            ),
+          ],
         ),
         if (widget.task.isCancelled)
           Positioned(
