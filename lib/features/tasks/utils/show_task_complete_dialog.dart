@@ -1,118 +1,133 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../assets/presentation/widgets/asset_status_dropdown_button.dart';
-import '../../assets/utils/asset_status.dart';
 import '../../core/presentation/widgets/glass_layer.dart';
-import '../data/models/task/task_model.dart';
+import '../../core/presentation/widgets/rounded_button.dart';
 import '../domain/entities/task/task.dart';
-import '../presentation/blocs/task_management/task_management_bloc.dart';
+import '../domain/entities/task_priority.dart';
+import 'get_task_priority_icon.dart';
 
 Future<dynamic> showTaskCompleteDialog({
   required BuildContext context,
   required Task task,
 }) {
-  final formKey = GlobalKey<FormState>();
-  String comment = '';
-  String assetStatus = '';
   return showDialog(
     context: context,
     barrierColor: Colors.transparent,
-    builder: (context) => StatefulBuilder(builder: (context, setInnerState) {
-      return Material(
-        color: Colors.transparent,
-        child: GlassLayer(
-          onDismiss: () => Navigator.pop(context),
-          child: AlertDialog(
-            actionsAlignment: MainAxisAlignment.spaceEvenly,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            title: Text(
-              AppLocalizations.of(context)!.work_request_confirm_cancel,
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!
-                      .work_request_confirm_cancel_description,
+    builder: (context) => Material(
+      color: Colors.transparent,
+      child: GlassLayer(
+        onDismiss: () => Navigator.pop(context),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            AlertDialog(
+              alignment: Alignment.topCenter,
+              insetPadding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.2,
+                left: 24,
+                right: 24,
+                bottom: 24,
+              ),
+              actionsAlignment: MainAxisAlignment.spaceEvenly,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              title: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 90.0),
+                  child: Text(
+                    AppLocalizations.of(context)!.task_complete_question,
+                  ),
                 ),
-                const SizedBox(
-                  height: 4,
+              ),
+              content: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    // success
+                    RoundedButton(
+                      axis: Axis.horizontal,
+                      onPressed: () {
+                        print('success');
+                        Navigator.pop(context, true);
+                      },
+                      icon: Icons.done_rounded,
+                      iconSize: 40,
+                      title:
+                          AppLocalizations.of(context)!.task_complete_success,
+                      titleSize: 20,
+                      foregroundColor: Colors.grey.shade200,
+                      padding: const EdgeInsets.all(16),
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).primaryColor,
+                          Theme.of(context).primaryColor.withAlpha(60),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    // failed
+                    RoundedButton(
+                      axis: Axis.horizontal,
+                      onPressed: () {
+                        print('fail');
+                        Navigator.pop(context, true);
+                      },
+                      icon: Icons.clear_rounded,
+                      iconSize: 40,
+                      title: AppLocalizations.of(context)!.task_complete_fail,
+                      titleSize: 20,
+                      foregroundColor: Colors.grey.shade200,
+                      padding: const EdgeInsets.all(16),
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).errorColor.withAlpha(200),
+                          Theme.of(context).errorColor.withAlpha(100),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                  ],
                 ),
-                Form(
-                  key: formKey,
-                  child: TextFormField(
-                    minLines: 1,
-                    maxLines: 6,
-                    onChanged: (value) {
-                      comment = value;
-                    },
-                    validator: (value) {
-                      if (value!.trim().length < 5) {
-                        return AppLocalizations.of(context)!
-                            .validation_min_five_characters;
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.multiline,
-                    decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!
-                          .work_request_confirm_cancel_hint,
+              ),
+              actions: [
+                // cancel
+                TextButton(
+                  child: Text(
+                    AppLocalizations.of(context)!.cancel,
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.headline1!.color,
                     ),
                   ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                if (task.assetId.isNotEmpty)
-                  AssetStatusDropdownButton(
-                    assetStatus: assetStatus,
-                    onSelected: (val) => setInnerState(() => assetStatus = val),
-                  ),
               ],
             ),
-            actions: [
-              TextButton(
-                child: Text(
-                  AppLocalizations.of(context)!
-                      .user_profile_add_user_personal_data_back,
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.headline1!.color,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+            Positioned(
+              top: (MediaQuery.of(context).size.height * 0.2) - 100,
+              child: getTaskPriorityIcon(
+                context,
+                TaskPriority.low,
+                200,
+                EdgeInsets.zero,
+                true,
               ),
-              TextButton(
-                child: Text(
-                  AppLocalizations.of(context)!.confirm,
-                  style: const TextStyle(
-                    color: Colors.amber,
-                  ),
-                ),
-                onPressed: () {
-                  if (formKey.currentState!.validate() &&
-                      (task.assetId.isEmpty || assetStatus.isNotEmpty)) {
-                    context.read<TaskManagementBloc>().add(
-                          CancelTaskEvent(
-                            task: TaskModel.fromTask(task).copyWith(
-                              assetStatus: AssetStatus.fromString(assetStatus),
-                            ),
-                            comment: comment,
-                          ),
-                        );
-                    Navigator.pop(context, true);
-                  }
-                },
-              ),
-            ],
-          ),
+            )
+          ],
         ),
-      );
-    }),
+      ),
+    ),
   );
 }

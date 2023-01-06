@@ -2063,7 +2063,7 @@
     "@asset_replaced_with": {
       "description": "asset - replaced with"
     },
-    "asset_replaced_info": "This task can no longer continue because the asset linked to it has been replaced. To continue working, create a new task for the resource above.",
+    "asset_replaced_info": "This task can no longer continue because the asset linked to it has been replaced. To continue working, create a new task.",
     "@asset_replaced_info": {
       "description": "asset - replaced info"
     },
@@ -2170,6 +2170,22 @@
     "task_edit": "Edit task",
     "@task_edit": {
       "description": "task edit"
+    },
+    "task_complete": "Finish the task",
+    "@task_complete": {
+      "description": "task complete"
+    },
+    "task_complete_question": "The task was finished:",
+    "@task_complete_question": {
+      "description": "task complete"
+    },
+    "task_complete_success": "Successfully",
+    "@task_complete_success": {
+      "description": "task complete"
+    },
+    "task_complete_fail": "Unsuccessfully",
+    "@task_complete_fail": {
+      "description": "task complete"
     },
     "task_convert": "Convert to task",
     "@task_convert": {

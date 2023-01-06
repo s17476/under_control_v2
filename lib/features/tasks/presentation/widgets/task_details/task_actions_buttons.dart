@@ -139,7 +139,7 @@ class _TaskActionsButtonsState extends State<TaskActionsButtons> {
                               arguments: widget.task,
                             );
                           },
-                icon: Icons.check_circle_outline,
+                icon: Icons.edit_note,
                 iconSize: 40,
                 title: AppLocalizations.of(context)!.task_action_register,
                 titleSize: 16,
@@ -193,10 +193,10 @@ class _TaskActionsButtonsState extends State<TaskActionsButtons> {
                         }
                       });
                     },
-          icon: Icons.check_circle_outline,
+          icon: Icons.done_rounded,
           iconSize: 40,
-          title: AppLocalizations.of(context)!.task_action_register,
-          titleSize: 16,
+          title: AppLocalizations.of(context)!.task_complete,
+          titleSize: 20,
           foregroundColor: Colors.grey.shade200,
           padding: const EdgeInsets.all(16),
           gradient: LinearGradient(
