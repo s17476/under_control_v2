@@ -569,6 +569,8 @@
     "task_msg_not_updated": "Zadanie nie zostało zaktualizowane",
     "task_msg_deleted": "Usunięto zadanie",
     "task_msg_not_deleted": "Zadanie nie zostało usunięte",
+    "task_msg_not_completed": "Zadanie nie zostało zakończone",
+    "task_msg_completed": "Zadanie zostało zakończone",
     "task_owner": "Właściciel zadania",
     "task_and_request": "Zadania i zlecenia",
     "task_filter_reset": "Resetuj filtr",

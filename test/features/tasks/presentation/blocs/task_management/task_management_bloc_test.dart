@@ -13,6 +13,7 @@ import 'package:under_control_v2/features/tasks/domain/entities/task_priority.da
 import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
 import 'package:under_control_v2/features/tasks/domain/usecases/task/add_task.dart';
 import 'package:under_control_v2/features/tasks/domain/usecases/task/cancel_task.dart';
+import 'package:under_control_v2/features/tasks/domain/usecases/task/complete_task.dart';
 import 'package:under_control_v2/features/tasks/domain/usecases/task/delete_task.dart';
 import 'package:under_control_v2/features/tasks/domain/usecases/task/update_task.dart';
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_management/task_management_bloc.dart';
@@ -28,6 +29,8 @@ class MockCancelTask extends Mock implements CancelTask {}
 
 class MockUpdateTask extends Mock implements UpdateTask {}
 
+class MockCompleteTask extends Mock implements CompleteTask {}
+
 void main() {
   late MockCompanyProfileBloc mockCompanyProfileBloc;
 
@@ -35,6 +38,7 @@ void main() {
   late MockDeleteTask mockDeleteTask;
   late MockCancelTask mockCancelTask;
   late MockUpdateTask mockUpdateTask;
+  late MockCompleteTask mockCompleteTask;
 
   late TaskManagementBloc workRequestManagementBloc;
 
@@ -87,6 +91,7 @@ void main() {
     mockDeleteTask = MockDeleteTask();
     mockCancelTask = MockCancelTask();
     mockUpdateTask = MockUpdateTask();
+    mockCompleteTask = MockCompleteTask();
 
     when(() => mockCompanyProfileBloc.stream).thenAnswer(
       (_) => Stream.fromFuture(
@@ -100,6 +105,7 @@ void main() {
       deleteTask: mockDeleteTask,
       updateTask: mockUpdateTask,
       cancelTask: mockCancelTask,
+      completeTask: mockCompleteTask,
     );
   });
 

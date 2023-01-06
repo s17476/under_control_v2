@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/tasks/domain/usecases/task/complete_task.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -26,6 +27,7 @@ class TaskManagementBloc
   final DeleteTask deleteTask;
   final UpdateTask updateTask;
   final CancelTask cancelTask;
+  final CompleteTask completeTask;
 
   late StreamSubscription _companyProfileStreamSubscription;
   String _companyId = '';
@@ -36,6 +38,7 @@ class TaskManagementBloc
     required this.deleteTask,
     required this.updateTask,
     required this.cancelTask,
+    required this.completeTask,
   }) : super(TaskManagementEmptyState()) {
     _companyProfileStreamSubscription =
         companyProfileBloc.stream.listen((state) {
@@ -64,6 +67,30 @@ class TaskManagementBloc
           (_) async => emit(
             TaskManagementSuccessState(
               message: BlocMessage.added,
+            ),
+          ),
+        );
+      },
+    );
+
+    on<CompleteTaskEvent>(
+      (event, emit) async {
+        emit(TaskManagementLoadingState());
+        final failureOrVoidResult = await completeTask(
+          TaskParams(
+            task: event.task,
+            companyId: _companyId,
+          ),
+        );
+        await failureOrVoidResult.fold(
+          (failure) async => emit(
+            TaskManagementErrorState(
+              message: BlocMessage.notCompleted,
+            ),
+          ),
+          (_) async => emit(
+            TaskManagementSuccessState(
+              message: BlocMessage.completed,
             ),
           ),
         );

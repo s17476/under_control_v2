@@ -32,6 +32,12 @@ class CancelTaskEvent extends TaskManagementEvent {
   });
 }
 
+class CompleteTaskEvent extends TaskManagementEvent {
+  const CompleteTaskEvent({
+    required super.task,
+  });
+}
+
 class UpdateTaskEvent extends TaskManagementEvent {
   final List<File>? images;
   final File? video;

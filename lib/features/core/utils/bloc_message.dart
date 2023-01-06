@@ -9,4 +9,6 @@ enum BlocMessage {
   moved,
   notMoved,
   inUse,
+  completed,
+  notCompleted,
 }

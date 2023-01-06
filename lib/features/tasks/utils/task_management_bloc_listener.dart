@@ -30,6 +30,12 @@ void taskManagementBlocListener(
       case BlocMessage.notDeleted:
         message = AppLocalizations.of(context)!.task_msg_not_deleted;
         break;
+      case BlocMessage.completed:
+        message = AppLocalizations.of(context)!.task_msg_completed;
+        break;
+      case BlocMessage.notCompleted:
+        message = AppLocalizations.of(context)!.task_msg_not_completed;
+        break;
       default:
         message = '';
         break;

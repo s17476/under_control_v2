@@ -968,6 +968,7 @@ Future<_i1.GetIt> $initGetIt(
         deleteTask: gh<_i96.DeleteTask>(),
         updateTask: gh<_i37.UpdateTask>(),
         cancelTask: gh<_i71.CancelTask>(),
+        completeTask: gh<_i81.CompleteTask>(),
       ));
   gh.factory<_i197.WorkRequestManagementBloc>(
       () => _i197.WorkRequestManagementBloc(

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/presentation/widgets/glass_layer.dart';
 import '../../core/presentation/widgets/rounded_button.dart';
+import '../data/models/task/task_model.dart';
 import '../domain/entities/task/task.dart';
 import '../domain/entities/task_priority.dart';
+import '../presentation/blocs/task_management/task_management_bloc.dart';
 import 'get_task_priority_icon.dart';
 
 Future<dynamic> showTaskCompleteDialog({
@@ -53,7 +56,11 @@ Future<dynamic> showTaskCompleteDialog({
                     RoundedButton(
                       axis: Axis.horizontal,
                       onPressed: () {
-                        print('success');
+                        final updatedTask = TaskModel.fromTask(task)
+                            .copyWith(isSuccessful: true);
+                        context.read<TaskManagementBloc>().add(
+                              CompleteTaskEvent(task: updatedTask),
+                            );
                         Navigator.pop(context, true);
                       },
                       icon: Icons.done_rounded,
@@ -79,7 +86,11 @@ Future<dynamic> showTaskCompleteDialog({
                     RoundedButton(
                       axis: Axis.horizontal,
                       onPressed: () {
-                        print('fail');
+                        final updatedTask = TaskModel.fromTask(task)
+                            .copyWith(isSuccessful: false);
+                        context.read<TaskManagementBloc>().add(
+                              CompleteTaskEvent(task: updatedTask),
+                            );
                         Navigator.pop(context, true);
                       },
                       icon: Icons.clear_rounded,

@@ -29,6 +29,7 @@ class _TaskActionsButtonsState extends State<TaskActionsButtons> {
   bool _canContinues = false;
   bool _canFinishes = false;
   bool _isLoading = true;
+  bool _hasActions = false;
 
   void _showContinueInfo() {
     showSnackBar(
@@ -44,15 +45,18 @@ class _TaskActionsButtonsState extends State<TaskActionsButtons> {
     if (actionsState is TaskActionLoadedState) {
       if (actionsState.allActions.allTaskActions.isEmpty) {
         _isLoading = false;
+        _hasActions = false;
       } else {
         _isLoading = !actionsState.allActions.allTaskActions
             .any((action) => action.taskId == widget.task.id);
         _canFinishes = !_isLoading;
+        _hasActions = !_isLoading;
       }
       _canContinues = !actionsState.allActions.allTaskActions
           .any((action) => action.replacementAssetId.isNotEmpty);
     } else {
       _canContinues = false;
+      _hasActions = false;
     }
     super.didChangeDependencies();
   }
@@ -168,31 +172,33 @@ class _TaskActionsButtonsState extends State<TaskActionsButtons> {
         RoundedButton(
           axis: Axis.horizontal,
           isLoading: _isLoading,
-          onPressed: !_canFinishes
-              ? _showContinueInfo
-              : !getUserPermission(
-                  context: context,
-                  featureType: FeatureType.tasks,
-                  permissionType: PermissionType.create,
-                )
-                  ? () {
-                      showSnackBar(
-                        context: context,
-                        message:
-                            AppLocalizations.of(context)!.permission_no_action,
-                        isErrorMessage: true,
-                      );
-                    }
-                  : () {
-                      showTaskCompleteDialog(
-                        context: context,
-                        task: widget.task,
-                      ).then((value) {
-                        if (value is bool && value) {
-                          Navigator.pop(context);
+          onPressed: !_hasActions
+              ? () {}
+              : !_canFinishes
+                  ? _showContinueInfo
+                  : !getUserPermission(
+                      context: context,
+                      featureType: FeatureType.tasks,
+                      permissionType: PermissionType.create,
+                    )
+                      ? () {
+                          showSnackBar(
+                            context: context,
+                            message: AppLocalizations.of(context)!
+                                .permission_no_action,
+                            isErrorMessage: true,
+                          );
                         }
-                      });
-                    },
+                      : () {
+                          showTaskCompleteDialog(
+                            context: context,
+                            task: widget.task,
+                          ).then((value) {
+                            if (value is bool && value) {
+                              Navigator.pop(context);
+                            }
+                          });
+                        },
           icon: Icons.done_rounded,
           iconSize: 40,
           title: AppLocalizations.of(context)!.task_complete,

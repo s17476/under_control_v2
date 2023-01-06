@@ -2351,6 +2351,14 @@
     "@task_msg_not_deleted": {
       "description": "task - NOT deleted msg"
     },
+    "task_msg_not_completed": "Task NOT completed",
+    "@task_msg_not_completed": {
+      "description": "task - NOT completed msg"
+    },
+    "task_msg_completed": "Task completed",
+    "@task_msg_completed": {
+      "description": "task - completed msg"
+    },
     "task_owner": "Task owner",
     "@task_owner": {
       "description": "task owner"

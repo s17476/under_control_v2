@@ -538,6 +538,7 @@ class TaskRepositoryImpl extends TaskRepository {
       // update task
       final updatedTask = TaskModel.fromTask(params.task).copyWith(
         isFinished: true,
+        executionDate: DateTime.now(),
       );
 
       final taskMap = updatedTask.toMap();
@@ -550,52 +551,52 @@ class TaskRepositoryImpl extends TaskRepository {
       batch.delete(taskReference);
 
       //
-      if (params.task.assetId.isNotEmpty) {
-        // asset
-        final assetReference = firebaseFirestore
-            .collection('companies')
-            .doc(params.companyId)
-            .collection('assets')
-            .doc(params.task.assetId);
+      // if (params.task.assetId.isNotEmpty) {
+      //   // asset
+      //   final assetReference = firebaseFirestore
+      //       .collection('companies')
+      //       .doc(params.companyId)
+      //       .collection('assets')
+      //       .doc(params.task.assetId);
 
-        final assetSnapshot = await assetReference.get();
-        final asset = AssetModel.fromMap(
-          assetSnapshot.data() as Map<String, dynamic>,
-          assetSnapshot.id,
-        );
-        final updatedModel = asset.copyWith(
-          currentStatus: params.task.assetStatus,
-        );
-        final assetMap = updatedModel.toMap();
+      //   final assetSnapshot = await assetReference.get();
+      //   final asset = AssetModel.fromMap(
+      //     assetSnapshot.data() as Map<String, dynamic>,
+      //     assetSnapshot.id,
+      //   );
+      //   final updatedModel = asset.copyWith(
+      //     currentStatus: params.task.assetStatus,
+      //   );
+      //   final assetMap = updatedModel.toMap();
 
-        // action
-        final actionsReference = firebaseFirestore
-            .collection('companies')
-            .doc(params.companyId)
-            .collection('assetsActions');
+      //   // action
+      //   final actionsReference = firebaseFirestore
+      //       .collection('companies')
+      //       .doc(params.companyId)
+      //       .collection('assetsActions');
 
-        final assetAction = AssetActionModel(
-          id: '',
-          assetId: params.task.assetId,
-          dateTime: DateTime.now(),
-          userId: params.task.userId,
-          locationId: params.task.locationId,
-          isAssetInUse: asset.isInUse,
-          isCreate: false,
-          assetStatus: params.task.assetStatus,
-          connectedTask: taskReference.id,
-          connectedWorkRequest: '',
-        );
-        final actionMap = assetAction.toMap();
+      //   final assetAction = AssetActionModel(
+      //     id: '',
+      //     assetId: params.task.assetId,
+      //     dateTime: DateTime.now(),
+      //     userId: params.task.userId,
+      //     locationId: params.task.locationId,
+      //     isAssetInUse: asset.isInUse,
+      //     isCreate: false,
+      //     assetStatus: params.task.assetStatus,
+      //     connectedTask: taskReference.id,
+      //     connectedWorkRequest: '',
+      //   );
+      //   final actionMap = assetAction.toMap();
 
-        // get action reference
-        final actionReference = await actionsReference.add({'name': ''});
+      //   // get action reference
+      //   final actionReference = await actionsReference.add({'name': ''});
 
-        // add action
-        batch.set(actionReference, actionMap);
-        // update item
-        batch.update(assetReference, assetMap);
-      }
+      //   // add action
+      //   batch.set(actionReference, actionMap);
+      //   // update item
+      //   batch.update(assetReference, assetMap);
+      // }
       //
 
       batch.commit();
