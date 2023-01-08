@@ -525,7 +525,7 @@ class TaskRepositoryImpl extends TaskRepository {
           .collection('companies')
           .doc(params.companyId)
           .collection('tasks')
-          .doc(params.task.id);
+          .doc(params.task.id); 
 
       final taskInArchiveReference = firebaseFirestore
           .collection('companies')

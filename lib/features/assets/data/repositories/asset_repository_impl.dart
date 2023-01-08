@@ -5,8 +5,13 @@ import 'package:injectable/injectable.dart';
 
 import 'package:under_control_v2/features/assets/domain/entities/assets_stream.dart';
 import 'package:under_control_v2/features/assets/domain/repositories/asset_repository.dart';
+import 'package:under_control_v2/features/assets/utils/asset_status.dart';
+import 'package:under_control_v2/features/assets/utils/get_next_date.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/tasks/data/models/task/task_model.dart';
+import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
+import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
 
 import '../models/asset_action/asset_action_model.dart';
 
@@ -114,6 +119,80 @@ class AssetRepositoryImpl extends AssetRepository {
         assetReference,
         assetMap,
       );
+
+      // add inspection
+      if (params.asset.currentStatus != AssetStatus.disposed) {
+        final taskReference = await firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('tasks')
+            .add({'name': ''});
+
+        // increment counter
+        int counterValue = 0;
+        final companyReference =
+            firebaseFirestore.collection('companies').doc(params.companyId);
+
+        await firebaseFirestore.runTransaction((transaction) async {
+          final companySnapshot = await transaction.get(companyReference);
+
+          if (!companySnapshot.exists) {
+            throw Exception("Comapny does not exist!");
+          }
+
+          counterValue = companySnapshot.data()!['tasksCounter'] ?? 0;
+          counterValue++;
+
+          transaction.update(companyReference, {'tasksCounter': counterValue});
+        });
+
+        DateTime inspectionExecutionDate = params.asset.addDate;
+        if (params.asset.currentStatus == AssetStatus.ok ||
+            params.asset.currentStatus ==
+                AssetStatus.workingRequiresAttention) {
+          inspectionExecutionDate = getNextDate(
+            params.asset.addDate,
+            params.asset.durationUnit,
+            params.asset.duration,
+          );
+        }
+
+        final inspection = TaskModel(
+          id: '',
+          parentId: '',
+          count: counterValue,
+          date: params.asset.addDate,
+          executionDate: inspectionExecutionDate,
+          title: 'AUTO#',
+          description: 'AUTO#',
+          locationId: params.asset.locationId,
+          userId: params.userId ?? '',
+          assetId: assetReference.id,
+          workOrderId: '',
+          images: const [],
+          instructions: const [],
+          video: '',
+          priority: TaskPriority.low,
+          type: TaskType.inspection,
+          assetStatus: params.asset.currentStatus,
+          isFinished: false,
+          isCancelled: false,
+          isSuccessful: false,
+          isInProgress: false,
+          isCyclictask: true,
+          durationUnit: params.asset.durationUnit,
+          duration: params.asset.duration,
+          actions: const [],
+          assignedGroups: const [],
+          assignedUsers: [params.userId ?? ''],
+          sparePartsAssets: const [],
+          sparePartsItems: const [],
+        );
+
+        final inspectionMap = inspection.toMap();
+
+        batch.set(taskReference, inspectionMap);
+      }
 
       // commit the batch
       batch.commit();
