@@ -195,15 +195,24 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                           ),
                         ),
                       // title
-                      Text(
-                        widget.task.title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                      if (!widget.task.title.contains('AUTO#'))
+                        Text(
+                          widget.task.title,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      if (widget.task.title.contains('AUTO#'))
+                        Text(
+                          AppLocalizations.of(context)!.auto_generated,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
 
                       if (widget.task.description.isNotEmpty)
                         const SizedBox(

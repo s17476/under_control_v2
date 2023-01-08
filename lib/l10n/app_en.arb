@@ -3,6 +3,10 @@
     "@important": {
       "description": "Important"
     },
+    "auto_generated": "Automatically generated",
+    "@auto_generated": {
+      "description": "Automatically generated"
+    },
     "server_error": "Server error",
     "@server_error": {
       "description": "Server error"

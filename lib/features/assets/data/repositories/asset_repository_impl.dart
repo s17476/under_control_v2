@@ -164,7 +164,7 @@ class AssetRepositoryImpl extends AssetRepository {
           date: params.asset.addDate,
           executionDate: inspectionExecutionDate,
           title: 'AUTO#',
-          description: 'AUTO#',
+          description: '',
           locationId: params.asset.locationId,
           userId: params.userId ?? '',
           assetId: assetReference.id,

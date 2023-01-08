@@ -172,7 +172,7 @@ class _TaskTileState extends State<TaskTile> {
                     if (widget.task.assetId.isEmpty) const NoAssetInfo(),
 
                     // title
-                    TaskTitle(title: widget.task.title),
+                    TaskTitle(taskTitle: widget.task.title),
                     const SizedBox(
                       height: 4,
                     ),
@@ -549,13 +549,19 @@ class TaskAuthor extends StatelessWidget {
 class TaskTitle extends StatelessWidget {
   const TaskTitle({
     Key? key,
-    required this.title,
+    required this.taskTitle,
   }) : super(key: key);
 
-  final String title;
+  final String taskTitle;
 
   @override
   Widget build(BuildContext context) {
+    String title = '';
+    if (taskTitle.contains('AUTO#')) {
+      title = AppLocalizations.of(context)!.auto_generated;
+    } else {
+      title = taskTitle;
+    }
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
       child: Text(
