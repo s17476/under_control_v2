@@ -75,8 +75,9 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
                                 const ShimmerAssetActionListTile(),
                           );
                         }
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
+                        return ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
                           children: [
                             if (state.workRequests.isNotEmpty)
                               WorkRequestsTabView(

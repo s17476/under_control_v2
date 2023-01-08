@@ -106,58 +106,7 @@ class _TaskTileState extends State<TaskTile> {
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Row(
                         children: [
-                          // scheduled task, but not started yet
-                          if (!widget.task.isFinished &&
-                              !widget.task.isInProgress)
-                            Icon(
-                              Icons.schedule_rounded,
-                              size: 40,
-                              color: widget.task.executionDate
-                                      .isBefore(DateTime.now())
-                                  ? Theme.of(context)
-                                      .highlightColor
-                                      .withAlpha(200)
-                                  : Theme.of(context)
-                                      .textTheme
-                                      .caption!
-                                      .color!
-                                      .withAlpha(120),
-                            ),
-                          // done sucessfully
-                          if (widget.task.isFinished &&
-                              widget.task.isSuccessful)
-                            Icon(
-                              Icons.check_circle_outline_rounded,
-                              size: 40,
-                              color:
-                                  Theme.of(context).primaryColor.withAlpha(120),
-                            ),
-                          // done unsuccessfully
-                          if (widget.task.isFinished &&
-                              !widget.task.isSuccessful)
-                            Icon(
-                              Icons.cancel_outlined,
-                              size: 40,
-                              color:
-                                  Theme.of(context).errorColor.withAlpha(160),
-                            ),
-                          // task in progress
-                          if (!widget.task.isFinished &&
-                              widget.task.isInProgress)
-                            Icon(
-                              Icons.run_circle_outlined,
-                              size: 40,
-                              color: widget.task.executionDate
-                                      .isBefore(DateTime.now())
-                                  ? Theme.of(context)
-                                      .highlightColor
-                                      .withAlpha(200)
-                                  : Theme.of(context)
-                                      .textTheme
-                                      .caption!
-                                      .color!
-                                      .withAlpha(120),
-                            ),
+                          ProgressIcon(task: widget.task),
                           const SizedBox(
                             width: 8,
                           ),
@@ -209,50 +158,7 @@ class _TaskTileState extends State<TaskTile> {
                                 const SizedBox(
                                   height: 2,
                                 ),
-                                // scheduled task, but not started yet
-                                if (!widget.task.isFinished &&
-                                    !widget.task.isInProgress)
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .task_progress_scheduled,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(fontSize: 14),
-                                  ),
-                                // done sucessfully
-                                if (widget.task.isFinished &&
-                                    widget.task.isSuccessful)
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .task_progress_finished_successfully,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(fontSize: 14),
-                                  ),
-                                // done unsuccessfully
-                                if (widget.task.isFinished &&
-                                    !widget.task.isSuccessful)
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .task_progress_finished_unsuccessfully,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(fontSize: 14),
-                                  ),
-                                // task in progress
-                                if (!widget.task.isFinished &&
-                                    widget.task.isInProgress)
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .task_progress_in_progress,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(fontSize: 14),
-                                  ),
+                                ProgressText(task: widget.task),
                               ],
                             ),
                           ),
@@ -348,6 +254,113 @@ class _TaskTileState extends State<TaskTile> {
           )
       ],
     );
+  }
+}
+
+class ProgressIcon extends StatelessWidget {
+  const ProgressIcon({
+    Key? key,
+    required this.task,
+  }) : super(key: key);
+
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    // task cancelled
+    if (task.isCancelled) {
+      return Icon(
+        Icons.cancel_outlined,
+        size: 40,
+        color: Theme.of(context).highlightColor.withAlpha(200),
+      );
+    } else if (task.isFinished) {
+      // done sucessfully
+      if (task.isSuccessful) {
+        return Icon(
+          Icons.check_circle_outline_rounded,
+          size: 40,
+          color: Theme.of(context).primaryColor.withAlpha(120),
+        );
+
+        // done unsuccessfully
+      } else {
+        return Icon(
+          Icons.cancel_outlined,
+          size: 40,
+          color: Theme.of(context).errorColor.withAlpha(160),
+        );
+      }
+    } else {
+      // task in progress
+      if (task.isInProgress) {
+        return Icon(
+          Icons.run_circle_outlined,
+          size: 40,
+          color: task.executionDate.isBefore(DateTime.now())
+              ? Theme.of(context).highlightColor.withAlpha(200)
+              : Theme.of(context).textTheme.caption!.color!.withAlpha(120),
+        );
+      } else {
+        // scheduled task, but not started yet
+        return Icon(
+          Icons.schedule_rounded,
+          size: 40,
+          color: task.executionDate.isBefore(DateTime.now())
+              ? Theme.of(context).highlightColor.withAlpha(200)
+              : Theme.of(context).textTheme.caption!.color!.withAlpha(120),
+        );
+      }
+    }
+  }
+}
+
+class ProgressText extends StatelessWidget {
+  const ProgressText({
+    Key? key,
+    required this.task,
+  }) : super(key: key);
+
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    // task cancelled
+    if (task.isCancelled) {
+      return Text(
+        AppLocalizations.of(context)!.task_progress_cancelled,
+        style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+      );
+    } else if (task.isFinished) {
+      // done sucessfully
+      if (task.isSuccessful) {
+        return Text(
+          AppLocalizations.of(context)!.task_progress_finished_successfully,
+          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+        );
+
+        // done unsuccessfully
+      } else {
+        return Text(
+          AppLocalizations.of(context)!.task_progress_finished_unsuccessfully,
+          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+        );
+      }
+    } else {
+      // task in progress
+      if (task.isInProgress) {
+        return Text(
+          AppLocalizations.of(context)!.task_progress_in_progress,
+          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+        );
+      } else {
+        // scheduled task, but not started yet
+        return Text(
+          AppLocalizations.of(context)!.task_progress_scheduled,
+          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+        );
+      }
+    }
   }
 }
 

@@ -230,13 +230,15 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                       const Divider(
                         thickness: 1.5,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TaskActionsButtons(task: widget.task),
-                      ),
-                      const Divider(
-                        thickness: 1.5,
-                      ),
+                      if (!widget.task.isFinished) ...[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TaskActionsButtons(task: widget.task),
+                        ),
+                        const Divider(
+                          thickness: 1.5,
+                        )
+                      ],
 
                       // task data
                       Padding(

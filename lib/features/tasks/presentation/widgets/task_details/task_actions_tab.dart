@@ -21,10 +21,15 @@ class TaskActionsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: TaskActionsButtons(task: task),
-        ),
+        if (!task.isFinished)
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: TaskActionsButtons(task: task),
+          ),
+        if (task.isFinished)
+          const SizedBox(
+            height: 16,
+          ),
         Expanded(
           child: BlocBuilder<TaskActionBloc, TaskActionState>(
             builder: (context, state) {

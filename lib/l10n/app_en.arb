@@ -2151,6 +2151,10 @@
     "@task": {
       "description": "task"
     },
+    "task_archive": "Tasks archive",
+    "@task_archive": {
+      "description": "tasks archive"
+    },
     "task_data": "Task data",
     "@task_data": {
       "description": "task data"
@@ -2361,6 +2365,10 @@
     },
     "task_progress_scheduled": "Scheduled",
     "@task_progress_scheduled": {
+      "description": "task progress"
+    },
+    "task_progress_cancelled": "Cancelled",
+    "@task_progress_cancelled": {
       "description": "task progress"
     },
     "task_progress_in_progress": "In progress",

@@ -5,6 +5,7 @@ import '../../checklists/presentation/pages/checklist_management_page.dart';
 import '../../core/utils/choice.dart';
 import '../presentation/pages/add_task_page.dart';
 import '../presentation/pages/add_work_request_page.dart';
+import '../presentation/pages/task_archive_page.dart';
 import '../presentation/pages/work_request_archive_page.dart';
 
 List<Choice> tasksOverlayMenuItems(BuildContext context) {
@@ -20,6 +21,16 @@ List<Choice> tasksOverlayMenuItems(BuildContext context) {
       },
     ),
     Choice(
+      title: AppLocalizations.of(context)!.task_add,
+      icon: Icons.add_task,
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          AddTaskPage.routeName,
+        );
+      },
+    ),
+    Choice(
       title: AppLocalizations.of(context)!.work_request_archive,
       icon: Icons.history,
       onTap: () {
@@ -30,12 +41,12 @@ List<Choice> tasksOverlayMenuItems(BuildContext context) {
       },
     ),
     Choice(
-      title: AppLocalizations.of(context)!.task_add,
-      icon: Icons.add_task,
+      title: AppLocalizations.of(context)!.task_archive,
+      icon: Icons.history,
       onTap: () {
         Navigator.pushNamed(
           context,
-          AddTaskPage.routeName,
+          TaskArchivePage.routeName,
         );
       },
     ),

@@ -9,6 +9,7 @@ import 'package:under_control_v2/features/settings/presentation/pages/language_s
 import 'package:under_control_v2/features/settings/presentation/pages/settings_page.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/register_task_action_page.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/select_new_assets_data_page.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/task_archive_page.dart';
 
 import 'custom_multi_bloc_provider.dart';
 import 'features/assets/presentation/pages/add_asset_page.dart';
@@ -197,6 +198,7 @@ class App extends StatelessWidget
                   const LanguageSettingsPage(),
               TaskActionDetailsPage.routeName: (context) =>
                   const TaskActionDetailsPage(),
+              TaskArchivePage.routeName: (context) => const TaskArchivePage(),
             },
             // localization
             localizationsDelegates: const [
