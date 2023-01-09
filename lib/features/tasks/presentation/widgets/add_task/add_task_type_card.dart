@@ -12,10 +12,12 @@ class AddTaskTypeCard extends StatelessWidget with ResponsiveSize {
     Key? key,
     required this.setTaskType,
     required this.taskType,
+    required this.isConnectedToAsset,
   }) : super(key: key);
 
   final Function(String) setTaskType;
   final String taskType;
+  final bool isConnectedToAsset;
 
   @override
   Widget build(BuildContext context) {
@@ -127,44 +129,46 @@ class AddTaskTypeCard extends StatelessWidget with ResponsiveSize {
                           height: 16,
                         ),
                         // inspection
-                        SelectionButton<String>(
-                          onSelected: (val) {
-                            setTaskType(val);
-                          },
-                          leading: Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 16,
+                        if (isConnectedToAsset) ...[
+                          SelectionButton<String>(
+                            onSelected: (val) {
+                              setTaskType(val);
+                            },
+                            leading: Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 16,
+                              ),
+                              width: 70,
+                              height: 70,
+                              child: getTaskTypeIcon(
+                                context,
+                                TaskType.inspection,
+                                50,
+                              ),
                             ),
-                            width: 70,
-                            height: 70,
-                            child: getTaskTypeIcon(
+                            iconSize: 50,
+                            title: getLocalizedTaskTypeName(
                               context,
                               TaskType.inspection,
-                              50,
                             ),
+                            titleSize: 24,
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.deepPurple.withAlpha(80),
+                                Colors.deepPurple,
+                                Colors.deepPurple.withAlpha(100),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            value: TaskType.inspection.name,
+                            groupValue: taskType,
                           ),
-                          iconSize: 50,
-                          title: getLocalizedTaskTypeName(
-                            context,
-                            TaskType.inspection,
-                          ),
-                          titleSize: 24,
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.deepPurple.withAlpha(80),
-                              Colors.deepPurple,
-                              Colors.deepPurple.withAlpha(100),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          value: TaskType.inspection.name,
-                          groupValue: taskType,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
+                          const SizedBox(
+                            height: 16,
+                          )
+                        ],
                         // event
                         SelectionButton<String>(
                           onSelected: (val) {

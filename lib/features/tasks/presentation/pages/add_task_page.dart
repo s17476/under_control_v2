@@ -410,6 +410,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
       });
     } else {
       setState(() {
+        if (_taskType == TaskType.inspection.name) {
+          _taskType = '';
+        }
         _isConnectedToAsset = false;
         _assetId = '';
         _locationId = '';
@@ -671,6 +674,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       AddTaskTypeCard(
         setTaskType: _setTaskType,
         taskType: _taskType,
+        isConnectedToAsset: _isConnectedToAsset,
       ),
       SetPriorityCard(
         setPriority: _setPriority,
