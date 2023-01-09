@@ -215,7 +215,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           dateTime: updatedTaskAction.stopTime,
           userId: params.userProfile.id,
           locationId: updatedAsset.locationId,
-          isAssetInUse: false,
+          isAssetInUse: updatedAsset.isInUse,
           isCreate: false,
           assetStatus: updatedAsset.currentStatus,
           connectedTask: updatedTaskAction.taskId,
