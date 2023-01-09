@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_tasks_tab.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -60,7 +61,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
       });
       if (_asset != null) {
         // number of tabs
-        _tabsCount = 2;
+        _tabsCount = 3;
         _tabsCount += _asset!.images.isNotEmpty ? 1 : 0;
         _tabsCount += _asset!.spareParts.isNotEmpty ? 1 : 0;
         _tabsCount += _asset!.instructions.isNotEmpty ? 1 : 0;
@@ -176,6 +177,13 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
               ),
               Tab(
                 icon: Icon(
+                  Icons.work_history,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
+              Tab(
+                icon: Icon(
                   Icons.history,
                   color: tabBarIconColor,
                   size: tabBarIconSize,
@@ -229,6 +237,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
                 child: TabBarView(
                   children: [
                     AssetInfoTab(asset: _asset!),
+                    AssetTasksTab(asset: _asset!),
                     AssetHistoryTab(asset: _asset!),
                     if (_asset!.images.isNotEmpty)
                       AssetImagesTab(asset: _asset!),

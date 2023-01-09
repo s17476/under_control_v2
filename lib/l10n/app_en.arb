@@ -1735,6 +1735,14 @@
     "@instruction_history": {
       "description": "instruction history"
     },
+    "asset_no_tasks": "No active tasks",
+    "@asset_no_tasks": {
+      "description": "no active tasks"
+    },
+    "asset_no_work_requests": "No active work requests",
+    "@asset_no_work_requests": {
+      "description": "no active work requests"
+    },
     "asset_add_new": "Add new asset",
     "@asset_add_new": {
       "description": "add asset menu item"
@@ -2178,6 +2186,14 @@
     "task_edit": "Edit task",
     "@task_edit": {
       "description": "task edit"
+    },
+    "task_active": "Active tasks",
+    "@task_active": {
+      "description": "tasks active"
+    },
+    "task_finished": "Finished tasks",
+    "@task_finished": {
+      "description": "tasks finished"
     },
     "task_complete": "Finish the task",
     "@task_complete": {
