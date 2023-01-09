@@ -83,8 +83,10 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
                   builder: (context, state) {
                     if (state is FilterLoadedState &&
                         state.locations.isNotEmpty) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      return ListView(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AnimatedContainer(
                             duration: const Duration(milliseconds: 300),
@@ -127,8 +129,10 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
                                     drafts.add(instruction);
                                   }
                                 }
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                return ListView(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  // crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // drafts
                                     if (drafts.isNotEmpty)
@@ -170,9 +174,12 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
                                       ),
                                     // published instructions
                                     if (published.isNotEmpty)
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                      ListView(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        // crossAxisAlignment:
+                                        //     CrossAxisAlignment.start,
                                         children: [
                                           if (published.isNotEmpty)
                                             Padding(

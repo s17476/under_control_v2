@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/task_details_page.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/cached_user_avatar.dart';
@@ -72,7 +73,15 @@ class ItemActionListTile extends StatelessWidget {
                             ItemDetailsPage.routeName,
                             arguments: item,
                           )
-                      : () {},
+                      : action.taskId.isNotEmpty
+                          ? () {
+                              Navigator.pushNamed(
+                                context,
+                                TaskDetailsPage.routeName,
+                                arguments: action.taskId,
+                              );
+                            }
+                          : () {},
                   child: Container(
                     padding: const EdgeInsets.only(
                       top: 4,

@@ -24,7 +24,9 @@ class DashboardPage extends StatelessWidget {
         SliverToBoxAdapter(
           child: BlocBuilder<FilterBloc, FilterState>(
             builder: (context, state) {
-              return Column(
+              return ListView(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 children: const [
                   WorkRequestsLatest(),
                   TasksLatest(),

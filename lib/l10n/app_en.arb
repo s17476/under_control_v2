@@ -761,7 +761,7 @@
     "@bottom_bar_title_assets": {
       "description": "BottomBar and AppBar label"
     },
-    "bottom_bar_title_knowledge": "Knowledge base",
+    "bottom_bar_title_knowledge": "Knowledge",
     "@bottom_bar_title_knowledge": {
       "description": "BottomBar and AppBar label"
     },

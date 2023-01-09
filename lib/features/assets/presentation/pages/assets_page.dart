@@ -119,8 +119,10 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                     builder: (context, state) {
                       if (state is FilterLoadedState &&
                           state.locations.isNotEmpty) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        return ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AnimatedContainer(
                               color:
@@ -216,9 +218,12 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                                     widget.searchQuery,
                                   );
                                   _filterAssets();
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  return ListView(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    // crossAxisAlignment:
+                                    //     CrossAxisAlignment.start,
                                     children: [
                                       // inUse
                                       if (_inUse.isNotEmpty)
@@ -254,7 +259,7 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                                             ),
                                           ],
                                         ),
-                                      // published instructions
+
                                       if (_inReserve.isNotEmpty)
                                         Column(
                                           crossAxisAlignment:
