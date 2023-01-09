@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
 
 import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_location_card.dart';
@@ -249,6 +250,7 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
       _userId = userState.userProfile.id;
     }
 
+    // edit case
     if (arguments != null && arguments is WorkRequest && _workRequest == null) {
       _workRequest = WorkRequestModel.fromWorkRequest(arguments).deepCopy();
 
@@ -264,6 +266,15 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
       _assetId = _workRequest!.assetId;
       _assetStatus = _workRequest!.assetStatus.name;
       _isConnectedToAsset = _workRequest!.assetId.isNotEmpty;
+    }
+
+    // add to asset
+    if (arguments != null && arguments is Asset && _workRequest == null) {
+      final asset = arguments;
+      _locationId = asset.locationId;
+      _assetId = asset.id;
+      _assetStatus = asset.currentStatus.name;
+      _isConnectedToAsset = true;
     }
 
     super.didChangeDependencies();

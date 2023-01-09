@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/rounded_button.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/add_task_page.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/add_work_request_page.dart';
 
 import '../../../../tasks/presentation/blocs/task/task_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request/work_request_bloc.dart';
@@ -22,6 +25,71 @@ class AssetTasksTab extends StatelessWidget {
     return ListView(
       shrinkWrap: true,
       children: [
+        // add work request
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 12,
+            left: 8,
+            right: 8,
+            bottom: 4,
+          ),
+          child: RoundedButton(
+            onPressed: () => Navigator.pushNamed(
+              context,
+              AddWorkRequestPage.routeName,
+              arguments: asset,
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 16,
+              horizontal: 16,
+            ),
+            axis: Axis.horizontal,
+            icon: Icons.add,
+            iconSize: 30,
+            title: AppLocalizations.of(context)!.work_request_add,
+            titleSize: 18,
+            gradient: LinearGradient(
+              colors: [
+                Colors.blue.shade700,
+                Colors.blue.shade700.withAlpha(70),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        // add task
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
+          child: RoundedButton(
+            onPressed: () => Navigator.pushNamed(
+              context,
+              AddTaskPage.routeName,
+              arguments: asset,
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 16,
+              horizontal: 16,
+            ),
+            axis: Axis.horizontal,
+            icon: Icons.add_task,
+            iconSize: 30,
+            title: AppLocalizations.of(context)!.task_add,
+            titleSize: 18,
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).primaryColor,
+                Theme.of(context).primaryColor.withAlpha(60),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         BlocBuilder<WorkRequestBloc, WorkRequestState>(
           builder: (context, state) {
             if (state is WorkRequestLoadedState) {

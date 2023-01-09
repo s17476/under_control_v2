@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
@@ -562,6 +563,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
       _assignedGroups = _task!.assignedGroups;
       _sparePartsAssets = _task!.sparePartsAssets;
       _sparePartsItems = _task!.sparePartsItems;
+    }
+
+    // add to asset
+    if (arguments != null && arguments is Asset && _task == null) {
+      final asset = arguments;
+
+      _locationId = asset.locationId;
+      _assetId = asset.id;
+      _assetStatus = asset.currentStatus.name;
+      _isConnectedToAsset = true;
     }
 
     super.didChangeDependencies();
