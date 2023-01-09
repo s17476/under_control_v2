@@ -531,7 +531,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       _descriptionTextEditingController.text = _workRequest!.description;
       _locationId = _workRequest!.locationId;
       _priority = _workRequest!.priority.name;
-      _date = _workRequest!.date;
+      // _date = _workRequest!.date;
       _assetId = _workRequest!.assetId;
       _assetStatus = _workRequest!.assetStatus.name;
       _isConnectedToAsset = _workRequest!.assetId.isNotEmpty;

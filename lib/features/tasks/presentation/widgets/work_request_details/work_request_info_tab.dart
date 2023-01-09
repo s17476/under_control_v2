@@ -19,6 +19,7 @@ import '../../../domain/entities/work_request/work_request.dart';
 import '../../../utils/get_localized_task_priority_name.dart';
 import '../../../utils/get_task_priority_icon.dart';
 import '../../blocs/task/task_bloc.dart';
+import '../../blocs/task_archive/task_archive_bloc.dart';
 import '../task_tile.dart';
 
 class WorkRequestInfoTab extends StatefulWidget {
@@ -210,6 +211,7 @@ class _WorkRequestInfoTabState extends State<WorkRequestInfoTab> {
                                         child: TaskTile(task: task),
                                       );
                                     }
+                                    return const SizedBox();
                                   }
                                   return const Padding(
                                     padding: EdgeInsets.only(
@@ -219,7 +221,33 @@ class _WorkRequestInfoTabState extends State<WorkRequestInfoTab> {
                                     child: ShimmerAssetActionListTile(),
                                   );
                                 },
-                              )
+                              ),
+                              // archive task
+                              BlocBuilder<TaskArchiveBloc, TaskArchiveState>(
+                                builder: (context, state) {
+                                  if (state is TaskArchiveLoadedState) {
+                                    final task = state
+                                        .getTaskById(widget.workRequest.taskId);
+                                    if (task != null) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 8.0,
+                                          top: 12,
+                                        ),
+                                        child: TaskTile(task: task),
+                                      );
+                                    }
+                                    return const SizedBox();
+                                  }
+                                  return const Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: 8.0,
+                                      top: 16,
+                                    ),
+                                    child: ShimmerAssetActionListTile(),
+                                  );
+                                },
+                              ),
                             ],
                           ),
                         ),
