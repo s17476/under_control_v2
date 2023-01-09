@@ -274,6 +274,16 @@ class _HomePageState extends State<HomePage>
 
     // bottom navigation
     _navigationController = CircularBottomNavigationController(_pageIndex);
+    _pageController.addListener(() {
+      if (_pageController.page! - _pageIndex > 0.5 ||
+          _pageController.page! - _pageIndex < -0.5) {
+        _scrollController.animateTo(
+          0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
 
     // triggers hide/show bottom navigation bar
     _scrollController.addListener(() {
