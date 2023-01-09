@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/tasks/data/models/task_action/task_action_model.dart';
-import 'package:under_control_v2/features/tasks/presentation/blocs/task_action_management/task_action_management_bloc.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_summary_card.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_work_request/set_asset_status_card.dart';
+import '../../data/models/task_action/task_action_model.dart';
+import '../blocs/task_action_management/task_action_management_bloc.dart';
+import '../widgets/add_task_action/add_task_action_summary_card.dart';
+import '../widgets/add_work_request/set_asset_status_card.dart';
 
 import '../../../assets/data/models/asset_model.dart';
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
@@ -26,7 +26,6 @@ import '../../domain/entities/task/task.dart';
 import '../../domain/entities/task_action/task_action.dart';
 import '../blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
 import '../blocs/task/task_bloc.dart';
-import '../blocs/task_action/task_action_bloc.dart';
 import '../widgets/add_task_action/add_task_action_add_participants_card.dart';
 import '../widgets/add_task_action/add_task_action_add_spare_part_card.dart';
 import '../widgets/add_task_action/add_task_action_card.dart';
@@ -458,16 +457,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
       }
     }
 
-    // final assetPartsState = context.watch<AssetPartsBloc>().state;
-
-    // if (_task != null && _task!.assetId.isNotEmpty) {
-    //   _hasChildrenAssets = assetPartsState is AssetPartsLoadedState &&
-    //       assetPartsState.parentId == _task!.assetId &&
-    //       assetPartsState.allAssetParts.allAssets.isNotEmpty;
-    // } else {
-    //   _hasChildrenAssets = false;
-    // }
-    // TODO: add edit case
+// TODO - edit case
 
     super.didChangeDependencies();
   }

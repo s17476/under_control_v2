@@ -189,8 +189,6 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
         );
         // update asset status
       } else if (params.task.assetId.isNotEmpty) {
-        // TODO - add inspection update if task type is inspection
-
         // get connected asset
         final assetsReference = firebaseFirestore
             .collection('companies')
@@ -209,7 +207,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           currentStatus: params.taskAction.replacedAssetStatus,
         );
 
-        final replacedAssetMap = updatedAsset.toMap();
+        final updatedAssetMap = updatedAsset.toMap();
 
         final assetAction = AssetActionModel(
           id: '',
@@ -234,47 +232,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
         // update replaced asset
         batch.update(
           assetsReference.doc(updatedAsset.id),
-          replacedAssetMap,
-        );
-
-        // repplacement asset
-        final replacementAssetSnapshot =
-            await assetsReference.doc(params.task.assetId).get();
-        final replacementAsset = AssetModel.fromMap(
-          replacementAssetSnapshot.data() as Map<String, dynamic>,
-          replacementAssetSnapshot.id,
-        );
-
-        final updatedReplacementAsset = replacementAsset.copyWith(
-          locationId: params.task.locationId,
-        );
-
-        final replacementAssetMap = updatedReplacementAsset.toMap();
-
-        final replacementAssetAction = AssetActionModel(
-          id: '',
-          assetId: replacementAsset.id,
-          dateTime: updatedTaskAction.stopTime,
-          userId: params.userProfile.id,
-          locationId: params.task.locationId,
-          isAssetInUse: true,
-          isCreate: false,
-          assetStatus: updatedReplacementAsset.currentStatus,
-          connectedTask: updatedTaskAction.taskId,
-          connectedWorkRequest: '',
-        );
-        final replacementAssetActionMap = replacementAssetAction.toMap();
-
-        // get action reference
-        final replacementAssetActionReference =
-            await assetActionsReference.add({'name': ''});
-
-        // add action
-        batch.set(replacementAssetActionReference, replacementAssetActionMap);
-        // update replacement asset
-        batch.update(
-          assetsReference.doc(updatedReplacementAsset.id),
-          replacementAssetMap,
+          updatedAssetMap,
         );
       }
 

@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/assets/utils/get_next_date.dart';
+import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
 
 import '../../../assets/data/models/asset_action/asset_action_model.dart';
 import '../../../assets/data/models/asset_model.dart';
@@ -525,7 +526,7 @@ class TaskRepositoryImpl extends TaskRepository {
           .collection('companies')
           .doc(params.companyId)
           .collection('tasks')
-          .doc(params.task.id); 
+          .doc(params.task.id);
 
       final taskInArchiveReference = firebaseFirestore
           .collection('companies')
@@ -550,6 +551,32 @@ class TaskRepositoryImpl extends TaskRepository {
 
       batch.delete(taskReference);
 
+      // if task is technical inspection
+      if (params.task.assetId.isNotEmpty &&
+          params.task.type == TaskType.inspection) {
+        // get connected asset
+        final assetReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('assets')
+            .doc(params.task.assetId);
+
+        final assetSnapshot = await assetReference.get();
+        final asset = AssetModel.fromMap(
+          assetSnapshot.data() as Map<String, dynamic>,
+          assetSnapshot.id,
+        );
+
+        final updatedAsset = asset.copyWith(
+          currentStatus: params.task.assetStatus,
+          lastInspection: params.task.executionDate,
+        );
+
+        final assetMap = updatedAsset.toMap();
+
+        batch.update(assetReference, assetMap);
+      }
+
       // cyclic task
       if (params.task.isCyclictask) {
         // increment counter
@@ -571,7 +598,7 @@ class TaskRepositoryImpl extends TaskRepository {
         });
 
         final nextTask = TaskModel.fromTask(params.task).copyWith(
-          assetId: '',
+          id: '',
           count: counterValue,
           date: DateTime.now(),
           isCancelled: false,
@@ -595,55 +622,6 @@ class TaskRepositoryImpl extends TaskRepository {
 
         batch.set(nextTaskReference, nextTaskMap);
       }
-
-      //
-      // if (params.task.assetId.isNotEmpty) {
-      //   // asset
-      //   final assetReference = firebaseFirestore
-      //       .collection('companies')
-      //       .doc(params.companyId)
-      //       .collection('assets')
-      //       .doc(params.task.assetId);
-
-      //   final assetSnapshot = await assetReference.get();
-      //   final asset = AssetModel.fromMap(
-      //     assetSnapshot.data() as Map<String, dynamic>,
-      //     assetSnapshot.id,
-      //   );
-      //   final updatedModel = asset.copyWith(
-      //     currentStatus: params.task.assetStatus,
-      //   );
-      //   final assetMap = updatedModel.toMap();
-
-      //   // action
-      //   final actionsReference = firebaseFirestore
-      //       .collection('companies')
-      //       .doc(params.companyId)
-      //       .collection('assetsActions');
-
-      //   final assetAction = AssetActionModel(
-      //     id: '',
-      //     assetId: params.task.assetId,
-      //     dateTime: DateTime.now(),
-      //     userId: params.task.userId,
-      //     locationId: params.task.locationId,
-      //     isAssetInUse: asset.isInUse,
-      //     isCreate: false,
-      //     assetStatus: params.task.assetStatus,
-      //     connectedTask: taskReference.id,
-      //     connectedWorkRequest: '',
-      //   );
-      //   final actionMap = assetAction.toMap();
-
-      //   // get action reference
-      //   final actionReference = await actionsReference.add({'name': ''});
-
-      //   // add action
-      //   batch.set(actionReference, actionMap);
-      //   // update item
-      //   batch.update(assetReference, assetMap);
-      // }
-      //
 
       batch.commit();
 
