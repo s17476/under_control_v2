@@ -2,10 +2,13 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/loading_widget.dart';
 
 import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../assets/presentation/pages/assets_page.dart';
 import '../../../assets/utils/asset_management_bloc_listener.dart';
+import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../dashboard/presentation/pages/dashboard_page.dart';
 import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../filter/presentation/widgets/home_page_filter.dart';
@@ -628,6 +631,15 @@ class _HomePageState extends State<HomePage>
                     // tasks filter
                     AppBarTasksFilter(
                       isTaskFilterVisible: _isTaskFilterVisible,
+                    ),
+                    // loading widget
+                    BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
+                      builder: (context, state) {
+                        if (state is CompanyProfileLoaded) {
+                          return const SizedBox();
+                        }
+                        return const LoadingPage();
+                      },
                     ),
                   ],
                 ),
