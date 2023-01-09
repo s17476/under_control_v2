@@ -62,6 +62,13 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
     });
   }
 
+  String _progressTitle() {
+    if (widget.task.isSuccessful) {
+      return AppLocalizations.of(context)!.task_progress_finished_successfully;
+    }
+    return AppLocalizations.of(context)!.task_progress_finished_unsuccessfully;
+  }
+
   @override
   void didChangeDependencies() {
     final companyState = context.watch<CompanyProfileBloc>().state;
@@ -266,6 +273,29 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                               height: 16,
                             ),
 
+                            // task is finished
+                            if (widget.task.isFinished) ...[
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: IconTitleRow(
+                                      icon: Icons.done,
+                                      iconColor: Colors.white,
+                                      iconBackground: widget.task.isSuccessful
+                                          ? Theme.of(context).primaryColor
+                                          : Theme.of(context).errorColor,
+                                      title: _progressTitle(),
+                                      titleFontSize: 16,
+                                    ),
+                                  ),
+                                  ProgressIcon(task: widget.task),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                            ],
+
                             // execution date
                             Row(
                               children: [
@@ -275,8 +305,11 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                                     iconColor: Colors.white,
                                     iconBackground:
                                         Theme.of(context).primaryColor,
-                                    title: AppLocalizations.of(context)!
-                                        .task_execution_date,
+                                    title: widget.task.isFinished
+                                        ? AppLocalizations.of(context)!
+                                            .task_complete_question
+                                        : AppLocalizations.of(context)!
+                                            .task_execution_date,
                                     titleFontSize: 16,
                                   ),
                                 ),
@@ -666,5 +699,63 @@ class AssignedGroups extends StatelessWidget {
           ),
       ],
     );
+  }
+}
+
+class ProgressIcon extends StatelessWidget {
+  const ProgressIcon({
+    Key? key,
+    required this.task,
+  }) : super(key: key);
+
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    // task cancelled
+    if (task.isCancelled) {
+      return Icon(
+        Icons.cancel_outlined,
+        size: 40,
+        color: Theme.of(context).highlightColor.withAlpha(200),
+      );
+    } else if (task.isFinished) {
+      // done sucessfully
+      if (task.isSuccessful) {
+        return Icon(
+          Icons.check_circle_outline_rounded,
+          size: 40,
+          color: Theme.of(context).primaryColor.withAlpha(120),
+        );
+
+        // done unsuccessfully
+      } else {
+        return Icon(
+          Icons.cancel_outlined,
+          size: 40,
+          color: Theme.of(context).errorColor.withAlpha(160),
+        );
+      }
+    } else {
+      // task in progress
+      if (task.isInProgress) {
+        return Icon(
+          Icons.run_circle_outlined,
+          size: 40,
+          color: task.executionDate.isBefore(DateTime.now())
+              ? Theme.of(context).highlightColor.withAlpha(200)
+              : Theme.of(context).textTheme.caption!.color!.withAlpha(120),
+        );
+      } else {
+        // scheduled task, but not started yet
+        return Icon(
+          Icons.schedule_rounded,
+          size: 40,
+          color: task.executionDate.isBefore(DateTime.now())
+              ? Theme.of(context).highlightColor.withAlpha(200)
+              : Theme.of(context).textTheme.caption!.color!.withAlpha(120),
+        );
+      }
+    }
   }
 }

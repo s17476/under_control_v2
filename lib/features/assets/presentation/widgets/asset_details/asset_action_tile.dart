@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/task_details_page.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../../tasks/presentation/blocs/task/task_bloc.dart';
+import '../../../../tasks/presentation/blocs/task_archive/task_archive_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request/work_request_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../../../../tasks/presentation/pages/work_request_details_page.dart';
@@ -64,7 +66,15 @@ class AssetActionTile extends StatelessWidget {
                             arguments: action.connectedWorkRequest,
                           );
                         }
-                      : () {},
+                      : action.connectedTask.isNotEmpty
+                          ? () {
+                              Navigator.pushNamed(
+                                context,
+                                TaskDetailsPage.routeName,
+                                arguments: action.connectedTask,
+                              );
+                            }
+                          : () {},
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 padding: const EdgeInsets.only(
@@ -116,6 +126,26 @@ class AssetActionTile extends StatelessWidget {
                       BlocBuilder<TaskBloc, TaskState>(
                         builder: (context, state) {
                           if (state is TaskLoadedState) {
+                            final task = state.getTaskById(
+                              action.connectedTask,
+                            );
+                            if (task != null) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.task} #${task.count}',
+                                ),
+                              );
+                            }
+                          }
+                          return const SizedBox();
+                        },
+                      ),
+                    // connected task from archive
+                    if (action.connectedTask.isNotEmpty)
+                      BlocBuilder<TaskArchiveBloc, TaskArchiveState>(
+                        builder: (context, state) {
+                          if (state is TaskArchiveLoadedState) {
                             final task = state.getTaskById(
                               action.connectedTask,
                             );

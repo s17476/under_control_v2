@@ -2183,6 +2183,10 @@
     "@task_complete": {
       "description": "task complete"
     },
+    "task_completed": "Finished:",
+    "@task_completed": {
+      "description": "task completed"
+    },
     "task_complete_question": "The task was finished:",
     "@task_complete_question": {
       "description": "task complete"

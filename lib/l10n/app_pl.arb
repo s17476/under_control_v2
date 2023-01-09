@@ -527,6 +527,7 @@
     "task_add": "Dodaj nowe zadanie",
     "task_edit": "Edytuj zadanie",
     "task_complete": "Zakończ zadanie",
+    "task_completed": "Zakończono:",
     "task_complete_question": "Zadanie zokończone:",
     "task_complete_success": "Sukcesem",
     "task_complete_fail": "Niepowodzeniem",
