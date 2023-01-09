@@ -88,8 +88,9 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           .doc(params.task.id);
 
       final updatedTask = TaskModel.fromTask(params.task).copyWith(
-        // TODO - update asset status while adding action
-        // assetStatus:
+        assetStatus: params.task.assetId.isNotEmpty
+            ? params.taskAction.replacedAssetStatus
+            : null,
         isInProgress: true,
       );
 
@@ -150,6 +151,95 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
         final replacementAssetSnapshot = await assetsReference
             .doc(params.taskAction.replacementAssetId)
             .get();
+        final replacementAsset = AssetModel.fromMap(
+          replacementAssetSnapshot.data() as Map<String, dynamic>,
+          replacementAssetSnapshot.id,
+        );
+
+        final updatedReplacementAsset = replacementAsset.copyWith(
+          locationId: params.task.locationId,
+        );
+
+        final replacementAssetMap = updatedReplacementAsset.toMap();
+
+        final replacementAssetAction = AssetActionModel(
+          id: '',
+          assetId: replacementAsset.id,
+          dateTime: updatedTaskAction.stopTime,
+          userId: params.userProfile.id,
+          locationId: params.task.locationId,
+          isAssetInUse: true,
+          isCreate: false,
+          assetStatus: updatedReplacementAsset.currentStatus,
+          connectedTask: updatedTaskAction.taskId,
+          connectedWorkRequest: '',
+        );
+        final replacementAssetActionMap = replacementAssetAction.toMap();
+
+        // get action reference
+        final replacementAssetActionReference =
+            await assetActionsReference.add({'name': ''});
+
+        // add action
+        batch.set(replacementAssetActionReference, replacementAssetActionMap);
+        // update replacement asset
+        batch.update(
+          assetsReference.doc(updatedReplacementAsset.id),
+          replacementAssetMap,
+        );
+        // update asset status
+      } else if (params.task.assetId.isNotEmpty) {
+        // TODO - add inspection update if task type is inspection
+
+        // get connected asset
+        final assetsReference = firebaseFirestore
+            .collection('companies')
+            .doc(params.userProfile.companyId)
+            .collection('assets');
+
+        // replaced asset
+        final assetSnapshot =
+            await assetsReference.doc(params.task.assetId).get();
+        final asset = AssetModel.fromMap(
+          assetSnapshot.data() as Map<String, dynamic>,
+          assetSnapshot.id,
+        );
+
+        final updatedAsset = asset.copyWith(
+          currentStatus: params.taskAction.replacedAssetStatus,
+        );
+
+        final replacedAssetMap = updatedAsset.toMap();
+
+        final assetAction = AssetActionModel(
+          id: '',
+          assetId: asset.id,
+          dateTime: updatedTaskAction.stopTime,
+          userId: params.userProfile.id,
+          locationId: updatedAsset.locationId,
+          isAssetInUse: false,
+          isCreate: false,
+          assetStatus: updatedAsset.currentStatus,
+          connectedTask: updatedTaskAction.taskId,
+          connectedWorkRequest: '',
+        );
+        final assetActionMap = assetAction.toMap();
+
+        // get action reference
+        final assetActionReference =
+            await assetActionsReference.add({'name': ''});
+
+        // add action
+        batch.set(assetActionReference, assetActionMap);
+        // update replaced asset
+        batch.update(
+          assetsReference.doc(updatedAsset.id),
+          replacedAssetMap,
+        );
+
+        // repplacement asset
+        final replacementAssetSnapshot =
+            await assetsReference.doc(params.task.assetId).get();
         final replacementAsset = AssetModel.fromMap(
           replacementAssetSnapshot.data() as Map<String, dynamic>,
           replacementAssetSnapshot.id,
@@ -362,6 +452,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
       );
     } catch (e) {
       print('nie poszło');
+      print(e);
       return const Left(
         UnsuspectedFailure(message: 'Unsuspected error'),
       );

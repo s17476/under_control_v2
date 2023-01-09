@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/utils/get_asset_status_icon.dart';
+import 'package:under_control_v2/features/assets/utils/get_localizae_asset_status_name.dart';
 
 import '../../../../assets/data/models/asset_model.dart';
 import '../../../../assets/domain/entities/asset.dart';
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
+import '../../../../assets/utils/asset_status.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/double_apis.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -31,6 +34,7 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.addedPartsAssets,
     required this.replacedAsset,
     required this.replacementAsset,
+    required this.assetStatus,
   }) : super(key: key);
 
   final PageController pageController;
@@ -49,6 +53,8 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
 
   final AssetModel? replacedAsset;
   final AssetModel? replacementAsset;
+
+  final AssetStatus? assetStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +104,14 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
                       participants: participants,
                       pageController: pageController,
                     ),
+
+                    // asset's new status
+                    if (replacedAsset == null)
+                      AssetStatusSummaryCard(
+                        assetStatus: assetStatus,
+                        replacedAsset: replacedAsset,
+                        pageController: pageController,
+                      ),
 
                     // images
                     if (images.isNotEmpty)
@@ -321,6 +335,73 @@ class ImagesSummaryCard extends StatelessWidget {
                 ? '${AppLocalizations.of(context)!.asset_add_images_added}: ${images.length}'
                 : AppLocalizations.of(context)!.asset_add_images_not_added,
           ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+      ],
+    );
+  }
+}
+
+class AssetStatusSummaryCard extends StatelessWidget {
+  const AssetStatusSummaryCard({
+    Key? key,
+    required this.assetStatus,
+    required this.replacedAsset,
+    required this.pageController,
+  }) : super(key: key);
+
+  final AssetStatus? assetStatus;
+  final AssetModel? replacedAsset;
+  final PageController pageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SummaryCard(
+          title: AppLocalizations.of(context)!.asset_status,
+          validator: () {
+            if (replacedAsset == null) {
+              if (assetStatus == null ||
+                  assetStatus == AssetStatus.unknown ||
+                  assetStatus == AssetStatus.disposed ||
+                  assetStatus == AssetStatus.noInspection) {
+                return AppLocalizations.of(context)!.asset_status_not_selected;
+              }
+            }
+            return null;
+          },
+          pageController: pageController,
+          onTapAnimateToPage: 6,
+          child: Builder(builder: (context) {
+            if (assetStatus == null) {
+              return const SizedBox();
+            }
+            return Row(
+              children: [
+                SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: getAssetStatusIcon(
+                    context,
+                    assetStatus!,
+                    30,
+                    true,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    getLocalizedAssetStatusName(
+                      context,
+                      assetStatus!,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }),
         ),
         const SizedBox(
           height: 8,

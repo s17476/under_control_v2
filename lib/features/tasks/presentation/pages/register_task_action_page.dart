@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/data/models/task_action/task_action_model.dart';
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_action_management/task_action_management_bloc.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_summary_card.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_work_request/set_asset_status_card.dart';
 
 import '../../../assets/data/models/asset_model.dart';
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
@@ -74,6 +75,8 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   AssetModel? _replacedAsset;
   AssetModel? _replacementAsset;
 
+  AssetStatus? _assetStatus;
+
   _addNewTaskAction(BuildContext context) {
     String errorMessage = '';
     if (!_formKey.currentState!.validate()) {
@@ -112,6 +115,16 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         errorMessage =
             AppLocalizations.of(context)!.task_action_replaced_asset_err;
       }
+      // set new asset status if it has not been replaced
+      if (errorMessage.isEmpty && _replacedAsset == null) {
+        if (_assetStatus == null ||
+            _assetStatus == AssetStatus.unknown ||
+            _assetStatus == AssetStatus.disposed ||
+            _assetStatus == AssetStatus.noInspection) {
+          errorMessage =
+              AppLocalizations.of(context)!.asset_status_not_selected;
+        }
+      }
     }
 
     // shows SnackBar if validation error occures
@@ -126,8 +139,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
       final taskAction = TaskActionModel(
         id: '',
         taskId: _task!.id,
-        replacedAssetStatus:
-            _replacedAsset?.currentStatus ?? AssetStatus.unknown,
+        replacedAssetStatus: _replacedAsset?.currentStatus ?? _assetStatus!,
         replacedAssetLocationId: _replacedAsset?.locationId ?? '',
         replacementAssetId: _replacementAsset?.id ?? '',
         comment: _descriptionTextEditingController.text,
@@ -349,6 +361,12 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     }
   }
 
+  void _setStatus(String newStatus) {
+    setState(() {
+      _assetStatus = AssetStatus.fromString(newStatus);
+    });
+  }
+
   @override
   void initState() {
     context.read<ReservedSparePartsBloc>().add(
@@ -392,6 +410,11 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
                 parentAssetId: _task!.assetId,
               ),
             );
+        final assetState = context.watch<AssetBloc>().state;
+        if (assetState is AssetLoadedState) {
+          final asset = assetState.getAssetById(_task!.assetId);
+          _assetStatus = asset?.currentStatus;
+        }
       }
     }
 
@@ -503,6 +526,9 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         isConnectedAssetReplaced: _replacedAsset != null,
         toggleReplacementAsset: _toggleReplacementAsset,
       ),
+      if (_assetStatus != null && _replacedAsset == null)
+        SetAssetStatusCard(
+            setStatus: _setStatus, assetStatus: _assetStatus!.name),
       AddTaskActionSummaryCard(
         pageController: _pageController,
         descriptionTextEditingController: _descriptionTextEditingController,
@@ -515,6 +541,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         sparePartsItems: _sparePartsItems,
         replacedAsset: _replacedAsset,
         replacementAsset: _replacementAsset,
+        assetStatus: _assetStatus,
       ),
     ];
 
