@@ -685,7 +685,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
         isAddUsersVisible: _isAddUsersVisible,
         isAddGroupsVisible: _isAddGroupsVisible,
       ),
-      // TODO
       AddTaskCheckpointsCard(
         checklist: _checklist,
         isAddChecklistVisible: _isAddChecklist,
@@ -721,6 +720,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         assignedUsers: _assignedUsers,
         sparePartsAssets: _sparePartsAssets,
         sparePartsItems: _sparePartsItems,
+        checklist: _checklist,
       ),
     ];
 

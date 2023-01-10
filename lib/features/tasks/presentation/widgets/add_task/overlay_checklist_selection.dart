@@ -5,11 +5,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../checklists/data/models/checkpoint_model.dart';
 import '../../../../checklists/domain/entities/checklist.dart';
 import '../../../../checklists/presentation/blocs/checklist/checklist_bloc.dart';
-import '../../../../checklists/presentation/widgets/checklist_tile.dart';
-import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/glass_layer.dart';
-import '../../../../core/presentation/widgets/shimmer_user_list_tile.dart';
+import '../../../../core/presentation/widgets/shimmer_custom_dropdown_button.dart';
+import '../../../../core/utils/responsive_size.dart';
 import 'checklist_selection_tile.dart';
 
 class OverlayChecklistSelection extends StatefulWidget {
@@ -17,10 +16,14 @@ class OverlayChecklistSelection extends StatefulWidget {
     Key? key,
     required this.checklist,
     required this.onDismiss,
+    required this.addEntireChecklist,
+    required this.toggleCheckpoint,
   }) : super(key: key);
 
   final List<CheckpointModel> checklist;
   final Function() onDismiss;
+  final Function(Checklist checklist) addEntireChecklist;
+  final Function(CheckpointModel checkpoint) toggleCheckpoint;
 
   @override
   State<OverlayChecklistSelection> createState() =>
@@ -126,19 +129,19 @@ class _OverlayChecklistSelectionState extends State<OverlayChecklistSelection>
                                 key: ValueKey(filteredChecklists[index].id),
                                 checklist: filteredChecklists[index],
                                 searchQuery: _searchQuery,
-                                // onTap: (checklist) {
-                                // TODO - open checklist page
-                                // },
+                                checkpoints: widget.checklist,
+                                addEntireChecklist: widget.addEntireChecklist,
+                                toggleCheckpoint: widget.toggleCheckpoint,
                               ),
                             );
                           })
                         : ListView.builder(
                             padding: const EdgeInsets.only(bottom: 50),
                             shrinkWrap: true,
-                            itemCount: 20,
+                            itemCount: 10,
                             itemBuilder: (context, index) => const Padding(
                               padding: EdgeInsets.symmetric(vertical: 4),
-                              child: ShimmerUserListTile(),
+                              child: ShimmerCustomDropdownButton(),
                             ),
                           ),
                   ),

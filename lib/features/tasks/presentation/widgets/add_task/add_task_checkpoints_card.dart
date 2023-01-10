@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/overlay_checklist_selection.dart';
 
 import '../../../../checklists/data/models/checkpoint_model.dart';
+import '../../../../checklists/domain/entities/checklist.dart';
 import '../../../../checklists/presentation/widgets/add_checkpoint_button.dart';
 import '../../../../checklists/presentation/widgets/checkpoint_tile.dart';
 import '../../../../checklists/utils/show_add_checkpoint_bottom_modal_sheet.dart';
 import '../../../../core/utils/show_snack_bar.dart';
+import 'overlay_checklist_selection.dart';
 
 class AddTaskCheckpointsCard extends StatefulWidget {
   const AddTaskCheckpointsCard({
@@ -66,6 +67,32 @@ class _AddTaskCheckpointsCardState extends State<AddTaskCheckpointsCard> {
     setState(() {
       _checkpoints.remove(checkpoint);
     });
+  }
+
+  void _addEntireChecklist(Checklist checklist) {
+    final List<CheckpointModel> tmpChecklist = [];
+    for (var check in checklist.allCheckpoints) {
+      if (!widget.checklist.contains(check)) {
+        tmpChecklist.add(check);
+      }
+    }
+    if (tmpChecklist.isNotEmpty) {
+      setState(() {
+        widget.checklist.addAll(tmpChecklist);
+      });
+    }
+  }
+
+  void _toggleCheckpoint(CheckpointModel checkpoint) {
+    if (widget.checklist.contains(checkpoint)) {
+      setState(() {
+        widget.checklist.remove(checkpoint);
+      });
+    } else {
+      setState(() {
+        widget.checklist.add(checkpoint);
+      });
+    }
   }
 
   @override
@@ -180,6 +207,8 @@ class _AddTaskCheckpointsCardState extends State<AddTaskCheckpointsCard> {
           OverlayChecklistSelection(
             checklist: widget.checklist,
             onDismiss: widget.toggleAddChecklistVisibility,
+            addEntireChecklist: _addEntireChecklist,
+            toggleCheckpoint: _toggleCheckpoint,
           ),
       ],
     );

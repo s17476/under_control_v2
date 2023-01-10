@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
-import 'package:under_control_v2/features/checklists/presentation/widgets/checkpoint_tile.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/highlighted_text.dart';
-import 'package:under_control_v2/features/core/presentation/widgets/rounded_button.dart';
 
+import '../../../../checklists/data/models/checkpoint_model.dart';
 import '../../../../checklists/domain/entities/checklist.dart';
+import '../../../../core/presentation/widgets/highlighted_text.dart';
+import '../../../../core/presentation/widgets/rounded_button.dart';
 import 'checkpoint_selection_tile.dart';
 
 class ChecklistSelectionTile extends StatefulWidget {
@@ -13,11 +12,16 @@ class ChecklistSelectionTile extends StatefulWidget {
     Key? key,
     required this.checklist,
     this.searchQuery = '',
+    required this.checkpoints,
+    required this.addEntireChecklist,
+    required this.toggleCheckpoint,
   }) : super(key: key);
 
   final Checklist checklist;
   final String searchQuery;
   final List<CheckpointModel> checkpoints;
+  final Function(Checklist checklist) addEntireChecklist;
+  final Function(CheckpointModel checkpoint) toggleCheckpoint;
 
   @override
   State<ChecklistSelectionTile> createState() => _ChecklistSelectionTileState();
@@ -117,12 +121,19 @@ class _ChecklistSelectionTileState extends State<ChecklistSelectionTile> {
         AnimatedSize(
           duration: const Duration(milliseconds: 300),
           child: Container(
-            margin: _isExpanded ? const EdgeInsets.all(8) : null,
+            margin: _isExpanded
+                ? const EdgeInsets.only(
+                    top: 8,
+                    bottom: 16,
+                    left: 8,
+                    right: 8,
+                  )
+                : null,
             height: _isExpanded ? null : 0,
             child: Column(
               children: [
                 RoundedButton(
-                  onPressed: () {},
+                  onPressed: () => widget.addEntireChecklist(widget.checklist),
                   axis: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
@@ -145,7 +156,7 @@ class _ChecklistSelectionTileState extends State<ChecklistSelectionTile> {
                   itemCount: widget.checklist.allCheckpoints.length,
                   itemBuilder: (context, index) => CheckpointSelectionTile(
                     checkpoint: widget.checklist.allCheckpoints[index],
-                    toggleCheckpoint: (_) {},
+                    toggleCheckpoint: widget.toggleCheckpoint,
                     index: index,
                     isAdded: widget.checkpoints
                         .contains(widget.checklist.allCheckpoints[index]),

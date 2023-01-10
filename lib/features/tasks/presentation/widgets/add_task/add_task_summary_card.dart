@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
+import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
+
 import '../../../../assets/domain/entities/asset.dart';
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/utils/asset_status.dart';
@@ -58,6 +60,7 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.assignedGroups,
     required this.sparePartsAssets,
     required this.sparePartsItems,
+    required this.checklist,
     required this.images,
     this.video,
   }) : super(key: key);
@@ -89,6 +92,7 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
 
   final List<String> sparePartsAssets;
   final List<SparePartItemModel> sparePartsItems;
+  final List<CheckpointModel> checklist;
 
   final List<File> images;
   final File? video;
@@ -252,6 +256,12 @@ class AddTaskSummaryCard extends StatelessWidget with ResponsiveSize {
                     if (video != null)
                       VideoSummaryCard(pageController: pageController),
 
+                    if (checklist.isNotEmpty)
+                      ChecklistSummaryCard(
+                        checkpoints: checklist,
+                        pageController: pageController,
+                      ),
+
                     const SizedBox(
                       height: 50,
                     ),
@@ -288,7 +298,7 @@ class PriorityAndTypeSummaryCard extends StatelessWidget {
               ? AppLocalizations.of(context)!.task_type_select
               : null,
           pageController: pageController,
-          onTapAnimateToPage: 9,
+          onTapAnimateToPage: 10,
           child: Row(
             children: [
               getTaskPriorityAndTypeIcon(
@@ -407,6 +417,62 @@ class TitleSummaryCard extends StatelessWidget {
           pageController: pageController,
           onTapAnimateToPage: 0,
           child: Text(titleTextEditingController.text.trim()),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+      ],
+    );
+  }
+}
+
+class ChecklistSummaryCard extends StatelessWidget {
+  const ChecklistSummaryCard({
+    Key? key,
+    required this.checkpoints,
+    required this.pageController,
+  }) : super(key: key);
+
+  final List<CheckpointModel> checkpoints;
+  final PageController pageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SummaryCard(
+          title:
+              '${AppLocalizations.of(context)!.checklist_add_checkpoints_title}: ${checkpoints.length}',
+          validator: () => checkpoints.isEmpty
+              ? AppLocalizations.of(context)!.checklist_add_checkpoints_empty
+              : null,
+          pageController: pageController,
+          onTapAnimateToPage: 9,
+          child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: checkpoints.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Row(
+                  children: [
+                    const Icon(Icons.check_circle_outline),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Expanded(
+                      child: Text(
+                        checkpoints[index].title,
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
         const SizedBox(
           height: 8,
@@ -643,7 +709,7 @@ class AssignedUsersSummaryCard extends StatelessWidget {
           title: AppLocalizations.of(context)!.task_assigned_users,
           validator: () => null,
           pageController: pageController,
-          onTapAnimateToPage: 7,
+          onTapAnimateToPage: 8,
           child: BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
             builder: (context, state) {
               if (state is CompanyProfileLoaded) {
@@ -661,7 +727,7 @@ class AssignedUsersSummaryCard extends StatelessWidget {
                   itemBuilder: (context, index) => UserListTile(
                     user: users[index],
                     onTap: (_) => pageController.animateToPage(
-                      7,
+                      8,
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                     ),
@@ -703,7 +769,7 @@ class AssignedGroupsSummaryCard extends StatelessWidget {
           title: AppLocalizations.of(context)!.task_assigned_groups,
           validator: () => null,
           pageController: pageController,
-          onTapAnimateToPage: 7,
+          onTapAnimateToPage: 8,
           child: BlocBuilder<GroupBloc, GroupState>(
             builder: (context, state) {
               if (state is GroupLoadedState) {
@@ -721,7 +787,7 @@ class AssignedGroupsSummaryCard extends StatelessWidget {
                   itemBuilder: (context, index) => GroupTile(
                     group: groups[index],
                     onTap: (_) => pageController.animateToPage(
-                      7,
+                      8,
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                     ),
@@ -807,7 +873,7 @@ class SparePartsSummaryCard extends StatelessWidget {
             return null;
           },
           pageController: pageController,
-          onTapAnimateToPage: 8,
+          onTapAnimateToPage: 6,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
