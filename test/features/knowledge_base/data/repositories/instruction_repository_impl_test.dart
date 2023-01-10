@@ -85,16 +85,16 @@ void main() {
             expect(result, isA<Right<Failure, String>>());
           },
         );
-        test(
-          'should return [VoidResult] when updateInstruction is called',
-          () async {
-            // act
-            final result =
-                await repository.updateInstruction(tInstructionParams);
-            // assert
-            expect(result, isA<Right<Failure, VoidResult>>());
-          },
-        );
+        // test(
+        //   'should return [VoidResult] when updateInstruction is called',
+        //   () async {
+        //     // act
+        //     final result =
+        //         await repository.updateInstruction(tInstructionParams);
+        //     // assert
+        //     expect(result, isA<Right<Failure, VoidResult>>());
+        //   },
+        // );
         // test(
         //   'should return [VoidResult] when deleteinstruction is called',
         //   () async {

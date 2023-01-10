@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_checkpoints_card.dart';
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_instructions.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_location_card.dart';
 import '../../../assets/utils/asset_status.dart';
+import '../../../checklists/data/models/checkpoint_model.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -89,6 +91,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   List<String> _sparePartsAssets = [];
   List<SparePartItemModel> _sparePartsItems = [];
+  final List<CheckpointModel> _checkpoints = [];
 
   File? _videoFile;
 
@@ -640,6 +643,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
         instructions: _instructions,
         isAddInstructionsVisible: _isAddInstructionsVisible,
       ),
+      AddTaskSparePartCard(
+        toggleAssetSelection: _toggleAssetSparePartSelection,
+        toggleItemSelection: _toggleItemSparePartSelection,
+        updateSparePartQuantity: _updateSparePartItemModel,
+        toggleAddAssetVisibility: _toggleAddAssetVisibility,
+        toggleAddItemVisibility: _toggleAddItemVisibility,
+        sparePartsAssets: _sparePartsAssets,
+        sparePartsItems: _sparePartsItems,
+        isAddAssetVisible: _isAddAssetVisible,
+        isAddItemVisible: _isAddItemVisible,
+      ),
       AddTaskSetCyclicCard(
         executionDate: _executionDate,
         setExecutionDate: _setExecutionDate,
@@ -660,17 +674,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         isAddUsersVisible: _isAddUsersVisible,
         isAddGroupsVisible: _isAddGroupsVisible,
       ),
-      AddTaskSparePartCard(
-        toggleAssetSelection: _toggleAssetSparePartSelection,
-        toggleItemSelection: _toggleItemSparePartSelection,
-        updateSparePartQuantity: _updateSparePartItemModel,
-        toggleAddAssetVisibility: _toggleAddAssetVisibility,
-        toggleAddItemVisibility: _toggleAddItemVisibility,
-        sparePartsAssets: _sparePartsAssets,
-        sparePartsItems: _sparePartsItems,
-        isAddAssetVisible: _isAddAssetVisible,
-        isAddItemVisible: _isAddItemVisible,
-      ),
+      AddTaskCheckpointsCard(checkpoints: _checkpoints),
       AddTaskTypeCard(
         setTaskType: _setTaskType,
         taskType: _taskType,

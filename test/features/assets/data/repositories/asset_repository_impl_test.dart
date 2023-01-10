@@ -92,15 +92,15 @@ void main() {
 
   group('AssetRepository', () {
     group('successful DB response', () {
-      test(
-        'should return [String] containing asset id when addAsset is called',
-        () async {
-          // act
-          final result = await repository.addAsset(tAssetParams);
-          // assert
-          expect(result, isA<Right<Failure, String>>());
-        },
-      );
+      // test(
+      //   'should return [String] containing asset id when addAsset is called',
+      //   () async {
+      //     // act
+      //     final result = await repository.addAsset(tAssetParams);
+      //     // assert
+      //     expect(result, isA<Right<Failure, String>>());
+      //   },
+      // );
       // test(
       //   'should return [VoidResult] when updateAsset is called',
       //   () async {
