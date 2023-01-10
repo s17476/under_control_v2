@@ -23,6 +23,7 @@ import '../blocs/task_action_management/task_action_management_bloc.dart';
 import '../blocs/task_archive/task_archive_bloc.dart';
 import '../blocs/work_request_management/work_request_management_bloc.dart';
 import '../widgets/task_details/task_actions_tab.dart';
+import '../widgets/task_details/task_checklist_tab.dart';
 import '../widgets/task_details/task_info_tab.dart';
 import '../widgets/task_details/task_instructions_tab.dart';
 import '../widgets/task_details/task_spare_part_tab.dart';
@@ -41,7 +42,7 @@ class TaskDetailsPage extends StatefulWidget {
 
 class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
   Task? _task;
-  late TaskActionBloc _taskActionBloc;
+  // late TaskActionBloc _taskActionBloc;
 
   List<Choice> _choices = [];
 
@@ -49,7 +50,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
 
   @override
   void didChangeDependencies() {
-    _taskActionBloc = context.read<TaskActionBloc>();
+    // _taskActionBloc = context.read<TaskActionBloc>();
     final taskId = (ModalRoute.of(context)?.settings.arguments as String);
     final taskState = context.watch<TaskBloc>().state;
     if (taskState is TaskLoadedState) {
@@ -82,6 +83,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
 
         // number of tabs
         _tabsCount = 2;
+        _tabsCount += _task!.checklist.isNotEmpty ? 1 : 0;
         _tabsCount += _task!.images.isNotEmpty ? 1 : 0;
         _tabsCount += _task!.video.isNotEmpty ? 1 : 0;
         _tabsCount += _task!.instructions.isNotEmpty ? 1 : 0;
@@ -212,6 +214,14 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
                     size: tabBarIconSize,
                   ),
                 ),
+                if (_task!.checklist.isNotEmpty)
+                  Tab(
+                    icon: Icon(
+                      Icons.checklist,
+                      color: tabBarIconColor,
+                      size: tabBarIconSize,
+                    ),
+                  ),
                 if (_task!.images.isNotEmpty)
                   Tab(
                     icon: Icon(
@@ -263,6 +273,8 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
                     children: [
                       TaskInfoTab(task: _task!),
                       TaskActionsTab(task: _task!),
+                      if (_task!.checklist.isNotEmpty)
+                        TaskChecklistTab(checklist: _task!.checklist),
                       if (_task!.images.isNotEmpty)
                         ImagesTab(images: _task!.images),
                       if (_task!.video.isNotEmpty)
