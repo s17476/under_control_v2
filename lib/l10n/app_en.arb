@@ -2163,6 +2163,10 @@
     "@task": {
       "description": "task"
     },
+    "task_add_checklist": "Add the entire list",
+    "@task_add_checklist": {
+      "description": "task add checklist"
+    },
     "task_archive": "Tasks archive",
     "@task_archive": {
       "description": "tasks archive"

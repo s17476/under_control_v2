@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../assets/utils/asset_status.dart';
+import '../../../../checklists/data/models/checkpoint_model.dart';
 import '../../../../core/utils/duration_unit.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
 import '../task_priority.dart';
@@ -36,6 +37,7 @@ class Task extends Equatable {
   final List<String> assignedUsers;
   final List<String> sparePartsAssets;
   final List<SparePartItemModel> sparePartsItems;
+  final List<CheckpointModel> checklist;
 
   const Task({
     required this.id,
@@ -67,6 +69,7 @@ class Task extends Equatable {
     required this.assignedUsers,
     required this.sparePartsAssets,
     required this.sparePartsItems,
+    required this.checklist,
   });
 
   @override
@@ -101,11 +104,12 @@ class Task extends Equatable {
       assignedUsers,
       sparePartsAssets,
       sparePartsItems,
+      checklist,
     ];
   }
 
   @override
   String toString() {
-    return 'Task(id: $id, parentId: $parentId, count: $count, date: $date, executionDate: $executionDate, title: $title, description: $description, locationId: $locationId, userId: $userId, assetId: $assetId, workOrderId: $workOrderId, images: $images, instructions: $instructions, video: $video, priority: $priority, type: $type, assetStatus: $assetStatus, isFinished: $isFinished, isCancelled: $isCancelled, isSuccessful: $isSuccessful, isInProgress: $isInProgress, isCyclictask: $isCyclictask, durationUnit: $durationUnit, duration: $duration, actions: $actions, assignedGroups: $assignedGroups, assignedUsers: $assignedUsers, sparePartsAssets: $sparePartsAssets, sparePartsItems: $sparePartsItems)';
+    return 'Task(id: $id, parentId: $parentId, count: $count, date: $date, executionDate: $executionDate, title: $title, description: $description, locationId: $locationId, userId: $userId, assetId: $assetId, workOrderId: $workOrderId, images: $images, instructions: $instructions, video: $video, priority: $priority, type: $type, assetStatus: $assetStatus, isFinished: $isFinished, isCancelled: $isCancelled, isSuccessful: $isSuccessful, isInProgress: $isInProgress, isCyclictask: $isCyclictask, durationUnit: $durationUnit, duration: $duration, actions: $actions, assignedGroups: $assignedGroups, assignedUsers: $assignedUsers, sparePartsAssets: $sparePartsAssets, sparePartsItems: $sparePartsItems, checklist: $checklist)';
   }
 }

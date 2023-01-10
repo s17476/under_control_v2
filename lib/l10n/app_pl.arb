@@ -522,6 +522,7 @@
     "work_request_msg_deleted": "Usunięto zlecenie",
     "work_request_msg_not_deleted": "Zlecenie nie zostało usunięte",
     "task": "Zadanie",
+    "task_add_checklist": "Dodaj całą listę",
     "task_archive": "Archiwum zadań",
     "task_data": "Dane zadania",
     "task_cancel": "Anuluj zadanie",

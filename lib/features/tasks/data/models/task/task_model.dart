@@ -3,6 +3,7 @@ import 'package:under_control_v2/features/tasks/data/models/task/spare_part_item
 import 'package:under_control_v2/features/tasks/domain/entities/task/task.dart';
 
 import '../../../../assets/utils/asset_status.dart';
+import '../../../../checklists/data/models/checkpoint_model.dart';
 import '../../../../core/utils/duration_unit.dart';
 import '../../../domain/entities/task_priority.dart';
 import '../../../domain/entities/task_type.dart';
@@ -38,6 +39,7 @@ class TaskModel extends Task {
     required super.assignedUsers,
     required super.sparePartsAssets,
     required super.sparePartsItems,
+    required super.checklist,
   });
 
   TaskModel copyWith({
@@ -70,6 +72,7 @@ class TaskModel extends Task {
     List<String>? assignedUsers,
     List<String>? sparePartsAssets,
     List<SparePartItemModel>? sparePartsItems,
+    List<CheckpointModel>? checklist,
   }) {
     return TaskModel(
       id: id ?? this.id,
@@ -101,6 +104,7 @@ class TaskModel extends Task {
       assignedUsers: assignedUsers ?? this.assignedUsers,
       sparePartsAssets: sparePartsAssets ?? this.sparePartsAssets,
       sparePartsItems: sparePartsItems ?? this.sparePartsItems,
+      checklist: checklist ?? this.checklist,
     );
   }
 
@@ -137,6 +141,7 @@ class TaskModel extends Task {
     result.addAll(
       {'sparePartsItems': sparePartsItems.map((x) => x.toMap()).toList()},
     );
+    result.addAll({'checklist': checklist.map((x) => x.toMap()).toList()});
 
     return result;
   }
@@ -186,6 +191,12 @@ class TaskModel extends Task {
       sparePartsItems: List<SparePartItemModel>.from(
         map['sparePartsItems']?.map((x) => SparePartItemModel.fromMap(x)) ?? [],
       ),
+      checklist: List<CheckpointModel>.from(
+        map['checklist']?.map(
+              (x) => CheckpointModel.fromMap(x),
+            ) ??
+            [],
+      ),
     );
   }
 
@@ -198,6 +209,7 @@ class TaskModel extends Task {
       instructions: [...instructions],
       sparePartsAssets: [...sparePartsAssets],
       sparePartsItems: [...sparePartsItems],
+      checklist: [...checklist],
     );
   }
 
@@ -231,5 +243,6 @@ class TaskModel extends Task {
         assignedUsers: task.assignedUsers,
         sparePartsAssets: task.sparePartsAssets,
         sparePartsItems: task.sparePartsItems,
+        checklist: task.checklist,
       );
 }

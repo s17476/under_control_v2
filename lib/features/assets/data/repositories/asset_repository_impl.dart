@@ -187,6 +187,7 @@ class AssetRepositoryImpl extends AssetRepository {
           assignedUsers: [params.userId ?? ''],
           sparePartsAssets: const [],
           sparePartsItems: const [],
+          checklist: const [],
         );
 
         final inspectionMap = inspection.toMap();

@@ -77,6 +77,7 @@ void main() {
       SparePartItemModel(
           itemId: 'itemId', locationId: 'locationId', quantity: 1),
     ],
+    checklist: const [],
   );
 
   final tTaskParams = TaskParams(

@@ -79,6 +79,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   bool _isAddInstructionsVisible = false;
   bool _isAddGroupsVisible = false;
   bool _isAddUsersVisible = false;
+  bool _isAddChecklist = false;
   bool _isCyclicTask = false;
 
   DateTime _date = DateTime.now();
@@ -91,7 +92,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   List<String> _sparePartsAssets = [];
   List<SparePartItemModel> _sparePartsItems = [];
-  final List<CheckpointModel> _checkpoints = [];
+  List<CheckpointModel> _checklist = [];
 
   File? _videoFile;
 
@@ -186,6 +187,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         assignedUsers: _assignedUsers,
         sparePartsAssets: _sparePartsAssets,
         sparePartsItems: _sparePartsItems,
+        checklist: _checklist,
       );
 
       // add new task
@@ -227,6 +229,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
   void _toggleAddUsersVisibility() {
     setState(() {
       _isAddUsersVisible = !_isAddUsersVisible;
+    });
+  }
+
+  void _toggleAddChecklistVisibility() {
+    setState(() {
+      _isAddChecklist = !_isAddChecklist;
     });
   }
 
@@ -513,6 +521,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
         _toggleAddGroupsVisibility();
       } else if (_isAddUsersVisible) {
         _toggleAddUsersVisibility();
+      } else if (_isAddChecklist) {
+        _toggleAddChecklistVisibility();
       }
     });
     super.initState();
@@ -569,6 +579,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       _assignedGroups = _task!.assignedGroups;
       _sparePartsAssets = _task!.sparePartsAssets;
       _sparePartsItems = _task!.sparePartsItems;
+      _checklist = _task!.checklist;
     }
 
     // add to asset
@@ -674,7 +685,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
         isAddUsersVisible: _isAddUsersVisible,
         isAddGroupsVisible: _isAddGroupsVisible,
       ),
-      AddTaskCheckpointsCard(checkpoints: _checkpoints),
+      // TODO
+      AddTaskCheckpointsCard(
+        checklist: _checklist,
+        isAddChecklistVisible: _isAddChecklist,
+        toggleAddChecklistVisibility: _toggleAddChecklistVisibility,
+      ),
       AddTaskTypeCard(
         setTaskType: _setTaskType,
         taskType: _taskType,
@@ -726,6 +742,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
           return false;
         } else if (_isAddUsersVisible) {
           _toggleAddUsersVisibility();
+          return false;
+        } else if (_isAddChecklist) {
+          _toggleAddChecklistVisibility();
           return false;
         }
         // double click to exit the app

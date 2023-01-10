@@ -87,6 +87,12 @@ class _TaskActionsButtonsState extends State<TaskActionsButtons> {
                             );
                           }
                         : () {
+                            showSnackBar(
+                              context: context,
+                              message:
+                                  'COMMING SOON - Feature under development',
+                              isErrorMessage: true,
+                            );
                             // Navigator.pushNamed(
                             //   context,
                             //   AddToItemPage.routeName,
@@ -100,15 +106,18 @@ class _TaskActionsButtonsState extends State<TaskActionsButtons> {
                 foregroundColor: Colors.grey.shade200,
                 padding: const EdgeInsets.all(16),
                 gradient: LinearGradient(
-                  colors: _canContinues
-                      ? [
-                          Colors.amber.shade800,
-                          Colors.amber.shade700.withAlpha(60),
-                        ]
-                      : [
-                          Colors.grey.shade700,
-                          Colors.grey.shade700.withAlpha(60),
-                        ],
+                  colors:
+                      // TODO - add live task recording
+                      //  _canContinues
+                      //     ? [
+                      //         Colors.amber.shade800,
+                      //         Colors.amber.shade700.withAlpha(60),
+                      //       ]
+                      //     :
+                      [
+                    Colors.grey.shade700,
+                    Colors.grey.shade700.withAlpha(60),
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),

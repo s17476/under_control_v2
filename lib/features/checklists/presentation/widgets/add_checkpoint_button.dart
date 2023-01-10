@@ -8,31 +8,47 @@ class AddCheckpointButton extends StatelessWidget {
   final Color color;
   final Function(CheckpointModel? oldCheckpoint, CheckpointModel newCheckpoint)
       addCheckpoint;
+  final bool showTitle;
 
   const AddCheckpointButton({
     Key? key,
     this.color = const Color.fromRGBO(0, 240, 130, 100),
     required this.addCheckpoint,
+    this.showTitle = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton.extended(
+    if (showTitle) {
+      return FloatingActionButton.extended(
+        onPressed: () {
+          showAddCheckpointModalBottomSheet(
+            context: context,
+            onSave: addCheckpoint,
+          );
+        },
+        icon: Icon(
+          Icons.add,
+          color: Colors.grey.shade200,
+        ),
+        label: Text(
+          AppLocalizations.of(context)!.checklist_add_checkpoint,
+          style: TextStyle(
+            color: Colors.grey.shade200,
+          ),
+        ),
+      );
+    }
+    return FloatingActionButton(
       onPressed: () {
         showAddCheckpointModalBottomSheet(
           context: context,
           onSave: addCheckpoint,
         );
       },
-      icon: Icon(
+      child: Icon(
         Icons.add,
         color: Colors.grey.shade200,
-      ),
-      label: Text(
-        AppLocalizations.of(context)!.checklist_add_checkpoint,
-        style: TextStyle(
-          color: Colors.grey.shade200,
-        ),
       ),
     );
   }

@@ -44,6 +44,7 @@ final tTaskModel = TaskModel(
   sparePartsItems: const [
     SparePartItemModel(itemId: 'itemId', locationId: 'locationId', quantity: 1)
   ],
+  checklist: const [],
 );
 
 final tTaskModelToMap = {
@@ -77,6 +78,7 @@ final tTaskModelToMap = {
   'sparePartsItems': const [
     {'itemId': 'itemId', 'locationId': 'locationId', 'quantity': 1.0},
   ],
+  'checklist': const [],
 };
 
 final tTaskModelFromMap = {
@@ -110,6 +112,7 @@ final tTaskModelFromMap = {
   'sparePartsItems': const [
     {'itemId': 'itemId', 'locationId': 'locationId', 'quantity': 1.0},
   ],
+  'checklist': const [],
 };
 
 final tTaskParams = TaskParams(task: tTaskModel, companyId: 'companyId');

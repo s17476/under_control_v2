@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/overlay_checklist_selection.dart';
 
 import '../../../../checklists/data/models/checkpoint_model.dart';
 import '../../../../checklists/presentation/widgets/add_checkpoint_button.dart';
@@ -10,10 +11,15 @@ import '../../../../core/utils/show_snack_bar.dart';
 class AddTaskCheckpointsCard extends StatefulWidget {
   const AddTaskCheckpointsCard({
     Key? key,
-    required this.checkpoints,
+    required this.checklist,
+    required this.toggleAddChecklistVisibility,
+    required this.isAddChecklistVisible,
   }) : super(key: key);
 
-  final List<CheckpointModel> checkpoints;
+  final List<CheckpointModel> checklist;
+
+  final Function() toggleAddChecklistVisibility;
+  final bool isAddChecklistVisible;
 
   @override
   State<AddTaskCheckpointsCard> createState() => _AddTaskCheckpointsCardState();
@@ -64,7 +70,7 @@ class _AddTaskCheckpointsCardState extends State<AddTaskCheckpointsCard> {
 
   @override
   void initState() {
-    _checkpoints = widget.checkpoints;
+    _checkpoints = widget.checklist;
     super.initState();
   }
 
@@ -144,6 +150,7 @@ class _AddTaskCheckpointsCardState extends State<AddTaskCheckpointsCard> {
           right: 16,
           child: AddCheckpointButton(
             addCheckpoint: _saveCheckpoint,
+            showTitle: false,
           ),
         ),
         Positioned(
@@ -152,7 +159,7 @@ class _AddTaskCheckpointsCardState extends State<AddTaskCheckpointsCard> {
           child: FloatingActionButton.extended(
             backgroundColor: Colors.blue.shade700,
             // TODO - add checkpoints and checklist
-            onPressed: () {},
+            onPressed: widget.toggleAddChecklistVisibility,
             label: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -169,6 +176,11 @@ class _AddTaskCheckpointsCardState extends State<AddTaskCheckpointsCard> {
             ),
           ),
         ),
+        if (widget.isAddChecklistVisible)
+          OverlayChecklistSelection(
+            checklist: widget.checklist,
+            onDismiss: widget.toggleAddChecklistVisibility,
+          ),
       ],
     );
   }
