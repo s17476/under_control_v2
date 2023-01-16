@@ -4,9 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../blocs/task_archive/task_archive_bloc.dart';
-import '../blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../widgets/task_tile.dart';
-import '../widgets/work_request_tile.dart';
 
 class TaskArchivePage extends StatelessWidget {
   const TaskArchivePage({Key? key}) : super(key: key);

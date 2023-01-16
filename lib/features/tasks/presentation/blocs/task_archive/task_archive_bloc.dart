@@ -145,7 +145,7 @@ class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
         List<Task> tmpList = [
           ...oldTasks,
           ...workRequestsList.allTasks,
-        ]..sort((a, b) => b.date.compareTo(a.date));
+        ]..sort((a, b) => b.executionDate.compareTo(a.executionDate));
 
         workRequestsList = TasksListModel(
           allTasks: tmpList,

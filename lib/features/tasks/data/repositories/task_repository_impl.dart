@@ -282,6 +282,7 @@ class TaskRepositoryImpl extends TaskRepository {
           .doc(params.companyId)
           .collection('tasksArchive')
           .where('locationId', whereIn: params.locations)
+          .orderBy('executionDate')
           .snapshots();
 
       return Right(TasksStream(allTasks: querySnapshot));
