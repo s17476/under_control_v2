@@ -149,6 +149,7 @@ final tTaskActionModel = TaskActionModel(
   replacedAssetLocationId: 'locationId',
   replacedAssetStatus: AssetStatus.ok,
   replacementAssetId: 'assetId',
+  checklist: const [],
 );
 
 final tTaskActionModelToMap = {
@@ -164,6 +165,7 @@ final tTaskActionModelToMap = {
   'replacedAssetLocationId': 'locationId',
   'replacedAssetStatus': AssetStatus.ok.name,
   'replacementAssetId': 'assetId',
+  'checklist': [],
 };
 
 final tTaskActionModelFromMap = {
@@ -179,6 +181,7 @@ final tTaskActionModelFromMap = {
   'replacedAssetLocationId': 'locationId',
   'replacedAssetStatus': AssetStatus.ok.name,
   'replacementAssetId': 'assetId',
+  'checklist': [],
 };
 
 final tTaskActionParams = TaskActionParams(

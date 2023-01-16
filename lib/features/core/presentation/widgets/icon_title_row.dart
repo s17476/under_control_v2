@@ -5,6 +5,7 @@ class IconTitleRow extends StatelessWidget {
     Key? key,
     required this.icon,
     required this.iconColor,
+    this.titleColor,
     required this.iconBackground,
     this.iconSize = 20,
     this.iconPadding = 4,
@@ -14,6 +15,7 @@ class IconTitleRow extends StatelessWidget {
 
   final IconData icon;
   final Color iconColor;
+  final Color? titleColor;
   final Color iconBackground;
   final double iconSize;
   final double iconPadding;
@@ -68,6 +70,7 @@ class IconTitleRow extends StatelessWidget {
             title,
             style: TextStyle(
               fontSize: titleFontSize,
+              color: titleColor,
             ),
             maxLines: 10,
             overflow: TextOverflow.ellipsis,

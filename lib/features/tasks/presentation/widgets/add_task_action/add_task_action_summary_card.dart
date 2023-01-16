@@ -3,14 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:under_control_v2/features/assets/utils/get_asset_status_icon.dart';
 import 'package:under_control_v2/features/assets/utils/get_localizae_asset_status_name.dart';
+import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
 
 import '../../../../assets/data/models/asset_model.dart';
 import '../../../../assets/domain/entities/asset.dart';
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
 import '../../../../assets/utils/asset_status.dart';
+import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/double_apis.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -32,6 +35,7 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.sparePartsItems,
     required this.removedPartsAssets,
     required this.addedPartsAssets,
+    required this.checklist,
     required this.replacedAsset,
     required this.replacementAsset,
     required this.assetStatus,
@@ -50,6 +54,7 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
   final List<SparePartItemModel> sparePartsItems;
   final List<AssetModel> removedPartsAssets;
   final List<String> addedPartsAssets;
+  final List<CheckpointModel> checklist;
 
   final AssetModel? replacedAsset;
   final AssetModel? replacementAsset;
@@ -104,6 +109,13 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
                       participants: participants,
                       pageController: pageController,
                     ),
+
+                    // checklist
+                    if (checklist.isNotEmpty)
+                      ChecklistSummaryCard(
+                        checklist: checklist,
+                        pageController: pageController,
+                      ),
 
                     // asset's new status
                     if (replacedAsset == null)
@@ -553,6 +565,66 @@ class ConnectedAssetSummaryCard extends StatelessWidget {
                 )
               ],
             ],
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+      ],
+    );
+  }
+}
+
+class ChecklistSummaryCard extends StatelessWidget {
+  const ChecklistSummaryCard({
+    Key? key,
+    required this.checklist,
+    required this.pageController,
+  }) : super(key: key);
+
+  final List<CheckpointModel> checklist;
+  final PageController pageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SummaryCard(
+          title: AppLocalizations.of(context)!.checklist,
+          validator: () => null,
+          pageController: pageController,
+          onTapAnimateToPage: 7,
+          child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: checklist.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          const Icon(Icons.check_circle_outline_outlined),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(checklist[index].title),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      checklist[index].isChecked
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank,
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
         const SizedBox(

@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 
 import '../../../../assets/data/models/asset_model.dart';
+import '../../../../checklists/data/models/checkpoint_model.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
 import '../../../data/models/task_action/user_action_model.dart';
 
@@ -20,14 +21,15 @@ class TaskAction extends Equatable {
   final List<String> addedPartsAssets;
   final List<SparePartItemModel> sparePartsItems;
   final List<UserActionModel> usersActions;
+  final List<CheckpointModel> checklist;
 
   const TaskAction({
     required this.id,
     required this.taskId,
+    required this.comment,
     required this.replacedAssetStatus,
     required this.replacedAssetLocationId,
     required this.replacementAssetId,
-    required this.comment,
     required this.startTime,
     required this.stopTime,
     required this.images,
@@ -35,6 +37,7 @@ class TaskAction extends Equatable {
     required this.addedPartsAssets,
     required this.sparePartsItems,
     required this.usersActions,
+    required this.checklist,
   });
 
   @override
@@ -53,11 +56,12 @@ class TaskAction extends Equatable {
       addedPartsAssets,
       sparePartsItems,
       usersActions,
+      checklist,
     ];
   }
 
   @override
   String toString() {
-    return 'TaskAction(id: $id, taskId: $taskId, comment: $comment, replacedAssetStatus: $replacedAssetStatus, replacedAssetLocationId: $replacedAssetLocationId, replacementAssetId: $replacementAssetId, startTime: $startTime, stopTime: $stopTime, images: $images, removedPartsAssets: $removedPartsAssets, addedPartsAssets: $addedPartsAssets, sparePartsItems: $sparePartsItems, usersActions: $usersActions)';
+    return 'TaskAction(id: $id, taskId: $taskId, comment: $comment, replacedAssetStatus: $replacedAssetStatus, replacedAssetLocationId: $replacedAssetLocationId, replacementAssetId: $replacementAssetId, startTime: $startTime, stopTime: $stopTime, images: $images, removedPartsAssets: $removedPartsAssets, addedPartsAssets: $addedPartsAssets, sparePartsItems: $sparePartsItems, usersActions: $usersActions, checklist: $checklist)';
   }
 }

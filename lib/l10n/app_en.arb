@@ -1181,6 +1181,10 @@
     "@company_details_join_date": {
       "description": "Join date"
     },
+    "checklist": "Checklist",
+    "@checklist": {
+      "description": "Checklists - title"
+    },
     "checklist_drawer_title": "Checklists",
     "@checklist_drawer_title": {
       "description": "Checklists - title in the main drawer"

@@ -3,6 +3,7 @@ import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 import 'package:under_control_v2/features/core/utils/duration_apis.dart';
 
+import '../../../../checklists/data/models/checkpoint_model.dart';
 import '../../../domain/entities/task_action/task_action.dart';
 import '../task/spare_part_item_model.dart';
 import 'user_action_model.dart';
@@ -22,6 +23,7 @@ class TaskActionModel extends TaskAction {
     required super.addedPartsAssets,
     required super.sparePartsItems,
     required super.usersActions,
+    required super.checklist,
   });
 
   TaskActionModel copyWith({
@@ -38,6 +40,7 @@ class TaskActionModel extends TaskAction {
     List<String>? addedPartsAssets,
     List<SparePartItemModel>? sparePartsItems,
     List<UserActionModel>? usersActions,
+    List<CheckpointModel>? checklist,
   }) {
     return TaskActionModel(
       id: id ?? this.id,
@@ -54,6 +57,7 @@ class TaskActionModel extends TaskAction {
       addedPartsAssets: addedPartsAssets ?? this.addedPartsAssets,
       sparePartsItems: sparePartsItems ?? this.sparePartsItems,
       usersActions: usersActions ?? this.usersActions,
+      checklist: checklist ?? this.checklist,
     );
   }
 
@@ -78,6 +82,7 @@ class TaskActionModel extends TaskAction {
         {'sparePartsItems': sparePartsItems.map((x) => x.toMap()).toList()});
     result
         .addAll({'usersActions': usersActions.map((x) => x.toMap()).toList()});
+    result.addAll({'checklist': checklist.map((x) => x.toMap()).toList()});
 
     return result;
   }
@@ -125,6 +130,12 @@ class TaskActionModel extends TaskAction {
           (x) => UserActionModel.fromMap(x),
         ),
       ),
+      checklist: List<CheckpointModel>.from(
+        map['checklist']?.map(
+              (x) => CheckpointModel.fromMap(x),
+            ) ??
+            [],
+      ),
     );
   }
 
@@ -143,6 +154,7 @@ class TaskActionModel extends TaskAction {
       replacedAssetLocationId: taskAction.replacedAssetLocationId,
       replacedAssetStatus: taskAction.replacedAssetStatus,
       usersActions: taskAction.usersActions,
+      checklist: taskAction.checklist,
     );
   }
 
@@ -153,6 +165,7 @@ class TaskActionModel extends TaskAction {
       addedPartsAssets: [...addedPartsAssets],
       sparePartsItems: [...sparePartsItems],
       usersActions: [...usersActions],
+      checklist: [...checklist],
     );
   }
 

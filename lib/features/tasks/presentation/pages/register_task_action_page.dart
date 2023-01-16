@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_checklist_card.dart';
+import '../../../checklists/data/models/checkpoint_model.dart';
 import '../../data/models/task_action/task_action_model.dart';
 import '../blocs/task_action_management/task_action_management_bloc.dart';
 import '../widgets/add_task_action/add_task_action_summary_card.dart';
@@ -70,6 +72,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   final List<SparePartItemModel> _sparePartsItems = [];
   final List<AssetModel> _removedPartsAssets = [];
   final List<String> _addedPartsAssets = [];
+  final List<CheckpointModel> _checklist = [];
 
   AssetModel? _replacedAsset;
   AssetModel? _replacementAsset;
@@ -149,6 +152,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         addedPartsAssets: _addedPartsAssets,
         sparePartsItems: _sparePartsItems,
         usersActions: _participants,
+        checklist: _checklist,
       );
 
       if (_taskAction == null) {
@@ -360,6 +364,20 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
     }
   }
 
+  void _toggleCheckpoint(CheckpointModel checkpoint) {
+    final index =
+        _checklist.indexWhere((element) => element.title == checkpoint.title);
+    if (index >= 0) {
+      setState(() {
+        _checklist.removeAt(index);
+      });
+    } else {
+      setState(() {
+        _checklist.add(checkpoint.copyWith(isChecked: true));
+      });
+    }
+  }
+
   void _setStatus(String newStatus) {
     setState(() {
       _assetStatus = AssetStatus.fromString(newStatus);
@@ -519,6 +537,12 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
       if (_assetStatus != null && _replacedAsset == null)
         SetAssetStatusCard(
             setStatus: _setStatus, assetStatus: _assetStatus!.name),
+      if (_task!.checklist.isNotEmpty)
+        AddTaskActionChecklistCard(
+          task: _task!,
+          checklist: _checklist,
+          toggleCheckpoint: _toggleCheckpoint,
+        ),
       AddTaskActionSummaryCard(
         pageController: _pageController,
         descriptionTextEditingController: _descriptionTextEditingController,
@@ -532,6 +556,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         replacedAsset: _replacedAsset,
         replacementAsset: _replacementAsset,
         assetStatus: _assetStatus,
+        checklist: _checklist,
       ),
     ];
 
