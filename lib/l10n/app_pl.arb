@@ -295,6 +295,7 @@
     "checklist_name": "Nazwa listy kontrolnej",
     "checklist_description": "Opis listy kontrolnej (opcjonalny)",
     "checklist_add_checkpoint": "Dodaj punkt kontrolny",
+    "checklist_edit_checkpoint": "Edytuj punkt kontrolny",
     "checklist_checkpoint_title": "Nazwa punktu kontrolnego",
     "checklist_add_checkpoints": "Dodaj punkty kontrolne",
     "checklist_add_checkpoints_exists": "Punkt kontrolny o tej nazwie ju istnieje",

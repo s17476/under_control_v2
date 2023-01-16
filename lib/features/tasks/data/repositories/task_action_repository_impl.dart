@@ -92,6 +92,14 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
             ? params.taskAction.replacedAssetStatus
             : null,
         isInProgress: true,
+        checklist: params.task.checklist.map((checkpoint) {
+          if (params.taskAction.checklist
+              .map((e) => e.title)
+              .contains(checkpoint.title)) {
+            return checkpoint.copyWith(isChecked: true);
+          }
+          return checkpoint;
+        }).toList(),
       );
 
       final updatedTaskMap = updatedTask.toMap();

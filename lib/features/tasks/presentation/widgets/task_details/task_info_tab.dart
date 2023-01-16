@@ -6,7 +6,9 @@ import 'package:intl/intl.dart';
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
+import '../../../../assets/utils/get_asset_status_icon.dart';
 import '../../../../assets/utils/get_localizad_duration_unit_name.dart';
+import '../../../../assets/utils/get_localizae_asset_status_name.dart';
 import '../../../../assets/utils/get_next_date.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/icon_title_row.dart';
@@ -292,7 +294,46 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                                 ],
                               ),
                               const SizedBox(
-                                height: 16,
+                                height: 8,
+                              ),
+                              if (widget.task.assetId.isNotEmpty) ...[
+                                IconTitleRow(
+                                  icon: Icons.security,
+                                  iconColor: Colors.white,
+                                  iconBackground:
+                                      Theme.of(context).primaryColor,
+                                  title: AppLocalizations.of(context)!
+                                      .asset_status,
+                                  titleFontSize: 16,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        getLocalizedAssetStatusName(
+                                          context,
+                                          widget.task.assetStatus,
+                                        ),
+                                        textAlign: TextAlign.end,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    SizedBox(
+                                      height: 32,
+                                      width: 32,
+                                      child: getAssetStatusIcon(
+                                        context,
+                                        widget.task.assetStatus,
+                                        14,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                              const SizedBox(
+                                height: 8,
                               ),
                             ],
 

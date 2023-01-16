@@ -118,7 +118,9 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
             AppLocalizations.of(context)!.task_action_replaced_asset_err;
       }
       // set new asset status if it has not been replaced
-      if (errorMessage.isEmpty && _replacedAsset == null) {
+      if (errorMessage.isEmpty &&
+          _task!.assetId.isNotEmpty &&
+          _replacedAsset == null) {
         if (_assetStatus == null ||
             _assetStatus == AssetStatus.unknown ||
             _assetStatus == AssetStatus.disposed ||
@@ -141,7 +143,9 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
       final taskAction = TaskActionModel(
         id: '',
         taskId: _task!.id,
-        replacedAssetStatus: _replacedAsset?.currentStatus ?? _assetStatus!,
+        replacedAssetStatus: _replacedAsset?.currentStatus ??
+            _assetStatus ??
+            AssetStatus.unknown,
         replacedAssetLocationId: _replacedAsset?.locationId ?? '',
         replacementAssetId: _replacementAsset?.id ?? '',
         comment: _descriptionTextEditingController.text,
@@ -557,6 +561,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         replacementAsset: _replacementAsset,
         assetStatus: _assetStatus,
         checklist: _checklist,
+        isConnectedToAnAsset: _task!.assetId.isNotEmpty,
       ),
     ];
 

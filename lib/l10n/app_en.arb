@@ -1237,6 +1237,10 @@
     "@checklist_add_checkpoint": {
       "description": "Checklists - add checkpoint"
     },
+    "checklist_edit_checkpoint": "Edit checkpoint",
+    "@checklist_edit_checkpoint": {
+      "description": "Checklists - edit checkpoint"
+    },
     "checklist_checkpoint_title": "Checkpoint title",
     "@checklist_checkpoint_title": {
       "description": "Checklists - checklist_checkpoint_title"

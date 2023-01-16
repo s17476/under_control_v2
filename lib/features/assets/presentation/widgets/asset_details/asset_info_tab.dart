@@ -161,7 +161,7 @@ class AssetInfoTab extends StatelessWidget with ResponsiveSize {
             ],
           ),
 
-          // item data
+          // asset data
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Column(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/assets/utils/asset_status.dart';
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../assets/presentation/widgets/asset_tile.dart';
@@ -90,6 +91,13 @@ class _TaskActionDetailsPageState extends State<TaskActionDetailsPage> {
                         const Divider(
                           thickness: 1.5,
                         ),
+                        if (_taskAction!.replacedAssetStatus !=
+                            AssetStatus.unknown) ...[
+                          ActionAssetStatus(taskAction: _taskAction!),
+                          const Divider(
+                            thickness: 1.5,
+                          ),
+                        ],
                         ActionDuration(
                           dateTimeFormat: dateTimeFormat,
                           taskAction: _taskAction,
@@ -106,6 +114,13 @@ class _TaskActionDetailsPageState extends State<TaskActionDetailsPage> {
                           showUserInfoCard: _showUserInfoCard,
                           isUserInfoCardVisible: _isUserInfoCardVisible,
                         ),
+                        // checklist
+                        if (_taskAction!.checklist.isNotEmpty) ...[
+                          const Divider(
+                            thickness: 1.5,
+                          ),
+                          ActionChecklist(taskAction: _taskAction!),
+                        ],
                         // images
                         if (_taskAction!.images.isNotEmpty) ...[
                           const Divider(
@@ -503,6 +518,66 @@ class ActionImages extends StatelessWidget {
   }
 }
 
+class ActionChecklist extends StatelessWidget {
+  const ActionChecklist({
+    Key? key,
+    required this.taskAction,
+  }) : super(key: key);
+
+  final TaskActionModel taskAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: IconTitleRow(
+            icon: Icons.image,
+            iconColor: Colors.white,
+            iconBackground: Colors.black,
+            title: AppLocalizations.of(context)!.checklist,
+          ),
+        ),
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: taskAction.checklist.length,
+          padding: const EdgeInsets.only(bottom: 16),
+          itemBuilder: (context, index) {
+            return Container(
+              color: (index % 2 == 0) ? null : Colors.black26,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 8,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: IconTitleRow(
+                        icon: Icons.check_circle_outline_outlined,
+                        iconColor: Colors.grey.shade200,
+                        iconBackground: Theme.of(context).primaryColor,
+                        title: taskAction.checklist[index].title,
+                      ),
+                    ),
+                    Icon(
+                      taskAction.checklist[index].isChecked
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
 class Participants extends StatelessWidget {
   const Participants({
     Key? key,
@@ -637,6 +712,58 @@ class ActionDuration extends StatelessWidget {
               Text(taskAction!.getTotalDuration),
             ],
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class ActionAssetStatus extends StatelessWidget {
+  const ActionAssetStatus({
+    Key? key,
+    required this.taskAction,
+  }) : super(key: key);
+
+  final TaskActionModel taskAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          IconTitleRow(
+            icon: Icons.security,
+            iconColor: Colors.white,
+            iconBackground: Theme.of(context).primaryColor,
+            title: AppLocalizations.of(context)!.asset_status,
+            titleFontSize: 16,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  getLocalizedAssetStatusName(
+                    context,
+                    taskAction.replacedAssetStatus,
+                  ),
+                  textAlign: TextAlign.end,
+                ),
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              SizedBox(
+                height: 32,
+                width: 32,
+                child: getAssetStatusIcon(
+                  context,
+                  taskAction.replacedAssetStatus,
+                  14,
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

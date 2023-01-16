@@ -834,7 +834,7 @@ class NotAssignedSummaryCard extends StatelessWidget {
           validator: () =>
               AppLocalizations.of(context)!.task_assign_groups_or_users_error,
           pageController: pageController,
-          onTapAnimateToPage: 7,
+          onTapAnimateToPage: 8,
           child: const SizedBox(),
         ),
         const SizedBox(

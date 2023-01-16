@@ -39,7 +39,6 @@ Future<void> showAddCheckpointModalBottomSheet({
             ),
           ),
           child: Column(
-            // mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
                 padding: const EdgeInsets.only(
@@ -47,9 +46,9 @@ Future<void> showAddCheckpointModalBottomSheet({
                   bottom: 4,
                 ),
                 child: Text(
-                  //
-                  //
-                  AppLocalizations.of(context)!.checklist_add_checkpoint,
+                  currentCheckpoint != null
+                      ? AppLocalizations.of(context)!.checklist_edit_checkpoint
+                      : AppLocalizations.of(context)!.checklist_add_checkpoint,
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,

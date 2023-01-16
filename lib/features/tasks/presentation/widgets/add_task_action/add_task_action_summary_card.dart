@@ -4,16 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:under_control_v2/features/assets/utils/get_asset_status_icon.dart';
-import 'package:under_control_v2/features/assets/utils/get_localizae_asset_status_name.dart';
-import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
-
 import '../../../../assets/data/models/asset_model.dart';
 import '../../../../assets/domain/entities/asset.dart';
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
 import '../../../../assets/utils/asset_status.dart';
-import '../../../../core/presentation/widgets/icon_title_row.dart';
+import '../../../../assets/utils/get_asset_status_icon.dart';
+import '../../../../assets/utils/get_localizae_asset_status_name.dart';
+import '../../../../checklists/data/models/checkpoint_model.dart';
 import '../../../../core/presentation/widgets/summary_card.dart';
 import '../../../../core/utils/double_apis.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -39,6 +37,7 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
     required this.replacedAsset,
     required this.replacementAsset,
     required this.assetStatus,
+    required this.isConnectedToAnAsset,
   }) : super(key: key);
 
   final PageController pageController;
@@ -60,6 +59,8 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
   final AssetModel? replacementAsset;
 
   final AssetStatus? assetStatus;
+
+  final bool isConnectedToAnAsset;
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +119,7 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
                       ),
 
                     // asset's new status
-                    if (replacedAsset == null)
+                    if (isConnectedToAnAsset && replacedAsset == null)
                       AssetStatusSummaryCard(
                         assetStatus: assetStatus,
                         replacedAsset: replacedAsset,
