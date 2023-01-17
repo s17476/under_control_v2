@@ -150,17 +150,8 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                 icon: Icons.location_on,
                 label: AppLocalizations.of(context)!.drawer_item_locations,
               ),
-              // checklists
-              CustomMenuItem(
-                onTap: () {
-                  Navigator.popAndPushNamed(
-                    context,
-                    ChecklistManagementPage.routeName,
-                  );
-                },
-                icon: Icons.checklist_rounded,
-                label: AppLocalizations.of(context)!.checklist_drawer_title,
-              ),
+
+              const Expanded(child: SizedBox()),
               // settings
               CustomMenuItem(
                 onTap: () => Navigator.popAndPushNamed(
@@ -171,7 +162,6 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                 // iconBackgroundColor: Colors.deepPurple,
                 label: AppLocalizations.of(context)!.drawer_item_settings,
               ),
-              const Expanded(child: SizedBox()),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

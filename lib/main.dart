@@ -216,6 +216,7 @@ class App extends StatelessWidget
             supportedLocales: const [
               Locale('en', ''),
               Locale('pl', ''),
+              Locale('da', ''),
             ],
           );
         },

@@ -19,7 +19,7 @@ String getLocalizedLanguageName(
       return trans.language_en;
     case 'pl':
       return trans.language_pl;
-    case 'dk':
+    case 'da':
       return trans.language_dk;
     default:
       return langCode;

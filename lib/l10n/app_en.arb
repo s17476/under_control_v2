@@ -111,9 +111,9 @@
     "@compressed_size": {
       "description": "compressed size"
     },
-    "lenght": "Lenght",
-    "@lenght": {
-      "description": "Lenght"
+    "length": "Length",
+    "@length": {
+      "description": "Length"
     },
     "category": "Category",
     "@category": {
