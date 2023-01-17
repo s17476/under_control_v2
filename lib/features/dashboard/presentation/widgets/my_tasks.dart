@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
 
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
@@ -11,6 +10,7 @@ import '../../../groups/domain/entities/feature.dart';
 import '../../../tasks/domain/entities/task/task.dart';
 import '../../../tasks/presentation/blocs/task/task_bloc.dart';
 import '../../../tasks/presentation/widgets/task_tile.dart';
+import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 class MyTasks extends StatefulWidget {
@@ -145,12 +145,16 @@ class _MyTasksState extends State<MyTasks> {
                         ),
                       ),
                     if (_tasks != null && _tasks!.isEmpty)
-                      Container(
-                        alignment: Alignment.center,
-                        height: 50,
-                        child: Text(
-                          AppLocalizations.of(context)!
-                              .no_actions_in_selected_locations,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 50,
+                          child: Text(
+                            AppLocalizations.of(context)!
+                                .status_my_tasks_no_tasks,
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                   ],

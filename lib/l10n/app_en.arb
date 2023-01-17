@@ -2527,6 +2527,10 @@
     "@status_my_tasks": {
       "description": "status - my tasks"
     },
+    "status_my_tasks_no_tasks": "You have no tasks for today in selected locations",
+    "@status_my_tasks_no_tasks": {
+      "description": "status - my tasks"
+    },
     "status_in_locations": "Status in selected locations",
     "@status_in_locations": {
       "description": "status card title"
