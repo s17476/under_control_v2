@@ -2522,5 +2522,29 @@
     "task_action_duration": "Duration",
     "@task_action_duration": {
       "description": "task action - task duration"
+    },
+    "status_in_locations": "Status in selected locations",
+    "@status_in_locations": {
+      "description": "status card title"
+    },
+    "status_recent": "Last 30 days",
+    "@status_recent": {
+      "description": "status card title"
+    },
+    "status_total": "Total",
+    "@status_total": {
+      "description": "status card"
+    },
+    "status_awaiting": "Awaiting",
+    "@status_awaiting": {
+      "description": "status card"
+    },
+    "status_converted": "Converted to tasks",
+    "@status_converted": {
+      "description": "status card"
+    },
+    "status_cancelled": "Cancelled",
+    "@status_cancelled": {
+      "description": "status card"
     }
 }

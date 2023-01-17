@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:under_control_v2/features/dashboard/presentation/widgets/status_card.dart';
 
 import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../widgets/assets_latest_actions.dart';
@@ -24,21 +25,25 @@ class DashboardPage extends StatelessWidget {
         SliverToBoxAdapter(
           child: BlocBuilder<FilterBloc, FilterState>(
             builder: (context, state) {
-              return ListView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: const [
-                  WorkRequestsLatest(),
-                  TasksLatest(),
-                  AssetsWithoutInspection(),
-                  AssetsLatestActions(),
-                  InventoryLowLevelItems(),
-                  InventoryLatestActions(),
-                  SizedBox(
-                    height: 50,
-                  ),
-                ],
-              );
+              if (state is FilterLoadedState && state.locations.isNotEmpty) {
+                return ListView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: const [
+                    StatusCard(),
+                    WorkRequestsLatest(),
+                    TasksLatest(),
+                    AssetsWithoutInspection(),
+                    AssetsLatestActions(),
+                    InventoryLowLevelItems(),
+                    InventoryLatestActions(),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox();
             },
           ),
         ),
