@@ -21,6 +21,7 @@ import 'features/company_profile/presentation/pages/assign_company_page.dart';
 import 'features/company_profile/presentation/pages/company_details_page.dart';
 import 'features/core/presentation/pages/home_page.dart';
 import 'features/core/presentation/pages/loading_page.dart';
+import 'features/core/presentation/pages/passive_home_page.dart';
 import 'features/core/presentation/pages/qr_scanner.dart';
 import 'features/core/themes/themes.dart';
 import 'features/core/utils/custom_page_transition.dart';
@@ -103,7 +104,10 @@ class App extends StatelessWidget
                     builder: (context, state) {
                       switch (state.runtimeType) {
                         case Approved:
-                          return const HomePage();
+                          if ((state as Approved).userProfile.isActive) {
+                            return const HomePage();
+                          }
+                          return const PassiveHomePage();
                         case NoUserProfileError:
                           return const AddUserProfilePage();
                         case NoCompanyState:
@@ -127,6 +131,7 @@ class App extends StatelessWidget
             // pages
             routes: {
               HomePage.routeName: (context) => const HomePage(),
+              PassiveHomePage.routeName: (context) => const PassiveHomePage(),
               AuthenticationPage.routeName: (context) =>
                   const AuthenticationPage(),
               AddCompanyPage.routeName: (context) => const AddCompanyPage(),
