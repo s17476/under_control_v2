@@ -27,20 +27,20 @@ class WorkRequestsStatusErrorState extends WorkRequestsStatusState {
 }
 
 class WorkRequestsStatusLoadedState extends WorkRequestsStatusState {
-  final int awaiting;
-  final int converted;
-  final int cancelled;
+  final WorkRequestsListModel awaiting;
+  final WorkRequestsListModel converted;
+  final WorkRequestsListModel cancelled;
 
   WorkRequestsStatusLoadedState({
-    this.awaiting = 0,
-    this.converted = 0,
-    this.cancelled = 0,
+    required this.awaiting,
+    required this.converted,
+    required this.cancelled,
   }) : super(properties: [awaiting, converted, cancelled]);
 
   WorkRequestsStatusLoadedState copyWith(
-    int? awaiting,
-    int? converted,
-    int? cancelled,
+    WorkRequestsListModel? awaiting,
+    WorkRequestsListModel? converted,
+    WorkRequestsListModel? cancelled,
   ) =>
       WorkRequestsStatusLoadedState(
         awaiting: awaiting ?? this.awaiting,

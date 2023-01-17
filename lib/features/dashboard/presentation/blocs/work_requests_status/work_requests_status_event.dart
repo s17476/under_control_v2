@@ -14,25 +14,31 @@ abstract class WorkRequestsStatusEvent extends Equatable {
 class GetWorkRequestsStatusEvent extends WorkRequestsStatusEvent {}
 
 class UpdateAwaitingStatusEvent extends WorkRequestsStatusEvent {
-  final int awaiting;
+  final QuerySnapshot<Object?> snapshot;
+  final List<String> locations;
 
   UpdateAwaitingStatusEvent({
-    required this.awaiting,
-  }) : super(properties: [awaiting]);
+    required this.snapshot,
+    required this.locations,
+  }) : super(properties: [snapshot, locations]);
 }
 
 class UpdateConvertedStatusEvent extends WorkRequestsStatusEvent {
-  final int converted;
+  final QuerySnapshot<Object?> snapshot;
+  final List<String> locations;
 
   UpdateConvertedStatusEvent({
-    required this.converted,
-  }) : super(properties: [converted]);
+    required this.snapshot,
+    required this.locations,
+  }) : super(properties: [snapshot, locations]);
 }
 
 class UpdateCancelledStatusEvent extends WorkRequestsStatusEvent {
-  final int cancelled;
+  final QuerySnapshot<Object?> snapshot;
+  final List<String> locations;
 
   UpdateCancelledStatusEvent({
-    required this.cancelled,
-  }) : super(properties: [cancelled]);
+    required this.snapshot,
+    required this.locations,
+  }) : super(properties: [snapshot, locations]);
 }
