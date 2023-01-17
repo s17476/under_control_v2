@@ -1,17 +1,18 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/dashboard/domain/usecases/get_awaiting_work_requests_count.dart';
-import 'package:under_control_v2/features/dashboard/domain/usecases/get_cancelled_work_requests_count.dart';
-import 'package:under_control_v2/features/dashboard/domain/usecases/get_converted_work_requests_count.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../../groups/domain/entities/feature.dart';
 import '../../../../tasks/data/models/work_request/work_request_list_model.dart';
+import '../../../../tasks/domain/entities/work_request/work_request.dart';
+import '../../../domain/usecases/get_awaiting_work_requests_count.dart';
+import '../../../domain/usecases/get_cancelled_work_requests_count.dart';
+import '../../../domain/usecases/get_converted_work_requests_count.dart';
 
 part 'work_requests_status_event.dart';
 part 'work_requests_status_state.dart';
@@ -59,11 +60,7 @@ class WorkRequestsStatusBloc
 
     on<GetWorkRequestsStatusEvent>((event, emit) async {
       if (_locations.isEmpty) {
-        emit(WorkRequestsStatusLoadedState(
-          awaiting: const WorkRequestsListModel(allWorkRequests: []),
-          converted: const WorkRequestsListModel(allWorkRequests: []),
-          cancelled: const WorkRequestsListModel(allWorkRequests: []),
-        ));
+        emit(WorkRequestsStatusLoadedState());
       } else {
         emit(WorkRequestsStatusLoadingState());
         _clearSubscriptions();
@@ -109,8 +106,9 @@ class WorkRequestsStatusBloc
           final failureOrConvertedWorkRequestsStream =
               await getConvertedWorkRequestsCount(params);
           await failureOrConvertedWorkRequestsStream.fold(
-            (failure) async =>
-                emit(WorkRequestsStatusErrorState(message: failure.message)),
+            (failure) async {
+              emit(WorkRequestsStatusErrorState(message: failure.message));
+            },
             (stream) async {
               final streamSubscription =
                   stream.allWorkRequests.listen((snapshot) {
@@ -131,7 +129,7 @@ class WorkRequestsStatusBloc
             (stream) async {
               final streamSubscription =
                   stream.allWorkRequests.listen((snapshot) {
-                add(UpdateConvertedStatusEvent(
+                add(UpdateCancelledStatusEvent(
                   snapshot: snapshot,
                   locations: chunk,
                 ));
@@ -142,8 +140,136 @@ class WorkRequestsStatusBloc
         }
       }
     });
-    // TODO add update handlers
-    on<UpdateAwaitingStatusEvent>((event, emit) async {});
+
+    on<UpdateAwaitingStatusEvent>((event, emit) async {
+      List<WorkRequest>? oldWorkRequests;
+      WorkRequestsStatusLoadedState? oldState;
+      // save old work orders if this is not a first chunk
+      if (state is WorkRequestsStatusLoadedState) {
+        oldState = state as WorkRequestsStatusLoadedState;
+        oldWorkRequests =
+            (state as WorkRequestsStatusLoadedState).awaiting.allWorkRequests;
+      }
+      emit(WorkRequestsStatusLoadingState());
+      // gets work orders list
+      WorkRequestsListModel workRequestsList =
+          WorkRequestsListModel.fromSnapshot(
+        event.snapshot as QuerySnapshot<Map<String, dynamic>>,
+      );
+
+      // merge work orders list if this is not a first chunk
+      if (oldWorkRequests != null) {
+        List<WorkRequest> workRequestsToRemove = [];
+        for (var oldWorkRequest in oldWorkRequests) {
+          if (event.locations.contains(oldWorkRequest.locationId)) {
+            workRequestsToRemove.add(oldWorkRequest);
+          }
+        }
+        for (var workRequestToRemove in workRequestsToRemove) {
+          oldWorkRequests.remove(workRequestToRemove);
+        }
+        // merge and sort by date
+        List<WorkRequest> tmpList = [
+          ...oldWorkRequests,
+          ...workRequestsList.allWorkRequests,
+        ]..sort((a, b) => a.date.compareTo(b.date));
+
+        workRequestsList = WorkRequestsListModel(
+          allWorkRequests: tmpList,
+        );
+      }
+      emit(
+        oldState?.copyWith(awaiting: workRequestsList) ??
+            WorkRequestsStatusLoadedState(awaiting: workRequestsList),
+      );
+    });
+
+    on<UpdateConvertedStatusEvent>((event, emit) async {
+      List<WorkRequest>? oldWorkRequests;
+      WorkRequestsStatusLoadedState? oldState;
+      // save old work orders if this is not a first chunk
+      if (state is WorkRequestsStatusLoadedState) {
+        oldState = state as WorkRequestsStatusLoadedState;
+        oldWorkRequests =
+            (state as WorkRequestsStatusLoadedState).converted.allWorkRequests;
+      }
+      emit(WorkRequestsStatusLoadingState());
+      // gets work orders list
+      WorkRequestsListModel workRequestsList =
+          WorkRequestsListModel.fromSnapshot(
+        event.snapshot as QuerySnapshot<Map<String, dynamic>>,
+      );
+
+      // merge work orders list if this is not a first chunk
+      if (oldWorkRequests != null) {
+        List<WorkRequest> workRequestsToRemove = [];
+        for (var oldWorkRequest in oldWorkRequests) {
+          if (event.locations.contains(oldWorkRequest.locationId)) {
+            workRequestsToRemove.add(oldWorkRequest);
+          }
+        }
+        for (var workRequestToRemove in workRequestsToRemove) {
+          oldWorkRequests.remove(workRequestToRemove);
+        }
+        // merge and sort by date
+        List<WorkRequest> tmpList = [
+          ...oldWorkRequests,
+          ...workRequestsList.allWorkRequests
+              .where((element) => element.taskId.isNotEmpty),
+        ]..sort((a, b) => a.date.compareTo(b.date));
+
+        workRequestsList = WorkRequestsListModel(
+          allWorkRequests: tmpList,
+        );
+      }
+      emit(
+        oldState?.copyWith(converted: workRequestsList) ??
+            WorkRequestsStatusLoadedState(converted: workRequestsList),
+      );
+    });
+
+    on<UpdateCancelledStatusEvent>((event, emit) async {
+      List<WorkRequest>? oldWorkRequests;
+      WorkRequestsStatusLoadedState? oldState;
+      // save old work orders if this is not a first chunk
+      if (state is WorkRequestsStatusLoadedState) {
+        oldState = state as WorkRequestsStatusLoadedState;
+        oldWorkRequests =
+            (state as WorkRequestsStatusLoadedState).cancelled.allWorkRequests;
+      }
+      emit(WorkRequestsStatusLoadingState());
+      // gets work orders list
+      WorkRequestsListModel workRequestsList =
+          WorkRequestsListModel.fromSnapshot(
+        event.snapshot as QuerySnapshot<Map<String, dynamic>>,
+      );
+
+      // merge work orders list if this is not a first chunk
+      if (oldWorkRequests != null) {
+        List<WorkRequest> workRequestsToRemove = [];
+        for (var oldWorkRequest in oldWorkRequests) {
+          if (event.locations.contains(oldWorkRequest.locationId)) {
+            workRequestsToRemove.add(oldWorkRequest);
+          }
+        }
+        for (var workRequestToRemove in workRequestsToRemove) {
+          oldWorkRequests.remove(workRequestToRemove);
+        }
+        // merge and sort by date
+        List<WorkRequest> tmpList = [
+          ...oldWorkRequests,
+          ...workRequestsList.allWorkRequests,
+        ]..sort((a, b) => a.date.compareTo(b.date));
+
+        workRequestsList = WorkRequestsListModel(
+          allWorkRequests: tmpList,
+        );
+      }
+      emit(
+        oldState?.copyWith(cancelled: workRequestsList) ??
+            WorkRequestsStatusLoadedState(cancelled: workRequestsList),
+      );
+    });
   }
 
   void _clearSubscriptions() {

@@ -18,6 +18,7 @@ import 'features/company_profile/presentation/blocs/company_management/company_m
 import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dart';
 import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart';
+import 'features/dashboard/presentation/blocs/work_requests_status/work_requests_status_bloc.dart';
 import 'features/filter/presentation/blocs/filter/filter_bloc.dart';
 import 'features/groups/presentation/blocs/group/group_bloc.dart';
 import 'features/inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart';
@@ -190,6 +191,10 @@ class CustomMultiBlocProvider extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<LanguageCubit>()..getInitLanguage(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<WorkRequestsStatusBloc>(),
+          lazy: false,
         ),
       ],
       child: child,

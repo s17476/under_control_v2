@@ -32,16 +32,16 @@ class WorkRequestsStatusLoadedState extends WorkRequestsStatusState {
   final WorkRequestsListModel cancelled;
 
   WorkRequestsStatusLoadedState({
-    required this.awaiting,
-    required this.converted,
-    required this.cancelled,
+    this.awaiting = const WorkRequestsListModel(allWorkRequests: []),
+    this.converted = const WorkRequestsListModel(allWorkRequests: []),
+    this.cancelled = const WorkRequestsListModel(allWorkRequests: []),
   }) : super(properties: [awaiting, converted, cancelled]);
 
-  WorkRequestsStatusLoadedState copyWith(
+  WorkRequestsStatusLoadedState copyWith({
     WorkRequestsListModel? awaiting,
     WorkRequestsListModel? converted,
     WorkRequestsListModel? cancelled,
-  ) =>
+  }) =>
       WorkRequestsStatusLoadedState(
         awaiting: awaiting ?? this.awaiting,
         converted: converted ?? this.converted,

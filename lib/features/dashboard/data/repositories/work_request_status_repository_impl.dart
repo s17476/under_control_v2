@@ -55,6 +55,7 @@ class WorkRequestsStatusRepositoryImpl extends WorkRequestsStatusRepository {
           .collection('companies')
           .doc(params.companyId)
           .collection('workRequestsArchive')
+          .where('cancelled', isEqualTo: true)
           .where('date', isGreaterThan: startDate)
           .where('locationId', whereIn: params.locations)
           .snapshots();
@@ -77,8 +78,8 @@ class WorkRequestsStatusRepositoryImpl extends WorkRequestsStatusRepository {
       querySnapshot = firebaseFirestore
           .collection('companies')
           .doc(params.companyId)
-          .collection('workRequests')
-          .where('taskId', isNotEqualTo: '')
+          .collection('workRequestsArchive')
+          // .where('taskId', isNotEqualTo: '')
           .where('date', isGreaterThan: startDate)
           .where('locationId', whereIn: params.locations)
           .snapshots();
