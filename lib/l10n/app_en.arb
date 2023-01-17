@@ -2523,6 +2523,10 @@
     "@task_action_duration": {
       "description": "task action - task duration"
     },
+    "status_my_tasks": "My tasks for today",
+    "@status_my_tasks": {
+      "description": "status - my tasks"
+    },
     "status_in_locations": "Status in selected locations",
     "@status_in_locations": {
       "description": "status card title"

@@ -612,6 +612,7 @@
     "task_action_details": "Handlingsdetaljer",
     "task_action_no_actions": "Der er ikke tilføjet nogen handlinger til denne opgave endnu",
     "task_action_duration": "Varighed",
+    "status_my_tasks": "Mine opgaver i dag",
     "status_in_locations": "Status på udvalgte placeringer",
     "status_recent": "Sidste 30 dage",
     "status_total": "Total",

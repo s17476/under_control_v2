@@ -408,17 +408,12 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
 
       batch.commit();
 
-      print('poszło');
-
       return Right(taskActionReference.id);
     } on FirebaseException catch (e) {
-      print('nie poszło');
       return Left(
         DatabaseFailure(message: e.message ?? 'Database Failure'),
       );
     } catch (e) {
-      print('nie poszło');
-      print(e);
       return const Left(
         UnsuspectedFailure(message: 'Unsuspected error'),
       );

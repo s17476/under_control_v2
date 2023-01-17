@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:under_control_v2/features/dashboard/presentation/widgets/my_tasks.dart';
 import 'package:under_control_v2/features/dashboard/presentation/widgets/status_card.dart';
 
 import '../../../filter/presentation/blocs/filter/filter_bloc.dart';
@@ -31,6 +32,7 @@ class DashboardPage extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   children: const [
                     StatusCard(),
+                    MyTasks(),
                     WorkRequestsLatest(),
                     TasksLatest(),
                     AssetsWithoutInspection(),

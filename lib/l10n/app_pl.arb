@@ -612,6 +612,7 @@
     "task_action_details": "Szczegóły akcji",
     "task_action_no_actions": "Do tego zadania nie dodano jeszcze w żadnych akcji",
     "task_action_duration": "Czas trwania",
+    "status_my_tasks": "Moje zadania na dzisiaj",
     "status_in_locations": "Status w wybranych lokacjach",
     "status_recent": "Ostatnie 30 dni",
     "status_total": "Razem",
