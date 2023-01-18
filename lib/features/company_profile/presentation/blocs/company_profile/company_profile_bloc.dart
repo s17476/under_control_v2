@@ -17,7 +17,7 @@ import '../../../domain/usecases/get_company_by_id.dart';
 part 'company_profile_event.dart';
 part 'company_profile_state.dart';
 
-@injectable
+@singleton
 class CompanyProfileBloc
     extends Bloc<CompanyProfileEvent, CompanyProfileState> {
   late StreamSubscription _userProfileStreamSubscription;
@@ -37,8 +37,7 @@ class CompanyProfileBloc
       (state) {
         if (state is Approved) {
           add(GetCompanyByIdEvent(id: state.userProfile.companyId));
-        }
-        if (state is NotApproved) {
+        } else if (state is NotApproved) {
           add(GetCompanyByIdEvent(id: state.userProfile.companyId));
         }
       },
@@ -83,6 +82,7 @@ class CompanyProfileBloc
     on<UpdateCompanyUsersEvent>((UpdateCompanyUsersEvent event, emit) async {
       CompanyUsersList usersList = CompanyUsersListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>);
+      print('CompanyProfileBloc - Loaded');
       emit(
         CompanyProfileLoaded(
           companyUsers: usersList,

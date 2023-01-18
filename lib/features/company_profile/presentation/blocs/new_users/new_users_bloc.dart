@@ -13,7 +13,7 @@ import '../company_profile/company_profile_bloc.dart';
 part 'new_users_event.dart';
 part 'new_users_state.dart';
 
-@injectable
+@singleton
 class NewUsersBloc extends Bloc<NewUsersEvent, NewUsersState> {
   late StreamSubscription _companyProfileSubscription;
   StreamSubscription? _newUsersStreamSubscription;
@@ -44,14 +44,6 @@ class NewUsersBloc extends Bloc<NewUsersEvent, NewUsersState> {
           _newUsersStreamSubscription = newUsers.allUsers.listen((snapshot) {
             add(UpdateNewUsersEvent(snapshot: snapshot));
           });
-          emit(
-            NewUsersLoadedState(
-              newUsers: const CompanyUsersList(
-                activeUsers: [],
-                passiveUsers: [],
-              ),
-            ),
-          );
         },
       );
     });
@@ -60,6 +52,7 @@ class NewUsersBloc extends Bloc<NewUsersEvent, NewUsersState> {
       (event, emit) async {
         CompanyUsersList usersList = CompanyUsersListModel.fromSnapshot(
             event.snapshot as QuerySnapshot<Map<String, dynamic>>);
+        print('NewUsersBloc - Loaded');
         emit(
           NewUsersLoadedState(
             newUsers: usersList,

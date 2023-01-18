@@ -1,11 +1,9 @@
-import 'dart:async';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../domain/entities/checklist.dart';
 import '../../../domain/usecases/add_checklist.dart';
 import '../../../domain/usecases/delete_checklist.dart';
@@ -27,33 +25,26 @@ enum ChecklistMessage {
 @injectable
 class ChecklistManagementBloc
     extends Bloc<ChecklistManagementEvent, ChecklistManagementState> {
-  late StreamSubscription _companyProfileStreamSubscription;
-  final CompanyProfileBloc companyProfileBloc;
+  final UserProfileBloc userProfileBloc;
   final AddChecklist addChecklist;
   final UpdateChecklist updateChecklist;
   final DeleteChecklist deleteChecklist;
 
-  String companyId = '';
+  String _companyId = '';
 
   ChecklistManagementBloc({
-    required this.companyProfileBloc,
+    required this.userProfileBloc,
     required this.addChecklist,
     required this.updateChecklist,
     required this.deleteChecklist,
   }) : super(ChecklistManagementEmptyState()) {
-    _companyProfileStreamSubscription =
-        companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && companyId.isEmpty) {
-        companyId = state.company.id;
-      }
-    });
-
     on<AddChecklistEvent>((event, emit) async {
       emit(ChecklistManagementLoadingState());
+      _getCompanyId();
       final failureOrString = await addChecklist(
         ChecklistParams(
           checklist: event.checklist,
-          companyId: companyId,
+          companyId: _companyId,
         ),
       );
       await failureOrString.fold(
@@ -72,10 +63,11 @@ class ChecklistManagementBloc
 
     on<UpdateChecklistEvent>((event, emit) async {
       emit(ChecklistManagementLoadingState());
+      _getCompanyId();
       final failureOrVoidResult = await updateChecklist(
         ChecklistParams(
           checklist: event.checklist,
-          companyId: companyId,
+          companyId: _companyId,
         ),
       );
       await failureOrVoidResult.fold(
@@ -94,10 +86,11 @@ class ChecklistManagementBloc
 
     on<DeleteChecklistEvent>((event, emit) async {
       emit(ChecklistManagementLoadingState());
+      _getCompanyId();
       final failureOrVoidResult = await deleteChecklist(
         ChecklistParams(
           checklist: event.checklist,
-          companyId: companyId,
+          companyId: _companyId,
         ),
       );
       await failureOrVoidResult.fold(
@@ -115,9 +108,12 @@ class ChecklistManagementBloc
     });
   }
 
-  @override
-  Future<void> close() {
-    _companyProfileStreamSubscription.cancel();
-    return super.close();
+  void _getCompanyId() {
+    if (_companyId.isEmpty) {
+      final userState = userProfileBloc.state;
+      if (userState is Approved) {
+        _companyId = userState.userProfile.companyId;
+      }
+    }
   }
 }

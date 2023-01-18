@@ -17,7 +17,7 @@ import '../../../domain/usecases/get_items_stream.dart';
 part 'items_event.dart';
 part 'items_state.dart';
 
-@injectable
+@singleton
 class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   final FilterBloc filterBloc;
   final GetItemsStream getChecklistsStream;
@@ -64,13 +64,10 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     on<UpdateItemsListEvent>(
       (event, emit) async {
         emit(ItemsLoadingState());
-        //   final availableLocations = getAvailableLocationsForGroups(
-        //   groups: event.selectedGroups,
-        //   locations: event.selectedLocations,
-        // );
         final itemsList = ItemsListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );
+        print('ItemsBloc - Loaded');
         emit(
           ItemsLoadedState(allItems: itemsList),
         );

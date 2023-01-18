@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/location_selection_helpers.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/locations_list_model.dart';
 import '../../../domain/entities/location.dart';
 import '../../../domain/entities/locations_list.dart';
@@ -28,9 +29,9 @@ const String updateSuccess = 'updateSuccess';
 const String locationSelected = 'locationSelected';
 const String locationRemoved = 'locationRemoved';
 
-@lazySingleton
+@singleton
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
-  final CompanyProfileBloc companyProfileBloc;
+  final UserProfileBloc userProfileBloc;
   final AddLocation addLocation;
   final CacheLocation cacheLocation;
   final DeleteLocation deleteLocation;
@@ -38,12 +39,12 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final TryToGetCachedLocation tryToGetCachedLocation;
   final UpdateLocation updateLocation;
 
-  late StreamSubscription _companyProfileStreamSubscription;
+  late StreamSubscription _userProfileStreamSubscription;
   StreamSubscription? _locationsStreamSubscription;
   String _companyId = '';
 
   LocationBloc({
-    required this.companyProfileBloc,
+    required this.userProfileBloc,
     required this.addLocation,
     required this.cacheLocation,
     required this.deleteLocation,
@@ -51,10 +52,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     required this.tryToGetCachedLocation,
     required this.updateLocation,
   }) : super(const LocationEmptyState()) {
-    _companyProfileStreamSubscription = companyProfileBloc.stream.listen(
+    _userProfileStreamSubscription = userProfileBloc.stream.listen(
       (state) {
-        if (state is CompanyProfileLoaded) {
-          _companyId = state.company.id;
+        if (_companyId.isEmpty && state is Approved) {
+          _companyId = state.userProfile.companyId;
           add(FetchAllLocationsEvent());
         }
       },
@@ -164,6 +165,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
               selectedLocationsParams.children,
               locationsList.allLocations,
             );
+            print('LocationBloc - Loaded');
             emit(
               LocationLoadedState(
                 selectedLocations: cachedLocations,
@@ -321,7 +323,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   @override
   Future<void> close() {
-    _companyProfileStreamSubscription.cancel();
+    _userProfileStreamSubscription.cancel();
     _locationsStreamSubscription?.cancel();
     return super.close();
   }

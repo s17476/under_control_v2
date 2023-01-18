@@ -14,7 +14,7 @@ import '../company_profile/company_profile_bloc.dart';
 part 'suspended_users_event.dart';
 part 'suspended_users_state.dart';
 
-@injectable
+@singleton
 class SuspendedUsersBloc
     extends Bloc<SuspendedUsersEvent, SuspendedUsersState> {
   late StreamSubscription _companyProfileSubscription;
@@ -47,14 +47,6 @@ class SuspendedUsersBloc
               suspendedUsers.allUsers.listen((snapshot) {
             add(UpdateSuspendedUsersEvent(snapshot: snapshot));
           });
-          emit(
-            SuspendedUsersLoadedState(
-              suspendedUsers: const CompanyUsersList(
-                activeUsers: [],
-                passiveUsers: [],
-              ),
-            ),
-          );
         },
       );
     });
@@ -63,6 +55,7 @@ class SuspendedUsersBloc
       (event, emit) async {
         CompanyUsersList usersList = CompanyUsersListModel.fromSnapshot(
             event.snapshot as QuerySnapshot<Map<String, dynamic>>);
+        print('SuspendedUsersBloc - Loaded');
         emit(
           SuspendedUsersLoadedState(
             suspendedUsers: usersList,

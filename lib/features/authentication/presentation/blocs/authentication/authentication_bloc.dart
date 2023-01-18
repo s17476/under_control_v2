@@ -18,7 +18,7 @@ import '../../../../core/utils/input_validator.dart';
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
-@injectable
+@lazySingleton
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   late StreamSubscription _streamSubscription;
@@ -51,8 +51,13 @@ class AuthenticationBloc
           emit(Unauthenticated());
         } else if (event.user != null) {
           if (checkEmailVerification()) {
-            emit(Authenticated(
-                userId: event.user!.uid, email: event.user!.email!));
+            print('Authentification bloc - authenticated');
+            emit(
+              Authenticated(
+                userId: event.user!.uid,
+                email: event.user!.email!,
+              ),
+            );
           } else {
             emit(AwaitingVerification());
           }

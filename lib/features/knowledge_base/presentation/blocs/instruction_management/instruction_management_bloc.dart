@@ -1,12 +1,10 @@
-import 'dart:async';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/bloc_message.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/instruction_model.dart';
 import '../../../domain/usecases/add_instruction.dart';
 import '../../../domain/usecases/delete_instruction.dart';
@@ -18,29 +16,22 @@ part 'instruction_management_state.dart';
 @injectable
 class InstructionManagementBloc
     extends Bloc<InstructionManagementEvent, InstructionManagementState> {
-  final CompanyProfileBloc companyProfileBloc;
+  final UserProfileBloc userProfileBloc;
   final AddInstruction addInstruction;
   final DeleteInstruction deleteInstruction;
   final UpdateInstruction updateInstruction;
 
-  late StreamSubscription _companyProfileStreamSubscription;
   String _companyId = '';
 
   InstructionManagementBloc({
-    required this.companyProfileBloc,
+    required this.userProfileBloc,
     required this.addInstruction,
     required this.deleteInstruction,
     required this.updateInstruction,
   }) : super(InstructionManagementEmptyState()) {
-    _companyProfileStreamSubscription =
-        companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
-        _companyId = state.company.id;
-      }
-    });
-
     on<AddInstructionEvent>((event, emit) async {
       emit(InstructionManagementLoadingState());
+      _getCompanyId();
       final failureOrString = await addInstruction(
         InstructionParams(
           instruction: event.instruction,
@@ -63,6 +54,7 @@ class InstructionManagementBloc
 
     on<DeleteInstructionEvent>((event, emit) async {
       emit(InstructionManagementLoadingState());
+      _getCompanyId();
       final failureOrVoidResult = await deleteInstruction(
         InstructionParams(
           instruction: event.instruction,
@@ -85,6 +77,7 @@ class InstructionManagementBloc
 
     on<UpdateInstructionEvent>((event, emit) async {
       emit(InstructionManagementLoadingState());
+      _getCompanyId();
       final failureOrVoidResult = await updateInstruction(
         InstructionParams(
           instruction: event.instruction,
@@ -106,9 +99,12 @@ class InstructionManagementBloc
     });
   }
 
-  @override
-  Future<void> close() {
-    _companyProfileStreamSubscription.cancel();
-    return super.close();
+  void _getCompanyId() {
+    if (_companyId.isEmpty) {
+      final userState = userProfileBloc.state;
+      if (userState is Approved) {
+        _companyId = userState.userProfile.companyId;
+      }
+    }
   }
 }

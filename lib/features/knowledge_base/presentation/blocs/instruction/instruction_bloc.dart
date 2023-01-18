@@ -15,7 +15,7 @@ import '../../../domain/usecases/get_instructions_stream.dart';
 part 'instruction_event.dart';
 part 'instruction_state.dart';
 
-@injectable
+@singleton
 class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
   final FilterBloc filterBloc;
   final GetInstructionsStream getInstructionsStream;
@@ -154,6 +154,7 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
           allInstructions: tmpList,
         );
       }
+      print('InstructionBloc - Loaded');
       emit(InstructionLoadedState(
         allInstructions: instructionsList,
       ));

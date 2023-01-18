@@ -1,11 +1,9 @@
-import 'dart:async';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/item_action/item_action_model.dart';
 import '../../../data/models/item_amount_in_location_model.dart';
 import '../../../data/models/item_model.dart';
@@ -33,31 +31,24 @@ enum ItemActionMessage {
 @injectable
 class ItemActionManagementBloc
     extends Bloc<ItemActionManagementEvent, ItemActionManagementState> {
-  final CompanyProfileBloc companyProfileBloc;
+  final UserProfileBloc userProfileBloc;
   final AddItemAction addItemAction;
   final UpdateItemAction updateItemAction;
   final DeleteItemAction deleteItemAction;
   final MoveItemAction moveItemAction;
 
-  late StreamSubscription _companyProfileStreamSubscription;
   String _companyId = '';
 
   ItemActionManagementBloc({
-    required this.companyProfileBloc,
+    required this.userProfileBloc,
     required this.addItemAction,
     required this.updateItemAction,
     required this.deleteItemAction,
     required this.moveItemAction,
   }) : super(ItemActionManagementEmptyState()) {
-    _companyProfileStreamSubscription =
-        companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
-        _companyId = state.company.id;
-      }
-    });
-
     on<AddItemActionEvent>((event, emit) async {
       emit(ItemActionManagementLoadingState());
+      _getCompanyId();
       ItemAmountInLocationModel itemAmountInLocation;
       int index = event.item.amountInLocations.indexWhere(
         (element) => element.locationId == event.itemAction.locationId,
@@ -128,6 +119,7 @@ class ItemActionManagementBloc
 
     on<UpdateItemActionEvent>((event, emit) async {
       emit(ItemActionManagementLoadingState());
+      _getCompanyId();
       ItemAmountInLocationModel itemAmountInLocation;
       int index = event.item.amountInLocations.indexWhere(
         (element) => element.locationId == event.itemAction.locationId,
@@ -200,6 +192,7 @@ class ItemActionManagementBloc
 
     on<DeleteItemActionEvent>((event, emit) async {
       emit(ItemActionManagementLoadingState());
+      _getCompanyId();
       ItemAmountInLocationModel itemAmountInLocation;
       int index = event.item.amountInLocations.indexWhere(
         (element) => element.locationId == event.itemAction.locationId,
@@ -264,6 +257,7 @@ class ItemActionManagementBloc
 
     on<MoveItemActionEvent>((event, emit) async {
       emit(ItemActionManagementLoadingState());
+      _getCompanyId();
       ItemAmountInLocationModel itemAmountInOldLocation;
       ItemAmountInLocationModel itemAmountInNewLocation;
 
@@ -364,9 +358,12 @@ class ItemActionManagementBloc
     });
   }
 
-  @override
-  Future<void> close() {
-    _companyProfileStreamSubscription.cancel();
-    return super.close();
+  void _getCompanyId() {
+    if (_companyId.isEmpty) {
+      final userState = userProfileBloc.state;
+      if (userState is Approved) {
+        _companyId = userState.userProfile.companyId;
+      }
+    }
   }
 }

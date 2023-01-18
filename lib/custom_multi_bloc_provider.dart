@@ -63,79 +63,34 @@ class CustomMultiBlocProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AuthenticationBloc>()),
         BlocProvider(create: (context) => getIt<UserProfileBloc>()),
         BlocProvider(create: (context) => getIt<UserManagementBloc>()),
-        BlocProvider(
-          create: (context) => getIt<CompanyProfileBloc>(),
-          lazy: false,
-        ),
+        BlocProvider(create: (context) => getIt<CompanyProfileBloc>()),
         BlocProvider(create: (context) => getIt<CompanyManagementBloc>()),
-        BlocProvider(
-          create: (context) => getIt<LocationBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<GroupBloc>(),
-          lazy: false,
-        ),
+        BlocProvider(create: (context) => getIt<LocationBloc>()),
+        BlocProvider(create: (context) => getIt<GroupBloc>()),
         BlocProvider(create: (context) => getIt<NewUsersBloc>()),
         BlocProvider(create: (context) => getIt<SuspendedUsersBloc>()),
         BlocProvider(create: (context) => getIt<ChecklistBloc>()),
-        BlocProvider(
-          create: (context) => getIt<ChecklistManagementBloc>(),
-          lazy: false,
-        ),
+        BlocProvider(create: (context) => getIt<ChecklistManagementBloc>()),
         BlocProvider(create: (context) => getIt<ItemCategoryBloc>()),
-        BlocProvider(
-          create: (context) => getIt<ItemCategoryManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<ItemsBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<ItemsManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<ItemActionBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<ItemActionManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<DashboardItemActionBloc>(),
-          lazy: false,
-        ),
+        BlocProvider(create: (context) => getIt<ItemCategoryManagementBloc>()),
+        BlocProvider(create: (context) => getIt<ItemsBloc>()),
+        BlocProvider(create: (context) => getIt<ItemsManagementBloc>()),
+        BlocProvider(create: (context) => getIt<ItemActionBloc>()),
+        BlocProvider(create: (context) => getIt<ItemActionManagementBloc>()),
+        BlocProvider(create: (context) => getIt<DashboardItemActionBloc>()),
         BlocProvider(create: (context) => getIt<InstructionCategoryBloc>()),
         BlocProvider(
           create: (context) => getIt<InstructionCategoryManagementBloc>(),
-          lazy: false,
         ),
         BlocProvider(create: (context) => getIt<InstructionBloc>()),
-        BlocProvider(
-          create: (context) => getIt<InstructionManagementBloc>(),
-          lazy: false,
-        ),
+        BlocProvider(create: (context) => getIt<InstructionManagementBloc>()),
         BlocProvider(create: (context) => getIt<AssetCategoryBloc>()),
-        BlocProvider(
-          create: (context) => getIt<AssetCategoryManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<AssetActionBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<AssetActionManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<AssetBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<AssetManagementBloc>(),
-          lazy: false,
-        ),
+        BlocProvider(create: (context) => getIt<AssetCategoryManagementBloc>()),
+        BlocProvider(create: (context) => getIt<AssetActionBloc>()),
+        BlocProvider(create: (context) => getIt<AssetBloc>()),
+        BlocProvider(create: (context) => getIt<AssetActionManagementBloc>()),
+        BlocProvider(create: (context) => getIt<AssetManagementBloc>()),
+        // TODO - BLoCs optimalization
         BlocProvider(
           create: (context) => getIt<AssetInternalNumberCubit>(),
         ),

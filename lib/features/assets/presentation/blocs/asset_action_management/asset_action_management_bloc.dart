@@ -1,12 +1,10 @@
-import 'dart:async';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/bloc_message.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/asset_action/asset_action_model.dart';
 import '../../../data/models/asset_model.dart';
 import '../../../domain/usecases/asset_action/add_asset_action.dart';
@@ -19,29 +17,22 @@ part 'asset_action_management_state.dart';
 @injectable
 class AssetActionManagementBloc
     extends Bloc<AssetActionManagementEvent, AssetActionManagementState> {
-  final CompanyProfileBloc companyProfileBloc;
+  final UserProfileBloc userProfileBloc;
   final AddAssetAction addAssetAction;
   final UpdateAssetAction updateAssetAction;
   final DeleteAssetAction deleteAssetAction;
 
-  late StreamSubscription _companyprofileStreamSubscription;
   String _companyId = '';
 
   AssetActionManagementBloc({
-    required this.companyProfileBloc,
+    required this.userProfileBloc,
     required this.addAssetAction,
     required this.updateAssetAction,
     required this.deleteAssetAction,
   }) : super(AssetActionManagementEmptyState()) {
-    _companyprofileStreamSubscription =
-        companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
-        _companyId = state.company.id;
-      }
-    });
-
     on<AddAssetActionEvent>((event, emit) async {
       emit(AssetActionManagementLoadingState());
+      _getCompanyId();
       final updatedAsset = event.asset.copyWith(
         isInUse: event.assetAction.isAssetInUse,
         currentStatus: event.assetAction.assetStatus,
@@ -69,6 +60,7 @@ class AssetActionManagementBloc
 
     on<DeleteAssetActionEvent>((event, emit) async {
       emit(AssetActionManagementLoadingState());
+      _getCompanyId();
       final updatedAsset = event.asset.copyWith(
         isInUse: event.assetAction.isAssetInUse,
         currentStatus: event.assetAction.assetStatus,
@@ -96,6 +88,7 @@ class AssetActionManagementBloc
 
     on<UpdateAssetActionEvent>((event, emit) async {
       emit(AssetActionManagementLoadingState());
+      _getCompanyId();
       final updatedAsset = event.asset.copyWith(
         isInUse: event.assetAction.isAssetInUse,
         currentStatus: event.assetAction.assetStatus,
@@ -122,9 +115,12 @@ class AssetActionManagementBloc
     });
   }
 
-  @override
-  Future<void> close() {
-    _companyprofileStreamSubscription.cancel();
-    return super.close();
+  void _getCompanyId() {
+    if (_companyId.isEmpty) {
+      final userState = userProfileBloc.state;
+      if (userState is Approved) {
+        _companyId = userState.userProfile.companyId;
+      }
+    }
   }
 }

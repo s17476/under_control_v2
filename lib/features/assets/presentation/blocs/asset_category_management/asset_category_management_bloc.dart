@@ -1,13 +1,11 @@
-import 'dart:async';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/bloc_message.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../domain/entities/asset_category/asset_category.dart';
 import '../../../domain/usecases/asset_category/add_asset_category.dart';
 import '../../../domain/usecases/asset_category/delete_asset_category.dart';
@@ -19,29 +17,22 @@ part 'asset_category_management_state.dart';
 @injectable
 class AssetCategoryManagementBloc
     extends Bloc<AssetCategoryManagementEvent, AssetCategoryManagementState> {
-  final CompanyProfileBloc companyProfileBloc;
+  final UserProfileBloc userProfileBloc;
   final AddAssetCategory addAssetCategory;
   final UpdateAssetCategory updateAssetCategory;
   final DeleteAssetCategory deleteAssetCategory;
 
-  late StreamSubscription _companyProfileStreamSubscription;
   String _companyId = '';
 
   AssetCategoryManagementBloc({
-    required this.companyProfileBloc,
+    required this.userProfileBloc,
     required this.addAssetCategory,
     required this.updateAssetCategory,
     required this.deleteAssetCategory,
   }) : super(AssetCategoryManagementEmptyState()) {
-    _companyProfileStreamSubscription =
-        companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
-        _companyId = state.company.id;
-      }
-    });
-
     on<AddAssetCategoryEvent>((event, emit) async {
       emit(AssetCategoryManagementLoadingState());
+      _getCompanyId();
       final failureOrString = await addAssetCategory(
         AssetCategoryParams(
           assetCategory: event.assetCategory,
@@ -64,6 +55,7 @@ class AssetCategoryManagementBloc
 
     on<UpdateAssetCategoryEvent>((event, emit) async {
       emit(AssetCategoryManagementLoadingState());
+      _getCompanyId();
       final failureOrVoidResult = await updateAssetCategory(
         AssetCategoryParams(
           assetCategory: event.assetCategory,
@@ -86,6 +78,7 @@ class AssetCategoryManagementBloc
 
     on<DeleteAssetCategoryEvent>((event, emit) async {
       emit(AssetCategoryManagementLoadingState());
+      _getCompanyId();
       final failureOrVoidResult = await deleteAssetCategory(
         AssetCategoryParams(
           assetCategory: event.assetCategory,
@@ -117,9 +110,12 @@ class AssetCategoryManagementBloc
     });
   }
 
-  @override
-  Future<void> close() {
-    _companyProfileStreamSubscription.cancel();
-    return super.close();
+  void _getCompanyId() {
+    if (_companyId.isEmpty) {
+      final userState = userProfileBloc.state;
+      if (userState is Approved) {
+        _companyId = userState.userProfile.companyId;
+      }
+    }
   }
 }

@@ -15,7 +15,7 @@ import '../../../domain/usecases/item_action/get_dashboard_last_five_item_action
 part 'dashboard_item_action_event.dart';
 part 'dashboard_item_action_state.dart';
 
-@injectable
+@singleton
 class DashboardItemActionBloc
     extends Bloc<DashboardItemActionEvent, DashboardItemActionState> {
   final FilterBloc filterBloc;
@@ -219,6 +219,7 @@ class DashboardItemActionBloc
             allItemActions: tmpList,
           );
         }
+        print('DashboardItemActionBloc - Loaded');
         emit(DashboardItemActionLoadedState(
           allActions: itemActionsList,
           isAllItems: event.limit == 0,

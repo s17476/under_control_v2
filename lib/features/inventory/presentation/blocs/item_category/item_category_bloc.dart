@@ -13,7 +13,7 @@ import '../../../domain/usecases/item_category/get_items_categories_stream.dart'
 part 'item_category_event.dart';
 part 'item_category_state.dart';
 
-@lazySingleton
+@singleton
 class ItemCategoryBloc extends Bloc<ItemCategoryEvent, ItemCategoryState> {
   final UserProfileBloc userProfileBloc;
   final GetItemsCategoriesStream getItemsCategoriesStream;
@@ -28,7 +28,7 @@ class ItemCategoryBloc extends Bloc<ItemCategoryEvent, ItemCategoryState> {
     required this.getItemsCategoriesStream,
   }) : super(ItemCategoryEmptyState()) {
     _userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
-      if (state is Approved) {
+      if (_companyId.isEmpty && state is Approved) {
         _companyId = state.userProfile.companyId;
         add(GetAllItemsCategoriesEvent());
       }
@@ -58,6 +58,7 @@ class ItemCategoryBloc extends Bloc<ItemCategoryEvent, ItemCategoryState> {
         final itemCategoryList = ItemsCategoriesListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );
+        print('ItemCategoryBloc - Loaded');
         emit(ItemCategoryLoadedState(allItemsCategories: itemCategoryList));
       },
     );

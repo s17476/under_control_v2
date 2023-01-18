@@ -26,7 +26,7 @@ const String deleteSuccess = 'deleteSuccess';
 const String updateSuccess = 'updateSuccess';
 const String groupContainsMembers = 'groupContainsMembers';
 
-@lazySingleton
+@singleton
 class GroupBloc extends Bloc<GroupEvent, GroupState> {
   final CompanyProfileBloc companyProfileBloc;
   final AddGroup addGroup;
@@ -52,7 +52,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   }) : super(GroupEmptyState()) {
     _companyProfileStreamSubscription = companyProfileBloc.stream.listen(
       (state) {
-        if (state is CompanyProfileLoaded) {
+        if (_companyId.isEmpty && state is CompanyProfileLoaded) {
           _companyId = state.company.id;
           add(FetchAllGroupsEvent());
         }
@@ -126,11 +126,6 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
                 groupsStream.allGroups.listen((snapshot) {
               add(UpdateGroupsListEvent(snapshot: snapshot));
             });
-            // emit(
-            //   GroupLoadedState(
-            //     allGroups: const GroupsList(allGroups: []),
-            //   ),
-            // );
           },
         );
       },
@@ -156,12 +151,14 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
                 cachedGroups.add(groupsList.allGroups[index]);
               }
             }
+
             emit(GroupLoadedState(
               allGroups: groupsList,
               selectedGroups: cachedGroups,
             ));
           },
         );
+        print('GroupBloc - Loaded');
       },
     );
 

@@ -1,12 +1,11 @@
-import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/item_model.dart';
 import '../../../domain/entities/item.dart';
 import '../../../domain/usecases/add_item.dart';
@@ -33,7 +32,7 @@ enum ItemsMessage {
 @injectable
 class ItemsManagementBloc
     extends Bloc<ItemsManagementEvent, ItemsManagementState> {
-  final CompanyProfileBloc companyProfileBloc;
+  final UserProfileBloc userProfileBloc;
   final AddItem addItem;
   final DeleteItem deleteItem;
   final UpdateItem updateItem;
@@ -41,28 +40,21 @@ class ItemsManagementBloc
   final DeleteItemPhoto deleteItemPhoto;
   final UpdateItemPhoto updateItemPhoto;
 
-  late StreamSubscription _companyProfileStreamSubscription;
   String _companyId = '';
 
   ItemsManagementBloc({
     required this.addItemPhoto,
     required this.deleteItemPhoto,
     required this.updateItemPhoto,
-    required this.companyProfileBloc,
+    required this.userProfileBloc,
     required this.addItem,
     required this.deleteItem,
     required this.updateItem,
   }) : super(ItemsManagementEmptyState()) {
-    _companyProfileStreamSubscription =
-        companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
-        _companyId = state.company.id;
-      }
-    });
-
     on<AddItemEvent>(
       (event, emit) async {
         emit(ItemsManagementLoadingState());
+        _getCompanyId();
         ItemModel item = event.item as ItemModel;
         final failureOrImageUrl = await addItemPhoto(
           ItemParams(
@@ -102,6 +94,7 @@ class ItemsManagementBloc
     on<DeleteItemEvent>(
       (event, emit) async {
         emit(ItemsManagementLoadingState());
+        _getCompanyId();
         final failureOrVoidResult = await deleteItem(
           ItemParams(
             item: event.item,
@@ -126,6 +119,7 @@ class ItemsManagementBloc
     on<UpdateItemEvent>(
       (event, emit) async {
         emit(ItemsManagementLoadingState());
+        _getCompanyId();
         ItemModel item = event.item as ItemModel;
         final failureOrImageUrl = await addItemPhoto(
           ItemParams(
@@ -162,9 +156,13 @@ class ItemsManagementBloc
       },
     );
   }
-  @override
-  Future<void> close() {
-    _companyProfileStreamSubscription.cancel();
-    return super.close();
+
+  void _getCompanyId() {
+    if (_companyId.isEmpty) {
+      final userState = userProfileBloc.state;
+      if (userState is Approved) {
+        _companyId = userState.userProfile.companyId;
+      }
+    }
   }
 }

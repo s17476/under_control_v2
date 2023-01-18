@@ -13,7 +13,7 @@ import '../../../domain/usecases/item_category/get_instructions_categories_strea
 part 'instruction_category_event.dart';
 part 'instruction_category_state.dart';
 
-@lazySingleton
+@singleton
 class InstructionCategoryBloc
     extends Bloc<InstructionCategoryEvent, InstructionCategoryState> {
   final UserProfileBloc userProfileBloc;
@@ -29,7 +29,7 @@ class InstructionCategoryBloc
     required this.getInstructionsCategoriesStream,
   }) : super(InstructionCategoryEmptyState()) {
     _userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
-      if (state is Approved) {
+      if (_companyId.isEmpty && state is Approved) {
         _companyId = state.userProfile.companyId;
         add(GetAllInstructionsCategoriesEvent());
       }
@@ -60,6 +60,7 @@ class InstructionCategoryBloc
             InstructionsCategoriesListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );
+        print('InstructionCategoryBloc - Loaded');
         emit(
           InstructionCategoryLoadedState(
             allInstructionsCategories: instructionCategoryList,

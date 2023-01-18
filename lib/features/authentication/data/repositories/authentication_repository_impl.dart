@@ -19,7 +19,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   });
 
   @override
-  Stream<User?> get user => firebaseAuth.userChanges();
+  Stream<User?> get user => firebaseAuth.authStateChanges();
 
   @override
   bool get isEmailVerified => firebaseAuth.currentUser!.emailVerified;

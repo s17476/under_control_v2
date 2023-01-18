@@ -90,6 +90,7 @@ class AssetActionBloc extends Bloc<AssetActionEvent, AssetActionState> {
         emit(AssetActionLoadingState());
         final assetActionsList = AssetActionsListModel.fromSnapshot(
             event.snapshot as QuerySnapshot<Map<String, dynamic>>);
+        print('AssetActionsBloc - Loaded');
         emit(
           AssetActionLoadedState(
             allActions: assetActionsList,

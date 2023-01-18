@@ -23,7 +23,7 @@ import '../../../domain/usecases/update_user_data.dart';
 part 'user_profile_event.dart';
 part 'user_profile_state.dart';
 
-@injectable
+@lazySingleton
 class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   final AuthenticationBloc authenticationBloc;
   final AddUser addUser;
@@ -157,6 +157,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
         (userStream) async {
           _userStreamSubscription =
               userStream.userStream.listen((userSnapshot) {
+            print('UserProfileBloc - Loaded');
             add(UpdateUserProfileEvent(snapshot: userSnapshot));
           });
         },

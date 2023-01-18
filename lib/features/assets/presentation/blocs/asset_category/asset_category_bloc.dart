@@ -13,7 +13,7 @@ import '../../../domain/usecases/asset_category/get_assets_categories_stream.dar
 part 'asset_category_event.dart';
 part 'asset_category_state.dart';
 
-@lazySingleton
+@singleton
 class AssetCategoryBloc extends Bloc<AssetCategoryEvent, AssetCategoryState> {
   final UserProfileBloc userProfileBloc;
   final GetAssetsCategoriesStream getAssetsCategoriesStream;
@@ -28,7 +28,7 @@ class AssetCategoryBloc extends Bloc<AssetCategoryEvent, AssetCategoryState> {
     required this.getAssetsCategoriesStream,
   }) : super(AssetCategoryEmptyState()) {
     _userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
-      if (state is Approved) {
+      if (_companyId.isEmpty && state is Approved) {
         _companyId = state.userProfile.companyId;
         add(GetAllAssetsCategoriesEvent());
       }
@@ -58,6 +58,7 @@ class AssetCategoryBloc extends Bloc<AssetCategoryEvent, AssetCategoryState> {
         final assetCategoryList = AssetsCategoriesListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );
+        print('AssetCategoryBloc - Loaded');
         emit(
           AssetCategoryLoadedState(
             allAssetsCategories: assetCategoryList,

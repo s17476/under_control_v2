@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../domain/entities/item_category/item_category.dart';
 import '../../../domain/usecases/item_category/add_item_category.dart';
 import '../../../domain/usecases/item_category/delete_item_category.dart';
@@ -29,29 +27,22 @@ enum ItemCategoryMessage {
 @injectable
 class ItemCategoryManagementBloc
     extends Bloc<ItemCategoryManagementEvent, ItemCategoryManagementState> {
-  final CompanyProfileBloc companyProfileBloc;
+  final UserProfileBloc userProfileBloc;
   final AddItemCategory addItemCategory;
   final UpdateItemCategory updateItemCategory;
   final DeleteItemCategory deleteItemCategory;
 
-  late StreamSubscription _companyProfileStreamSubscription;
   String _companyId = '';
 
   ItemCategoryManagementBloc({
-    required this.companyProfileBloc,
+    required this.userProfileBloc,
     required this.addItemCategory,
     required this.updateItemCategory,
     required this.deleteItemCategory,
   }) : super(ItemCategoryManagementEmptyState()) {
-    _companyProfileStreamSubscription =
-        companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
-        _companyId = state.company.id;
-      }
-    });
-
     on<AddItemCategoryEvent>((event, emit) async {
       emit(ItemCategoryManagementLoadingState());
+      _getCompanyId();
       final failureOrString = await addItemCategory(
         ItemCategoryParams(
           itemCategory: event.itemCategory,
@@ -74,6 +65,7 @@ class ItemCategoryManagementBloc
 
     on<UpdateItemCategoryEvent>((event, emit) async {
       emit(ItemCategoryManagementLoadingState());
+      _getCompanyId();
       final failureOrVoidResult = await updateItemCategory(
         ItemCategoryParams(
           itemCategory: event.itemCategory,
@@ -96,6 +88,7 @@ class ItemCategoryManagementBloc
 
     on<DeleteItemCategoryEvent>((event, emit) async {
       emit(ItemCategoryManagementLoadingState());
+      _getCompanyId();
       final failureOrVoidResult = await deleteItemCategory(
         ItemCategoryParams(
           itemCategory: event.itemCategory,
@@ -127,9 +120,12 @@ class ItemCategoryManagementBloc
     });
   }
 
-  @override
-  Future<void> close() {
-    _companyProfileStreamSubscription.cancel();
-    return super.close();
+  void _getCompanyId() {
+    if (_companyId.isEmpty) {
+      final userState = userProfileBloc.state;
+      if (userState is Approved) {
+        _companyId = userState.userProfile.companyId;
+      }
+    }
   }
 }

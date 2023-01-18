@@ -15,7 +15,7 @@ import '../../../domain/usecases/get_assets_stream.dart';
 part 'asset_event.dart';
 part 'asset_state.dart';
 
-@injectable
+@singleton
 class AssetBloc extends Bloc<AssetEvent, AssetState> {
   final FilterBloc filterBloc;
   final GetAssetsStream getAssetsStream;
@@ -51,9 +51,6 @@ class AssetBloc extends Bloc<AssetEvent, AssetState> {
                 .map((loc) => loc.id)
                 .toList();
           }
-          //
-          //
-
           add(GetAssetsStreamEvent());
         }
       },
@@ -150,6 +147,7 @@ class AssetBloc extends Bloc<AssetEvent, AssetState> {
           allAssets: tmpList,
         );
       }
+      print('AssetsBloc - Loaded');
       emit(AssetLoadedState(
         allAssets: assetsList,
       ));

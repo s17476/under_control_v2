@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +23,6 @@ class AssetManagementBloc
   final DeleteAsset deleteAsset;
   final UpdateAsset updateAsset;
 
-  late StreamSubscription _userProfileStreamSubscription;
   String _companyId = '';
   String _userId = '';
 
@@ -34,15 +32,9 @@ class AssetManagementBloc
     required this.deleteAsset,
     required this.updateAsset,
   }) : super(AssetManagementEmptyState()) {
-    _userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
-      if (state is Approved && _companyId.isEmpty) {
-        _companyId = state.userProfile.companyId;
-        _userId = state.userProfile.id;
-      }
-    });
-
     on<AddAssetEvent>((event, emit) async {
       emit(AssetManagementLoadingState());
+      _getCompanyAndUserId();
       final failureOrString = await addAsset(
         AssetParams(
           asset: event.asset,
@@ -68,6 +60,7 @@ class AssetManagementBloc
 
     on<DeleteAssetEvent>((event, emit) async {
       emit(AssetManagementLoadingState());
+      _getCompanyAndUserId();
       final failureOrVoidResult = await deleteAsset(
         AssetParams(
           asset: event.asset,
@@ -90,7 +83,7 @@ class AssetManagementBloc
 
     on<UpdateAssetEvent>((event, emit) async {
       emit(AssetManagementLoadingState());
-
+      _getCompanyAndUserId();
       final failureOrVoidResult = await updateAsset(
         AssetParams(
           asset: event.asset,
@@ -115,9 +108,13 @@ class AssetManagementBloc
     });
   }
 
-  @override
-  Future<void> close() {
-    _userProfileStreamSubscription.cancel();
-    return super.close();
+  void _getCompanyAndUserId() {
+    if (_companyId.isEmpty) {
+      final userState = userProfileBloc.state;
+      if (userState is Approved) {
+        _companyId = userState.userProfile.companyId;
+        _userId = userState.userProfile.id;
+      }
+    }
   }
 }

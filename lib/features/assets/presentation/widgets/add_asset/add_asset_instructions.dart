@@ -125,15 +125,7 @@ class InstructionsList extends StatelessWidget {
       builder: (context, state) {
         if (state is InstructionLoadedState) {
           if (state.allInstructions.allInstructions.isEmpty) {
-            return Column(
-              children: [
-                const Expanded(child: SizedBox()),
-                Text(
-                  AppLocalizations.of(context)!.item_no_items,
-                ),
-                const Expanded(child: SizedBox()),
-              ],
-            );
+            return const SizedBox();
           }
           final filteredItems = state.allInstructions.allInstructions
               .where(
