@@ -60,191 +60,134 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
       permissionType: PermissionType.read,
     );
     final userState = context.read<UserProfileBloc>().state;
-    return CustomScrollView(
-      slivers: [
-        SliverOverlapInjector(
-          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-        ),
-        SliverToBoxAdapter(
-          child: !permission
-              ? Column(
+    if (!permission) {
+      return Column(
+        children: [
+          SizedBox(
+            height: responsiveSizeVerticalPct(small: 40),
+          ),
+          SizedBox(
+            child: Text(
+              AppLocalizations.of(context)!.permission_no_permission,
+            ),
+          ),
+        ],
+      );
+    }
+    return BlocBuilder<FilterBloc, FilterState>(
+      builder: (context, state) {
+        if (state is FilterLoadedState && state.locations.isNotEmpty) {
+          return BlocBuilder<InstructionBloc, InstructionState>(
+              builder: (context, state) {
+            if (state is InstructionLoadedState) {
+              // Instructions loaded but the list is empty
+              if (state.allInstructions.allInstructions.isEmpty) {
+                return Column(
                   children: [
                     SizedBox(
                       height: responsiveSizeVerticalPct(small: 40),
                     ),
-                    SizedBox(
+                    Text(
+                      AppLocalizations.of(context)!.item_no_items,
+                    ),
+                  ],
+                );
+              }
+              final filteredInstructions = _search(
+                context,
+                state.allInstructions.allInstructions,
+                searchQuery,
+              );
+              final List<Instruction> published = [];
+              final List<Instruction> drafts = [];
+              for (var instruction in filteredInstructions) {
+                if (instruction.isPublished) {
+                  published.add(instruction);
+                } else if (userState is Approved &&
+                    userState.userProfile.id == instruction.userId &&
+                    !instruction.isPublished) {
+                  drafts.add(instruction);
+                }
+              }
+              return ListView(
+                children: [
+                  // drafts
+                  if (drafts.isNotEmpty) ...[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                        top: 8,
+                        bottom: 4,
+                      ),
                       child: Text(
-                        AppLocalizations.of(context)!.permission_no_permission,
+                        AppLocalizations.of(context)!.drafts,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4!
+                            .copyWith(fontSize: 20),
+                      ),
+                    ),
+                    ...drafts.map(
+                      (draft) => Padding(
+                        key: ValueKey(draft.id),
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: InstructionTile(
+                          instruction: draft,
+                          searchQuery: searchQuery,
+                        ),
                       ),
                     ),
                   ],
-                )
-              : BlocBuilder<FilterBloc, FilterState>(
-                  builder: (context, state) {
-                    if (state is FilterLoadedState &&
-                        state.locations.isNotEmpty) {
-                      return ListView(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            height:
-                                isSearchBoxExpanded ? searchBoxHeight + 4 : 0,
-                          ),
-                          // instructions list
-                          BlocBuilder<InstructionBloc, InstructionState>(
-                            builder: (context, state) {
-                              if (state is InstructionLoadedState) {
-                                if (state
-                                    .allInstructions.allInstructions.isEmpty) {
-                                  return Column(
-                                    children: [
-                                      SizedBox(
-                                        height: responsiveSizeVerticalPct(
-                                            small: 40),
-                                      ),
-                                      Text(
-                                        AppLocalizations.of(context)!
-                                            .item_no_items,
-                                      ),
-                                    ],
-                                  );
-                                }
-                                final filteredInstructions = _search(
-                                  context,
-                                  state.allInstructions.allInstructions,
-                                  searchQuery,
-                                );
-                                final List<Instruction> published = [];
-                                final List<Instruction> drafts = [];
-                                for (var instruction in filteredInstructions) {
-                                  if (instruction.isPublished) {
-                                    published.add(instruction);
-                                  } else if (userState is Approved &&
-                                      userState.userProfile.id ==
-                                          instruction.userId &&
-                                      !instruction.isPublished) {
-                                    drafts.add(instruction);
-                                  }
-                                }
-                                return ListView(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // drafts
-                                    if (drafts.isNotEmpty)
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 16,
-                                              vertical: 4,
-                                            ),
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .drafts,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline4!
-                                                  .copyWith(fontSize: 20),
-                                            ),
-                                          ),
-                                          ListView.separated(
-                                            separatorBuilder:
-                                                (context, index) =>
-                                                    const SizedBox(
-                                              height: 4,
-                                            ),
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: drafts.length,
-                                            itemBuilder: (context, index) =>
-                                                InstructionTile(
-                                              instruction: drafts[index],
-                                              searchQuery: searchQuery,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    // published instructions
-                                    if (published.isNotEmpty)
-                                      ListView(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        // crossAxisAlignment:
-                                        //     CrossAxisAlignment.start,
-                                        children: [
-                                          if (published.isNotEmpty)
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 16,
-                                                vertical: 4,
-                                              ),
-                                              child: Text(
-                                                AppLocalizations.of(context)!
-                                                    .published,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline4!
-                                                    .copyWith(fontSize: 20),
-                                              ),
-                                            ),
-                                          ListView.separated(
-                                            separatorBuilder:
-                                                (context, index) =>
-                                                    const SizedBox(
-                                              height: 4,
-                                            ),
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: published.length,
-                                            itemBuilder: (context, index) =>
-                                                InstructionTile(
-                                              instruction: published[index],
-                                              searchQuery: searchQuery,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 50,
-                                          ),
-                                        ],
-                                      ),
-                                  ],
-                                );
-                              } else {
-                                // shows shimmer when loading
-                                return ListView.separated(
-                                  padding: const EdgeInsets.only(top: 4),
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                    height: 4,
-                                  ),
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: 8,
-                                  itemBuilder: (context, index) =>
-                                      const ShimmerInstructionTile(),
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      );
-                    }
-                    return const SizedBox();
-                  },
-                ),
-        ),
-      ],
+                  // published instructions
+                  if (published.isNotEmpty) ...[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                        top: 8,
+                        bottom: 4,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.published,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4!
+                            .copyWith(fontSize: 20),
+                      ),
+                    ),
+                    ...published.map(
+                      (instruction) => Padding(
+                        key: ValueKey(instruction.id),
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: InstructionTile(
+                          instruction: instruction,
+                          searchQuery: searchQuery,
+                        ),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(
+                    height: 50,
+                  ),
+                ],
+              );
+            }
+            // shows shimmer while loading
+            return ListView.separated(
+              padding: const EdgeInsets.only(top: 4),
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 4,
+              ),
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: 8,
+              itemBuilder: (context, index) => const ShimmerInstructionTile(),
+            );
+          });
+        }
+        return const SizedBox();
+      },
     );
   }
 }

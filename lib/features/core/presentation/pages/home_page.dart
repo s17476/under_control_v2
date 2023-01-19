@@ -548,13 +548,11 @@ class _HomePageState extends State<HomePage>
                                         _isAssetsSearchBarExpanded,
                                     searchQuery: _assetsSearchQuery,
                                   ),
-                                  KeepAlivePage(
-                                    child: KnowledgeBasePage(
-                                      searchBoxHeight: _searchBoxHeight,
-                                      isSearchBoxExpanded:
-                                          _isInstructionsSearchBarExpanded,
-                                      searchQuery: _instructionsSearchQuery,
-                                    ),
+                                  KnowledgeBasePage(
+                                    searchBoxHeight: _searchBoxHeight,
+                                    isSearchBoxExpanded:
+                                        _isInstructionsSearchBarExpanded,
+                                    searchQuery: _instructionsSearchQuery,
                                   ),
                                 ],
                               ),
