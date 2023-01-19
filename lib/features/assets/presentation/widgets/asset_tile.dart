@@ -108,19 +108,31 @@ class AssetTile extends StatelessWidget {
                                   color: color,
                                   // shows asset's photo or an icon if no there is no photo url
                                   child: asset.images.isNotEmpty
+                                      // TODO - cache images
                                       ? CachedNetworkImage(
                                           imageUrl: asset.images[0],
-                                          placeholder: (context, url) =>
+                                          placeholder: (context, url) => Stack(
+                                            children: [
                                               Shimmer.fromColors(
-                                            baseColor: Theme.of(context)
-                                                .scaffoldBackgroundColor,
-                                            highlightColor:
-                                                Theme.of(context).cardColor,
-                                            child: Container(
-                                              color: Colors.black,
-                                              width: double.infinity,
-                                              height: 70,
-                                            ),
+                                                baseColor: Theme.of(context)
+                                                    .scaffoldBackgroundColor,
+                                                highlightColor:
+                                                    Theme.of(context).cardColor,
+                                                child: Container(
+                                                  color: Colors.black,
+                                                  width: double.infinity,
+                                                  height: 70,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: double.infinity,
+                                                height: 70,
+                                                child: Icon(
+                                                  Icons.precision_manufacturing,
+                                                  size: 50,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                           errorWidget: (context, url, error) =>
                                               const Icon(

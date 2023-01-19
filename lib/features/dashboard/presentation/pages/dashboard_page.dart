@@ -15,10 +15,7 @@ import '../widgets/work_requests_latest.dart';
 class DashboardPage extends StatelessWidget {
   const DashboardPage({
     Key? key,
-    required this.scrollController,
   }) : super(key: key);
-
-  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {

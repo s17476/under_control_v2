@@ -279,11 +279,12 @@ class _HomePageState extends State<HomePage>
     _pageController.addListener(() {
       if (_pageController.page! - _pageIndex > 0.5 ||
           _pageController.page! - _pageIndex < -0.5) {
-        _scrollController.animateTo(
-          0,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
+        // TODO - scroll up on page change
+        // _scrollController.animateTo(
+        //   0,
+        //   duration: const Duration(milliseconds: 300),
+        //   curve: Curves.easeInOut,
+        // );
       }
     });
 
@@ -476,94 +477,93 @@ class _HomePageState extends State<HomePage>
                     BlocBuilder<FilterBloc, FilterState>(
                       builder: (context, state) {
                         if (state is FilterLoadedState) {
-                          // locations not selected
-                          if (state.locations.isEmpty) {
-                            return Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 16,
-                                    top: 8,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          AppLocalizations.of(context)!
-                                              .home_screen_filter_select_locations,
-                                          style: const TextStyle(fontSize: 18),
+                          return Stack(
+                            children: [
+                              // locations not selected
+                              if (state is FilterLoadedState &&
+                                  state.locations.isEmpty)
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 16,
+                                        top: 8,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .home_screen_filter_select_locations,
+                                              style:
+                                                  const TextStyle(fontSize: 18),
+                                            ),
+                                          ),
+                                          const Icon(
+                                            Icons.arrow_upward,
+                                            size: 50,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const Expanded(
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.location_off,
+                                          size: 100,
                                         ),
                                       ),
-                                      const Icon(
-                                        Icons.arrow_upward,
-                                        size: 50,
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    const SizedBox(
+                                      height: 36,
+                                    ),
+                                  ],
                                 ),
-                                const Expanded(
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.location_off,
-                                      size: 100,
+                              // tabs
+                              // if (state is FilterLoadedState &&
+                              //     state.locations.isNotEmpty)
+                              PageView(
+                                controller: _pageController,
+                                onPageChanged: (index) {
+                                  if (!_isBottomNavigationAnimating) {
+                                    setState(() {
+                                      _pageIndex = index;
+                                    });
+                                    _navigationController.value = index;
+                                  }
+                                },
+                                children: [
+                                  const KeepAlivePage(
+                                    child: TasksPage(),
+                                  ),
+                                  KeepAlivePage(
+                                    child: InventoryPage(
+                                      searchBoxHeight: _searchBoxHeight,
+                                      isSearchBoxExpanded:
+                                          _isInventorySearchBarExpanded,
+                                      searchQuery: _inventorySearchQuery,
+                                      isSortedByCategory: false,
                                     ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 36,
-                                ),
-                              ],
-                            );
-                          }
-
-                          if (state.locations.isNotEmpty) {
-                            return PageView(
-                              controller: _pageController,
-                              onPageChanged: (index) {
-                                if (!_isBottomNavigationAnimating) {
-                                  setState(() {
-                                    _pageIndex = index;
-                                  });
-                                  _navigationController.value = index;
-                                }
-                              },
-                              children: [
-                                const KeepAlivePage(
-                                  child: TasksPage(),
-                                ),
-                                KeepAlivePage(
-                                  child: InventoryPage(
-                                    searchBoxHeight: _searchBoxHeight,
-                                    isSearchBoxExpanded:
-                                        _isInventorySearchBarExpanded,
-                                    searchQuery: _inventorySearchQuery,
-                                    isSortedByCategory: false,
-                                  ),
-                                ),
-                                KeepAlivePage(
-                                  child: DashboardPage(
-                                    scrollController: _scrollController,
-                                  ),
-                                ),
-                                KeepAlivePage(
-                                  child: AssetsPage(
+                                  const DashboardPage(),
+                                  AssetsPage(
                                     searchBoxHeight: _searchBoxHeight,
                                     isSearchBoxExpanded:
                                         _isAssetsSearchBarExpanded,
                                     searchQuery: _assetsSearchQuery,
                                   ),
-                                ),
-                                KeepAlivePage(
-                                  child: KnowledgeBasePage(
-                                    searchBoxHeight: _searchBoxHeight,
-                                    isSearchBoxExpanded:
-                                        _isInstructionsSearchBarExpanded,
-                                    searchQuery: _instructionsSearchQuery,
+                                  KeepAlivePage(
+                                    child: KnowledgeBasePage(
+                                      searchBoxHeight: _searchBoxHeight,
+                                      isSearchBoxExpanded:
+                                          _isInstructionsSearchBarExpanded,
+                                      searchQuery: _instructionsSearchQuery,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                          }
+                                ],
+                              ),
+                            ],
+                          );
                         }
                         return const SizedBox();
                       },
