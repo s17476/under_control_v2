@@ -251,6 +251,9 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                         searchQuery: widget.searchQuery,
                       ),
                     ),
+                    const SizedBox(
+                      height: 50,
+                    ),
                   ],
                 );
               }

@@ -533,9 +533,7 @@ class _HomePageState extends State<HomePage>
                                   }
                                 },
                                 children: [
-                                  const KeepAlivePage(
-                                    child: TasksPage(),
-                                  ),
+                                  const TasksPage(),
                                   KeepAlivePage(
                                     child: InventoryPage(
                                       searchBoxHeight: _searchBoxHeight,

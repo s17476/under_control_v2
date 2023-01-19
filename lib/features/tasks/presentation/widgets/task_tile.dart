@@ -634,7 +634,7 @@ class ConnectedAsset extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      '${asset.internalCode} - ${asset.producer} - ${asset.model}',
+                      '${asset.producer} - ${asset.model}',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
