@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../blocs/work_requests_status/work_requests_status_bloc.dart';
 
@@ -111,19 +112,19 @@ class WorkrequestsStatus extends StatelessWidget {
                           PieChartData(
                             pieTouchData: PieTouchData(
                               enabled: false,
-                              touchCallback:
-                                  (FlTouchEvent event, pieTouchResponse) {
-                                // setState(() {
-                                //   if (!event.isInterestedForInteractions ||
-                                //       pieTouchResponse == null ||
-                                //       pieTouchResponse.touchedSection == null) {
-                                //     touchedIndex = -1;
-                                //     return;
-                                //   }
-                                //   touchedIndex = pieTouchResponse
-                                //       .touchedSection!.touchedSectionIndex;
-                                // });
-                              },
+                              // touchCallback:
+                              //     (FlTouchEvent event, pieTouchResponse) {
+                              // setState(() {
+                              //   if (!event.isInterestedForInteractions ||
+                              //       pieTouchResponse == null ||
+                              //       pieTouchResponse.touchedSection == null) {
+                              //     touchedIndex = -1;
+                              //     return;
+                              //   }
+                              //   touchedIndex = pieTouchResponse
+                              //       .touchedSection!.touchedSectionIndex;
+                              // });
+                              //   },
                             ),
                             borderData: FlBorderData(
                               show: false,
@@ -245,7 +246,19 @@ class WorkrequestsStatus extends StatelessWidget {
             ),
           );
         }
-        return const SizedBox();
+        return Shimmer.fromColors(
+          baseColor: Theme.of(context).cardColor,
+          highlightColor: Theme.of(context).cardColor.withAlpha(60),
+          child: Container(
+            width: double.infinity,
+            height: 170,
+            // margin: margin,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.black,
+            ),
+          ),
+        );
       },
     );
   }

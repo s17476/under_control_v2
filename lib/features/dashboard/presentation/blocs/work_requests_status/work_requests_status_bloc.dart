@@ -33,10 +33,6 @@ class WorkRequestsStatusBloc
   String _companyId = '';
   List<String> _locations = [];
 
-  WorkRequestsListModel? _awaiting;
-  WorkRequestsListModel? _converted;
-  WorkRequestsListModel? _cancelled;
-
   WorkRequestsStatusBloc({
     required this.filterBloc,
     required this.getAwaitingWorkRequestsCount,
@@ -182,17 +178,10 @@ class WorkRequestsStatusBloc
           allWorkRequests: tmpList,
         );
       }
-      _awaiting = workRequestsList;
-      if (_awaiting != null && _cancelled != null && _converted != null) {
-        print('WorkRequestsStatusBloc - Awaiting - Loaded');
-        emit(
-          WorkRequestsStatusLoadedState(
-            awaiting: _awaiting!,
-            cancelled: _cancelled!,
-            converted: _converted!,
-          ),
-        );
-      }
+      emit(
+        oldState?.copyWith(awaiting: workRequestsList) ??
+            WorkRequestsStatusLoadedState(awaiting: workRequestsList),
+      );
     });
 
     on<UpdateConvertedStatusEvent>((event, emit) async {
@@ -233,17 +222,10 @@ class WorkRequestsStatusBloc
           allWorkRequests: tmpList,
         );
       }
-      _converted = workRequestsList;
-      if (_awaiting != null && _cancelled != null && _converted != null) {
-        print('WorkRequestsStatusBloc - Converted - Loaded');
-        emit(
-          WorkRequestsStatusLoadedState(
-            awaiting: _awaiting!,
-            cancelled: _cancelled!,
-            converted: _converted!,
-          ),
-        );
-      }
+      emit(
+        oldState?.copyWith(converted: workRequestsList) ??
+            WorkRequestsStatusLoadedState(converted: workRequestsList),
+      );
     });
 
     on<UpdateCancelledStatusEvent>((event, emit) async {
@@ -283,17 +265,10 @@ class WorkRequestsStatusBloc
           allWorkRequests: tmpList,
         );
       }
-      _cancelled = workRequestsList;
-      if (_awaiting != null && _cancelled != null && _converted != null) {
-        print('WorkRequestsStatusBloc - Cancelled - Loaded');
-        emit(
-          WorkRequestsStatusLoadedState(
-            awaiting: _awaiting!,
-            cancelled: _cancelled!,
-            converted: _converted!,
-          ),
-        );
-      }
+      emit(
+        oldState?.copyWith(cancelled: workRequestsList) ??
+            WorkRequestsStatusLoadedState(cancelled: workRequestsList),
+      );
     });
   }
 
