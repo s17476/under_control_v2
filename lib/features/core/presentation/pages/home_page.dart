@@ -534,14 +534,12 @@ class _HomePageState extends State<HomePage>
                                 },
                                 children: [
                                   const TasksPage(),
-                                  KeepAlivePage(
-                                    child: InventoryPage(
-                                      searchBoxHeight: _searchBoxHeight,
-                                      isSearchBoxExpanded:
-                                          _isInventorySearchBarExpanded,
-                                      searchQuery: _inventorySearchQuery,
-                                      isSortedByCategory: false,
-                                    ),
+                                  InventoryPage(
+                                    searchBoxHeight: _searchBoxHeight,
+                                    isSearchBoxExpanded:
+                                        _isInventorySearchBarExpanded,
+                                    searchQuery: _inventorySearchQuery,
+                                    isSortedByCategory: false,
                                   ),
                                   const DashboardPage(),
                                   AssetsPage(

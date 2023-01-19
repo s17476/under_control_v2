@@ -105,17 +105,28 @@ class ItemTile extends StatelessWidget {
                                   child: item.itemPhoto.isNotEmpty
                                       ? CachedNetworkImage(
                                           imageUrl: item.itemPhoto,
-                                          placeholder: (context, url) =>
+                                          placeholder: (context, url) => Stack(
+                                            children: [
                                               Shimmer.fromColors(
-                                            baseColor: Theme.of(context)
-                                                .scaffoldBackgroundColor,
-                                            highlightColor:
-                                                Theme.of(context).cardColor,
-                                            child: Container(
-                                              color: Colors.black,
-                                              width: double.infinity,
-                                              height: 70,
-                                            ),
+                                                baseColor: Theme.of(context)
+                                                    .scaffoldBackgroundColor,
+                                                highlightColor:
+                                                    Theme.of(context).cardColor,
+                                                child: Container(
+                                                  color: Colors.black,
+                                                  width: double.infinity,
+                                                  height: 70,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: double.infinity,
+                                                height: 70,
+                                                child: Icon(
+                                                  Icons.api,
+                                                  size: 50,
+                                                ),
+                                              )
+                                            ],
                                           ),
                                           errorWidget: (context, url, error) =>
                                               const Icon(

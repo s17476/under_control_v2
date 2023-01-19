@@ -67,94 +67,67 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
       featureType: FeatureType.inventory,
       permissionType: PermissionType.read,
     );
-    return CustomScrollView(
-      slivers: [
-        SliverOverlapInjector(
-          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-        ),
-        SliverToBoxAdapter(
-          child: !permission
-              ? Column(
-                  children: [
-                    SizedBox(
-                      height: responsiveSizeVerticalPct(small: 40),
-                    ),
-                    SizedBox(
-                      child: Text(
-                        AppLocalizations.of(context)!.permission_no_permission,
-                      ),
-                    ),
-                  ],
-                )
-              : BlocBuilder<FilterBloc, FilterState>(
-                  builder: (context, state) {
-                    if (state is FilterLoadedState &&
-                        state.locations.isNotEmpty) {
-                      return Column(
-                        children: [
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            height: isSearchBoxExpanded ? searchBoxHeight : 0,
-                          ),
-                          BlocBuilder<ItemsBloc, ItemsState>(
-                            builder: (context, state) {
-                              if (state is ItemsLoadedState) {
-                                if (state.allItems.allItems.isEmpty) {
-                                  return Column(
-                                    children: [
-                                      SizedBox(
-                                        height: responsiveSizeVerticalPct(
-                                            small: 40),
-                                      ),
-                                      Text(
-                                        AppLocalizations.of(context)!
-                                            .item_no_items,
-                                      ),
-                                    ],
-                                  );
-                                }
-                                final filteredItems = _searchItems(
-                                  context,
-                                  state.allItems.allItems,
-                                  searchQuery,
-                                );
-                                return ListView.builder(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: filteredItems.length,
-                                  itemBuilder: (context, index) {
-                                    return ItemTile(
-                                      item: filteredItems[index],
-                                      searchQuery: searchQuery,
-                                    );
-                                  },
-                                );
-                              } else {
-                                // loading shimmer animation
-                                return ListView.builder(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: 6,
-                                  itemBuilder: (context, index) {
-                                    return const ShimmerItemTile();
-                                  },
-                                );
-                              }
-                            },
-                          ),
-                          const SizedBox(
-                            height: 50,
-                          ),
-                        ],
-                      );
-                    }
-                    return const SizedBox();
-                  },
-                ),
-        ),
-      ],
-    );
+    if (!permission) {
+      return Column(
+        children: [
+          SizedBox(
+            height: responsiveSizeVerticalPct(small: 40),
+          ),
+          SizedBox(
+            child: Text(
+              AppLocalizations.of(context)!.permission_no_permission,
+            ),
+          ),
+        ],
+      );
+    }
+    return BlocBuilder<FilterBloc, FilterState>(builder: (context, state) {
+      if (state is FilterLoadedState && state.locations.isNotEmpty) {
+        return BlocBuilder<ItemsBloc, ItemsState>(builder: (context, state) {
+          if (state is ItemsLoadedState) {
+            // Items loaded, but the list is empty
+            if (state.allItems.allItems.isEmpty) {
+              return Column(
+                children: [
+                  SizedBox(
+                    height: responsiveSizeVerticalPct(small: 40),
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.item_no_items,
+                  ),
+                ],
+              );
+            }
+            // Items loaded
+            final filteredItems = _searchItems(
+              context,
+              state.allItems.allItems,
+              searchQuery,
+            );
+            return ListView.builder(
+              padding: const EdgeInsets.only(top: 8),
+              itemCount: filteredItems.length,
+              itemBuilder: (context, index) {
+                return ItemTile(
+                  item: filteredItems[index],
+                  searchQuery: searchQuery,
+                );
+              },
+            );
+          }
+          // loading shimmer animation
+          return ListView.builder(
+            padding: const EdgeInsets.only(top: 2),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 6,
+            itemBuilder: (context, index) {
+              return const ShimmerItemTile();
+            },
+          );
+        });
+      }
+      return const SizedBox();
+    });
   }
 }
