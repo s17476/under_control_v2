@@ -475,52 +475,49 @@ class _HomePageState extends State<HomePage>
                   children: [
                     BlocBuilder<FilterBloc, FilterState>(
                       builder: (context, state) {
-                        return Stack(
-                          children: [
-                            // locations not selected
-                            if (state is FilterLoadedState &&
-                                state.locations.isEmpty)
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 16,
-                                      top: 8,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .home_screen_filter_select_locations,
-                                            style:
-                                                const TextStyle(fontSize: 18),
-                                          ),
-                                        ),
-                                        const Icon(
-                                          Icons.arrow_upward,
-                                          size: 50,
-                                        ),
-                                      ],
-                                    ),
+                        if (state is FilterLoadedState) {
+                          // locations not selected
+                          if (state.locations.isEmpty) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 16,
+                                    top: 8,
                                   ),
-                                  const Expanded(
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.location_off,
-                                        size: 100,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .home_screen_filter_select_locations,
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
                                       ),
+                                      const Icon(
+                                        Icons.arrow_upward,
+                                        size: 50,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Expanded(
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.location_off,
+                                      size: 100,
                                     ),
                                   ),
-                                  const SizedBox(
-                                    height: 36,
-                                  ),
-                                ],
-                              ),
-                            // tabs
-                            // if (state is FilterLoadedState &&
-                            //     state.locations.isNotEmpty)
-                            PageView(
+                                ),
+                                const SizedBox(
+                                  height: 36,
+                                ),
+                              ],
+                            );
+                          }
+
+                          if (state.locations.isNotEmpty) {
+                            return PageView(
                               controller: _pageController,
                               onPageChanged: (index) {
                                 if (!_isBottomNavigationAnimating) {
@@ -543,8 +540,10 @@ class _HomePageState extends State<HomePage>
                                     isSortedByCategory: false,
                                   ),
                                 ),
-                                const KeepAlivePage(
-                                  child: DashboardPage(),
+                                KeepAlivePage(
+                                  child: DashboardPage(
+                                    scrollController: _scrollController,
+                                  ),
                                 ),
                                 KeepAlivePage(
                                   child: AssetsPage(
@@ -563,9 +562,10 @@ class _HomePageState extends State<HomePage>
                                   ),
                                 ),
                               ],
-                            ),
-                          ],
-                        );
+                            );
+                          }
+                        }
+                        return const SizedBox();
                       },
                     ),
                     Container(

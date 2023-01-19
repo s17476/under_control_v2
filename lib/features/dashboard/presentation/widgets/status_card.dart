@@ -7,6 +7,7 @@ class StatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Dash - StatusCard');
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListView(
