@@ -15,7 +15,7 @@ import '../../../domain/usecases/asset_action/get_dashboard_last_five_asset_acti
 part 'dashboard_asset_action_event.dart';
 part 'dashboard_asset_action_state.dart';
 
-@injectable
+@singleton
 class DashboardAssetActionBloc
     extends Bloc<DashboardAssetActionEvent, DashboardAssetActionState> {
   final FilterBloc filterBloc;
@@ -219,6 +219,7 @@ class DashboardAssetActionBloc
             allAssetActions: tmpList,
           );
         }
+        print('DashboardAssetActionBloc - Loaded');
         emit(DashboardAssetActionLoadedState(
           allActions: assetActionsList,
           isAllItems: event.limit == 0,

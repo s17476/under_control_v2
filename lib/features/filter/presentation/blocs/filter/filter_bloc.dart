@@ -14,7 +14,7 @@ import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bl
 part 'filter_event.dart';
 part 'filter_state.dart';
 
-@injectable
+@singleton
 class FilterBloc extends Bloc<FilterEvent, FilterState> {
   final LocationBloc locationBloc;
   final GroupBloc groupBloc;
@@ -35,7 +35,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
   }) : super(FilterEmptyState()) {
     // location stream
     _locationStreamSubscription = locationBloc.stream.listen((state) {
-      if (state is LocationLoadedState) {
+      if (_companyId.isNotEmpty && state is LocationLoadedState) {
         // gets all selected locations
         final selectedLocations = state.allSelectedLocations;
         add(UpdateLocationsEvent(locations: selectedLocations));
@@ -44,7 +44,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
     // group stream
     _groupStreamSubscription = groupBloc.stream.listen((state) {
-      if (state is GroupLoadedState && userProfileBloc.state is Approved) {
+      if (_companyId.isNotEmpty && state is GroupLoadedState) {
         if (!_isAdmin) {
           add(
             UpdateGroupsEvent(
@@ -67,10 +67,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
     on<UpdateLocationsEvent>(
       (event, emit) async {
-        emit(FilterLoadingState());
-        List<Group> updatedGroups = [];
-        List<Group> selectedGroups = [];
         if (groupBloc.state is GroupLoadedState) {
+          emit(FilterLoadingState());
+          List<Group> updatedGroups = [];
+          List<Group> selectedGroups = [];
           if (!_isAdmin) {
             selectedGroups = (groupBloc.state as GroupLoadedState)
                 .getGroupsById(_userGroups);
@@ -86,6 +86,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
               }
             }
           }
+          print('FilterBloc - Locations - Loaded');
           emit(
             FilterLoadedState(
               isAdmin: _isAdmin,
@@ -95,24 +96,16 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
               allPossibleGroups: getAllPossibleGroups(),
             ),
           );
-        } else {
-          emit(
-            FilterLoadedState(
-              isAdmin: _isAdmin,
-              companyId: _companyId,
-              locations: event.locations,
-              groups: updatedGroups,
-            ),
-          );
         }
       },
     );
 
     on<UpdateGroupsEvent>((event, emit) async {
-      final locations = state.locations;
-      emit(FilterLoadingState());
-      List<Group> updatedGroups = [];
       if (locationBloc.state is LocationLoadedState) {
+        emit(FilterLoadingState());
+        List<Group> updatedGroups = [];
+        final locations =
+            (locationBloc.state as LocationLoadedState).allSelectedLocations;
         for (var location in locations) {
           for (var group in event.groups) {
             if (group.locations.contains(location.id) &&
@@ -121,16 +114,17 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
             }
           }
         }
+        print('FilterBloc - Groups - Loaded');
+        emit(
+          FilterLoadedState(
+            isAdmin: _isAdmin,
+            companyId: _companyId,
+            locations: locations,
+            groups: updatedGroups,
+            allPossibleGroups: getAllPossibleGroups(),
+          ),
+        );
       }
-      emit(
-        FilterLoadedState(
-          isAdmin: _isAdmin,
-          companyId: _companyId,
-          locations: locations,
-          groups: updatedGroups,
-          allPossibleGroups: getAllPossibleGroups(),
-        ),
-      );
     });
   }
 

@@ -1,13 +1,12 @@
-import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/bloc_message.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/work_request/work_request_model.dart';
 import '../../../domain/entities/work_request/work_request.dart';
 import '../../../domain/usecases/work_order/add_work_request.dart';
@@ -21,32 +20,25 @@ part 'work_request_management_state.dart';
 @injectable
 class WorkRequestManagementBloc
     extends Bloc<WorkRequestManagementEvent, WorkRequestManagementState> {
-  final CompanyProfileBloc companyProfileBloc;
+  final UserProfileBloc userProfileBloc;
   final AddWorkRequest addWorkRequest;
   final DeleteWorkRequest deleteWorkRequest;
   final UpdateWorkRequest updateWorkRequest;
   final CancelWorkRequest cancelWorkRequest;
 
-  late StreamSubscription _companyProfileStreamSubscription;
   String _companyId = '';
 
   WorkRequestManagementBloc({
-    required this.companyProfileBloc,
+    required this.userProfileBloc,
     required this.addWorkRequest,
     required this.deleteWorkRequest,
     required this.updateWorkRequest,
     required this.cancelWorkRequest,
   }) : super(WorkRequestManagementEmptyState()) {
-    _companyProfileStreamSubscription =
-        companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
-        _companyId = state.company.id;
-      }
-    });
-
     on<AddWorkRequestEvent>(
       (event, emit) async {
         emit(WorkRequestManagementLoadingState());
+        _getCompanyId();
         final failureOrString = await addWorkRequest(
           WorkRequestParams(
             workRequest: event.workRequest,
@@ -73,6 +65,7 @@ class WorkRequestManagementBloc
     on<DeleteWorkRequestEvent>(
       (event, emit) async {
         emit(WorkRequestManagementLoadingState());
+        _getCompanyId();
         final failureOrVoidResult = await deleteWorkRequest(
           WorkRequestParams(
             workRequest: event.workRequest,
@@ -97,6 +90,7 @@ class WorkRequestManagementBloc
     on<CancelWorkRequestEvent>(
       (event, emit) async {
         emit(WorkRequestManagementLoadingState());
+        _getCompanyId();
         String updatedDescription = '';
         if (event.workRequest.description.isEmpty) {
           updatedDescription = event.comment;
@@ -132,6 +126,7 @@ class WorkRequestManagementBloc
     on<UpdateWorkRequestEvent>(
       (event, emit) async {
         emit(WorkRequestManagementLoadingState());
+        _getCompanyId();
         final failureOrVoidResult = await updateWorkRequest(
           WorkRequestParams(
             workRequest: event.workRequest,
@@ -155,9 +150,12 @@ class WorkRequestManagementBloc
       },
     );
   }
-  @override
-  Future<void> close() {
-    _companyProfileStreamSubscription.cancel();
-    return super.close();
+  void _getCompanyId() {
+    if (_companyId.isEmpty) {
+      final userState = userProfileBloc.state;
+      if (userState is Approved) {
+        _companyId = userState.userProfile.companyId;
+      }
+    }
   }
 }

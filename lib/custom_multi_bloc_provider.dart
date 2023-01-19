@@ -90,49 +90,19 @@ class CustomMultiBlocProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AssetBloc>()),
         BlocProvider(create: (context) => getIt<AssetActionManagementBloc>()),
         BlocProvider(create: (context) => getIt<AssetManagementBloc>()),
+        BlocProvider(create: (context) => getIt<AssetInternalNumberCubit>()),
+        BlocProvider(create: (context) => getIt<DashboardAssetActionBloc>()),
+        BlocProvider(create: (context) => getIt<WorkRequestBloc>()),
+        BlocProvider(create: (context) => getIt<WorkRequestManagementBloc>()),
+        BlocProvider(create: (context) => getIt<WorkRequestArchiveBloc>()),
+        BlocProvider(create: (context) => getIt<TaskBloc>()),
+        BlocProvider(create: (context) => getIt<TaskManagementBloc>()),
+        BlocProvider(create: (context) => getIt<TaskActionBloc>()),
+        BlocProvider(create: (context) => getIt<TaskActionManagementBloc>()),
+        BlocProvider(create: (context) => getIt<TaskArchiveBloc>()),
+        BlocProvider(create: (context) => getIt<TaskArchiveLatestBloc>()),
         // TODO - BLoCs optimalization
-        BlocProvider(
-          create: (context) => getIt<AssetInternalNumberCubit>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<DashboardAssetActionBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<WorkRequestBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<WorkRequestManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<WorkRequestArchiveBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<TaskBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<TaskManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<TaskActionBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<TaskActionManagementBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<TaskArchiveBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<TaskArchiveLatestBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<FilterBloc>(),
-          lazy: false,
-        ),
+        BlocProvider(create: (context) => getIt<FilterBloc>()),
         BlocProvider(
           create: (context) => getIt<TaskFilterBloc>(),
           lazy: false,

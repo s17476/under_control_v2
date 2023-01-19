@@ -247,6 +247,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             ),
           ),
           (_) async {
+            print('LocationBloc - Selected');
             emit(
               LocationLoadedState(
                 allLocations: currentState.allLocations,
@@ -306,6 +307,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             ),
           ),
           (_) async {
+            print('LocationBloc - Unselected');
             emit(
               LocationLoadedState(
                 allLocations: currentState.allLocations,

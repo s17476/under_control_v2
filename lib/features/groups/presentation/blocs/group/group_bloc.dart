@@ -181,12 +181,15 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
               selectedGroups: selectedGroups,
             ),
           ),
-          (_) async => emit(
-            GroupLoadedState(
-              allGroups: currentState.allGroups,
-              selectedGroups: selectedGroups,
-            ),
-          ),
+          (_) async {
+            print('GroupBloc - Selected');
+            emit(
+              GroupLoadedState(
+                allGroups: currentState.allGroups,
+                selectedGroups: selectedGroups,
+              ),
+            );
+          },
         );
       },
     );
@@ -208,16 +211,16 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
               allGroups: currentState.allGroups,
               selectedGroups: [...selectedGroups],
             ),
-            // currentState.copyWith(
-            //   selectedGroups: selectedGroups,
-            // ),
           ),
-          (_) async => emit(
-            GroupLoadedState(
-              allGroups: currentState.allGroups,
-              selectedGroups: [...selectedGroups],
-            ),
-          ),
+          (_) async {
+            print('GroupBloc - Unselected');
+            emit(
+              GroupLoadedState(
+                allGroups: currentState.allGroups,
+                selectedGroups: [...selectedGroups],
+              ),
+            );
+          },
         );
       },
     );

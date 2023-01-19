@@ -1,18 +1,17 @@
-import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/tasks/domain/usecases/task/complete_task.dart';
 
-import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/bloc_message.dart';
+import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/task/task_model.dart';
 import '../../../domain/entities/task/task.dart';
 import '../../../domain/usecases/task/add_task.dart';
 import '../../../domain/usecases/task/cancel_task.dart';
+import '../../../domain/usecases/task/complete_task.dart';
 import '../../../domain/usecases/task/delete_task.dart';
 import '../../../domain/usecases/task/update_task.dart';
 
@@ -22,34 +21,27 @@ part 'task_management_state.dart';
 @injectable
 class TaskManagementBloc
     extends Bloc<TaskManagementEvent, TaskManagementState> {
-  final CompanyProfileBloc companyProfileBloc;
+  final UserProfileBloc userProfileBloc;
   final AddTask addTask;
   final DeleteTask deleteTask;
   final UpdateTask updateTask;
   final CancelTask cancelTask;
   final CompleteTask completeTask;
 
-  late StreamSubscription _companyProfileStreamSubscription;
   String _companyId = '';
 
   TaskManagementBloc({
-    required this.companyProfileBloc,
+    required this.userProfileBloc,
     required this.addTask,
     required this.deleteTask,
     required this.updateTask,
     required this.cancelTask,
     required this.completeTask,
   }) : super(TaskManagementEmptyState()) {
-    _companyProfileStreamSubscription =
-        companyProfileBloc.stream.listen((state) {
-      if (state is CompanyProfileLoaded && _companyId.isEmpty) {
-        _companyId = state.company.id;
-      }
-    });
-
     on<AddTaskEvent>(
       (event, emit) async {
         emit(TaskManagementLoadingState());
+        _getCompanyId();
         final failureOrString = await addTask(
           TaskParams(
             task: event.task,
@@ -76,6 +68,7 @@ class TaskManagementBloc
     on<CompleteTaskEvent>(
       (event, emit) async {
         emit(TaskManagementLoadingState());
+        _getCompanyId();
         final failureOrVoidResult = await completeTask(
           TaskParams(
             task: event.task,
@@ -100,6 +93,7 @@ class TaskManagementBloc
     on<DeleteTaskEvent>(
       (event, emit) async {
         emit(TaskManagementLoadingState());
+        _getCompanyId();
         final failureOrVoidResult = await deleteTask(
           TaskParams(
             task: event.task,
@@ -124,6 +118,7 @@ class TaskManagementBloc
     on<CancelTaskEvent>(
       (event, emit) async {
         emit(TaskManagementLoadingState());
+        _getCompanyId();
         String updatedDescription = '';
         if (event.task.description.isEmpty) {
           updatedDescription = event.comment;
@@ -158,6 +153,7 @@ class TaskManagementBloc
     on<UpdateTaskEvent>(
       (event, emit) async {
         emit(TaskManagementLoadingState());
+        _getCompanyId();
         final failureOrVoidResult = await updateTask(
           TaskParams(
             task: event.task,
@@ -181,9 +177,12 @@ class TaskManagementBloc
       },
     );
   }
-  @override
-  Future<void> close() {
-    _companyProfileStreamSubscription.cancel();
-    return super.close();
+  void _getCompanyId() {
+    if (_companyId.isEmpty) {
+      final userState = userProfileBloc.state;
+      if (userState is Approved) {
+        _companyId = userState.userProfile.companyId;
+      }
+    }
   }
 }

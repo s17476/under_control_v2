@@ -15,7 +15,7 @@ import '../../../domain/usecases/task/get_tasks_stream.dart';
 part 'task_event.dart';
 part 'task_state.dart';
 
-@injectable
+@singleton
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final FilterBloc filterBloc;
   final GetTasksStream getTasksStream;
@@ -148,6 +148,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           allTasks: tmpList,
         );
       }
+      print('TaskBloc - Loaded');
       emit(TaskLoadedState(
         allTasks: workRequestsList,
       ));

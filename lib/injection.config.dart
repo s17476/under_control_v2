@@ -68,13 +68,13 @@ import 'package:under_control_v2/features/assets/presentation/blocs/asset/asset_
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_action/asset_action_bloc.dart'
     as _i175;
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_action_management/asset_action_management_bloc.dart'
-    as _i185;
-import 'package:under_control_v2/features/assets/presentation/blocs/asset_category/asset_category_bloc.dart'
     as _i186;
-import 'package:under_control_v2/features/assets/presentation/blocs/asset_category_management/asset_category_management_bloc.dart'
+import 'package:under_control_v2/features/assets/presentation/blocs/asset_category/asset_category_bloc.dart'
     as _i187;
-import 'package:under_control_v2/features/assets/presentation/blocs/asset_management/asset_management_bloc.dart'
+import 'package:under_control_v2/features/assets/presentation/blocs/asset_category_management/asset_category_management_bloc.dart'
     as _i188;
+import 'package:under_control_v2/features/assets/presentation/blocs/asset_management/asset_management_bloc.dart'
+    as _i189;
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_parts/asset_parts_bloc.dart'
     as _i207;
 import 'package:under_control_v2/features/assets/presentation/blocs/dashboard_asset_action/dashboard_asset_action_bloc.dart'
@@ -114,9 +114,9 @@ import 'package:under_control_v2/features/checklists/domain/usecases/get_checkli
 import 'package:under_control_v2/features/checklists/domain/usecases/update_checklist.dart'
     as _i160;
 import 'package:under_control_v2/features/checklists/presentation/blocs/checklist/checklist_bloc.dart'
-    as _i189;
-import 'package:under_control_v2/features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart'
     as _i190;
+import 'package:under_control_v2/features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart'
+    as _i191;
 import 'package:under_control_v2/features/company_profile/data/repositories/company_management_repository_impl.dart'
     as _i80;
 import 'package:under_control_v2/features/company_profile/data/repositories/company_repository_impl.dart'
@@ -142,13 +142,13 @@ import 'package:under_control_v2/features/company_profile/domain/usecases/get_co
 import 'package:under_control_v2/features/company_profile/domain/usecases/update_company.dart'
     as _i161;
 import 'package:under_control_v2/features/company_profile/presentation/blocs/company_management/company_management_bloc.dart'
-    as _i191;
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart'
     as _i192;
+import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart'
+    as _i193;
 import 'package:under_control_v2/features/company_profile/presentation/blocs/new_users/new_users_bloc.dart'
-    as _i202;
-import 'package:under_control_v2/features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
     as _i203;
+import 'package:under_control_v2/features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart'
+    as _i204;
 import 'package:under_control_v2/features/core/network/network_info.dart'
     as _i24;
 import 'package:under_control_v2/features/core/utils/input_validator.dart'
@@ -188,7 +188,7 @@ import 'package:under_control_v2/features/groups/domain/usecases/try_to_get_cach
 import 'package:under_control_v2/features/groups/domain/usecases/update_group.dart'
     as _i162;
 import 'package:under_control_v2/features/groups/presentation/blocs/group/group_bloc.dart'
-    as _i193;
+    as _i194;
 import 'package:under_control_v2/features/inventory/data/repositories/dashboard_item_action_repository_impl.dart'
     as _i87;
 import 'package:under_control_v2/features/inventory/data/repositories/item_action_repository_impl.dart'
@@ -252,15 +252,15 @@ import 'package:under_control_v2/features/inventory/presentation/blocs/dashboard
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action/item_action_bloc.dart'
     as _i137;
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart'
-    as _i197;
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_category/item_category_bloc.dart'
     as _i198;
-import 'package:under_control_v2/features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart'
+import 'package:under_control_v2/features/inventory/presentation/blocs/item_category/item_category_bloc.dart'
     as _i199;
+import 'package:under_control_v2/features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart'
+    as _i200;
 import 'package:under_control_v2/features/inventory/presentation/blocs/items/items_bloc.dart'
     as _i210;
 import 'package:under_control_v2/features/inventory/presentation/blocs/items_management/items_management_bloc.dart'
-    as _i200;
+    as _i201;
 import 'package:under_control_v2/features/knowledge_base/data/repositories/instruction_category_repository_impl.dart'
     as _i10;
 import 'package:under_control_v2/features/knowledge_base/data/repositories/instruction_repository_impl.dart'
@@ -288,11 +288,11 @@ import 'package:under_control_v2/features/knowledge_base/domain/usecases/update_
 import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction/instruction_bloc.dart'
     as _i209;
 import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_category/instruction_category_bloc.dart'
-    as _i194;
-import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart'
     as _i195;
-import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart'
+import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart'
     as _i196;
+import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart'
+    as _i197;
 import 'package:under_control_v2/features/locations/data/datasources/location_local_data_source.dart'
     as _i138;
 import 'package:under_control_v2/features/locations/data/datasources/location_remote_data_source.dart'
@@ -314,7 +314,7 @@ import 'package:under_control_v2/features/locations/domain/usecases/try_to_get_c
 import 'package:under_control_v2/features/locations/domain/usecases/update_location.dart'
     as _i163;
 import 'package:under_control_v2/features/locations/presentation/blocs/bloc/location_bloc.dart'
-    as _i201;
+    as _i202;
 import 'package:under_control_v2/features/settings/presentation/blocs/language/language_cubit.dart'
     as _i21;
 import 'package:under_control_v2/features/tasks/data/repositories/task_action_repository_impl.dart'
@@ -374,7 +374,7 @@ import 'package:under_control_v2/features/tasks/presentation/blocs/task/task_blo
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_action/task_action_bloc.dart'
     as _i150;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_action_management/task_action_management_bloc.dart'
-    as _i204;
+    as _i205;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_archive/task_archive_bloc.dart'
     as _i211;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_archive_latest/task_archive_latest_bloc.dart'
@@ -382,13 +382,13 @@ import 'package:under_control_v2/features/tasks/presentation/blocs/task_archive_
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_filter/task_filter_bloc.dart'
     as _i220;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_management/task_management_bloc.dart'
-    as _i205;
+    as _i206;
 import 'package:under_control_v2/features/tasks/presentation/blocs/work_request/work_request_bloc.dart'
     as _i215;
 import 'package:under_control_v2/features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart'
     as _i214;
 import 'package:under_control_v2/features/tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart'
-    as _i206;
+    as _i185;
 import 'package:under_control_v2/features/user_profile/data/repositories/user_files_repository_impl.dart'
     as _i40;
 import 'package:under_control_v2/features/user_profile/data/repositories/user_profile_repository_impl.dart'
@@ -881,41 +881,49 @@ Future<_i1.GetIt> $initGetIt(
         addUserAvatar: gh<_i56.AddUserAvatar>(),
         inputValidator: gh<_i8.InputValidator>(),
       ));
-  gh.factory<_i185.AssetActionManagementBloc>(
-      () => _i185.AssetActionManagementBloc(
+  gh.factory<_i185.WorkRequestManagementBloc>(
+      () => _i185.WorkRequestManagementBloc(
+            userProfileBloc: gh<_i184.UserProfileBloc>(),
+            addWorkRequest: gh<_i57.AddWorkRequest>(),
+            deleteWorkRequest: gh<_i100.DeleteWorkRequest>(),
+            updateWorkRequest: gh<_i165.UpdateWorkRequest>(),
+            cancelWorkRequest: gh<_i74.CancelWorkRequest>(),
+          ));
+  gh.factory<_i186.AssetActionManagementBloc>(
+      () => _i186.AssetActionManagementBloc(
             userProfileBloc: gh<_i184.UserProfileBloc>(),
             addAssetAction: gh<_i168.AddAssetAction>(),
             updateAssetAction: gh<_i158.UpdateAssetAction>(),
             deleteAssetAction: gh<_i89.DeleteAssetAction>(),
           ));
-  gh.singleton<_i186.AssetCategoryBloc>(_i186.AssetCategoryBloc(
+  gh.singleton<_i187.AssetCategoryBloc>(_i187.AssetCategoryBloc(
     userProfileBloc: gh<_i184.UserProfileBloc>(),
     getAssetsCategoriesStream: gh<_i109.GetAssetsCategoriesStream>(),
   ));
-  gh.factory<_i187.AssetCategoryManagementBloc>(
-      () => _i187.AssetCategoryManagementBloc(
+  gh.factory<_i188.AssetCategoryManagementBloc>(
+      () => _i188.AssetCategoryManagementBloc(
             userProfileBloc: gh<_i184.UserProfileBloc>(),
             addAssetCategory: gh<_i169.AddAssetCategory>(),
             updateAssetCategory: gh<_i159.UpdateAssetCategory>(),
             deleteAssetCategory: gh<_i90.DeleteAssetCategory>(),
           ));
-  gh.factory<_i188.AssetManagementBloc>(() => _i188.AssetManagementBloc(
+  gh.factory<_i189.AssetManagementBloc>(() => _i189.AssetManagementBloc(
         userProfileBloc: gh<_i184.UserProfileBloc>(),
         addAsset: gh<_i167.AddAsset>(),
         deleteAsset: gh<_i88.DeleteAsset>(),
         updateAsset: gh<_i157.UpdateAsset>(),
       ));
-  gh.singleton<_i189.ChecklistBloc>(_i189.ChecklistBloc(
+  gh.singleton<_i190.ChecklistBloc>(_i190.ChecklistBloc(
     userProfileBloc: gh<_i184.UserProfileBloc>(),
     getChecklistsStream: gh<_i114.GetChecklistStream>(),
   ));
-  gh.factory<_i190.ChecklistManagementBloc>(() => _i190.ChecklistManagementBloc(
+  gh.factory<_i191.ChecklistManagementBloc>(() => _i191.ChecklistManagementBloc(
         userProfileBloc: gh<_i184.UserProfileBloc>(),
         addChecklist: gh<_i170.AddChecklist>(),
         updateChecklist: gh<_i160.UpdateChecklist>(),
         deleteChecklist: gh<_i91.DeleteChecklist>(),
       ));
-  gh.factory<_i191.CompanyManagementBloc>(() => _i191.CompanyManagementBloc(
+  gh.factory<_i192.CompanyManagementBloc>(() => _i192.CompanyManagementBloc(
         userProfileBloc: gh<_i184.UserProfileBloc>(),
         inputValidator: gh<_i8.InputValidator>(),
         addCompany: gh<_i171.AddCompany>(),
@@ -923,14 +931,14 @@ Future<_i1.GetIt> $initGetIt(
         addCompanyLogo: gh<_i172.AddCompanyLogo>(),
         updateCompany: gh<_i161.UpdateCompany>(),
       ));
-  gh.singleton<_i192.CompanyProfileBloc>(_i192.CompanyProfileBloc(
+  gh.singleton<_i193.CompanyProfileBloc>(_i193.CompanyProfileBloc(
     userProfileBloc: gh<_i184.UserProfileBloc>(),
     fetchAllCompanyUsers: gh<_i102.FetchAllCompanyUsers>(),
     getCompanyById: gh<_i115.GetCompanyById>(),
     inputValidator: gh<_i8.InputValidator>(),
   ));
-  gh.singleton<_i193.GroupBloc>(_i193.GroupBloc(
-    companyProfileBloc: gh<_i192.CompanyProfileBloc>(),
+  gh.singleton<_i194.GroupBloc>(_i194.GroupBloc(
+    companyProfileBloc: gh<_i193.CompanyProfileBloc>(),
     addGroup: gh<_i173.AddGroup>(),
     updateGroup: gh<_i162.UpdateGroup>(),
     deleteGroup: gh<_i180.DeleteGroup>(),
@@ -938,45 +946,45 @@ Future<_i1.GetIt> $initGetIt(
     cacheGroups: gh<_i178.CacheGroups>(),
     tryToGetCachedGroups: gh<_i151.TryToGetCachedGroups>(),
   ));
-  gh.singleton<_i194.InstructionCategoryBloc>(_i194.InstructionCategoryBloc(
+  gh.singleton<_i195.InstructionCategoryBloc>(_i195.InstructionCategoryBloc(
     userProfileBloc: gh<_i184.UserProfileBloc>(),
     getInstructionsCategoriesStream:
         gh<_i121.GetInstructionsCategoriesStream>(),
   ));
-  gh.factory<_i195.InstructionCategoryManagementBloc>(
-      () => _i195.InstructionCategoryManagementBloc(
+  gh.factory<_i196.InstructionCategoryManagementBloc>(
+      () => _i196.InstructionCategoryManagementBloc(
             userProfileBloc: gh<_i184.UserProfileBloc>(),
             addInstructionCategory: gh<_i48.AddInstructionCategory>(),
             updateInstructionCategory: gh<_i32.UpdateInstructionCategory>(),
             deleteInstructionCategory: gh<_i93.DeleteInstructionCategory>(),
           ));
-  gh.factory<_i196.InstructionManagementBloc>(
-      () => _i196.InstructionManagementBloc(
+  gh.factory<_i197.InstructionManagementBloc>(
+      () => _i197.InstructionManagementBloc(
             userProfileBloc: gh<_i184.UserProfileBloc>(),
             addInstruction: gh<_i47.AddInstruction>(),
             deleteInstruction: gh<_i92.DeleteInstruction>(),
             updateInstruction: gh<_i31.UpdateInstruction>(),
           ));
-  gh.factory<_i197.ItemActionManagementBloc>(
-      () => _i197.ItemActionManagementBloc(
+  gh.factory<_i198.ItemActionManagementBloc>(
+      () => _i198.ItemActionManagementBloc(
             userProfileBloc: gh<_i184.UserProfileBloc>(),
             addItemAction: gh<_i50.AddItemAction>(),
             updateItemAction: gh<_i34.UpdateItemAction>(),
             deleteItemAction: gh<_i95.DeleteItemAction>(),
             moveItemAction: gh<_i23.MoveItemAction>(),
           ));
-  gh.singleton<_i198.ItemCategoryBloc>(_i198.ItemCategoryBloc(
+  gh.singleton<_i199.ItemCategoryBloc>(_i199.ItemCategoryBloc(
     userProfileBloc: gh<_i184.UserProfileBloc>(),
     getItemsCategoriesStream: gh<_i124.GetItemsCategoriesStream>(),
   ));
-  gh.factory<_i199.ItemCategoryManagementBloc>(
-      () => _i199.ItemCategoryManagementBloc(
+  gh.factory<_i200.ItemCategoryManagementBloc>(
+      () => _i200.ItemCategoryManagementBloc(
             userProfileBloc: gh<_i184.UserProfileBloc>(),
             addItemCategory: gh<_i51.AddItemCategory>(),
             updateItemCategory: gh<_i35.UpdateItemCategory>(),
             deleteItemCategory: gh<_i96.DeleteItemCategory>(),
           ));
-  gh.factory<_i200.ItemsManagementBloc>(() => _i200.ItemsManagementBloc(
+  gh.factory<_i201.ItemsManagementBloc>(() => _i201.ItemsManagementBloc(
         addItemPhoto: gh<_i52.AddItemPhoto>(),
         deleteItemPhoto: gh<_i97.DeleteItemPhoto>(),
         updateItemPhoto: gh<_i36.UpdateItemPhoto>(),
@@ -985,7 +993,7 @@ Future<_i1.GetIt> $initGetIt(
         deleteItem: gh<_i94.DeleteItem>(),
         updateItem: gh<_i33.UpdateItem>(),
       ));
-  gh.singleton<_i201.LocationBloc>(_i201.LocationBloc(
+  gh.singleton<_i202.LocationBloc>(_i202.LocationBloc(
     userProfileBloc: gh<_i184.UserProfileBloc>(),
     addLocation: gh<_i174.AddLocation>(),
     cacheLocation: gh<_i179.CacheLocation>(),
@@ -994,46 +1002,38 @@ Future<_i1.GetIt> $initGetIt(
     tryToGetCachedLocation: gh<_i152.TryToGetCachedLocation>(),
     updateLocation: gh<_i163.UpdateLocation>(),
   ));
-  gh.singleton<_i202.NewUsersBloc>(_i202.NewUsersBloc(
-    gh<_i192.CompanyProfileBloc>(),
+  gh.singleton<_i203.NewUsersBloc>(_i203.NewUsersBloc(
+    gh<_i193.CompanyProfileBloc>(),
     gh<_i103.FetchNewUsers>(),
   ));
-  gh.singleton<_i203.SuspendedUsersBloc>(_i203.SuspendedUsersBloc(
-    gh<_i192.CompanyProfileBloc>(),
+  gh.singleton<_i204.SuspendedUsersBloc>(_i204.SuspendedUsersBloc(
+    gh<_i193.CompanyProfileBloc>(),
     gh<_i104.FetchSuspendedUsers>(),
   ));
-  gh.factory<_i204.TaskActionManagementBloc>(
-      () => _i204.TaskActionManagementBloc(
+  gh.factory<_i205.TaskActionManagementBloc>(
+      () => _i205.TaskActionManagementBloc(
             userProfileBloc: gh<_i184.UserProfileBloc>(),
             addTaskAction: gh<_i54.AddTaskAction>(),
             deleteTaskAction: gh<_i99.DeleteTaskAction>(),
             updateTaskAction: gh<_i38.UpdateTaskAction>(),
           ));
-  gh.factory<_i205.TaskManagementBloc>(() => _i205.TaskManagementBloc(
-        companyProfileBloc: gh<_i192.CompanyProfileBloc>(),
+  gh.factory<_i206.TaskManagementBloc>(() => _i206.TaskManagementBloc(
+        userProfileBloc: gh<_i184.UserProfileBloc>(),
         addTask: gh<_i53.AddTask>(),
         deleteTask: gh<_i98.DeleteTask>(),
         updateTask: gh<_i37.UpdateTask>(),
         cancelTask: gh<_i73.CancelTask>(),
         completeTask: gh<_i83.CompleteTask>(),
       ));
-  gh.factory<_i206.WorkRequestManagementBloc>(
-      () => _i206.WorkRequestManagementBloc(
-            companyProfileBloc: gh<_i192.CompanyProfileBloc>(),
-            addWorkRequest: gh<_i57.AddWorkRequest>(),
-            deleteWorkRequest: gh<_i100.DeleteWorkRequest>(),
-            updateWorkRequest: gh<_i165.UpdateWorkRequest>(),
-            cancelWorkRequest: gh<_i74.CancelWorkRequest>(),
-          ));
   gh.factory<_i207.AssetPartsBloc>(() => _i207.AssetPartsBloc(
-        companyProfileBloc: gh<_i192.CompanyProfileBloc>(),
+        companyProfileBloc: gh<_i193.CompanyProfileBloc>(),
         getAssetsStreamForParent: gh<_i111.GetAssetsStreamForParent>(),
       ));
-  gh.factory<_i208.FilterBloc>(() => _i208.FilterBloc(
-        locationBloc: gh<_i201.LocationBloc>(),
-        groupBloc: gh<_i193.GroupBloc>(),
-        userProfileBloc: gh<_i184.UserProfileBloc>(),
-      ));
+  gh.singleton<_i208.FilterBloc>(_i208.FilterBloc(
+    locationBloc: gh<_i202.LocationBloc>(),
+    groupBloc: gh<_i194.GroupBloc>(),
+    userProfileBloc: gh<_i184.UserProfileBloc>(),
+  ));
   gh.singleton<_i209.InstructionBloc>(_i209.InstructionBloc(
     filterBloc: gh<_i208.FilterBloc>(),
     getInstructionsStream: gh<_i122.GetInstructionsStream>(),
@@ -1042,26 +1042,26 @@ Future<_i1.GetIt> $initGetIt(
     filterBloc: gh<_i208.FilterBloc>(),
     getChecklistsStream: gh<_i125.GetItemsStream>(),
   ));
-  gh.factory<_i211.TaskArchiveBloc>(() => _i211.TaskArchiveBloc(
-        filterBloc: gh<_i208.FilterBloc>(),
-        getArchiveTasksStream: gh<_i106.GetArchiveTasksStream>(),
-      ));
-  gh.factory<_i212.TaskArchiveLatestBloc>(() => _i212.TaskArchiveLatestBloc(
-        filterBloc: gh<_i208.FilterBloc>(),
-        getArchiveLatestTasksStream: gh<_i105.GetArchiveLatestTasksStream>(),
-      ));
-  gh.factory<_i213.TaskBloc>(() => _i213.TaskBloc(
-        filterBloc: gh<_i208.FilterBloc>(),
-        getTasksStream: gh<_i130.GetTasksStream>(),
-      ));
-  gh.factory<_i214.WorkRequestArchiveBloc>(() => _i214.WorkRequestArchiveBloc(
-        filterBloc: gh<_i208.FilterBloc>(),
-        getArchiveWorkRequestsStream: gh<_i107.GetArchiveWorkRequestsStream>(),
-      ));
-  gh.factory<_i215.WorkRequestBloc>(() => _i215.WorkRequestBloc(
-        filterBloc: gh<_i208.FilterBloc>(),
-        getWorkRequestsStream: gh<_i133.GetWorkRequestsStream>(),
-      ));
+  gh.singleton<_i211.TaskArchiveBloc>(_i211.TaskArchiveBloc(
+    filterBloc: gh<_i208.FilterBloc>(),
+    getArchiveTasksStream: gh<_i106.GetArchiveTasksStream>(),
+  ));
+  gh.singleton<_i212.TaskArchiveLatestBloc>(_i212.TaskArchiveLatestBloc(
+    filterBloc: gh<_i208.FilterBloc>(),
+    getArchiveLatestTasksStream: gh<_i105.GetArchiveLatestTasksStream>(),
+  ));
+  gh.singleton<_i213.TaskBloc>(_i213.TaskBloc(
+    filterBloc: gh<_i208.FilterBloc>(),
+    getTasksStream: gh<_i130.GetTasksStream>(),
+  ));
+  gh.singleton<_i214.WorkRequestArchiveBloc>(_i214.WorkRequestArchiveBloc(
+    filterBloc: gh<_i208.FilterBloc>(),
+    getArchiveWorkRequestsStream: gh<_i107.GetArchiveWorkRequestsStream>(),
+  ));
+  gh.singleton<_i215.WorkRequestBloc>(_i215.WorkRequestBloc(
+    filterBloc: gh<_i208.FilterBloc>(),
+    getWorkRequestsStream: gh<_i133.GetWorkRequestsStream>(),
+  ));
   gh.factory<_i216.WorkRequestsStatusBloc>(() => _i216.WorkRequestsStatusBloc(
         filterBloc: gh<_i208.FilterBloc>(),
         getAwaitingWorkRequestsCount: gh<_i112.GetAwaitingWorkRequestsCount>(),
@@ -1074,14 +1074,12 @@ Future<_i1.GetIt> $initGetIt(
     filterBloc: gh<_i208.FilterBloc>(),
     getAssetsStream: gh<_i110.GetAssetsStream>(),
   ));
-  gh.factory<_i218.DashboardAssetActionBloc>(
-      () => _i218.DashboardAssetActionBloc(
-            filterBloc: gh<_i208.FilterBloc>(),
-            getDashboardAssetActionsStream:
-                gh<_i117.GetDashboardAssetActionsStream>(),
-            getDashboardLastFiveAssetActionsStream:
-                gh<_i119.GetDashboardLastFiveAssetActionsStream>(),
-          ));
+  gh.singleton<_i218.DashboardAssetActionBloc>(_i218.DashboardAssetActionBloc(
+    filterBloc: gh<_i208.FilterBloc>(),
+    getDashboardAssetActionsStream: gh<_i117.GetDashboardAssetActionsStream>(),
+    getDashboardLastFiveAssetActionsStream:
+        gh<_i119.GetDashboardLastFiveAssetActionsStream>(),
+  ));
   gh.singleton<_i219.DashboardItemActionBloc>(_i219.DashboardItemActionBloc(
     filterBloc: gh<_i208.FilterBloc>(),
     getDashboardItemsActionsStream: gh<_i118.GetDashboardItemsActionsStream>(),

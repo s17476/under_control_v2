@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
@@ -26,8 +25,7 @@ class TaskActionManagementBloc
   final DeleteTaskAction deleteTaskAction;
   final UpdateTaskAction updateTaskAction;
 
-  late StreamSubscription _userProfileStreamSubscription;
-  late UserProfile _userProfile;
+  UserProfile? _userProfile;
 
   TaskActionManagementBloc({
     required this.userProfileBloc,
@@ -35,20 +33,15 @@ class TaskActionManagementBloc
     required this.deleteTaskAction,
     required this.updateTaskAction,
   }) : super(TaskActionManagementEmptyState()) {
-    _userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
-      if (state is Approved) {
-        _userProfile = state.userProfile;
-      }
-    });
-
     on<AddTaskActionEvent>(
       (event, emit) async {
         emit(TaskActionManagementLoadingState());
+        _getUser();
         final failureOrString = await addTaskAction(
           TaskActionParams(
             task: event.task,
             taskAction: event.taskAction,
-            userProfile: _userProfile,
+            userProfile: _userProfile!,
             images: event.images,
           ),
         );
@@ -70,11 +63,12 @@ class TaskActionManagementBloc
     on<DeleteTaskActionEvent>(
       (event, emit) async {
         emit(TaskActionManagementLoadingState());
+        _getUser();
         final failureOrVoidResult = await deleteTaskAction(
           TaskActionParams(
             task: event.task,
             taskAction: event.taskAction,
-            userProfile: _userProfile,
+            userProfile: _userProfile!,
           ),
         );
         await failureOrVoidResult.fold(
@@ -95,11 +89,12 @@ class TaskActionManagementBloc
     on<UpdateTaskActionEvent>(
       (event, emit) async {
         emit(TaskActionManagementLoadingState());
+        _getUser();
         final failureOrVoidResult = await updateTaskAction(
           TaskActionParams(
             task: event.task,
             taskAction: event.taskAction,
-            userProfile: _userProfile,
+            userProfile: _userProfile!,
             images: event.images,
           ),
         );
@@ -119,9 +114,12 @@ class TaskActionManagementBloc
     );
   }
 
-  @override
-  Future<void> close() {
-    _userProfileStreamSubscription.cancel();
-    return super.close();
+  void _getUser() {
+    if (_userProfile == null) {
+      final userState = userProfileBloc.state;
+      if (userState is Approved) {
+        _userProfile = userState.userProfile;
+      }
+    }
   }
 }

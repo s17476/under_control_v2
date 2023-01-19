@@ -15,7 +15,7 @@ import '../../../domain/usecases/work_order/get_work_requests_stream.dart';
 part 'work_request_event.dart';
 part 'work_request_state.dart';
 
-@injectable
+@singleton
 class WorkRequestBloc extends Bloc<WorkRequestEvent, WorkRequestState> {
   final FilterBloc filterBloc;
   final GetWorkRequestsStream getWorkRequestsStream;
@@ -153,6 +153,7 @@ class WorkRequestBloc extends Bloc<WorkRequestEvent, WorkRequestState> {
           allWorkRequests: tmpList,
         );
       }
+      print('WorkRequestBloc - Loaded');
       emit(WorkRequestLoadedState(
         allWorkRequests: workRequestsList,
       ));

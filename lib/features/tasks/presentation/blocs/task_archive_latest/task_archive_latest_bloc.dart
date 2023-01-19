@@ -15,7 +15,7 @@ import '../../../domain/usecases/task/get_archive_latest_tasks_stream.dart';
 part 'task_archive_latest_event.dart';
 part 'task_archive_latest_state.dart';
 
-@injectable
+@singleton
 class TaskArchiveLatestBloc
     extends Bloc<TaskArchiveLatestEvent, TaskArchiveLatestState> {
   final FilterBloc filterBloc;
@@ -152,6 +152,7 @@ class TaskArchiveLatestBloc
           allTasks: tmpList,
         );
       }
+      print('TaskArchiveLatestBloc - Loaded');
       emit(TaskArchiveLatestLoadedState(
         allTasks: workRequestsList,
       ));

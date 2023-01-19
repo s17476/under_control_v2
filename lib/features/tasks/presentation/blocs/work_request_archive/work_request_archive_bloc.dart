@@ -15,7 +15,7 @@ import '../../../domain/usecases/work_order/get_archive_work_requests_stream.dar
 part 'work_request_archive_event.dart';
 part 'work_request_archive_state.dart';
 
-@injectable
+@singleton
 class WorkRequestArchiveBloc
     extends Bloc<WorkRequestArchiveEvent, WorkRequestArchiveState> {
   final FilterBloc filterBloc;
@@ -156,6 +156,7 @@ class WorkRequestArchiveBloc
           allWorkRequests: tmpList,
         );
       }
+      print('WorkRequestArchiveBloc - Loaded');
       emit(WorkRequestArchiveLoadedState(
         allWorkRequests: workRequestsList,
       ));

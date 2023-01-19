@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
+import '../../../../groups/domain/entities/feature.dart';
 import '../../../data/models/task/tasks_list_model.dart';
 import '../../../domain/entities/task/task.dart';
 import '../../../domain/usecases/task/get_archive_tasks_stream.dart';
@@ -15,7 +15,7 @@ import '../../../domain/usecases/task/get_archive_tasks_stream.dart';
 part 'task_archive_event.dart';
 part 'task_archive_state.dart';
 
-@injectable
+@singleton
 class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
   final FilterBloc filterBloc;
   final GetArchiveTasksStream getArchiveTasksStream;
@@ -151,6 +151,7 @@ class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
           allTasks: tmpList,
         );
       }
+      print('TaskArchiveBloc - Loaded');
       emit(TaskArchiveLoadedState(
         allTasks: workRequestsList,
       ));
