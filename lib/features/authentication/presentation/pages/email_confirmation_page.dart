@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/size_config.dart';
 
 import '../../../core/utils/responsive_size.dart';
 import '../blocs/authentication/authentication_bloc.dart';
@@ -15,21 +16,22 @@ class EmailConfirmationPage extends StatefulWidget {
 
 class _EmailConfirmationPageState extends State<EmailConfirmationPage>
     with ResponsiveSize {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
-        systemNavigationBarIconBrightness: Brightness.light,
-        statusBarColor: Theme.of(context).scaffoldBackgroundColor,
-        statusBarBrightness: Brightness.dark,
-      ));
-    });
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //       systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
+  //       systemNavigationBarIconBrightness: Brightness.light,
+  //       statusBarColor: Theme.of(context).scaffoldBackgroundColor,
+  //       statusBarBrightness: Brightness.dark,
+  //     ));
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(

@@ -92,38 +92,38 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
                 ),
               ),
             ),
-            if (state.workRequests.isNotEmpty && state.tasks.isNotEmpty)
-              const Divider(
-                thickness: 1.5,
-              ),
-            if (state.tasks.isNotEmpty) ...[
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(
-                  AppLocalizations.of(context)!.bottom_bar_title_tasks,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4!
-                      .copyWith(fontSize: 18),
-                ),
-              ),
-              ...state.tasks.map(
-                (task) => Padding(
-                  key: ValueKey(task.id),
-                  padding: const EdgeInsets.only(
-                    top: 4,
-                    bottom: 4,
-                    right: 8,
-                    left: 2,
-                  ),
-                  child: TaskTile(task: task),
-                ),
-              ),
-            ],
-            const SizedBox(
-              height: 50,
+          ],
+          if (state.workRequests.isNotEmpty && state.tasks.isNotEmpty)
+            const Divider(
+              thickness: 1.5,
             ),
-          ]
+          if (state.tasks.isNotEmpty) ...[
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Text(
+                AppLocalizations.of(context)!.bottom_bar_title_tasks,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4!
+                    .copyWith(fontSize: 18),
+              ),
+            ),
+            ...state.tasks.map(
+              (task) => Padding(
+                key: ValueKey(task.id),
+                padding: const EdgeInsets.only(
+                  top: 4,
+                  bottom: 4,
+                  right: 8,
+                  left: 2,
+                ),
+                child: TaskTile(task: task),
+              ),
+            ),
+          ],
+          const SizedBox(
+            height: 50,
+          ),
         ],
       );
     });

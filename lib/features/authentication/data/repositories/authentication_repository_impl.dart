@@ -84,7 +84,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       if (firebaseAuth.currentUser != null &&
           !firebaseAuth.currentUser!.emailVerified) {
         await firebaseAuth.currentUser!.sendEmailVerification();
-      } else {}
+      }
       return Right(VoidResult());
     } on FirebaseAuthException catch (e) {
       return Left(

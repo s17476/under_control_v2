@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../widgets/companies_list.dart';
@@ -67,6 +69,11 @@ class _AssignCompanyPageState extends State<AssignCompanyPage> {
               children: _pages,
             ),
             CreatorBottomNavigation(
+              firstPageBackwardButtonIconData: Icons.logout,
+              firstPageBackwardButtonLabel:
+                  AppLocalizations.of(context)!.main_drawer_signout,
+              firstPageBackwardButtonFunction: () =>
+                  context.read<AuthenticationBloc>().add(SignoutEvent()),
               lastPageForwardButtonFunction: () => Navigator.pushNamed(
                 context,
                 AddCompanyPage.routeName,

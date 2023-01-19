@@ -36,7 +36,11 @@ class CompaniesList extends StatelessWidget {
               ],
             );
           default:
-            return const SizedBox();
+            return Center(
+              child: const SizedBox(
+                child: Text('data'),
+              ),
+            );
         }
       },
     );

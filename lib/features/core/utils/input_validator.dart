@@ -73,10 +73,6 @@ class InputValidator {
   String? textFieldValidator(String text) {
     if (text.trim().isEmpty || text.trim().length < 2) {
       return inputToShort;
-    }
-    final result = RegExp(r'([A-Z][a-zA-Z]+)').hasMatch(text);
-    if (!result) {
-      return inputFormatInvalid;
     } else {
       return null;
     }

@@ -106,14 +106,12 @@ class AuthenticationBloc
           failureOrVoid
               .fold((failure) async => emit(Error(message: failure.message)),
                   (_) async {
-            if (event.user != null) {
-              if (checkEmailVerification()) {
-                emit(Authenticated(
-                    userId: event.user!.uid, email: event.user!.email!));
-              } else {
-                sendVerificationEmail(NoParams());
-                emit(AwaitingVerification());
-              }
+            if (checkEmailVerification()) {
+              emit(Authenticated(
+                  userId: event.user!.uid, email: event.user!.email!));
+            } else {
+              sendVerificationEmail(NoParams());
+              emit(AwaitingVerification());
             }
           });
         },

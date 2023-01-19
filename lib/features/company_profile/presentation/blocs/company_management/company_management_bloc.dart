@@ -22,7 +22,7 @@ part 'company_management_state.dart';
 const String companyUpdated = 'companyUpdated';
 const String companyLogoUpdated = 'companyLogoUpdated';
 
-@injectable
+@singleton
 class CompanyManagementBloc
     extends Bloc<CompanyManagementEvent, CompanyManagementState> {
   late StreamSubscription _userProfileStreamSubscription;

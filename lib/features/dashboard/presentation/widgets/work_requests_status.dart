@@ -75,6 +75,11 @@ class WorkrequestsStatus extends StatelessWidget {
     return BlocBuilder<WorkRequestsStatusBloc, WorkRequestsStatusState>(
       builder: (context, state) {
         if (state is WorkRequestsStatusLoadedState) {
+          if (state.awaiting.allWorkRequests.isEmpty &&
+              state.converted.allWorkRequests.isEmpty &&
+              state.cancelled.allWorkRequests.isEmpty) {
+            return const SizedBox();
+          }
           return Container(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,

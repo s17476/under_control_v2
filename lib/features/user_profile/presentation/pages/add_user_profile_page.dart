@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../data/models/user_profile_model.dart';
@@ -138,6 +139,11 @@ class _AddUserProfilePageState extends State<AddUserProfilePage> {
               children: _pages,
             ),
             CreatorBottomNavigation(
+              firstPageBackwardButtonIconData: Icons.logout,
+              firstPageBackwardButtonLabel:
+                  AppLocalizations.of(context)!.main_drawer_signout,
+              firstPageBackwardButtonFunction: () =>
+                  context.read<AuthenticationBloc>().add(SignoutEvent()),
               lastPageForwardButtonFunction: () => _addUser(),
               pages: _pages,
               pageController: _pageController,

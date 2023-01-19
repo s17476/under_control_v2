@@ -927,14 +927,14 @@ Future<_i1.GetIt> $initGetIt(
         updateChecklist: gh<_i160.UpdateChecklist>(),
         deleteChecklist: gh<_i91.DeleteChecklist>(),
       ));
-  gh.factory<_i193.CompanyManagementBloc>(() => _i193.CompanyManagementBloc(
-        userProfileBloc: gh<_i184.UserProfileBloc>(),
-        inputValidator: gh<_i8.InputValidator>(),
-        addCompany: gh<_i171.AddCompany>(),
-        fetchAllCompanies: gh<_i101.FetchAllCompanies>(),
-        addCompanyLogo: gh<_i172.AddCompanyLogo>(),
-        updateCompany: gh<_i161.UpdateCompany>(),
-      ));
+  gh.singleton<_i193.CompanyManagementBloc>(_i193.CompanyManagementBloc(
+    userProfileBloc: gh<_i184.UserProfileBloc>(),
+    inputValidator: gh<_i8.InputValidator>(),
+    addCompany: gh<_i171.AddCompany>(),
+    fetchAllCompanies: gh<_i101.FetchAllCompanies>(),
+    addCompanyLogo: gh<_i172.AddCompanyLogo>(),
+    updateCompany: gh<_i161.UpdateCompany>(),
+  ));
   gh.singleton<_i194.CompanyProfileBloc>(_i194.CompanyProfileBloc(
     userProfileBloc: gh<_i184.UserProfileBloc>(),
     fetchAllCompanyUsers: gh<_i102.FetchAllCompanyUsers>(),
