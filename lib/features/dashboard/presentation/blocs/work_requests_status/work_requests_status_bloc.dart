@@ -17,7 +17,7 @@ import '../../../domain/usecases/get_converted_work_requests_count.dart';
 part 'work_requests_status_event.dart';
 part 'work_requests_status_state.dart';
 
-@injectable
+@singleton
 class WorkRequestsStatusBloc
     extends Bloc<WorkRequestsStatusEvent, WorkRequestsStatusState> {
   final FilterBloc filterBloc;
@@ -32,6 +32,10 @@ class WorkRequestsStatusBloc
 
   String _companyId = '';
   List<String> _locations = [];
+
+  WorkRequestsListModel? _awaiting;
+  WorkRequestsListModel? _converted;
+  WorkRequestsListModel? _cancelled;
 
   WorkRequestsStatusBloc({
     required this.filterBloc,
@@ -178,10 +182,17 @@ class WorkRequestsStatusBloc
           allWorkRequests: tmpList,
         );
       }
-      emit(
-        oldState?.copyWith(awaiting: workRequestsList) ??
-            WorkRequestsStatusLoadedState(awaiting: workRequestsList),
-      );
+      _awaiting = workRequestsList;
+      if (_awaiting != null && _cancelled != null && _converted != null) {
+        print('WorkRequestsStatusBloc - Awaiting - Loaded');
+        emit(
+          WorkRequestsStatusLoadedState(
+            awaiting: _awaiting!,
+            cancelled: _cancelled!,
+            converted: _converted!,
+          ),
+        );
+      }
     });
 
     on<UpdateConvertedStatusEvent>((event, emit) async {
@@ -222,10 +233,17 @@ class WorkRequestsStatusBloc
           allWorkRequests: tmpList,
         );
       }
-      emit(
-        oldState?.copyWith(converted: workRequestsList) ??
-            WorkRequestsStatusLoadedState(converted: workRequestsList),
-      );
+      _converted = workRequestsList;
+      if (_awaiting != null && _cancelled != null && _converted != null) {
+        print('WorkRequestsStatusBloc - Converted - Loaded');
+        emit(
+          WorkRequestsStatusLoadedState(
+            awaiting: _awaiting!,
+            cancelled: _cancelled!,
+            converted: _converted!,
+          ),
+        );
+      }
     });
 
     on<UpdateCancelledStatusEvent>((event, emit) async {
@@ -265,10 +283,17 @@ class WorkRequestsStatusBloc
           allWorkRequests: tmpList,
         );
       }
-      emit(
-        oldState?.copyWith(cancelled: workRequestsList) ??
-            WorkRequestsStatusLoadedState(cancelled: workRequestsList),
-      );
+      _cancelled = workRequestsList;
+      if (_awaiting != null && _cancelled != null && _converted != null) {
+        print('WorkRequestsStatusBloc - Cancelled - Loaded');
+        emit(
+          WorkRequestsStatusLoadedState(
+            awaiting: _awaiting!,
+            cancelled: _cancelled!,
+            converted: _converted!,
+          ),
+        );
+      }
     });
   }
 

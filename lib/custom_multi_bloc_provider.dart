@@ -101,26 +101,14 @@ class CustomMultiBlocProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<TaskActionManagementBloc>()),
         BlocProvider(create: (context) => getIt<TaskArchiveBloc>()),
         BlocProvider(create: (context) => getIt<TaskArchiveLatestBloc>()),
-        // TODO - BLoCs optimalization
         BlocProvider(create: (context) => getIt<FilterBloc>()),
-        BlocProvider(
-          create: (context) => getIt<TaskFilterBloc>(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => getIt<ReservedSparePartsBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<AssetPartsBloc>(),
-          lazy: false,
-        ),
+        BlocProvider(create: (context) => getIt<TaskFilterBloc>()),
+        BlocProvider(create: (context) => getIt<ReservedSparePartsBloc>()),
+        BlocProvider(create: (context) => getIt<AssetPartsBloc>()),
         BlocProvider(
           create: (context) => getIt<LanguageCubit>()..getInitLanguage(),
         ),
-        BlocProvider(
-          create: (context) => getIt<WorkRequestsStatusBloc>(),
-          lazy: false,
-        ),
+        BlocProvider(create: (context) => getIt<WorkRequestsStatusBloc>()),
       ],
       child: child,
     );

@@ -17,7 +17,7 @@ import '../work_request/work_request_bloc.dart';
 part 'task_filter_event.dart';
 part 'task_filter_state.dart';
 
-@injectable
+@singleton
 class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
   final UserProfileBloc userProfileBloc;
   final TaskBloc taskBloc;
@@ -102,6 +102,7 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
         ));
         // options selected
       } else {
+        print('TaskFilter - Selected');
         emit(_filterTasks());
       }
     });
@@ -118,6 +119,7 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
         );
       }
       if (newState != null) {
+        print('TaskFilter - Show Filter');
         emit(newState);
       }
     });
@@ -132,6 +134,7 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
             .copyWith(isFilterVisible: false);
       }
       if (newState != null) {
+        print('TaskFilter - Hide Filter');
         emit(newState);
       }
     });
