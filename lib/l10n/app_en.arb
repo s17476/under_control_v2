@@ -2415,8 +2415,16 @@
     "@task_progress_finished_successfully": {
       "description": "task progress"
     },
+    "task_progress_finished_success": "Success",
+    "@task_progress_finished_success": {
+      "description": "task progress"
+    },
     "task_progress_finished_unsuccessfully": "Finished unsuccessfully",
     "@task_progress_finished_unsuccessfully": {
+      "description": "task progress"
+    },
+    "task_progress_finished_failure": "Failure",
+    "@task_progress_finished_failure": {
       "description": "task progress"
     },
     "task_owner": "Task owner",

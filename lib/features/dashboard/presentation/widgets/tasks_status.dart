@@ -6,8 +6,8 @@ import 'package:shimmer/shimmer.dart';
 
 import '../blocs/work_requests_status/work_requests_status_bloc.dart';
 
-class WorkRequestsStatus extends StatelessWidget {
-  const WorkRequestsStatus({super.key});
+class TasksStatus extends StatelessWidget {
+  const TasksStatus({super.key});
 
   List<PieChartSectionData> showingSections(
       BuildContext context, WorkRequestsStatusLoadedState state) {
@@ -91,7 +91,7 @@ class WorkRequestsStatus extends StatelessWidget {
                 Row(
                   children: [
                     Icon(
-                      Icons.build,
+                      Icons.task_alt,
                       color: Theme.of(context).textTheme.caption!.color,
                       size: 16,
                     ),
@@ -99,7 +99,7 @@ class WorkRequestsStatus extends StatelessWidget {
                       width: 4,
                     ),
                     Text(
-                      AppLocalizations.of(context)!.work_requests,
+                      AppLocalizations.of(context)!.task_finished,
                       style: Theme.of(context)
                           .textTheme
                           .caption!
@@ -172,14 +172,17 @@ class WorkRequestsStatus extends StatelessWidget {
                     Expanded(
                         flex: 8,
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(
+                            top: 8,
+                            bottom: 8,
+                            right: 8,
+                          ),
                           child: Column(
                             children: [
                               Row(
                                 children: [
-                                  Container(
-                                    height: 16,
-                                    width: 16,
+                                  Icon(
+                                    Icons.check_circle_outline_rounded,
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   const SizedBox(
@@ -188,33 +191,7 @@ class WorkRequestsStatus extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       AppLocalizations.of(context)!
-                                          .status_converted,
-                                    ),
-                                  ),
-                                  Text(
-                                    state.converted.allWorkRequests.length
-                                        .toString(),
-                                    style: const TextStyle(fontSize: 16),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 16,
-                                    width: 16,
-                                    color: Theme.of(context).errorColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      AppLocalizations.of(context)!
-                                          .status_awaiting,
+                                          .task_progress_finished_success,
                                     ),
                                   ),
                                   Text(
@@ -229,9 +206,33 @@ class WorkRequestsStatus extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  Container(
-                                    height: 16,
-                                    width: 16,
+                                  Icon(
+                                    Icons.cancel_outlined,
+                                    color: Theme.of(context).errorColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      AppLocalizations.of(context)!
+                                          .task_progress_finished_failure,
+                                    ),
+                                  ),
+                                  Text(
+                                    state.converted.allWorkRequests.length
+                                        .toString(),
+                                    style: const TextStyle(fontSize: 16),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.cancel_outlined,
                                     color: Colors.amber,
                                   ),
                                   const SizedBox(
