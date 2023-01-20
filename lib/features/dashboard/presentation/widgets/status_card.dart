@@ -29,7 +29,7 @@ class StatusCard extends StatelessWidget {
           const SizedBox(
             height: 8,
           ),
-          const WorkrequestsStatus(),
+          const WorkRequestsStatus(),
         ],
       ),
     );

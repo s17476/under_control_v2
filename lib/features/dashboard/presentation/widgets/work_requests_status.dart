@@ -6,8 +6,8 @@ import 'package:shimmer/shimmer.dart';
 
 import '../blocs/work_requests_status/work_requests_status_bloc.dart';
 
-class WorkrequestsStatus extends StatelessWidget {
-  const WorkrequestsStatus({super.key});
+class WorkRequestsStatus extends StatelessWidget {
+  const WorkRequestsStatus({super.key});
 
   List<PieChartSectionData> showingSections(
       BuildContext context, WorkRequestsStatusLoadedState state) {
@@ -15,23 +15,23 @@ class WorkrequestsStatus extends StatelessWidget {
         state.converted.allWorkRequests.length +
         state.cancelled.allWorkRequests.length;
     final awaitingPercentage =
-        (state.awaiting.allWorkRequests.length / totalCount) * 100;
+        (state.awaiting.allWorkRequests.length / totalCount);
     final convertedPercentage =
-        (state.converted.allWorkRequests.length / totalCount) * 100;
+        (state.converted.allWorkRequests.length / totalCount);
     final cancelledPercentage =
-        (state.cancelled.allWorkRequests.length / totalCount) * 100;
+        (state.cancelled.allWorkRequests.length / totalCount);
 
     return List.generate(3, (i) {
       // final isTouched = i == touchedIndex;
       final isTouched = false;
       final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 30.0;
+      final radius = isTouched ? 60.0 : 15.0;
       switch (i) {
         case 0:
           return PieChartSectionData(
+            showTitle: false,
             color: Theme.of(context).errorColor,
             value: awaitingPercentage,
-            title: '',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -41,9 +41,9 @@ class WorkrequestsStatus extends StatelessWidget {
           );
         case 1:
           return PieChartSectionData(
+            showTitle: false,
             color: Theme.of(context).primaryColor,
             value: convertedPercentage,
-            title: '',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -53,9 +53,9 @@ class WorkrequestsStatus extends StatelessWidget {
           );
         case 2:
           return PieChartSectionData(
+            showTitle: false,
             color: Colors.amber,
             value: cancelledPercentage,
-            title: '',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -107,42 +107,70 @@ class WorkrequestsStatus extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 4,
+                ),
                 Row(
                   children: [
                     Expanded(
-                      flex: 1,
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: PieChart(
-                          PieChartData(
-                            pieTouchData: PieTouchData(
-                              enabled: false,
-                              // touchCallback:
-                              //     (FlTouchEvent event, pieTouchResponse) {
-                              // setState(() {
-                              //   if (!event.isInterestedForInteractions ||
-                              //       pieTouchResponse == null ||
-                              //       pieTouchResponse.touchedSection == null) {
-                              //     touchedIndex = -1;
-                              //     return;
-                              //   }
-                              //   touchedIndex = pieTouchResponse
-                              //       .touchedSection!.touchedSectionIndex;
-                              // });
-                              //   },
+                      flex: 3,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 1,
+                            child: PieChart(
+                              PieChartData(
+                                pieTouchData: PieTouchData(
+                                  enabled: false,
+                                  // touchCallback:
+                                  //     (FlTouchEvent event, pieTouchResponse) {
+                                  // setState(() {
+                                  //   if (!event.isInterestedForInteractions ||
+                                  //       pieTouchResponse == null ||
+                                  //       pieTouchResponse.touchedSection == null) {
+                                  //     touchedIndex = -1;
+                                  //     return;
+                                  //   }
+                                  //   touchedIndex = pieTouchResponse
+                                  //       .touchedSection!.touchedSectionIndex;
+                                  // });
+                                  //   },
+                                ),
+                                borderData: FlBorderData(
+                                  show: false,
+                                ),
+                                sectionsSpace: 8,
+                                centerSpaceRadius: 30,
+                                sections: showingSections(context, state),
+                              ),
                             ),
-                            borderData: FlBorderData(
-                              show: false,
-                            ),
-                            sectionsSpace: 8,
-                            centerSpaceRadius: 20,
-                            sections: showingSections(context, state),
                           ),
-                        ),
+                          CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            foregroundColor:
+                                Theme.of(context).textTheme.headline5!.color,
+                            radius: 28,
+                            child: FittedBox(
+                              child: Text(
+                                (state.awaiting.allWorkRequests.length +
+                                        state.converted.allWorkRequests.length +
+                                        state.cancelled.allWorkRequests.length)
+                                    .toString(),
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
+                    const SizedBox(
+                      width: 4,
+                    ),
                     Expanded(
-                        flex: 2,
+                        flex: 8,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -171,7 +199,7 @@ class WorkrequestsStatus extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(
-                                height: 4,
+                                height: 8,
                               ),
                               Row(
                                 children: [
@@ -197,7 +225,7 @@ class WorkrequestsStatus extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(
-                                height: 4,
+                                height: 8,
                               ),
                               Row(
                                 children: [
@@ -222,26 +250,6 @@ class WorkrequestsStatus extends StatelessWidget {
                                   )
                                 ],
                               ),
-                              const Divider(),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      AppLocalizations.of(context)!
-                                          .status_total,
-                                    ),
-                                  ),
-                                  Text(
-                                    (state.awaiting.allWorkRequests.length +
-                                            state.converted.allWorkRequests
-                                                .length +
-                                            state.cancelled.allWorkRequests
-                                                .length)
-                                        .toString(),
-                                    style: const TextStyle(fontSize: 16),
-                                  )
-                                ],
-                              )
                             ],
                           ),
                         )),
