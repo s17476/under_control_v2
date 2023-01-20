@@ -151,7 +151,7 @@ class AssetRepositoryImpl extends AssetRepository {
             params.asset.currentStatus ==
                 AssetStatus.workingRequiresAttention) {
           inspectionExecutionDate = getNextDate(
-            params.asset.addDate,
+            params.asset.lastInspection,
             params.asset.durationUnit,
             params.asset.duration,
           );

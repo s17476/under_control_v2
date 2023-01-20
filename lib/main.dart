@@ -49,6 +49,7 @@ import 'features/settings/presentation/blocs/language/language_cubit.dart';
 import 'features/settings/presentation/pages/language_settings_page.dart';
 import 'features/settings/presentation/pages/settings_page.dart';
 import 'features/tasks/presentation/pages/add_task_page.dart';
+import 'features/tasks/presentation/pages/add_task_template_page.dart';
 import 'features/tasks/presentation/pages/add_work_request_page.dart';
 import 'features/tasks/presentation/pages/register_task_action_page.dart';
 import 'features/tasks/presentation/pages/select_new_assets_data_page.dart';
@@ -56,6 +57,7 @@ import 'features/tasks/presentation/pages/subtract_item_from_location_page.dart'
 import 'features/tasks/presentation/pages/task_action_details_page.dart';
 import 'features/tasks/presentation/pages/task_archive_page.dart';
 import 'features/tasks/presentation/pages/task_details_page.dart';
+import 'features/tasks/presentation/pages/templates_management_page.dart';
 import 'features/tasks/presentation/pages/work_request_archive_page.dart';
 import 'features/tasks/presentation/pages/work_request_details_page.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -204,6 +206,10 @@ class App extends StatelessWidget
               TaskActionDetailsPage.routeName: (context) =>
                   const TaskActionDetailsPage(),
               TaskArchivePage.routeName: (context) => const TaskArchivePage(),
+              TemplatesManagementPage.routeName: (context) =>
+                  const TemplatesManagementPage(),
+              AddTaskTemplatePage.routeName: (context) =>
+                  const AddTaskTemplatePage(),
             },
             // localization
             localizationsDelegates: const [

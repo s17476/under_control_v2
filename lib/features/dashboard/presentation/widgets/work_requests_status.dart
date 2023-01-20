@@ -192,32 +192,6 @@ class WorkRequestsStatus extends StatelessWidget {
                                   Container(
                                     height: 16,
                                     width: 16,
-                                    color: Theme.of(context).errorColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      AppLocalizations.of(context)!
-                                          .status_awaiting,
-                                    ),
-                                  ),
-                                  Text(
-                                    state.awaiting.allWorkRequests.length
-                                        .toString(),
-                                    style: const TextStyle(fontSize: 16),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 16,
-                                    width: 16,
                                     color: Colors.amber,
                                   ),
                                   const SizedBox(
@@ -231,6 +205,32 @@ class WorkRequestsStatus extends StatelessWidget {
                                   ),
                                   Text(
                                     state.cancelled.allWorkRequests.length
+                                        .toString(),
+                                    style: const TextStyle(fontSize: 16),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 16,
+                                    width: 16,
+                                    color: Theme.of(context).errorColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      AppLocalizations.of(context)!
+                                          .status_awaiting,
+                                    ),
+                                  ),
+                                  Text(
+                                    state.awaiting.allWorkRequests.length
                                         .toString(),
                                     style: const TextStyle(fontSize: 16),
                                   )

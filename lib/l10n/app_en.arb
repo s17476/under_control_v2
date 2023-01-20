@@ -2443,6 +2443,34 @@
     "@task_filter_reset": {
       "description": "task - reset filter"
     },
+    "task_templates": "Tasks templates",
+    "@task_templates": {
+      "description": "task - templates"
+    },
+    "task_templates_msg_added": "New task template added",
+    "@task_templates_msg_added": {
+      "description": "Task template - added msg"
+    },
+    "task_templates_msg_not_added": "New task template NOT added",
+    "@task_templates_msg_not_added": {
+      "description": "Task template - NOT added msg"
+    },
+    "task_templates_msg_updated": "Task template updated",
+    "@task_templates_msg_updated": {
+      "description": "Task template - updated msg"
+    },
+    "task_templates_msg_not_updated": "Task template NOT updated",
+    "@task_templates_msg_not_updated": {
+      "description": "Task template - NOT updated msg"
+    },
+    "task_templates_msg_deleted": "Task template deleted",
+    "@task_templates_msg_deleted": {
+      "description": "task template - deleted msg"
+    },
+    "task_templates_msg_not_deleted": "Task template NOT deleted",
+    "@task_templates_msg_not_deleted": {
+      "description": "Task template - NOT deleted msg"
+    },
     "task_action_new": "Register new action",
     "@task_action_new": {
       "description": "task action - new"

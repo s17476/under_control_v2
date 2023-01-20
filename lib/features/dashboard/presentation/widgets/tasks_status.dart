@@ -210,30 +210,6 @@ class TasksStatus extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  Icon(
-                                    Icons.cancel_outlined,
-                                    color: Theme.of(context).errorColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      AppLocalizations.of(context)!
-                                          .task_progress_finished_failure,
-                                    ),
-                                  ),
-                                  Text(
-                                    unsuccessfullCount.toString(),
-                                    style: const TextStyle(fontSize: 16),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Row(
-                                children: [
                                   const Icon(
                                     Icons.cancel_outlined,
                                     color: Colors.amber,
@@ -249,6 +225,30 @@ class TasksStatus extends StatelessWidget {
                                   ),
                                   Text(
                                     cancelledCount.toString(),
+                                    style: const TextStyle(fontSize: 16),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.cancel_outlined,
+                                    color: Theme.of(context).errorColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      AppLocalizations.of(context)!
+                                          .task_progress_finished_failure,
+                                    ),
+                                  ),
+                                  Text(
+                                    unsuccessfullCount.toString(),
                                     style: const TextStyle(fontSize: 16),
                                   )
                                 ],
