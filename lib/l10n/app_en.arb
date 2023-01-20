@@ -1855,6 +1855,10 @@
     "@duration_select": {
       "description": "Duration select"
     },
+    "assets_status": "Assets status",
+    "@assets_status": {
+      "description": "Assets status"
+    },
     "asset_status_ok": "OK",
     "@asse_status": {
       "description": "Asset status"

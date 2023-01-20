@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/dashboard/presentation/widgets/tasks_status.dart';
+import 'assets_status.dart';
+import 'tasks_status.dart';
 import 'work_requests_status.dart';
 
 class StatusCard extends StatelessWidget {
@@ -35,6 +37,10 @@ class StatusCard extends StatelessWidget {
             height: 8,
           ),
           const TasksStatus(),
+          const SizedBox(
+            height: 8,
+          ),
+          const AssetsStatus(),
         ],
       ),
     );

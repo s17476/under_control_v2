@@ -445,6 +445,7 @@
     "duration_not_selected": "Nie wybrano okresu",
     "duration": "Okres",
     "duration_select": "Wybierz okres",
+    "assets_status": "Stan zasobów",
     "asset_status_ok": "W porządku",
     "asset_status_ok_comment": "Zasób działa, tak jak zwykle. Nie ma wizualnych, lub akustycznych oznak uszkodzenia.",
     "asset_status_working_requires_attention": "W użyciu - wymaga uwagi",

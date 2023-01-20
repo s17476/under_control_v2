@@ -4,22 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../blocs/work_requests_status/work_requests_status_bloc.dart';
+import '../../../tasks/presentation/blocs/task_archive/task_archive_bloc.dart';
 
 class TasksStatus extends StatelessWidget {
   const TasksStatus({super.key});
 
   List<PieChartSectionData> showingSections(
-      BuildContext context, WorkRequestsStatusLoadedState state) {
-    final totalCount = state.awaiting.allWorkRequests.length +
-        state.converted.allWorkRequests.length +
-        state.cancelled.allWorkRequests.length;
-    final awaitingPercentage =
-        (state.awaiting.allWorkRequests.length / totalCount);
-    final convertedPercentage =
-        (state.converted.allWorkRequests.length / totalCount);
-    final cancelledPercentage =
-        (state.cancelled.allWorkRequests.length / totalCount);
+      BuildContext context, int success, int failure, int cancelled) {
+    final totalCount = success + failure + cancelled;
+    final successPercentage = success / totalCount;
+    final failurePercentage = failure / totalCount;
+    final cancelledPercentage = cancelled / totalCount;
 
     return List.generate(3, (i) {
       // final isTouched = i == touchedIndex;
@@ -30,38 +25,23 @@ class TasksStatus extends StatelessWidget {
         case 0:
           return PieChartSectionData(
             showTitle: false,
-            color: Theme.of(context).errorColor,
-            value: awaitingPercentage,
+            color: Theme.of(context).primaryColor,
+            value: successPercentage,
             radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-            ),
           );
         case 1:
-          return PieChartSectionData(
-            showTitle: false,
-            color: Theme.of(context).primaryColor,
-            value: convertedPercentage,
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-            ),
-          );
-        case 2:
           return PieChartSectionData(
             showTitle: false,
             color: Colors.amber,
             value: cancelledPercentage,
             radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-            ),
+          );
+        case 2:
+          return PieChartSectionData(
+            showTitle: false,
+            color: Theme.of(context).errorColor,
+            value: failurePercentage,
+            radius: radius,
           );
 
         default:
@@ -72,14 +52,36 @@ class TasksStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WorkRequestsStatusBloc, WorkRequestsStatusState>(
+    return BlocBuilder<TaskArchiveBloc, TaskArchiveState>(
       builder: (context, state) {
-        if (state is WorkRequestsStatusLoadedState) {
-          if (state.awaiting.allWorkRequests.isEmpty &&
-              state.converted.allWorkRequests.isEmpty &&
-              state.cancelled.allWorkRequests.isEmpty) {
+        if (state is TaskArchiveLoadedState) {
+          if (state.allTasks.allTasks.isEmpty) {
             return const SizedBox();
           }
+          final limitDate = DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            DateTime.now().day,
+          ).subtract(const Duration(days: 30));
+          final allTasks = state.allTasks.allTasks
+              .where((task) => task.executionDate.isAfter(limitDate));
+          final successfullCount = allTasks
+              .where(
+                (task) => task.isSuccessful,
+              )
+              .length;
+          final unsuccessfullCount = allTasks
+              .where(
+                (task) => !task.isSuccessful && !task.isCancelled,
+              )
+              .length;
+          final cancelledCount = allTasks
+              .where(
+                (task) => !task.isSuccessful && task.isCancelled,
+              )
+              .length;
+          final totalCount =
+              successfullCount + unsuccessfullCount + cancelledCount;
           return Container(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
@@ -140,9 +142,15 @@ class TasksStatus extends StatelessWidget {
                                 borderData: FlBorderData(
                                   show: false,
                                 ),
-                                sectionsSpace: 8,
+                                startDegreeOffset: 270,
+                                sectionsSpace: 4,
                                 centerSpaceRadius: 30,
-                                sections: showingSections(context, state),
+                                sections: showingSections(
+                                  context,
+                                  successfullCount,
+                                  unsuccessfullCount,
+                                  cancelledCount,
+                                ),
                               ),
                             ),
                           ),
@@ -150,13 +158,10 @@ class TasksStatus extends StatelessWidget {
                             backgroundColor: Colors.transparent,
                             foregroundColor:
                                 Theme.of(context).textTheme.headline5!.color,
-                            radius: 28,
+                            radius: 24,
                             child: FittedBox(
                               child: Text(
-                                (state.awaiting.allWorkRequests.length +
-                                        state.converted.allWorkRequests.length +
-                                        state.cancelled.allWorkRequests.length)
-                                    .toString(),
+                                '${((successfullCount / totalCount) * 100).toStringAsFixed(0)}%',
                                 style: const TextStyle(
                                   fontSize: 24,
                                 ),
@@ -195,8 +200,7 @@ class TasksStatus extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    state.awaiting.allWorkRequests.length
-                                        .toString(),
+                                    successfullCount.toString(),
                                     style: const TextStyle(fontSize: 16),
                                   )
                                 ],
@@ -220,8 +224,7 @@ class TasksStatus extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    state.converted.allWorkRequests.length
-                                        .toString(),
+                                    unsuccessfullCount.toString(),
                                     style: const TextStyle(fontSize: 16),
                                   )
                                 ],
@@ -245,8 +248,7 @@ class TasksStatus extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    state.cancelled.allWorkRequests.length
-                                        .toString(),
+                                    cancelledCount.toString(),
                                     style: const TextStyle(fontSize: 16),
                                   )
                                 ],
@@ -265,7 +267,7 @@ class TasksStatus extends StatelessWidget {
           highlightColor: Theme.of(context).cardColor.withAlpha(60),
           child: Container(
             width: double.infinity,
-            height: 140,
+            height: 145,
             // margin: margin,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),

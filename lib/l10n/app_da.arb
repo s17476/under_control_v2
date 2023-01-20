@@ -445,6 +445,7 @@
     "duration_not_selected": "Periode ikke valgt",
     "duration": "Periode",
     "duration_select": "Vælg en periode",
+    "assets_status": "Aktiv status",
     "asset_status_ok": "I orden",
     "asset_status_ok_comment": "Aktivet fungerer som normalt. Der er ingen visuel eller hørbar indikation af skade.",
     "asset_status_working_requires_attention": "I brug - kræver opmærksomhed",

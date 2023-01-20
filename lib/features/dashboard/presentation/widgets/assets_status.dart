@@ -4,22 +4,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../blocs/work_requests_status/work_requests_status_bloc.dart';
+import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
+import '../../../assets/utils/asset_status.dart';
+import '../../../assets/utils/get_asset_status_icon.dart';
 
-class WorkRequestsStatus extends StatelessWidget {
-  const WorkRequestsStatus({super.key});
+class AssetsStatus extends StatelessWidget {
+  const AssetsStatus({super.key});
 
   List<PieChartSectionData> showingSections(
-      BuildContext context, WorkRequestsStatusLoadedState state) {
-    final totalCount = state.awaiting.allWorkRequests.length +
-        state.converted.allWorkRequests.length +
-        state.cancelled.allWorkRequests.length;
-    final awaitingPercentage =
-        (state.awaiting.allWorkRequests.length / totalCount);
-    final convertedPercentage =
-        (state.converted.allWorkRequests.length / totalCount);
-    final cancelledPercentage =
-        (state.cancelled.allWorkRequests.length / totalCount);
+    BuildContext context,
+    int ok,
+    int attention,
+    int reparation,
+    int noInspection,
+  ) {
+    final totalCount = ok + attention + reparation + noInspection;
+    final okPercentage = ok / totalCount;
+    final attentionPercentage = attention / totalCount;
+    final reparationPercentage = (reparation + noInspection) / totalCount;
 
     return List.generate(3, (i) {
       // final isTouched = i == touchedIndex;
@@ -31,21 +33,21 @@ class WorkRequestsStatus extends StatelessWidget {
           return PieChartSectionData(
             showTitle: false,
             color: Theme.of(context).primaryColor,
-            value: convertedPercentage,
+            value: okPercentage,
             radius: radius,
           );
         case 1:
           return PieChartSectionData(
             showTitle: false,
             color: Colors.amber,
-            value: cancelledPercentage,
+            value: attentionPercentage,
             radius: radius,
           );
         case 2:
           return PieChartSectionData(
             showTitle: false,
             color: Theme.of(context).errorColor,
-            value: awaitingPercentage,
+            value: reparationPercentage,
             radius: radius,
           );
 
@@ -57,14 +59,41 @@ class WorkRequestsStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WorkRequestsStatusBloc, WorkRequestsStatusState>(
+    return BlocBuilder<AssetBloc, AssetState>(
       builder: (context, state) {
-        if (state is WorkRequestsStatusLoadedState) {
-          if (state.awaiting.allWorkRequests.isEmpty &&
-              state.converted.allWorkRequests.isEmpty &&
-              state.cancelled.allWorkRequests.isEmpty) {
+        if (state is AssetLoadedState) {
+          if (state.allAssets.allAssets.isEmpty) {
             return const SizedBox();
           }
+
+          final allAssets = state.allAssets.allAssets;
+          final statusOk = allAssets
+              .where(
+                (asset) => asset.currentStatus == AssetStatus.ok,
+              )
+              .length;
+          final statusAttention = allAssets
+              .where(
+                (asset) =>
+                    asset.currentStatus == AssetStatus.workingRequiresAttention,
+              )
+              .length;
+          final statusReparation = allAssets
+              .where(
+                (asset) =>
+                    asset.currentStatus ==
+                    AssetStatus.notWorkingRequiresReparation,
+              )
+              .length;
+          final statusNoInspection = allAssets
+              .where(
+                (asset) => asset.currentStatus == AssetStatus.noInspection,
+              )
+              .length;
+          final totalCount = statusOk +
+              statusNoInspection +
+              statusReparation +
+              statusAttention;
           return Container(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
@@ -76,7 +105,7 @@ class WorkRequestsStatus extends StatelessWidget {
                 Row(
                   children: [
                     Icon(
-                      Icons.build,
+                      Icons.precision_manufacturing,
                       color: Theme.of(context).textTheme.caption!.color,
                       size: 16,
                     ),
@@ -84,7 +113,7 @@ class WorkRequestsStatus extends StatelessWidget {
                       width: 4,
                     ),
                     Text(
-                      AppLocalizations.of(context)!.work_requests,
+                      AppLocalizations.of(context)!.assets_status,
                       style: Theme.of(context)
                           .textTheme
                           .caption!
@@ -128,7 +157,13 @@ class WorkRequestsStatus extends StatelessWidget {
                                 startDegreeOffset: 270,
                                 sectionsSpace: 4,
                                 centerSpaceRadius: 30,
-                                sections: showingSections(context, state),
+                                sections: showingSections(
+                                  context,
+                                  statusOk,
+                                  statusAttention,
+                                  statusReparation,
+                                  statusNoInspection,
+                                ),
                               ),
                             ),
                           ),
@@ -139,10 +174,7 @@ class WorkRequestsStatus extends StatelessWidget {
                             radius: 24,
                             child: FittedBox(
                               child: Text(
-                                (state.awaiting.allWorkRequests.length +
-                                        state.converted.allWorkRequests.length +
-                                        state.cancelled.allWorkRequests.length)
-                                    .toString(),
+                                '${((statusOk / totalCount) * 100).toStringAsFixed(0)}%',
                                 style: const TextStyle(
                                   fontSize: 24,
                                 ),
@@ -158,15 +190,24 @@ class WorkRequestsStatus extends StatelessWidget {
                     Expanded(
                         flex: 8,
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(
+                            top: 8,
+                            bottom: 8,
+                            right: 8,
+                          ),
                           child: Column(
                             children: [
                               Row(
                                 children: [
-                                  Container(
-                                    height: 16,
-                                    width: 16,
-                                    color: Theme.of(context).primaryColor,
+                                  SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: getAssetStatusIcon(
+                                      context,
+                                      AssetStatus.ok,
+                                      10,
+                                      true,
+                                    ),
                                   ),
                                   const SizedBox(
                                     width: 4,
@@ -174,12 +215,12 @@ class WorkRequestsStatus extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       AppLocalizations.of(context)!
-                                          .status_converted,
+                                          .asset_status_ok,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                   Text(
-                                    state.converted.allWorkRequests.length
-                                        .toString(),
+                                    statusOk.toString(),
                                     style: const TextStyle(fontSize: 16),
                                   )
                                 ],
@@ -189,10 +230,15 @@ class WorkRequestsStatus extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  Container(
-                                    height: 16,
-                                    width: 16,
-                                    color: Theme.of(context).errorColor,
+                                  SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: getAssetStatusIcon(
+                                      context,
+                                      AssetStatus.workingRequiresAttention,
+                                      10,
+                                      true,
+                                    ),
                                   ),
                                   const SizedBox(
                                     width: 4,
@@ -200,12 +246,12 @@ class WorkRequestsStatus extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       AppLocalizations.of(context)!
-                                          .status_awaiting,
+                                          .asset_status_working_requires_attention,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                   Text(
-                                    state.awaiting.allWorkRequests.length
-                                        .toString(),
+                                    statusAttention.toString(),
                                     style: const TextStyle(fontSize: 16),
                                   )
                                 ],
@@ -215,10 +261,15 @@ class WorkRequestsStatus extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  Container(
-                                    height: 16,
-                                    width: 16,
-                                    color: Colors.amber,
+                                  SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: getAssetStatusIcon(
+                                      context,
+                                      AssetStatus.notWorkingRequiresReparation,
+                                      10,
+                                      true,
+                                    ),
                                   ),
                                   const SizedBox(
                                     width: 4,
@@ -226,12 +277,43 @@ class WorkRequestsStatus extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       AppLocalizations.of(context)!
-                                          .status_cancelled,
+                                          .asset_status_not_working_requires_reparation,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                   Text(
-                                    state.cancelled.allWorkRequests.length
-                                        .toString(),
+                                    statusReparation.toString(),
+                                    style: const TextStyle(fontSize: 16),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: getAssetStatusIcon(
+                                      context,
+                                      AssetStatus.noInspection,
+                                      10,
+                                      true,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      AppLocalizations.of(context)!
+                                          .asset_status_no_inspection,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Text(
+                                    statusNoInspection.toString(),
                                     style: const TextStyle(fontSize: 16),
                                   )
                                 ],
@@ -250,7 +332,7 @@ class WorkRequestsStatus extends StatelessWidget {
           highlightColor: Theme.of(context).cardColor.withAlpha(60),
           child: Container(
             width: double.infinity,
-            height: 145,
+            height: 170,
             // margin: margin,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
