@@ -13,6 +13,8 @@ abstract class AssetEvent extends Equatable {
 
 class GetAssetsStreamEvent extends AssetEvent {}
 
+class ResetEvent extends AssetEvent {}
+
 class UpdateAssetsListEvent extends AssetEvent {
   final QuerySnapshot<Object?> snapshot;
   final List<String> locations;

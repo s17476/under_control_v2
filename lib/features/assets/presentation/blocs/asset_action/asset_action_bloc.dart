@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../data/models/asset_action/asset_actions_list_model.dart';
 import '../../../data/models/asset_model.dart';
@@ -16,15 +17,27 @@ part 'asset_action_state.dart';
 
 @injectable
 class AssetActionBloc extends Bloc<AssetActionEvent, AssetActionState> {
+  final AuthenticationBloc authenticationBloc;
   final GetAssetActionsStream getAssetActionsStream;
   final GetLastFiveAssetActionsStream getLastFiveAssetActionsStream;
+
+  late StreamSubscription _authStreamSubscription;
 
   StreamSubscription? _assetActionsStreamSubscription;
 
   AssetActionBloc({
+    required this.authenticationBloc,
     required this.getAssetActionsStream,
     required this.getLastFiveAssetActionsStream,
   }) : super(AssetActionEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((event) {
+      add(ResetEvent());
+    });
+
+    on<ResetEvent>(
+      (event, emit) => emit(AssetActionEmptyState()),
+    );
+
     on<GetAssetActionsEvent>((event, emit) async {
       emit(AssetActionLoadingState());
 
@@ -90,7 +103,6 @@ class AssetActionBloc extends Bloc<AssetActionEvent, AssetActionState> {
         emit(AssetActionLoadingState());
         final assetActionsList = AssetActionsListModel.fromSnapshot(
             event.snapshot as QuerySnapshot<Map<String, dynamic>>);
-        print('AssetActionsBloc - Loaded');
         emit(
           AssetActionLoadedState(
             allActions: assetActionsList,
@@ -103,6 +115,7 @@ class AssetActionBloc extends Bloc<AssetActionEvent, AssetActionState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _assetActionsStreamSubscription?.cancel();
     return super.close();
   }

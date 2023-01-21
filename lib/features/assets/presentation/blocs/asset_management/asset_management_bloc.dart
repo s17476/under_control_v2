@@ -109,12 +109,10 @@ class AssetManagementBloc
   }
 
   void _getCompanyAndUserId() {
-    if (_companyId.isEmpty) {
-      final userState = userProfileBloc.state;
-      if (userState is Approved) {
-        _companyId = userState.userProfile.companyId;
-        _userId = userState.userProfile.id;
-      }
+    final userState = userProfileBloc.state;
+    if (userState is Approved) {
+      _companyId = userState.userProfile.companyId;
+      _userId = userState.userProfile.id;
     }
   }
 }

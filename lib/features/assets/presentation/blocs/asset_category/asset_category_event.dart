@@ -13,6 +13,8 @@ abstract class AssetCategoryEvent extends Equatable {
 
 class GetAllAssetsCategoriesEvent extends AssetCategoryEvent {}
 
+class ResetEvent extends AssetCategoryEvent {}
+
 class UpdateAssetsCategoriesListEvent extends AssetCategoryEvent {
   final QuerySnapshot<Object?> snapshot;
   UpdateAssetsCategoriesListEvent({

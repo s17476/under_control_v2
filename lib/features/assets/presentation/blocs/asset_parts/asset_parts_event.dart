@@ -25,3 +25,7 @@ class UpdateAssetPartsListEvent extends AssetPartsEvent {
     required this.parentAssetId,
   }) : super(properties: [snapshot, parentAssetId]);
 }
+
+class ResetEvent extends AssetPartsEvent {
+  const ResetEvent({super.properties = const []});
+}

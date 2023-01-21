@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../assets/data/models/assets_list_model.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -15,17 +16,31 @@ part 'asset_parts_state.dart';
 
 @injectable
 class AssetPartsBloc extends Bloc<AssetPartsEvent, AssetPartsState> {
+  final AuthenticationBloc authenticationBloc;
   final UserProfileBloc userProfileBloc;
   final GetAssetsStreamForParent getAssetsStreamForParent;
 
+  late StreamSubscription _authStreamSubscription;
   StreamSubscription? _streamSubscription;
 
   String _companyId = '';
 
   AssetPartsBloc({
+    required this.authenticationBloc,
     required this.userProfileBloc,
     required this.getAssetsStreamForParent,
   }) : super(AssetPartsEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((event) {
+      add(const ResetEvent());
+    });
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        emit(AssetPartsEmptyState());
+      },
+    );
+
     on<GetAssetsForParentEvent>((event, emit) async {
       emit(AssetPartsLoadingState());
       _getCompanyId();
@@ -61,7 +76,6 @@ class AssetPartsBloc extends Bloc<AssetPartsEvent, AssetPartsState> {
         final assetParts = AssetsListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );
-        print('AssetPartsBloc - Loaded');
         emit(
           AssetPartsLoadedState(
             allAssetParts: assetParts,
@@ -83,6 +97,7 @@ class AssetPartsBloc extends Bloc<AssetPartsEvent, AssetPartsState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _streamSubscription?.cancel();
     return super.close();
   }

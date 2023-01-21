@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
@@ -18,11 +19,13 @@ part 'dashboard_asset_action_state.dart';
 @singleton
 class DashboardAssetActionBloc
     extends Bloc<DashboardAssetActionEvent, DashboardAssetActionState> {
+  final AuthenticationBloc authenticationBloc;
   final FilterBloc filterBloc;
   final GetDashboardAssetActionsStream getDashboardAssetActionsStream;
   final GetDashboardLastFiveAssetActionsStream
       getDashboardLastFiveAssetActionsStream;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _filterStreamSubscription;
   final List<StreamSubscription?> _actionStreamSubscriptions = [];
 
@@ -30,10 +33,14 @@ class DashboardAssetActionBloc
   List<String> _locations = [];
 
   DashboardAssetActionBloc({
+    required this.authenticationBloc,
     required this.filterBloc,
     required this.getDashboardAssetActionsStream,
     required this.getDashboardLastFiveAssetActionsStream,
   }) : super(DashboardAssetActionEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((event) {
+      add(ResetEvent());
+    });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
@@ -51,6 +58,14 @@ class DashboardAssetActionBloc
           // gets latest five actions
           add(GetDashboardLastFiveAssetActionsEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _locations = [];
+        emit(DashboardAssetActionEmptyState());
       },
     );
 
@@ -219,7 +234,6 @@ class DashboardAssetActionBloc
             allAssetActions: tmpList,
           );
         }
-        print('DashboardAssetActionBloc - Loaded');
         emit(DashboardAssetActionLoadedState(
           allActions: assetActionsList,
           isAllItems: event.limit == 0,
@@ -230,6 +244,7 @@ class DashboardAssetActionBloc
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _filterStreamSubscription.cancel();
     if (_actionStreamSubscriptions.isNotEmpty) {
       for (var actionSubscription in _actionStreamSubscriptions) {

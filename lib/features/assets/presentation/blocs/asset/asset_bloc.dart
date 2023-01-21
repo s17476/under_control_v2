@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../../core/usecases/usecase.dart';
@@ -18,8 +19,10 @@ part 'asset_state.dart';
 @singleton
 class AssetBloc extends Bloc<AssetEvent, AssetState> {
   final FilterBloc filterBloc;
+  AuthenticationBloc authenticationBloc;
   final GetAssetsStream getAssetsStream;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _filterStreamSubscription;
   final List<StreamSubscription?> _assetStreamSubscriptions = [];
 
@@ -28,8 +31,12 @@ class AssetBloc extends Bloc<AssetEvent, AssetState> {
 
   AssetBloc({
     required this.filterBloc,
+    required this.authenticationBloc,
     required this.getAssetsStream,
   }) : super(AssetEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((event) {
+      add(ResetEvent());
+    });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
@@ -53,6 +60,14 @@ class AssetBloc extends Bloc<AssetEvent, AssetState> {
           }
           add(GetAssetsStreamEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _locations = [];
+        emit(AssetEmptyState());
       },
     );
 
@@ -147,7 +162,6 @@ class AssetBloc extends Bloc<AssetEvent, AssetState> {
           allAssets: tmpList,
         );
       }
-      print('AssetsBloc - Loaded');
       emit(AssetLoadedState(
         allAssets: assetsList,
       ));
@@ -156,6 +170,7 @@ class AssetBloc extends Bloc<AssetEvent, AssetState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _filterStreamSubscription.cancel();
     if (_assetStreamSubscriptions.isNotEmpty) {
       for (var assetSubscription in _assetStreamSubscriptions) {

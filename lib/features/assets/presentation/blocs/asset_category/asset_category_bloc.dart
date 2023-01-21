@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/asset_category/assets_categories_list_model.dart';
@@ -16,22 +17,33 @@ part 'asset_category_state.dart';
 @singleton
 class AssetCategoryBloc extends Bloc<AssetCategoryEvent, AssetCategoryState> {
   final UserProfileBloc userProfileBloc;
+  final AuthenticationBloc authenticationBloc;
   final GetAssetsCategoriesStream getAssetsCategoriesStream;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _userProfileStreamSubscription;
   StreamSubscription? _assetsCategoriesStreamSubscription;
 
   String _companyId = '';
 
   AssetCategoryBloc({
+    required this.authenticationBloc,
     required this.userProfileBloc,
     required this.getAssetsCategoriesStream,
   }) : super(AssetCategoryEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((event) {
+      add(ResetEvent());
+    });
     _userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
       if (_companyId.isEmpty && state is Approved) {
         _companyId = state.userProfile.companyId;
         add(GetAllAssetsCategoriesEvent());
       }
+    });
+
+    on<ResetEvent>((event, emit) {
+      _companyId = '';
+      emit(AssetCategoryEmptyState());
     });
 
     on<GetAllAssetsCategoriesEvent>((event, emit) async {
@@ -58,7 +70,6 @@ class AssetCategoryBloc extends Bloc<AssetCategoryEvent, AssetCategoryState> {
         final assetCategoryList = AssetsCategoriesListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );
-        print('AssetCategoryBloc - Loaded');
         emit(
           AssetCategoryLoadedState(
             allAssetsCategories: assetCategoryList,
@@ -70,6 +81,7 @@ class AssetCategoryBloc extends Bloc<AssetCategoryEvent, AssetCategoryState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _userProfileStreamSubscription.cancel();
     _assetsCategoriesStreamSubscription?.cancel();
     return super.close();

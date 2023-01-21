@@ -48,3 +48,5 @@ class UpdateAssetActionsListEvent extends AssetActionEvent {
           limit,
         ]);
 }
+
+class ResetEvent extends AssetActionEvent {}

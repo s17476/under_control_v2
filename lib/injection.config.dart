@@ -66,7 +66,7 @@ import 'package:under_control_v2/features/assets/domain/usecases/update_asset.da
 import 'package:under_control_v2/features/assets/presentation/blocs/asset/asset_bloc.dart'
     as _i225;
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_action/asset_action_bloc.dart'
-    as _i181;
+    as _i191;
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_action_management/asset_action_management_bloc.dart'
     as _i192;
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_category/asset_category_bloc.dart'
@@ -80,7 +80,7 @@ import 'package:under_control_v2/features/assets/presentation/blocs/asset_parts/
 import 'package:under_control_v2/features/assets/presentation/blocs/dashboard_asset_action/dashboard_asset_action_bloc.dart'
     as _i226;
 import 'package:under_control_v2/features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart'
-    as _i182;
+    as _i181;
 import 'package:under_control_v2/features/authentication/data/repositories/authentication_repository_impl.dart'
     as _i75;
 import 'package:under_control_v2/features/authentication/domain/repositories/authentication_repository.dart'
@@ -100,7 +100,7 @@ import 'package:under_control_v2/features/authentication/domain/usecases/signout
 import 'package:under_control_v2/features/authentication/domain/usecases/signup.dart'
     as _i154;
 import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart'
-    as _i183;
+    as _i182;
 import 'package:under_control_v2/features/checklists/data/repositories/checklists_repository_impl.dart'
     as _i82;
 import 'package:under_control_v2/features/checklists/domain/repositories/checklists_repository.dart'
@@ -178,11 +178,11 @@ import 'package:under_control_v2/features/groups/domain/repositories/group_repos
 import 'package:under_control_v2/features/groups/domain/usecases/add_group.dart'
     as _i179;
 import 'package:under_control_v2/features/groups/domain/usecases/cache_groups.dart'
-    as _i184;
+    as _i183;
 import 'package:under_control_v2/features/groups/domain/usecases/delete_group.dart'
-    as _i186;
+    as _i185;
 import 'package:under_control_v2/features/groups/domain/usecases/get_groups_stream.dart'
-    as _i189;
+    as _i188;
 import 'package:under_control_v2/features/groups/domain/usecases/try_to_get_cached_groups.dart'
     as _i157;
 import 'package:under_control_v2/features/groups/domain/usecases/update_group.dart'
@@ -304,11 +304,11 @@ import 'package:under_control_v2/features/locations/domain/repositories/location
 import 'package:under_control_v2/features/locations/domain/usecases/add_location.dart'
     as _i180;
 import 'package:under_control_v2/features/locations/domain/usecases/cache_location.dart'
-    as _i185;
+    as _i184;
 import 'package:under_control_v2/features/locations/domain/usecases/delete_location.dart'
-    as _i187;
+    as _i186;
 import 'package:under_control_v2/features/locations/domain/usecases/fetch_all_locations.dart'
-    as _i188;
+    as _i187;
 import 'package:under_control_v2/features/locations/domain/usecases/try_to_get_cached_location.dart'
     as _i158;
 import 'package:under_control_v2/features/locations/domain/usecases/update_location.dart'
@@ -404,7 +404,7 @@ import 'package:under_control_v2/features/tasks/presentation/blocs/work_request/
 import 'package:under_control_v2/features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart'
     as _i222;
 import 'package:under_control_v2/features/tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart'
-    as _i191;
+    as _i190;
 import 'package:under_control_v2/features/user_profile/data/repositories/user_files_repository_impl.dart'
     as _i43;
 import 'package:under_control_v2/features/user_profile/data/repositories/user_profile_repository_impl.dart'
@@ -454,7 +454,7 @@ import 'package:under_control_v2/features/user_profile/domain/usecases/update_us
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_management/user_management_bloc.dart'
     as _i172;
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart'
-    as _i190;
+    as _i189;
 
 import 'features/authentication/domain/repositories/injectable_modules.dart'
     as _i230;
@@ -871,14 +871,9 @@ Future<_i1.GetIt> $initGetIt(
       () => _i179.AddGroup(groupRepository: gh<_i141.GroupRepository>()));
   gh.lazySingleton<_i180.AddLocation>(() =>
       _i180.AddLocation(locationRepository: gh<_i145.LocationRepository>()));
-  gh.factory<_i181.AssetActionBloc>(() => _i181.AssetActionBloc(
-        getAssetActionsStream: gh<_i113.GetAssetActionsStream>(),
-        getLastFiveAssetActionsStream:
-            gh<_i131.GetLastFiveAssetActionsStream>(),
-      ));
-  gh.factory<_i182.AssetInternalNumberCubit>(
-      () => _i182.AssetInternalNumberCubit(gh<_i79.CheckCodeAvailability>()));
-  gh.lazySingleton<_i183.AuthenticationBloc>(() => _i183.AuthenticationBloc(
+  gh.factory<_i181.AssetInternalNumberCubit>(
+      () => _i181.AssetInternalNumberCubit(gh<_i79.CheckCodeAvailability>()));
+  gh.lazySingleton<_i182.AuthenticationBloc>(() => _i182.AuthenticationBloc(
         signin: gh<_i152.Signin>(),
         signup: gh<_i154.Signup>(),
         signout: gh<_i153.Signout>(),
@@ -888,20 +883,20 @@ Future<_i1.GetIt> $initGetIt(
         sendPasswordResetEmail: gh<_i150.SendPasswordResetEmail>(),
         inputValidator: gh<_i8.InputValidator>(),
       ));
-  gh.lazySingleton<_i184.CacheGroups>(
-      () => _i184.CacheGroups(groupRepository: gh<_i141.GroupRepository>()));
-  gh.lazySingleton<_i185.CacheLocation>(() =>
-      _i185.CacheLocation(locationRepository: gh<_i145.LocationRepository>()));
-  gh.lazySingleton<_i186.DeleteGroup>(
-      () => _i186.DeleteGroup(groupRepository: gh<_i141.GroupRepository>()));
-  gh.lazySingleton<_i187.DeleteLocation>(() =>
-      _i187.DeleteLocation(locationRepository: gh<_i145.LocationRepository>()));
-  gh.lazySingleton<_i188.FetchAllLocations>(() => _i188.FetchAllLocations(
+  gh.lazySingleton<_i183.CacheGroups>(
+      () => _i183.CacheGroups(groupRepository: gh<_i141.GroupRepository>()));
+  gh.lazySingleton<_i184.CacheLocation>(() =>
+      _i184.CacheLocation(locationRepository: gh<_i145.LocationRepository>()));
+  gh.lazySingleton<_i185.DeleteGroup>(
+      () => _i185.DeleteGroup(groupRepository: gh<_i141.GroupRepository>()));
+  gh.lazySingleton<_i186.DeleteLocation>(() =>
+      _i186.DeleteLocation(locationRepository: gh<_i145.LocationRepository>()));
+  gh.lazySingleton<_i187.FetchAllLocations>(() => _i187.FetchAllLocations(
       locationRepository: gh<_i145.LocationRepository>()));
-  gh.lazySingleton<_i189.GetGroupsStream>(() =>
-      _i189.GetGroupsStream(groupRepository: gh<_i141.GroupRepository>()));
-  gh.lazySingleton<_i190.UserProfileBloc>(() => _i190.UserProfileBloc(
-        authenticationBloc: gh<_i183.AuthenticationBloc>(),
+  gh.lazySingleton<_i188.GetGroupsStream>(() =>
+      _i188.GetGroupsStream(groupRepository: gh<_i141.GroupRepository>()));
+  gh.lazySingleton<_i189.UserProfileBloc>(() => _i189.UserProfileBloc(
+        authenticationBloc: gh<_i182.AuthenticationBloc>(),
         addUser: gh<_i59.AddUser>(),
         assignUserToCompany: gh<_i72.AssignUserToCompany>(),
         resetCompany: gh<_i149.ResetCompany>(),
@@ -911,54 +906,62 @@ Future<_i1.GetIt> $initGetIt(
         addUserAvatar: gh<_i60.AddUserAvatar>(),
         inputValidator: gh<_i8.InputValidator>(),
       ));
-  gh.factory<_i191.WorkRequestManagementBloc>(
-      () => _i191.WorkRequestManagementBloc(
-            userProfileBloc: gh<_i190.UserProfileBloc>(),
+  gh.factory<_i190.WorkRequestManagementBloc>(
+      () => _i190.WorkRequestManagementBloc(
+            userProfileBloc: gh<_i189.UserProfileBloc>(),
             addWorkRequest: gh<_i61.AddWorkRequest>(),
             deleteWorkRequest: gh<_i105.DeleteWorkRequest>(),
             updateWorkRequest: gh<_i171.UpdateWorkRequest>(),
             cancelWorkRequest: gh<_i78.CancelWorkRequest>(),
           ));
+  gh.factory<_i191.AssetActionBloc>(() => _i191.AssetActionBloc(
+        authenticationBloc: gh<_i182.AuthenticationBloc>(),
+        getAssetActionsStream: gh<_i113.GetAssetActionsStream>(),
+        getLastFiveAssetActionsStream:
+            gh<_i131.GetLastFiveAssetActionsStream>(),
+      ));
   gh.factory<_i192.AssetActionManagementBloc>(
       () => _i192.AssetActionManagementBloc(
-            userProfileBloc: gh<_i190.UserProfileBloc>(),
+            userProfileBloc: gh<_i189.UserProfileBloc>(),
             addAssetAction: gh<_i174.AddAssetAction>(),
             updateAssetAction: gh<_i164.UpdateAssetAction>(),
             deleteAssetAction: gh<_i93.DeleteAssetAction>(),
           ));
   gh.singleton<_i193.AssetCategoryBloc>(_i193.AssetCategoryBloc(
-    userProfileBloc: gh<_i190.UserProfileBloc>(),
+    authenticationBloc: gh<_i182.AuthenticationBloc>(),
+    userProfileBloc: gh<_i189.UserProfileBloc>(),
     getAssetsCategoriesStream: gh<_i114.GetAssetsCategoriesStream>(),
   ));
   gh.factory<_i194.AssetCategoryManagementBloc>(
       () => _i194.AssetCategoryManagementBloc(
-            userProfileBloc: gh<_i190.UserProfileBloc>(),
+            userProfileBloc: gh<_i189.UserProfileBloc>(),
             addAssetCategory: gh<_i175.AddAssetCategory>(),
             updateAssetCategory: gh<_i165.UpdateAssetCategory>(),
             deleteAssetCategory: gh<_i94.DeleteAssetCategory>(),
           ));
   gh.factory<_i195.AssetManagementBloc>(() => _i195.AssetManagementBloc(
-        userProfileBloc: gh<_i190.UserProfileBloc>(),
+        userProfileBloc: gh<_i189.UserProfileBloc>(),
         addAsset: gh<_i173.AddAsset>(),
         deleteAsset: gh<_i92.DeleteAsset>(),
         updateAsset: gh<_i163.UpdateAsset>(),
       ));
   gh.factory<_i196.AssetPartsBloc>(() => _i196.AssetPartsBloc(
-        userProfileBloc: gh<_i190.UserProfileBloc>(),
+        authenticationBloc: gh<_i182.AuthenticationBloc>(),
+        userProfileBloc: gh<_i189.UserProfileBloc>(),
         getAssetsStreamForParent: gh<_i116.GetAssetsStreamForParent>(),
       ));
   gh.singleton<_i197.ChecklistBloc>(_i197.ChecklistBloc(
-    userProfileBloc: gh<_i190.UserProfileBloc>(),
+    userProfileBloc: gh<_i189.UserProfileBloc>(),
     getChecklistsStream: gh<_i119.GetChecklistStream>(),
   ));
   gh.factory<_i198.ChecklistManagementBloc>(() => _i198.ChecklistManagementBloc(
-        userProfileBloc: gh<_i190.UserProfileBloc>(),
+        userProfileBloc: gh<_i189.UserProfileBloc>(),
         addChecklist: gh<_i176.AddChecklist>(),
         updateChecklist: gh<_i166.UpdateChecklist>(),
         deleteChecklist: gh<_i95.DeleteChecklist>(),
       ));
   gh.singleton<_i199.CompanyManagementBloc>(_i199.CompanyManagementBloc(
-    userProfileBloc: gh<_i190.UserProfileBloc>(),
+    userProfileBloc: gh<_i189.UserProfileBloc>(),
     inputValidator: gh<_i8.InputValidator>(),
     addCompany: gh<_i177.AddCompany>(),
     fetchAllCompanies: gh<_i106.FetchAllCompanies>(),
@@ -966,7 +969,7 @@ Future<_i1.GetIt> $initGetIt(
     updateCompany: gh<_i167.UpdateCompany>(),
   ));
   gh.singleton<_i200.CompanyProfileBloc>(_i200.CompanyProfileBloc(
-    userProfileBloc: gh<_i190.UserProfileBloc>(),
+    userProfileBloc: gh<_i189.UserProfileBloc>(),
     fetchAllCompanyUsers: gh<_i107.FetchAllCompanyUsers>(),
     getCompanyById: gh<_i120.GetCompanyById>(),
     inputValidator: gh<_i8.InputValidator>(),
@@ -975,45 +978,45 @@ Future<_i1.GetIt> $initGetIt(
     companyProfileBloc: gh<_i200.CompanyProfileBloc>(),
     addGroup: gh<_i179.AddGroup>(),
     updateGroup: gh<_i168.UpdateGroup>(),
-    deleteGroup: gh<_i186.DeleteGroup>(),
-    getGroupsStream: gh<_i189.GetGroupsStream>(),
-    cacheGroups: gh<_i184.CacheGroups>(),
+    deleteGroup: gh<_i185.DeleteGroup>(),
+    getGroupsStream: gh<_i188.GetGroupsStream>(),
+    cacheGroups: gh<_i183.CacheGroups>(),
     tryToGetCachedGroups: gh<_i157.TryToGetCachedGroups>(),
   ));
   gh.singleton<_i202.InstructionCategoryBloc>(_i202.InstructionCategoryBloc(
-    userProfileBloc: gh<_i190.UserProfileBloc>(),
+    userProfileBloc: gh<_i189.UserProfileBloc>(),
     getInstructionsCategoriesStream:
         gh<_i126.GetInstructionsCategoriesStream>(),
   ));
   gh.factory<_i203.InstructionCategoryManagementBloc>(
       () => _i203.InstructionCategoryManagementBloc(
-            userProfileBloc: gh<_i190.UserProfileBloc>(),
+            userProfileBloc: gh<_i189.UserProfileBloc>(),
             addInstructionCategory: gh<_i51.AddInstructionCategory>(),
             updateInstructionCategory: gh<_i34.UpdateInstructionCategory>(),
             deleteInstructionCategory: gh<_i97.DeleteInstructionCategory>(),
           ));
   gh.factory<_i204.InstructionManagementBloc>(
       () => _i204.InstructionManagementBloc(
-            userProfileBloc: gh<_i190.UserProfileBloc>(),
+            userProfileBloc: gh<_i189.UserProfileBloc>(),
             addInstruction: gh<_i50.AddInstruction>(),
             deleteInstruction: gh<_i96.DeleteInstruction>(),
             updateInstruction: gh<_i33.UpdateInstruction>(),
           ));
   gh.factory<_i205.ItemActionManagementBloc>(
       () => _i205.ItemActionManagementBloc(
-            userProfileBloc: gh<_i190.UserProfileBloc>(),
+            userProfileBloc: gh<_i189.UserProfileBloc>(),
             addItemAction: gh<_i53.AddItemAction>(),
             updateItemAction: gh<_i36.UpdateItemAction>(),
             deleteItemAction: gh<_i99.DeleteItemAction>(),
             moveItemAction: gh<_i23.MoveItemAction>(),
           ));
   gh.singleton<_i206.ItemCategoryBloc>(_i206.ItemCategoryBloc(
-    userProfileBloc: gh<_i190.UserProfileBloc>(),
+    userProfileBloc: gh<_i189.UserProfileBloc>(),
     getItemsCategoriesStream: gh<_i129.GetItemsCategoriesStream>(),
   ));
   gh.factory<_i207.ItemCategoryManagementBloc>(
       () => _i207.ItemCategoryManagementBloc(
-            userProfileBloc: gh<_i190.UserProfileBloc>(),
+            userProfileBloc: gh<_i189.UserProfileBloc>(),
             addItemCategory: gh<_i54.AddItemCategory>(),
             updateItemCategory: gh<_i37.UpdateItemCategory>(),
             deleteItemCategory: gh<_i100.DeleteItemCategory>(),
@@ -1022,17 +1025,17 @@ Future<_i1.GetIt> $initGetIt(
         addItemPhoto: gh<_i55.AddItemPhoto>(),
         deleteItemPhoto: gh<_i101.DeleteItemPhoto>(),
         updateItemPhoto: gh<_i38.UpdateItemPhoto>(),
-        userProfileBloc: gh<_i190.UserProfileBloc>(),
+        userProfileBloc: gh<_i189.UserProfileBloc>(),
         addItem: gh<_i52.AddItem>(),
         deleteItem: gh<_i98.DeleteItem>(),
         updateItem: gh<_i35.UpdateItem>(),
       ));
   gh.singleton<_i209.LocationBloc>(_i209.LocationBloc(
-    userProfileBloc: gh<_i190.UserProfileBloc>(),
+    userProfileBloc: gh<_i189.UserProfileBloc>(),
     addLocation: gh<_i180.AddLocation>(),
-    cacheLocation: gh<_i185.CacheLocation>(),
-    deleteLocation: gh<_i187.DeleteLocation>(),
-    fetchAllLocations: gh<_i188.FetchAllLocations>(),
+    cacheLocation: gh<_i184.CacheLocation>(),
+    deleteLocation: gh<_i186.DeleteLocation>(),
+    fetchAllLocations: gh<_i187.FetchAllLocations>(),
     tryToGetCachedLocation: gh<_i158.TryToGetCachedLocation>(),
     updateLocation: gh<_i169.UpdateLocation>(),
   ));
@@ -1046,13 +1049,13 @@ Future<_i1.GetIt> $initGetIt(
   ));
   gh.factory<_i212.TaskActionManagementBloc>(
       () => _i212.TaskActionManagementBloc(
-            userProfileBloc: gh<_i190.UserProfileBloc>(),
+            userProfileBloc: gh<_i189.UserProfileBloc>(),
             addTaskAction: gh<_i57.AddTaskAction>(),
             deleteTaskAction: gh<_i103.DeleteTaskAction>(),
             updateTaskAction: gh<_i40.UpdateTaskAction>(),
           ));
   gh.factory<_i213.TaskManagementBloc>(() => _i213.TaskManagementBloc(
-        userProfileBloc: gh<_i190.UserProfileBloc>(),
+        userProfileBloc: gh<_i189.UserProfileBloc>(),
         addTask: gh<_i56.AddTask>(),
         deleteTask: gh<_i102.DeleteTask>(),
         updateTask: gh<_i39.UpdateTask>(),
@@ -1060,12 +1063,12 @@ Future<_i1.GetIt> $initGetIt(
         completeTask: gh<_i87.CompleteTask>(),
       ));
   gh.factory<_i214.TaskTemplatesBloc>(() => _i214.TaskTemplatesBloc(
-        userProfileBloc: gh<_i190.UserProfileBloc>(),
+        userProfileBloc: gh<_i189.UserProfileBloc>(),
         getTasksTemplatesStream: gh<_i136.GetTasksTemplatesStream>(),
       ));
   gh.factory<_i215.TaskTemplatesManagementBloc>(
       () => _i215.TaskTemplatesManagementBloc(
-            userProfileBloc: gh<_i190.UserProfileBloc>(),
+            userProfileBloc: gh<_i189.UserProfileBloc>(),
             addTaskTemplate: gh<_i58.AddTaskTemplate>(),
             updateTaskTemplate: gh<_i41.UpdateTaskTemplate>(),
             deleteTaskTemplate: gh<_i104.DeleteTaskTemplate>(),
@@ -1073,7 +1076,7 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i216.FilterBloc>(_i216.FilterBloc(
     locationBloc: gh<_i209.LocationBloc>(),
     groupBloc: gh<_i201.GroupBloc>(),
-    userProfileBloc: gh<_i190.UserProfileBloc>(),
+    userProfileBloc: gh<_i189.UserProfileBloc>(),
   ));
   gh.singleton<_i217.InstructionBloc>(_i217.InstructionBloc(
     filterBloc: gh<_i216.FilterBloc>(),
@@ -1111,9 +1114,11 @@ Future<_i1.GetIt> $initGetIt(
   ));
   gh.singleton<_i225.AssetBloc>(_i225.AssetBloc(
     filterBloc: gh<_i216.FilterBloc>(),
+    authenticationBloc: gh<_i182.AuthenticationBloc>(),
     getAssetsStream: gh<_i115.GetAssetsStream>(),
   ));
   gh.singleton<_i226.DashboardAssetActionBloc>(_i226.DashboardAssetActionBloc(
+    authenticationBloc: gh<_i182.AuthenticationBloc>(),
     filterBloc: gh<_i216.FilterBloc>(),
     getDashboardAssetActionsStream: gh<_i122.GetDashboardAssetActionsStream>(),
     getDashboardLastFiveAssetActionsStream:
@@ -1126,7 +1131,7 @@ Future<_i1.GetIt> $initGetIt(
         gh<_i125.GetDashboardLastFiveItemsActionsStream>(),
   ));
   gh.singleton<_i228.TaskFilterBloc>(_i228.TaskFilterBloc(
-    gh<_i190.UserProfileBloc>(),
+    gh<_i189.UserProfileBloc>(),
     gh<_i221.TaskBloc>(),
     gh<_i223.WorkRequestBloc>(),
   ));

@@ -13,6 +13,8 @@ abstract class DashboardAssetActionEvent extends Equatable {
 
 class GetDashboardAssetActionsEvent extends DashboardAssetActionEvent {}
 
+class ResetEvent extends DashboardAssetActionEvent {}
+
 class GetDashboardLastFiveAssetActionsEvent extends DashboardAssetActionEvent {}
 
 class UpdateDashboardAssetActionsListEvent extends DashboardAssetActionEvent {
