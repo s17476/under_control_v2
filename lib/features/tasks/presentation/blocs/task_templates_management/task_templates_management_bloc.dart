@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -34,6 +36,8 @@ class TaskTemplatesManagementBloc
       _getCompanyId();
       final failureOrString = await addTaskTemplate(
         TaskParams(
+          images: event.images,
+          video: event.video,
           task: event.task,
           companyId: _companyId,
         ),
@@ -57,6 +61,8 @@ class TaskTemplatesManagementBloc
       _getCompanyId();
       final failureOrVoidResult = await updateTaskTemplate(
         TaskParams(
+          images: event.images,
+          video: event.video,
           task: event.task,
           companyId: _companyId,
         ),

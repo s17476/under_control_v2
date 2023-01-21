@@ -15,14 +15,17 @@ import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../domain/entities/task/task.dart';
 import '../../utils/get_task_priority_and_type_icon.dart';
 import '../pages/task_details_page.dart';
+import '../pages/task_template_details_page.dart';
 
 class TaskTile extends StatefulWidget {
   const TaskTile({
     Key? key,
     required this.task,
+    this.isTemplate = false,
   }) : super(key: key);
 
   final Task task;
+  final bool isTemplate;
 
   @override
   State<TaskTile> createState() => _TaskTileState();
@@ -79,13 +82,17 @@ class _TaskTileState extends State<TaskTile> {
           child: Material(
             borderRadius: BorderRadius.circular(10),
             child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  TaskDetailsPage.routeName,
-                  arguments: widget.task.id,
-                );
-              },
+              onTap: widget.isTemplate
+                  ? () => Navigator.pushNamed(
+                        context,
+                        TaskTemplateDetailsPage.routeName,
+                        arguments: widget.task.id,
+                      )
+                  : () => Navigator.pushNamed(
+                        context,
+                        TaskDetailsPage.routeName,
+                        arguments: widget.task.id,
+                      ),
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 padding: const EdgeInsets.only(
@@ -102,69 +109,71 @@ class _TaskTileState extends State<TaskTile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // date
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: Row(
-                        children: [
-                          ProgressIcon(task: widget.task),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.build,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .caption!
-                                          .color,
-                                      size: 10,
-                                    ),
-                                    const SizedBox(
-                                      width: 2,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        dateFormat
-                                            .format(widget.task.executionDate),
+                    if (!widget.isTemplate)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Row(
+                          children: [
+                            ProgressIcon(task: widget.task),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.build,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .caption!
+                                            .color,
+                                        size: 10,
+                                      ),
+                                      const SizedBox(
+                                        width: 2,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          dateFormat.format(
+                                              widget.task.executionDate),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption,
+                                        ),
+                                      ),
+                                      if (widget.task.isCyclictask)
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 4),
+                                          child: Icon(
+                                            Icons.refresh,
+                                            size: 14,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .caption!
+                                                .color,
+                                          ),
+                                        ),
+                                      Text(
+                                        '#${widget.task.count}',
                                         style:
                                             Theme.of(context).textTheme.caption,
                                       ),
-                                    ),
-                                    if (widget.task.isCyclictask)
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 4),
-                                        child: Icon(
-                                          Icons.refresh,
-                                          size: 14,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .caption!
-                                              .color,
-                                        ),
-                                      ),
-                                    Text(
-                                      '#${widget.task.count}',
-                                      style:
-                                          Theme.of(context).textTheme.caption,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                ProgressText(task: widget.task),
-                              ],
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 2,
+                                  ),
+                                  ProgressText(task: widget.task),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
                     // shows asset data if work order is connected to an asset
                     if (widget.task.assetId.isNotEmpty)
                       ConnectedAsset(assetId: widget.task.assetId),

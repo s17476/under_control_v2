@@ -29,6 +29,7 @@ import '../../domain/entities/task_type.dart';
 import '../../domain/entities/work_request/work_request.dart';
 import '../blocs/task/task_bloc.dart';
 import '../blocs/task_management/task_management_bloc.dart';
+import '../blocs/task_templates_management/task_templates_management_bloc.dart';
 import '../widgets/add_task/add_task_assign_card.dart';
 import '../widgets/add_task/add_task_card.dart';
 import '../widgets/add_task/add_task_set_cyclic.dart';
@@ -50,8 +51,9 @@ class AddTaskTemplatePage extends StatefulWidget {
 }
 
 class _AddTaskTemplatePageState extends State<AddTaskTemplatePage> {
-  WorkRequest? _workRequest;
   Task? _task;
+
+  bool _isTemplate = true;
 
   bool _loadingImages = false;
 
@@ -168,7 +170,7 @@ class _AddTaskTemplatePageState extends State<AddTaskTemplatePage> {
         locationId: _locationId,
         userId: _userId,
         assetId: _assetId,
-        workOrderId: _workRequest?.id ?? '',
+        workOrderId: '',
         images: const [],
         instructions: _instructions,
         video: '',
@@ -190,24 +192,37 @@ class _AddTaskTemplatePageState extends State<AddTaskTemplatePage> {
         checklist: _checklist,
       );
 
-      // add new task
-      if (_task == null || _task!.id.isEmpty) {
-        context.read<TaskManagementBloc>().add(
-              AddTaskEvent(
-                task: newTask,
-                images: _images,
-                video: _videoFile,
-              ),
-            );
-        // update task
+      if (_isTemplate) {
+        // add new template
+        if (_task == null || _task!.id.isEmpty) {
+          context.read<TaskTemplatesManagementBloc>().add(
+                AddTaskTemplateEvent(
+                  task: newTask,
+                  images: _images,
+                  video: _videoFile,
+                ),
+              );
+          // update template
+        } else {
+          context.read<TaskTemplatesManagementBloc>().add(
+                UpdateTaskTemplateEvent(
+                  task: newTask,
+                  images: _images,
+                  video: _videoFile,
+                ),
+              );
+        }
       } else {
-        context.read<TaskManagementBloc>().add(
-              UpdateTaskEvent(
-                task: newTask,
-                images: _images,
-                video: _videoFile,
-              ),
-            );
+        // add new template
+        if (_task == null || _task!.id.isEmpty) {
+          context.read<TaskManagementBloc>().add(
+                AddTaskEvent(
+                  task: newTask,
+                  images: _images,
+                  video: _videoFile,
+                ),
+              );
+        }
       }
 
       Navigator.pop(context);
@@ -537,26 +552,41 @@ class _AddTaskTemplatePageState extends State<AddTaskTemplatePage> {
 
     final arguments = ModalRoute.of(context)!.settings.arguments;
 
-    // conversion from Work Request
-    if (arguments != null && arguments is WorkRequest && _workRequest == null) {
-      _workRequest = WorkRequestModel.fromWorkRequest(arguments).deepCopy();
-
-      if (_workRequest!.images.isNotEmpty) {
-        fetchImages(_workRequest!.images);
-      }
-      _titleTextEditingController.text = _workRequest!.title;
-      _descriptionTextEditingController.text = _workRequest!.description;
-      _locationId = _workRequest!.locationId;
-      _priority = _workRequest!.priority.name;
-      // _date = _workRequest!.date;
-      _assetId = _workRequest!.assetId;
-      _assetStatus = _workRequest!.assetStatus.name;
-      _isConnectedToAsset = _workRequest!.assetId.isNotEmpty;
-    }
-
     // task edit mode
     if (arguments != null && arguments is Task && _task == null) {
       _task = TaskModel.fromTask(arguments).deepCopy();
+
+      if (_task!.images.isNotEmpty) {
+        fetchImages(_task!.images);
+      }
+      _titleTextEditingController.text = _task!.title;
+      _descriptionTextEditingController.text = _task!.description;
+      _locationId = _task!.locationId;
+      _priority = _task!.priority.name;
+      _date = _task!.date;
+      _assetId = _task!.assetId;
+      _assetStatus = _task!.assetStatus.name;
+      _isConnectedToAsset = _task!.assetId.isNotEmpty;
+      _taskType = _task!.type.name;
+      _instructions = _task!.instructions;
+      _durationUnit = _task!.durationUnit.name;
+      _duration = _task!.duration;
+      _isCyclicTask = _task!.isCyclictask;
+      _executionDate = _task!.executionDate;
+      _assignedUsers = _task!.assignedUsers;
+      _assignedGroups = _task!.assignedGroups;
+      _sparePartsAssets = _task!.sparePartsAssets;
+      _sparePartsItems = _task!.sparePartsItems;
+      _checklist = _task!.checklist;
+    }
+
+    // task template use mode
+    if (arguments != null &&
+        arguments is List &&
+        arguments[0] is Task &&
+        _task == null) {
+      _task = TaskModel.fromTask(arguments[0]).deepCopy();
+      _isTemplate = false;
 
       if (_task!.images.isNotEmpty) {
         fetchImages(_task!.images);
@@ -609,7 +639,7 @@ class _AddTaskTemplatePageState extends State<AddTaskTemplatePage> {
       KeepAlivePage(
         child: AddTaskCard(
           isEditMode: _task != null,
-          isConvertMode: _workRequest != null,
+          isTemplate: _isTemplate,
           titleTextEditingController: _titleTextEditingController,
           descriptionTextEditingController: _descriptionTextEditingController,
         ),
@@ -642,9 +672,8 @@ class _AddTaskTemplatePageState extends State<AddTaskTemplatePage> {
       KeepAlivePage(
         child: AddVideoCard(
           videoFile: _videoFile,
-          videoUrl: (_workRequest != null && _workRequest!.video.isNotEmpty)
-              ? _workRequest!.video
-              : null,
+          videoUrl:
+              (_task != null && _task!.video.isNotEmpty) ? _task!.video : null,
           updateVideo: _setVideo,
         ),
       ),

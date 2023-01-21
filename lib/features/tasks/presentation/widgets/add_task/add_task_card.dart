@@ -7,13 +7,13 @@ class AddTaskCard extends StatelessWidget {
   const AddTaskCard({
     Key? key,
     required this.isEditMode,
-    required this.isConvertMode,
+    required this.isTemplate,
     required this.titleTextEditingController,
     required this.descriptionTextEditingController,
   }) : super(key: key);
 
   final bool isEditMode;
-  final bool isConvertMode;
+  final bool isTemplate;
   final TextEditingController titleTextEditingController;
   final TextEditingController descriptionTextEditingController;
 
@@ -44,11 +44,13 @@ class AddTaskCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24),
                         child: Text(
-                          isConvertMode
-                              ? AppLocalizations.of(context)!.task_convert
+                          !isTemplate
+                              ? AppLocalizations.of(context)!.task_templates_use
                               : isEditMode
-                                  ? AppLocalizations.of(context)!.task_edit
-                                  : AppLocalizations.of(context)!.task_add,
+                                  ? AppLocalizations.of(context)!
+                                      .task_templates_edit
+                                  : AppLocalizations.of(context)!
+                                      .task_templates_add,
                           style: TextStyle(
                             fontSize:
                                 Theme.of(context).textTheme.headline5!.fontSize,

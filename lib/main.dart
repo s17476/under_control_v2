@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/task_template_details_page.dart';
 
 import 'custom_multi_bloc_provider.dart';
 import 'features/assets/presentation/pages/add_asset_page.dart';
@@ -210,6 +211,8 @@ class App extends StatelessWidget
                   const TemplatesManagementPage(),
               AddTaskTemplatePage.routeName: (context) =>
                   const AddTaskTemplatePage(),
+              TaskTemplateDetailsPage.routeName: (context) =>
+                  const TaskTemplateDetailsPage(),
             },
             // localization
             localizationsDelegates: const [

@@ -31,4 +31,9 @@ class TaskTemplatesLoadedState extends TaskTemplatesState {
   TaskTemplatesLoadedState({
     required this.allTasks,
   }) : super(properties: [allTasks]);
+
+  Task? getTaskById(String taskId) {
+    final index = allTasks.allTasks.indexWhere((task) => task.id == taskId);
+    return allTasks.allTasks[index];
+  }
 }

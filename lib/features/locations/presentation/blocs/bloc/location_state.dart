@@ -30,9 +30,12 @@ class LocationLoadedState extends LocationState {
   List<Location> get allSelectedLocations {
     final List<Location> selectedLocations = [...this.selectedLocations];
     for (var locId in children) {
-      selectedLocations.add(
-        allLocations.allLocations.firstWhere((e) => e.id == locId),
-      );
+      final index = allLocations.allLocations.indexWhere((e) => e.id == locId);
+      if (index >= 0) {
+        selectedLocations.add(
+          allLocations.allLocations[index],
+        );
+      }
     }
     return selectedLocations;
   }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/tasks/presentation/blocs/task_templates/task_templates_bloc.dart';
-import 'package:under_control_v2/features/tasks/presentation/pages/add_task_template_page.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/task_tile.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../domain/entities/task/task.dart';
 import '../../utils/template_listener.dart';
+import '../blocs/task_templates/task_templates_bloc.dart';
+import '../widgets/task_tile.dart';
+import 'add_task_template_page.dart';
 
 class TemplatesManagementPage extends StatelessWidget {
   const TemplatesManagementPage({Key? key}) : super(key: key);
@@ -45,10 +45,13 @@ class TemplatesManagementPage extends StatelessWidget {
                   } else {
                     return Padding(
                       key: ValueKey(allTasks[index].id),
-                      padding: EdgeInsets.only(top: index == 0 ? 4 : 0),
+                      padding: const EdgeInsets.only(top: 8),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: TaskTile(task: allTasks[index]),
+                        child: TaskTile(
+                          task: allTasks[index],
+                          isTemplate: true,
+                        ),
                       ),
                     );
                   }
@@ -66,11 +69,11 @@ class TemplatesManagementPage extends StatelessWidget {
           Navigator.pushNamed(context, AddTaskTemplatePage.routeName);
         },
         icon: Icon(
-          Icons.add,
+          Icons.add_task,
           color: Colors.grey.shade200,
         ),
         label: Text(
-          AppLocalizations.of(context)!.checklist_add_button,
+          AppLocalizations.of(context)!.add,
           style: TextStyle(
             color: Colors.grey.shade200,
           ),

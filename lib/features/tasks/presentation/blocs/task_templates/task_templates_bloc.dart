@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/task/tasks_list_model.dart';
+import '../../../domain/entities/task/task.dart';
 import '../../../domain/usecases/task_template/get_tasks_templates_stream.dart';
 
 part 'task_templates_event.dart';

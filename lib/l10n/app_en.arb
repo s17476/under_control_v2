@@ -2471,6 +2471,18 @@
     "@task_templates_msg_not_deleted": {
       "description": "Task template - NOT deleted msg"
     },
+    "task_templates_add": "Add new template",
+    "@task_templates_add": {
+      "description": "Task template - add page"
+    },
+    "task_templates_edit": "Edit template",
+    "@task_templates_edit": {
+      "description": "Task template - add page"
+    },
+    "task_templates_use": "Use template",
+    "@task_templates_use": {
+      "description": "Task template - add page"
+    },
     "task_action_new": "Register new action",
     "@task_action_new": {
       "description": "task action - new"

@@ -11,11 +11,23 @@ abstract class TaskTemplatesManagementEvent extends Equatable {
 }
 
 class AddTaskTemplateEvent extends TaskTemplatesManagementEvent {
-  const AddTaskTemplateEvent({required super.task});
+  final List<File>? images;
+  final File? video;
+  const AddTaskTemplateEvent({
+    required super.task,
+    this.images,
+    this.video,
+  });
 }
 
 class UpdateTaskTemplateEvent extends TaskTemplatesManagementEvent {
-  const UpdateTaskTemplateEvent({required super.task});
+  final List<File>? images;
+  final File? video;
+  const UpdateTaskTemplateEvent({
+    required super.task,
+    this.images,
+    this.video,
+  });
 }
 
 class DeleteTaskTemplateEvent extends TaskTemplatesManagementEvent {

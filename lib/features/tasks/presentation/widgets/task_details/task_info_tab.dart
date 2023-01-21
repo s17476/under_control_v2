@@ -248,15 +248,6 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                       const Divider(
                         thickness: 1.5,
                       ),
-                      if (!widget.task.isFinished) ...[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TaskActionsButtons(task: widget.task),
-                        ),
-                        const Divider(
-                          thickness: 1.5,
-                        )
-                      ],
 
                       // task data
                       Padding(
@@ -270,118 +261,6 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                               iconBackground: Colors.black,
                               title: AppLocalizations.of(context)!.task_data,
                               titleFontSize: 16,
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-
-                            // task is finished
-                            if (widget.task.isFinished) ...[
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: IconTitleRow(
-                                      icon: Icons.done,
-                                      iconColor: Colors.white,
-                                      iconBackground: widget.task.isSuccessful
-                                          ? Theme.of(context).primaryColor
-                                          : Theme.of(context).errorColor,
-                                      title: _progressTitle(),
-                                      titleFontSize: 16,
-                                    ),
-                                  ),
-                                  ProgressIcon(task: widget.task),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              if (widget.task.assetId.isNotEmpty) ...[
-                                IconTitleRow(
-                                  icon: Icons.security,
-                                  iconColor: Colors.white,
-                                  iconBackground:
-                                      Theme.of(context).primaryColor,
-                                  title: AppLocalizations.of(context)!
-                                      .asset_status,
-                                  titleFontSize: 16,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        getLocalizedAssetStatusName(
-                                          context,
-                                          widget.task.assetStatus,
-                                        ),
-                                        textAlign: TextAlign.end,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    SizedBox(
-                                      height: 32,
-                                      width: 32,
-                                      child: getAssetStatusIcon(
-                                        context,
-                                        widget.task.assetStatus,
-                                        14,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                              const SizedBox(
-                                height: 8,
-                              ),
-                            ],
-
-                            // execution date
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: IconTitleRow(
-                                    icon: Icons.build,
-                                    iconColor: Colors.white,
-                                    iconBackground:
-                                        Theme.of(context).primaryColor,
-                                    title: widget.task.isFinished
-                                        ? AppLocalizations.of(context)!
-                                            .task_complete_question
-                                        : AppLocalizations.of(context)!
-                                            .task_execution_date,
-                                    titleFontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  detailedDateFormat.format(
-                                    widget.task.executionDate,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            // add date
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: IconTitleRow(
-                                    icon: Icons.calendar_month,
-                                    iconColor: Colors.white,
-                                    iconBackground:
-                                        Theme.of(context).primaryColor,
-                                    title: AppLocalizations.of(context)!
-                                        .asset_add_date,
-                                    titleFontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  detailedDateFormat.format(widget.task.date),
-                                ),
-                              ],
                             ),
                             const SizedBox(
                               height: 16,
