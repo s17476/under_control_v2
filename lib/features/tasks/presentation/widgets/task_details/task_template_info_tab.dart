@@ -6,9 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
-import '../../../../assets/utils/get_asset_status_icon.dart';
 import '../../../../assets/utils/get_localizad_duration_unit_name.dart';
-import '../../../../assets/utils/get_localizae_asset_status_name.dart';
 import '../../../../assets/utils/get_next_date.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/icon_title_row.dart';
@@ -29,10 +27,9 @@ import '../../../utils/get_localized_task_type_name.dart';
 import '../../../utils/get_task_priority_and_type_icon.dart';
 import '../../blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../work_request_tile.dart';
-import 'task_actions_buttons.dart';
 
-class TaskInfoTab extends StatefulWidget {
-  const TaskInfoTab({
+class TaskTemplateInfoTab extends StatefulWidget {
+  const TaskTemplateInfoTab({
     Key? key,
     required this.task,
   }) : super(key: key);
@@ -40,10 +37,10 @@ class TaskInfoTab extends StatefulWidget {
   final Task task;
 
   @override
-  State<TaskInfoTab> createState() => _TaskInfoTabState();
+  State<TaskTemplateInfoTab> createState() => _TaskTemplateInfoTabState();
 }
 
-class _TaskInfoTabState extends State<TaskInfoTab> {
+class _TaskTemplateInfoTabState extends State<TaskTemplateInfoTab> {
   UserProfile? _selectedUser;
   UserProfile? _authorProfile;
   bool _isUserInfoCardVisible = false;
@@ -248,15 +245,6 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                       const Divider(
                         thickness: 1.5,
                       ),
-                      if (!widget.task.isFinished) ...[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TaskActionsButtons(task: widget.task),
-                        ),
-                        const Divider(
-                          thickness: 1.5,
-                        )
-                      ],
 
                       // task data
                       Padding(
@@ -270,118 +258,6 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                               iconBackground: Colors.black,
                               title: AppLocalizations.of(context)!.task_data,
                               titleFontSize: 16,
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-
-                            // task is finished
-                            if (widget.task.isFinished) ...[
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: IconTitleRow(
-                                      icon: Icons.done,
-                                      iconColor: Colors.white,
-                                      iconBackground: widget.task.isSuccessful
-                                          ? Theme.of(context).primaryColor
-                                          : Theme.of(context).errorColor,
-                                      title: _progressTitle(),
-                                      titleFontSize: 16,
-                                    ),
-                                  ),
-                                  ProgressIcon(task: widget.task),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              if (widget.task.assetId.isNotEmpty) ...[
-                                IconTitleRow(
-                                  icon: Icons.security,
-                                  iconColor: Colors.white,
-                                  iconBackground:
-                                      Theme.of(context).primaryColor,
-                                  title: AppLocalizations.of(context)!
-                                      .asset_status,
-                                  titleFontSize: 16,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        getLocalizedAssetStatusName(
-                                          context,
-                                          widget.task.assetStatus,
-                                        ),
-                                        textAlign: TextAlign.end,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    SizedBox(
-                                      height: 32,
-                                      width: 32,
-                                      child: getAssetStatusIcon(
-                                        context,
-                                        widget.task.assetStatus,
-                                        14,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                              const SizedBox(
-                                height: 8,
-                              ),
-                            ],
-
-                            // execution date
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: IconTitleRow(
-                                    icon: Icons.build,
-                                    iconColor: Colors.white,
-                                    iconBackground:
-                                        Theme.of(context).primaryColor,
-                                    title: widget.task.isFinished
-                                        ? AppLocalizations.of(context)!
-                                            .task_complete_question
-                                        : AppLocalizations.of(context)!
-                                            .task_execution_date,
-                                    titleFontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  detailedDateFormat.format(
-                                    widget.task.executionDate,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            // add date
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: IconTitleRow(
-                                    icon: Icons.calendar_month,
-                                    iconColor: Colors.white,
-                                    iconBackground:
-                                        Theme.of(context).primaryColor,
-                                    title: AppLocalizations.of(context)!
-                                        .asset_add_date,
-                                    titleFontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  detailedDateFormat.format(widget.task.date),
-                                ),
-                              ],
                             ),
                             const SizedBox(
                               height: 16,

@@ -18,11 +18,10 @@ import '../../utils/work_request_management_bloc_listener.dart';
 import '../blocs/task_action_management/task_action_management_bloc.dart';
 import '../blocs/task_templates/task_templates_bloc.dart';
 import '../blocs/work_request_management/work_request_management_bloc.dart';
-import '../widgets/task_details/task_actions_tab.dart';
 import '../widgets/task_details/task_checklist_tab.dart';
-import '../widgets/task_details/task_info_tab.dart';
 import '../widgets/task_details/task_instructions_tab.dart';
 import '../widgets/task_details/task_spare_part_tab.dart';
+import '../widgets/task_details/task_template_info_tab.dart';
 import '../widgets/work_request_details/images_tab.dart';
 import '../widgets/work_request_details/video_tab.dart';
 import 'add_task_template_page.dart';
@@ -222,7 +221,7 @@ class _TaskTemplateDetailsPageState extends State<TaskTemplateDetailsPage>
                   ],
                   child: TabBarView(
                     children: [
-                      TaskInfoTab(task: _task!),
+                      TaskTemplateInfoTab(task: _task!),
                       if (_task!.checklist.isNotEmpty)
                         TaskChecklistTab(checklist: _task!.checklist),
                       if (_task!.images.isNotEmpty)
