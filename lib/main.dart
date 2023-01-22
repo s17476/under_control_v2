@@ -91,142 +91,155 @@ class App extends StatelessWidget
     return CustomMultiBlocProvider(
       child: BlocBuilder<LanguageCubit, Locale>(
         builder: (context, locale) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'UnderControl',
-            locale: locale,
-            theme: Themes().darkTheme(),
-            home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-              builder: (context, state) {
-                // user authenticated
-                if (state is Authenticated) {
-                  return BlocConsumer<UserProfileBloc, UserProfileState>(
-                    listener: (context, state) {
-                      showValidationSnackBar(state, context);
-                    },
-                    builder: (context, state) {
-                      switch (state.runtimeType) {
-                        case Approved:
-                          if ((state as Approved).userProfile.isActive) {
-                            return const HomePage();
-                          }
-                          return const PassiveHomePage();
-                        case NoUserProfileError:
-                          return const AddUserProfilePage();
-                        case NoCompanyState:
-                          return const AssignCompanyPage();
-                        case NotApproved:
-                          return const NotApprovedPage();
-                        default:
-                          return const LoadingPage();
-                      }
-                    },
-                  );
-                  // awaiting email verification
-                } else if (state is AwaitingVerification) {
-                  return const EmailConfirmationPage();
-                  // user not authenticated
-                } else {
-                  return const AuthenticationPage();
-                }
-              },
-            ),
-            // pages
-            routes: {
-              HomePage.routeName: (context) => const HomePage(),
-              PassiveHomePage.routeName: (context) => const PassiveHomePage(),
-              AuthenticationPage.routeName: (context) =>
-                  const AuthenticationPage(),
-              AddCompanyPage.routeName: (context) => const AddCompanyPage(),
-              LocationManagementPage.routeName: (context) =>
-                  const LocationManagementPage(),
-              GroupManagementPage.routeName: (context) =>
-                  const GroupManagementPage(),
-              AddGroupPage.routeName: (context) => const AddGroupPage(),
-              GroupDetailsPage.routeName: (context) => const GroupDetailsPage(),
-              UserDetailsPage.routeName: (context) => const UserDetailsPage(),
-              UsersListPage.routeName: (context) => const UsersListPage(),
-              NewUsersListPage.routeName: (context) => const NewUsersListPage(),
-              SuspendedUsersListPage.routeName: (context) =>
-                  const SuspendedUsersListPage(),
-              CompanyDetailsPage.routeName: (context) =>
-                  const CompanyDetailsPage(),
-              ChecklistManagementPage.routeName: (context) =>
-                  const ChecklistManagementPage(),
-              AddChecklistPage.routeName: (context) => const AddChecklistPage(),
-              ChecklistDetailsPage.routeName: (context) =>
-                  const ChecklistDetailsPage(),
-              ItemCategoryManagementPage.routeName: (context) =>
-                  const ItemCategoryManagementPage(),
-              AddItemPage.routeName: (context) => const AddItemPage(),
-              AddToItemPage.routeName: (context) => const AddToItemPage(),
-              SubtractFromItemPage.routeName: (context) =>
-                  const SubtractFromItemPage(),
-              MoveInsideItemPage.routeName: (context) =>
-                  const MoveInsideItemPage(),
-              ItemDetailsPage.routeName: (context) => const ItemDetailsPage(),
-              ActionsListPage.routeName: (context) => const ActionsListPage(),
-              AllActionsListPage.routeName: (context) =>
-                  const AllActionsListPage(),
-              QrScanner.routeName: (context) => const QrScanner(),
-              InstructionCategoryManagementPage.routeName: (context) =>
-                  const InstructionCategoryManagementPage(),
-              AddInstructionPage.routeName: (context) =>
-                  const AddInstructionPage(),
-              InstructionPreviewPage.routeName: (context) =>
-                  const InstructionPreviewPage(),
-              AssetCategoryManagementPage.routeName: (context) =>
-                  const AssetCategoryManagementPage(),
-              AllLowLevelItemsPage.routeName: (context) =>
-                  const AllLowLevelItemsPage(),
-              AddAssetPage.routeName: (context) => const AddAssetPage(),
-              AssetDetailsPage.routeName: (context) => const AssetDetailsPage(),
-              AssetActionsListPage.routeName: (context) =>
-                  const AssetActionsListPage(),
-              AllAssetActionsListPage.routeName: (context) =>
-                  const AllAssetActionsListPage(),
-              AllAssetsWithoutInspectionListPage.routeName: (context) =>
-                  const AllAssetsWithoutInspectionListPage(),
-              AddWorkRequestPage.routeName: (context) =>
-                  const AddWorkRequestPage(),
-              WorkRequestDetailsPage.routeName: (context) =>
-                  const WorkRequestDetailsPage(),
-              WorkRequestArchivePage.routeName: (context) =>
-                  const WorkRequestArchivePage(),
-              AddTaskPage.routeName: (context) => const AddTaskPage(),
-              TaskDetailsPage.routeName: (context) => const TaskDetailsPage(),
-              RegisterTaskActionPage.routeName: (context) =>
-                  const RegisterTaskActionPage(),
-              SubtractItemFromLocationPage.routeName: (context) =>
-                  const SubtractItemFromLocationPage(),
-              SelectNewAssetDataPage.routeName: (context) =>
-                  const SelectNewAssetDataPage(),
-              SettingsPage.routeName: (context) => const SettingsPage(),
-              LanguageSettingsPage.routeName: (context) =>
-                  const LanguageSettingsPage(),
-              TaskActionDetailsPage.routeName: (context) =>
-                  const TaskActionDetailsPage(),
-              TaskArchivePage.routeName: (context) => const TaskArchivePage(),
-              TemplatesManagementPage.routeName: (context) =>
-                  const TemplatesManagementPage(),
-              AddTaskTemplatePage.routeName: (context) =>
-                  const AddTaskTemplatePage(),
-              TaskTemplateDetailsPage.routeName: (context) =>
-                  const TaskTemplateDetailsPage(),
+          return GestureDetector(
+            onTap: () {
+              final focusScope = FocusScope.of(context);
+              final focusNode = focusScope.focusedChild;
+              if (!focusScope.hasPrimaryFocus && focusNode != null) {
+                focusNode.unfocus();
+              }
             },
-            // localization
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            // locales
-            supportedLocales: const [
-              Locale('en', ''),
-              Locale('pl', ''),
-              Locale('da', ''),
-            ],
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'UnderControl',
+              locale: locale,
+              theme: Themes().darkTheme(),
+              home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                builder: (context, state) {
+                  // user authenticated
+                  if (state is Authenticated) {
+                    return BlocConsumer<UserProfileBloc, UserProfileState>(
+                      listener: (context, state) {
+                        showValidationSnackBar(state, context);
+                      },
+                      builder: (context, state) {
+                        switch (state.runtimeType) {
+                          case Approved:
+                            if ((state as Approved).userProfile.isActive) {
+                              return const HomePage();
+                            }
+                            return const PassiveHomePage();
+                          case NoUserProfileError:
+                            return const AddUserProfilePage();
+                          case NoCompanyState:
+                            return const AssignCompanyPage();
+                          case NotApproved:
+                            return const NotApprovedPage();
+                          default:
+                            return const LoadingPage();
+                        }
+                      },
+                    );
+                    // awaiting email verification
+                  } else if (state is AwaitingVerification) {
+                    return const EmailConfirmationPage();
+                    // user not authenticated
+                  } else {
+                    return const AuthenticationPage();
+                  }
+                },
+              ),
+              // pages
+              routes: {
+                HomePage.routeName: (context) => const HomePage(),
+                PassiveHomePage.routeName: (context) => const PassiveHomePage(),
+                AuthenticationPage.routeName: (context) =>
+                    const AuthenticationPage(),
+                AddCompanyPage.routeName: (context) => const AddCompanyPage(),
+                LocationManagementPage.routeName: (context) =>
+                    const LocationManagementPage(),
+                GroupManagementPage.routeName: (context) =>
+                    const GroupManagementPage(),
+                AddGroupPage.routeName: (context) => const AddGroupPage(),
+                GroupDetailsPage.routeName: (context) =>
+                    const GroupDetailsPage(),
+                UserDetailsPage.routeName: (context) => const UserDetailsPage(),
+                UsersListPage.routeName: (context) => const UsersListPage(),
+                NewUsersListPage.routeName: (context) =>
+                    const NewUsersListPage(),
+                SuspendedUsersListPage.routeName: (context) =>
+                    const SuspendedUsersListPage(),
+                CompanyDetailsPage.routeName: (context) =>
+                    const CompanyDetailsPage(),
+                ChecklistManagementPage.routeName: (context) =>
+                    const ChecklistManagementPage(),
+                AddChecklistPage.routeName: (context) =>
+                    const AddChecklistPage(),
+                ChecklistDetailsPage.routeName: (context) =>
+                    const ChecklistDetailsPage(),
+                ItemCategoryManagementPage.routeName: (context) =>
+                    const ItemCategoryManagementPage(),
+                AddItemPage.routeName: (context) => const AddItemPage(),
+                AddToItemPage.routeName: (context) => const AddToItemPage(),
+                SubtractFromItemPage.routeName: (context) =>
+                    const SubtractFromItemPage(),
+                MoveInsideItemPage.routeName: (context) =>
+                    const MoveInsideItemPage(),
+                ItemDetailsPage.routeName: (context) => const ItemDetailsPage(),
+                ActionsListPage.routeName: (context) => const ActionsListPage(),
+                AllActionsListPage.routeName: (context) =>
+                    const AllActionsListPage(),
+                QrScanner.routeName: (context) => const QrScanner(),
+                InstructionCategoryManagementPage.routeName: (context) =>
+                    const InstructionCategoryManagementPage(),
+                AddInstructionPage.routeName: (context) =>
+                    const AddInstructionPage(),
+                InstructionPreviewPage.routeName: (context) =>
+                    const InstructionPreviewPage(),
+                AssetCategoryManagementPage.routeName: (context) =>
+                    const AssetCategoryManagementPage(),
+                AllLowLevelItemsPage.routeName: (context) =>
+                    const AllLowLevelItemsPage(),
+                AddAssetPage.routeName: (context) => const AddAssetPage(),
+                AssetDetailsPage.routeName: (context) =>
+                    const AssetDetailsPage(),
+                AssetActionsListPage.routeName: (context) =>
+                    const AssetActionsListPage(),
+                AllAssetActionsListPage.routeName: (context) =>
+                    const AllAssetActionsListPage(),
+                AllAssetsWithoutInspectionListPage.routeName: (context) =>
+                    const AllAssetsWithoutInspectionListPage(),
+                AddWorkRequestPage.routeName: (context) =>
+                    const AddWorkRequestPage(),
+                WorkRequestDetailsPage.routeName: (context) =>
+                    const WorkRequestDetailsPage(),
+                WorkRequestArchivePage.routeName: (context) =>
+                    const WorkRequestArchivePage(),
+                AddTaskPage.routeName: (context) => const AddTaskPage(),
+                TaskDetailsPage.routeName: (context) => const TaskDetailsPage(),
+                RegisterTaskActionPage.routeName: (context) =>
+                    const RegisterTaskActionPage(),
+                SubtractItemFromLocationPage.routeName: (context) =>
+                    const SubtractItemFromLocationPage(),
+                SelectNewAssetDataPage.routeName: (context) =>
+                    const SelectNewAssetDataPage(),
+                SettingsPage.routeName: (context) => const SettingsPage(),
+                LanguageSettingsPage.routeName: (context) =>
+                    const LanguageSettingsPage(),
+                TaskActionDetailsPage.routeName: (context) =>
+                    const TaskActionDetailsPage(),
+                TaskArchivePage.routeName: (context) => const TaskArchivePage(),
+                TemplatesManagementPage.routeName: (context) =>
+                    const TemplatesManagementPage(),
+                AddTaskTemplatePage.routeName: (context) =>
+                    const AddTaskTemplatePage(),
+                TaskTemplateDetailsPage.routeName: (context) =>
+                    const TaskTemplateDetailsPage(),
+              },
+              // localization
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              // locales
+              supportedLocales: const [
+                Locale('en', ''),
+                Locale('pl', ''),
+                Locale('da', ''),
+              ],
+            ),
           );
         },
       ),
