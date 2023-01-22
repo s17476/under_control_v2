@@ -31,8 +31,10 @@ class AssetCategoryBloc extends Bloc<AssetCategoryEvent, AssetCategoryState> {
     required this.userProfileBloc,
     required this.getAssetsCategoriesStream,
   }) : super(AssetCategoryEmptyState()) {
-    _authStreamSubscription = authenticationBloc.stream.listen((event) {
-      add(ResetEvent());
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
     });
     _userProfileStreamSubscription = userProfileBloc.stream.listen((state) {
       if (_companyId.isEmpty && state is Approved) {
@@ -43,6 +45,7 @@ class AssetCategoryBloc extends Bloc<AssetCategoryEvent, AssetCategoryState> {
 
     on<ResetEvent>((event, emit) {
       _companyId = '';
+      _assetsCategoriesStreamSubscription?.cancel();
       emit(AssetCategoryEmptyState());
     });
 

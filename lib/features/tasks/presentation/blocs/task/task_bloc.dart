@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../../core/usecases/usecase.dart';
@@ -17,9 +18,11 @@ part 'task_state.dart';
 
 @singleton
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
+  final AuthenticationBloc authenticationBloc;
   final FilterBloc filterBloc;
   final GetTasksStream getTasksStream;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _filterStreamSubscription;
   final List<StreamSubscription?> _workRequestStreamSubscriptions = [];
 
@@ -27,9 +30,15 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   List<String> _locations = [];
 
   TaskBloc({
+    required this.authenticationBloc,
     required this.filterBloc,
     required this.getTasksStream,
   }) : super(TaskEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
@@ -54,6 +63,20 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           }
           add(GetTasksStreamEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _locations.clear();
+        if (_workRequestStreamSubscriptions.isNotEmpty) {
+          for (var assetSubscription in _workRequestStreamSubscriptions) {
+            assetSubscription?.cancel();
+          }
+          _workRequestStreamSubscriptions.clear();
+        }
+        emit(TaskEmptyState());
       },
     );
 
@@ -148,7 +171,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           allTasks: tmpList,
         );
       }
-      print('TaskBloc - Loaded');
       emit(TaskLoadedState(
         allTasks: workRequestsList,
       ));
@@ -157,6 +179,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _filterStreamSubscription.cancel();
     if (_workRequestStreamSubscriptions.isNotEmpty) {
       for (var assetSubscription in _workRequestStreamSubscriptions) {

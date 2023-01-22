@@ -13,6 +13,8 @@ abstract class TaskTemplatesEvent extends Equatable {
 
 class GetTaskTemplatesEvent extends TaskTemplatesEvent {}
 
+class ResetEvent extends TaskTemplatesEvent {}
+
 class UpdateTaskTemplatesListEvent extends TaskTemplatesEvent {
   final QuerySnapshot<Object?> snapshot;
   UpdateTaskTemplatesListEvent({

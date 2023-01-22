@@ -26,3 +26,5 @@ class UpdateItemsListEvent extends ItemsEvent {
     required this.snapshot,
   }) : super(properties: [snapshot]);
 }
+
+class ResetEvent extends ItemsEvent {}

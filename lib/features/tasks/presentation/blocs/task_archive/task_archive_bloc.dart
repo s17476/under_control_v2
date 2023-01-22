@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
@@ -17,9 +18,11 @@ part 'task_archive_state.dart';
 
 @singleton
 class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
+  final AuthenticationBloc authenticationBloc;
   final FilterBloc filterBloc;
   final GetArchiveTasksStream getArchiveTasksStream;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _filterStreamSubscription;
   final List<StreamSubscription?> _workRequestArchiveStreamSubscriptions = [];
 
@@ -27,9 +30,15 @@ class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
   List<String> _locations = [];
 
   TaskArchiveBloc({
+    required this.authenticationBloc,
     required this.filterBloc,
     required this.getArchiveTasksStream,
   }) : super(TaskArchiveEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
@@ -55,6 +64,21 @@ class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
 
           add(GetTasksArchiveStreamEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _locations = [];
+        if (_workRequestArchiveStreamSubscriptions.isNotEmpty) {
+          for (var assetSubscription
+              in _workRequestArchiveStreamSubscriptions) {
+            assetSubscription?.cancel();
+          }
+          _workRequestArchiveStreamSubscriptions.clear();
+        }
+        emit(TaskArchiveEmptyState());
       },
     );
 
@@ -151,7 +175,6 @@ class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
           allTasks: tmpList,
         );
       }
-      print('TaskArchiveBloc - Loaded');
       emit(TaskArchiveLoadedState(
         allTasks: workRequestsList,
       ));
@@ -160,6 +183,7 @@ class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _filterStreamSubscription.cancel();
     if (_workRequestArchiveStreamSubscriptions.isNotEmpty) {
       for (var assetSubscription in _workRequestArchiveStreamSubscriptions) {

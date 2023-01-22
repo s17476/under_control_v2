@@ -52,3 +52,5 @@ class UpdateUserProfileEvent extends UserProfileEvent {
   final DocumentSnapshot<Object?> snapshot;
   UpdateUserProfileEvent({required this.snapshot}) : super([snapshot]);
 }
+
+class ResetEvent extends UserProfileEvent {}

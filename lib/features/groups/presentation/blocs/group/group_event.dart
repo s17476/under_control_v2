@@ -48,6 +48,8 @@ class DeleteGroupEvent extends GroupEvent {
 
 class FetchAllGroupsEvent extends GroupEvent {}
 
+class ResetEvent extends GroupEvent {}
+
 class UpdateGroupsListEvent extends GroupEvent {
   final QuerySnapshot<Object?> snapshot;
   UpdateGroupsListEvent({

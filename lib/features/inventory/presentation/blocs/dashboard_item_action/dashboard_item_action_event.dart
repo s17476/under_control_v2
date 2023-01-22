@@ -15,6 +15,8 @@ class GetDashboardItemActionsEvent extends DashboardItemActionEvent {}
 
 class GetDashboardLastFiveItemActionsEvent extends DashboardItemActionEvent {}
 
+class ResetEvent extends DashboardItemActionEvent {}
+
 class UpdateDashboardItemActionsListEvent extends DashboardItemActionEvent {
   final QuerySnapshot<Object?> snapshot;
   final int limit;

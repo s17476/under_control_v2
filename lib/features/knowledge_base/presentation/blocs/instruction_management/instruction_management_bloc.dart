@@ -100,11 +100,9 @@ class InstructionManagementBloc
   }
 
   void _getCompanyId() {
-    if (_companyId.isEmpty) {
-      final userState = userProfileBloc.state;
-      if (userState is Approved) {
-        _companyId = userState.userProfile.companyId;
-      }
+    final userState = userProfileBloc.state;
+    if (userState is Approved) {
+      _companyId = userState.userProfile.companyId;
     }
   }
 }

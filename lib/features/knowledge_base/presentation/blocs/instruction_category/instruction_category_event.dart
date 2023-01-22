@@ -13,6 +13,8 @@ abstract class InstructionCategoryEvent extends Equatable {
 
 class GetAllInstructionsCategoriesEvent extends InstructionCategoryEvent {}
 
+class ResetEvent extends InstructionCategoryEvent {}
+
 class UpdateInstructionsCategoriesListEvent extends InstructionCategoryEvent {
   final QuerySnapshot<Object?> snapshot;
   UpdateInstructionsCategoriesListEvent({

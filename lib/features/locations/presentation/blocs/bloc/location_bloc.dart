@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
-import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/location_selection_helpers.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -31,6 +31,7 @@ const String locationRemoved = 'locationRemoved';
 
 @singleton
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
+  final AuthenticationBloc authenticationBloc;
   final UserProfileBloc userProfileBloc;
   final AddLocation addLocation;
   final CacheLocation cacheLocation;
@@ -39,11 +40,13 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final TryToGetCachedLocation tryToGetCachedLocation;
   final UpdateLocation updateLocation;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _userProfileStreamSubscription;
   StreamSubscription? _locationsStreamSubscription;
   String _companyId = '';
 
   LocationBloc({
+    required this.authenticationBloc,
     required this.userProfileBloc,
     required this.addLocation,
     required this.cacheLocation,
@@ -52,12 +55,25 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     required this.tryToGetCachedLocation,
     required this.updateLocation,
   }) : super(const LocationEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     _userProfileStreamSubscription = userProfileBloc.stream.listen(
       (state) {
         if (_companyId.isEmpty && state is Approved) {
           _companyId = state.userProfile.companyId;
           add(FetchAllLocationsEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _locationsStreamSubscription?.cancel();
+        emit(const LocationEmptyState());
       },
     );
 
@@ -165,7 +181,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
               selectedLocationsParams.children,
               locationsList.allLocations,
             );
-            print('LocationBloc - Loaded');
             emit(
               LocationLoadedState(
                 selectedLocations: cachedLocations,
@@ -247,7 +262,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             ),
           ),
           (_) async {
-            print('LocationBloc - Selected');
             emit(
               LocationLoadedState(
                 allLocations: currentState.allLocations,
@@ -307,7 +321,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
             ),
           ),
           (_) async {
-            print('LocationBloc - Unselected');
             emit(
               LocationLoadedState(
                 allLocations: currentState.allLocations,
@@ -325,6 +338,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _userProfileStreamSubscription.cancel();
     _locationsStreamSubscription?.cancel();
     return super.close();

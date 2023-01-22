@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
@@ -19,17 +20,25 @@ part 'items_state.dart';
 
 @singleton
 class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
+  final AuthenticationBloc authenticationBloc;
   final FilterBloc filterBloc;
   final GetItemsStream getChecklistsStream;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _filterStreamSubscription;
   StreamSubscription? _itemsStreamSubscription;
   String _companyId = '';
 
   ItemsBloc({
+    required this.authenticationBloc,
     required this.filterBloc,
     required this.getChecklistsStream,
   }) : super(ItemsEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     _filterStreamSubscription = filterBloc.stream.listen((state) {
       if (state is FilterLoadedState && _companyId.isEmpty) {
         _companyId = state.companyId;
@@ -42,6 +51,14 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
         );
       }
     });
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _itemsStreamSubscription?.cancel();
+        emit(ItemsEmptyState());
+      },
+    );
 
     on<GetItemsEvent>((event, emit) async {
       emit(ItemsLoadingState());
@@ -67,7 +84,6 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
         final itemsList = ItemsListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );
-        print('ItemsBloc - Loaded');
         emit(
           ItemsLoadedState(allItems: itemsList),
         );
@@ -77,6 +93,7 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _filterStreamSubscription.cancel();
     _itemsStreamSubscription?.cancel();
     return super.close();

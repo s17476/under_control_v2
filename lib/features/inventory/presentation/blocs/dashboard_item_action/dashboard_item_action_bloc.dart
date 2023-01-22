@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
@@ -18,11 +19,13 @@ part 'dashboard_item_action_state.dart';
 @singleton
 class DashboardItemActionBloc
     extends Bloc<DashboardItemActionEvent, DashboardItemActionState> {
+  final AuthenticationBloc authenticationBloc;
   final FilterBloc filterBloc;
   final GetDashboardItemsActionsStream getDashboardItemsActionsStream;
   final GetDashboardLastFiveItemsActionsStream
       getDashboardLastFiveItemsActionsStream;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _filterStreamSubscription;
   final List<StreamSubscription?> _actionStreamSubscriptions = [];
 
@@ -30,10 +33,15 @@ class DashboardItemActionBloc
   List<String> _locations = [];
 
   DashboardItemActionBloc({
+    required this.authenticationBloc,
     required this.filterBloc,
     required this.getDashboardItemsActionsStream,
     required this.getDashboardLastFiveItemsActionsStream,
   }) : super(DashboardItemActionEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {}
+      add(ResetEvent());
+    });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
@@ -51,6 +59,20 @@ class DashboardItemActionBloc
           // gets latest five actions
           add(GetDashboardLastFiveItemActionsEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _locations = [];
+        if (_actionStreamSubscriptions.isNotEmpty) {
+          for (var actionSubscription in _actionStreamSubscriptions) {
+            actionSubscription?.cancel();
+          }
+        }
+        _actionStreamSubscriptions.clear();
+        emit(DashboardItemActionEmptyState());
       },
     );
 
@@ -219,7 +241,6 @@ class DashboardItemActionBloc
             allItemActions: tmpList,
           );
         }
-        print('DashboardItemActionBloc - Loaded');
         emit(DashboardItemActionLoadedState(
           allActions: itemActionsList,
           isAllItems: event.limit == 0,
@@ -230,6 +251,7 @@ class DashboardItemActionBloc
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _filterStreamSubscription.cancel();
     if (_actionStreamSubscriptions.isNotEmpty) {
       for (var actionSubscription in _actionStreamSubscriptions) {

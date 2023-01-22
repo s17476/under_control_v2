@@ -30,12 +30,17 @@ class AssetActionBloc extends Bloc<AssetActionEvent, AssetActionState> {
     required this.getAssetActionsStream,
     required this.getLastFiveAssetActionsStream,
   }) : super(AssetActionEmptyState()) {
-    _authStreamSubscription = authenticationBloc.stream.listen((event) {
-      add(ResetEvent());
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
     });
 
     on<ResetEvent>(
-      (event, emit) => emit(AssetActionEmptyState()),
+      (event, emit) {
+        _assetActionsStreamSubscription?.cancel();
+        emit(AssetActionEmptyState());
+      },
     );
 
     on<GetAssetActionsEvent>((event, emit) async {

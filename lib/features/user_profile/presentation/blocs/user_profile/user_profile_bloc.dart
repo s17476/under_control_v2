@@ -53,7 +53,16 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
       (state) {
         if (state is Authenticated) {
           add(GetUserByIdEvent(userId: state.userId));
+        } else if (state is Unauthenticated) {
+          add(ResetEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _userStreamSubscription?.cancel();
+        emit(UserProfileEmpty());
       },
     );
 
@@ -157,7 +166,6 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
         (userStream) async {
           _userStreamSubscription =
               userStream.userStream.listen((userSnapshot) {
-            print('UserProfileBloc - Loaded');
             add(UpdateUserProfileEvent(snapshot: userSnapshot));
           });
         },

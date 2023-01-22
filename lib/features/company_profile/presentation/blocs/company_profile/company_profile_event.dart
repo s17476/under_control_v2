@@ -24,3 +24,5 @@ class UpdateCompanyUsersEvent extends CompanyProfileEvent {
     required this.snapshot,
   }) : super([company, snapshot]);
 }
+
+class ResetEvent extends CompanyProfileEvent {}

@@ -43,6 +43,8 @@ class TaskFilterSelectEvent extends TaskFilterEvent {
 
 class TaskFilterShowEvent extends TaskFilterEvent {}
 
+class ResetEvent extends TaskFilterEvent {}
+
 class TaskFilterSetMiniSizeEvent extends TaskFilterEvent {}
 
 class TaskFilterSetFullSizeEvent extends TaskFilterEvent {}

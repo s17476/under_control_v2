@@ -13,6 +13,8 @@ abstract class ChecklistEvent extends Equatable {
 
 class GetAllChecklistsEvent extends ChecklistEvent {}
 
+class ResetEvent extends ChecklistEvent {}
+
 class UpdateChecklistsListEvent extends ChecklistEvent {
   final QuerySnapshot<Object?> snapshot;
   UpdateChecklistsListEvent({

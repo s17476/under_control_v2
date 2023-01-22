@@ -1,13 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
+import '../../../../groups/domain/entities/feature.dart';
 import '../../../data/models/work_request/work_request_list_model.dart';
 import '../../../domain/entities/work_request/work_request.dart';
 import '../../../domain/usecases/work_order/get_work_requests_stream.dart';
@@ -17,9 +18,11 @@ part 'work_request_state.dart';
 
 @singleton
 class WorkRequestBloc extends Bloc<WorkRequestEvent, WorkRequestState> {
+  final AuthenticationBloc authenticationBloc;
   final FilterBloc filterBloc;
   final GetWorkRequestsStream getWorkRequestsStream;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _filterStreamSubscription;
   final List<StreamSubscription?> _workRequestStreamSubscriptions = [];
 
@@ -27,9 +30,15 @@ class WorkRequestBloc extends Bloc<WorkRequestEvent, WorkRequestState> {
   List<String> _locations = [];
 
   WorkRequestBloc({
+    required this.authenticationBloc,
     required this.filterBloc,
     required this.getWorkRequestsStream,
   }) : super(WorkRequestEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
@@ -55,6 +64,20 @@ class WorkRequestBloc extends Bloc<WorkRequestEvent, WorkRequestState> {
 
           add(GetWorkRequestsStreamEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _locations = [];
+        if (_workRequestStreamSubscriptions.isNotEmpty) {
+          for (var assetSubscription in _workRequestStreamSubscriptions) {
+            assetSubscription?.cancel();
+          }
+          _workRequestStreamSubscriptions.clear();
+        }
+        emit(WorkRequestEmptyState());
       },
     );
 
@@ -153,7 +176,6 @@ class WorkRequestBloc extends Bloc<WorkRequestEvent, WorkRequestState> {
           allWorkRequests: tmpList,
         );
       }
-      print('WorkRequestBloc - Loaded');
       emit(WorkRequestLoadedState(
         allWorkRequests: workRequestsList,
       ));
@@ -162,6 +184,7 @@ class WorkRequestBloc extends Bloc<WorkRequestEvent, WorkRequestState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _filterStreamSubscription.cancel();
     if (_workRequestStreamSubscriptions.isNotEmpty) {
       for (var assetSubscription in _workRequestStreamSubscriptions) {

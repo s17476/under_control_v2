@@ -42,3 +42,5 @@ class UpdateItemActionsListEvent extends ItemActionEvent {
           limit,
         ]);
 }
+
+class ResetEvent extends ItemActionEvent {}

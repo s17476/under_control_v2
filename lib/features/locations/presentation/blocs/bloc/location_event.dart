@@ -46,6 +46,8 @@ class DeleteLocationEvent extends LocationEvent {
 
 class FetchAllLocationsEvent extends LocationEvent {}
 
+class ResetEvent extends LocationEvent {}
+
 class UpdateLocationsListEvent extends LocationEvent {
   final QuerySnapshot<Object?> snapshot;
   UpdateLocationsListEvent({

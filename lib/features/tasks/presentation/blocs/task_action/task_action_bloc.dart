@@ -50,7 +50,6 @@ class TaskActionBloc extends Bloc<TaskActionEvent, TaskActionState> {
       TaskActionsListModel taskActions = TaskActionsListModel.fromSnapshot(
         event.snapshot as QuerySnapshot<Map<String, dynamic>>,
       );
-      print('TaskActionBloc - Loaded');
       emit(TaskActionLoadedState(allActions: taskActions));
     });
 

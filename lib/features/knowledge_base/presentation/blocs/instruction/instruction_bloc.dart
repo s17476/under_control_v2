@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../../core/usecases/usecase.dart';
@@ -17,9 +18,11 @@ part 'instruction_state.dart';
 
 @singleton
 class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
+  final AuthenticationBloc authenticationBloc;
   final FilterBloc filterBloc;
   final GetInstructionsStream getInstructionsStream;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _filterStreamSubscription;
   final List<StreamSubscription?> _instructionStreamSubscriptions = [];
 
@@ -27,9 +30,15 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
   List<String> _locations = [];
 
   InstructionBloc({
+    required this.authenticationBloc,
     required this.filterBloc,
     required this.getInstructionsStream,
   }) : super(InstructionEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
@@ -54,6 +63,20 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
 
           add(GetInstructionsStreamEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _locations = [];
+        if (_instructionStreamSubscriptions.isNotEmpty) {
+          for (var actionSubscription in _instructionStreamSubscriptions) {
+            actionSubscription?.cancel();
+          }
+        }
+        _instructionStreamSubscriptions.clear();
+        emit(InstructionEmptyState());
       },
     );
 
@@ -154,7 +177,6 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
           allInstructions: tmpList,
         );
       }
-      print('InstructionBloc - Loaded');
       emit(InstructionLoadedState(
         allInstructions: instructionsList,
       ));
@@ -163,6 +185,7 @@ class InstructionBloc extends Bloc<InstructionEvent, InstructionState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _filterStreamSubscription.cancel();
     if (_instructionStreamSubscriptions.isNotEmpty) {
       for (var actionSubscription in _instructionStreamSubscriptions) {

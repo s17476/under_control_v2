@@ -13,6 +13,8 @@ abstract class TaskArchiveEvent extends Equatable {
 
 class GetTasksArchiveStreamEvent extends TaskArchiveEvent {}
 
+class ResetEvent extends TaskArchiveEvent {}
+
 class UpdateTasksArchiveListEvent extends TaskArchiveEvent {
   final QuerySnapshot<Object?> snapshot;
   final List<String> locations;

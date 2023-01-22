@@ -13,6 +13,8 @@ abstract class WorkRequestArchiveEvent extends Equatable {
 
 class GetWorkRequestsArchiveStreamEvent extends WorkRequestArchiveEvent {}
 
+class ResetEvent extends WorkRequestArchiveEvent {}
+
 class UpdateWorkRequestsArchiveListEvent extends WorkRequestArchiveEvent {
   final QuerySnapshot<Object?> snapshot;
   final List<String> locations;

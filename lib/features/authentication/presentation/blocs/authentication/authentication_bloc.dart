@@ -51,7 +51,6 @@ class AuthenticationBloc
           emit(Unauthenticated());
         } else if (event.user != null) {
           if (checkEmailVerification()) {
-            print('Authentification bloc - authenticated');
             emit(
               Authenticated(
                 userId: event.user!.uid,

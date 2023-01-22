@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../../groups/domain/entities/group.dart';
@@ -19,10 +20,12 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
   final LocationBloc locationBloc;
   final GroupBloc groupBloc;
   final UserProfileBloc userProfileBloc;
+  final AuthenticationBloc authenticationBloc;
 
   late StreamSubscription _locationStreamSubscription;
   late StreamSubscription _groupStreamSubscription;
   late StreamSubscription _userProfileStreamSubscription;
+  late StreamSubscription _authStreamSubscription;
 
   String _companyId = '';
   bool _isAdmin = false;
@@ -32,7 +35,13 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     required this.locationBloc,
     required this.groupBloc,
     required this.userProfileBloc,
+    required this.authenticationBloc,
   }) : super(FilterEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     // location stream
     _locationStreamSubscription = locationBloc.stream.listen((state) {
       if (_companyId.isNotEmpty && state is LocationLoadedState) {
@@ -65,6 +74,14 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       }
     });
 
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _isAdmin = false;
+        _userGroups = [];
+      },
+    );
+
     on<UpdateLocationsEvent>(
       (event, emit) async {
         if (groupBloc.state is GroupLoadedState) {
@@ -86,7 +103,6 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
               }
             }
           }
-          print('FilterBloc - Locations - Loaded');
           emit(
             FilterLoadedState(
               isAdmin: _isAdmin,
@@ -114,7 +130,6 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
             }
           }
         }
-        print('FilterBloc - Groups - Loaded');
         emit(
           FilterLoadedState(
             isAdmin: _isAdmin,
@@ -172,6 +187,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     _locationStreamSubscription.cancel();
     _groupStreamSubscription.cancel();
     _userProfileStreamSubscription.cancel();
+    _authStreamSubscription.cancel();
     return super.close();
   }
 }

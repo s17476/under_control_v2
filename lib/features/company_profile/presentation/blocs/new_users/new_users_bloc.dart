@@ -41,6 +41,7 @@ class NewUsersBloc extends Bloc<NewUsersEvent, NewUsersState> {
       failureOrNewUsers.fold(
         (failure) async => emit(const NewUsersErrorState()),
         (newUsers) async {
+          _newUsersStreamSubscription?.cancel();
           _newUsersStreamSubscription = newUsers.allUsers.listen((snapshot) {
             add(UpdateNewUsersEvent(snapshot: snapshot));
           });
@@ -52,7 +53,6 @@ class NewUsersBloc extends Bloc<NewUsersEvent, NewUsersState> {
       (event, emit) async {
         CompanyUsersList usersList = CompanyUsersListModel.fromSnapshot(
             event.snapshot as QuerySnapshot<Map<String, dynamic>>);
-        print('NewUsersBloc - Loaded');
         emit(
           NewUsersLoadedState(
             newUsers: usersList,

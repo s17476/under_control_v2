@@ -115,11 +115,9 @@ class TaskActionManagementBloc
   }
 
   void _getUser() {
-    if (_userProfile == null) {
-      final userState = userProfileBloc.state;
-      if (userState is Approved) {
-        _userProfile = userState.userProfile;
-      }
+    final userState = userProfileBloc.state;
+    if (userState is Approved) {
+      _userProfile = userState.userProfile;
     }
   }
 }

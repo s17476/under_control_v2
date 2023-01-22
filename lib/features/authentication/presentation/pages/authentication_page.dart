@@ -119,239 +119,246 @@ class _AuthenticationPageState extends State<AuthenticationPage>
   Widget build(BuildContext context) {
     SizeConfig.init(context);
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: responsiveSizePx(small: 48),
-              ),
-              // logo widget
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                width: double.infinity,
-                child: const FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Logo(
-                    greenLettersSize: 18,
-                    whitheLettersSize: 12,
+      body: InkWell(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: responsiveSizePx(small: 48),
+                ),
+                // logo widget
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  width: double.infinity,
+                  child: const FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Logo(
+                      greenLettersSize: 18,
+                      whitheLettersSize: 12,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              // email text field
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
+                const SizedBox(
+                  height: 40,
                 ),
-                child: TextFormField(
-                  controller: _emailController,
-                  key: const ValueKey('email'),
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.person),
-                    floatingLabelStyle: TextStyle(
-                      color: Theme.of(context).textTheme.headline1!.color,
-                    ),
-                    labelText: 'E-mail',
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
+                // email text field
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              // password text field
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                ),
-                child: TextFormField(
-                  controller: _passwordController,
-                  key: const ValueKey('password'),
-                  obscureText: !_passwordIsVisible,
-                  keyboardType: TextInputType.visiblePassword,
-                  textInputAction: TextInputAction.done,
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      onPressed: _togglePasswordVisibility,
-                      icon: _passwordIsVisible
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
-                    ),
-                    prefixIcon: const Icon(Icons.lock_rounded),
-                    floatingLabelStyle: TextStyle(
-                      color: Theme.of(context).textTheme.headline1!.color,
-                    ),
-                    labelText: AppLocalizations.of(context)!.password,
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
-                  ),
-                  onEditingComplete: _tryToSubmit,
-                ),
-              ),
-              // repeat password
-              FadeTransition(
-                opacity: _opacityAnimation!,
-                child: SlideTransition(
-                  position: _slideAnimation!,
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 16,
+                  child: TextFormField(
+                    controller: _emailController,
+                    key: const ValueKey('email'),
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.person),
+                      floatingLabelStyle: TextStyle(
+                        color: Theme.of(context).textTheme.headline1!.color,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
+                      labelText: 'E-mail',
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                // password text field
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                  ),
+                  child: TextFormField(
+                    controller: _passwordController,
+                    key: const ValueKey('password'),
+                    obscureText: !_passwordIsVisible,
+                    keyboardType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        onPressed: _togglePasswordVisibility,
+                        icon: _passwordIsVisible
+                            ? const Icon(Icons.visibility_off)
+                            : const Icon(Icons.visibility),
+                      ),
+                      prefixIcon: const Icon(Icons.lock_rounded),
+                      floatingLabelStyle: TextStyle(
+                        color: Theme.of(context).textTheme.headline1!.color,
+                      ),
+                      labelText: AppLocalizations.of(context)!.password,
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                    ),
+                    onEditingComplete: _tryToSubmit,
+                  ),
+                ),
+                // repeat password
+                FadeTransition(
+                  opacity: _opacityAnimation!,
+                  child: SlideTransition(
+                    position: _slideAnimation!,
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 16,
                         ),
-                        child: TextFormField(
-                          controller: _repeatPasswordController,
-                          key: const ValueKey('password'),
-                          obscureText: !_passwordIsVisible,
-                          keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              onPressed: _togglePasswordVisibility,
-                              icon: _passwordIsVisible
-                                  ? const Icon(Icons.visibility_off)
-                                  : const Icon(Icons.visibility),
-                            ),
-                            prefixIcon: const Icon(Icons.lock_rounded),
-                            floatingLabelStyle: TextStyle(
-                              color:
-                                  Theme.of(context).textTheme.headline1!.color,
-                            ),
-                            labelText:
-                                AppLocalizations.of(context)!.repeat_password,
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            filled: true,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 32,
                           ),
-                          onEditingComplete: _tryToSubmit,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              SlideTransition(
-                position: _slideAnimation!,
-                child: const SizedBox(
-                  height: 32,
-                ),
-              ),
-              // login button
-              SlideTransition(
-                position: _slideAnimation!,
-                child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
-                  listener: (context, state) {
-                    if (state is Error) {
-                      ScaffoldMessenger.of(context)
-                        ..clearSnackBars()
-                        ..showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              state.message,
-                              style: TextStyle(
+                          child: TextFormField(
+                            controller: _repeatPasswordController,
+                            key: const ValueKey('password'),
+                            obscureText: !_passwordIsVisible,
+                            keyboardType: TextInputType.visiblePassword,
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                onPressed: _togglePasswordVisibility,
+                                icon: _passwordIsVisible
+                                    ? const Icon(Icons.visibility_off)
+                                    : const Icon(Icons.visibility),
+                              ),
+                              prefixIcon: const Icon(Icons.lock_rounded),
+                              floatingLabelStyle: TextStyle(
                                 color: Theme.of(context)
                                     .textTheme
                                     .headline1!
                                     .color,
                               ),
+                              labelText:
+                                  AppLocalizations.of(context)!.repeat_password,
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
                             ),
-                            backgroundColor: Theme.of(context).errorColor,
+                            onEditingComplete: _tryToSubmit,
                           ),
-                        );
-                      if (_isInLoginMode) {
-                        setState(() {
-                          _failureCounter++;
-                        });
-                      }
-                    }
-                  },
-                  builder: (context, state) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32,
-                      ),
-                      child: ElevatedButton(
-                        onPressed: state is Submitting ? () {} : _tryToSubmit,
-                        child: state is Submitting
-                            ? Padding(
-                                padding: EdgeInsets.all(
-                                  responsiveSizeVerticalPct(small: 1),
-                                ),
-                                child: SizedBox(
-                                  height: responsiveSizeVerticalPct(small: 2.5),
-                                  width: responsiveSizeVerticalPct(small: 2.5),
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )
-                            : _isInLoginMode
-                                ? Text(
-                                    AppLocalizations.of(context)!.signin,
-                                    style: TextStyle(
-                                      fontSize: responsiveSizePct(
-                                          small: 5.5, medium: 3, large: 1),
-                                    ),
-                                  )
-                                : Text(
-                                    AppLocalizations.of(context)!.signup,
-                                    style: TextStyle(
-                                      fontSize: responsiveSizePct(
-                                          small: 5.5, medium: 3, large: 1),
-                                    ),
-                                  ),
-                      ),
-                    );
-                  },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              SlideTransition(
-                position: _slideAnimation!,
-                child: const SizedBox(
-                  height: 8,
-                ),
-              ),
-              // signin - signup button
-              SlideTransition(
-                position: _slideAnimation!,
-                child: TextButton(
-                  onPressed: _toggleLoginMode,
-                  child: _isInLoginMode
-                      ? Text(AppLocalizations.of(context)!.new_account)
-                      : Text(AppLocalizations.of(context)!.account_exist),
-                ),
-              ),
 
-              if (_failureCounter > 2)
-                ResetPasswordTextButton(slideAnimation: _slideAnimation),
-            ],
+                SlideTransition(
+                  position: _slideAnimation!,
+                  child: const SizedBox(
+                    height: 32,
+                  ),
+                ),
+                // login button
+                SlideTransition(
+                  position: _slideAnimation!,
+                  child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+                    listener: (context, state) {
+                      if (state is Error) {
+                        ScaffoldMessenger.of(context)
+                          ..clearSnackBars()
+                          ..showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                state.message,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline1!
+                                      .color,
+                                ),
+                              ),
+                              backgroundColor: Theme.of(context).errorColor,
+                            ),
+                          );
+                        if (_isInLoginMode) {
+                          setState(() {
+                            _failureCounter++;
+                          });
+                        }
+                      }
+                    },
+                    builder: (context, state) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 32,
+                        ),
+                        child: ElevatedButton(
+                          onPressed: state is Submitting ? () {} : _tryToSubmit,
+                          child: state is Submitting
+                              ? Padding(
+                                  padding: EdgeInsets.all(
+                                    responsiveSizeVerticalPct(small: 1),
+                                  ),
+                                  child: SizedBox(
+                                    height:
+                                        responsiveSizeVerticalPct(small: 2.5),
+                                    width:
+                                        responsiveSizeVerticalPct(small: 2.5),
+                                    child: const CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : _isInLoginMode
+                                  ? Text(
+                                      AppLocalizations.of(context)!.signin,
+                                      style: TextStyle(
+                                        fontSize: responsiveSizePct(
+                                            small: 5.5, medium: 3, large: 1),
+                                      ),
+                                    )
+                                  : Text(
+                                      AppLocalizations.of(context)!.signup,
+                                      style: TextStyle(
+                                        fontSize: responsiveSizePct(
+                                            small: 5.5, medium: 3, large: 1),
+                                      ),
+                                    ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                SlideTransition(
+                  position: _slideAnimation!,
+                  child: const SizedBox(
+                    height: 8,
+                  ),
+                ),
+                // signin - signup button
+                SlideTransition(
+                  position: _slideAnimation!,
+                  child: TextButton(
+                    onPressed: _toggleLoginMode,
+                    child: _isInLoginMode
+                        ? Text(AppLocalizations.of(context)!.new_account)
+                        : Text(AppLocalizations.of(context)!.account_exist),
+                  ),
+                ),
+
+                if (_failureCounter > 2)
+                  ResetPasswordTextButton(slideAnimation: _slideAnimation),
+              ],
+            ),
           ),
         ),
       ),

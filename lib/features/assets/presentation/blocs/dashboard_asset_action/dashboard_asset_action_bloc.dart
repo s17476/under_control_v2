@@ -38,8 +38,10 @@ class DashboardAssetActionBloc
     required this.getDashboardAssetActionsStream,
     required this.getDashboardLastFiveAssetActionsStream,
   }) : super(DashboardAssetActionEmptyState()) {
-    _authStreamSubscription = authenticationBloc.stream.listen((event) {
-      add(ResetEvent());
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
     });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
@@ -65,6 +67,12 @@ class DashboardAssetActionBloc
       (event, emit) {
         _companyId = '';
         _locations = [];
+        if (_actionStreamSubscriptions.isNotEmpty) {
+          for (var actionSubscription in _actionStreamSubscriptions) {
+            actionSubscription?.cancel();
+          }
+        }
+        _actionStreamSubscriptions.clear();
         emit(DashboardAssetActionEmptyState());
       },
     );

@@ -25,3 +25,5 @@ class UpdateGroupsEvent extends FilterEvent {
     required this.groups,
   }) : super(properties: [groups]);
 }
+
+class ResetEvent extends FilterEvent {}

@@ -1,13 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
+import '../../../../groups/domain/entities/feature.dart';
 import '../../../data/models/work_request/work_request_list_model.dart';
 import '../../../domain/entities/work_request/work_request.dart';
 import '../../../domain/usecases/work_order/get_archive_work_requests_stream.dart';
@@ -18,9 +19,11 @@ part 'work_request_archive_state.dart';
 @singleton
 class WorkRequestArchiveBloc
     extends Bloc<WorkRequestArchiveEvent, WorkRequestArchiveState> {
+  final AuthenticationBloc authenticationBloc;
   final FilterBloc filterBloc;
   final GetArchiveWorkRequestsStream getArchiveWorkRequestsStream;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _filterStreamSubscription;
   final List<StreamSubscription?> _workRequestArchiveStreamSubscriptions = [];
 
@@ -28,9 +31,15 @@ class WorkRequestArchiveBloc
   List<String> _locations = [];
 
   WorkRequestArchiveBloc({
+    required this.authenticationBloc,
     required this.filterBloc,
     required this.getArchiveWorkRequestsStream,
   }) : super(WorkRequestArchiveEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
@@ -56,6 +65,21 @@ class WorkRequestArchiveBloc
 
           add(GetWorkRequestsArchiveStreamEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _locations = [];
+        if (_workRequestArchiveStreamSubscriptions.isNotEmpty) {
+          for (var assetSubscription
+              in _workRequestArchiveStreamSubscriptions) {
+            assetSubscription?.cancel();
+          }
+          _workRequestArchiveStreamSubscriptions.clear();
+        }
+        emit(WorkRequestArchiveEmptyState());
       },
     );
 
@@ -156,7 +180,6 @@ class WorkRequestArchiveBloc
           allWorkRequests: tmpList,
         );
       }
-      print('WorkRequestArchiveBloc - Loaded');
       emit(WorkRequestArchiveLoadedState(
         allWorkRequests: workRequestsList,
       ));
@@ -165,6 +188,7 @@ class WorkRequestArchiveBloc
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _filterStreamSubscription.cancel();
     if (_workRequestArchiveStreamSubscriptions.isNotEmpty) {
       for (var assetSubscription in _workRequestArchiveStreamSubscriptions) {

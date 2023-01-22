@@ -43,6 +43,7 @@ class SuspendedUsersBloc
       failureOrNewUsers.fold(
         (failure) async => emit(const SuspendedUsersErrorState()),
         (suspendedUsers) async {
+          _suspendedUsersStreamSubscription?.cancel();
           _suspendedUsersStreamSubscription =
               suspendedUsers.allUsers.listen((snapshot) {
             add(UpdateSuspendedUsersEvent(snapshot: snapshot));
@@ -55,7 +56,6 @@ class SuspendedUsersBloc
       (event, emit) async {
         CompanyUsersList usersList = CompanyUsersListModel.fromSnapshot(
             event.snapshot as QuerySnapshot<Map<String, dynamic>>);
-        print('SuspendedUsersBloc - Loaded');
         emit(
           SuspendedUsersLoadedState(
             suspendedUsers: usersList,

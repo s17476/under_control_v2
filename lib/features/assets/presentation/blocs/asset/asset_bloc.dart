@@ -34,8 +34,10 @@ class AssetBloc extends Bloc<AssetEvent, AssetState> {
     required this.authenticationBloc,
     required this.getAssetsStream,
   }) : super(AssetEmptyState()) {
-    _authStreamSubscription = authenticationBloc.stream.listen((event) {
-      add(ResetEvent());
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
     });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
@@ -67,6 +69,12 @@ class AssetBloc extends Bloc<AssetEvent, AssetState> {
       (event, emit) {
         _companyId = '';
         _locations = [];
+        if (_assetStreamSubscriptions.isNotEmpty) {
+          for (var assetSubscription in _assetStreamSubscriptions) {
+            assetSubscription?.cancel();
+          }
+        }
+        _assetStreamSubscriptions.clear();
         emit(AssetEmptyState());
       },
     );

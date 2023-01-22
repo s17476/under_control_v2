@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -28,6 +29,7 @@ const String groupContainsMembers = 'groupContainsMembers';
 
 @singleton
 class GroupBloc extends Bloc<GroupEvent, GroupState> {
+  final AuthenticationBloc authenticationBloc;
   final CompanyProfileBloc companyProfileBloc;
   final AddGroup addGroup;
   final UpdateGroup updateGroup;
@@ -36,12 +38,14 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   final CacheGroups cacheGroups;
   final TryToGetCachedGroups tryToGetCachedGroups;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _companyProfileStreamSubscription;
   StreamSubscription? _groupsStreamSubscription;
 
   String _companyId = '';
 
   GroupBloc({
+    required this.authenticationBloc,
     required this.companyProfileBloc,
     required this.addGroup,
     required this.updateGroup,
@@ -50,12 +54,25 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
     required this.cacheGroups,
     required this.tryToGetCachedGroups,
   }) : super(GroupEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     _companyProfileStreamSubscription = companyProfileBloc.stream.listen(
       (state) {
         if (_companyId.isEmpty && state is CompanyProfileLoaded) {
           _companyId = state.company.id;
           add(FetchAllGroupsEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _groupsStreamSubscription?.cancel();
+        emit(GroupEmptyState());
       },
     );
 
@@ -158,7 +175,6 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
             ));
           },
         );
-        print('GroupBloc - Loaded');
       },
     );
 
@@ -182,7 +198,6 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
             ),
           ),
           (_) async {
-            print('GroupBloc - Selected');
             emit(
               GroupLoadedState(
                 allGroups: currentState.allGroups,
@@ -228,6 +243,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _companyProfileStreamSubscription.cancel();
     _groupsStreamSubscription?.cancel();
     return super.close();

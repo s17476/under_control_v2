@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../domain/entities/task/task.dart';
@@ -19,90 +20,106 @@ part 'task_filter_state.dart';
 
 @singleton
 class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
+  final AuthenticationBloc authenticationBloc;
   final UserProfileBloc userProfileBloc;
   final TaskBloc taskBloc;
   final WorkRequestBloc workRequestBloc;
-  late StreamSubscription userStreamSubscription;
-  late StreamSubscription tasksStreamSubscription;
-  late StreamSubscription requestsStreamSubscription;
+  late StreamSubscription _authStreamSubscription;
+  late StreamSubscription _userStreamSubscription;
+  late StreamSubscription _tasksStreamSubscription;
+  late StreamSubscription _requestsStreamSubscription;
 
-  UserProfile? userProfile;
+  UserProfile? _userProfile;
+  List<Task>? _allTasks;
+  List<WorkRequest>? _allRequests;
 
-  List<Task>? allTasks;
-  List<WorkRequest>? allRequests;
+  TaskFilterEvent _lastEvent = const TaskFilterResetEvent();
 
-  TaskFilterEvent lastEvent = const TaskFilterResetEvent();
-
-  final double filterFullHeight = 335;
-  final double filterFullHeightOnlyRequests = 180;
-  final double filterMiniHeight = 180;
-  final double filterMiniHeightOnlyRequests = 113;
+  final double _filterFullHeight = 335;
+  final double _filterFullHeightOnlyRequests = 180;
+  final double _filterMiniHeight = 180;
+  final double _filterMiniHeightOnlyRequests = 113;
 
   TaskFilterBloc(
+    this.authenticationBloc,
     this.userProfileBloc,
     this.taskBloc,
     this.workRequestBloc,
   ) : super(const TaskFilterInitialState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     userProfileBloc.stream.listen((state) {
       if (state is Approved) {
-        userProfile = state.userProfile;
-        if (allRequests != null && allTasks != null) {
-          add(lastEvent);
+        _userProfile = state.userProfile;
+        if (_allRequests != null && _allTasks != null) {
+          add(_lastEvent);
         }
       }
     });
     taskBloc.stream.listen((state) {
       if (state is TaskLoadedState) {
-        allTasks = state.allTasks.allTasks;
-        if (allRequests != null && userProfile != null) {
+        _allTasks = state.allTasks.allTasks;
+        if (_allRequests != null && _userProfile != null) {
           // update state with recent selected options
-          add(lastEvent);
+          add(_lastEvent);
         }
       }
     });
     workRequestBloc.stream.listen((state) {
       if (state is WorkRequestLoadedState) {
-        allRequests = state.allWorkRequests.allWorkRequests;
-        if (allTasks != null && userProfile != null) {
+        _allRequests = state.allWorkRequests.allWorkRequests;
+        if (_allTasks != null && _userProfile != null) {
           // update state with recent selected options
-          add(lastEvent);
+          add(_lastEvent);
         }
       }
     });
 
+    on<ResetEvent>(
+      (event, emit) {
+        _userProfile = null;
+        _allTasks = null;
+        _allRequests = null;
+        _lastEvent = const TaskFilterResetEvent();
+      },
+    );
+
     on<TaskFilterResetEvent>((event, emit) {
-      lastEvent = event;
+      _lastEvent = event;
       emit(TaskFilterNothingSelectedState(
-        filterHeight: filterFullHeight,
+        filterHeight: _filterFullHeight,
         isFilterVisible: state.isFilterVisible,
         isMiniSize: false,
-        tasks: allTasks ?? [],
-        workRequests: allRequests ?? [],
+        tasks: _allTasks ?? [],
+        workRequests: _allRequests ?? [],
       ));
     });
 
     on<TaskFilterSelectEvent>((event, emit) {
-      lastEvent = TaskFilterSelectEvent(
-        taskOrRequest: event.taskOrRequest ?? lastEvent.taskOrRequest,
-        taskOwner: event.taskOwner ?? lastEvent.taskOwner,
-        taskPriority: event.taskPriority ?? lastEvent.taskPriority,
-        taskType: event.taskType ?? lastEvent.taskType,
+      _lastEvent = TaskFilterSelectEvent(
+        taskOrRequest: event.taskOrRequest ?? _lastEvent.taskOrRequest,
+        taskOwner: event.taskOwner ?? _lastEvent.taskOwner,
+        taskPriority: event.taskPriority ?? _lastEvent.taskPriority,
+        taskType: event.taskType ?? _lastEvent.taskType,
       );
       // nothing is selected
-      if (lastEvent.taskOrRequest == TaskOrRequest.all &&
-          lastEvent.taskOwner == TaskOwner.all &&
-          lastEvent.taskPriority == TaskPriority.unknown &&
-          lastEvent.taskType == TaskType.unknown) {
+      if (_lastEvent.taskOrRequest == TaskOrRequest.all &&
+          _lastEvent.taskOwner == TaskOwner.all &&
+          _lastEvent.taskPriority == TaskPriority.unknown &&
+          _lastEvent.taskType == TaskType.unknown) {
         emit(TaskFilterNothingSelectedState(
-          filterHeight: state.isMiniSize ? filterMiniHeight : filterFullHeight,
+          filterHeight:
+              state.isMiniSize ? _filterMiniHeight : _filterFullHeight,
           isFilterVisible: state.isFilterVisible,
           isMiniSize: state.isMiniSize,
-          tasks: allTasks ?? [],
-          workRequests: allRequests ?? [],
+          tasks: _allTasks ?? [],
+          workRequests: _allRequests ?? [],
         ));
         // options selected
       } else {
-        print('TaskFilter - Selected');
         emit(_filterTasks());
       }
     });
@@ -119,7 +136,6 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
         );
       }
       if (newState != null) {
-        print('TaskFilter - Show Filter');
         emit(newState);
       }
     });
@@ -134,7 +150,6 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
             .copyWith(isFilterVisible: false);
       }
       if (newState != null) {
-        print('TaskFilter - Hide Filter');
         emit(newState);
       }
     });
@@ -147,13 +162,13 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
       if (state is TaskFilterSelectedState) {
         newState = (state as TaskFilterSelectedState).copyWith(
           filterHeight: state.taskOrRequest == TaskOrRequest.request
-              ? filterMiniHeightOnlyRequests
-              : filterMiniHeight,
+              ? _filterMiniHeightOnlyRequests
+              : _filterMiniHeight,
           isMiniSize: true,
         );
       } else if (state is TaskFilterNothingSelectedState) {
         newState = (state as TaskFilterNothingSelectedState).copyWith(
-          filterHeight: filterMiniHeight,
+          filterHeight: _filterMiniHeight,
           isMiniSize: true,
         );
       }
@@ -167,13 +182,13 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
       if (state is TaskFilterSelectedState) {
         newState = (state as TaskFilterSelectedState).copyWith(
           filterHeight: state.taskOrRequest == TaskOrRequest.request
-              ? filterFullHeightOnlyRequests
-              : filterFullHeight,
+              ? _filterFullHeightOnlyRequests
+              : _filterFullHeight,
           isMiniSize: false,
         );
       } else if (state is TaskFilterNothingSelectedState) {
         newState = (state as TaskFilterNothingSelectedState).copyWith(
-          filterHeight: filterFullHeight,
+          filterHeight: _filterFullHeight,
           isMiniSize: false,
         );
       }
@@ -185,9 +200,10 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
 
   @override
   Future<void> close() {
-    userStreamSubscription.cancel();
-    tasksStreamSubscription.cancel();
-    requestsStreamSubscription.cancel();
+    _authStreamSubscription.cancel();
+    _userStreamSubscription.cancel();
+    _tasksStreamSubscription.cancel();
+    _requestsStreamSubscription.cancel();
     return super.close();
   }
 
@@ -196,17 +212,17 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
     List<WorkRequest> filteredRequests = [];
 
     // task or requests
-    switch (lastEvent.taskOrRequest) {
+    switch (_lastEvent.taskOrRequest) {
       case TaskOrRequest.all:
-        filteredTasks = allTasks ?? [];
-        filteredRequests = allRequests ?? [];
+        filteredTasks = _allTasks ?? [];
+        filteredRequests = _allRequests ?? [];
         break;
       case TaskOrRequest.request:
         filteredTasks = [];
-        filteredRequests = allRequests ?? [];
+        filteredRequests = _allRequests ?? [];
         break;
       case TaskOrRequest.task:
-        filteredTasks = allTasks ?? [];
+        filteredTasks = _allTasks ?? [];
         filteredRequests = [];
         break;
       default:
@@ -214,13 +230,13 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
 
     // task owner
     if (filteredTasks.isNotEmpty) {
-      switch (lastEvent.taskOwner) {
+      switch (_lastEvent.taskOwner) {
         // user tasks
         case TaskOwner.user:
           filteredTasks = filteredTasks
               .where(
                 (task) => task.assignedUsers.contains(
-                  userProfile!.id,
+                  _userProfile!.id,
                 ),
               )
               .toList();
@@ -230,7 +246,7 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
           filteredTasks = filteredTasks
               .where(
                 (task) => task.assignedGroups.any(
-                  (groupId) => userProfile!.userGroups.contains(
+                  (groupId) => _userProfile!.userGroups.contains(
                     groupId,
                   ),
                 ),
@@ -243,12 +259,12 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
               .where(
                 (task) =>
                     task.assignedGroups.any(
-                      (groupId) => userProfile!.userGroups.contains(
+                      (groupId) => _userProfile!.userGroups.contains(
                         groupId,
                       ),
                     ) ||
                     task.assignedUsers.contains(
-                      userProfile!.id,
+                      _userProfile!.id,
                     ),
               )
               .toList();
@@ -259,36 +275,36 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
     }
 
     // filter priority
-    if (lastEvent.taskPriority != TaskPriority.unknown) {
+    if (_lastEvent.taskPriority != TaskPriority.unknown) {
       filteredTasks = filteredTasks
-          .where((task) => task.priority == lastEvent.taskPriority)
+          .where((task) => task.priority == _lastEvent.taskPriority)
           .toList();
       filteredRequests = filteredRequests
-          .where((request) => request.priority == lastEvent.taskPriority)
+          .where((request) => request.priority == _lastEvent.taskPriority)
           .toList();
     }
 
     // filter task type
-    if (lastEvent.taskType != TaskType.unknown) {
+    if (_lastEvent.taskType != TaskType.unknown) {
       filteredTasks = filteredTasks
-          .where((task) => task.type == lastEvent.taskType)
+          .where((task) => task.type == _lastEvent.taskType)
           .toList();
     }
 
     final isOnlyRequestFilter =
-        lastEvent.taskOrRequest == TaskOrRequest.request;
+        _lastEvent.taskOrRequest == TaskOrRequest.request;
     double newSize;
     if (isOnlyRequestFilter) {
       if (state.isMiniSize) {
-        newSize = filterMiniHeightOnlyRequests;
+        newSize = _filterMiniHeightOnlyRequests;
       } else {
-        newSize = filterFullHeightOnlyRequests;
+        newSize = _filterFullHeightOnlyRequests;
       }
     } else {
       if (state.isMiniSize) {
-        newSize = filterMiniHeight;
+        newSize = _filterMiniHeight;
       } else {
-        newSize = filterFullHeight;
+        newSize = _filterFullHeight;
       }
     }
 
@@ -296,10 +312,10 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
       filterHeight: newSize,
       isFilterVisible: state.isFilterVisible,
       isMiniSize: state.isMiniSize,
-      taskOrRequest: lastEvent.taskOrRequest!,
-      taskOwner: lastEvent.taskOwner!,
-      taskPriority: lastEvent.taskPriority!,
-      taskType: lastEvent.taskType!,
+      taskOrRequest: _lastEvent.taskOrRequest!,
+      taskOwner: _lastEvent.taskOwner!,
+      taskPriority: _lastEvent.taskPriority!,
+      taskType: _lastEvent.taskType!,
       tasks: filteredTasks,
       workRequests: filteredRequests,
     );

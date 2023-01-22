@@ -13,6 +13,8 @@ abstract class InstructionEvent extends Equatable {
 
 class GetInstructionsStreamEvent extends InstructionEvent {}
 
+class ResetEvent extends InstructionEvent {}
+
 class UpdateInstructionsListEvent extends InstructionEvent {
   final QuerySnapshot<Object?> snapshot;
   final List<String> locations;

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../../core/usecases/usecase.dart';
@@ -18,9 +19,11 @@ part 'task_archive_latest_state.dart';
 @singleton
 class TaskArchiveLatestBloc
     extends Bloc<TaskArchiveLatestEvent, TaskArchiveLatestState> {
+  final AuthenticationBloc authenticationBloc;
   final FilterBloc filterBloc;
   final GetArchiveLatestTasksStream getArchiveLatestTasksStream;
 
+  late StreamSubscription _authStreamSubscription;
   late StreamSubscription _filterStreamSubscription;
   final List<StreamSubscription?> _taskArchiveStreamSubscriptions = [];
 
@@ -28,9 +31,15 @@ class TaskArchiveLatestBloc
   List<String> _locations = [];
 
   TaskArchiveLatestBloc({
+    required this.authenticationBloc,
     required this.filterBloc,
     required this.getArchiveLatestTasksStream,
   }) : super(TaskArchiveLatestEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
@@ -56,6 +65,20 @@ class TaskArchiveLatestBloc
 
           add(GetTasksArchiveLatestStreamEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _locations = [];
+        if (_taskArchiveStreamSubscriptions.isNotEmpty) {
+          for (var assetSubscription in _taskArchiveStreamSubscriptions) {
+            assetSubscription?.cancel();
+          }
+          _taskArchiveStreamSubscriptions.clear();
+        }
+        emit(TaskArchiveLatestEmptyState());
       },
     );
 
@@ -152,7 +175,6 @@ class TaskArchiveLatestBloc
           allTasks: tmpList,
         );
       }
-      print('TaskArchiveLatestBloc - Loaded');
       emit(TaskArchiveLatestLoadedState(
         allTasks: workRequestsList,
       ));
@@ -161,6 +183,7 @@ class TaskArchiveLatestBloc
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _filterStreamSubscription.cancel();
     if (_taskArchiveStreamSubscriptions.isNotEmpty) {
       for (var assetSubscription in _taskArchiveStreamSubscriptions) {

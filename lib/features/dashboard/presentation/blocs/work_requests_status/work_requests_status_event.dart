@@ -13,6 +13,8 @@ abstract class WorkRequestsStatusEvent extends Equatable {
 
 class GetWorkRequestsStatusEvent extends WorkRequestsStatusEvent {}
 
+class ResetEvent extends WorkRequestsStatusEvent {}
+
 class UpdateAwaitingStatusEvent extends WorkRequestsStatusEvent {
   final QuerySnapshot<Object?> snapshot;
   final List<String> locations;

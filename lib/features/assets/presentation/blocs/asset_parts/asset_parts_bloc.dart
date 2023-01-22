@@ -30,13 +30,16 @@ class AssetPartsBloc extends Bloc<AssetPartsEvent, AssetPartsState> {
     required this.userProfileBloc,
     required this.getAssetsStreamForParent,
   }) : super(AssetPartsEmptyState()) {
-    _authStreamSubscription = authenticationBloc.stream.listen((event) {
-      add(const ResetEvent());
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(const ResetEvent());
+      }
     });
 
     on<ResetEvent>(
       (event, emit) {
         _companyId = '';
+        _streamSubscription?.cancel();
         emit(AssetPartsEmptyState());
       },
     );

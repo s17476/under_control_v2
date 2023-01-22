@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../data/models/item_action/item_actions_list_model.dart';
@@ -16,15 +17,30 @@ part 'item_action_state.dart';
 
 @injectable
 class ItemActionBloc extends Bloc<ItemActionEvent, ItemActionState> {
+  final AuthenticationBloc authenticationBloc;
   final GetItemsActionsStream getItemsActionsStream;
   final GetLastFiveItemsActionsStream getLastFiveItemsActionsStream;
 
+  late StreamSubscription _authStreamSubscription;
   StreamSubscription? _itemsActionsStreamSubscription;
 
   ItemActionBloc({
+    required this.authenticationBloc,
     required this.getItemsActionsStream,
     required this.getLastFiveItemsActionsStream,
   }) : super(ItemActionEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
+
+    on<ResetEvent>(
+      (event, emit) {
+        _itemsActionsStreamSubscription?.cancel();
+        emit(ItemActionEmptyState());
+      },
+    );
     on<GetItemActionsEvent>((event, emit) async {
       emit(ItemActionLoadingState());
 
@@ -84,6 +100,7 @@ class ItemActionBloc extends Bloc<ItemActionEvent, ItemActionState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _itemsActionsStreamSubscription?.cancel();
     return super.close();
   }

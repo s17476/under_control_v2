@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
@@ -20,12 +21,14 @@ part 'work_requests_status_state.dart';
 @singleton
 class WorkRequestsStatusBloc
     extends Bloc<WorkRequestsStatusEvent, WorkRequestsStatusState> {
+  final AuthenticationBloc authenticationBloc;
   final FilterBloc filterBloc;
   final GetAwaitingWorkRequestsCount getAwaitingWorkRequestsCount;
   final GetConvertedWorkRequestsCount getConvertedWorkRequestsCount;
   final GetCancelledWorkRequestsCount getCancelledWorkRequestsCount;
 
   late StreamSubscription _filterStreamSubscription;
+  late StreamSubscription _authStreamSubscription;
   final List<StreamSubscription?> _awaitingWorkRequestStreamSubscriptions = [];
   final List<StreamSubscription?> _convertedWorkRequestStreamSubscriptions = [];
   final List<StreamSubscription?> _cancelledWorkRequestStreamSubscriptions = [];
@@ -34,11 +37,17 @@ class WorkRequestsStatusBloc
   List<String> _locations = [];
 
   WorkRequestsStatusBloc({
+    required this.authenticationBloc,
     required this.filterBloc,
     required this.getAwaitingWorkRequestsCount,
     required this.getConvertedWorkRequestsCount,
     required this.getCancelledWorkRequestsCount,
   }) : super(WorkRequestsStatusEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
     _filterStreamSubscription = filterBloc.stream.listen(
       (state) {
         if (state is FilterLoadedState) {
@@ -55,6 +64,15 @@ class WorkRequestsStatusBloc
 
           add(GetWorkRequestsStatusEvent());
         }
+      },
+    );
+
+    on<ResetEvent>(
+      (event, emit) {
+        _companyId = '';
+        _locations = [];
+        _clearSubscriptions();
+        emit(WorkRequestsStatusEmptyState());
       },
     );
 
@@ -296,6 +314,7 @@ class WorkRequestsStatusBloc
   @override
   Future<void> close() {
     _filterStreamSubscription.cancel();
+    _authStreamSubscription.cancel();
     if (_awaitingWorkRequestStreamSubscriptions.isNotEmpty) {
       for (var subscription in _awaitingWorkRequestStreamSubscriptions) {
         subscription?.cancel();

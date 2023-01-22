@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
 import '../../../../core/usecases/usecase.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -16,14 +17,31 @@ part 'task_templates_state.dart';
 
 @injectable
 class TaskTemplatesBloc extends Bloc<TaskTemplatesEvent, TaskTemplatesState> {
-  StreamSubscription? _tasksStreamSubscription;
+  final AuthenticationBloc authenticationBloc;
   final UserProfileBloc userProfileBloc;
   final GetTasksTemplatesStream getTasksTemplatesStream;
 
+  late StreamSubscription _authStreamSubscription;
+  StreamSubscription? _tasksStreamSubscription;
+
   TaskTemplatesBloc({
+    required this.authenticationBloc,
     required this.userProfileBloc,
     required this.getTasksTemplatesStream,
   }) : super(TaskTemplatesEmptyState()) {
+    _authStreamSubscription = authenticationBloc.stream.listen((state) {
+      if (state is Unauthenticated) {
+        add(ResetEvent());
+      }
+    });
+
+    on<ResetEvent>(
+      (event, emit) {
+        _tasksStreamSubscription?.cancel();
+        emit(TaskTemplatesEmptyState());
+      },
+    );
+
     on<GetTaskTemplatesEvent>((event, emit) async {
       final userState = userProfileBloc.state;
       if (userState is Approved) {
@@ -52,7 +70,6 @@ class TaskTemplatesBloc extends Bloc<TaskTemplatesEvent, TaskTemplatesState> {
         final tasksList = TasksListModel.fromSnapshot(
           event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );
-        print('TaskTemplatesBloc - Loaded');
         emit(TaskTemplatesLoadedState(allTasks: tasksList));
       },
     );
@@ -60,6 +77,7 @@ class TaskTemplatesBloc extends Bloc<TaskTemplatesEvent, TaskTemplatesState> {
 
   @override
   Future<void> close() {
+    _authStreamSubscription.cancel();
     _tasksStreamSubscription?.cancel();
     return super.close();
   }

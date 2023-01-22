@@ -13,6 +13,8 @@ abstract class WorkRequestEvent extends Equatable {
 
 class GetWorkRequestsStreamEvent extends WorkRequestEvent {}
 
+class ResetEvent extends WorkRequestEvent {}
+
 class UpdateWorkRequestsListEvent extends WorkRequestEvent {
   final QuerySnapshot<Object?> snapshot;
   final List<String> locations;
