@@ -101,7 +101,7 @@ class TasksStatus extends StatelessWidget {
                       width: 4,
                     ),
                     Text(
-                      AppLocalizations.of(context)!.task_finished,
+                      '${AppLocalizations.of(context)!.task_finished} - ${AppLocalizations.of(context)!.status_recent}',
                       style: Theme.of(context)
                           .textTheme
                           .caption!

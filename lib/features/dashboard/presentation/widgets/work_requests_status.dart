@@ -84,7 +84,7 @@ class WorkRequestsStatus extends StatelessWidget {
                       width: 4,
                     ),
                     Text(
-                      AppLocalizations.of(context)!.work_requests,
+                      '${AppLocalizations.of(context)!.work_requests} - ${AppLocalizations.of(context)!.status_recent}',
                       style: Theme.of(context)
                           .textTheme
                           .caption!
