@@ -15,7 +15,7 @@ import '../../../domain/usecases/task_template/get_tasks_templates_stream.dart';
 part 'task_templates_event.dart';
 part 'task_templates_state.dart';
 
-@injectable
+@lazySingleton
 class TaskTemplatesBloc extends Bloc<TaskTemplatesEvent, TaskTemplatesState> {
   final AuthenticationBloc authenticationBloc;
   final UserProfileBloc userProfileBloc;

@@ -1069,7 +1069,7 @@ Future<_i1.GetIt> $initGetIt(
         cancelTask: gh<_i77.CancelTask>(),
         completeTask: gh<_i87.CompleteTask>(),
       ));
-  gh.factory<_i214.TaskTemplatesBloc>(() => _i214.TaskTemplatesBloc(
+  gh.lazySingleton<_i214.TaskTemplatesBloc>(() => _i214.TaskTemplatesBloc(
         authenticationBloc: gh<_i181.AuthenticationBloc>(),
         userProfileBloc: gh<_i189.UserProfileBloc>(),
         getTasksTemplatesStream: gh<_i136.GetTasksTemplatesStream>(),

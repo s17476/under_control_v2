@@ -17,7 +17,7 @@ import '../../utils/get_task_priority_and_type_icon.dart';
 import '../pages/task_details_page.dart';
 import '../pages/task_template_details_page.dart';
 
-class TaskTile extends StatefulWidget {
+class TaskTile extends StatelessWidget {
   const TaskTile({
     Key? key,
     required this.task,
@@ -26,45 +26,6 @@ class TaskTile extends StatefulWidget {
 
   final Task task;
   final bool isTemplate;
-
-  @override
-  State<TaskTile> createState() => _TaskTileState();
-}
-
-class _TaskTileState extends State<TaskTile> {
-  UserProfile? _author;
-  final List<UserProfile> _assignedUsers = [];
-  final List<Group> _assignedGroups = [];
-
-  @override
-  void didChangeDependencies() {
-    final companyState = context.watch<CompanyProfileBloc>().state;
-    if (companyState is CompanyProfileLoaded) {
-      _author = companyState.getUserById(widget.task.userId);
-      if (widget.task.assignedUsers.isNotEmpty) {
-        _assignedUsers.clear();
-        for (var userId in widget.task.assignedUsers) {
-          final usr = companyState.getUserById(userId);
-          if (usr != null) {
-            _assignedUsers.add(usr);
-          }
-        }
-      }
-    }
-    if (widget.task.assignedGroups.isNotEmpty) {
-      _assignedGroups.clear();
-      final groupState = context.watch<GroupBloc>().state;
-      if (groupState is GroupLoadedState) {
-        for (var groupId in widget.task.assignedGroups) {
-          final grp = groupState.getGroupById(groupId);
-          if (grp != null) {
-            _assignedGroups.add(grp);
-          }
-        }
-      }
-    }
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +43,16 @@ class _TaskTileState extends State<TaskTile> {
           child: Material(
             borderRadius: BorderRadius.circular(10),
             child: InkWell(
-              onTap: widget.isTemplate
+              onTap: isTemplate
                   ? () => Navigator.pushNamed(
                         context,
                         TaskTemplateDetailsPage.routeName,
-                        arguments: widget.task.id,
+                        arguments: task.id,
                       )
                   : () => Navigator.pushNamed(
                         context,
                         TaskDetailsPage.routeName,
-                        arguments: widget.task.id,
+                        arguments: task.id,
                       ),
               borderRadius: BorderRadius.circular(10),
               child: Container(
@@ -109,12 +70,12 @@ class _TaskTileState extends State<TaskTile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // date
-                    if (!widget.isTemplate)
+                    if (!isTemplate)
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0),
                         child: Row(
                           children: [
-                            ProgressIcon(task: widget.task),
+                            ProgressIcon(task: task),
                             const SizedBox(
                               width: 8,
                             ),
@@ -137,14 +98,13 @@ class _TaskTileState extends State<TaskTile> {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          dateFormat.format(
-                                              widget.task.executionDate),
+                                          dateFormat.format(task.executionDate),
                                           style: Theme.of(context)
                                               .textTheme
                                               .caption,
                                         ),
                                       ),
-                                      if (widget.task.isCyclictask)
+                                      if (task.isCyclictask)
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(right: 4),
@@ -158,7 +118,7 @@ class _TaskTileState extends State<TaskTile> {
                                           ),
                                         ),
                                       Text(
-                                        '#${widget.task.count}',
+                                        '#${task.count}',
                                         style:
                                             Theme.of(context).textTheme.caption,
                                       ),
@@ -167,7 +127,7 @@ class _TaskTileState extends State<TaskTile> {
                                   const SizedBox(
                                     height: 2,
                                   ),
-                                  ProgressText(task: widget.task),
+                                  ProgressText(task: task),
                                 ],
                               ),
                             ),
@@ -175,29 +135,38 @@ class _TaskTileState extends State<TaskTile> {
                         ),
                       ),
                     // shows asset data if work order is connected to an asset
-                    if (widget.task.assetId.isNotEmpty)
-                      ConnectedAsset(assetId: widget.task.assetId),
+                    if (task.assetId.isNotEmpty)
+                      ConnectedAsset(assetId: task.assetId),
                     // shows info if work order is not connected to an asset
-                    if (widget.task.assetId.isEmpty) const NoAssetInfo(),
+                    if (task.assetId.isEmpty) const NoAssetInfo(),
 
                     // title
-                    TaskTitle(taskTitle: widget.task.title),
+                    TaskTitle(taskTitle: task.title),
                     const SizedBox(
                       height: 4,
                     ),
                     Row(
                       children: [
-                        if (_author == null) const Expanded(child: SizedBox()),
-                        if (_author != null)
-                          // task author
-                          TaskAuthor(author: _author),
+                        // task author
+                        BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
+                          builder: (context, state) {
+                            final UserProfile? author;
+                            if (state is CompanyProfileLoaded) {
+                              author = state.getUserById(task.userId);
+                              if (author != null) {
+                                return TaskAuthor(author: author);
+                              }
+                            }
+                            return const Expanded(child: SizedBox());
+                          },
+                        ),
                         // image icon
-                        if (widget.task.images.isNotEmpty)
+                        if (task.images.isNotEmpty)
                           Row(
                             children: [
-                              if (widget.task.images.length > 1)
+                              if (task.images.length > 1)
                                 Text(
-                                  '${widget.task.images.length}x',
+                                  '${task.images.length}x',
                                   style: Theme.of(context)
                                       .textTheme
                                       .caption!
@@ -215,7 +184,7 @@ class _TaskTileState extends State<TaskTile> {
                             ],
                           ),
                         // video icon
-                        if (widget.task.video.isNotEmpty)
+                        if (task.video.isNotEmpty)
                           FaIcon(
                             FontAwesomeIcons.play,
                             size: 18,
@@ -227,12 +196,40 @@ class _TaskTileState extends State<TaskTile> {
                       height: 4,
                     ),
                     // assigned users
-                    if (_assignedUsers.isNotEmpty)
-                      AssignedUsers(assignedUsers: _assignedUsers),
+                    if (task.assignedUsers.isNotEmpty)
+                      BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
+                        builder: (context, state) {
+                          List<UserProfile> assignedUsers = [];
+                          if (state is CompanyProfileLoaded) {
+                            for (var userId in task.assignedUsers) {
+                              final usr = state.getUserById(userId);
+                              if (usr != null) {
+                                assignedUsers.add(usr);
+                              }
+                            }
+                          }
+                          return AssignedUsers(assignedUsers: assignedUsers);
+                        },
+                      ),
 
                     // assigned groups
-                    if (_assignedGroups.isNotEmpty)
-                      AssignedGroups(assignedGroups: _assignedGroups),
+                    if (task.assignedGroups.isNotEmpty)
+                      BlocBuilder<GroupBloc, GroupState>(
+                        builder: (context, state) {
+                          List<Group> assignedGroups = [];
+                          if (state is GroupLoadedState) {
+                            for (var groupId in task.assignedGroups) {
+                              final grp = state.getGroupById(groupId);
+                              if (grp != null) {
+                                assignedGroups.add(grp);
+                              }
+                            }
+                          }
+                          return AssignedGroups(
+                            assignedGroups: assignedGroups,
+                          );
+                        },
+                      ),
                   ],
                 ),
               ),
@@ -241,12 +238,12 @@ class _TaskTileState extends State<TaskTile> {
         ),
         getTaskPriorityAndTypeIcon(
           context: context,
-          priority: widget.task.priority,
-          type: widget.task.type,
+          priority: task.priority,
+          type: task.type,
           backgroundSize: 50,
           iconSize: 20,
         ),
-        if (widget.task.isCancelled)
+        if (task.isCancelled)
           Positioned(
             right: 16,
             child: Transform.rotate(

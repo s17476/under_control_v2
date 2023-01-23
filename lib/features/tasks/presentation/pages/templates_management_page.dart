@@ -49,6 +49,7 @@ class TemplatesManagementPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: TaskTile(
+                          key: ValueKey(allTasks[index].id),
                           task: allTasks[index],
                           isTemplate: true,
                         ),
