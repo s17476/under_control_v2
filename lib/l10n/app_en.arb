@@ -2483,6 +2483,14 @@
     "@task_templates_use": {
       "description": "Task template - add page"
     },
+    "task_templates_delete_title": "Delete template",
+    "@task_templates_delete_title": {
+      "description": "Task template"
+    },
+    "task_templates_delete_question": "Are you sure you want to delete this template?",
+    "@task_templates_delete_question": {
+      "description": "Task template"
+    },
     "task_action_new": "Register new action",
     "@task_action_new": {
       "description": "task action - new"

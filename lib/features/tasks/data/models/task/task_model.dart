@@ -185,9 +185,9 @@ class TaskModel extends Task {
       durationUnit: DurationUnit.fromString(map['durationUnit'] ?? ''),
       duration: map['duration']?.toInt() ?? 0,
       actions: List<String>.from(map['actions'] ?? []),
-      assignedGroups: List<String>.from(map['assignedGroups']),
-      assignedUsers: List<String>.from(map['assignedUsers']),
-      sparePartsAssets: List<String>.from(map['sparePartsAssets']),
+      assignedGroups: List<String>.from(map['assignedGroups'] ?? []),
+      assignedUsers: List<String>.from(map['assignedUsers'] ?? []),
+      sparePartsAssets: List<String>.from(map['sparePartsAssets'] ?? []),
       sparePartsItems: List<SparePartItemModel>.from(
         map['sparePartsItems']?.map((x) => SparePartItemModel.fromMap(x)) ?? [],
       ),

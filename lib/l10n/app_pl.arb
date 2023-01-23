@@ -602,6 +602,8 @@
     "task_templates_add": "Dodaj nowy szablon",
     "task_templates_edit": "Edytuj szablon",
     "task_templates_use": "Użyj szablonu",
+    "task_templates_delete_title": "Usuń szablon",
+    "task_templates_delete_question": "Czy jesteś pewny, że chcesz usunąć ten szablon?",
     "task_action_new": "Zarejestruj nową akcję",
     "task_action_edit": "Edytuj akcję",
     "task_action_participants": "Uczestnicy",

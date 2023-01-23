@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/tasks/utils/show_task_template_delete_dialog.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -74,7 +75,7 @@ class _TaskTemplateDetailsPageState extends State<TaskTemplateDetailsPage>
             : 0;
         // popup menu items
         _choices = [
-          // edit work order
+          // edit task template
           if (getUserPermission(
             context: context,
             featureType: FeatureType.tasks,
@@ -88,6 +89,24 @@ class _TaskTemplateDetailsPageState extends State<TaskTemplateDetailsPage>
                 AddTaskTemplatePage.routeName,
                 arguments: _task,
               ),
+            ),
+          // delete task template
+          if (getUserPermission(
+            context: context,
+            featureType: FeatureType.tasks,
+            permissionType: PermissionType.delete,
+          ))
+            Choice(
+              title: AppLocalizations.of(context)!.delete,
+              icon: Icons.delete,
+              onTap: () => showTaskTemplateDeleteDialog(
+                context: context,
+                task: _task!,
+              ).then((value) {
+                if (value != null && value == true) {
+                  Navigator.pop(context);
+                }
+              }),
             ),
         ];
       }
@@ -106,141 +125,144 @@ class _TaskTemplateDetailsPageState extends State<TaskTemplateDetailsPage>
       listener: (context, state) {
         taskActionManagementBlocListener(context, state);
       },
-      child: DefaultTabController(
-        length: _tabsCount,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(appBarTitle),
-            centerTitle: true,
-            leading: Builder(
-              builder: (context) {
-                return GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const AppBarAnimatedIcon(isBackIcon: true),
-                );
-              },
-            ),
-            actions: [
-              // popup menu
-              if (_task != null &&
-                  !_task!.isCancelled &&
-                  getUserPermission(
-                    context: context,
-                    featureType: FeatureType.tasks,
-                    permissionType: PermissionType.edit,
-                  ))
-                PopupMenuButton<Choice>(
-                  onSelected: (Choice choice) {
-                    choice.onTap();
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return _choices.map((Choice choice) {
-                      return PopupMenuItem<Choice>(
-                        value: choice,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(choice.icon),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              choice.title,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
+      child: _task == null
+          ? const SizedBox()
+          : DefaultTabController(
+              length: _tabsCount,
+              child: Scaffold(
+                appBar: AppBar(
+                  title: Text(appBarTitle),
+                  centerTitle: true,
+                  leading: Builder(
+                    builder: (context) {
+                      return GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: const AppBarAnimatedIcon(isBackIcon: true),
                       );
-                    }).toList();
-                  },
-                ),
-            ],
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  icon: Icon(
-                    Icons.info,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
+                    },
                   ),
-                ),
-                if (_task!.checklist.isNotEmpty)
-                  Tab(
-                    icon: Icon(
-                      Icons.checklist,
-                      color: tabBarIconColor,
-                      size: tabBarIconSize,
-                    ),
-                  ),
-                if (_task!.images.isNotEmpty)
-                  Tab(
-                    icon: Icon(
-                      Icons.image,
-                      color: tabBarIconColor,
-                      size: tabBarIconSize,
-                    ),
-                  ),
-                if (_task!.video.isNotEmpty)
-                  Tab(
-                    icon: Icon(
-                      FontAwesomeIcons.play,
-                      color: tabBarIconColor,
-                      size: tabBarIconSize,
-                    ),
-                  ),
-                if (_task!.instructions.isNotEmpty)
-                  Tab(
-                    icon: Icon(
-                      Icons.menu_book,
-                      color: tabBarIconColor,
-                      size: tabBarIconSize,
-                    ),
-                  ),
-                if (_task!.sparePartsAssets.isNotEmpty ||
-                    _task!.sparePartsItems.isNotEmpty)
-                  Tab(
-                    icon: Icon(
-                      Icons.settings_applications,
-                      color: tabBarIconColor,
-                      size: tabBarIconSize,
-                    ),
-                  ),
-              ],
-              indicatorColor: tabBarIconColor,
-            ),
-          ),
-          body: _task == null
-              ? const LoadingWidget()
-              : MultiBlocListener(
-                  listeners: [
-                    BlocListener<WorkRequestManagementBloc,
-                        WorkRequestManagementState>(
-                      listener: (context, state) =>
-                          workRequestManagementBlocListener(context, state),
-                    ),
+                  actions: [
+                    // popup menu
+                    if (_task != null &&
+                        !_task!.isCancelled &&
+                        getUserPermission(
+                          context: context,
+                          featureType: FeatureType.tasks,
+                          permissionType: PermissionType.edit,
+                        ))
+                      PopupMenuButton<Choice>(
+                        onSelected: (Choice choice) {
+                          choice.onTap();
+                        },
+                        itemBuilder: (BuildContext context) {
+                          return _choices.map((Choice choice) {
+                            return PopupMenuItem<Choice>(
+                              value: choice,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(choice.icon),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    choice.title,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList();
+                        },
+                      ),
                   ],
-                  child: TabBarView(
-                    children: [
-                      TaskTemplateInfoTab(task: _task!),
+                  bottom: TabBar(
+                    tabs: [
+                      Tab(
+                        icon: Icon(
+                          Icons.info,
+                          color: tabBarIconColor,
+                          size: tabBarIconSize,
+                        ),
+                      ),
                       if (_task!.checklist.isNotEmpty)
-                        TaskChecklistTab(checklist: _task!.checklist),
+                        Tab(
+                          icon: Icon(
+                            Icons.checklist,
+                            color: tabBarIconColor,
+                            size: tabBarIconSize,
+                          ),
+                        ),
                       if (_task!.images.isNotEmpty)
-                        ImagesTab(images: _task!.images),
+                        Tab(
+                          icon: Icon(
+                            Icons.image,
+                            color: tabBarIconColor,
+                            size: tabBarIconSize,
+                          ),
+                        ),
                       if (_task!.video.isNotEmpty)
-                        VideoTab(videoUrl: _task!.video),
+                        Tab(
+                          icon: Icon(
+                            FontAwesomeIcons.play,
+                            color: tabBarIconColor,
+                            size: tabBarIconSize,
+                          ),
+                        ),
                       if (_task!.instructions.isNotEmpty)
-                        TaskInstructionsTab(task: _task!),
+                        Tab(
+                          icon: Icon(
+                            Icons.menu_book,
+                            color: tabBarIconColor,
+                            size: tabBarIconSize,
+                          ),
+                        ),
                       if (_task!.sparePartsAssets.isNotEmpty ||
                           _task!.sparePartsItems.isNotEmpty)
-                        TaskSparePartTab(
-                          sparePartsAssets: _task!.sparePartsAssets,
-                          sparePartsItems: _task!.sparePartsItems,
+                        Tab(
+                          icon: Icon(
+                            Icons.settings_applications,
+                            color: tabBarIconColor,
+                            size: tabBarIconSize,
+                          ),
                         ),
                     ],
+                    indicatorColor: tabBarIconColor,
                   ),
                 ),
-        ),
-      ),
+                body: _task == null
+                    ? const LoadingWidget()
+                    : MultiBlocListener(
+                        listeners: [
+                          BlocListener<WorkRequestManagementBloc,
+                              WorkRequestManagementState>(
+                            listener: (context, state) =>
+                                workRequestManagementBlocListener(
+                                    context, state),
+                          ),
+                        ],
+                        child: TabBarView(
+                          children: [
+                            TaskTemplateInfoTab(task: _task!),
+                            if (_task!.checklist.isNotEmpty)
+                              TaskChecklistTab(checklist: _task!.checklist),
+                            if (_task!.images.isNotEmpty)
+                              ImagesTab(images: _task!.images),
+                            if (_task!.video.isNotEmpty)
+                              VideoTab(videoUrl: _task!.video),
+                            if (_task!.instructions.isNotEmpty)
+                              TaskInstructionsTab(task: _task!),
+                            if (_task!.sparePartsAssets.isNotEmpty ||
+                                _task!.sparePartsItems.isNotEmpty)
+                              TaskSparePartTab(
+                                sparePartsAssets: _task!.sparePartsAssets,
+                                sparePartsItems: _task!.sparePartsItems,
+                              ),
+                          ],
+                        ),
+                      ),
+              ),
+            ),
     );
   }
 }

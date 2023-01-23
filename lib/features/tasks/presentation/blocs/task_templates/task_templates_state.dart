@@ -34,6 +34,9 @@ class TaskTemplatesLoadedState extends TaskTemplatesState {
 
   Task? getTaskById(String taskId) {
     final index = allTasks.allTasks.indexWhere((task) => task.id == taskId);
-    return allTasks.allTasks[index];
+    if (index >= 0) {
+      return allTasks.allTasks[index];
+    }
+    return null;
   }
 }

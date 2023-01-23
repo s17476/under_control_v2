@@ -33,7 +33,7 @@ class StatusCard extends StatelessWidget {
             children: [
               Expanded(
                 child: IconTitleRow(
-                  icon: Icons.health_and_safety,
+                  icon: Icons.monitor_heart_outlined,
                   iconColor: Colors.white,
                   iconBackground: Theme.of(context).primaryColor,
                   title: AppLocalizations.of(context)!.status_in_locations,
