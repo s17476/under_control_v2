@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/dashboard/presentation/widgets/activity_card.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import 'assets_status.dart';
 import 'tasks_status.dart';
@@ -55,6 +56,10 @@ class StatusCard extends StatelessWidget {
                 height: 8,
               ),
               AssetsStatus(),
+              SizedBox(
+                height: 8,
+              ),
+              ActivityCard(),
             ],
           ),
         ),

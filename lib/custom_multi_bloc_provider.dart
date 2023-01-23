@@ -18,6 +18,8 @@ import 'features/company_profile/presentation/blocs/company_management/company_m
 import 'features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'features/company_profile/presentation/blocs/new_users/new_users_bloc.dart';
 import 'features/company_profile/presentation/blocs/suspended_users/suspended_users_bloc.dart';
+import 'features/dashboard/presentation/blocs/activity_bloc/activity_bloc_bloc.dart';
+import 'features/dashboard/presentation/blocs/task_actions_status/task_actions_status_bloc.dart';
 import 'features/dashboard/presentation/blocs/work_requests_status/work_requests_status_bloc.dart';
 import 'features/filter/presentation/blocs/filter/filter_bloc.dart';
 import 'features/groups/presentation/blocs/group/group_bloc.dart';
@@ -113,6 +115,8 @@ class CustomMultiBlocProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<WorkRequestsStatusBloc>()),
         BlocProvider(create: (context) => getIt<TaskTemplatesBloc>()),
         BlocProvider(create: (context) => getIt<TaskTemplatesManagementBloc>()),
+        BlocProvider(create: (context) => getIt<TaskActionsStatusBloc>()),
+        BlocProvider(create: (context) => getIt<ActivityBloc>()),
       ],
       child: child,
     );
