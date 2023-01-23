@@ -12,6 +12,7 @@ import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/tasks/data/models/task/task_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_priority.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/asset_action/asset_action_model.dart';
 
@@ -49,10 +50,10 @@ class AssetRepositoryImpl extends AssetRepository {
           .collection('assetsActions');
 
       // get action reference
-      final actionReference = await actionsReference.add({'name': ''});
+      final actionReference = actionsReference.doc(const Uuid().v1());
 
       // instruction reference
-      final assetReference = await assetsReference.add({'name': ''});
+      final assetReference = assetsReference.doc(const Uuid().v1());
 
       final assetAction = AssetActionModel(
         id: actionReference.id,
@@ -122,11 +123,11 @@ class AssetRepositoryImpl extends AssetRepository {
 
       // add inspection
       if (params.asset.currentStatus != AssetStatus.disposed) {
-        final taskReference = await firebaseFirestore
+        final taskReference = firebaseFirestore
             .collection('companies')
             .doc(params.companyId)
             .collection('tasks')
-            .add({'name': ''});
+            .doc(const Uuid().v1());
 
         // increment counter
         int counterValue = 0;
@@ -319,7 +320,7 @@ class AssetRepositoryImpl extends AssetRepository {
           .collection('assetsActions');
 
       // get action reference
-      final actionReference = await actionsReference.add({'name': ''});
+      final actionReference = actionsReference.doc(const Uuid().v1());
 
       final assetAction = AssetActionModel(
         id: actionReference.id,

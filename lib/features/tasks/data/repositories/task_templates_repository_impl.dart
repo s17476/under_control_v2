@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -39,7 +40,8 @@ class TaskTemplatesRepositoryImpl extends TaskTemplatesRepository {
           firebaseStorage.ref().child(params.companyId).child('tasksTemplates');
 
       // get task reference
-      final taskReference = await tasksReference.add({'name': ''});
+      // final taskReference = await tasksReference.add({'name': ''});
+      final taskReference = tasksReference.doc(const Uuid().v1());
 
       // save images
       if (params.images != null && params.images!.isNotEmpty) {

@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../assets/data/models/asset_action/asset_action_model.dart';
 import '../../../assets/data/models/asset_model.dart';
@@ -55,7 +56,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           .child('taskActions');
 
       // get task action reference
-      final taskActionReference = await taskActionsReference.add({'name': ''});
+      final taskActionReference = taskActionsReference.doc(const Uuid().v1());
 
       // save images
       if (params.images != null && params.images!.isNotEmpty) {
@@ -145,7 +146,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
 
         // get action reference
         final replacedAssetActionReference =
-            await assetActionsReference.add({'name': ''});
+            assetActionsReference.doc(const Uuid().v1());
 
         // add action
         batch.set(replacedAssetActionReference, replacedAssetActionMap);
@@ -186,7 +187,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
 
         // get action reference
         final replacementAssetActionReference =
-            await assetActionsReference.add({'name': ''});
+            assetActionsReference.doc(const Uuid().v1());
 
         // add action
         batch.set(replacementAssetActionReference, replacementAssetActionMap);
@@ -233,7 +234,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
 
         // get action reference
         final assetActionReference =
-            await assetActionsReference.add({'name': ''});
+            assetActionsReference.doc(const Uuid().v1());
 
         // add action
         batch.set(assetActionReference, assetActionMap);
@@ -282,7 +283,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final actionMap = assetAction.toMap();
 
           // get action reference
-          final actionReference = await assetActionsReference.add({'name': ''});
+          final actionReference = assetActionsReference.doc(const Uuid().v1());
 
           // add action
           batch.set(actionReference, actionMap);
@@ -334,7 +335,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final actionMap = assetAction.toMap();
 
           // get action reference
-          final actionReference = await actionsReference.add({'name': ''});
+          final actionReference = actionsReference.doc(const Uuid().v1());
 
           // add action
           batch.set(actionReference, actionMap);
@@ -400,7 +401,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final actionMap = itemAction.toMap();
 
           // get action reference
-          final actionReference = await actionsReference.add({'name': ''});
+          final actionReference = actionsReference.doc(const Uuid().v1());
 
           batch.set(actionReference, actionMap);
         }
@@ -497,7 +498,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final actionMap = assetAction.toMap();
 
           // get action reference
-          final actionReference = await actionsReference.add({'name': ''});
+          final actionReference = actionsReference.doc(const Uuid().v1());
 
           // add action
           batch.set(actionReference, actionMap);
@@ -563,7 +564,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final actionMap = itemAction.toMap();
 
           // get action reference
-          final actionReference = await actionsReference.add({'name': ''});
+          final actionReference = actionsReference.doc(const Uuid().v1());
 
           batch.set(actionReference, actionMap);
         }
@@ -743,7 +744,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
         final actionMap = assetAction.toMap();
 
         // get action reference
-        final actionReference = await actionsReference.add({'name': ''});
+        final actionReference = actionsReference.doc(const Uuid().v1());
 
         // add action
         batch.set(actionReference, actionMap);
@@ -793,7 +794,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final actionMap = assetAction.toMap();
 
           // get action reference
-          final actionReference = await actionsReference.add({'name': ''});
+          final actionReference = actionsReference.doc(const Uuid().v1());
 
           // add action
           batch.set(actionReference, actionMap);
@@ -866,7 +867,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
         final actionMap = assetAction.toMap();
 
         // get action reference
-        final actionReference = await actionsReference.add({'name': ''});
+        final actionReference = actionsReference.doc(const Uuid().v1());
 
         // add action
         batch.set(actionReference, actionMap);
@@ -917,7 +918,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final actionMap = assetAction.toMap();
 
           // get action reference
-          final actionReference = await actionsReference.add({'name': ''});
+          final actionReference = actionsReference.doc(const Uuid().v1());
 
           // add action
           batch.set(actionReference, actionMap);
@@ -1000,7 +1001,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
         final actionMap = itemAction.toMap();
 
         // get action reference
-        final actionReference = await actionsReference.add({'name': ''});
+        final actionReference = actionsReference.doc(const Uuid().v1());
 
         batch.set(actionReference, actionMap);
       }
@@ -1070,7 +1071,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final actionMap = itemAction.toMap();
 
           // get action reference
-          final actionReference = await actionsReference.add({'name': ''});
+          final actionReference = actionsReference.doc(const Uuid().v1());
 
           batch.set(actionReference, actionMap);
         }
@@ -1142,7 +1143,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
         final actionMap = itemAction.toMap();
 
         // get action reference
-        final actionReference = await actionsReference.add({'name': ''});
+        final actionReference = actionsReference.doc(const Uuid().v1());
 
         batch.set(actionReference, actionMap);
       }

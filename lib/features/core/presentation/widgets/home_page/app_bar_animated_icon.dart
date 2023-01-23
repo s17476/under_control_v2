@@ -30,6 +30,8 @@ import '../../../../tasks/presentation/blocs/task_action/task_action_bloc.dart';
 import '../../../../tasks/presentation/blocs/task_action_management/task_action_management_bloc.dart';
 import '../../../../tasks/presentation/blocs/task_archive/task_archive_bloc.dart';
 import '../../../../tasks/presentation/blocs/task_management/task_management_bloc.dart';
+import '../../../../tasks/presentation/blocs/task_templates/task_templates_bloc.dart';
+import '../../../../tasks/presentation/blocs/task_templates_management/task_templates_management_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request/work_request_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
@@ -367,6 +369,15 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
         BlocListener<TaskArchiveBloc, TaskArchiveState>(
           listener: (context, state) {
             if (state is TaskArchiveLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<TaskTemplatesManagementBloc, TaskTemplatesManagementState>(
+          listener: (context, state) {
+            if (state is TaskTemplatesLoadingState) {
               _startAnimation();
             } else {
               _stopAnimation();

@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/assets/data/models/asset_action/asset_action_model.dart';
 import 'package:under_control_v2/features/assets/data/models/asset_model.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -42,8 +43,7 @@ class WorkRequestsRepositoryImpl extends WorkRequestsRepository {
           firebaseStorage.ref().child(params.companyId).child('tasks');
 
       // get workRequest reference
-      final workRequestReference =
-          await workRequestsReference.add({'name': ''});
+      final workRequestReference = workRequestsReference.doc(const Uuid().v1());
 
       // save documents
       if (params.images != null && params.images!.isNotEmpty) {
@@ -139,7 +139,7 @@ class WorkRequestsRepositoryImpl extends WorkRequestsRepository {
         final actionMap = assetAction.toMap();
 
         // get action reference
-        final actionReference = await actionsReference.add({'name': ''});
+        final actionReference = actionsReference.doc(const Uuid().v1());
 
         // add action
         batch.set(actionReference, actionMap);
@@ -365,7 +365,7 @@ class WorkRequestsRepositoryImpl extends WorkRequestsRepository {
         final actionMap = assetAction.toMap();
 
         // get action reference
-        final actionReference = await actionsReference.add({'name': ''});
+        final actionReference = actionsReference.doc(const Uuid().v1());
 
         // add action
         batch.set(actionReference, actionMap);
@@ -460,7 +460,7 @@ class WorkRequestsRepositoryImpl extends WorkRequestsRepository {
         final actionMap = assetAction.toMap();
 
         // get action reference
-        final actionReference = await actionsReference.add({'name': ''});
+        final actionReference = actionsReference.doc(const Uuid().v1());
 
         // add action
         batch.set(actionReference, actionMap);

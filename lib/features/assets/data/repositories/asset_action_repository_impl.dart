@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -37,13 +38,13 @@ class AssetActionRepositoryImpl extends AssetActionRepository {
       final actionMap = (params.assetAction as AssetActionModel).toMap();
 
       // get action reference
-      final actionReference = await actionsReference.add({'name': ''});
+      final actionReference = actionsReference.doc(const Uuid().v1());
 
       // batch
       final batch = firebaseFirestore.batch();
 
       // add action
-      batch.set(actionsReference.doc(actionReference.id), actionMap);
+      batch.set(actionReference, actionMap);
       // update item
       batch.update(assetReference, assetMap);
 

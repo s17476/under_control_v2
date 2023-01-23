@@ -66,6 +66,7 @@ dependencies:
   flutter_chat_types: ^3.6.0
   flutter_hooks: ^0.18.5+1
   fl_chart: ^0.55.2
+  uuid: ^3.0.7
   
 dev_dependencies:
   flutter_test:

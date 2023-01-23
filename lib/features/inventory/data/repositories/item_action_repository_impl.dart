@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -36,7 +37,7 @@ class ItemActionRepositoryImpl extends ItemActionRepository {
       final actionMap = (params.itemAction as ItemActionModel).toMap();
 
       // get action reference
-      final actionReference = await actionsReference.add({'name': ''});
+      final actionReference = actionsReference.doc(const Uuid().v1());
 
       // batch
       final batch = firebaseFirestore.batch();
@@ -195,17 +196,15 @@ class ItemActionRepositoryImpl extends ItemActionRepository {
           (params.moveToItemAction as ItemActionModel).toMap();
 
       // get action reference
-      final moveFromActionReference = await actionsReference.add({'name': ''});
-      final moveToActionReference = await actionsReference.add({'name': ''});
+      final moveFromActionReference = actionsReference.doc(const Uuid().v1());
+      final moveToActionReference = actionsReference.doc(const Uuid().v1());
 
       // batch
       final batch = firebaseFirestore.batch();
 
       // add actions
-      batch.set(
-          actionsReference.doc(moveFromActionReference.id), moveFromActionMap);
-      batch.set(
-          actionsReference.doc(moveToActionReference.id), moveToActionMap);
+      batch.set(moveFromActionReference, moveFromActionMap);
+      batch.set(moveToActionReference, moveToActionMap);
       // update item
       batch.update(itemReference, itemMap);
 

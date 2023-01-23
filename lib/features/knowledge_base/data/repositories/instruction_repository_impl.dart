@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -39,8 +40,7 @@ class InstructionRepositoryImpl extends InstructionRepository {
           .collection('instructions');
 
       // instruction reference
-      final instructionReference =
-          await instructionsReference.add({'name': ''});
+      final instructionReference = instructionsReference.doc(const Uuid().v1());
       // storage reference
       final storageReference =
           firebaseStorage.ref().child(params.companyId).child('instructions');

@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/assets/utils/get_next_date.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../assets/data/models/asset_action/asset_action_model.dart';
 import '../../../assets/data/models/asset_model.dart';
@@ -44,7 +45,7 @@ class TaskRepositoryImpl extends TaskRepository {
           firebaseStorage.ref().child(params.companyId).child('tasks');
 
       // get task reference
-      final taskReference = await tasksReference.add({'name': ''});
+      final taskReference = tasksReference.doc(const Uuid().v1());
 
       // save images
       if (params.images != null && params.images!.isNotEmpty) {
@@ -138,7 +139,7 @@ class TaskRepositoryImpl extends TaskRepository {
         final actionMap = assetAction.toMap();
 
         // get action reference
-        final actionReference = await actionsReference.add({'name': ''});
+        final actionReference = actionsReference.doc(const Uuid().v1());
 
         // add action
         batch.set(actionReference, actionMap);
@@ -406,7 +407,7 @@ class TaskRepositoryImpl extends TaskRepository {
         final actionMap = assetAction.toMap();
 
         // get action reference
-        final actionReference = await actionsReference.add({'name': ''});
+        final actionReference = actionsReference.doc(const Uuid().v1());
 
         // add action
         batch.set(actionReference, actionMap);
@@ -499,7 +500,7 @@ class TaskRepositoryImpl extends TaskRepository {
         final actionMap = assetAction.toMap();
 
         // get action reference
-        final actionReference = await actionsReference.add({'name': ''});
+        final actionReference = actionsReference.doc(const Uuid().v1());
 
         // add action
         batch.set(actionReference, actionMap);
@@ -615,11 +616,11 @@ class TaskRepositoryImpl extends TaskRepository {
         );
         final nextTaskMap = nextTask.toMap();
 
-        final nextTaskReference = await firebaseFirestore
+        final nextTaskReference = firebaseFirestore
             .collection('companies')
             .doc(params.companyId)
             .collection('tasks')
-            .add({'name': ''});
+            .doc(const Uuid().v1());
 
         batch.set(nextTaskReference, nextTaskMap);
       }

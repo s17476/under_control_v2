@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -38,7 +39,7 @@ class ItemRepositoryImpl extends ItemRepository {
           firebaseStorage.ref().child(params.companyId).child('items');
 
       // get action reference
-      final itemReference = await itemsReference.add({'name': ''});
+      final itemReference = itemsReference.doc(const Uuid().v1());
 
       // save documents
       if (params.documents != null && params.documents!.isNotEmpty) {
