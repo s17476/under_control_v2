@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
 
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
@@ -225,11 +226,12 @@ class _AddWorkRequestSetAssetState extends State<AddWorkRequestSetAssetCard>
                                     );
                                   }
 
-                                  final filteredAssets = searchAssets(
+                                  List<Asset> filteredAssets = searchAssets(
                                     context,
                                     state.allAssets.allAssets,
                                     _searchQuery,
                                   );
+
                                   return ListView.builder(
                                     padding: const EdgeInsets.only(
                                       top: 2,
