@@ -176,7 +176,10 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
               ),
             );
       }
-
+      // reset reserved items
+      context
+          .read<ReservedSparePartsBloc>()
+          .add(ReservedSparePartsResetEvent());
       Navigator.pop(context);
     }
   }
