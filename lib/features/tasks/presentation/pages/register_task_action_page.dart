@@ -143,6 +143,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
       final taskAction = TaskActionModel(
         id: '',
         taskId: _task!.id,
+        locationId: _task!.locationId,
         replacedAssetStatus: _replacedAsset?.currentStatus ??
             _assetStatus ??
             AssetStatus.unknown,

@@ -10,6 +10,7 @@ import '../../../data/models/task_action/user_action_model.dart';
 class TaskAction extends Equatable {
   final String id;
   final String taskId;
+  final String locationId;
   final String comment;
   final AssetStatus replacedAssetStatus;
   final String replacedAssetLocationId;
@@ -26,6 +27,7 @@ class TaskAction extends Equatable {
   const TaskAction({
     required this.id,
     required this.taskId,
+    required this.locationId,
     required this.comment,
     required this.replacedAssetStatus,
     required this.replacedAssetLocationId,
@@ -45,6 +47,7 @@ class TaskAction extends Equatable {
     return [
       id,
       taskId,
+      locationId,
       comment,
       replacedAssetStatus,
       replacedAssetLocationId,
@@ -62,6 +65,6 @@ class TaskAction extends Equatable {
 
   @override
   String toString() {
-    return 'TaskAction(id: $id, taskId: $taskId, comment: $comment, replacedAssetStatus: $replacedAssetStatus, replacedAssetLocationId: $replacedAssetLocationId, replacementAssetId: $replacementAssetId, startTime: $startTime, stopTime: $stopTime, images: $images, removedPartsAssets: $removedPartsAssets, addedPartsAssets: $addedPartsAssets, sparePartsItems: $sparePartsItems, usersActions: $usersActions, checklist: $checklist)';
+    return 'TaskAction(id: $id, taskId: $taskId, locationId: $locationId, comment: $comment, replacedAssetStatus: $replacedAssetStatus, replacedAssetLocationId: $replacedAssetLocationId, replacementAssetId: $replacementAssetId, startTime: $startTime, stopTime: $stopTime, images: $images, removedPartsAssets: $removedPartsAssets, addedPartsAssets: $addedPartsAssets, sparePartsItems: $sparePartsItems, usersActions: $usersActions, checklist: $checklist)';
   }
 }

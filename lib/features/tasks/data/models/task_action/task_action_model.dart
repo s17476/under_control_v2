@@ -12,6 +12,7 @@ class TaskActionModel extends TaskAction {
   const TaskActionModel({
     required super.id,
     required super.taskId,
+    required super.locationId,
     required super.replacedAssetStatus,
     required super.replacedAssetLocationId,
     required super.replacementAssetId,
@@ -29,6 +30,7 @@ class TaskActionModel extends TaskAction {
   TaskActionModel copyWith({
     String? id,
     String? taskId,
+    String? locationId,
     AssetStatus? replacedAssetStatus,
     String? replacedAssetLocationId,
     String? replacementAssetId,
@@ -45,6 +47,7 @@ class TaskActionModel extends TaskAction {
     return TaskActionModel(
       id: id ?? this.id,
       taskId: taskId ?? this.taskId,
+      locationId: locationId ?? this.locationId,
       replacedAssetStatus: replacedAssetStatus ?? this.replacedAssetStatus,
       replacedAssetLocationId:
           replacedAssetLocationId ?? this.replacedAssetLocationId,
@@ -65,6 +68,7 @@ class TaskActionModel extends TaskAction {
     final result = <String, dynamic>{};
 
     result.addAll({'taskId': taskId});
+    result.addAll({'locationId': locationId});
     result.addAll({'replacedAssetStatus': replacedAssetStatus.name});
     result.addAll({'replacedAssetLocationId': replacedAssetLocationId});
     result.addAll({'replacementAssetId': replacementAssetId});
@@ -103,6 +107,7 @@ class TaskActionModel extends TaskAction {
     return TaskActionModel(
       id: id,
       taskId: map['taskId'] ?? '',
+      locationId: map['locationId'] ?? '',
       replacedAssetStatus:
           AssetStatus.fromString(map['replacedAssetStatus'] ?? ''),
       replacedAssetLocationId: map['replacedAssetLocationId'] ?? '',
@@ -150,6 +155,7 @@ class TaskActionModel extends TaskAction {
       removedPartsAssets: taskAction.removedPartsAssets,
       sparePartsItems: taskAction.sparePartsItems,
       taskId: taskAction.taskId,
+      locationId: taskAction.locationId,
       replacementAssetId: taskAction.replacementAssetId,
       replacedAssetLocationId: taskAction.replacedAssetLocationId,
       replacedAssetStatus: taskAction.replacedAssetStatus,

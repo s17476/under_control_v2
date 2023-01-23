@@ -138,6 +138,7 @@ final tUserActionModelFromMap = {
 final tTaskActionModel = TaskActionModel(
   id: 'id',
   taskId: 'taskId',
+  locationId: 'locationId',
   comment: 'comment',
   startTime: tDate,
   stopTime: tDate,
@@ -154,6 +155,7 @@ final tTaskActionModel = TaskActionModel(
 
 final tTaskActionModelToMap = {
   'taskId': 'taskId',
+  'locationId': 'locationId',
   'comment': 'comment',
   'startTime': tDate,
   'stopTime': tDate,
@@ -170,6 +172,7 @@ final tTaskActionModelToMap = {
 
 final tTaskActionModelFromMap = {
   'taskId': 'taskId',
+  'locationId': 'locationId',
   'comment': 'comment',
   'startTime': Timestamp.fromDate(tDate),
   'stopTime': Timestamp.fromDate(tDate),
