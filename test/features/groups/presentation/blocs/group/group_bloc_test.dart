@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company.dart';
 import 'package:under_control_v2/features/company_profile/domain/entities/company_users_list.dart';
 import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -33,7 +34,11 @@ class MockCacheGroups extends Mock implements CacheGroups {}
 
 class MockTryToGetCachedGroups extends Mock implements TryToGetCachedGroups {}
 
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
 void main() {
+  late MockAuthenticationBloc mockAuthenticationBloc;
   late MockCompanyProfileBloc mockCompanyProfileBloc;
   late MockAddGroup mockAddGroup;
   late MockUpdateGroup mockUpdateGroup;
@@ -64,7 +69,15 @@ void main() {
       ),
     );
 
+    mockAuthenticationBloc = MockAuthenticationBloc();
+    when(() => mockAuthenticationBloc.stream).thenAnswer(
+      (_) => Stream.fromFuture(
+        Future.value(EmptyAuthenticationState()),
+      ),
+    );
+
     groupBloc = GroupBloc(
+      authenticationBloc: mockAuthenticationBloc,
       companyProfileBloc: mockCompanyProfileBloc,
       addGroup: mockAddGroup,
       updateGroup: mockUpdateGroup,

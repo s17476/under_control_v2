@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_model.dart';
@@ -16,7 +17,11 @@ class MockGetItemsActionsStream extends Mock implements GetItemsActionsStream {}
 class MockGetLastFiveItemsActionsStream extends Mock
     implements GetLastFiveItemsActionsStream {}
 
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
 void main() {
+  late MockAuthenticationBloc mockAuthenticationBloc;
   late MockGetItemsActionsStream mockGetItemActionsStream;
   late MockGetLastFiveItemsActionsStream mockGetLastFiveItemActionsStream;
   late ItemActionBloc itemActionBloc;
@@ -51,8 +56,15 @@ void main() {
     () {
       mockGetItemActionsStream = MockGetItemsActionsStream();
       mockGetLastFiveItemActionsStream = MockGetLastFiveItemsActionsStream();
+      mockAuthenticationBloc = MockAuthenticationBloc();
+      when(() => mockAuthenticationBloc.stream).thenAnswer(
+        (_) => Stream.fromFuture(
+          Future.value(EmptyAuthenticationState()),
+        ),
+      );
 
       itemActionBloc = ItemActionBloc(
+        authenticationBloc: mockAuthenticationBloc,
         getItemsActionsStream: mockGetItemActionsStream,
         getLastFiveItemsActionsStream: mockGetLastFiveItemActionsStream,
       );

@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/tasks/data/models/work_request/work_request_model.dart';
@@ -13,9 +12,11 @@ import 'package:under_control_v2/features/tasks/domain/usecases/work_order/cance
 import 'package:under_control_v2/features/tasks/domain/usecases/work_order/delete_work_request.dart';
 import 'package:under_control_v2/features/tasks/domain/usecases/work_order/update_work_request.dart';
 import 'package:under_control_v2/features/tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
+import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
-class MockCompanyProfileBloc extends Mock
-    implements Stream<CompanyProfileState>, CompanyProfileBloc {}
+class MockUserProfileBloc extends Mock
+    implements Stream<UserProfileState>, UserProfileBloc {}
 
 class MockAddWorkRequest extends Mock implements AddWorkRequest {}
 
@@ -26,7 +27,7 @@ class MockCancelWorkRequest extends Mock implements CancelWorkRequest {}
 class MockUpdateWorkRequest extends Mock implements UpdateWorkRequest {}
 
 void main() {
-  late MockCompanyProfileBloc mockCompanyProfileBloc;
+  late MockUserProfileBloc mockUserProfileBloc;
 
   late MockAddWorkRequest mockAddWorkRequest;
   late MockDeleteWorkRequest mockDeleteWorkRequest;
@@ -60,21 +61,41 @@ void main() {
   );
 
   setUp(() {
-    mockCompanyProfileBloc = MockCompanyProfileBloc();
-
     mockAddWorkRequest = MockAddWorkRequest();
     mockDeleteWorkRequest = MockDeleteWorkRequest();
     mockCancelWorkRequest = MockCancelWorkRequest();
     mockUpdateWorkRequest = MockUpdateWorkRequest();
 
-    when(() => mockCompanyProfileBloc.stream).thenAnswer(
+    mockUserProfileBloc = MockUserProfileBloc();
+    when(() => mockUserProfileBloc.stream).thenAnswer(
       (_) => Stream.fromFuture(
-        Future.value(CompanyProfileEmpty()),
+        Future.value(UserProfileEmpty()),
+      ),
+    );
+    when(() => mockUserProfileBloc.state).thenReturn(
+      Approved(
+        userProfile: UserProfile(
+          id: '',
+          administrator: false,
+          approved: true,
+          avatarUrl: '',
+          companyId: '',
+          email: '',
+          firstName: '',
+          isActive: true,
+          joinDate: DateTime.now(),
+          lastName: '',
+          phoneNumber: '',
+          locations: const [],
+          rejected: false,
+          suspended: false,
+          userGroups: const [],
+        ),
       ),
     );
 
     workRequestManagementBloc = WorkRequestManagementBloc(
-      companyProfileBloc: mockCompanyProfileBloc,
+      userProfileBloc: mockUserProfileBloc,
       addWorkRequest: mockAddWorkRequest,
       deleteWorkRequest: mockDeleteWorkRequest,
       updateWorkRequest: mockUpdateWorkRequest,

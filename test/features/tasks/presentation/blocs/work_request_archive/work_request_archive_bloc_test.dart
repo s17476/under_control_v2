@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/work_request/work_requests_stream.dart';
@@ -13,7 +14,11 @@ class MockFilterBloc extends Mock implements Stream<FilterState>, FilterBloc {}
 class MockGetArchiveWorkRequestsStream extends Mock
     implements GetArchiveWorkRequestsStream {}
 
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
 void main() {
+  late MockAuthenticationBloc mockAuthenticationBloc;
   late MockFilterBloc mockFilterBloc;
 
   late MockGetArchiveWorkRequestsStream mockGetArchiveWorkRequestsStream;
@@ -33,9 +38,16 @@ void main() {
     when(() => mockFilterBloc.state).thenAnswer(
       (_) => FilterEmptyState(),
     );
+    mockAuthenticationBloc = MockAuthenticationBloc();
+    when(() => mockAuthenticationBloc.stream).thenAnswer(
+      (_) => Stream.fromFuture(
+        Future.value(EmptyAuthenticationState()),
+      ),
+    );
 
     mockGetArchiveWorkRequestsStream = MockGetArchiveWorkRequestsStream();
     workRequestArchiveBloc = WorkRequestArchiveBloc(
+      authenticationBloc: mockAuthenticationBloc,
       filterBloc: mockFilterBloc,
       getArchiveWorkRequestsStream: mockGetArchiveWorkRequestsStream,
     );

@@ -15,9 +15,11 @@ import 'package:under_control_v2/features/inventory/domain/usecases/item_action/
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/move_item_action.dart';
 import 'package:under_control_v2/features/inventory/domain/usecases/item_action/update_item_action.dart';
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart';
+import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
-class MockCompanyProfileBloc extends Mock
-    implements Stream<CompanyProfileState>, CompanyProfileBloc {}
+class MockUserProfileBloc extends Mock
+    implements Stream<UserProfileState>, UserProfileBloc {}
 
 class MockAddItemAction extends Mock implements AddItemAction {}
 
@@ -28,7 +30,7 @@ class MockDeleteItemAction extends Mock implements DeleteItemAction {}
 class MockMoveItemAction extends Mock implements MoveItemAction {}
 
 void main() {
-  late MockCompanyProfileBloc mockCompanyProfileBloc;
+  late MockUserProfileBloc mockUserProfileBloc;
 
   late MockAddItemAction mockAddItemAction;
   late MockUpdateItemAction mockUpdateItemAction;
@@ -89,21 +91,41 @@ void main() {
   );
 
   setUp(() {
-    mockCompanyProfileBloc = MockCompanyProfileBloc();
+    mockUserProfileBloc = MockUserProfileBloc();
+    when(() => mockUserProfileBloc.stream).thenAnswer(
+      (_) => Stream.fromFuture(
+        Future.value(UserProfileEmpty()),
+      ),
+    );
+    when(() => mockUserProfileBloc.state).thenReturn(
+      Approved(
+        userProfile: UserProfile(
+          id: '',
+          administrator: false,
+          approved: true,
+          avatarUrl: '',
+          companyId: '',
+          email: '',
+          firstName: '',
+          isActive: true,
+          joinDate: DateTime.now(),
+          lastName: '',
+          phoneNumber: '',
+          locations: const [],
+          rejected: false,
+          suspended: false,
+          userGroups: const [],
+        ),
+      ),
+    );
 
     mockAddItemAction = MockAddItemAction();
     mockUpdateItemAction = MockUpdateItemAction();
     mockDeleteItemAction = MockDeleteItemAction();
     mockMoveItemAction = MockMoveItemAction();
 
-    when(() => mockCompanyProfileBloc.stream).thenAnswer(
-      (_) => Stream.fromFuture(
-        Future.value(CompanyProfileEmpty()),
-      ),
-    );
-
     itemActionManagementBloc = ItemActionManagementBloc(
-      companyProfileBloc: mockCompanyProfileBloc,
+      userProfileBloc: mockUserProfileBloc,
       addItemAction: mockAddItemAction,
       updateItemAction: mockUpdateItemAction,
       deleteItemAction: mockDeleteItemAction,

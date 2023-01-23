@@ -13,9 +13,11 @@ import 'package:under_control_v2/features/company_profile/presentation/blocs/com
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/core/utils/duration_unit.dart';
+import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
-class MockCompanyProfileBloc extends Mock
-    implements Stream<CompanyProfileState>, CompanyProfileBloc {}
+class MockUserProfileBloc extends Mock
+    implements Stream<UserProfileState>, UserProfileBloc {}
 
 class MockAddAssetAction extends Mock implements AddAssetAction {}
 
@@ -24,7 +26,7 @@ class MockUpdateAssetAction extends Mock implements UpdateAssetAction {}
 class MockDeleteAssetAction extends Mock implements DeleteAssetAction {}
 
 void main() {
-  late MockCompanyProfileBloc mockCompanyProfileBloc;
+  late MockUserProfileBloc mockUserProfileBloc;
 
   late MockAddAssetAction mockAddAssetAction;
   late MockDeleteAssetAction mockDeleteAssetAction;
@@ -78,10 +80,31 @@ void main() {
   );
 
   setUp(() {
-    mockCompanyProfileBloc = MockCompanyProfileBloc();
-    when(() => mockCompanyProfileBloc.stream).thenAnswer(
+    mockUserProfileBloc = MockUserProfileBloc();
+    when(() => mockUserProfileBloc.stream).thenAnswer(
       (_) => Stream.fromFuture(
-        Future.value(CompanyProfileEmpty()),
+        Future.value(UserProfileEmpty()),
+      ),
+    );
+    when(() => mockUserProfileBloc.state).thenReturn(
+      Approved(
+        userProfile: UserProfile(
+          id: '',
+          administrator: false,
+          approved: true,
+          avatarUrl: '',
+          companyId: '',
+          email: '',
+          firstName: '',
+          isActive: true,
+          joinDate: DateTime.now(),
+          lastName: '',
+          phoneNumber: '',
+          locations: const [],
+          rejected: false,
+          suspended: false,
+          userGroups: const [],
+        ),
       ),
     );
 
@@ -90,7 +113,7 @@ void main() {
     mockUpdateAssetAction = MockUpdateAssetAction();
 
     assetActionManagementBloc = AssetActionManagementBloc(
-      companyProfileBloc: mockCompanyProfileBloc,
+      userProfileBloc: mockUserProfileBloc,
       addAssetAction: mockAddAssetAction,
       updateAssetAction: mockUpdateAssetAction,
       deleteAssetAction: mockDeleteAssetAction,

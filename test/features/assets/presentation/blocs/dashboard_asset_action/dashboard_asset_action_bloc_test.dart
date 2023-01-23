@@ -6,6 +6,7 @@ import 'package:under_control_v2/features/assets/domain/entities/asset_action/as
 import 'package:under_control_v2/features/assets/domain/usecases/asset_action/get_dashboard_asset_actions_stream.dart';
 import 'package:under_control_v2/features/assets/domain/usecases/asset_action/get_dashboard_last_five_asset_actions_stream.dart';
 import 'package:under_control_v2/features/assets/presentation/blocs/dashboard_asset_action/dashboard_asset_action_bloc.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
 
@@ -17,7 +18,11 @@ class MockGetDashboardAssetActionsStream extends Mock
 class MockGetDashboardLastFiveAssetActionsStream extends Mock
     implements GetDashboardLastFiveAssetActionsStream {}
 
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
 void main() {
+  late MockAuthenticationBloc mockAuthenticationBloc;
   late MockFilterBloc mockFilterBloc;
 
   late MockGetDashboardAssetActionsStream mockGetDashboardAssetActionsStream;
@@ -39,12 +44,19 @@ void main() {
     when(() => mockFilterBloc.state).thenAnswer(
       (_) => FilterEmptyState(),
     );
+    mockAuthenticationBloc = MockAuthenticationBloc();
+    when(() => mockAuthenticationBloc.stream).thenAnswer(
+      (_) => Stream.fromFuture(
+        Future.value(EmptyAuthenticationState()),
+      ),
+    );
 
     mockGetDashboardAssetActionsStream = MockGetDashboardAssetActionsStream();
     mockGetDashboardLastFiveAssetActionsStream =
         MockGetDashboardLastFiveAssetActionsStream();
 
     dashboardAssetActionBloc = DashboardAssetActionBloc(
+      authenticationBloc: mockAuthenticationBloc,
       filterBloc: mockFilterBloc,
       getDashboardAssetActionsStream: mockGetDashboardAssetActionsStream,
       getDashboardLastFiveAssetActionsStream:

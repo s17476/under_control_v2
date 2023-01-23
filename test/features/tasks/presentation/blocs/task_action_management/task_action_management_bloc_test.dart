@@ -63,6 +63,27 @@ void main() {
         ),
       ),
     );
+    when(() => mockUserProfileBloc.state).thenReturn(
+      Approved(
+        userProfile: UserProfile(
+          id: '',
+          administrator: false,
+          approved: true,
+          avatarUrl: '',
+          companyId: '',
+          email: '',
+          firstName: '',
+          isActive: true,
+          joinDate: DateTime.now(),
+          lastName: '',
+          phoneNumber: '',
+          locations: const [],
+          rejected: false,
+          suspended: false,
+          userGroups: const [],
+        ),
+      ),
+    );
 
     taskActionManagementBloc = TaskActionManagementBloc(
       userProfileBloc: mockUserProfileBloc,

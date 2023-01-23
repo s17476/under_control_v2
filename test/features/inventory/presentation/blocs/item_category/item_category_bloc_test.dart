@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/inventory/data/models/item_category/item_category_model.dart';
@@ -16,7 +17,11 @@ class MockUserProfileBloc extends Mock
 class MockGetItemsCategoriesStream extends Mock
     implements GetItemsCategoriesStream {}
 
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
 void main() {
+  late MockAuthenticationBloc mockAuthenticationBloc;
   late MockUserProfileBloc mockUserProfileBloc;
   late MockGetItemsCategoriesStream mockGetItemsCategoriesStream;
   late ItemCategoryBloc itemCategoryBloc;
@@ -40,8 +45,15 @@ void main() {
           Future.value(UserProfileEmpty()),
         ),
       );
+      mockAuthenticationBloc = MockAuthenticationBloc();
+      when(() => mockAuthenticationBloc.stream).thenAnswer(
+        (_) => Stream.fromFuture(
+          Future.value(EmptyAuthenticationState()),
+        ),
+      );
 
       itemCategoryBloc = ItemCategoryBloc(
+        authenticationBloc: mockAuthenticationBloc,
         userProfileBloc: mockUserProfileBloc,
         getItemsCategoriesStream: mockGetItemsCategoriesStream,
       );

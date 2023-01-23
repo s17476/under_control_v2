@@ -2,21 +2,26 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/checklists/data/models/checklist_model.dart';
 import 'package:under_control_v2/features/checklists/data/models/checklists_stream_model.dart';
 import 'package:under_control_v2/features/checklists/domain/usecases/get_checklists_stream.dart';
 import 'package:under_control_v2/features/checklists/presentation/blocs/Checklist/checklist_bloc.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
-class MockCompanyProfileBloc extends Mock
-    implements Stream<CompanyProfileState>, CompanyProfileBloc {}
+class MockUserProfileBloc extends Mock
+    implements Stream<UserProfileState>, UserProfileBloc {}
+
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
 
 class MockGetChecklistsStream extends Mock implements GetChecklistStream {}
 
 void main() {
-  late MockCompanyProfileBloc mockCompanyProfileBloc;
+  late MockAuthenticationBloc mockAuthenticationBloc;
+  late MockUserProfileBloc mockUserProfileBloc;
   late MockGetChecklistsStream mockGetChecklistsStream;
   late ChecklistBloc checklistBloc;
 
@@ -36,16 +41,25 @@ void main() {
 
   setUp(
     () {
-      mockCompanyProfileBloc = MockCompanyProfileBloc();
       mockGetChecklistsStream = MockGetChecklistsStream();
-      when(() => mockCompanyProfileBloc.stream).thenAnswer(
+
+      mockUserProfileBloc = MockUserProfileBloc();
+      when(() => mockUserProfileBloc.stream).thenAnswer(
         (_) => Stream.fromFuture(
-          Future.value(CompanyProfileEmpty()),
+          Future.value(UserProfileEmpty()),
+        ),
+      );
+
+      mockAuthenticationBloc = MockAuthenticationBloc();
+      when(() => mockAuthenticationBloc.stream).thenAnswer(
+        (_) => Stream.fromFuture(
+          Future.value(EmptyAuthenticationState()),
         ),
       );
 
       checklistBloc = ChecklistBloc(
-        companyProfileBloc: mockCompanyProfileBloc,
+        authenticationBloc: mockAuthenticationBloc,
+        userProfileBloc: mockUserProfileBloc,
         getChecklistsStream: mockGetChecklistsStream,
       );
     },

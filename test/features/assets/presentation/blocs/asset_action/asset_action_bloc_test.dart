@@ -8,6 +8,7 @@ import 'package:under_control_v2/features/assets/domain/usecases/asset_action/ge
 import 'package:under_control_v2/features/assets/domain/usecases/asset_action/get_last_five_asset_actions_stream.dart';
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_action/asset_action_bloc.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/core/utils/duration_unit.dart';
@@ -17,7 +18,11 @@ class MockGetAssetActionsStream extends Mock implements GetAssetActionsStream {}
 class MockGetLastFiveAssetActionsStream extends Mock
     implements GetLastFiveAssetActionsStream {}
 
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
 void main() {
+  late MockAuthenticationBloc mockAuthenticationBloc;
   late MockGetAssetActionsStream mockGetAssetActionsStream;
   late MockGetLastFiveAssetActionsStream mockGetLastFiveAssetActionsStream;
   late AssetActionBloc assetActionBloc;
@@ -57,7 +62,15 @@ void main() {
     mockGetAssetActionsStream = MockGetAssetActionsStream();
     mockGetLastFiveAssetActionsStream = MockGetLastFiveAssetActionsStream();
 
+    mockAuthenticationBloc = MockAuthenticationBloc();
+    when(() => mockAuthenticationBloc.stream).thenAnswer(
+      (_) => Stream.fromFuture(
+        Future.value(EmptyAuthenticationState()),
+      ),
+    );
+
     assetActionBloc = AssetActionBloc(
+      authenticationBloc: mockAuthenticationBloc,
       getAssetActionsStream: mockGetAssetActionsStream,
       getLastFiveAssetActionsStream: mockGetLastFiveAssetActionsStream,
     );

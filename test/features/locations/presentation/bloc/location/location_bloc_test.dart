@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/locations/data/models/location_model.dart';
@@ -15,9 +15,13 @@ import 'package:under_control_v2/features/locations/domain/usecases/fetch_all_lo
 import 'package:under_control_v2/features/locations/domain/usecases/try_to_get_cached_location.dart';
 import 'package:under_control_v2/features/locations/domain/usecases/update_location.dart';
 import 'package:under_control_v2/features/locations/presentation/blocs/bloc/location_bloc.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
-class MockCompanyProfileBloc extends Mock
-    implements Stream<CompanyProfileState>, CompanyProfileBloc {}
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
+class MockUserProfileBloc extends Mock
+    implements Stream<UserProfileState>, UserProfileBloc {}
 
 class MockFetchAllLocations extends Mock implements FetchAllLocations {}
 
@@ -33,7 +37,8 @@ class MockTryToGetCachedLocation extends Mock
     implements TryToGetCachedLocation {}
 
 void main() {
-  late MockCompanyProfileBloc mockCompanyProfileBloc;
+  late MockAuthenticationBloc mockAuthenticationBloc;
+  late MockUserProfileBloc mockUserProfileBloc;
   late MockFetchAllLocations mockFetchAllLocations;
   late MockAddLocation mockAddLocation;
   late MockDeleteLocation mockDeleteLocation;
@@ -44,7 +49,18 @@ void main() {
 
   setUp(
     () {
-      mockCompanyProfileBloc = MockCompanyProfileBloc();
+      mockAuthenticationBloc = MockAuthenticationBloc();
+      when(() => mockAuthenticationBloc.stream).thenAnswer(
+        (_) => Stream.fromFuture(
+          Future.value(EmptyAuthenticationState()),
+        ),
+      );
+      mockUserProfileBloc = MockUserProfileBloc();
+      when(() => mockUserProfileBloc.stream).thenAnswer(
+        (_) => Stream.fromFuture(
+          Future.value(UserProfileEmpty()),
+        ),
+      );
       mockFetchAllLocations = MockFetchAllLocations();
       mockAddLocation = MockAddLocation();
       mockDeleteLocation = MockDeleteLocation();
@@ -52,25 +68,9 @@ void main() {
       mockCacheLocation = MockCacheLocation();
       mockTryToGetCachedLocation = MockTryToGetCachedLocation();
 
-      // when(() => mockCompanyProfileBloc.stream).thenAnswer(
-      //   (_) => Stream.fromFuture(
-      //     Future.value(
-      //       CompanyProfileLoaded(
-      //         company: CompanyModel.initial(),
-      //         companyUsers: const CompanyUsersListModel(allUsers: []),
-      //       ),
-      //     ),
-      //   ),
-      // );
-
-      when(() => mockCompanyProfileBloc.stream).thenAnswer(
-        (_) => Stream.fromFuture(
-          Future.value(CompanyProfileEmpty()),
-        ),
-      );
-
       locationBloc = LocationBloc(
-        companyProfileBloc: mockCompanyProfileBloc,
+        userProfileBloc: mockUserProfileBloc,
+        authenticationBloc: mockAuthenticationBloc,
         addLocation: mockAddLocation,
         cacheLocation: mockCacheLocation,
         deleteLocation: mockDeleteLocation,

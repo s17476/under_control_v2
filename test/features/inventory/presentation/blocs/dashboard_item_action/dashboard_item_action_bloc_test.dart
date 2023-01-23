@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
 import 'package:under_control_v2/features/inventory/domain/entities/item_action/item_actions_stream.dart';
@@ -17,8 +18,12 @@ class MockGetDashboardItemsActionsStream extends Mock
 class MockGetDashboardLastFiveItemsActionsStream extends Mock
     implements GetDashboardLastFiveItemsActionsStream {}
 
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
 void main() {
   late MockFilterBloc mockFilterBloc;
+  late MockAuthenticationBloc mockAuthenticationBloc;
 
   late MockGetDashboardItemsActionsStream mockGetDashboardItemsActionsStream;
   late MockGetDashboardLastFiveItemsActionsStream
@@ -39,12 +44,19 @@ void main() {
     when(() => mockFilterBloc.state).thenAnswer(
       (_) => FilterEmptyState(),
     );
+    mockAuthenticationBloc = MockAuthenticationBloc();
+    when(() => mockAuthenticationBloc.stream).thenAnswer(
+      (_) => Stream.fromFuture(
+        Future.value(EmptyAuthenticationState()),
+      ),
+    );
 
     mockGetDashboardItemsActionsStream = MockGetDashboardItemsActionsStream();
     mockGetDashboardLastFiveItemsActionsStream =
         MockGetDashboardLastFiveItemsActionsStream();
 
     dashboardItemActionBloc = DashboardItemActionBloc(
+      authenticationBloc: mockAuthenticationBloc,
       filterBloc: mockFilterBloc,
       getDashboardItemsActionsStream: mockGetDashboardItemsActionsStream,
       getDashboardLastFiveItemsActionsStream:

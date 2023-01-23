@@ -6,6 +6,7 @@ import 'package:under_control_v2/features/assets/data/models/asset_category/asse
 import 'package:under_control_v2/features/assets/domain/entities/asset_category/assets_categories_stream.dart';
 import 'package:under_control_v2/features/assets/domain/usecases/asset_category/get_assets_categories_stream.dart';
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_category/asset_category_bloc.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
@@ -16,7 +17,11 @@ class MockUserProfileBloc extends Mock
 class MockGetAssetsCategoriesStream extends Mock
     implements GetAssetsCategoriesStream {}
 
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
 void main() {
+  late MockAuthenticationBloc mockAuthenticationBloc;
   late MockUserProfileBloc mockUserProfileBloc;
   late MockGetAssetsCategoriesStream mockGetAssetsCategoriesStream;
   late AssetCategoryBloc assetCategoryBloc;
@@ -41,7 +46,15 @@ void main() {
         ),
       );
 
+      mockAuthenticationBloc = MockAuthenticationBloc();
+      when(() => mockAuthenticationBloc.stream).thenAnswer(
+        (_) => Stream.fromFuture(
+          Future.value(EmptyAuthenticationState()),
+        ),
+      );
+
       assetCategoryBloc = AssetCategoryBloc(
+        authenticationBloc: mockAuthenticationBloc,
         userProfileBloc: mockUserProfileBloc,
         getAssetsCategoriesStream: mockGetAssetsCategoriesStream,
       );

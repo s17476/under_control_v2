@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/company_profile/data/models/company_model.dart';
 import 'package:under_control_v2/features/company_profile/data/models/company_users_model.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/fetch_all_company_users.dart';
@@ -18,9 +19,13 @@ class MockGetCompanyById extends Mock implements GetCompanyById {}
 class MockUserProfileBloc extends Mock
     implements Stream<UserProfileState>, UserProfileBloc {}
 
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
 class MockInputValidator extends Mock implements InputValidator {}
 
 void main() {
+  late MockAuthenticationBloc mockAuthenticationBloc;
   late CompanyProfileBloc companyProfileBloc;
   late MockFetchAllCompanyUsers mockFetchAllCompanyUsers;
   late MockGetCompanyById mockGetCompanyById;
@@ -35,8 +40,15 @@ void main() {
 
     when(() => mockUserProfileBloc.stream)
         .thenAnswer((_) => Stream.fromFuture(Future.value(UserProfileEmpty())));
+    mockAuthenticationBloc = MockAuthenticationBloc();
+    when(() => mockAuthenticationBloc.stream).thenAnswer(
+      (_) => Stream.fromFuture(
+        Future.value(EmptyAuthenticationState()),
+      ),
+    );
 
     companyProfileBloc = CompanyProfileBloc(
+      authenticationBloc: mockAuthenticationBloc,
       userProfileBloc: mockUserProfileBloc,
       fetchAllCompanyUsers: mockFetchAllCompanyUsers,
       getCompanyById: mockGetCompanyById,

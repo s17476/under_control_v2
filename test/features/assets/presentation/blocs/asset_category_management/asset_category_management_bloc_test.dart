@@ -7,12 +7,13 @@ import 'package:under_control_v2/features/assets/domain/usecases/asset_category/
 import 'package:under_control_v2/features/assets/domain/usecases/asset_category/delete_asset_category.dart';
 import 'package:under_control_v2/features/assets/domain/usecases/asset_category/update_asset_category.dart';
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_category_management/asset_category_management_bloc.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
+import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
-class MockCompanyProfileBloc extends Mock
-    implements Stream<CompanyProfileState>, CompanyProfileBloc {}
+class MockUserProfileBloc extends Mock
+    implements Stream<UserProfileState>, UserProfileBloc {}
 
 class MockAddAssetCategory extends Mock implements AddAssetCategory {}
 
@@ -21,7 +22,7 @@ class MockUpdateAssetCategory extends Mock implements UpdateAssetCategory {}
 class MockDeleteAssetCategory extends Mock implements DeleteAssetCategory {}
 
 void main() {
-  late MockCompanyProfileBloc mockCompanyProfileBloc;
+  late MockUserProfileBloc mockUserProfileBloc;
 
   late MockAddAssetCategory mockAddAssetCategory;
   late MockUpdateAssetCategory mockUpdateAssetCategory;
@@ -43,20 +44,40 @@ void main() {
 
   setUp(
     () {
-      mockCompanyProfileBloc = MockCompanyProfileBloc();
-
       mockAddAssetCategory = MockAddAssetCategory();
       mockUpdateAssetCategory = MockUpdateAssetCategory();
       mockDeleteAssetCategory = MockDeleteAssetCategory();
 
-      when(() => mockCompanyProfileBloc.stream).thenAnswer(
+      mockUserProfileBloc = MockUserProfileBloc();
+      when(() => mockUserProfileBloc.stream).thenAnswer(
         (_) => Stream.fromFuture(
-          Future.value(CompanyProfileEmpty()),
+          Future.value(UserProfileEmpty()),
+        ),
+      );
+      when(() => mockUserProfileBloc.state).thenReturn(
+        Approved(
+          userProfile: UserProfile(
+            id: '',
+            administrator: false,
+            approved: true,
+            avatarUrl: '',
+            companyId: '',
+            email: '',
+            firstName: '',
+            isActive: true,
+            joinDate: DateTime.now(),
+            lastName: '',
+            phoneNumber: '',
+            locations: const [],
+            rejected: false,
+            suspended: false,
+            userGroups: const [],
+          ),
         ),
       );
 
       assetCategoryManagementBloc = AssetCategoryManagementBloc(
-        companyProfileBloc: mockCompanyProfileBloc,
+        userProfileBloc: mockUserProfileBloc,
         addAssetCategory: mockAddAssetCategory,
         updateAssetCategory: mockUpdateAssetCategory,
         deleteAssetCategory: mockDeleteAssetCategory,

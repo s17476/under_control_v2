@@ -2,7 +2,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/knowledge_base/data/models/instruction_model.dart';
@@ -10,9 +9,8 @@ import 'package:under_control_v2/features/knowledge_base/domain/usecases/add_ins
 import 'package:under_control_v2/features/knowledge_base/domain/usecases/delete_instruction.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/usecases/update_instruction.dart';
 import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
-
-class MockCompanyProfileBloc extends Mock
-    implements Stream<CompanyProfileState>, CompanyProfileBloc {}
+import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
+import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 class MockAddInstruction extends Mock implements AddInstruction {}
 
@@ -20,8 +18,11 @@ class MockDeleteInstruction extends Mock implements DeleteInstruction {}
 
 class MockUpdateInstruction extends Mock implements UpdateInstruction {}
 
+class MockUserProfileBloc extends Mock
+    implements Stream<UserProfileState>, UserProfileBloc {}
+
 void main() {
-  late MockCompanyProfileBloc mockCompanyProfileBloc;
+  late MockUserProfileBloc mockUserProfileBloc;
 
   late MockAddInstruction mockAddInstruction;
   late MockDeleteInstruction mockDeleteInstruction;
@@ -50,11 +51,31 @@ void main() {
 
   setUp(
     () {
-      mockCompanyProfileBloc = MockCompanyProfileBloc();
-
-      when(() => mockCompanyProfileBloc.stream).thenAnswer(
+      mockUserProfileBloc = MockUserProfileBloc();
+      when(() => mockUserProfileBloc.stream).thenAnswer(
         (_) => Stream.fromFuture(
-          Future.value(CompanyProfileEmpty()),
+          Future.value(UserProfileEmpty()),
+        ),
+      );
+      when(() => mockUserProfileBloc.state).thenReturn(
+        Approved(
+          userProfile: UserProfile(
+            id: '',
+            administrator: false,
+            approved: true,
+            avatarUrl: '',
+            companyId: '',
+            email: '',
+            firstName: '',
+            isActive: true,
+            joinDate: DateTime.now(),
+            lastName: '',
+            phoneNumber: '',
+            locations: const [],
+            rejected: false,
+            suspended: false,
+            userGroups: const [],
+          ),
         ),
       );
 
@@ -63,7 +84,7 @@ void main() {
       mockUpdateInstruction = MockUpdateInstruction();
 
       instructionManagementBloc = InstructionManagementBloc(
-        companyProfileBloc: mockCompanyProfileBloc,
+        userProfileBloc: mockUserProfileBloc,
         addInstruction: mockAddInstruction,
         deleteInstruction: mockDeleteInstruction,
         updateInstruction: mockUpdateInstruction,

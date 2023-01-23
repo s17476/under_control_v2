@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:under_control_v2/features/assets/domain/entities/assets_stream.dart';
 import 'package:under_control_v2/features/assets/domain/usecases/get_assets_stream.dart';
 import 'package:under_control_v2/features/assets/presentation/blocs/asset/asset_bloc.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
 
@@ -12,7 +13,11 @@ class MockFilterBloc extends Mock implements Stream<FilterState>, FilterBloc {}
 
 class MockGetAssetsStream extends Mock implements GetAssetsStream {}
 
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
 void main() {
+  late MockAuthenticationBloc mockAuthenticationBloc;
   late MockFilterBloc mockFilterBloc;
 
   late MockGetAssetsStream mockGetAssetsStream;
@@ -20,7 +25,14 @@ void main() {
   late AssetBloc assetBloc;
 
   setUp(() {
+    mockAuthenticationBloc = MockAuthenticationBloc();
     mockFilterBloc = MockFilterBloc();
+
+    when(() => mockAuthenticationBloc.stream).thenAnswer(
+      (_) => Stream.fromFuture(
+        Future.value(EmptyAuthenticationState()),
+      ),
+    );
 
     when(() => mockFilterBloc.stream).thenAnswer(
       (_) => Stream.fromFuture(
@@ -35,6 +47,7 @@ void main() {
 
     mockGetAssetsStream = MockGetAssetsStream();
     assetBloc = AssetBloc(
+      authenticationBloc: mockAuthenticationBloc,
       filterBloc: mockFilterBloc,
       getAssetsStream: mockGetAssetsStream,
     );

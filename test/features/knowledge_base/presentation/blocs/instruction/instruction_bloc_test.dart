@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart';
 import 'package:under_control_v2/features/knowledge_base/domain/entities/instructions_stream.dart';
@@ -12,7 +13,11 @@ class MockFilterBloc extends Mock implements Stream<FilterState>, FilterBloc {}
 
 class MockGetInstructionsStream extends Mock implements GetInstructionsStream {}
 
+class MockAuthenticationBloc extends Mock
+    implements Stream<AuthenticationState>, AuthenticationBloc {}
+
 void main() {
+  late MockAuthenticationBloc mockAuthenticationBloc;
   late MockFilterBloc mockFilterBloc;
 
   late MockGetInstructionsStream mockGetInstructionsStream;
@@ -36,7 +41,15 @@ void main() {
 
       mockGetInstructionsStream = MockGetInstructionsStream();
 
+      mockAuthenticationBloc = MockAuthenticationBloc();
+      when(() => mockAuthenticationBloc.stream).thenAnswer(
+        (_) => Stream.fromFuture(
+          Future.value(EmptyAuthenticationState()),
+        ),
+      );
+
       instructionBloc = InstructionBloc(
+        authenticationBloc: mockAuthenticationBloc,
         filterBloc: mockFilterBloc,
         getInstructionsStream: mockGetInstructionsStream,
       );
