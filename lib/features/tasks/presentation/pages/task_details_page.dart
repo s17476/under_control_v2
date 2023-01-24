@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_children_tab.dart';
 
+import '../../../assets/domain/entities/asset.dart';
+import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
@@ -50,7 +53,6 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
 
   @override
   void didChangeDependencies() {
-    // _taskActionBloc = context.read<TaskActionBloc>();
     final taskId = (ModalRoute.of(context)?.settings.arguments as String);
     final taskState = context.watch<TaskBloc>().state;
     if (taskState is TaskLoadedState) {
@@ -83,6 +85,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
 
         // number of tabs
         _tabsCount = 2;
+
         _tabsCount += _task!.checklist.isNotEmpty ? 1 : 0;
         _tabsCount += _task!.images.isNotEmpty ? 1 : 0;
         _tabsCount += _task!.video.isNotEmpty ? 1 : 0;

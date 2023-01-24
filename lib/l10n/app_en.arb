@@ -2618,5 +2618,37 @@
     "status_activity": "Activity",
     "@status_activity": {
       "description": "status card"
+    },
+    "details_asset": "Asset",
+    "@details_asset": {
+      "description": "details page"
+    },
+    "details_tasks": "Tasks",
+    "@details_tasks": {
+      "description": "details page"
+    },
+    "details_history": "History",
+    "@details_history": {
+      "description": "details page"
+    },
+    "details_subassets": "Subassets",
+    "@details_subassets": {
+      "description": "details page"
+    },
+    "details_pictures": "Pictures",
+    "@details_pictures": {
+      "description": "details page"
+    },
+    "details_spare_parts": "Spare parts",
+    "@details_spare_parts": {
+      "description": "details page"
+    },
+    "details_instructions": "Instructions",
+    "@details_instructions": {
+      "description": "details page"
+    },
+    "details_documents": "Documents",
+    "@details_documents": {
+      "description": "details page"
     }
 }

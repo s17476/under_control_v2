@@ -635,5 +635,13 @@
     "status_awaiting": "Oczekujące",
     "status_converted": "Konwertowane na zadania",
     "status_cancelled": "Anulowane",
-    "status_activity": "Aktywność"
+    "status_activity": "Aktywność",
+    "details_asset": "Zasób",
+    "details_tasks": "Zadania",
+    "details_history": "Historia",
+    "details_subassets": "Podzespoły",
+    "details_pictures": "Zdjęcia",
+    "details_spare_parts": "Części zamienne",
+    "details_instructions": "Instrukcje",
+    "details_documents": "Dokumenty"
 }

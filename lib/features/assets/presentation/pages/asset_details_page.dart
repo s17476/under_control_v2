@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_tasks_tab.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -19,11 +18,13 @@ import '../../utils/asset_management_bloc_listener.dart';
 import '../blocs/asset/asset_bloc.dart';
 import '../blocs/asset_action/asset_action_bloc.dart';
 import '../blocs/asset_management/asset_management_bloc.dart';
+import '../widgets/asset_details/asset_children_tab.dart';
 import '../widgets/asset_details/asset_documents_tab.dart';
 import '../widgets/asset_details/asset_history_tab.dart';
 import '../widgets/asset_details/asset_images_tab.dart';
 import '../widgets/asset_details/asset_info_tab.dart';
 import '../widgets/asset_details/asset_instructions_tab.dart';
+import '../widgets/asset_details/asset_tasks_tab.dart';
 import '../widgets/asset_details/assets_spare_parts_tab.dart';
 import 'add_asset_page.dart';
 
@@ -37,16 +38,41 @@ class AssetDetailsPage extends StatefulWidget {
 }
 
 class _AssetDetailsPageState extends State<AssetDetailsPage>
-    with ResponsiveSize {
+    with ResponsiveSize, TickerProviderStateMixin {
   Asset? _asset;
   late UserProfile _currentUser;
 
   List<Choice> _choices = [];
+  List<Asset> _children = [];
+
+  String _appBarTitle = '';
 
   int _tabsCount = 2;
 
+  late TabController _tabController;
+
+  List<String> titles = [];
+
+  @override
+  void initState() {
+    _tabController = TabController(length: _tabsCount, vsync: this);
+    super.initState();
+  }
+
   @override
   void didChangeDependencies() {
+    titles = [
+      AppLocalizations.of(context)!.details_asset,
+      AppLocalizations.of(context)!.details_tasks,
+      AppLocalizations.of(context)!.details_history,
+      AppLocalizations.of(context)!.details_subassets,
+      AppLocalizations.of(context)!.details_pictures,
+      AppLocalizations.of(context)!.details_spare_parts,
+      AppLocalizations.of(context)!.details_instructions,
+      AppLocalizations.of(context)!.details_documents,
+    ];
+    _appBarTitle = titles[_tabController.index];
+
     // gets current user
     final currentState = context.read<UserProfileBloc>().state;
     if (currentState is Approved) {
@@ -60,12 +86,26 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
         _asset = assetsState.getAssetById(assetId);
       });
       if (_asset != null) {
+        final assetState = context.watch<AssetBloc>().state;
+        if (assetState is AssetLoadedState) {
+          _children = assetState.allAssets.allAssets
+              .where((asset) => asset.currentParentId == _asset!.id)
+              .toList();
+        }
         // number of tabs
         _tabsCount = 3;
+        _tabsCount += _children.isNotEmpty ? 1 : 0;
         _tabsCount += _asset!.images.isNotEmpty ? 1 : 0;
         _tabsCount += _asset!.spareParts.isNotEmpty ? 1 : 0;
         _tabsCount += _asset!.instructions.isNotEmpty ? 1 : 0;
         _tabsCount += _asset!.documents.isNotEmpty ? 1 : 0;
+        _tabController.dispose();
+        _tabController = TabController(length: _tabsCount, vsync: this);
+        _tabController.addListener(() {
+          setState(() {
+            _appBarTitle = titles[_tabController.index];
+          });
+        });
         // popup menu items
         _choices = [
           // edit item
@@ -112,145 +152,155 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    String appBarTitle = '';
     final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;
     const double tabBarIconSize = 32;
-
-    appBarTitle = AppLocalizations.of(context)!.asset_details;
-
-    return DefaultTabController(
-      length: _tabsCount,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(appBarTitle),
-          centerTitle: true,
-          leading: Builder(
-            builder: (context) {
-              return GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const AppBarAnimatedIcon(isBackIcon: true),
-              );
-            },
-          ),
-          actions: [
-            // popup menu
-            if (getUserPermission(
-              context: context,
-              featureType: FeatureType.assets,
-              permissionType: PermissionType.edit,
-            ))
-              PopupMenuButton<Choice>(
-                onSelected: (Choice choice) {
-                  choice.onTap();
-                },
-                itemBuilder: (BuildContext context) {
-                  return _choices.map((Choice choice) {
-                    return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(choice.icon),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            choice.title,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList();
-                },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_appBarTitle),
+        centerTitle: true,
+        leading: Builder(
+          builder: (context) {
+            return GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: const AppBarAnimatedIcon(isBackIcon: true),
+            );
+          },
+        ),
+        actions: [
+          // popup menu
+          if (getUserPermission(
+            context: context,
+            featureType: FeatureType.assets,
+            permissionType: PermissionType.edit,
+          ))
+            PopupMenuButton<Choice>(
+              onSelected: (Choice choice) {
+                choice.onTap();
+              },
+              itemBuilder: (BuildContext context) {
+                return _choices.map((Choice choice) {
+                  return PopupMenuItem<Choice>(
+                    value: choice,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(choice.icon),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          choice.title,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList();
+              },
+            ),
+        ],
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(
+              icon: Icon(
+                Icons.info,
+                color: tabBarIconColor,
+                size: tabBarIconSize,
+              ),
+            ),
+            Tab(
+              icon: Icon(
+                Icons.work_history,
+                color: tabBarIconColor,
+                size: tabBarIconSize,
+              ),
+            ),
+            Tab(
+              icon: Icon(
+                Icons.history,
+                color: tabBarIconColor,
+                size: tabBarIconSize,
+              ),
+            ),
+            if (_children.isNotEmpty)
+              Tab(
+                icon: Icon(
+                  Icons.account_tree,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
+            if (_asset!.images.isNotEmpty)
+              Tab(
+                icon: Icon(
+                  Icons.image,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
+            if (_asset!.spareParts.isNotEmpty)
+              Tab(
+                icon: Icon(
+                  Icons.settings_applications_sharp,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
+            if (_asset!.instructions.isNotEmpty)
+              Tab(
+                icon: Icon(
+                  Icons.menu_book,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
+            if (_asset!.documents.isNotEmpty)
+              Tab(
+                icon: Icon(
+                  FontAwesomeIcons.filePdf,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
               ),
           ],
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                icon: Icon(
-                  Icons.info,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
-                ),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.work_history,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
-                ),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.history,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
-                ),
-              ),
-              if (_asset!.images.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    Icons.image,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-              if (_asset!.spareParts.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    Icons.settings_applications_sharp,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-              if (_asset!.instructions.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    Icons.menu_book,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-              if (_asset!.documents.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    FontAwesomeIcons.filePdf,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-            ],
-            indicatorColor: tabBarIconColor,
-          ),
+          indicatorColor: tabBarIconColor,
         ),
-        body: _asset == null
-            ? const LoadingWidget()
-            : MultiBlocListener(
-                listeners: [
-                  BlocListener<AssetManagementBloc, AssetManagementState>(
-                    listener: (context, state) =>
-                        assetManagementBlocListener(context, state),
-                  ),
-                ],
-                child: TabBarView(
-                  children: [
-                    AssetInfoTab(asset: _asset!),
-                    AssetTasksTab(asset: _asset!),
-                    AssetHistoryTab(asset: _asset!),
-                    if (_asset!.images.isNotEmpty)
-                      AssetImagesTab(asset: _asset!),
-                    if (_asset!.spareParts.isNotEmpty)
-                      AssetsSparePartsTab(asset: _asset!),
-                    if (_asset!.instructions.isNotEmpty)
-                      AssetsInstructionsTab(asset: _asset!),
-                    if (_asset!.documents.isNotEmpty)
-                      AssetDocumentsTab(asset: _asset!),
-                  ],
-                ),
-              ),
       ),
+      body: _asset == null
+          ? const LoadingWidget()
+          : MultiBlocListener(
+              listeners: [
+                BlocListener<AssetManagementBloc, AssetManagementState>(
+                  listener: (context, state) =>
+                      assetManagementBlocListener(context, state),
+                ),
+              ],
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  AssetInfoTab(asset: _asset!),
+                  AssetTasksTab(asset: _asset!),
+                  AssetHistoryTab(asset: _asset!),
+                  if (_children.isNotEmpty)
+                    AssetChildrenTab(children: _children),
+                  if (_asset!.images.isNotEmpty) AssetImagesTab(asset: _asset!),
+                  if (_asset!.spareParts.isNotEmpty)
+                    AssetsSparePartsTab(asset: _asset!),
+                  if (_asset!.instructions.isNotEmpty)
+                    AssetsInstructionsTab(asset: _asset!),
+                  if (_asset!.documents.isNotEmpty)
+                    AssetDocumentsTab(asset: _asset!),
+                ],
+              ),
+            ),
     );
   }
 }

@@ -635,5 +635,13 @@
     "status_awaiting": "Venter",
     "status_converted": "Konverteret til opgaver",
     "status_cancelled": "Annulleret",
-    "status_activity": "Aktivitiet"
+    "status_activity": "Aktivitiet",
+    "details_asset": "Aktiv",
+    "details_tasks": "Opgaver",
+    "details_history": "Historie",
+    "details_subassets": "Underactiver",
+    "details_pictures": "Billeder",
+    "details_spare_parts": "Reservedele",
+    "details_instructions": "Instruktioner",
+    "details_documents": "Dokumenter"
 }
