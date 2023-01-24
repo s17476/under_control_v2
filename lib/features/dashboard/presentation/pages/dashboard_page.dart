@@ -23,16 +23,16 @@ class DashboardPage extends StatelessWidget {
       builder: (context, state) {
         if (state is FilterLoadedState && state.locations.isNotEmpty) {
           return ListView(
-            children: const [
-              StatusCard(),
-              MyTasks(),
-              WorkRequestsLatest(),
-              TasksLatest(),
-              AssetsWithoutInspection(),
-              AssetsLatestActions(),
-              InventoryLowLevelItems(),
-              InventoryLatestActions(),
-              SizedBox(
+            children: [
+              ...getStatusCardWidgets(context),
+              const MyTasks(),
+              const WorkRequestsLatest(),
+              const TasksLatest(),
+              const AssetsWithoutInspection(),
+              const AssetsLatestActions(),
+              const InventoryLowLevelItems(),
+              const InventoryLatestActions(),
+              const SizedBox(
                 height: 50,
               ),
             ],
