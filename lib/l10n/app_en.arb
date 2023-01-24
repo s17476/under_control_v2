@@ -2614,5 +2614,9 @@
     "status_cancelled": "Cancelled",
     "@status_cancelled": {
       "description": "status card"
+    },
+    "status_activity": "Activity",
+    "@status_activity": {
+      "description": "status card"
     }
 }

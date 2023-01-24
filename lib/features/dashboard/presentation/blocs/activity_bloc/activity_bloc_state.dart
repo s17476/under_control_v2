@@ -67,7 +67,7 @@ class ActivityBlocState extends Equatable {
 
   Map<String, int> _getActivitiesMap() {
     Map<String, int> activities = {};
-    final DateFormat dateFormat = DateFormat('dd-MM');
+    final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
     // work requests
     for (var workRequest in workRequests) {
       final key = dateFormat.format(workRequest.date);
@@ -93,6 +93,9 @@ class ActivityBlocState extends Equatable {
       final key = dateFormat.format(taskAction.stopTime);
       activities[key] = (activities[key] ?? 0) + 1;
     }
+    // sort map by date
+    activities = Map.fromEntries(
+        activities.entries.toList()..sort((a, b) => a.key.compareTo(b.key)));
     return activities;
   }
 }

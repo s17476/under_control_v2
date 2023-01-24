@@ -634,5 +634,6 @@
     "status_total": "Razem",
     "status_awaiting": "Oczekujące",
     "status_converted": "Konwertowane na zadania",
-    "status_cancelled": "Anulowane"
+    "status_cancelled": "Anulowane",
+    "status_activity": "Aktywność"
 }

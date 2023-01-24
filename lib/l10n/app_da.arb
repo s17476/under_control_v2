@@ -634,5 +634,6 @@
     "status_total": "Total",
     "status_awaiting": "Venter",
     "status_converted": "Konverteret til opgaver",
-    "status_cancelled": "Annulleret"
+    "status_cancelled": "Annulleret",
+    "status_activity": "Aktivitiet"
 }
