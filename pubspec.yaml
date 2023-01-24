@@ -67,6 +67,7 @@ dependencies:
   flutter_hooks: ^0.18.5+1
   fl_chart: ^0.55.2
   uuid: ^3.0.7
+  firebase_messaging: ^13.1.0
   
 dev_dependencies:
   flutter_test:

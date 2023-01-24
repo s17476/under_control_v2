@@ -104,15 +104,23 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
               state.allItems.allItems,
               searchQuery,
             );
-            return ListView.builder(
+            return ListView(
               padding: const EdgeInsets.only(top: 8),
-              itemCount: filteredItems.length,
-              itemBuilder: (context, index) {
-                return ItemTile(
-                  item: filteredItems[index],
-                  searchQuery: searchQuery,
-                );
-              },
+              children: [
+                // Empty space under search bar
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  height: isSearchBoxExpanded ? searchBoxHeight : 0,
+                ),
+                ...filteredItems
+                    .map(
+                      (item) => ItemTile(
+                        item: item,
+                        searchQuery: searchQuery,
+                      ),
+                    )
+                    .toList()
+              ],
             );
           }
           // loading shimmer animation

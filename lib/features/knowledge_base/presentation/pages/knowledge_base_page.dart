@@ -111,6 +111,11 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
               }
               return ListView(
                 children: [
+                  // Empty space under search bar
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    height: isSearchBoxExpanded ? searchBoxHeight : 0,
+                  ),
                   // drafts
                   if (drafts.isNotEmpty) ...[
                     Padding(

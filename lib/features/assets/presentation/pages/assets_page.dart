@@ -143,8 +143,12 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                       color: Theme.of(context).appBarTheme.backgroundColor,
                       duration: const Duration(milliseconds: 300),
                       height: widget.isSearchBoxExpanded
-                          ? widget.searchBoxHeight + 4
+                          ? widget.searchBoxHeight
                           : 0,
+                    ),
+                    Container(
+                      height: 4,
+                      color: Theme.of(context).appBarTheme.backgroundColor,
                     ),
                     // TabBar
                     Container(
