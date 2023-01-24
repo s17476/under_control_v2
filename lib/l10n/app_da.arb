@@ -601,7 +601,7 @@
     "task_templates_msg_not_deleted": "Opgave skablon ikke slettet",
     "task_templates_add": "Tilføj ny skabelon",
     "task_templates_edit": "Rediger skabelon",
-    "task_templates_use": "Brug skabelon",
+    "task_templates_use": "Brug skabelonen",
     "task_templates_delete_title": "Slet skabelon",
     "task_templates_delete_question": "Er du sikker på, at du vil slette denne skabelon?",
     "task_action_new": "Registrer en ny handling",

@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:under_control_v2/features/tasks/presentation/pages/task_template_details_page.dart';
 
 import 'custom_multi_bloc_provider.dart';
 import 'features/assets/presentation/pages/add_asset_page.dart';
@@ -58,6 +57,7 @@ import 'features/tasks/presentation/pages/subtract_item_from_location_page.dart'
 import 'features/tasks/presentation/pages/task_action_details_page.dart';
 import 'features/tasks/presentation/pages/task_archive_page.dart';
 import 'features/tasks/presentation/pages/task_details_page.dart';
+import 'features/tasks/presentation/pages/task_template_details_page.dart';
 import 'features/tasks/presentation/pages/templates_management_page.dart';
 import 'features/tasks/presentation/pages/work_request_archive_page.dart';
 import 'features/tasks/presentation/pages/work_request_details_page.dart';

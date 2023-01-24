@@ -97,6 +97,11 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
             const Divider(
               thickness: 1.5,
             ),
+          if (state.workRequests.isEmpty)
+            const SizedBox(
+              height: 8,
+            ),
+
           if (state.tasks.isNotEmpty) ...[
             Padding(
               padding: const EdgeInsets.only(left: 8),

@@ -213,16 +213,14 @@ class _AddTaskTemplatePageState extends State<AddTaskTemplatePage> {
               );
         }
       } else {
-        // add new template
-        if (_task == null || _task!.id.isEmpty) {
-          context.read<TaskManagementBloc>().add(
-                AddTaskEvent(
-                  task: newTask,
-                  images: _images,
-                  video: _videoFile,
-                ),
-              );
-        }
+        // add new task
+        context.read<TaskManagementBloc>().add(
+              AddTaskEvent(
+                task: newTask,
+                images: _images,
+                video: _videoFile,
+              ),
+            );
       }
 
       Navigator.pop(context);
@@ -595,7 +593,7 @@ class _AddTaskTemplatePageState extends State<AddTaskTemplatePage> {
       _descriptionTextEditingController.text = _task!.description;
       _locationId = _task!.locationId;
       _priority = _task!.priority.name;
-      _date = _task!.date;
+      _date = DateTime.now();
       _assetId = _task!.assetId;
       _assetStatus = _task!.assetStatus.name;
       _isConnectedToAsset = _task!.assetId.isNotEmpty;
@@ -604,7 +602,7 @@ class _AddTaskTemplatePageState extends State<AddTaskTemplatePage> {
       _durationUnit = _task!.durationUnit.name;
       _duration = _task!.duration;
       _isCyclicTask = _task!.isCyclictask;
-      _executionDate = _task!.executionDate;
+      _executionDate = DateTime.now();
       _assignedUsers = _task!.assignedUsers;
       _assignedGroups = _task!.assignedGroups;
       _sparePartsAssets = _task!.sparePartsAssets;

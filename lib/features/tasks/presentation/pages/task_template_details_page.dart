@@ -75,6 +75,21 @@ class _TaskTemplateDetailsPageState extends State<TaskTemplateDetailsPage>
             : 0;
         // popup menu items
         _choices = [
+          // use task template
+          if (getUserPermission(
+            context: context,
+            featureType: FeatureType.tasks,
+            permissionType: PermissionType.create,
+          ))
+            Choice(
+              title: AppLocalizations.of(context)!.task_templates_use,
+              icon: Icons.add_task,
+              onTap: () => Navigator.pushNamed(
+                context,
+                AddTaskTemplatePage.routeName,
+                arguments: [_task],
+              ),
+            ),
           // edit task template
           if (getUserPermission(
             context: context,
