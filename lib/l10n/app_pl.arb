@@ -643,5 +643,8 @@
     "details_pictures": "Zdjęcia",
     "details_spare_parts": "Części zamienne",
     "details_instructions": "Instrukcje",
-    "details_documents": "Dokumenty"
+    "details_documents": "Dokumenty",
+    "details_item": "Przedmiot",
+    "details_actions": "Akcje",
+    "details_locations": "Lokacje"
 }

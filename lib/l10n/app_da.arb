@@ -643,5 +643,8 @@
     "details_pictures": "Billeder",
     "details_spare_parts": "Reservedele",
     "details_instructions": "Instruktioner",
-    "details_documents": "Dokumenter"
+    "details_documents": "Dokumenter",
+    "details_item": "Vare",
+    "details_actions": "Handling",
+    "details_locations": "Placeringer"
 }

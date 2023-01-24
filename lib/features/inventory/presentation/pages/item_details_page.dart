@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_documents_tab.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/item_details/item_instructions_tab.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -25,7 +23,9 @@ import '../blocs/item_action_management/item_action_management_bloc.dart';
 import '../blocs/items/items_bloc.dart';
 import '../blocs/items_management/items_management_bloc.dart';
 import '../widgets/item_details/item_actions_tab.dart';
+import '../widgets/item_details/item_documents_tab.dart';
 import '../widgets/item_details/item_info_tab.dart';
+import '../widgets/item_details/item_instructions_tab.dart';
 import '../widgets/item_details/item_locations_tab.dart';
 import 'add_item_page.dart';
 
@@ -38,7 +38,8 @@ class ItemDetailsPage extends StatefulWidget {
   State<ItemDetailsPage> createState() => _ItemDetailsPageState();
 }
 
-class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
+class _ItemDetailsPageState extends State<ItemDetailsPage>
+    with ResponsiveSize, TickerProviderStateMixin {
   Item? _item;
   late UserProfile _currentUser;
 
@@ -46,8 +47,27 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
 
   int _tabsCount = 3;
 
+  String _appBarTitle = '';
+  late TabController _tabController;
+
+  List<String> titles = [];
+
+  @override
+  void initState() {
+    _tabController = TabController(length: _tabsCount, vsync: this);
+    super.initState();
+  }
+
   @override
   void didChangeDependencies() {
+    titles = [
+      AppLocalizations.of(context)!.details_item,
+      AppLocalizations.of(context)!.details_actions,
+      AppLocalizations.of(context)!.details_locations,
+      AppLocalizations.of(context)!.details_instructions,
+      AppLocalizations.of(context)!.details_documents,
+    ];
+    _appBarTitle = titles[_tabController.index];
     // gets current user
     final currentState = context.read<UserProfileBloc>().state;
     if (currentState is Approved) {
@@ -68,6 +88,14 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
         _tabsCount = 3;
         _tabsCount += _item!.instructions.isNotEmpty ? 1 : 0;
         _tabsCount += _item!.documents.isNotEmpty ? 1 : 0;
+
+        _tabController.dispose();
+        _tabController = TabController(length: _tabsCount, vsync: this);
+        _tabController.addListener(() {
+          setState(() {
+            _appBarTitle = titles[_tabController.index];
+          });
+        });
 
         // popup menu items
         _choices = [
@@ -126,129 +154,125 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> with ResponsiveSize {
 
   @override
   Widget build(BuildContext context) {
-    String appBarTitle = '';
     final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;
     const double tabBarIconSize = 32;
 
-    appBarTitle = AppLocalizations.of(context)!.item_details_title;
-
-    return DefaultTabController(
-      length: _tabsCount,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(appBarTitle),
-          centerTitle: true,
-          leading: Builder(
-            builder: (context) {
-              return GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const AppBarAnimatedIcon(isBackIcon: true),
-              );
-            },
-          ),
-          actions: [
-            // popup menu
-            if (getUserPermission(
-              context: context,
-              featureType: FeatureType.inventory,
-              permissionType: PermissionType.edit,
-            ))
-              PopupMenuButton<Choice>(
-                onSelected: (Choice choice) {
-                  choice.onTap();
-                },
-                itemBuilder: (BuildContext context) {
-                  return _choices.map((Choice choice) {
-                    return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(choice.icon),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            choice.title,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList();
-                },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_appBarTitle),
+        centerTitle: true,
+        leading: Builder(
+          builder: (context) {
+            return GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: const AppBarAnimatedIcon(isBackIcon: true),
+            );
+          },
+        ),
+        actions: [
+          // popup menu
+          if (getUserPermission(
+            context: context,
+            featureType: FeatureType.inventory,
+            permissionType: PermissionType.edit,
+          ))
+            PopupMenuButton<Choice>(
+              onSelected: (Choice choice) {
+                choice.onTap();
+              },
+              itemBuilder: (BuildContext context) {
+                return _choices.map((Choice choice) {
+                  return PopupMenuItem<Choice>(
+                    value: choice,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(choice.icon),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          choice.title,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList();
+              },
+            ),
+        ],
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(
+              icon: Icon(
+                Icons.info,
+                color: tabBarIconColor,
+                size: tabBarIconSize,
+              ),
+            ),
+            Tab(
+              icon: Icon(
+                Icons.work_history,
+                color: tabBarIconColor,
+                size: tabBarIconSize,
+              ),
+            ),
+            Tab(
+              icon: Icon(
+                Icons.location_on,
+                color: tabBarIconColor,
+                size: tabBarIconSize,
+              ),
+            ),
+            if (_item!.instructions.isNotEmpty)
+              Tab(
+                icon: Icon(
+                  Icons.menu_book,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
+            if (_item!.documents.isNotEmpty)
+              Tab(
+                icon: Icon(
+                  FontAwesomeIcons.filePdf,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
               ),
           ],
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                icon: Icon(
-                  Icons.info,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
-                ),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.work_history,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
-                ),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.location_on,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
-                ),
-              ),
-              if (_item!.instructions.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    Icons.menu_book,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-              if (_item!.documents.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    FontAwesomeIcons.filePdf,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-            ],
-            indicatorColor: tabBarIconColor,
-          ),
+          indicatorColor: tabBarIconColor,
         ),
-        body: _item == null
-            ? const LoadingWidget()
-            : MultiBlocListener(
-                listeners: [
-                  BlocListener<ItemsManagementBloc, ItemsManagementState>(
-                    listener: (context, state) =>
-                        itemManagementBlocListener(context, state),
-                  ),
-                  BlocListener<ItemActionManagementBloc,
-                      ItemActionManagementState>(
-                    listener: (context, state) =>
-                        itemActionManagementBlocListener(context, state),
-                  ),
-                ],
-                child: TabBarView(
-                  children: [
-                    ItemInfoTab(item: _item!),
-                    ItemActionsTab(item: _item!),
-                    ItemLocationsTab(item: _item!),
-                    if (_item!.instructions.isNotEmpty)
-                      ItemInstructionsTab(item: _item!),
-                    if (_item!.documents.isNotEmpty)
-                      ItemDocumentsTab(item: _item!),
-                  ],
-                ),
-              ),
       ),
+      body: _item == null
+          ? const LoadingWidget()
+          : MultiBlocListener(
+              listeners: [
+                BlocListener<ItemsManagementBloc, ItemsManagementState>(
+                  listener: (context, state) =>
+                      itemManagementBlocListener(context, state),
+                ),
+                BlocListener<ItemActionManagementBloc,
+                    ItemActionManagementState>(
+                  listener: (context, state) =>
+                      itemActionManagementBlocListener(context, state),
+                ),
+              ],
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  ItemInfoTab(item: _item!),
+                  ItemActionsTab(item: _item!),
+                  ItemLocationsTab(item: _item!),
+                  if (_item!.instructions.isNotEmpty)
+                    ItemInstructionsTab(item: _item!),
+                  if (_item!.documents.isNotEmpty)
+                    ItemDocumentsTab(item: _item!),
+                ],
+              ),
+            ),
     );
   }
 }

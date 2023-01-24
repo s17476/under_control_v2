@@ -2650,5 +2650,17 @@
     "details_documents": "Documents",
     "@details_documents": {
       "description": "details page"
+    },
+    "details_item": "Item",
+    "@details_item": {
+      "description": "details page"
+    },
+    "details_actions": "Actions",
+    "@details_actions": {
+      "description": "details page"
+    },
+    "details_locations": "Locations",
+    "@details_locations": {
+      "description": "details page"
     }
 }
