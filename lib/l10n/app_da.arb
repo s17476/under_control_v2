@@ -649,5 +649,6 @@
     "details_documents": "Dokumenter",
     "details_item": "Vare",
     "details_actions": "Handling",
-    "details_locations": "Placeringer"
+    "details_locations": "Placeringer",
+    "details_checklist": "Tjekliste"
 }

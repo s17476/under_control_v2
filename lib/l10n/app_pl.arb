@@ -649,5 +649,6 @@
     "details_documents": "Dokumenty",
     "details_item": "Przedmiot",
     "details_actions": "Akcje",
-    "details_locations": "Lokacje"
+    "details_locations": "Lokacje",
+    "details_checklist": "Lista kontrolna"
 }

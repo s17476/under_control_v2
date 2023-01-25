@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/asset_children_tab.dart';
 
-import '../../../assets/domain/entities/asset.dart';
-import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/utils/choice.dart';
@@ -43,7 +40,8 @@ class TaskDetailsPage extends StatefulWidget {
   State<TaskDetailsPage> createState() => _TaskDetailsPageState();
 }
 
-class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
+class _TaskDetailsPageState extends State<TaskDetailsPage>
+    with ResponsiveSize, TickerProviderStateMixin {
   Task? _task;
   // late TaskActionBloc _taskActionBloc;
 
@@ -51,8 +49,29 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
 
   int _tabsCount = 2;
 
+  late TabController _tabController;
+
+  List<String> titles = [];
+  String _appBarTitle = '';
+
+  @override
+  void initState() {
+    _tabController = TabController(length: _tabsCount, vsync: this);
+    super.initState();
+  }
+
   @override
   void didChangeDependencies() {
+    titles = [
+      AppLocalizations.of(context)!.details_task,
+      AppLocalizations.of(context)!.details_actions,
+      AppLocalizations.of(context)!.details_checklist,
+      AppLocalizations.of(context)!.details_pictures,
+      AppLocalizations.of(context)!.details_video,
+      AppLocalizations.of(context)!.details_instructions,
+      AppLocalizations.of(context)!.details_spare_parts,
+    ];
+    _appBarTitle = titles[_tabController.index];
     final taskId = (ModalRoute.of(context)?.settings.arguments as String);
     final taskState = context.watch<TaskBloc>().state;
     if (taskState is TaskLoadedState) {
@@ -94,6 +113,13 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
                 _task!.sparePartsItems.isNotEmpty)
             ? 1
             : 0;
+        _tabController.dispose();
+        _tabController = TabController(length: _tabsCount, vsync: this);
+        _tabController.addListener(() {
+          setState(() {
+            _appBarTitle = titles[_tabController.index];
+          });
+        });
         // popup menu items
         _choices = [
           // edit work order
@@ -135,165 +161,162 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> with ResponsiveSize {
     super.didChangeDependencies();
   }
 
-  // @override
-  // void dispose() {
-  //   _taskActionBloc.add(ResetTaskActionsEvent());
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    String appBarTitle = '';
     final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;
     const double tabBarIconSize = 32;
-    appBarTitle = AppLocalizations.of(context)!.task_details;
 
     return BlocListener<TaskActionManagementBloc, TaskActionManagementState>(
       listener: (context, state) {
         taskActionManagementBlocListener(context, state);
       },
-      child: DefaultTabController(
-        length: _tabsCount,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(appBarTitle),
-            centerTitle: true,
-            leading: Builder(
-              builder: (context) {
-                return GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const AppBarAnimatedIcon(isBackIcon: true),
-                );
-              },
-            ),
-            actions: [
-              // popup menu
-              if (_task != null &&
-                  !_task!.isCancelled &&
-                  getUserPermission(
-                    context: context,
-                    featureType: FeatureType.tasks,
-                    permissionType: PermissionType.edit,
-                  ))
-                PopupMenuButton<Choice>(
-                  onSelected: (Choice choice) {
-                    choice.onTap();
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return _choices.map((Choice choice) {
-                      return PopupMenuItem<Choice>(
-                        value: choice,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(choice.icon),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              choice.title,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList();
-                  },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_appBarTitle),
+          centerTitle: true,
+          leading: Builder(
+            builder: (context) {
+              return GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: const AppBarAnimatedIcon(isBackIcon: true),
+              );
+            },
+          ),
+          actions: [
+            // popup menu
+            if (_task != null &&
+                !_task!.isCancelled &&
+                getUserPermission(
+                  context: context,
+                  featureType: FeatureType.tasks,
+                  permissionType: PermissionType.edit,
+                ))
+              PopupMenuButton<Choice>(
+                onSelected: (Choice choice) {
+                  choice.onTap();
+                },
+                itemBuilder: (BuildContext context) {
+                  return _choices.map((Choice choice) {
+                    return PopupMenuItem<Choice>(
+                      value: choice,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(choice.icon),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            choice.title,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList();
+                },
+              ),
+          ],
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: [
+              Tab(
+                icon: Icon(
+                  Icons.info,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.work_history,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
+                ),
+              ),
+              if (_task!.checklist.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    Icons.checklist,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
+                ),
+              if (_task!.images.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    Icons.image,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
+                ),
+              if (_task!.video.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    FontAwesomeIcons.play,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
+                ),
+              if (_task!.instructions.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    Icons.menu_book,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
+                ),
+              if (_task!.sparePartsAssets.isNotEmpty ||
+                  _task!.sparePartsItems.isNotEmpty)
+                Tab(
+                  icon: Icon(
+                    Icons.settings_applications,
+                    color: tabBarIconColor,
+                    size: tabBarIconSize,
+                  ),
                 ),
             ],
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  icon: Icon(
-                    Icons.info,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-                Tab(
-                  icon: Icon(
-                    Icons.work_history,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-                if (_task!.checklist.isNotEmpty)
-                  Tab(
-                    icon: Icon(
-                      Icons.checklist,
-                      color: tabBarIconColor,
-                      size: tabBarIconSize,
-                    ),
-                  ),
-                if (_task!.images.isNotEmpty)
-                  Tab(
-                    icon: Icon(
-                      Icons.image,
-                      color: tabBarIconColor,
-                      size: tabBarIconSize,
-                    ),
-                  ),
-                if (_task!.video.isNotEmpty)
-                  Tab(
-                    icon: Icon(
-                      FontAwesomeIcons.play,
-                      color: tabBarIconColor,
-                      size: tabBarIconSize,
-                    ),
-                  ),
-                if (_task!.instructions.isNotEmpty)
-                  Tab(
-                    icon: Icon(
-                      Icons.menu_book,
-                      color: tabBarIconColor,
-                      size: tabBarIconSize,
-                    ),
-                  ),
-                if (_task!.sparePartsAssets.isNotEmpty ||
-                    _task!.sparePartsItems.isNotEmpty)
-                  Tab(
-                    icon: Icon(
-                      Icons.settings_applications,
-                      color: tabBarIconColor,
-                      size: tabBarIconSize,
-                    ),
-                  ),
-              ],
-              indicatorColor: tabBarIconColor,
-            ),
+            indicatorColor: tabBarIconColor,
           ),
-          body: _task == null
-              ? const LoadingWidget()
-              : MultiBlocListener(
-                  listeners: [
-                    BlocListener<WorkRequestManagementBloc,
-                        WorkRequestManagementState>(
-                      listener: (context, state) =>
-                          workRequestManagementBlocListener(context, state),
-                    ),
-                  ],
-                  child: TabBarView(
-                    children: [
-                      TaskInfoTab(task: _task!),
-                      TaskActionsTab(task: _task!),
-                      if (_task!.checklist.isNotEmpty)
-                        TaskChecklistTab(checklist: _task!.checklist),
-                      if (_task!.images.isNotEmpty)
-                        ImagesTab(images: _task!.images),
-                      if (_task!.video.isNotEmpty)
-                        VideoTab(videoUrl: _task!.video),
-                      if (_task!.instructions.isNotEmpty)
-                        TaskInstructionsTab(task: _task!),
-                      if (_task!.sparePartsAssets.isNotEmpty ||
-                          _task!.sparePartsItems.isNotEmpty)
-                        TaskSparePartTab(
-                          sparePartsAssets: _task!.sparePartsAssets,
-                          sparePartsItems: _task!.sparePartsItems,
-                        ),
-                    ],
-                  ),
-                ),
         ),
+        body: _task == null
+            ? const LoadingWidget()
+            : MultiBlocListener(
+                listeners: [
+                  BlocListener<WorkRequestManagementBloc,
+                      WorkRequestManagementState>(
+                    listener: (context, state) =>
+                        workRequestManagementBlocListener(context, state),
+                  ),
+                ],
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    TaskInfoTab(task: _task!),
+                    TaskActionsTab(task: _task!),
+                    if (_task!.checklist.isNotEmpty)
+                      TaskChecklistTab(checklist: _task!.checklist),
+                    if (_task!.images.isNotEmpty)
+                      ImagesTab(images: _task!.images),
+                    if (_task!.video.isNotEmpty)
+                      VideoTab(videoUrl: _task!.video),
+                    if (_task!.instructions.isNotEmpty)
+                      TaskInstructionsTab(task: _task!),
+                    if (_task!.sparePartsAssets.isNotEmpty ||
+                        _task!.sparePartsItems.isNotEmpty)
+                      TaskSparePartTab(
+                        sparePartsAssets: _task!.sparePartsAssets,
+                        sparePartsItems: _task!.sparePartsItems,
+                      ),
+                  ],
+                ),
+              ),
       ),
     );
   }

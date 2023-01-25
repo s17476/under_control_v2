@@ -2674,5 +2674,9 @@
     "details_locations": "Locations",
     "@details_locations": {
       "description": "details page"
+    },
+    "details_checklist": "Checklist",
+    "@details_checklist": {
+      "description": "details page"
     }
 }
