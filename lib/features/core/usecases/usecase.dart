@@ -460,3 +460,12 @@ class SelectedGroupsParams extends Equatable {
   @override
   List<Object> get props => [groups];
 }
+
+class UserProfileParams extends Equatable {
+  final UserProfile userProfile;
+
+  const UserProfileParams({required this.userProfile});
+
+  @override
+  List<Object> get props => [userProfile];
+}
