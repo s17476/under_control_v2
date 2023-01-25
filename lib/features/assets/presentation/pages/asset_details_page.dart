@@ -45,13 +45,12 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
   List<Choice> _choices = [];
   List<Asset> _children = [];
 
-  String _appBarTitle = '';
-
   int _tabsCount = 2;
 
   late TabController _tabController;
 
   List<String> titles = [];
+  String _appBarTitle = '';
 
   @override
   void initState() {

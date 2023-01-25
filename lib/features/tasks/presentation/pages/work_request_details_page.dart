@@ -34,16 +34,33 @@ class WorkRequestDetailsPage extends StatefulWidget {
 }
 
 class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
-    with ResponsiveSize {
+    with ResponsiveSize, TickerProviderStateMixin {
   WorkRequest? _workRequest;
   // late UserProfile _currentUser;
 
   List<Choice> _choices = [];
 
   int _tabsCount = 1;
+  late TabController _tabController;
+
+  List<String> titles = [];
+  String _appBarTitle = '';
+
+  @override
+  void initState() {
+    _tabController = TabController(length: _tabsCount, vsync: this);
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
+    titles = [
+      AppLocalizations.of(context)!.details_work_request,
+      AppLocalizations.of(context)!.details_pictures,
+      AppLocalizations.of(context)!.details_video,
+    ];
+    _appBarTitle = titles[_tabController.index];
+
     // gets selected asset
     final workRequestId =
         (ModalRoute.of(context)?.settings.arguments as String);
@@ -72,6 +89,13 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
         _tabsCount = 1;
         _tabsCount += _workRequest!.images.isNotEmpty ? 1 : 0;
         _tabsCount += _workRequest!.video.isNotEmpty ? 1 : 0;
+        _tabController.dispose();
+        _tabController = TabController(length: _tabsCount, vsync: this);
+        _tabController.addListener(() {
+          setState(() {
+            _appBarTitle = titles[_tabController.index];
+          });
+        });
         // popup menu items
         _choices = [
           // convert work order
@@ -130,111 +154,107 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
 
   @override
   Widget build(BuildContext context) {
-    String appBarTitle = '';
     final Color? tabBarIconColor = Theme.of(context).textTheme.bodyLarge!.color;
     const double tabBarIconSize = 32;
 
-    appBarTitle = AppLocalizations.of(context)!.work_request_details;
-
-    return DefaultTabController(
-      length: _tabsCount,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(appBarTitle),
-          centerTitle: true,
-          leading: Builder(
-            builder: (context) {
-              return GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const AppBarAnimatedIcon(isBackIcon: true),
-              );
-            },
-          ),
-          actions: [
-            // popup menu
-            if (_workRequest != null &&
-                !_workRequest!.cancelled &&
-                getUserPermission(
-                  context: context,
-                  featureType: FeatureType.tasks,
-                  permissionType: PermissionType.create,
-                ))
-              PopupMenuButton<Choice>(
-                onSelected: (Choice choice) {
-                  choice.onTap();
-                },
-                itemBuilder: (BuildContext context) {
-                  return _choices.map((Choice choice) {
-                    return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(choice.icon),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            choice.title,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList();
-                },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_appBarTitle),
+        centerTitle: true,
+        leading: Builder(
+          builder: (context) {
+            return GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: const AppBarAnimatedIcon(isBackIcon: true),
+            );
+          },
+        ),
+        actions: [
+          // popup menu
+          if (_workRequest != null &&
+              !_workRequest!.cancelled &&
+              getUserPermission(
+                context: context,
+                featureType: FeatureType.tasks,
+                permissionType: PermissionType.create,
+              ))
+            PopupMenuButton<Choice>(
+              onSelected: (Choice choice) {
+                choice.onTap();
+              },
+              itemBuilder: (BuildContext context) {
+                return _choices.map((Choice choice) {
+                  return PopupMenuItem<Choice>(
+                    value: choice,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(choice.icon),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          choice.title,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList();
+              },
+            ),
+        ],
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(
+              icon: Icon(
+                Icons.info,
+                color: tabBarIconColor,
+                size: tabBarIconSize,
               ),
-          ],
-          bottom: TabBar(
-            tabs: [
+            ),
+            if (_workRequest!.images.isNotEmpty)
               Tab(
                 icon: Icon(
-                  Icons.info,
+                  Icons.image,
                   color: tabBarIconColor,
                   size: tabBarIconSize,
                 ),
               ),
-              if (_workRequest!.images.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    Icons.image,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-              if (_workRequest!.video.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    FontAwesomeIcons.play,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-            ],
-            indicatorColor: tabBarIconColor,
-          ),
-        ),
-        body: _workRequest == null
-            ? const LoadingWidget()
-            : MultiBlocListener(
-                listeners: [
-                  BlocListener<WorkRequestManagementBloc,
-                      WorkRequestManagementState>(
-                    listener: (context, state) =>
-                        workRequestManagementBlocListener(context, state),
-                  ),
-                ],
-                child: TabBarView(
-                  children: [
-                    WorkRequestInfoTab(workRequest: _workRequest!),
-                    if (_workRequest!.images.isNotEmpty)
-                      ImagesTab(images: _workRequest!.images),
-                    if (_workRequest!.video.isNotEmpty)
-                      VideoTab(videoUrl: _workRequest!.video),
-                  ],
+            if (_workRequest!.video.isNotEmpty)
+              Tab(
+                icon: Icon(
+                  FontAwesomeIcons.play,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
                 ),
               ),
+          ],
+          indicatorColor: tabBarIconColor,
+        ),
       ),
+      body: _workRequest == null
+          ? const LoadingWidget()
+          : MultiBlocListener(
+              listeners: [
+                BlocListener<WorkRequestManagementBloc,
+                    WorkRequestManagementState>(
+                  listener: (context, state) =>
+                      workRequestManagementBlocListener(context, state),
+                ),
+              ],
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  WorkRequestInfoTab(workRequest: _workRequest!),
+                  if (_workRequest!.images.isNotEmpty)
+                    ImagesTab(images: _workRequest!.images),
+                  if (_workRequest!.video.isNotEmpty)
+                    VideoTab(videoUrl: _workRequest!.video),
+                ],
+              ),
+            ),
     );
   }
 }

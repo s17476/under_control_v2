@@ -2627,6 +2627,14 @@
     "@details_tasks": {
       "description": "details page"
     },
+    "details_task": "Task",
+    "@details_task": {
+      "description": "details page"
+    },
+    "details_work_request": "Work request",
+    "@details_work_request": {
+      "description": "details page"
+    },
     "details_history": "History",
     "@details_history": {
       "description": "details page"
@@ -2637,6 +2645,10 @@
     },
     "details_pictures": "Pictures",
     "@details_pictures": {
+      "description": "details page"
+    },
+    "details_video": "Video",
+    "@details_video": {
       "description": "details page"
     },
     "details_spare_parts": "Spare parts",
