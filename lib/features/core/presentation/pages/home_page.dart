@@ -1,9 +1,11 @@
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
 
+import '../../../../notifications_helpers.dart';
 import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../assets/presentation/pages/assets_page.dart';
 import '../../../assets/utils/asset_management_bloc_listener.dart';
@@ -268,6 +270,12 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
+    // notifications
+    FirebaseMessaging.onMessage.listen(showFlutterNotification);
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+    });
     // bottom bar navigation
     _animationController = AnimationController(
       vsync: this,
