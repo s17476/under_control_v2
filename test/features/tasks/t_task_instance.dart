@@ -199,6 +199,7 @@ final tTaskActionParams = TaskActionParams(
     avatarUrl: 'avatarUrl',
     userGroups: const [],
     locations: const [],
+    deviceTokens: const [],
     companyId: 'companyId',
     approved: true,
     rejected: false,

@@ -30,6 +30,7 @@ void main() {
     avatarUrl: 'avatarUrl',
     userGroups: const ['userGroups'],
     locations: const ['locations'],
+    deviceTokens: const ['deviceTokens'],
     companyId: 'companyId',
     approved: false,
     rejected: false,

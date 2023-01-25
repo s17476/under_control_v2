@@ -87,6 +87,7 @@ void main() {
           lastName: '',
           phoneNumber: '',
           locations: const [],
+          deviceTokens: const [],
           rejected: false,
           suspended: false,
           userGroups: const [],

@@ -72,7 +72,7 @@ import 'features/user_profile/presentation/pages/user_details_page.dart';
 import 'features/user_profile/presentation/pages/users_list_page.dart';
 import 'firebase_options.dart';
 import 'injection.dart';
-import 'notifications_helpers.dart';
+import 'features/notifications/utils/notifications_helpers.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

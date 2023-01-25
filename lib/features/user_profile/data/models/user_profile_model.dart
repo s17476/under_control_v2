@@ -12,6 +12,7 @@ class UserProfileModel extends UserProfile {
     required super.avatarUrl,
     required super.userGroups,
     required super.locations,
+    required super.deviceTokens,
     required super.companyId,
     required super.approved,
     required super.rejected,
@@ -30,6 +31,7 @@ class UserProfileModel extends UserProfile {
     String? avatarUrl,
     List<String>? userGroups,
     List<String>? locations,
+    List<String>? deviceTokens,
     String? companyId,
     bool? approved,
     bool? rejected,
@@ -47,6 +49,7 @@ class UserProfileModel extends UserProfile {
       avatarUrl: avatarUrl ?? this.avatarUrl,
       userGroups: userGroups ?? this.userGroups,
       locations: locations ?? this.locations,
+      deviceTokens: deviceTokens ?? this.deviceTokens,
       companyId: companyId ?? this.companyId,
       approved: approved ?? this.approved,
       rejected: rejected ?? this.rejected,
@@ -67,6 +70,7 @@ class UserProfileModel extends UserProfile {
     result.addAll({'avatarUrl': avatarUrl});
     result.addAll({'userGroups': userGroups});
     result.addAll({'locations': locations});
+    result.addAll({'deviceTokens': deviceTokens});
     result.addAll({'companyId': companyId});
     result.addAll({'approved': approved});
     result.addAll({'rejected': rejected});
@@ -94,6 +98,7 @@ class UserProfileModel extends UserProfile {
       avatarUrl: map['avatarUrl'] ?? '',
       userGroups: List<String>.from(map['userGroups']),
       locations: List<String>.from(map['locations']),
+      deviceTokens: List<String>.from(map['deviceTokens'] ?? []),
       companyId: map['companyId'] ?? '',
       approved: map['approved'] ?? false,
       rejected: map['rejected'] ?? false,
@@ -123,6 +128,7 @@ class UserProfileModel extends UserProfile {
       avatarUrl: '',
       userGroups: const [],
       locations: const [],
+      deviceTokens: const [],
       companyId: '',
       approved: false,
       rejected: false,

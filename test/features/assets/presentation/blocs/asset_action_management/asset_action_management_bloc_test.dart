@@ -9,7 +9,6 @@ import 'package:under_control_v2/features/assets/domain/usecases/asset_action/de
 import 'package:under_control_v2/features/assets/domain/usecases/asset_action/update_asset_action.dart';
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_action_management/asset_action_management_bloc.dart';
 import 'package:under_control_v2/features/assets/utils/asset_status.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/core/utils/duration_unit.dart';
@@ -101,6 +100,7 @@ void main() {
           lastName: '',
           phoneNumber: '',
           locations: const [],
+          deviceTokens: const [],
           rejected: false,
           suspended: false,
           userGroups: const [],

@@ -2,7 +2,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/knowledge_base/data/models/inventory_category/instruction_category_model.dart';
@@ -74,6 +73,7 @@ void main() {
             lastName: '',
             phoneNumber: '',
             locations: const [],
+            deviceTokens: const [],
             rejected: false,
             suspended: false,
             userGroups: const [],

@@ -9,6 +9,7 @@ class UserProfile extends Equatable {
   final String avatarUrl;
   final List<String> userGroups;
   final List<String> locations;
+  final List<String> deviceTokens;
   final String companyId;
   final bool approved;
   final bool rejected;
@@ -26,6 +27,7 @@ class UserProfile extends Equatable {
     required this.avatarUrl,
     required this.userGroups,
     required this.locations,
+    required this.deviceTokens,
     required this.companyId,
     required this.approved,
     required this.rejected,
@@ -46,6 +48,7 @@ class UserProfile extends Equatable {
       avatarUrl,
       userGroups,
       locations,
+      deviceTokens,
       companyId,
       approved,
       rejected,
@@ -58,6 +61,6 @@ class UserProfile extends Equatable {
 
   @override
   String toString() {
-    return 'UserProfile(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phoneNumber: $phoneNumber, avatarUrl: $avatarUrl, userGroups: $userGroups, locations: $locations, companyId: $companyId, approved: $approved, rejected: $rejected, suspended: $suspended, isActive: $isActive, administrator: $administrator, joinDate: $joinDate)';
+    return 'UserProfile(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phoneNumber: $phoneNumber, avatarUrl: $avatarUrl, userGroups: $userGroups, locations: $locations, deviceTokens: $deviceTokens, companyId: $companyId, approved: $approved, rejected: $rejected, suspended: $suspended, isActive: $isActive, administrator: $administrator, joinDate: $joinDate)';
   }
 }

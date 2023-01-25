@@ -7,7 +7,6 @@ import 'package:under_control_v2/features/checklists/domain/usecases/add_checkli
 import 'package:under_control_v2/features/checklists/domain/usecases/delete_checklist.dart';
 import 'package:under_control_v2/features/checklists/domain/usecases/update_checklist.dart';
 import 'package:under_control_v2/features/checklists/presentation/blocs/checklist_management/checklist_management_bloc.dart';
-import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/core/error/failures.dart';
 import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/user_profile/domain/entities/user_profile.dart';
@@ -68,6 +67,7 @@ void main() {
             lastName: '',
             phoneNumber: '',
             locations: const [],
+            deviceTokens: const [],
             rejected: false,
             suspended: false,
             userGroups: const [],
