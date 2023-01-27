@@ -46,4 +46,14 @@ class NotificationSettingsModel extends NotificationSettings {
       workRequests: map['workRequests'] ?? false,
     );
   }
+
+  factory NotificationSettingsModel.initial() {
+    return const NotificationSettingsModel(
+      lastNotificationId: '',
+      assets: true,
+      items: true,
+      tasks: true,
+      workRequests: true,
+    );
+  }
 }

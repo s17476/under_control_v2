@@ -20,6 +20,7 @@ import '../../inventory/domain/entities/item_action/item_action.dart';
 import '../../inventory/domain/entities/item_category/item_category.dart';
 import '../../knowledge_base/domain/entities/instruction_category/instruction_category.dart';
 import '../../locations/domain/entities/location.dart';
+import '../../notifications/domain/entities/notification_type.dart';
 import '../../tasks/domain/entities/work_request/work_request.dart';
 import '../error/failures.dart';
 
@@ -468,4 +469,19 @@ class UserProfileParams extends Equatable {
 
   @override
   List<Object> get props => [userProfile];
+}
+
+class NotificationSettingsParams extends Equatable {
+  final String userId;
+  final NotificationType type;
+  final bool value;
+
+  const NotificationSettingsParams({
+    required this.userId,
+    required this.type,
+    required this.value,
+  });
+
+  @override
+  List<Object> get props => [userId, type, value];
 }
