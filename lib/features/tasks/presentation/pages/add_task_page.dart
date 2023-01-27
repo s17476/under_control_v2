@@ -609,7 +609,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
       KeepAlivePage(
         child: AddTaskCard(
           isEditMode: _task != null,
-          isTemplate: _workRequest != null,
           titleTextEditingController: _titleTextEditingController,
           descriptionTextEditingController: _descriptionTextEditingController,
         ),

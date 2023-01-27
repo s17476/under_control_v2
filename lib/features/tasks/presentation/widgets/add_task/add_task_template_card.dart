@@ -3,15 +3,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 
-class AddTaskCard extends StatelessWidget {
-  const AddTaskCard({
+class AddTaskTemplateCard extends StatelessWidget {
+  const AddTaskTemplateCard({
     Key? key,
     required this.isEditMode,
+    required this.isTemplate,
     required this.titleTextEditingController,
     required this.descriptionTextEditingController,
   }) : super(key: key);
 
   final bool isEditMode;
+  final bool isTemplate;
   final TextEditingController titleTextEditingController;
   final TextEditingController descriptionTextEditingController;
 
@@ -42,9 +44,13 @@ class AddTaskCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24),
                         child: Text(
-                          isEditMode
-                              ? AppLocalizations.of(context)!.task_edit
-                              : AppLocalizations.of(context)!.task_add,
+                          !isTemplate
+                              ? AppLocalizations.of(context)!.task_templates_use
+                              : isEditMode
+                                  ? AppLocalizations.of(context)!
+                                      .task_templates_edit
+                                  : AppLocalizations.of(context)!
+                                      .task_templates_add,
                           style: TextStyle(
                             fontSize:
                                 Theme.of(context).textTheme.headline5!.fontSize,
@@ -53,7 +59,6 @@ class AddTaskCard extends StatelessWidget {
                       ),
                       // title text field
                       CustomTextFormField(
-                        enabled: titleTextEditingController.text != 'AUTO#',
                         scrollPadding: const EdgeInsets.all(170),
                         validator: (val) {
                           if (val!.length < 2) {

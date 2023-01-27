@@ -35,6 +35,7 @@ import '../widgets/add_task/add_task_card.dart';
 import '../widgets/add_task/add_task_set_cyclic.dart';
 import '../widgets/add_task/add_task_spare_part_card.dart';
 import '../widgets/add_task/add_task_summary_card.dart';
+import '../widgets/add_task/add_task_template_card.dart';
 import '../widgets/add_task/add_task_type_card.dart';
 import '../widgets/add_work_request/add_video_card.dart';
 import '../widgets/add_work_request/add_work_request_set_asset_card.dart';
@@ -635,7 +636,7 @@ class _AddTaskTemplatePageState extends State<AddTaskTemplatePage> {
   Widget build(BuildContext context) {
     _pages = [
       KeepAlivePage(
-        child: AddTaskCard(
+        child: AddTaskTemplateCard(
           isEditMode: _task != null,
           isTemplate: _isTemplate,
           titleTextEditingController: _titleTextEditingController,
