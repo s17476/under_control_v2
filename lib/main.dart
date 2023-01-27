@@ -49,6 +49,7 @@ import 'features/knowledge_base/presentation/pages/instruction_preview_page.dart
 import 'features/locations/presentation/pages/location_management_page.dart';
 import 'features/settings/presentation/blocs/language/language_cubit.dart';
 import 'features/settings/presentation/pages/language_settings_page.dart';
+import 'features/settings/presentation/pages/notification_settings_page.dart';
 import 'features/settings/presentation/pages/settings_page.dart';
 import 'features/tasks/presentation/pages/add_task_page.dart';
 import 'features/tasks/presentation/pages/add_task_template_page.dart';
@@ -234,6 +235,8 @@ class App extends StatelessWidget
                 SettingsPage.routeName: (context) => const SettingsPage(),
                 LanguageSettingsPage.routeName: (context) =>
                     const LanguageSettingsPage(),
+                NotificationSettingsPage.routeName: (context) =>
+                    const NotificationSettingsPage(),
                 TaskActionDetailsPage.routeName: (context) =>
                     const TaskActionDetailsPage(),
                 TaskArchivePage.routeName: (context) => const TaskArchivePage(),

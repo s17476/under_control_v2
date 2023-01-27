@@ -6,21 +6,21 @@ final tNotificationDate = DateTime(2023);
 
 final tUcNotificationModel = UcNotificationModel(
   id: 'id',
-  type: NotificationType.task,
+  type: NotificationType.tasks,
   title: 'title',
   body: 'body',
   date: tNotificationDate,
 );
 
 final tUcNotificationToMap = {
-  'type': NotificationType.task.name,
+  'type': NotificationType.tasks.name,
   'title': 'title',
   'body': 'body',
   'date': tNotificationDate,
 };
 
 final tUcNotificationFromMap = {
-  'type': NotificationType.task.name,
+  'type': NotificationType.tasks.name,
   'title': 'title',
   'body': 'body',
   'date': Timestamp.fromDate(tNotificationDate),

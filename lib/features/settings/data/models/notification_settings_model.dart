@@ -40,10 +40,10 @@ class NotificationSettingsModel extends NotificationSettings {
   factory NotificationSettingsModel.fromMap(Map<String, dynamic> map) {
     return NotificationSettingsModel(
       lastNotificationId: map['lastNotificationId'] ?? '',
-      assets: map['assets'] ?? false,
-      items: map['items'] ?? false,
-      tasks: map['tasks'] ?? false,
-      workRequests: map['workRequests'] ?? false,
+      assets: map['assets'] ?? true,
+      items: map['items'] ?? true,
+      tasks: map['tasks'] ?? true,
+      workRequests: map['workRequests'] ?? true,
     );
   }
 
@@ -54,6 +54,16 @@ class NotificationSettingsModel extends NotificationSettings {
       items: true,
       tasks: true,
       workRequests: true,
+    );
+  }
+
+  factory NotificationSettingsModel.fromDomain(NotificationSettings settings) {
+    return NotificationSettingsModel(
+      lastNotificationId: settings.lastNotificationId,
+      assets: settings.assets,
+      items: settings.items,
+      tasks: settings.tasks,
+      workRequests: settings.workRequests,
     );
   }
 }

@@ -1,9 +1,9 @@
 enum NotificationType {
   unknown(''),
-  workRequest('workRequest'),
-  task('task'),
-  item('item'),
-  asset('asset');
+  workRequests('workRequests'),
+  tasks('tasks'),
+  items('items'),
+  assets('assets');
 
   final String name;
 
@@ -11,14 +11,14 @@ enum NotificationType {
 
   factory NotificationType.fromString(String name) {
     switch (name) {
-      case 'workRequest':
-        return NotificationType.workRequest;
-      case 'task':
-        return NotificationType.task;
-      case 'item':
-        return NotificationType.item;
-      case 'asset':
-        return NotificationType.asset;
+      case 'workRequests':
+        return NotificationType.workRequests;
+      case 'tasks':
+        return NotificationType.tasks;
+      case 'items':
+        return NotificationType.items;
+      case 'assets':
+        return NotificationType.assets;
       default:
         return NotificationType.unknown;
     }
