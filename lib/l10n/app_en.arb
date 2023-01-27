@@ -2678,5 +2678,9 @@
     "details_checklist": "Checklist",
     "@details_checklist": {
       "description": "details page"
+    },
+    "notifications": "Notifications",
+    "@notifications": {
+      "description": "notifications"
     }
 }

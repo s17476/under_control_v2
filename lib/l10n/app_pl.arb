@@ -650,5 +650,6 @@
     "details_item": "Przedmiot",
     "details_actions": "Akcje",
     "details_locations": "Lokacje",
-    "details_checklist": "Lista kontrolna"
+    "details_checklist": "Lista kontrolna",
+    "notifications": "Powiadomienia"
 }

@@ -24,7 +24,7 @@ class NotificationSettingsCubit extends Cubit<NotificationSettingsState> {
   final GetNotificationSettings getNotificationSettings;
   final UpdateNotificationSettings updateNotificationSettings;
 
-  late StreamSubscription _userStreamSubscription;
+  // late StreamSubscription _userStreamSubscription;
   late StreamSubscription _authStreamSubscription;
   NotificationSettingsCubit(
     this.userProfileBloc,
@@ -38,11 +38,13 @@ class NotificationSettingsCubit extends Cubit<NotificationSettingsState> {
       }
     });
 
-    _userStreamSubscription = userProfileBloc.stream.listen((state) {
-      if (state is Approved && state.userProfile.isActive) {
-        getSettings(state.userProfile);
-      }
-    });
+    // _userStreamSubscription = userProfileBloc.stream.listen((state) {
+    //   print('APPROVED');
+    final userState = userProfileBloc.state;
+    if (userState is Approved && userState.userProfile.isActive) {
+      getSettings(userState.userProfile);
+    }
+    // });
   }
 
   Future<void> getSettings(UserProfile userProfile) async {
@@ -102,7 +104,7 @@ class NotificationSettingsCubit extends Cubit<NotificationSettingsState> {
 
   @override
   Future<void> close() {
-    _userStreamSubscription.cancel();
+    // _userStreamSubscription.cancel();
     _authStreamSubscription.cancel();
     return super.close();
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/settings/presentation/blocs/notification_settings/notification_settings_cubit.dart';
 
 import '../../utils/get_localizaed_language_name.dart';
 import '../blocs/language/language_cubit.dart';
@@ -12,27 +13,19 @@ class NotificationSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final systemLocales = context
-        .findAncestorWidgetOfExactType<MaterialApp>()!
-        .supportedLocales
-        .toList()
-      ..sort(
-        (a, b) => a.languageCode.compareTo(b.languageCode),
-      );
     return Scaffold(
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.language_select,
         ),
       ),
-      body: ListView.separated(
-        itemCount: systemLocales.length,
-        separatorBuilder: (context, index) => const Divider(
-          thickness: 1.5,
-        ),
-        itemBuilder: (context, index) => LanguageButton(
-          languageCode: systemLocales[index].languageCode,
-        ),
+      body: BlocBuilder<NotificationSettingsCubit, NotificationSettingsState>(
+        builder: (context, state) {
+          if (state is NotificationSettingsLoaded) {
+            return Text(state.settings.assets.toString());
+          }
+          return Text(state.toString());
+        },
       ),
     );
   }

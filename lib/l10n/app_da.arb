@@ -650,5 +650,6 @@
     "details_item": "Vare",
     "details_actions": "Handling",
     "details_locations": "Placeringer",
-    "details_checklist": "Tjekliste"
+    "details_checklist": "Tjekliste",
+    "notifications": "Meddelelser"
 }

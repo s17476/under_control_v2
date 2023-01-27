@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/settings/presentation/widgets/notification_settings_tile.dart';
 
 import '../widgets/language_settings_tile.dart';
 
@@ -19,6 +20,10 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           children: const [
             LanguageSettingsTile(),
+            Divider(
+              thickness: 1.5,
+            ),
+            NotificationSettingsTile(),
             Divider(
               thickness: 1.5,
             ),
