@@ -29,7 +29,7 @@ class NotificationSettingsImpl extends NotificationSettingsRepository {
           .get();
 
       if (documentSnapshot.exists) {
-        final documentMap = documentSnapshot as Map<String, dynamic>;
+        final documentMap = documentSnapshot.data() as Map<String, dynamic>;
         final notificationSettings =
             NotificationSettingsModel.fromMap(documentMap);
         return Right(notificationSettings);

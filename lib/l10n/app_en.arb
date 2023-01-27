@@ -2682,5 +2682,21 @@
     "notifications": "Notifications",
     "@notifications": {
       "description": "notifications"
+    },
+    "notifications_work_requests": "Notifications about new work orders in locations registered in your groups.",
+    "@notifications_work_requests": {
+      "description": "notifications"
+    },
+    "notifications_tasks": "Notifications about new tasks in locations registered in your groups.",
+    "@notifications_tasks": {
+      "description": "notifications"
+    },
+    "notifications_inventory": "Notifications about items below the emergency quantity.",
+    "@notifications_inventory": {
+      "description": "notifications"
+    },
+    "notifications_assets": "Notifications about assets without a valid inspection.",
+    "@notifications_assets": {
+      "description": "notifications"
     }
 }

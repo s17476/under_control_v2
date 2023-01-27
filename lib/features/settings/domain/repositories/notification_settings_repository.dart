@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:under_control_v2/features/settings/domain/entities/notification_settings.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
+import '../entities/notification_settings.dart';
 
 abstract class NotificationSettingsRepository {
   ///Gets notification settings.

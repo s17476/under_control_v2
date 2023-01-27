@@ -651,5 +651,9 @@
     "details_actions": "Handling",
     "details_locations": "Placeringer",
     "details_checklist": "Tjekliste",
-    "notifications": "Meddelelser"
+    "notifications": "Meddelelser",
+    "notifications_work_requests": "Meddelelser om nye anmodninger på placeringer, der er registreret i dine grupper.",
+    "notifications_tasks": "Meddelelser om nye opgaver på placeringer, der er registreret i dine grupper.",
+    "notifications_inventory": "Meddelelser om varer under nødmængden.",
+    "notifications_assets": "Meddelelser om aktiver uden gyldig eftersyn."
 }
