@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -10,17 +12,25 @@ import 'package:under_control_v2/features/core/usecases/usecase.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
+class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
+
 class MockNetworkInfo extends Mock implements NetworkInfo {}
 
 void main() {
   late MockFirebaseAuth mockFirebaseAuth;
   late MockNetworkInfo mockNetworkInfo;
+  late MockFirebaseMessaging mockFirebaseMessaging;
   late AuthenticationRepositoryImpl repository;
+  late FakeFirebaseFirestore fakeFirebaseFirestore;
 
   setUp(() {
     mockFirebaseAuth = MockFirebaseAuth();
     mockNetworkInfo = MockNetworkInfo();
+    fakeFirebaseFirestore = FakeFirebaseFirestore();
+    mockFirebaseMessaging = MockFirebaseMessaging();
     repository = AuthenticationRepositoryImpl(
+      firebaseFirestore: fakeFirebaseFirestore,
+      firebaseMessaging: mockFirebaseMessaging,
       firebaseAuth: mockFirebaseAuth,
       networkInfo: mockNetworkInfo,
     );
