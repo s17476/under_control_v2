@@ -19,12 +19,17 @@ abstract class TaskFilterEvent extends Equatable {
 }
 
 class TaskFilterResetEvent extends TaskFilterEvent {
-  const TaskFilterResetEvent({
+  TaskFilterResetEvent({
     super.taskOrRequest = TaskOrRequest.all,
     super.taskOwner = TaskOwner.all,
     super.taskPriority = TaskPriority.unknown,
     super.taskType = TaskType.unknown,
-  });
+  }) : super(properties: [
+          taskOrRequest,
+          taskOwner,
+          taskPriority,
+          taskType,
+        ]);
 }
 
 class TaskFilterSelectEvent extends TaskFilterEvent {

@@ -33,7 +33,7 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
   List<Task>? _allTasks;
   List<WorkRequest>? _allRequests;
 
-  TaskFilterEvent _lastEvent = const TaskFilterResetEvent();
+  TaskFilterEvent _lastEvent = TaskFilterResetEvent();
 
   final double _filterFullHeight = 335;
   final double _filterFullHeightOnlyRequests = 180;
@@ -83,7 +83,7 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
         _userProfile = null;
         _allTasks = null;
         _allRequests = null;
-        _lastEvent = const TaskFilterResetEvent();
+        _lastEvent = TaskFilterResetEvent();
       },
     );
 
@@ -93,8 +93,8 @@ class TaskFilterBloc extends Bloc<TaskFilterEvent, TaskFilterState> {
         filterHeight: _filterFullHeight,
         isFilterVisible: state.isFilterVisible,
         isMiniSize: false,
-        tasks: _allTasks ?? [],
-        workRequests: _allRequests ?? [],
+        tasks: _allTasks != null ? [..._allTasks!] : [],
+        workRequests: _allRequests != null ? [..._allRequests!] : [],
       ));
     });
 

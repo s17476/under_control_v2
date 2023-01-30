@@ -223,67 +223,69 @@ class _TaskDetailsPageState extends State<TaskDetailsPage>
                 },
               ),
           ],
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: [
-              Tab(
-                icon: Icon(
-                  Icons.info,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
+          bottom: _task == null
+              ? null
+              : TabBar(
+                  controller: _tabController,
+                  tabs: [
+                    Tab(
+                      icon: Icon(
+                        Icons.info,
+                        color: tabBarIconColor,
+                        size: tabBarIconSize,
+                      ),
+                    ),
+                    Tab(
+                      icon: Icon(
+                        Icons.work_history,
+                        color: tabBarIconColor,
+                        size: tabBarIconSize,
+                      ),
+                    ),
+                    if (_task!.checklist.isNotEmpty)
+                      Tab(
+                        icon: Icon(
+                          Icons.checklist,
+                          color: tabBarIconColor,
+                          size: tabBarIconSize,
+                        ),
+                      ),
+                    if (_task!.images.isNotEmpty)
+                      Tab(
+                        icon: Icon(
+                          Icons.image,
+                          color: tabBarIconColor,
+                          size: tabBarIconSize,
+                        ),
+                      ),
+                    if (_task!.video.isNotEmpty)
+                      Tab(
+                        icon: Icon(
+                          FontAwesomeIcons.play,
+                          color: tabBarIconColor,
+                          size: tabBarIconSize,
+                        ),
+                      ),
+                    if (_task!.instructions.isNotEmpty)
+                      Tab(
+                        icon: Icon(
+                          Icons.menu_book,
+                          color: tabBarIconColor,
+                          size: tabBarIconSize,
+                        ),
+                      ),
+                    if (_task!.sparePartsAssets.isNotEmpty ||
+                        _task!.sparePartsItems.isNotEmpty)
+                      Tab(
+                        icon: Icon(
+                          Icons.settings_applications,
+                          color: tabBarIconColor,
+                          size: tabBarIconSize,
+                        ),
+                      ),
+                  ],
+                  indicatorColor: tabBarIconColor,
                 ),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.work_history,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
-                ),
-              ),
-              if (_task!.checklist.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    Icons.checklist,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-              if (_task!.images.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    Icons.image,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-              if (_task!.video.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    FontAwesomeIcons.play,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-              if (_task!.instructions.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    Icons.menu_book,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-              if (_task!.sparePartsAssets.isNotEmpty ||
-                  _task!.sparePartsItems.isNotEmpty)
-                Tab(
-                  icon: Icon(
-                    Icons.settings_applications,
-                    color: tabBarIconColor,
-                    size: tabBarIconSize,
-                  ),
-                ),
-            ],
-            indicatorColor: tabBarIconColor,
-          ),
         ),
         body: _task == null
             ? const LoadingWidget()

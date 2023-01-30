@@ -132,7 +132,7 @@ class _AppBarTasksFilterState extends State<AppBarTasksFilter> {
                           ),
                           onPressed: () => context
                               .read<TaskFilterBloc>()
-                              .add(const TaskFilterResetEvent()),
+                              .add(TaskFilterResetEvent()),
                           label: Text(
                             AppLocalizations.of(context)!.task_filter_reset,
                             style: Theme.of(context)

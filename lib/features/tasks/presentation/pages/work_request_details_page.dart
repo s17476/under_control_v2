@@ -210,35 +210,37 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
               },
             ),
         ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(
-              icon: Icon(
-                Icons.info,
-                color: tabBarIconColor,
-                size: tabBarIconSize,
+        bottom: _workRequest == null
+            ? null
+            : TabBar(
+                controller: _tabController,
+                tabs: [
+                  Tab(
+                    icon: Icon(
+                      Icons.info,
+                      color: tabBarIconColor,
+                      size: tabBarIconSize,
+                    ),
+                  ),
+                  if (_workRequest!.images.isNotEmpty)
+                    Tab(
+                      icon: Icon(
+                        Icons.image,
+                        color: tabBarIconColor,
+                        size: tabBarIconSize,
+                      ),
+                    ),
+                  if (_workRequest!.video.isNotEmpty)
+                    Tab(
+                      icon: Icon(
+                        FontAwesomeIcons.play,
+                        color: tabBarIconColor,
+                        size: tabBarIconSize,
+                      ),
+                    ),
+                ],
+                indicatorColor: tabBarIconColor,
               ),
-            ),
-            if (_workRequest!.images.isNotEmpty)
-              Tab(
-                icon: Icon(
-                  Icons.image,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
-                ),
-              ),
-            if (_workRequest!.video.isNotEmpty)
-              Tab(
-                icon: Icon(
-                  FontAwesomeIcons.play,
-                  color: tabBarIconColor,
-                  size: tabBarIconSize,
-                ),
-              ),
-          ],
-          indicatorColor: tabBarIconColor,
-        ),
       ),
       body: _workRequest == null
           ? const LoadingWidget()
