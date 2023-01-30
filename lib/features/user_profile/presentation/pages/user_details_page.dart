@@ -253,9 +253,11 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                           const SizedBox(
                             width: 4,
                           ),
-                          Text(
-                            choice.title,
-                            overflow: TextOverflow.ellipsis,
+                          Expanded(
+                            child: Text(
+                              choice.title,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),

@@ -27,9 +27,9 @@ exports.taskAdded = functions.firestore
       };
       const dbPayload = {
         'type': 'tasks',
-        'groupTask': true,
-        'title': 'NEWTASK#',
+        'code': 'NEW',
         'id': document.id,
+        'read': false,
       };
 
       const tokens = [];
@@ -74,9 +74,10 @@ exports.taskAdded = functions.firestore
         // if no permissions found, then default permission option is TRUE
         if((userPermissions.exists && (userPermissions.data().tasks == true || userPermissions.data().tasks == undefined)) || !userPermissions.exists){
           // add token to the list
+          
           const userTokens = user.data().deviceTokens;
           userTokens.forEach(token => {
-            if(tokens.indexOf(token) === -1){
+            if(document.data().userId != user.id && tokens.indexOf(token) === -1){
               tokens.push(token);
             }
           });
@@ -122,9 +123,9 @@ exports.workRequestAdded = functions.firestore
       };
       const dbPayload = {
         'type': 'workRequests',
-        'groupTask': false,
-        'title': 'NEWRrequest#',
+        'code': 'NEW',
         'id': document.id,
+        'read': false,
       };
 
       const tokens = [];
@@ -156,7 +157,7 @@ exports.workRequestAdded = functions.firestore
           // add token to the list
           const userTokens = user.data().deviceTokens;
           userTokens.forEach(token => {
-            if(tokens.indexOf(token) === -1){
+            if(document.data().userId != user.id && tokens.indexOf(token) === -1){
               tokens.push(token);
             }
           });
