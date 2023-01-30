@@ -100,6 +100,86 @@ exports.taskAdded = functions.firestore
       return;
     });
 
+// new work request handler
+exports.workRequestAdded = functions.firestore
+    .document("companies/{companyId}/workRequests/{workRequestId}")
+    .onCreate(async (document, context) => {
+
+      let companyId = context.params.companyId;
+      const newTask = document.data();
+
+      // notification data
+      const text = newTask.title;
+      const payload = {
+        notification: {
+          title_loc_key: 'new_work_request_title',
+          body: text ? (text.length <= 100 ? text : text.substring(0, 97) + '...') : '',
+        },
+        data:{
+          type: 'workRequests',
+          id: document.id,
+        }
+      };
+      const dbPayload = {
+        'type': 'workRequests',
+        'groupTask': false,
+        'title': 'NEWRrequest#',
+        'id': document.id,
+      };
+
+      const tokens = [];
+      const userIds = [];
+
+      var users = [];
+
+
+      const requestUsers = await db
+        .collection('users')
+        .where('companyId', '==', companyId)
+        .where('isActive', '==', true)
+        .get();
+        
+      users = requestUsers.docs;
+      
+
+      if (users.empty) {
+        console.log('No matching documents.');
+        return;
+      }
+
+      for(const user of users){
+        const userPermissions = await getNotificationSettings(user.id);
+
+        // check user permissions
+        // if no permissions found, then default permission option is TRUE
+        if((userPermissions.exists && (userPermissions.data().workRequests == true || userPermissions.data().workRequests == undefined)) || !userPermissions.exists){
+          // add token to the list
+          const userTokens = user.data().deviceTokens;
+          userTokens.forEach(token => {
+            if(tokens.indexOf(token) === -1){
+              tokens.push(token);
+            }
+          });
+          // users to get in app notification
+          if(userIds.indexOf(user.id) === -1){
+            userIds.push(user.id);
+          }
+        }
+      }
+        
+      // add new in app notifications to the db
+      for(const userId of userIds){
+        await addNotificationToDb(userId, document.id, dbPayload);
+      }
+
+      // send notifications
+      if(tokens.length > 0){
+        await admin.messaging().sendToDevice(tokens, payload);
+      }
+
+      return;
+    });
+
 function addNotificationToDb(userId, documentId, dbPayplad){
   return db
   .collection('users')
