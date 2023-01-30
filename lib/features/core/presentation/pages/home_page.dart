@@ -61,6 +61,7 @@ class _HomePageState extends State<HomePage>
   late CircularBottomNavigationController _navigationController;
 
   bool _isFilterExpanded = false;
+  bool _isNotificationsExpanded = false;
   bool _isInventorySearchBarExpanded = false;
   bool _isAssetsSearchBarExpanded = false;
   bool _isInstructionsSearchBarExpanded = false;
@@ -153,6 +154,14 @@ class _HomePageState extends State<HomePage>
     context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
   }
 
+  // show/hide filter widget
+  void _toggleIsNotificationsExpanded() {
+    setState(() {
+      _isNotificationsExpanded = !_isNotificationsExpanded;
+    });
+    context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
+  }
+
   // show/hide search bar widget
   void _toggleIsSearchBarExpanded() {
     setState(() {
@@ -165,6 +174,9 @@ class _HomePageState extends State<HomePage>
       }
       if (_isFilterExpanded) {
         _toggleIsFilterExpanded();
+      }
+      if (_isNotificationsExpanded) {
+        _toggleIsNotificationsExpanded();
       }
 
       // toggle inventory search
@@ -211,6 +223,10 @@ class _HomePageState extends State<HomePage>
     // hides filter widget if expanded
     if (_isFilterExpanded) {
       _toggleIsFilterExpanded();
+    }
+    // hides notifications
+    if (_isNotificationsExpanded) {
+      _toggleIsNotificationsExpanded();
     }
     // hides tasks filter if visible
     if (_isTaskFilterVisible) {
@@ -290,17 +306,17 @@ class _HomePageState extends State<HomePage>
 
     // bottom navigation
     _navigationController = CircularBottomNavigationController(_pageIndex);
-    _pageController.addListener(() {
-      if (_pageController.page! - _pageIndex > 0.5 ||
-          _pageController.page! - _pageIndex < -0.5) {
-        // TODO - scroll up on page change
-        // _scrollController.animateTo(
-        //   0,
-        //   duration: const Duration(milliseconds: 300),
-        //   curve: Curves.easeInOut,
-        // );
-      }
-    });
+    // _pageController.addListener(() {
+    //   if (_pageController.page! - _pageIndex > 0.5 ||
+    //       _pageController.page! - _pageIndex < -0.5) {
+    // TODO - scroll up on page change
+    // _scrollController.animateTo(
+    //   0,
+    //   duration: const Duration(milliseconds: 300),
+    //   curve: Curves.easeInOut,
+    // );
+    //   }
+    // });
 
     // triggers hide/show bottom navigation bar
     _scrollController.addListener(() {
@@ -328,6 +344,9 @@ class _HomePageState extends State<HomePage>
       }
       if (_isTaskFilterVisible) {
         context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
+      }
+      if (_isNotificationsExpanded) {
+        _toggleIsNotificationsExpanded();
       }
     });
 
@@ -372,6 +391,11 @@ class _HomePageState extends State<HomePage>
         // hides filter widget if expanded
         if (_isFilterExpanded) {
           _toggleIsFilterExpanded();
+          return false;
+        }
+        // hides notifications
+        if (_isNotificationsExpanded) {
+          _toggleIsNotificationsExpanded();
           return false;
         }
         // hides menu drawer if visible
@@ -448,6 +472,14 @@ class _HomePageState extends State<HomePage>
                 _isFilterExpanded = false;
               });
             }
+            if ((state is TaskFilterSelectedState ||
+                    state is TaskFilterNothingSelectedState) &&
+                state.isFilterVisible &&
+                _isNotificationsExpanded) {
+              setState(() {
+                _isNotificationsExpanded = false;
+              });
+            }
           }),
         ],
         child: Scaffold(
@@ -477,6 +509,9 @@ class _HomePageState extends State<HomePage>
                       pageIndex: _pageIndex,
                       isFilterExpanded: _isFilterExpanded,
                       toggleIsFilterExpanded: _toggleIsFilterExpanded,
+                      isNotificationsExpanded: _isNotificationsExpanded,
+                      toggleIsNotificationsExpanded:
+                          _toggleIsNotificationsExpanded,
                       isMenuVisible: _isMenuVisible,
                       toggleIsMenuVisible: _toggleIsMenuVisible,
                       isSearchBarExpanded: _getFlagForPageIndex(_pageIndex),

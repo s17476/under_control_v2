@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import 'filter_icon.dart';
+import 'notifications_icon.dart';
 
-class FilterButton extends HookWidget {
-  const FilterButton({
+class NotificationsButton extends HookWidget {
+  const NotificationsButton({
     Key? key,
     required this.isNotificationsExpanded,
     required this.toggleIsNotificationsExpanded,
@@ -28,7 +28,7 @@ class FilterButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final toggleState = useState(false);
-    toggleState.value = isFilterExpanded;
+    toggleState.value = isNotificationsExpanded;
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 8,
@@ -41,10 +41,10 @@ class FilterButton extends HookWidget {
           if (isSearchBarExpanded) {
             toggleIsSearchBarExpanded();
           }
-          if (isNotificationsExpanded) {
-            toggleIsNotificationsExpanded();
+          if (isFilterExpanded) {
+            toggleIsFilterExpanded();
           }
-          toggleIsFilterExpanded();
+          toggleIsNotificationsExpanded();
         },
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
@@ -53,13 +53,13 @@ class FilterButton extends HookWidget {
             child: child,
           ),
           child: toggleState.value
-              ? FilterIcon(
+              ? NotificationsIcon(
                   key: const ValueKey('expanded'),
-                  isFilterExpanded: isFilterExpanded,
+                  isExpanded: isNotificationsExpanded,
                 )
-              : FilterIcon(
+              : NotificationsIcon(
                   key: const ValueKey('colapsed'),
-                  isFilterExpanded: isFilterExpanded,
+                  isExpanded: isNotificationsExpanded,
                 ),
         ),
       ),

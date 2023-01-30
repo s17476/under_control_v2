@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:under_control_v2/features/core/presentation/widgets/home_page/notifications_icon.dart';
+
 import '../../../../groups/domain/entities/feature.dart';
 import '../../../../tasks/presentation/blocs/task_filter/task_filter_bloc.dart';
 import '../../../utils/get_user_permission.dart';
 import '../../../utils/permission.dart';
 import 'app_bar_animated_icon.dart';
 import 'filter_button.dart';
+import 'notifications_button.dart';
 import 'search_button.dart';
 import 'task_filter_button.dart';
 
@@ -17,6 +20,8 @@ class HomeSliverAppBar extends StatelessWidget {
     required this.pageIndex,
     required this.isFilterExpanded,
     required this.toggleIsFilterExpanded,
+    required this.isNotificationsExpanded,
+    required this.toggleIsNotificationsExpanded,
     required this.isSearchBarExpanded,
     required this.toggleIsSearchBarExpanded,
     required this.isMenuVisible,
@@ -27,6 +32,8 @@ class HomeSliverAppBar extends StatelessWidget {
   final int pageIndex;
   final bool isFilterExpanded;
   final VoidCallback toggleIsFilterExpanded;
+  final bool isNotificationsExpanded;
+  final VoidCallback toggleIsNotificationsExpanded;
   final bool isSearchBarExpanded;
   final VoidCallback toggleIsSearchBarExpanded;
   final bool isMenuVisible;
@@ -122,8 +129,21 @@ class HomeSliverAppBar extends StatelessWidget {
             isSearchBarExpanded: isSearchBarExpanded,
             toggleIsSearchBarExpanded: toggleIsSearchBarExpanded,
           ),
+        // // filter
+        NotificationsButton(
+          isNotificationsExpanded: isNotificationsExpanded,
+          toggleIsNotificationsExpanded: toggleIsNotificationsExpanded,
+          isFilterExpanded: isFilterExpanded,
+          toggleIsFilterExpanded: toggleIsFilterExpanded,
+          isSearchBarExpanded: isSearchBarExpanded,
+          toggleIsSearchBarExpanded: toggleIsSearchBarExpanded,
+          isMenuVisible: isMenuVisible,
+          toggleIsMenuVisible: toggleIsMenuVisible,
+        ),
         // filter
         FilterButton(
+          isNotificationsExpanded: isNotificationsExpanded,
+          toggleIsNotificationsExpanded: toggleIsNotificationsExpanded,
           isFilterExpanded: isFilterExpanded,
           toggleIsFilterExpanded: toggleIsFilterExpanded,
           isSearchBarExpanded: isSearchBarExpanded,

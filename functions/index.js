@@ -30,6 +30,7 @@ exports.taskAdded = functions.firestore
         'code': 'NEW',
         'connectedId': document.id,
         'read': false,
+        'date': document.data().date,
       };
 
       const tokens = [];
@@ -126,6 +127,7 @@ exports.workRequestAdded = functions.firestore
         'code': 'NEW',
         'connectedId': document.id,
         'read': false,
+        'date': document.data().date,
       };
 
       const tokens = [];

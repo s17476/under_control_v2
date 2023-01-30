@@ -8,6 +8,7 @@ class UcNotification extends Equatable {
   final String code;
   final String connectedId;
   final bool read;
+  final DateTime date;
 
   const UcNotification({
     required this.id,
@@ -15,6 +16,7 @@ class UcNotification extends Equatable {
     required this.code,
     required this.connectedId,
     required this.read,
+    required this.date,
   });
 
   @override
@@ -25,11 +27,12 @@ class UcNotification extends Equatable {
       code,
       connectedId,
       read,
+      date,
     ];
   }
 
   @override
   String toString() {
-    return 'UcNotification(id: $id, type: $type, code: $code, connectedId: $connectedId, read: $read)';
+    return 'UcNotification(id: $id, type: $type, code: $code, connectedId: $connectedId, read: $read, date: $date)';
   }
 }
