@@ -28,7 +28,7 @@ exports.taskAdded = functions.firestore
       const dbPayload = {
         'type': 'tasks',
         'code': 'NEW',
-        'id': document.id,
+        'connectedId': document.id,
         'read': false,
       };
 
@@ -124,7 +124,7 @@ exports.workRequestAdded = functions.firestore
       const dbPayload = {
         'type': 'workRequests',
         'code': 'NEW',
-        'id': document.id,
+        'connectedId': document.id,
         'read': false,
       };
 

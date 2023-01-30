@@ -5,16 +5,16 @@ import 'package:under_control_v2/features/notifications/domain/entities/notifica
 class UcNotification extends Equatable {
   final String id;
   final NotificationType type;
-  final String title;
-  final String body;
-  final DateTime date;
+  final String code;
+  final String connectedId;
+  final bool read;
 
   const UcNotification({
     required this.id,
     required this.type,
-    required this.title,
-    required this.body,
-    required this.date,
+    required this.code,
+    required this.connectedId,
+    required this.read,
   });
 
   @override
@@ -22,14 +22,14 @@ class UcNotification extends Equatable {
     return [
       id,
       type,
-      title,
-      body,
-      date,
+      code,
+      connectedId,
+      read,
     ];
   }
 
   @override
   String toString() {
-    return 'UcNotification(id: $id, type: $type, title: $title, body: $body, date: $date)';
+    return 'UcNotification(id: $id, type: $type, code: $code, connectedId: $connectedId, read: $read)';
   }
 }

@@ -471,6 +471,19 @@ class UserProfileParams extends Equatable {
   List<Object> get props => [userProfile];
 }
 
+class UcNotificationParams extends Equatable {
+  final String userId;
+  final String notificationId;
+
+  const UcNotificationParams({
+    required this.userId,
+    required this.notificationId,
+  });
+
+  @override
+  List<Object> get props => [userId, notificationId];
+}
+
 class NotificationSettingsParams extends Equatable {
   final String userId;
   final NotificationType type;
