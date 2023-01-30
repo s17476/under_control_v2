@@ -108,7 +108,6 @@ class AssetTile extends StatelessWidget {
                                   color: color,
                                   // shows asset's photo or an icon if no there is no photo url
                                   child: asset.images.isNotEmpty
-                                      // TODO - cache images
                                       ? CachedNetworkImage(
                                           imageUrl: asset.images[0],
                                           placeholder: (context, url) => Stack(

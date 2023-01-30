@@ -36,7 +36,6 @@ class _InventoryLatestActionsState extends State<InventoryLatestActions> {
 
   @override
   Widget build(BuildContext context) {
-    print('Dash - InventoryLatestActions');
     final permission = getUserPermission(
       context: context,
       featureType: FeatureType.inventory,

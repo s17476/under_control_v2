@@ -228,7 +228,6 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
             ),
           ),
           (_) async {
-            print('GroupBloc - Unselected');
             emit(
               GroupLoadedState(
                 allGroups: currentState.allGroups,

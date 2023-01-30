@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
 import 'package:under_control_v2/features/notifications/domain/entities/notification_type.dart';

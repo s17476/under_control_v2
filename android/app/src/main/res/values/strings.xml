@@ -1,0 +1,4 @@
+<resources>
+    <string name="new_task_title">You got a new task</string>
+    <string name="new_work_request_title">New work request</string>
+</resources>

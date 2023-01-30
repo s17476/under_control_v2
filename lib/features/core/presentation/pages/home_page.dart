@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
 
-import '../../../notifications/utils/notifications_helpers.dart';
 import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../assets/presentation/pages/assets_page.dart';
 import '../../../assets/utils/asset_management_bloc_listener.dart';
@@ -35,7 +34,6 @@ import '../widgets/home_page/app_bar_search_box.dart';
 import '../widgets/home_page/home_bottom_navigation_bar.dart';
 import '../widgets/home_page/home_sliver_app_bar.dart';
 import '../widgets/home_page/main_drawer.dart';
-import '../widgets/keep_alive_page.dart';
 import '../widgets/overlay_menu/overlay_menu.dart';
 
 class HomePage extends StatefulWidget {
@@ -496,8 +494,7 @@ class _HomePageState extends State<HomePage>
                           return Stack(
                             children: [
                               // locations not selected
-                              if (state is FilterLoadedState &&
-                                  state.locations.isEmpty)
+                              if (state.locations.isEmpty)
                                 Column(
                                   children: [
                                     Padding(

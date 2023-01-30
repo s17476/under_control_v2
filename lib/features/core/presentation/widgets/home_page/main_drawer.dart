@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/settings/presentation/pages/settings_page.dart';
 
 import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
-import '../../../../checklists/presentation/pages/checklist_management_page.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../company_profile/presentation/pages/company_details_page.dart';
 import '../../../../groups/presentation/pages/group_management_page.dart';
 import '../../../../locations/presentation/pages/location_management_page.dart';
+import '../../../../settings/presentation/pages/settings_page.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../../user_profile/presentation/pages/user_details_page.dart';
 import '../../../../user_profile/presentation/pages/users_list_page.dart';
