@@ -1,23 +1,23 @@
-part of 'items_management_bloc.dart';
+part of 'uc_notification_management_bloc.dart';
 
 abstract class UcNotificationManagementEvent extends Equatable {
-  final UcNotification notification;
+  final String notificationId;
   const UcNotificationManagementEvent({
-    required this.notification,
+    required this.notificationId,
   });
 
   @override
-  List<Object> get props => [notification];
+  List<Object> get props => [notificationId];
 }
 
 class MarkAsUnreadEvent extends UcNotificationManagementEvent {
-  const MarkAsUnreadEvent({required super.notification});
+  const MarkAsUnreadEvent({required super.notificationId});
 }
 
 class MarkAsReadEvent extends UcNotificationManagementEvent {
-  const MarkAsReadEvent({required super.notification});
+  const MarkAsReadEvent({required super.notificationId});
 }
 
 class DeleteNotificationEvent extends UcNotificationManagementEvent {
-  const DeleteNotificationEvent({required super.notification});
+  const DeleteNotificationEvent({required super.notificationId});
 }

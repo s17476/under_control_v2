@@ -65,7 +65,7 @@ import 'package:under_control_v2/features/assets/domain/usecases/get_assets_stre
 import 'package:under_control_v2/features/assets/domain/usecases/update_asset.dart'
     as _i180;
 import 'package:under_control_v2/features/assets/presentation/blocs/asset/asset_bloc.dart'
-    as _i248;
+    as _i249;
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_action/asset_action_bloc.dart'
     as _i209;
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_action_management/asset_action_management_bloc.dart'
@@ -79,7 +79,7 @@ import 'package:under_control_v2/features/assets/presentation/blocs/asset_manage
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_parts/asset_parts_bloc.dart'
     as _i214;
 import 'package:under_control_v2/features/assets/presentation/blocs/dashboard_asset_action/dashboard_asset_action_bloc.dart'
-    as _i249;
+    as _i250;
 import 'package:under_control_v2/features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart'
     as _i198;
 import 'package:under_control_v2/features/authentication/data/repositories/authentication_repository_impl.dart'
@@ -171,13 +171,13 @@ import 'package:under_control_v2/features/dashboard/domain/usecases/get_converte
 import 'package:under_control_v2/features/dashboard/domain/usecases/get_latest_task_actions.dart'
     as _i146;
 import 'package:under_control_v2/features/dashboard/presentation/blocs/activity_bloc/activity_bloc_bloc.dart'
-    as _i247;
+    as _i248;
 import 'package:under_control_v2/features/dashboard/presentation/blocs/task_actions_status/task_actions_status_bloc.dart'
-    as _i240;
+    as _i241;
 import 'package:under_control_v2/features/dashboard/presentation/blocs/work_requests_status/work_requests_status_bloc.dart'
-    as _i246;
+    as _i247;
 import 'package:under_control_v2/features/filter/presentation/blocs/filter/filter_bloc.dart'
-    as _i237;
+    as _i238;
 import 'package:under_control_v2/features/groups/data/datasources/group_local_data_source.dart'
     as _i156;
 import 'package:under_control_v2/features/groups/data/datasources/group_remote_data_source.dart'
@@ -259,7 +259,7 @@ import 'package:under_control_v2/features/inventory/domain/usecases/update_item.
 import 'package:under_control_v2/features/inventory/domain/usecases/update_item_photo.dart'
     as _i49;
 import 'package:under_control_v2/features/inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart'
-    as _i250;
+    as _i251;
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action/item_action_bloc.dart'
     as _i206;
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart'
@@ -269,7 +269,7 @@ import 'package:under_control_v2/features/inventory/presentation/blocs/item_cate
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_category_management/item_category_management_bloc.dart'
     as _i226;
 import 'package:under_control_v2/features/inventory/presentation/blocs/items/items_bloc.dart'
-    as _i239;
+    as _i240;
 import 'package:under_control_v2/features/inventory/presentation/blocs/items_management/items_management_bloc.dart'
     as _i227;
 import 'package:under_control_v2/features/knowledge_base/data/repositories/instruction_category_repository_impl.dart'
@@ -297,7 +297,7 @@ import 'package:under_control_v2/features/knowledge_base/domain/usecases/item_ca
 import 'package:under_control_v2/features/knowledge_base/domain/usecases/update_instruction.dart'
     as _i44;
 import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction/instruction_bloc.dart'
-    as _i238;
+    as _i239;
 import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_category/instruction_category_bloc.dart'
     as _i221;
 import 'package:under_control_v2/features/knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart'
@@ -346,8 +346,10 @@ import 'package:under_control_v2/features/notifications/domain/usecases/register
     as _i30;
 import 'package:under_control_v2/features/notifications/domain/usecases/remove_device_token.dart'
     as _i31;
-import 'package:under_control_v2/features/notifications/presentation/blocs/bloc/uc_notification_bloc.dart'
+import 'package:under_control_v2/features/notifications/presentation/blocs/uc_notification/uc_notification_bloc.dart'
     as _i236;
+import 'package:under_control_v2/features/notifications/presentation/blocs/uc_notification_management/uc_notification_management_bloc.dart'
+    as _i237;
 import 'package:under_control_v2/features/notifications/presentation/cubits/cubit/device_token_cubit.dart'
     as _i219;
 import 'package:under_control_v2/features/settings/data/repositories/notification_settings_repository_impl.dart'
@@ -427,17 +429,17 @@ import 'package:under_control_v2/features/tasks/domain/usecases/work_order/updat
 import 'package:under_control_v2/features/tasks/presentation/blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart'
     as _i32;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task/task_bloc.dart'
-    as _i243;
+    as _i244;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_action/task_action_bloc.dart'
     as _i173;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_action_management/task_action_management_bloc.dart'
     as _i232;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_archive/task_archive_bloc.dart'
-    as _i241;
-import 'package:under_control_v2/features/tasks/presentation/blocs/task_archive_latest/task_archive_latest_bloc.dart'
     as _i242;
+import 'package:under_control_v2/features/tasks/presentation/blocs/task_archive_latest/task_archive_latest_bloc.dart'
+    as _i243;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_filter/task_filter_bloc.dart'
-    as _i251;
+    as _i252;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_management/task_management_bloc.dart'
     as _i233;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_templates/task_templates_bloc.dart'
@@ -445,9 +447,9 @@ import 'package:under_control_v2/features/tasks/presentation/blocs/task_template
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_templates_management/task_templates_management_bloc.dart'
     as _i235;
 import 'package:under_control_v2/features/tasks/presentation/blocs/work_request/work_request_bloc.dart'
-    as _i245;
+    as _i246;
 import 'package:under_control_v2/features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart'
-    as _i244;
+    as _i245;
 import 'package:under_control_v2/features/tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart'
     as _i208;
 import 'package:under_control_v2/features/user_profile/data/repositories/user_files_repository_impl.dart'
@@ -502,8 +504,8 @@ import 'package:under_control_v2/features/user_profile/presentation/blocs/user_p
     as _i207;
 
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i253;
-import 'features/core/injectable_modules/injectable_modules.dart' as _i252;
+    as _i254;
+import 'features/core/injectable_modules/injectable_modules.dart' as _i253;
 
 /// ignore_for_file: unnecessary_lambdas
 /// ignore_for_file: lines_longer_than_80_chars
@@ -1181,108 +1183,112 @@ Future<_i1.GetIt> $initGetIt(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
     userProfileBloc: gh<_i207.UserProfileBloc>(),
     getNotifications: gh<_i149.GetNotifications>(),
-    markAsRead: gh<_i163.MarkAsRead>(),
-    markAsUnread: gh<_i164.MarkAsUnread>(),
-    deleteNotification: gh<_i114.DeleteNotification>(),
   ));
-  gh.singleton<_i237.FilterBloc>(_i237.FilterBloc(
+  gh.factory<_i237.UcNotificationManagementBloc>(
+      () => _i237.UcNotificationManagementBloc(
+            markAsRead: gh<_i163.MarkAsRead>(),
+            markAsUnread: gh<_i164.MarkAsUnread>(),
+            deleteNotification: gh<_i114.DeleteNotification>(),
+            userProfileBloc: gh<_i207.UserProfileBloc>(),
+          ));
+  gh.singleton<_i238.FilterBloc>(_i238.FilterBloc(
     locationBloc: gh<_i228.LocationBloc>(),
     groupBloc: gh<_i220.GroupBloc>(),
     userProfileBloc: gh<_i207.UserProfileBloc>(),
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
   ));
-  gh.singleton<_i238.InstructionBloc>(_i238.InstructionBloc(
+  gh.singleton<_i239.InstructionBloc>(_i239.InstructionBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    filterBloc: gh<_i237.FilterBloc>(),
+    filterBloc: gh<_i238.FilterBloc>(),
     getInstructionsStream: gh<_i140.GetInstructionsStream>(),
   ));
-  gh.singleton<_i239.ItemsBloc>(_i239.ItemsBloc(
+  gh.singleton<_i240.ItemsBloc>(_i240.ItemsBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    filterBloc: gh<_i237.FilterBloc>(),
+    filterBloc: gh<_i238.FilterBloc>(),
     getChecklistsStream: gh<_i143.GetItemsStream>(),
   ));
-  gh.singleton<_i240.TaskActionsStatusBloc>(_i240.TaskActionsStatusBloc(
+  gh.singleton<_i241.TaskActionsStatusBloc>(_i241.TaskActionsStatusBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    filterBloc: gh<_i237.FilterBloc>(),
+    filterBloc: gh<_i238.FilterBloc>(),
     getLatestTaskActions: gh<_i146.GetLatestTaskActions>(),
   ));
-  gh.singleton<_i241.TaskArchiveBloc>(_i241.TaskArchiveBloc(
+  gh.singleton<_i242.TaskArchiveBloc>(_i242.TaskArchiveBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    filterBloc: gh<_i237.FilterBloc>(),
+    filterBloc: gh<_i238.FilterBloc>(),
     getArchiveTasksStream: gh<_i124.GetArchiveTasksStream>(),
   ));
-  gh.singleton<_i242.TaskArchiveLatestBloc>(_i242.TaskArchiveLatestBloc(
+  gh.singleton<_i243.TaskArchiveLatestBloc>(_i243.TaskArchiveLatestBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    filterBloc: gh<_i237.FilterBloc>(),
+    filterBloc: gh<_i238.FilterBloc>(),
     getArchiveLatestTasksStream: gh<_i123.GetArchiveLatestTasksStream>(),
   ));
-  gh.singleton<_i243.TaskBloc>(_i243.TaskBloc(
+  gh.singleton<_i244.TaskBloc>(_i244.TaskBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    filterBloc: gh<_i237.FilterBloc>(),
+    filterBloc: gh<_i238.FilterBloc>(),
     getTasksStream: gh<_i151.GetTasksStream>(),
   ));
-  gh.singleton<_i244.WorkRequestArchiveBloc>(_i244.WorkRequestArchiveBloc(
+  gh.singleton<_i245.WorkRequestArchiveBloc>(_i245.WorkRequestArchiveBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    filterBloc: gh<_i237.FilterBloc>(),
+    filterBloc: gh<_i238.FilterBloc>(),
     getArchiveWorkRequestsStream: gh<_i125.GetArchiveWorkRequestsStream>(),
   ));
-  gh.singleton<_i245.WorkRequestBloc>(_i245.WorkRequestBloc(
+  gh.singleton<_i246.WorkRequestBloc>(_i246.WorkRequestBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    filterBloc: gh<_i237.FilterBloc>(),
+    filterBloc: gh<_i238.FilterBloc>(),
     getWorkRequestsStream: gh<_i155.GetWorkRequestsStream>(),
   ));
-  gh.singleton<_i246.WorkRequestsStatusBloc>(_i246.WorkRequestsStatusBloc(
+  gh.singleton<_i247.WorkRequestsStatusBloc>(_i247.WorkRequestsStatusBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    filterBloc: gh<_i237.FilterBloc>(),
+    filterBloc: gh<_i238.FilterBloc>(),
     getAwaitingWorkRequestsCount: gh<_i130.GetAwaitingWorkRequestsCount>(),
     getConvertedWorkRequestsCount: gh<_i134.GetConvertedWorkRequestsCount>(),
     getCancelledWorkRequestsCount: gh<_i131.GetCancelledWorkRequestsCount>(),
   ));
-  gh.singleton<_i247.ActivityBloc>(_i247.ActivityBloc(
+  gh.singleton<_i248.ActivityBloc>(_i248.ActivityBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    workRequestBloc: gh<_i245.WorkRequestBloc>(),
-    workRequestArchiveBloc: gh<_i244.WorkRequestArchiveBloc>(),
-    taskBloc: gh<_i243.TaskBloc>(),
-    taskArchiveBloc: gh<_i241.TaskArchiveBloc>(),
-    taskActionsStatusBloc: gh<_i240.TaskActionsStatusBloc>(),
+    workRequestBloc: gh<_i246.WorkRequestBloc>(),
+    workRequestArchiveBloc: gh<_i245.WorkRequestArchiveBloc>(),
+    taskBloc: gh<_i244.TaskBloc>(),
+    taskArchiveBloc: gh<_i242.TaskArchiveBloc>(),
+    taskActionsStatusBloc: gh<_i241.TaskActionsStatusBloc>(),
   ));
-  gh.singleton<_i248.AssetBloc>(_i248.AssetBloc(
-    filterBloc: gh<_i237.FilterBloc>(),
+  gh.singleton<_i249.AssetBloc>(_i249.AssetBloc(
+    filterBloc: gh<_i238.FilterBloc>(),
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
     getAssetsStream: gh<_i128.GetAssetsStream>(),
   ));
-  gh.singleton<_i249.DashboardAssetActionBloc>(_i249.DashboardAssetActionBloc(
+  gh.singleton<_i250.DashboardAssetActionBloc>(_i250.DashboardAssetActionBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    filterBloc: gh<_i237.FilterBloc>(),
+    filterBloc: gh<_i238.FilterBloc>(),
     getDashboardAssetActionsStream: gh<_i135.GetDashboardAssetActionsStream>(),
     getDashboardLastFiveAssetActionsStream:
         gh<_i137.GetDashboardLastFiveAssetActionsStream>(),
   ));
-  gh.singleton<_i250.DashboardItemActionBloc>(_i250.DashboardItemActionBloc(
+  gh.singleton<_i251.DashboardItemActionBloc>(_i251.DashboardItemActionBloc(
     authenticationBloc: gh<_i199.AuthenticationBloc>(),
-    filterBloc: gh<_i237.FilterBloc>(),
+    filterBloc: gh<_i238.FilterBloc>(),
     getDashboardItemsActionsStream: gh<_i136.GetDashboardItemsActionsStream>(),
     getDashboardLastFiveItemsActionsStream:
         gh<_i138.GetDashboardLastFiveItemsActionsStream>(),
   ));
-  gh.singleton<_i251.TaskFilterBloc>(_i251.TaskFilterBloc(
+  gh.singleton<_i252.TaskFilterBloc>(_i252.TaskFilterBloc(
     gh<_i199.AuthenticationBloc>(),
     gh<_i207.UserProfileBloc>(),
-    gh<_i243.TaskBloc>(),
-    gh<_i245.WorkRequestBloc>(),
+    gh<_i244.TaskBloc>(),
+    gh<_i246.WorkRequestBloc>(),
   ));
   return getIt;
 }
 
-class _$FirebaseFirestoreService extends _i252.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i253.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i252.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i253.FirebaseStorageService {}
 
-class _$FirebaseMessagingService extends _i252.FirebaseMessagingService {}
+class _$FirebaseMessagingService extends _i253.FirebaseMessagingService {}
 
-class _$SharedPreferencesService extends _i252.SharedPreferencesService {}
+class _$SharedPreferencesService extends _i253.SharedPreferencesService {}
 
 class _$FirebaseAuthenticationService
-    extends _i253.FirebaseAuthenticationService {}
+    extends _i254.FirebaseAuthenticationService {}
 
-class _$DataConnectionCheckerModule extends _i253.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i254.DataConnectionCheckerModule {}

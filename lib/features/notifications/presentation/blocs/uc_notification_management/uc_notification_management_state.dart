@@ -1,4 +1,4 @@
-part of 'items_management_bloc.dart';
+part of 'uc_notification_management_bloc.dart';
 
 abstract class UcNotificationManagementState extends Equatable {
   final BlocMessage message;

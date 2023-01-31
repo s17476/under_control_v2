@@ -14,14 +14,14 @@ part 'uc_notification_management_event.dart';
 part 'uc_notification_management_state.dart';
 
 @injectable
-class ItemsManagementBloc
+class UcNotificationManagementBloc
     extends Bloc<UcNotificationManagementEvent, UcNotificationManagementState> {
   final UserProfileBloc userProfileBloc;
   final MarkAsRead markAsRead;
   final MarkAsUnread markAsUnread;
   final DeleteNotification deleteNotification;
 
-  ItemsManagementBloc({
+  UcNotificationManagementBloc({
     required this.markAsRead,
     required this.markAsUnread,
     required this.deleteNotification,
@@ -34,7 +34,7 @@ class ItemsManagementBloc
         if (userId != null) {
           final params = UcNotificationParams(
             userId: userId,
-            notificationId: event.notification.id,
+            notificationId: event.notificationId,
           );
           final failureOrVoidResult = await markAsRead(params);
           await failureOrVoidResult.fold(
@@ -63,7 +63,7 @@ class ItemsManagementBloc
         if (userId != null) {
           final params = UcNotificationParams(
             userId: userId,
-            notificationId: event.notification.id,
+            notificationId: event.notificationId,
           );
           final failureOrVoidResult = await markAsUnread(params);
           await failureOrVoidResult.fold(
@@ -92,7 +92,7 @@ class ItemsManagementBloc
         if (userId != null) {
           final params = UcNotificationParams(
             userId: userId,
-            notificationId: event.notification.id,
+            notificationId: event.notificationId,
           );
           final failureOrVoidResult = await deleteNotification(params);
           await failureOrVoidResult.fold(

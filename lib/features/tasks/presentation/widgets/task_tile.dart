@@ -5,12 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/notifications/domain/entities/uc_notification.dart';
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../groups/domain/entities/group.dart';
 import '../../../groups/presentation/blocs/group/group_bloc.dart';
+import '../../../notifications/presentation/blocs/uc_notification_management/uc_notification_management_bloc.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../domain/entities/task/task.dart';
 import '../../utils/get_task_priority_and_type_icon.dart';
@@ -22,12 +24,12 @@ class TaskTile extends StatelessWidget {
     Key? key,
     required this.task,
     this.isTemplate = false,
-    this.markAsRead,
+    this.notification,
   }) : super(key: key);
 
   final Task task;
   final bool isTemplate;
-  final Function()? markAsRead;
+  final UcNotification? notification;
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +55,12 @@ class TaskTile extends StatelessWidget {
                         arguments: task.id,
                       )
                   : () {
-                      if (markAsRead != null) {
-                        markAsRead!();
+                      if (notification != null) {
+                        context.read<UcNotificationManagementBloc>().add(
+                              MarkAsReadEvent(
+                                notificationId: notification!.id,
+                              ),
+                            );
                       }
                       Navigator.pushNamed(
                         context,
@@ -77,6 +83,18 @@ class TaskTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // notification info
+                    if (notification != null) ...[
+                      Text(
+                        AppLocalizations.of(context)!.notifications_tasks_tile,
+                        style: notification!.read
+                            ? null
+                            : TextStyle(
+                                color: Theme.of(context).highlightColor,
+                              ),
+                      ),
+                      const Divider(),
+                    ],
                     // date
                     if (!isTemplate)
                       Padding(

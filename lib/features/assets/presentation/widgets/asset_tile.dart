@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../notifications/domain/entities/uc_notification.dart';
 import '../../../core/presentation/widgets/highlighted_text.dart';
 import '../../../core/presentation/widgets/icon_title_mini_row.dart';
+import '../../../notifications/presentation/blocs/uc_notification_management/uc_notification_management_bloc.dart';
 import '../../domain/entities/asset.dart';
 import '../../utils/get_asset_status_icon.dart';
 import '../pages/asset_details_page.dart';
@@ -22,6 +26,7 @@ class AssetTile extends StatelessWidget {
     this.isSelected,
     this.groupValue,
     this.onRadioSelected,
+    this.notification,
   }) : super(key: key);
 
   final Asset asset;
@@ -34,6 +39,7 @@ class AssetTile extends StatelessWidget {
   final bool? isSelected;
   final String? groupValue;
   final Function(String)? onRadioSelected;
+  final UcNotification? notification;
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +61,20 @@ class AssetTile extends StatelessWidget {
               : onRadioSelected != null
                   ? () => onRadioSelected!(asset.id)
                   // open details page
-                  : () => Navigator.pushNamed(
+                  : () {
+                      if (notification != null) {
+                        context.read<UcNotificationManagementBloc>().add(
+                              MarkAsReadEvent(
+                                notificationId: notification!.id,
+                              ),
+                            );
+                      }
+                      Navigator.pushNamed(
                         context,
                         AssetDetailsPage.routeName,
                         arguments: asset.id,
-                      ),
+                      );
+                    },
           onLongPress: () => Navigator.pushNamed(
             context,
             AssetDetailsPage.routeName,
@@ -159,6 +174,20 @@ class AssetTile extends StatelessWidget {
                                   const SizedBox(
                                     height: 4,
                                   ),
+                                  // notification info
+                                  if (notification != null) ...[
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .notifications_assets_tile,
+                                      style: notification!.read
+                                          ? null
+                                          : TextStyle(
+                                              color: Theme.of(context)
+                                                  .highlightColor,
+                                            ),
+                                    ),
+                                    const Divider(),
+                                  ],
                                   HighlightedText(
                                     text: asset.producer,
                                     query: searchQuery,

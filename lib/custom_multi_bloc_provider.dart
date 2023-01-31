@@ -35,7 +35,8 @@ import 'features/knowledge_base/presentation/blocs/instruction_category/instruct
 import 'features/knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart';
 import 'features/knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import 'features/locations/presentation/blocs/bloc/location_bloc.dart';
-import 'features/notifications/presentation/blocs/bloc/uc_notification_bloc.dart';
+import 'features/notifications/presentation/blocs/uc_notification/uc_notification_bloc.dart';
+import 'features/notifications/presentation/blocs/uc_notification_management/uc_notification_management_bloc.dart';
 import 'features/notifications/presentation/cubits/cubit/device_token_cubit.dart';
 import 'features/settings/presentation/blocs/notification_settings/notification_settings_cubit.dart';
 import 'features/tasks/presentation/blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
@@ -123,6 +124,9 @@ class CustomMultiBlocProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<DeviceTokenCubit>()),
         BlocProvider(create: (context) => getIt<NotificationSettingsCubit>()),
         BlocProvider(create: (context) => getIt<UcNotificationBloc>()),
+        BlocProvider(
+          create: (context) => getIt<UcNotificationManagementBloc>(),
+        ),
       ],
       child: child,
     );

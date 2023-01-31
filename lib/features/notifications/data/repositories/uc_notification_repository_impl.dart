@@ -46,6 +46,7 @@ class UcNotificationRepositoryImpl extends UcNotificationRepository {
           .collection('users')
           .doc(params.userProfile.id)
           .collection('notifications')
+          .orderBy('date', descending: true)
           .snapshots();
       return Right(UcNotificationsStream(allNotifications: querySnapshot));
     } on FirebaseException catch (e) {
@@ -68,7 +69,7 @@ class UcNotificationRepositoryImpl extends UcNotificationRepository {
           .doc(params.userId)
           .collection('notifications')
           .doc(params.notificationId)
-          .update({'read': false});
+          .update({'read': true});
       return Right(VoidResult());
     } on FirebaseException catch (e) {
       return Left(
@@ -90,7 +91,7 @@ class UcNotificationRepositoryImpl extends UcNotificationRepository {
           .doc(params.userId)
           .collection('notifications')
           .doc(params.notificationId)
-          .update({'read': true});
+          .update({'read': false});
       return Right(VoidResult());
     } on FirebaseException catch (e) {
       return Left(

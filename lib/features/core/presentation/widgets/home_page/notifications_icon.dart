@@ -22,7 +22,9 @@ class NotificationsIcon extends StatelessWidget {
                   Theme.of(context).textTheme.bodySmall!.color!.withAlpha(60),
             );
           } else {
-            final count = state.allNotifications.allNotifications.length;
+            final count = state.allNotifications.allNotifications
+                .where((notification) => !notification.read)
+                .length;
             return Stack(
               alignment: Alignment.center,
               children: [
@@ -42,6 +44,7 @@ class NotificationsIcon extends StatelessWidget {
                       color: Theme.of(context).appBarTheme.backgroundColor,
                     ),
                     child: Container(
+                      alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 2,
                         vertical: 0,

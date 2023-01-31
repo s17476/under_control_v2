@@ -2,12 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:under_control_v2/features/core/utils/location_selection_helpers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/presentation/widgets/highlighted_text.dart';
 import '../../../core/presentation/widgets/icon_title_mini_row.dart';
 import '../../../core/utils/double_apis.dart';
+import '../../../core/utils/location_selection_helpers.dart';
 import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../../notifications/domain/entities/uc_notification.dart';
+import '../../../notifications/presentation/blocs/uc_notification_management/uc_notification_management_bloc.dart';
 import '../../domain/entities/item.dart';
 import '../../utils/get_item_quantity_in_locations.dart';
 import '../../utils/get_localized_unit_name.dart';
@@ -25,6 +28,7 @@ class ItemTile extends StatelessWidget {
     this.onSelected,
     this.isSelected,
     this.locationId,
+    this.notification,
   }) : super(key: key);
 
   final Item item;
@@ -35,6 +39,7 @@ class ItemTile extends StatelessWidget {
   final Function(String)? onSelected;
   final bool? isSelected;
   final String? locationId;
+  final UcNotification? notification;
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +56,20 @@ class ItemTile extends StatelessWidget {
         child: InkWell(
           onTap: onSelected != null
               ? () => onSelected!(item.id)
-              : () => Navigator.pushNamed(
+              : () {
+                  if (notification != null) {
+                    context.read<UcNotificationManagementBloc>().add(
+                          MarkAsReadEvent(
+                            notificationId: notification!.id,
+                          ),
+                        );
+                  }
+                  Navigator.pushNamed(
                     context,
                     ItemDetailsPage.routeName,
                     arguments: item,
-                  ),
+                  );
+                },
           onLongPress: () => Navigator.pushNamed(
             context,
             ItemDetailsPage.routeName,
@@ -146,6 +160,7 @@ class ItemTile extends StatelessWidget {
                             const SizedBox(
                               width: 12,
                             ),
+
                             // item model
                             Expanded(
                               child: Column(
@@ -155,6 +170,20 @@ class ItemTile extends StatelessWidget {
                                   const SizedBox(
                                     height: 4,
                                   ),
+                                  // notification info
+                                  if (notification != null) ...[
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .notifications_inventory_tile,
+                                      style: notification!.read
+                                          ? null
+                                          : TextStyle(
+                                              color: Theme.of(context)
+                                                  .highlightColor,
+                                            ),
+                                    ),
+                                    const Divider(),
+                                  ],
                                   HighlightedText(
                                     text: item.producer,
                                     query: searchQuery,

@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../core/presentation/widgets/cached_user_avatar.dart';
+import '../../../notifications/domain/entities/uc_notification.dart';
+import '../../../notifications/presentation/blocs/uc_notification_management/uc_notification_management_bloc.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../domain/entities/work_request/work_request.dart';
 import '../../utils/get_task_priority_icon.dart';
@@ -18,11 +20,11 @@ class WorkRequestTile extends StatelessWidget {
   const WorkRequestTile({
     Key? key,
     required this.workRequest,
-    this.markAsRead,
+    this.notification,
   }) : super(key: key);
 
   final WorkRequest workRequest;
-  final Function()? markAsRead;
+  final UcNotification? notification;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +51,12 @@ class WorkRequestTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             child: InkWell(
               onTap: () {
-                if (markAsRead != null) {
-                  markAsRead!();
+                if (notification != null) {
+                  context.read<UcNotificationManagementBloc>().add(
+                        MarkAsReadEvent(
+                          notificationId: notification!.id,
+                        ),
+                      );
                 }
                 Navigator.pushNamed(
                   context,
@@ -73,6 +79,19 @@ class WorkRequestTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // notification info
+                    if (notification != null) ...[
+                      Text(
+                        AppLocalizations.of(context)!
+                            .notifications_work_requests_tile,
+                        style: notification!.read
+                            ? null
+                            : TextStyle(
+                                color: Theme.of(context).highlightColor,
+                              ),
+                      ),
+                      const Divider(),
+                    ],
                     // date
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
