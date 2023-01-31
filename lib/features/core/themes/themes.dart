@@ -84,5 +84,10 @@ class Themes with MaterialColorGenerator {
         progressIndicatorTheme: const ProgressIndicatorThemeData(
           color: Color.fromRGBO(0, 240, 130, 100),
         ),
+        checkboxTheme: CheckboxThemeData(
+          checkColor: MaterialStateColor.resolveWith(
+            (states) => Colors.grey.shade100,
+          ),
+        ),
       );
 }

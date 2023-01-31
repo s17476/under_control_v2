@@ -18,7 +18,8 @@ class NotificationsIcon extends StatelessWidget {
           if (state.allNotifications.allNotifications.isEmpty) {
             return Icon(
               Icons.notifications,
-              color: Theme.of(context).textTheme.caption!.color!.withAlpha(60),
+              color:
+                  Theme.of(context).textTheme.bodySmall!.color!.withAlpha(60),
             );
           } else {
             final count = state.allNotifications.allNotifications.length;
@@ -28,11 +29,11 @@ class NotificationsIcon extends StatelessWidget {
                 Icon(
                   Icons.notifications_sharp,
                   color: !isExpanded
-                      ? Theme.of(context).textTheme.headline6!.color
+                      ? Theme.of(context).textTheme.titleLarge!.color
                       : Theme.of(context).primaryColor.withAlpha(130),
                 ),
                 Positioned(
-                  top: 0,
+                  top: 2,
                   right: 0,
                   child: Container(
                     padding: const EdgeInsets.all(1),
@@ -42,23 +43,22 @@ class NotificationsIcon extends StatelessWidget {
                     ),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 3,
-                        vertical: 1,
+                        horizontal: 2,
+                        vertical: 0,
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
                         color: isExpanded
-                            ? Theme.of(context).textTheme.headline6!.color
+                            ? Theme.of(context).textTheme.titleLarge!.color
                             : Theme.of(context).primaryColor.withAlpha(130),
                       ),
                       child: Text(
                         count > 99 ? '99+' : count.toString(),
                         style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 8,
                           color: !isExpanded
-                              ? Theme.of(context).textTheme.headline6!.color
-                              : Theme.of(context).primaryColor.withAlpha(130),
+                              ? Theme.of(context).textTheme.titleLarge!.color
+                              : Colors.grey.shade800,
                         ),
                       ),
                     ),

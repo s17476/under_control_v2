@@ -69,22 +69,24 @@ exports.taskAdded = functions.firestore
       }
 
       for(const user of users){
-        const userPermissions = await getNotificationSettings(user.id);
+        if(document.data().userId != user.id){
+          const userPermissions = await getNotificationSettings(user.id);
 
-        // check user permissions
-        // if no permissions found, then default permission option is TRUE
-        if((userPermissions.exists && (userPermissions.data().tasks == true || userPermissions.data().tasks == undefined)) || !userPermissions.exists){
-          // add token to the list
+          // check user permissions
+          // if no permissions found, then default permission option is TRUE
+          if((userPermissions.exists && (userPermissions.data().tasks == true || userPermissions.data().tasks == undefined)) || !userPermissions.exists){
+            // add token to the list
           
-          const userTokens = user.data().deviceTokens;
-          userTokens.forEach(token => {
-            if(document.data().userId != user.id && tokens.indexOf(token) === -1){
-              tokens.push(token);
+            const userTokens = user.data().deviceTokens;
+            userTokens.forEach(token => {
+              if(tokens.indexOf(token) === -1){
+                tokens.push(token);
+              }
+            });
+            // users to get in app notification
+            if(userIds.indexOf(user.id) === -1){
+              userIds.push(user.id);
             }
-          });
-          // users to get in app notification
-          if(userIds.indexOf(user.id) === -1){
-            userIds.push(user.id);
           }
         }
       }
@@ -151,21 +153,24 @@ exports.workRequestAdded = functions.firestore
       }
 
       for(const user of users){
-        const userPermissions = await getNotificationSettings(user.id);
 
-        // check user permissions
-        // if no permissions found, then default permission option is TRUE
-        if((userPermissions.exists && (userPermissions.data().workRequests == true || userPermissions.data().workRequests == undefined)) || !userPermissions.exists){
-          // add token to the list
-          const userTokens = user.data().deviceTokens;
-          userTokens.forEach(token => {
-            if(document.data().userId != user.id && tokens.indexOf(token) === -1){
-              tokens.push(token);
+        if(document.data().userId != user.id ){
+          const userPermissions = await getNotificationSettings(user.id);
+
+          // check user permissions
+          // if no permissions found, then default permission option is TRUE
+          if((userPermissions.exists && (userPermissions.data().workRequests == true || userPermissions.data().workRequests == undefined)) || !userPermissions.exists){
+            // add token to the list
+            const userTokens = user.data().deviceTokens;
+            userTokens.forEach(token => {
+              if(tokens.indexOf(token) === -1){
+                tokens.push(token);
+              }
+            });
+            // users to get in app notification
+            if(userIds.indexOf(user.id) === -1){
+              userIds.push(user.id);
             }
-          });
-          // users to get in app notification
-          if(userIds.indexOf(user.id) === -1){
-            userIds.push(user.id);
           }
         }
       }
