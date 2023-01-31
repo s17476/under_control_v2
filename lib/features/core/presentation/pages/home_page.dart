@@ -3,7 +3,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
 
 import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../assets/presentation/pages/assets_page.dart';
@@ -36,6 +35,7 @@ import '../widgets/home_page/home_bottom_navigation_bar.dart';
 import '../widgets/home_page/home_sliver_app_bar.dart';
 import '../widgets/home_page/main_drawer.dart';
 import '../widgets/overlay_menu/overlay_menu.dart';
+import 'loading_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

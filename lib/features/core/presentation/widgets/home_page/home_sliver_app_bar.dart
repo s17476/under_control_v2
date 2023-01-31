@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:under_control_v2/features/core/presentation/widgets/home_page/notifications_icon.dart';
-
 import '../../../../groups/domain/entities/feature.dart';
 import '../../../../tasks/presentation/blocs/task_filter/task_filter_bloc.dart';
 import '../../../utils/get_user_permission.dart';

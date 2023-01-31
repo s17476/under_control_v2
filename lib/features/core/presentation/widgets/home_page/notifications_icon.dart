@@ -31,7 +31,7 @@ class NotificationsIcon extends StatelessWidget {
                 Icon(
                   Icons.notifications_sharp,
                   color: !isExpanded
-                      ? Theme.of(context).textTheme.titleLarge!.color
+                      ? Theme.of(context).iconTheme.color
                       : Theme.of(context).primaryColor.withAlpha(130),
                 ),
                 Positioned(

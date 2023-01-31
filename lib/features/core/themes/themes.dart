@@ -25,7 +25,7 @@ class Themes with MaterialColorGenerator {
         //   surface: const Color.fromARGB(255, 50, 50, 50),
         //   onSurface: Colors.grey.shade300,
         // ),
-        errorColor: const Color.fromARGB(255, 194, 56, 46),
+        errorColor: Color.fromARGB(255, 189, 49, 39),
         brightness: Brightness.dark,
         drawerTheme: const DrawerThemeData(
           backgroundColor: Color(0xFF191919),

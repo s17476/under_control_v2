@@ -63,7 +63,10 @@ class TaskFilterButton extends HookWidget {
               : Stack(
                   key: const ValueKey('colapsed'),
                   children: [
-                    const Icon(Icons.filter_list_outlined),
+                    Icon(
+                      Icons.filter_list_outlined,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                     BlocBuilder<TaskFilterBloc, TaskFilterState>(
                       builder: (context, state) {
                         if (state is TaskFilterSelectedState) {

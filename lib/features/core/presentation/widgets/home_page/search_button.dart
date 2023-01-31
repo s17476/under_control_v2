@@ -33,9 +33,10 @@ class SearchButton extends HookWidget {
                   key: const ValueKey('expanded'),
                   color: Theme.of(context).primaryColor,
                 )
-              : const Icon(
+              : Icon(
                   Icons.search,
-                  key: ValueKey('colapsed'),
+                  key: const ValueKey('colapsed'),
+                  color: Theme.of(context).iconTheme.color,
                 ),
         ),
       ),
