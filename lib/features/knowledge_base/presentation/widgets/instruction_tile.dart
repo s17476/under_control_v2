@@ -27,6 +27,7 @@ class InstructionTile extends StatelessWidget {
     return Container(
       color: Theme.of(context).cardColor,
       child: Material(
+        color: Colors.transparent,
         child: InkWell(
           onTap: onSelection != null
               ? () => onSelection!(instruction.id)

@@ -10,6 +10,22 @@ class Themes with MaterialColorGenerator {
         primarySwatch: createMaterialColor(
           const Color.fromRGBO(0, 240, 130, 100),
         ),
+        dividerTheme: const DividerThemeData(color: Colors.white12),
+
+        // colorScheme: ColorScheme(
+        //   brightness: Brightness.dark,
+        //   primary: const Color.fromRGBO(0, 240, 130, 100),
+        //   onPrimary: Colors.grey.shade200,
+        //   secondary: const Color.fromRGBO(0, 240, 130, 100),
+        //   onSecondary: Colors.grey.shade200,
+        //   error: const Color.fromARGB(255, 200, 46, 35),
+        //   onError: Colors.grey.shade200,
+        //   background: const Color.fromARGB(255, 30, 30, 30),
+        //   onBackground: Colors.grey.shade200,
+        //   surface: const Color.fromARGB(255, 50, 50, 50),
+        //   onSurface: Colors.grey.shade300,
+        // ),
+        errorColor: Color.fromARGB(255, 194, 56, 46),
         brightness: Brightness.dark,
         drawerTheme: const DrawerThemeData(
           backgroundColor: Color(0xFF191919),

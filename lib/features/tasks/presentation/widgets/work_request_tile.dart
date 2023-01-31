@@ -43,6 +43,7 @@ class WorkRequestTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Material(
+            color: Colors.transparent,
             borderRadius: BorderRadius.circular(10),
             child: InkWell(
               onTap: () {
@@ -74,18 +75,18 @@ class WorkRequestTile extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.add,
-                            color: Theme.of(context).textTheme.caption!.color,
+                            color: Theme.of(context).textTheme.bodySmall!.color,
                             size: 12,
                           ),
                           Expanded(
                             child: Text(
                               dateFormat.format(workRequest.date),
-                              style: Theme.of(context).textTheme.caption,
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ),
                           Text(
                             '#${workRequest.count}',
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
                       ),
@@ -139,7 +140,8 @@ class WorkRequestTile extends StatelessWidget {
                             Icon(
                               Icons.handyman,
                               size: 16,
-                              color: Theme.of(context).textTheme.caption!.color,
+                              color:
+                                  Theme.of(context).textTheme.bodySmall!.color,
                             ),
                             const SizedBox(
                               width: 4,
@@ -151,7 +153,7 @@ class WorkRequestTile extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption!
+                                  .bodySmall!
                                   .copyWith(fontSize: 16),
                             ),
                           ],
@@ -169,7 +171,7 @@ class WorkRequestTile extends StatelessWidget {
                         //     .textTheme
                         //     .caption!
                         //     .copyWith(fontSize: 16),
-                        style: const TextStyle(fontSize: 16),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
 
@@ -196,7 +198,7 @@ class WorkRequestTile extends StatelessWidget {
                                 ),
                                 Text(
                                   '${user.firstName} ${user.lastName}',
-                                  style: Theme.of(context).textTheme.caption,
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
                             ),
@@ -210,7 +212,7 @@ class WorkRequestTile extends StatelessWidget {
                                     '${workRequest.images.length}x',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .caption!
+                                        .bodySmall!
                                         .copyWith(fontSize: 14),
                                   ),
                                 FaIcon(
@@ -218,7 +220,7 @@ class WorkRequestTile extends StatelessWidget {
                                   size: 18,
                                   color: Theme.of(context)
                                       .textTheme
-                                      .caption!
+                                      .bodySmall!
                                       .color,
                                 ),
                                 const SizedBox(
@@ -231,7 +233,8 @@ class WorkRequestTile extends StatelessWidget {
                             FaIcon(
                               FontAwesomeIcons.play,
                               size: 18,
-                              color: Theme.of(context).textTheme.caption!.color,
+                              color:
+                                  Theme.of(context).textTheme.bodySmall!.color,
                             ),
                         ],
                       ),

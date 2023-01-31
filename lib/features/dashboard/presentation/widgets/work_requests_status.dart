@@ -77,7 +77,7 @@ class WorkRequestsStatus extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.build,
-                      color: Theme.of(context).textTheme.caption!.color,
+                      color: Theme.of(context).textTheme.bodySmall!.color,
                       size: 16,
                     ),
                     const SizedBox(
@@ -87,7 +87,7 @@ class WorkRequestsStatus extends StatelessWidget {
                       '${AppLocalizations.of(context)!.work_requests} - ${AppLocalizations.of(context)!.status_recent}',
                       style: Theme.of(context)
                           .textTheme
-                          .caption!
+                          .bodySmall!
                           .copyWith(fontSize: 16),
                     ),
                   ],
@@ -134,8 +134,10 @@ class WorkRequestsStatus extends StatelessWidget {
                           ),
                           CircleAvatar(
                             backgroundColor: Colors.transparent,
-                            foregroundColor:
-                                Theme.of(context).textTheme.headline5!.color,
+                            foregroundColor: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .color,
                             radius: 24,
                             child: FittedBox(
                               child: Text(

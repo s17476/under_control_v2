@@ -41,6 +41,7 @@ class TaskTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Material(
+            color: Colors.transparent,
             borderRadius: BorderRadius.circular(10),
             child: InkWell(
               onTap: isTemplate
@@ -89,7 +90,7 @@ class TaskTile extends StatelessWidget {
                                         Icons.build,
                                         color: Theme.of(context)
                                             .textTheme
-                                            .caption!
+                                            .bodySmall!
                                             .color,
                                         size: 10,
                                       ),
@@ -101,7 +102,7 @@ class TaskTile extends StatelessWidget {
                                           dateFormat.format(task.executionDate),
                                           style: Theme.of(context)
                                               .textTheme
-                                              .caption,
+                                              .bodySmall,
                                         ),
                                       ),
                                       if (task.isCyclictask)
@@ -113,14 +114,15 @@ class TaskTile extends StatelessWidget {
                                             size: 14,
                                             color: Theme.of(context)
                                                 .textTheme
-                                                .caption!
+                                                .bodySmall!
                                                 .color,
                                           ),
                                         ),
                                       Text(
                                         '#${task.count}',
-                                        style:
-                                            Theme.of(context).textTheme.caption,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                       ),
                                     ],
                                   ),
@@ -169,14 +171,16 @@ class TaskTile extends StatelessWidget {
                                   '${task.images.length}x',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .caption!
+                                      .bodySmall!
                                       .copyWith(fontSize: 14),
                                 ),
                               FaIcon(
                                 FontAwesomeIcons.image,
                                 size: 18,
-                                color:
-                                    Theme.of(context).textTheme.caption!.color,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .color,
                               ),
                               const SizedBox(
                                 width: 4,
@@ -188,7 +192,7 @@ class TaskTile extends StatelessWidget {
                           FaIcon(
                             FontAwesomeIcons.play,
                             size: 18,
-                            color: Theme.of(context).textTheme.caption!.color,
+                            color: Theme.of(context).textTheme.bodySmall!.color,
                           ),
                       ],
                     ),
@@ -305,7 +309,7 @@ class ProgressIcon extends StatelessWidget {
           size: 40,
           color: task.executionDate.isBefore(DateTime.now())
               ? Theme.of(context).highlightColor.withAlpha(200)
-              : Theme.of(context).textTheme.caption!.color!.withAlpha(120),
+              : Theme.of(context).textTheme.bodySmall!.color!.withAlpha(120),
         );
       } else {
         // scheduled task, but not started yet
@@ -314,7 +318,7 @@ class ProgressIcon extends StatelessWidget {
           size: 40,
           color: task.executionDate.isBefore(DateTime.now())
               ? Theme.of(context).highlightColor.withAlpha(200)
-              : Theme.of(context).textTheme.caption!.color!.withAlpha(120),
+              : Theme.of(context).textTheme.bodySmall!.color!.withAlpha(120),
         );
       }
     }
@@ -335,21 +339,21 @@ class ProgressText extends StatelessWidget {
     if (task.isCancelled) {
       return Text(
         AppLocalizations.of(context)!.task_progress_cancelled,
-        style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
       );
     } else if (task.isFinished) {
       // done sucessfully
       if (task.isSuccessful) {
         return Text(
           AppLocalizations.of(context)!.task_progress_finished_successfully,
-          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
         );
 
         // done unsuccessfully
       } else {
         return Text(
           AppLocalizations.of(context)!.task_progress_finished_unsuccessfully,
-          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
         );
       }
     } else {
@@ -357,13 +361,13 @@ class ProgressText extends StatelessWidget {
       if (task.isInProgress) {
         return Text(
           AppLocalizations.of(context)!.task_progress_in_progress,
-          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
         );
       } else {
         // scheduled task, but not started yet
         return Text(
           AppLocalizations.of(context)!.task_progress_scheduled,
-          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
         );
       }
     }
@@ -390,7 +394,7 @@ class AssignedGroups extends StatelessWidget {
             children: [
               Icon(
                 Icons.group,
-                color: Theme.of(context).textTheme.caption!.color,
+                color: Theme.of(context).textTheme.bodySmall!.color,
                 size: 14,
               ),
               const SizedBox(
@@ -398,8 +402,10 @@ class AssignedGroups extends StatelessWidget {
               ),
               Text(
                 AppLocalizations.of(context)!.task_assigned_groups,
-                style:
-                    Theme.of(context).textTheme.caption!.copyWith(fontSize: 10),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(fontSize: 10),
               ),
               const Expanded(
                 child: Divider(
@@ -427,12 +433,12 @@ class AssignedGroups extends StatelessWidget {
                       ),
                       child: Icon(
                         Icons.group,
-                        color: Theme.of(context).textTheme.caption!.color,
+                        color: Theme.of(context).textTheme.bodySmall!.color,
                       ),
                     ),
                     Text(
                       group.name,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -464,7 +470,7 @@ class AssignedUsers extends StatelessWidget {
             children: [
               Icon(
                 Icons.person,
-                color: Theme.of(context).textTheme.caption!.color,
+                color: Theme.of(context).textTheme.bodySmall!.color,
                 size: 14,
               ),
               const SizedBox(
@@ -472,8 +478,10 @@ class AssignedUsers extends StatelessWidget {
               ),
               Text(
                 AppLocalizations.of(context)!.task_assigned_users,
-                style:
-                    Theme.of(context).textTheme.caption!.copyWith(fontSize: 10),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(fontSize: 10),
               ),
               const Expanded(
                 child: Divider(
@@ -506,7 +514,7 @@ class AssignedUsers extends StatelessWidget {
                     ),
                     Text(
                       user.firstName,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -544,7 +552,7 @@ class TaskAuthor extends StatelessWidget {
           ),
           Text(
             '${_author!.firstName} ${_author!.lastName}',
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),
@@ -574,7 +582,7 @@ class TaskTitle extends StatelessWidget {
         title,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
-        style: const TextStyle(fontSize: 16),
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }
@@ -594,7 +602,7 @@ class NoAssetInfo extends StatelessWidget {
           Icon(
             Icons.handyman,
             size: 16,
-            color: Theme.of(context).textTheme.caption!.color,
+            color: Theme.of(context).textTheme.bodySmall!.color,
           ),
           const SizedBox(
             width: 4,
@@ -603,7 +611,8 @@ class NoAssetInfo extends StatelessWidget {
             AppLocalizations.of(context)!.task_connected_asset_no,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 16),
+            style:
+                Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 16),
           ),
         ],
       ),

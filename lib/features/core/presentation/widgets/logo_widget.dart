@@ -21,7 +21,7 @@ class Logo extends StatelessWidget {
         Text(
           'U',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).primaryColor,
             fontSize: SizeConfig.blockSizeHorizontal * greenLettersSize,
             fontWeight: FontWeight.bold,
           ),
@@ -37,7 +37,7 @@ class Logo extends StatelessWidget {
         Text(
           'C',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).primaryColor,
             fontSize: SizeConfig.blockSizeHorizontal * greenLettersSize,
             fontWeight: FontWeight.bold,
           ),

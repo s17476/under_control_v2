@@ -31,7 +31,9 @@ void showSnackBar({
             ? SnackBarAction(
                 label: AppLocalizations.of(context)!.exit,
                 onPressed: () => Navigator.pop(context),
-                textColor: Colors.white,
+                textColor:
+                    MaterialStateColor.resolveWith((states) => Colors.white),
+                disabledTextColor: Colors.grey,
               )
             : null,
         backgroundColor: isErrorMessage
