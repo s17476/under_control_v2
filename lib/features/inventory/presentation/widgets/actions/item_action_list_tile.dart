@@ -64,6 +64,7 @@ class ItemActionListTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Material(
+                color: Colors.transparent,
                 borderRadius: BorderRadius.circular(10),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(10),

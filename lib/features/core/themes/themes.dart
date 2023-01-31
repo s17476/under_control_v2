@@ -25,7 +25,7 @@ class Themes with MaterialColorGenerator {
         //   surface: const Color.fromARGB(255, 50, 50, 50),
         //   onSurface: Colors.grey.shade300,
         // ),
-        errorColor: Color.fromARGB(255, 194, 56, 46),
+        errorColor: const Color.fromARGB(255, 194, 56, 46),
         brightness: Brightness.dark,
         drawerTheme: const DrawerThemeData(
           backgroundColor: Color(0xFF191919),
@@ -53,11 +53,36 @@ class Themes with MaterialColorGenerator {
         ),
         inputDecorationTheme: InputDecorationTheme(
           fillColor: Colors.grey.shade800,
+          errorStyle: const TextStyle(
+            color: Color.fromARGB(255, 194, 56, 46),
+          ),
+          labelStyle: TextStyle(color: Colors.grey.shade300),
+          floatingLabelStyle: TextStyle(color: Colors.grey.shade400),
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
+        ),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Color.fromRGBO(0, 240, 130, 100),
+          selectionColor: Color.fromRGBO(0, 240, 130, 100),
+          selectionHandleColor: Color.fromRGBO(0, 240, 130, 100),
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Color.fromARGB(255, 28, 154, 97),
           foregroundColor: Colors.white,
         ),
         highlightColor: Colors.amber,
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateColor.resolveWith(
+              (states) => const Color.fromRGBO(0, 240, 130, 100),
+            ),
+          ),
+        ),
+        popupMenuTheme: const PopupMenuThemeData(
+          color: Color.fromARGB(255, 50, 50, 50),
+        ),
+        canvasColor: const Color.fromARGB(255, 50, 50, 50),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: Color.fromRGBO(0, 240, 130, 100),
+        ),
       );
 }

@@ -62,9 +62,9 @@ class CustomTextFormField extends StatelessWidget {
         isDense: isDense,
         prefixIcon: prefixIcon,
         suffix: suffixIcon,
-        floatingLabelStyle: TextStyle(
-          color: Theme.of(context).textTheme.headline1!.color,
-        ),
+        // floatingLabelStyle: TextStyle(
+        //   color: Theme.of(context).textTheme.displayLarge!.color,
+        // ),
         labelText: labelText,
         contentPadding: contentPadding ??
             const EdgeInsets.symmetric(

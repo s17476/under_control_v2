@@ -46,6 +46,7 @@ class ItemTile extends StatelessWidget {
       ),
       margin: margin,
       child: Material(
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(borderRadius),
         child: InkWell(
           onTap: onSelected != null
