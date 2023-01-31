@@ -655,5 +655,6 @@
     "notifications_work_requests": "Powiadomienia o nowych zleceniach w lokacjach zarejestrowanych w twoich grupach.",
     "notifications_tasks": "Powiadomienia o nowych zadaniach w lokacjach zarejestrowanych w twoich grupach.",
     "notifications_inventory": "Powiadomienia o przedmiotach poniej ilości alarmowej.",
-    "notifications_assets": "Powiadomienia o zasobach bez aktualnego przeglądu technicznego."
+    "notifications_assets": "Powiadomienia o zasobach bez aktualnego przeglądu technicznego.",
+    "notifications_unread": "Nieodczytane"
 }

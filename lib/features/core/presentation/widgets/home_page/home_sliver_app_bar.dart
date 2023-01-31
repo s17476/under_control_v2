@@ -72,6 +72,9 @@ class HomeSliverAppBar extends StatelessWidget {
               if (isFilterExpanded) {
                 toggleIsFilterExpanded();
               }
+              if (isNotificationsExpanded) {
+                toggleIsNotificationsExpanded();
+              }
               if (isTaskFilterVisible) {
                 context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
               }

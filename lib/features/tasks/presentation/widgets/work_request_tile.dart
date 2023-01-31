@@ -18,9 +18,11 @@ class WorkRequestTile extends StatelessWidget {
   const WorkRequestTile({
     Key? key,
     required this.workRequest,
+    this.markAsRead,
   }) : super(key: key);
 
   final WorkRequest workRequest;
+  final Function()? markAsRead;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,9 @@ class WorkRequestTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             child: InkWell(
               onTap: () {
+                if (markAsRead != null) {
+                  markAsRead!();
+                }
                 Navigator.pushNamed(
                   context,
                   WorkRequestDetailsPage.routeName,

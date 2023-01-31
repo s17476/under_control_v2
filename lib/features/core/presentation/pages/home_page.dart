@@ -19,6 +19,7 @@ import '../../../inventory/utils/item_management_bloc_listener.dart';
 import '../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import '../../../knowledge_base/presentation/pages/knowledge_base_page.dart';
 import '../../../knowledge_base/utils/instruction_management_bloc_listener.dart';
+import '../../../notifications/presentation/widgets/home_page_notifications.dart';
 import '../../../tasks/presentation/blocs/task_filter/task_filter_bloc.dart';
 import '../../../tasks/presentation/blocs/task_management/task_management_bloc.dart';
 import '../../../tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
@@ -636,6 +637,11 @@ class _HomePageState extends State<HomePage>
                     HomePageFilter(
                       isFilterExpanded: _isFilterExpanded,
                       onDismiss: _toggleIsFilterExpanded,
+                    ),
+                    // notifications
+                    HomePageNotifications(
+                      isNotificationsExpanded: _isNotificationsExpanded,
+                      onDismiss: _toggleIsNotificationsExpanded,
                     ),
                     OverlayMenu(
                       isVisible: _isMenuVisible,

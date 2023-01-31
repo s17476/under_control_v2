@@ -22,10 +22,12 @@ class TaskTile extends StatelessWidget {
     Key? key,
     required this.task,
     this.isTemplate = false,
+    this.markAsRead,
   }) : super(key: key);
 
   final Task task;
   final bool isTemplate;
+  final Function()? markAsRead;
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +52,16 @@ class TaskTile extends StatelessWidget {
                         TaskTemplateDetailsPage.routeName,
                         arguments: task.id,
                       )
-                  : () => Navigator.pushNamed(
+                  : () {
+                      if (markAsRead != null) {
+                        markAsRead!();
+                      }
+                      Navigator.pushNamed(
                         context,
                         TaskDetailsPage.routeName,
                         arguments: task.id,
-                      ),
+                      );
+                    },
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 padding: const EdgeInsets.only(

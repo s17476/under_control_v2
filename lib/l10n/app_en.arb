@@ -2698,5 +2698,9 @@
     "notifications_assets": "Notifications about assets without a valid inspection.",
     "@notifications_assets": {
       "description": "notifications"
+    },
+    "notifications_unread": "Unread",
+    "@notifications_unread": {
+      "description": "notifications"
     }
 }
