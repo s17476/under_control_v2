@@ -57,6 +57,51 @@ class HomePageNotifications extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // notifications title
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 8,
+                          right: 8,
+                          top: 12,
+                          bottom: 8,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: IconTitleRow(
+                                icon: Icons.notification_important_sharp,
+                                iconColor: Colors.grey.shade200,
+                                iconBackground: Theme.of(context).primaryColor,
+                                title: AppLocalizations.of(context)!
+                                    .notifications_unread,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  NotificationsPage.routeName,
+                                );
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!.show_all,
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 16,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       BlocBuilder<UcNotificationBloc, UcNotificationState>(
                         builder: (context, state) {
                           if (state is UcNotificationLoaded) {
@@ -83,54 +128,6 @@ class HomePageNotifications extends StatelessWidget {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               children: [
-                                // notifications title
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 8,
-                                    right: 8,
-                                    top: 12,
-                                    bottom: 8,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: IconTitleRow(
-                                          icon: Icons
-                                              .notification_important_sharp,
-                                          iconColor: Colors.grey.shade200,
-                                          iconBackground:
-                                              Theme.of(context).primaryColor,
-                                          title: AppLocalizations.of(context)!
-                                              .notifications_unread,
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                            context,
-                                            NotificationsPage.routeName,
-                                          );
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 4.0),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                AppLocalizations.of(context)!
-                                                    .show_all,
-                                              ),
-                                              const Icon(
-                                                Icons.arrow_forward_ios,
-                                                size: 16,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
                                 ...unreadNotifications.map(
                                   (notification) => DismissibleNotificationTile(
                                     key: ValueKey(notification.id),
