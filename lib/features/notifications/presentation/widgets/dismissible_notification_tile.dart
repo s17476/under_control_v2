@@ -10,46 +10,51 @@ class DismissibleNotificationTile extends StatelessWidget {
     super.key,
     required this.notification,
     this.onlyDelete = false,
+    this.padding = EdgeInsets.zero,
   });
 
   final UcNotification notification;
   final bool onlyDelete;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: ValueKey(notification.id),
-      background: Container(
-        alignment: Alignment.centerLeft,
-        child: Icon(
-          onlyDelete ? Icons.delete : Icons.done,
-          size: 48,
+    return Padding(
+      padding: padding,
+      child: Dismissible(
+        key: ValueKey(notification.id),
+        background: Container(
+          alignment: Alignment.centerLeft,
+          child: Icon(
+            onlyDelete ? Icons.delete : Icons.done,
+            size: 48,
+          ),
         ),
-      ),
-      secondaryBackground: Container(
-        alignment: Alignment.centerRight,
-        child: const Icon(
-          Icons.delete,
-          size: 48,
+        secondaryBackground: Container(
+          alignment: Alignment.centerRight,
+          child: const Icon(
+            Icons.delete,
+            size: 48,
+          ),
         ),
-      ),
-      onDismissed: (direction) {
-        if (onlyDelete || direction == DismissDirection.endToStart) {
-          context.read<UcNotificationManagementBloc>().add(
-                DeleteNotificationEvent(
-                  notificationId: notification.id,
-                ),
-              );
-        } else {
-          context.read<UcNotificationManagementBloc>().add(
-                MarkAsReadEvent(
-                  notificationId: notification.id,
-                ),
-              );
-        }
-      },
-      child: NotificationTile(
-        notification: notification,
+        onDismissed: (direction) {
+          if (onlyDelete || direction == DismissDirection.endToStart) {
+            context.read<UcNotificationManagementBloc>().add(
+                  DeleteNotificationEvent(
+                    notificationId: notification.id,
+                  ),
+                );
+          } else {
+            context.read<UcNotificationManagementBloc>().add(
+                  MarkAsReadEvent(
+                    notificationId: notification.id,
+                  ),
+                );
+          }
+        },
+        child: NotificationTile(
+          notification: notification,
+        ),
       ),
     );
   }

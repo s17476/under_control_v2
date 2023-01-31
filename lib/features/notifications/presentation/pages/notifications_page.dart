@@ -32,19 +32,21 @@ class NotificationsPage extends StatelessWidget {
                 ),
               );
             }
-            return ListView.separated(
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 8,
-              ),
+            return ListView(
               padding: const EdgeInsets.symmetric(
                 horizontal: 8,
                 vertical: 8,
               ),
-              itemCount: notifications.length,
-              itemBuilder: (context, index) => DismissibleNotificationTile(
-                notification: notifications[index],
-                onlyDelete: true,
-              ),
+              children: [
+                ...notifications.map(
+                  (notification) => DismissibleNotificationTile(
+                    key: ValueKey(notification.id),
+                    notification: notification,
+                    onlyDelete: true,
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                  ),
+                ),
+              ],
             );
           }
           return ListView.separated(
