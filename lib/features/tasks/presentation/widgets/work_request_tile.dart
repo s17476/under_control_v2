@@ -41,231 +41,277 @@ class WorkRequestTile extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.only(left: 25),
-          width: double.infinity,
           decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Material(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(10),
-            child: InkWell(
-              onTap: () {
-                if (notification != null) {
-                  context.read<UcNotificationManagementBloc>().add(
-                        MarkAsReadEvent(
-                          notificationId: notification!.id,
-                        ),
-                      );
-                }
-                Navigator.pushNamed(
-                  context,
-                  WorkRequestDetailsPage.routeName,
-                  arguments: workRequest.id,
-                );
-              },
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 18,
-                  right: 8,
-                  top: 8,
-                  bottom: 8,
-                ),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // notification info
-                    if (notification != null) ...[
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (notification != null)
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                    color: notification!.read
+                        ? Theme.of(context).cardColor
+                        : const Color.fromARGB(255, 179, 0, 0),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.warning, size: 16),
+                      const SizedBox(
+                        width: 4,
+                      ),
                       Text(
                         AppLocalizations.of(context)!
                             .notifications_work_requests_tile,
-                        style: notification!.read
-                            ? null
-                            : TextStyle(
-                                color: Theme.of(context).highlightColor,
-                              ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall!
+                            .copyWith(fontSize: 16),
                       ),
-                      const Divider(),
                     ],
-                    // date
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Row(
+                  ),
+                ),
+              Container(
+                // margin: const EdgeInsets.only(left: 25),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: notification != null
+                      ? const BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        )
+                      : BorderRadius.circular(10),
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                  child: InkWell(
+                    onTap: () {
+                      if (notification != null) {
+                        context.read<UcNotificationManagementBloc>().add(
+                              MarkAsReadEvent(
+                                notificationId: notification!.id,
+                              ),
+                            );
+                      }
+                      Navigator.pushNamed(
+                        context,
+                        WorkRequestDetailsPage.routeName,
+                        arguments: workRequest.id,
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        left: 18,
+                        right: 8,
+                        top: 8,
+                        bottom: 8,
+                      ),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.add,
-                            color: Theme.of(context).textTheme.bodySmall!.color,
-                            size: 12,
-                          ),
-                          Expanded(
-                            child: Text(
-                              dateFormat.format(workRequest.date),
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ),
-                          Text(
-                            '#${workRequest.count}',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    ),
-                    // shows asset data if work order is connected to an asset
-                    if (workRequest.assetId.isNotEmpty)
-                      BlocBuilder<AssetBloc, AssetState>(
-                        builder: (context, state) {
-                          if (state is AssetLoadedState) {
-                            final asset =
-                                state.getAssetById(workRequest.assetId);
-                            if (asset != null) {
-                              return Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.precision_manufacturing,
-                                      size: 16,
-                                      color: Theme.of(context).highlightColor,
-                                    ),
-                                    const SizedBox(
-                                      width: 4,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        '${asset.producer} - ${asset.model}',
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color:
-                                              Theme.of(context).highlightColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                          }
-                          return const Text('');
-                        },
-                      ),
-                    // shows info if work order is not connected to an asset
-                    if (workRequest.assetId.isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.handyman,
-                              size: 16,
-                              color:
-                                  Theme.of(context).textTheme.bodySmall!.color,
-                            ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              AppLocalizations.of(context)!
-                                  .task_connected_asset_no,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                    // title
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        workRequest.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        // style: Theme.of(context)
-                        //     .textTheme
-                        //     .caption!
-                        //     .copyWith(fontSize: 16),
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-
-                    const SizedBox(
-                      height: 4,
-                    ),
-
-                    // user
-                    if (user != null)
-                      Row(
-                        children: [
-                          Expanded(
+                          // date
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
                             child: Row(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 4,
-                                    left: 8,
-                                  ),
-                                  child: CachedUserAvatar(
-                                    size: 20,
-                                    imageUrl: user.avatarUrl,
+                                Icon(
+                                  Icons.add,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .color,
+                                  size: 12,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    dateFormat.format(workRequest.date),
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ),
                                 Text(
-                                  '${user.firstName} ${user.lastName}',
+                                  '#${workRequest.count}',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
                             ),
                           ),
-                          // image icon
-                          if (workRequest.images.isNotEmpty)
-                            Row(
-                              children: [
-                                if (workRequest.images.length > 1)
+                          // shows asset data if work order is connected to an asset
+                          if (workRequest.assetId.isNotEmpty)
+                            BlocBuilder<AssetBloc, AssetState>(
+                              builder: (context, state) {
+                                if (state is AssetLoadedState) {
+                                  final asset =
+                                      state.getAssetById(workRequest.assetId);
+                                  if (asset != null) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.precision_manufacturing,
+                                            size: 16,
+                                            color: Theme.of(context)
+                                                .highlightColor,
+                                          ),
+                                          const SizedBox(
+                                            width: 4,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              '${asset.producer} - ${asset.model}',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Theme.of(context)
+                                                    .highlightColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                }
+                                return const Text('');
+                              },
+                            ),
+                          // shows info if work order is not connected to an asset
+                          if (workRequest.assetId.isEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.handyman,
+                                    size: 16,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .color,
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
                                   Text(
-                                    '${workRequest.images.length}x',
+                                    AppLocalizations.of(context)!
+                                        .task_connected_asset_no,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall!
-                                        .copyWith(fontSize: 14),
+                                        .copyWith(fontSize: 16),
                                   ),
-                                FaIcon(
-                                  FontAwesomeIcons.image,
-                                  size: 18,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .color,
-                                ),
-                                const SizedBox(
-                                  width: 4,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          // video icon
-                          if (workRequest.video.isNotEmpty)
-                            FaIcon(
-                              FontAwesomeIcons.play,
-                              size: 18,
-                              color:
-                                  Theme.of(context).textTheme.bodySmall!.color,
+
+                          // title
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              workRequest.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              // style: Theme.of(context)
+                              //     .textTheme
+                              //     .caption!
+                              //     .copyWith(fontSize: 16),
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+
+                          const SizedBox(
+                            height: 4,
+                          ),
+
+                          // user
+                          if (user != null)
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 4,
+                                          left: 8,
+                                        ),
+                                        child: CachedUserAvatar(
+                                          size: 20,
+                                          imageUrl: user.avatarUrl,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${user.firstName} ${user.lastName}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // image icon
+                                if (workRequest.images.isNotEmpty)
+                                  Row(
+                                    children: [
+                                      if (workRequest.images.length > 1)
+                                        Text(
+                                          '${workRequest.images.length}x',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .copyWith(fontSize: 14),
+                                        ),
+                                      FaIcon(
+                                        FontAwesomeIcons.image,
+                                        size: 18,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .color,
+                                      ),
+                                      const SizedBox(
+                                        width: 4,
+                                      ),
+                                    ],
+                                  ),
+                                // video icon
+                                if (workRequest.video.isNotEmpty)
+                                  FaIcon(
+                                    FontAwesomeIcons.play,
+                                    size: 18,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .color,
+                                  ),
+                              ],
                             ),
                         ],
                       ),
-                  ],
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
         getTaskPriorityIcon(

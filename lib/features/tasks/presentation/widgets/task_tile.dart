@@ -5,13 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:under_control_v2/features/notifications/domain/entities/uc_notification.dart';
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../groups/domain/entities/group.dart';
 import '../../../groups/presentation/blocs/group/group_bloc.dart';
+import '../../../notifications/domain/entities/uc_notification.dart';
 import '../../../notifications/presentation/blocs/uc_notification_management/uc_notification_management_bloc.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../domain/entities/task/task.dart';
@@ -39,230 +39,270 @@ class TaskTile extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.only(left: 25),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Material(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(10),
-            child: InkWell(
-              onTap: isTemplate
-                  ? () => Navigator.pushNamed(
-                        context,
-                        TaskTemplateDetailsPage.routeName,
-                        arguments: task.id,
-                      )
-                  : () {
-                      if (notification != null) {
-                        context.read<UcNotificationManagementBloc>().add(
-                              MarkAsReadEvent(
-                                notificationId: notification!.id,
-                              ),
-                            );
-                      }
-                      Navigator.pushNamed(
-                        context,
-                        TaskDetailsPage.routeName,
-                        arguments: task.id,
-                      );
-                    },
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 18,
-                  right: 8,
-                  top: 8,
-                  bottom: 8,
-                ),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // notification info
-                    if (notification != null) ...[
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (notification != null)
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                    color: notification!.read
+                        ? Theme.of(context).cardColor
+                        : const Color.fromARGB(255, 110, 0, 0),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.task_alt, size: 16),
+                      const SizedBox(
+                        width: 4,
+                      ),
                       Text(
                         AppLocalizations.of(context)!.notifications_tasks_tile,
-                        style: notification!.read
-                            ? null
-                            : TextStyle(
-                                color: Theme.of(context).highlightColor,
-                              ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall!
+                            .copyWith(fontSize: 16),
                       ),
-                      const Divider(),
                     ],
-                    // date
-                    if (!isTemplate)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 4.0),
-                        child: Row(
-                          children: [
-                            ProgressIcon(task: task),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                ),
+              Container(
+                // margin: const EdgeInsets.only(left: 25),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: notification != null
+                      ? const BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        )
+                      : BorderRadius.circular(10),
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                  child: InkWell(
+                    onTap: isTemplate
+                        ? () => Navigator.pushNamed(
+                              context,
+                              TaskTemplateDetailsPage.routeName,
+                              arguments: task.id,
+                            )
+                        : () {
+                            if (notification != null) {
+                              context.read<UcNotificationManagementBloc>().add(
+                                    MarkAsReadEvent(
+                                      notificationId: notification!.id,
+                                    ),
+                                  );
+                            }
+                            Navigator.pushNamed(
+                              context,
+                              TaskDetailsPage.routeName,
+                              arguments: task.id,
+                            );
+                          },
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        left: 18,
+                        right: 8,
+                        top: 8,
+                        bottom: 8,
+                      ),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // date
+                          if (!isTemplate)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 4.0),
+                              child: Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.build,
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .color,
-                                        size: 10,
-                                      ),
-                                      const SizedBox(
-                                        width: 2,
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          dateFormat.format(task.executionDate),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                        ),
-                                      ),
-                                      if (task.isCyclictask)
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 4),
-                                          child: Icon(
-                                            Icons.refresh,
-                                            size: 14,
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .color,
-                                          ),
-                                        ),
-                                      Text(
-                                        '#${task.count}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
-                                      ),
-                                    ],
-                                  ),
+                                  ProgressIcon(task: task),
                                   const SizedBox(
-                                    height: 2,
+                                    width: 8,
                                   ),
-                                  ProgressText(task: task),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.build,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .color,
+                                              size: 10,
+                                            ),
+                                            const SizedBox(
+                                              width: 2,
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                dateFormat
+                                                    .format(task.executionDate),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall,
+                                              ),
+                                            ),
+                                            if (task.isCyclictask)
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 4),
+                                                child: Icon(
+                                                  Icons.refresh,
+                                                  size: 14,
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodySmall!
+                                                      .color,
+                                                ),
+                                              ),
+                                            Text(
+                                              '#${task.count}',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 2,
+                                        ),
+                                        ProgressText(task: task),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    // shows asset data if work order is connected to an asset
-                    if (task.assetId.isNotEmpty)
-                      ConnectedAsset(assetId: task.assetId),
-                    // shows info if work order is not connected to an asset
-                    if (task.assetId.isEmpty) const NoAssetInfo(),
+                          // shows asset data if work order is connected to an asset
+                          if (task.assetId.isNotEmpty)
+                            ConnectedAsset(assetId: task.assetId),
+                          // shows info if work order is not connected to an asset
+                          if (task.assetId.isEmpty) const NoAssetInfo(),
 
-                    // title
-                    TaskTitle(taskTitle: task.title),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Row(
-                      children: [
-                        // task author
-                        BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
-                          builder: (context, state) {
-                            final UserProfile? author;
-                            if (state is CompanyProfileLoaded) {
-                              author = state.getUserById(task.userId);
-                              if (author != null) {
-                                return TaskAuthor(author: author);
-                              }
-                            }
-                            return const Expanded(child: SizedBox());
-                          },
-                        ),
-                        // image icon
-                        if (task.images.isNotEmpty)
+                          // title
+                          TaskTitle(taskTitle: task.title),
+                          const SizedBox(
+                            height: 4,
+                          ),
                           Row(
                             children: [
-                              if (task.images.length > 1)
-                                Text(
-                                  '${task.images.length}x',
-                                  style: Theme.of(context)
+                              // task author
+                              BlocBuilder<CompanyProfileBloc,
+                                  CompanyProfileState>(
+                                builder: (context, state) {
+                                  final UserProfile? author;
+                                  if (state is CompanyProfileLoaded) {
+                                    author = state.getUserById(task.userId);
+                                    if (author != null) {
+                                      return TaskAuthor(author: author);
+                                    }
+                                  }
+                                  return const Expanded(child: SizedBox());
+                                },
+                              ),
+                              // image icon
+                              if (task.images.isNotEmpty)
+                                Row(
+                                  children: [
+                                    if (task.images.length > 1)
+                                      Text(
+                                        '${task.images.length}x',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(fontSize: 14),
+                                      ),
+                                    FaIcon(
+                                      FontAwesomeIcons.image,
+                                      size: 18,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .color,
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                  ],
+                                ),
+                              // video icon
+                              if (task.video.isNotEmpty)
+                                FaIcon(
+                                  FontAwesomeIcons.play,
+                                  size: 18,
+                                  color: Theme.of(context)
                                       .textTheme
                                       .bodySmall!
-                                      .copyWith(fontSize: 14),
+                                      .color,
                                 ),
-                              FaIcon(
-                                FontAwesomeIcons.image,
-                                size: 18,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .color,
-                              ),
-                              const SizedBox(
-                                width: 4,
-                              ),
                             ],
                           ),
-                        // video icon
-                        if (task.video.isNotEmpty)
-                          FaIcon(
-                            FontAwesomeIcons.play,
-                            size: 18,
-                            color: Theme.of(context).textTheme.bodySmall!.color,
+                          const SizedBox(
+                            height: 4,
                           ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    // assigned users
-                    if (task.assignedUsers.isNotEmpty)
-                      BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
-                        builder: (context, state) {
-                          List<UserProfile> assignedUsers = [];
-                          if (state is CompanyProfileLoaded) {
-                            for (var userId in task.assignedUsers) {
-                              final usr = state.getUserById(userId);
-                              if (usr != null) {
-                                assignedUsers.add(usr);
-                              }
-                            }
-                          }
-                          return AssignedUsers(assignedUsers: assignedUsers);
-                        },
-                      ),
+                          // assigned users
+                          if (task.assignedUsers.isNotEmpty)
+                            BlocBuilder<CompanyProfileBloc,
+                                CompanyProfileState>(
+                              builder: (context, state) {
+                                List<UserProfile> assignedUsers = [];
+                                if (state is CompanyProfileLoaded) {
+                                  for (var userId in task.assignedUsers) {
+                                    final usr = state.getUserById(userId);
+                                    if (usr != null) {
+                                      assignedUsers.add(usr);
+                                    }
+                                  }
+                                }
+                                return AssignedUsers(
+                                    assignedUsers: assignedUsers);
+                              },
+                            ),
 
-                    // assigned groups
-                    if (task.assignedGroups.isNotEmpty)
-                      BlocBuilder<GroupBloc, GroupState>(
-                        builder: (context, state) {
-                          List<Group> assignedGroups = [];
-                          if (state is GroupLoadedState) {
-                            for (var groupId in task.assignedGroups) {
-                              final grp = state.getGroupById(groupId);
-                              if (grp != null) {
-                                assignedGroups.add(grp);
-                              }
-                            }
-                          }
-                          return AssignedGroups(
-                            assignedGroups: assignedGroups,
-                          );
-                        },
+                          // assigned groups
+                          if (task.assignedGroups.isNotEmpty)
+                            BlocBuilder<GroupBloc, GroupState>(
+                              builder: (context, state) {
+                                List<Group> assignedGroups = [];
+                                if (state is GroupLoadedState) {
+                                  for (var groupId in task.assignedGroups) {
+                                    final grp = state.getGroupById(groupId);
+                                    if (grp != null) {
+                                      assignedGroups.add(grp);
+                                    }
+                                  }
+                                }
+                                return AssignedGroups(
+                                  assignedGroups: assignedGroups,
+                                );
+                              },
+                            ),
+                        ],
                       ),
-                  ],
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
         getTaskPriorityAndTypeIcon(
