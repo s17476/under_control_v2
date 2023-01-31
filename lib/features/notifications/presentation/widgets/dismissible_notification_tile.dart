@@ -9,9 +9,11 @@ class DismissibleNotificationTile extends StatelessWidget {
   const DismissibleNotificationTile({
     super.key,
     required this.notification,
+    this.onlyDelete = false,
   });
 
   final UcNotification notification;
+  final bool onlyDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +21,8 @@ class DismissibleNotificationTile extends StatelessWidget {
       key: ValueKey(notification.id),
       background: Container(
         alignment: Alignment.centerLeft,
-        child: const Icon(
-          Icons.done,
+        child: Icon(
+          onlyDelete ? Icons.delete : Icons.done,
           size: 48,
         ),
       ),
@@ -32,7 +34,7 @@ class DismissibleNotificationTile extends StatelessWidget {
         ),
       ),
       onDismissed: (direction) {
-        if (direction == DismissDirection.endToStart) {
+        if (onlyDelete || direction == DismissDirection.endToStart) {
           context.read<UcNotificationManagementBloc>().add(
                 DeleteNotificationEvent(
                   notificationId: notification.id,

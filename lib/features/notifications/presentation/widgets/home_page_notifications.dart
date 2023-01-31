@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../core/presentation/widgets/glass_layer.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../blocs/uc_notification/uc_notification_bloc.dart';
@@ -135,7 +136,21 @@ class HomePageNotifications extends StatelessWidget {
                               ),
                             );
                           }
-                          return CircularProgressIndicator();
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
+                              height: 8,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 8,
+                            ),
+                            itemCount: 3,
+                            itemBuilder: (context, index) =>
+                                const ShimmerAssetActionListTile(),
+                          );
                         },
                       ),
 
