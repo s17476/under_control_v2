@@ -47,6 +47,7 @@ import 'features/knowledge_base/presentation/pages/add_instruction_page.dart';
 import 'features/knowledge_base/presentation/pages/instruction_category_management_page.dart';
 import 'features/knowledge_base/presentation/pages/instruction_preview_page.dart';
 import 'features/locations/presentation/pages/location_management_page.dart';
+import 'features/notifications/presentation/pages/notifications_page.dart';
 import 'features/settings/presentation/blocs/language/language_cubit.dart';
 import 'features/settings/presentation/pages/language_settings_page.dart';
 import 'features/settings/presentation/pages/notification_settings_page.dart';
@@ -245,6 +246,8 @@ class App extends StatelessWidget
                     const AddTaskTemplatePage(),
                 TaskTemplateDetailsPage.routeName: (context) =>
                     const TaskTemplateDetailsPage(),
+                NotificationsPage.routeName: (context) =>
+                    const NotificationsPage(),
               },
               // localization
               localizationsDelegates: const [

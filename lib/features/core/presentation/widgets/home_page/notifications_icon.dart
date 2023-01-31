@@ -15,16 +15,16 @@ class NotificationsIcon extends StatelessWidget {
     return BlocBuilder<UcNotificationBloc, UcNotificationState>(
       builder: (context, state) {
         if (state is UcNotificationLoaded) {
-          if (state.allNotifications.allNotifications.isEmpty) {
+          final count = state.allNotifications.allNotifications
+              .where((notification) => !notification.read)
+              .length;
+          if (count == 0) {
             return Icon(
               Icons.notifications,
               color:
                   Theme.of(context).textTheme.bodySmall!.color!.withAlpha(60),
             );
           } else {
-            final count = state.allNotifications.allNotifications
-                .where((notification) => !notification.read)
-                .length;
             return Stack(
               alignment: Alignment.center,
               children: [

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/notifications/presentation/widgets/notification_tile.dart';
 
 import '../../../core/presentation/widgets/glass_layer.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
 import '../blocs/uc_notification/uc_notification_bloc.dart';
+import '../pages/notifications_page.dart';
+import 'dismissible_notification_tile.dart';
 
 class HomePageNotifications extends StatelessWidget {
   const HomePageNotifications({
@@ -63,12 +64,41 @@ class HomePageNotifications extends StatelessWidget {
                           top: 12,
                           bottom: 8,
                         ),
-                        child: IconTitleRow(
-                          icon: Icons.notification_important_sharp,
-                          iconColor: Colors.grey.shade200,
-                          iconBackground: Theme.of(context).primaryColor,
-                          title: AppLocalizations.of(context)!
-                              .notifications_unread,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: IconTitleRow(
+                                icon: Icons.notification_important_sharp,
+                                iconColor: Colors.grey.shade200,
+                                iconBackground: Theme.of(context).primaryColor,
+                                title: AppLocalizations.of(context)!
+                                    .notifications_unread,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  NotificationsPage.routeName,
+                                );
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!.show_all,
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 16,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       BlocBuilder<UcNotificationBloc, UcNotificationState>(
@@ -78,6 +108,17 @@ class HomePageNotifications extends StatelessWidget {
                                 .allNotifications.allNotifications
                                 .where((notification) => !notification.read)
                                 .toList();
+                            if (unreadNotifications.isEmpty) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .notifications_no_unread,
+                                  ),
+                                ),
+                              );
+                            }
                             return ListView.separated(
                               separatorBuilder: (context, index) =>
                                   const SizedBox(
@@ -88,8 +129,8 @@ class HomePageNotifications extends StatelessWidget {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: unreadNotifications.length,
-                              itemBuilder: (context, index) => NotificationTile(
-                                key: ValueKey(unreadNotifications[index].id),
+                              itemBuilder: (context, index) =>
+                                  DismissibleNotificationTile(
                                 notification: unreadNotifications[index],
                               ),
                             );

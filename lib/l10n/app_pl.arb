@@ -660,5 +660,6 @@
     "notifications_inventory_tile": "Ilość poniżej limitu",
     "notifications_assets": "Powiadomienia o zasobach bez aktualnego przeglądu technicznego.",
     "notifications_assets_tile": "Status zasobu",
-    "notifications_unread": "Nieodczytane"
+    "notifications_unread": "Nieodczytane",
+    "notifications_no_unread": "Brak nowych powiadomień"
 }

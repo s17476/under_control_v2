@@ -2718,5 +2718,9 @@
     "notifications_unread": "Unread",
     "@notifications_unread": {
       "description": "notifications"
+    },
+    "notifications_no_unread": "No new notifications",
+    "@notifications_no_unread": {
+      "description": "notifications"
     }
 }
