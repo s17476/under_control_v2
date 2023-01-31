@@ -5,7 +5,7 @@ import 'package:under_control_v2/features/notifications/presentation/widgets/not
 
 import '../../../core/presentation/widgets/glass_layer.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
-import '../blocs/bloc/uc_notification_bloc.dart';
+import '../blocs/uc_notification/uc_notification_bloc.dart';
 
 class HomePageNotifications extends StatelessWidget {
   const HomePageNotifications({

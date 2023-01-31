@@ -653,8 +653,12 @@
     "details_checklist": "Tjekliste",
     "notifications": "Meddelelser",
     "notifications_work_requests": "Meddelelser om nye anmodninger på placeringer, der er registreret i dine grupper.",
+    "notifications_work_requests_tile": "Ny anmodning",
     "notifications_tasks": "Meddelelser om nye opgaver på placeringer, der er registreret i dine grupper.",
+    "notifications_tasks_tile": "Ny opgave",
     "notifications_inventory": "Meddelelser om varer under nødmængden.",
+    "notifications_inventory_tile": "Vareantal under grænsen",
     "notifications_assets": "Meddelelser om aktiver uden gyldig eftersyn.",
+    "notifications_assets_tile": "Aktivets status",
     "notifications_unread": "Ulæste"
 }

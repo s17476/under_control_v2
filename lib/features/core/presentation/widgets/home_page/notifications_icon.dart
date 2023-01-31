@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../notifications/presentation/blocs/bloc/uc_notification_bloc.dart';
+import '../../../../notifications/presentation/blocs/uc_notification/uc_notification_bloc.dart';
 
 class NotificationsIcon extends StatelessWidget {
   final bool isExpanded;

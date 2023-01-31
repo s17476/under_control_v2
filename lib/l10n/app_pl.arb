@@ -653,8 +653,12 @@
     "details_checklist": "Lista kontrolna",
     "notifications": "Powiadomienia",
     "notifications_work_requests": "Powiadomienia o nowych zleceniach w lokacjach zarejestrowanych w twoich grupach.",
+    "notifications_work_requests_tile": "Nowe zlecenie",
     "notifications_tasks": "Powiadomienia o nowych zadaniach w lokacjach zarejestrowanych w twoich grupach.",
+    "notifications_tasks_tile": "Nowe zadanie",
     "notifications_inventory": "Powiadomienia o przedmiotach poniej ilości alarmowej.",
+    "notifications_inventory_tile": "Ilość poniżej limitu",
     "notifications_assets": "Powiadomienia o zasobach bez aktualnego przeglądu technicznego.",
+    "notifications_assets_tile": "Status zasobu",
     "notifications_unread": "Nieodczytane"
 }

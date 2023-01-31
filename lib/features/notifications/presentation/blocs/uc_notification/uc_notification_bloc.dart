@@ -10,10 +10,7 @@ import '../../../../core/usecases/usecase.dart';
 import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../../data/models/uc_notifications_list_model.dart';
-import '../../../domain/usecases/delete_notification.dart';
 import '../../../domain/usecases/get_notifications.dart';
-import '../../../domain/usecases/mark_as_read.dart';
-import '../../../domain/usecases/mark_as_unread.dart';
 
 part 'uc_notification_event.dart';
 part 'uc_notification_state.dart';
@@ -24,9 +21,6 @@ class UcNotificationBloc
   final AuthenticationBloc authenticationBloc;
   final UserProfileBloc userProfileBloc;
   final GetNotifications getNotifications;
-  final MarkAsRead markAsRead;
-  final MarkAsUnread markAsUnread;
-  final DeleteNotification deleteNotification;
 
   late StreamSubscription _authStreamSubscription;
   late StreamSubscription _userStreamSubscription;
@@ -36,9 +30,6 @@ class UcNotificationBloc
     required this.authenticationBloc,
     required this.userProfileBloc,
     required this.getNotifications,
-    required this.markAsRead,
-    required this.markAsUnread,
-    required this.deleteNotification,
   }) : super(UcNotificationEmpty()) {
     _authStreamSubscription = authenticationBloc.stream.listen((state) {
       if (state is Unauthenticated) {

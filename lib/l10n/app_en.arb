@@ -2687,16 +2687,32 @@
     "@notifications_work_requests": {
       "description": "notifications"
     },
+    "notifications_work_requests_tile": "New work request",
+    "@notifications_work_requests_tile": {
+      "description": "notifications"
+    },
     "notifications_tasks": "Notifications about new tasks in locations registered in your groups.",
     "@notifications_tasks": {
+      "description": "notifications"
+    },
+    "notifications_tasks_tile": "New task",
+    "@notifications_tasks_tile": {
       "description": "notifications"
     },
     "notifications_inventory": "Notifications about items below the emergency quantity.",
     "@notifications_inventory": {
       "description": "notifications"
     },
+    "notifications_inventory_tile": "Item quantity below limit",
+    "@notifications_inventory_tile": {
+      "description": "notifications"
+    },
     "notifications_assets": "Notifications about assets without a valid inspection.",
     "@notifications_assets": {
+      "description": "notifications"
+    },
+    "notifications_assets_tile": "Asset's status",
+    "@notifications_assets_tile": {
       "description": "notifications"
     },
     "notifications_unread": "Unread",
