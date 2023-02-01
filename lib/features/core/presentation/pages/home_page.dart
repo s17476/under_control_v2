@@ -283,8 +283,21 @@ class _HomePageState extends State<HomePage>
     }
   }
 
+  Future<void> _requestPushNotificationsPermission() async {
+    await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+  }
+
   @override
   void initState() {
+    _requestPushNotificationsPermission();
     // notifications
     // FirebaseMessaging.onMessage.listen(showFlutterNotification);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
