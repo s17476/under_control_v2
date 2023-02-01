@@ -14,6 +14,8 @@
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		8B4AE407298126C600D3A7F9 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B4AE406298126C600D3A7F9 /* NotificationService.m */; };
 		8B4AE40B298126C600D3A7F9 /* ImageNotification.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8B4AE403298126C600D3A7F9 /* ImageNotification.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8BC91738298A6D5E0084C2C0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8BC9173B298A6D5E0084C2C0 /* Localizable.strings */; };
+		8BC91739298A6D5E0084C2C0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8BC9173B298A6D5E0084C2C0 /* Localizable.strings */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
@@ -72,6 +74,13 @@
 		8B4AE405298126C600D3A7F9 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
 		8B4AE406298126C600D3A7F9 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
 		8B4AE408298126C600D3A7F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8BC9173A298A6D5E0084C2C0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8BC9173C298A6DBA0084C2C0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Main.strings; sourceTree = "<group>"; };
+		8BC9173D298A6DBB0084C2C0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		8BC9173E298A6DBC0084C2C0 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8BC9173F298A6DF70084C2C0 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Main.strings; sourceTree = "<group>"; };
+		8BC91740298A6DF70084C2C0 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		8BC91741298A6DF70084C2C0 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +146,7 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+				8BC9173B298A6D5E0084C2C0 /* Localizable.strings */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				8B4AE404298126C600D3A7F9 /* ImageNotification */,
@@ -256,6 +266,8 @@
 			knownRegions = (
 				en,
 				Base,
+				pl,
+				da,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
@@ -273,6 +285,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BC91739298A6D5E0084C2C0 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
+				8BC91738298A6D5E0084C2C0 /* Localizable.strings in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
@@ -430,10 +444,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		8BC9173B298A6D5E0084C2C0 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8BC9173A298A6D5E0084C2C0 /* en */,
+				8BC9173E298A6DBC0084C2C0 /* pl */,
+				8BC91741298A6DF70084C2C0 /* da */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				97C146FB1CF9000F007C117D /* Base */,
+				8BC9173C298A6DBA0084C2C0 /* pl */,
+				8BC9173F298A6DF70084C2C0 /* da */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -442,6 +468,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				97C147001CF9000F007C117D /* Base */,
+				8BC9173D298A6DBB0084C2C0 /* pl */,
+				8BC91740298A6DF70084C2C0 /* da */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";

@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  Runner
+
+  Created by Grzegorz Fraczek on 01/02/2023.
+  
+*/
+"new_task_title" = "Du har fået en ny opgave";
+"new_work_request_title" = "Ny anmodning";
