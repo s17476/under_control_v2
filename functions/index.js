@@ -19,6 +19,7 @@ exports.taskAdded = functions.firestore
         notification: {
           title_loc_key: 'new_task_title',
           body: text ? (text.length <= 100 ? text : text.substring(0, 97) + '...') : '',
+          sound: 'default',
         },
         data:{
           type: 'tasks',
@@ -118,6 +119,7 @@ exports.workRequestAdded = functions.firestore
         notification: {
           title_loc_key: 'new_work_request_title',
           body: text ? (text.length <= 100 ? text : text.substring(0, 97) + '...') : '',
+          sound: 'default',
         },
         data:{
           type: 'workRequests',
