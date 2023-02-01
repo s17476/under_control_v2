@@ -66,8 +66,10 @@ class AddTaskActionAddSparePartCard extends HookWidget {
                       child: Text(
                         AppLocalizations.of(context)!.task_action_add_assets,
                         style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline5!.fontSize,
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .fontSize,
                         ),
                       ),
                     ),
@@ -87,7 +89,7 @@ class AddTaskActionAddSparePartCard extends HookWidget {
                                       .task_connected_asset,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .caption!
+                                      .bodySmall!
                                       .copyWith(fontSize: 18),
                                 ),
                               ),

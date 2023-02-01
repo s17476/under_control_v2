@@ -94,7 +94,7 @@ class _WorkRequestInfoTabState extends State<WorkRequestInfoTab> {
                             AppLocalizations.of(context)!.task_priority,
                             style: Theme.of(context)
                                 .textTheme
-                                .caption!
+                                .bodySmall!
                                 .copyWith(fontSize: 10),
                           ),
                           Text(
@@ -117,7 +117,7 @@ class _WorkRequestInfoTabState extends State<WorkRequestInfoTab> {
                         '#${widget.workRequest.count}',
                         style: Theme.of(context)
                             .textTheme
-                            .caption!
+                            .bodySmall!
                             .copyWith(fontSize: 14),
                       ),
                     ),

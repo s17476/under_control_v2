@@ -63,7 +63,7 @@ class InstructionTile extends StatelessWidget {
                       if (instruction.description.isNotEmpty)
                         Text(
                           instruction.description,
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                           maxLines: 4,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -76,7 +76,7 @@ class InstructionTile extends StatelessWidget {
                         children: [
                           Text(
                             '${AppLocalizations.of(context)!.instruction_steps}: ${instruction.steps.length} - ',
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                           for (var step in instruction.steps)
                             Padding(
@@ -84,8 +84,10 @@ class InstructionTile extends StatelessWidget {
                               child: FaIcon(
                                 getStepContentIcon(step.contentType),
                                 size: 18,
-                                color:
-                                    Theme.of(context).textTheme.caption!.color,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .color,
                               ),
                             ),
                         ],

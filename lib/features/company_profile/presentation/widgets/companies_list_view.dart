@@ -54,7 +54,7 @@ class _CompaniesListViewState extends State<CompaniesListView> {
                 controller: _searchController,
                 key: const ValueKey('search'),
                 keyboardType: TextInputType.name,
-                cursorColor: Theme.of(context).textTheme.headline5!.color,
+                cursorColor: Theme.of(context).textTheme.headlineSmall!.color,
                 decoration: InputDecoration(
                   suffixIcon: _searchController.text.isEmpty
                       ? const Icon(
@@ -68,10 +68,11 @@ class _CompaniesListViewState extends State<CompaniesListView> {
                             });
                           },
                           icon: const Icon(Icons.cancel),
-                          color: Theme.of(context).textTheme.headline5!.color,
+                          color:
+                              Theme.of(context).textTheme.headlineSmall!.color,
                         ),
                   floatingLabelStyle: TextStyle(
-                    color: Theme.of(context).textTheme.headline1!.color,
+                    color: Theme.of(context).textTheme.displayLarge!.color,
                   ),
                   hintText: AppLocalizations.of(context)!.search,
                   contentPadding: const EdgeInsets.symmetric(

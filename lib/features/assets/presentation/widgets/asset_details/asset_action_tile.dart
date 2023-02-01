@@ -96,7 +96,7 @@ class AssetActionTile extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
                         dateFormat.format(action.dateTime),
-                        style: Theme.of(context).textTheme.caption,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
                     if (isDashboardTile)
@@ -224,16 +224,17 @@ class AssetActionTile extends StatelessWidget {
                             action.isAssetInUse
                                 ? Icons.play_arrow
                                 : Icons.pause,
-                            color: Theme.of(context).textTheme.caption!.color,
+                            color: Theme.of(context).textTheme.bodySmall!.color,
                           ),
                         ),
                         Text(
                           action.isAssetInUse
                               ? AppLocalizations.of(context)!.asset_in_use
                               : AppLocalizations.of(context)!.asset_not_in_use,
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                                fontSize: 14,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    fontSize: 14,
+                                  ),
                         ),
                       ],
                     ),
@@ -254,7 +255,7 @@ class AssetActionTile extends StatelessWidget {
                           ),
                           Text(
                             '${user.firstName} ${user.lastName}',
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
                       ),

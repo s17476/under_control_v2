@@ -118,7 +118,7 @@ class _MoveInsideItemSummaryCardState extends State<MoveInsideItemSummaryCard> {
                       AppLocalizations.of(context)!.summary,
                       style: TextStyle(
                         fontSize:
-                            Theme.of(context).textTheme.headline5!.fontSize,
+                            Theme.of(context).textTheme.headlineSmall!.fontSize,
                       ),
                     ),
                   ),

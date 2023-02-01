@@ -89,7 +89,8 @@ class _AddAssetIsInUseCardState extends State<AddAssetIsInUseCard>
                   child: Text(
                     AppLocalizations.of(context)!.asset_is_in_use,
                     style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+                      fontSize:
+                          Theme.of(context).textTheme.headlineSmall!.fontSize,
                     ),
                   ),
                 ),

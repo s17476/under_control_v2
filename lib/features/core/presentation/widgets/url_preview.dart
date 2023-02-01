@@ -30,7 +30,7 @@ class _UrlPreviewState extends State<UrlPreview> {
       width: double.infinity,
       linkStyle: Theme.of(context)
           .textTheme
-          .headline6!
+          .titleLarge!
           .copyWith(color: Theme.of(context).primaryColor),
       padding: const EdgeInsets.all(8),
       openOnPreviewImageTap: true,

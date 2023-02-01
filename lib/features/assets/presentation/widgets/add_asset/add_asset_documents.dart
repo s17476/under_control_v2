@@ -78,8 +78,10 @@ class AddAssetDocumentsCard extends StatelessWidget with ResponsiveSize {
                       child: Text(
                         AppLocalizations.of(context)!.asset_add_documents,
                         style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline5!.fontSize,
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .fontSize,
                         ),
                       ),
                     ),

@@ -59,7 +59,7 @@ class _CustomYoutubePlayerState extends State<CustomYoutubePlayer> {
           icon: const FaIcon(FontAwesomeIcons.youtube),
           label: Text(AppLocalizations.of(context)!.youtube_play),
           style: TextButton.styleFrom(
-            foregroundColor: Theme.of(context).textTheme.headline6!.color,
+            foregroundColor: Theme.of(context).textTheme.titleLarge!.color,
           ),
         ),
       ],

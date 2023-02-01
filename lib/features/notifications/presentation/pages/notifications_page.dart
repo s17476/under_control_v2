@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/task_details/shimmer_task_action_tile.dart';
 
 import '../blocs/uc_notification/uc_notification_bloc.dart';
 import '../widgets/dismissible_notification_tile.dart';

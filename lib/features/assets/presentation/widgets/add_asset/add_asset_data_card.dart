@@ -82,9 +82,9 @@ class _AddAssetDataCardState extends State<AddAssetDataCard> {
       theme: DatePickerTheme(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         // headerColor: Theme.of,
-        itemStyle: Theme.of(context).textTheme.headline6!,
-        cancelStyle: Theme.of(context).textTheme.headline6!,
-        doneStyle: Theme.of(context).textTheme.headline6!.copyWith(
+        itemStyle: Theme.of(context).textTheme.titleLarge!,
+        cancelStyle: Theme.of(context).textTheme.titleLarge!,
+        doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
               color: Colors.amber,
             ),
         itemHeight: 40,
@@ -127,7 +127,7 @@ class _AddAssetDataCardState extends State<AddAssetDataCard> {
             child: Text(
               AppLocalizations.of(context)!.asset_add_data,
               style: TextStyle(
-                fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+                fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
               ),
             ),
           ),

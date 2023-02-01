@@ -91,7 +91,7 @@ class _TaskPriorityTabBarState extends State<TaskPriorityTabBar>
             if (!widget.isMini)
               Text(
                 AppLocalizations.of(context)!.task_priority,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             TabBar(
               tabs: [

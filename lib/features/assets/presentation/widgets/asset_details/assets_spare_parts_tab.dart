@@ -72,11 +72,11 @@ class _AssetsSparePartsTabState extends State<AssetsSparePartsTab> {
             Icon(
               Icons.settings_applications_sharp,
               size: 70,
-              color: Theme.of(context).textTheme.caption!.color!,
+              color: Theme.of(context).textTheme.bodySmall!.color!,
             ),
             Text(
               AppLocalizations.of(context)!.details_no_spare_parts,
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
         ),
@@ -96,8 +96,10 @@ class _AssetsSparePartsTabState extends State<AssetsSparePartsTab> {
               ),
               child: Text(
                 AppLocalizations.of(context)!.bottom_bar_title_assets,
-                style:
-                    Theme.of(context).textTheme.caption!.copyWith(fontSize: 18),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(fontSize: 18),
               ),
             ),
           ListView.builder(
@@ -121,8 +123,10 @@ class _AssetsSparePartsTabState extends State<AssetsSparePartsTab> {
               ),
               child: Text(
                 AppLocalizations.of(context)!.bottom_bar_title_inventory,
-                style:
-                    Theme.of(context).textTheme.caption!.copyWith(fontSize: 18),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(fontSize: 18),
               ),
             ),
           ListView.builder(

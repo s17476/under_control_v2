@@ -49,11 +49,13 @@ class CheckpointSelectionTile extends StatelessWidget {
                         Expanded(
                           child: Text(
                             checkpoint.title,
-                            style:
-                                Theme.of(context).textTheme.headline6!.copyWith(
-                                      color: Colors.grey.shade200,
-                                      fontSize: 18,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
+                                  color: Colors.grey.shade200,
+                                  fontSize: 18,
+                                ),
                             maxLines: 4,
                             overflow: TextOverflow.ellipsis,
                           ),

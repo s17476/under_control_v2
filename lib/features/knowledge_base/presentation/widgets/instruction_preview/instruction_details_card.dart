@@ -69,7 +69,7 @@ class InstructionDetailsCard extends StatelessWidget {
                     ),
                     child: Text(
                       instruction.name,
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
                 ),
@@ -144,11 +144,11 @@ class InstructionDetailsCard extends StatelessWidget {
                               return Shimmer.fromColors(
                                 baseColor: Theme.of(context)
                                     .textTheme
-                                    .headline6!
+                                    .titleLarge!
                                     .color!,
                                 highlightColor: Theme.of(context)
                                     .textTheme
-                                    .headline6!
+                                    .titleLarge!
                                     .color!
                                     .withOpacity(0.2),
                                 child: Text(

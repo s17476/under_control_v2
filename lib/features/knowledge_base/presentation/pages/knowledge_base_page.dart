@@ -129,7 +129,7 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
                         AppLocalizations.of(context)!.drafts,
                         style: Theme.of(context)
                             .textTheme
-                            .headline4!
+                            .headlineMedium!
                             .copyWith(fontSize: 20),
                       ),
                     ),
@@ -157,7 +157,7 @@ class KnowledgeBasePage extends StatelessWidget with ResponsiveSize {
                         AppLocalizations.of(context)!.published,
                         style: Theme.of(context)
                             .textTheme
-                            .headline4!
+                            .headlineMedium!
                             .copyWith(fontSize: 20),
                       ),
                     ),

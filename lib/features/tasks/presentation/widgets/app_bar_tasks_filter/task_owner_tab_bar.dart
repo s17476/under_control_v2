@@ -98,7 +98,7 @@ class _TaskOwnerTabBarState extends State<TaskOwnerTabBar>
             if (!widget.isMini)
               Text(
                 AppLocalizations.of(context)!.task_owner,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             TabBar(
               tabs: [

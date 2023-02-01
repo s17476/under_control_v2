@@ -33,7 +33,7 @@ class ResetPasswordTextButton extends StatelessWidget {
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.person),
                   floatingLabelStyle: TextStyle(
-                    color: Theme.of(context).textTheme.headline1!.color,
+                    color: Theme.of(context).textTheme.displayLarge!.color,
                   ),
                   labelText: 'E-mail',
                   contentPadding: const EdgeInsets.symmetric(

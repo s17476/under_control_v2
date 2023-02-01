@@ -5,7 +5,6 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/bloc_message.dart';
 import '../../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
-import '../../../domain/entities/uc_notification.dart';
 import '../../../domain/usecases/delete_notification.dart';
 import '../../../domain/usecases/mark_as_read.dart';
 import '../../../domain/usecases/mark_as_unread.dart';

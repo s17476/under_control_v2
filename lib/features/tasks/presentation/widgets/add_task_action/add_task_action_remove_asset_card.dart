@@ -46,8 +46,10 @@ class AddTaskActionRemoveAssetCard extends StatelessWidget {
                       child: Text(
                         AppLocalizations.of(context)!.task_action_remove_assets,
                         style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline5!.fontSize,
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .fontSize,
                         ),
                       ),
                     ),
@@ -61,7 +63,7 @@ class AddTaskActionRemoveAssetCard extends StatelessWidget {
                         AppLocalizations.of(context)!.task_connected_asset,
                         style: Theme.of(context)
                             .textTheme
-                            .caption!
+                            .bodySmall!
                             .copyWith(fontSize: 18),
                       ),
                     ),
@@ -94,7 +96,7 @@ class AddTaskActionRemoveAssetCard extends StatelessWidget {
                                         .asset_spare_parts,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .caption!
+                                        .bodySmall!
                                         .copyWith(fontSize: 18),
                                   ),
                                 ),

@@ -104,12 +104,12 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                 // first name
                 Text(
                   _selectedUser.firstName,
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 // last name
                 Text(
                   _selectedUser.lastName,
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 8),
                 // toggle group administrator
@@ -211,7 +211,7 @@ class _UserInfoCardState extends State<UserInfoCard> with ResponsiveSize {
                   icon: Icon(
                     Icons.clear_rounded,
                     size: 40,
-                    color: Theme.of(context).textTheme.caption!.color,
+                    color: Theme.of(context).textTheme.bodySmall!.color,
                   ),
                 ),
               ],

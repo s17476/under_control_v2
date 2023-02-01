@@ -34,7 +34,8 @@ class AddAssetIsSparePartCard extends StatelessWidget with ResponsiveSize {
                   child: Text(
                     AppLocalizations.of(context)!.asset_type,
                     style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+                      fontSize:
+                          Theme.of(context).textTheme.headlineSmall!.fontSize,
                     ),
                   ),
                 ),
@@ -101,7 +102,7 @@ class AddAssetIsSparePartCard extends StatelessWidget with ResponsiveSize {
                             Icon(
                               Icons.info,
                               color:
-                                  Theme.of(context).textTheme.caption!.color!,
+                                  Theme.of(context).textTheme.bodySmall!.color!,
                             ),
                             const SizedBox(
                               width: 8,
@@ -110,8 +111,10 @@ class AddAssetIsSparePartCard extends StatelessWidget with ResponsiveSize {
                               AppLocalizations.of(context)!
                                   .asset_spare_part_description,
                               style: TextStyle(
-                                color:
-                                    Theme.of(context).textTheme.caption!.color!,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .color!,
                               ),
                             ),
                           ],

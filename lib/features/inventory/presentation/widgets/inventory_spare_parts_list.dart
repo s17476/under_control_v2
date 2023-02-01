@@ -54,7 +54,7 @@ class InventorySparePartsList extends StatelessWidget {
                               .bottom_bar_title_inventory,
                           style: Theme.of(context)
                               .textTheme
-                              .caption!
+                              .bodySmall!
                               .copyWith(fontSize: 18),
                         ),
                       ),

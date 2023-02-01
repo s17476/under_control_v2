@@ -54,7 +54,7 @@ class SettingsSwitch extends StatelessWidget {
             Text(
               description!,
               style:
-                  Theme.of(context).textTheme.caption!.copyWith(fontSize: 14),
+                  Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
               textAlign: TextAlign.justify,
             ),
         ],

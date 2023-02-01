@@ -105,7 +105,7 @@ class AssetTasksTab extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     AppLocalizations.of(context)!.asset_no_work_requests,
-                    style: Theme.of(context).textTheme.caption!.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           fontSize: 18,
                         ),
                   ),
@@ -136,7 +136,7 @@ class AssetTasksTab extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     AppLocalizations.of(context)!.asset_no_tasks,
-                    style: Theme.of(context).textTheme.caption!.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           fontSize: 18,
                         ),
                   ),

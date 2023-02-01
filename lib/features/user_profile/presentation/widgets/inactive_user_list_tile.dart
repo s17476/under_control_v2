@@ -135,7 +135,7 @@ class InactiveUserListTile extends StatelessWidget {
                         AppLocalizations.of(context)!.reject,
                         style: TextStyle(
                           fontSize: 18,
-                          color: Theme.of(context).textTheme.caption!.color,
+                          color: Theme.of(context).textTheme.bodySmall!.color,
                         ),
                       ),
                     ),

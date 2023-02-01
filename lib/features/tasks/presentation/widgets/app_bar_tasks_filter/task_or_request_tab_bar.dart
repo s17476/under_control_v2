@@ -87,7 +87,7 @@ class _TaskOrRequestTabBarState extends State<TaskOrRequestTabBar>
             if (!widget.isMini)
               Text(
                 AppLocalizations.of(context)!.task_and_request,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             TabBar(
               tabs: [

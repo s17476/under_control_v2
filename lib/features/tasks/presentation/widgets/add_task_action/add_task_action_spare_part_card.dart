@@ -46,8 +46,10 @@ class AddTaskActionSparePartCard extends StatelessWidget {
                       child: Text(
                         AppLocalizations.of(context)!.task_action_used_items,
                         style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline5!.fontSize,
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .fontSize,
                         ),
                       ),
                     ),

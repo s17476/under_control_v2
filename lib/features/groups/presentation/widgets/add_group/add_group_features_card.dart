@@ -36,8 +36,10 @@ class AddGroupFeaturesCard extends StatelessWidget {
                           AppLocalizations.of(context)!
                               .group_management_add_card_permissions,
                           style: TextStyle(
-                            fontSize:
-                                Theme.of(context).textTheme.headline5!.fontSize,
+                            fontSize: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .fontSize,
                           ),
                         ),
                       ),

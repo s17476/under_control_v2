@@ -42,7 +42,7 @@ class AddToLocationCard extends StatelessWidget {
                       title,
                       style: TextStyle(
                         fontSize:
-                            Theme.of(context).textTheme.headline5!.fontSize,
+                            Theme.of(context).textTheme.headlineSmall!.fontSize,
                       ),
                     ),
                   ),

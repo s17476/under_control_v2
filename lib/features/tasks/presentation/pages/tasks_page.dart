@@ -74,7 +74,7 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
                 AppLocalizations.of(context)!.work_requests,
                 style: Theme.of(context)
                     .textTheme
-                    .headline4!
+                    .headlineMedium!
                     .copyWith(fontSize: 18),
               ),
             ),
@@ -109,7 +109,7 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
                 AppLocalizations.of(context)!.bottom_bar_title_tasks,
                 style: Theme.of(context)
                     .textTheme
-                    .headline4!
+                    .headlineMedium!
                     .copyWith(fontSize: 18),
               ),
             ),

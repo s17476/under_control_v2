@@ -349,7 +349,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                     _user!.firstName,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline4!
+                                        .headlineMedium!
                                         .copyWith(
                                           color: Colors.white,
                                         ),
@@ -360,7 +360,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                     _user!.lastName,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline4!
+                                        .headlineMedium!
                                         .copyWith(
                                           color: Colors.white,
                                         ),

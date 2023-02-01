@@ -90,8 +90,10 @@ class _AddCheckpointsCardState extends State<AddCheckpointsCard> {
                           AppLocalizations.of(context)!
                               .checklist_add_checkpoints,
                           style: TextStyle(
-                            fontSize:
-                                Theme.of(context).textTheme.headline5!.fontSize,
+                            fontSize: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .fontSize,
                           ),
                         ),
                       ),

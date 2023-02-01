@@ -95,7 +95,7 @@ class StepDetailsCard extends StatelessWidget with ResponsiveSize {
                   // title
                   Text(
                     step.title!,
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                   ),

@@ -94,7 +94,7 @@ class TasksStatus extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.task_alt,
-                      color: Theme.of(context).textTheme.caption!.color,
+                      color: Theme.of(context).textTheme.bodySmall!.color,
                       size: 16,
                     ),
                     const SizedBox(
@@ -104,7 +104,7 @@ class TasksStatus extends StatelessWidget {
                       '${AppLocalizations.of(context)!.task_finished} - ${AppLocalizations.of(context)!.status_recent}',
                       style: Theme.of(context)
                           .textTheme
-                          .caption!
+                          .bodySmall!
                           .copyWith(fontSize: 16),
                     ),
                   ],
@@ -156,8 +156,10 @@ class TasksStatus extends StatelessWidget {
                           ),
                           CircleAvatar(
                             backgroundColor: Colors.transparent,
-                            foregroundColor:
-                                Theme.of(context).textTheme.headline5!.color,
+                            foregroundColor: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .color,
                             radius: 24,
                             child: FittedBox(
                               child: Text(

@@ -123,8 +123,10 @@ class _AddTaskCheckpointsCardState extends State<AddTaskCheckpointsCard> {
                           AppLocalizations.of(context)!
                               .checklist_add_checkpoints,
                           style: TextStyle(
-                            fontSize:
-                                Theme.of(context).textTheme.headline5!.fontSize,
+                            fontSize: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .fontSize,
                           ),
                         ),
                       ),
@@ -185,7 +187,6 @@ class _AddTaskCheckpointsCardState extends State<AddTaskCheckpointsCard> {
           left: 16,
           child: FloatingActionButton.extended(
             backgroundColor: Colors.blue.shade700,
-            // TODO - add checkpoints and checklist
             onPressed: widget.toggleAddChecklistVisibility,
             label: Row(
               mainAxisSize: MainAxisSize.min,

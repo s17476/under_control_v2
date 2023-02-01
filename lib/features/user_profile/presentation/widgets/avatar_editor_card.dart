@@ -129,7 +129,7 @@ class _AvatarEditorCardState extends State<AvatarEditorCard>
                     child: Text(
                       AppLocalizations.of(context)!.cancel,
                       style: TextStyle(
-                        color: Theme.of(context).textTheme.headline1!.color,
+                        color: Theme.of(context).textTheme.displayLarge!.color,
                         fontSize: 24,
                       ),
                     ),

@@ -25,7 +25,7 @@ class TaskActionTile extends StatelessWidget {
     final timeFormat = DateFormat('HH:mm');
     final isSameDate = dateFormat.format(taskAction.startTime) ==
         dateFormat.format(taskAction.stopTime);
-    final captionStyle = Theme.of(context).textTheme.caption;
+    final captionStyle = Theme.of(context).textTheme.bodySmall;
     return Container(
       color: Theme.of(context).cardColor,
       child: Material(
@@ -238,7 +238,7 @@ class SameDateRow extends StatelessWidget {
         ),
         Text(
           timeFormat.format(taskAction.stopTime),
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ],
     );

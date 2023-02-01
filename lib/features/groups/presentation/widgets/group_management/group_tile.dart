@@ -88,11 +88,13 @@ class GroupTile extends StatelessWidget {
                               child: HighlightedText(
                             text: group.name,
                             query: searchQuery,
-                            style:
-                                Theme.of(context).textTheme.headline6!.copyWith(
-                                      color: Colors.grey.shade200,
-                                      fontSize: 18,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
+                                  color: Colors.grey.shade200,
+                                  fontSize: 18,
+                                ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           )),

@@ -27,7 +27,7 @@ Future<bool?> showUserApproveDialog({
           child: Text(
             AppLocalizations.of(context)!.cancel,
             style: TextStyle(
-              color: Theme.of(context).textTheme.headline1!.color,
+              color: Theme.of(context).textTheme.displayLarge!.color,
             ),
           ),
           onPressed: () {
@@ -82,7 +82,7 @@ Future<bool?> showUserRejectDialog({
           child: Text(
             AppLocalizations.of(context)!.cancel,
             style: TextStyle(
-              color: Theme.of(context).textTheme.headline1!.color,
+              color: Theme.of(context).textTheme.displayLarge!.color,
             ),
           ),
           onPressed: () {
@@ -128,7 +128,7 @@ Future<bool?> showUserSuspendDialog({
           child: Text(
             AppLocalizations.of(context)!.cancel,
             style: TextStyle(
-              color: Theme.of(context).textTheme.headline1!.color,
+              color: Theme.of(context).textTheme.displayLarge!.color,
             ),
           ),
           onPressed: () {
@@ -174,7 +174,7 @@ Future<bool?> showUserUnsuspendDialog({
           child: Text(
             AppLocalizations.of(context)!.cancel,
             style: TextStyle(
-              color: Theme.of(context).textTheme.headline1!.color,
+              color: Theme.of(context).textTheme.displayLarge!.color,
             ),
           ),
           onPressed: () {
@@ -220,7 +220,7 @@ Future<bool?> showMakeAdminDialog({
           child: Text(
             AppLocalizations.of(context)!.cancel,
             style: TextStyle(
-              color: Theme.of(context).textTheme.headline1!.color,
+              color: Theme.of(context).textTheme.displayLarge!.color,
             ),
           ),
           onPressed: () {
@@ -267,7 +267,7 @@ Future<bool?> showUnmakeAdminDialog({
           child: Text(
             AppLocalizations.of(context)!.cancel,
             style: TextStyle(
-              color: Theme.of(context).textTheme.headline1!.color,
+              color: Theme.of(context).textTheme.displayLarge!.color,
             ),
           ),
           onPressed: () {

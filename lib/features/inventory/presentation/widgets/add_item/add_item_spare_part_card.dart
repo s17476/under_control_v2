@@ -40,7 +40,8 @@ class _AddItemSparePartCardState extends State<AddItemSparePartCard>
                   child: Text(
                     AppLocalizations.of(context)!.item_spare_part,
                     style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+                      fontSize:
+                          Theme.of(context).textTheme.headlineSmall!.fontSize,
                     ),
                   ),
                 ),

@@ -51,8 +51,10 @@ class AddTaskAssignCard extends StatelessWidget with ResponsiveSize {
                             .task_assign_groups_or_users,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline5!.fontSize,
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .fontSize,
                         ),
                       ),
                     ),

@@ -2,7 +2,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:under_control_v2/features/company_profile/data/models/company_users_model.dart';
 import 'package:under_control_v2/features/company_profile/domain/usecases/fetch_new_users.dart';
 import 'package:under_control_v2/features/company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import 'package:under_control_v2/features/company_profile/presentation/blocs/new_users/new_users_bloc.dart';
@@ -36,8 +35,6 @@ void main() {
       );
     },
   );
-
-  final tCompanyUsers = CompanyUsersModel(allUsers: Stream.fromIterable([]));
 
   group('NewUsersBloc', () {
     test(

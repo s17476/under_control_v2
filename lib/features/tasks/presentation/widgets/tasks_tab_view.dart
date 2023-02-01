@@ -21,8 +21,10 @@ class TasksTabView extends StatelessWidget {
           padding: const EdgeInsets.only(left: 8),
           child: Text(
             AppLocalizations.of(context)!.bottom_bar_title_tasks,
-            style:
-                Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium!
+                .copyWith(fontSize: 18),
           ),
         ),
         AnimatedSize(

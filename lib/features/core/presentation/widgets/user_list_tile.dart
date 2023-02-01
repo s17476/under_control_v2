@@ -76,12 +76,12 @@ class UserListTile extends StatelessWidget {
                   if (showAdmin && user.administrator)
                     Text(
                       AppLocalizations.of(context)!.user_details_admin,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   if (!user.administrator && isGroupAdministrator)
                     Text(
                       AppLocalizations.of(context)!.user_details_group_admin,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                 ],
               ),

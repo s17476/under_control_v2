@@ -185,7 +185,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
                                       widget.participants[index].totalTime
                                           .toFormatedString(),
                                       style:
-                                          Theme.of(context).textTheme.caption,
+                                          Theme.of(context).textTheme.bodySmall,
                                     ),
                                   ),
                                   if (widget.isExtendedTimeInfo)
@@ -199,7 +199,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
                                               Icons.play_arrow,
                                               color: Theme.of(context)
                                                   .textTheme
-                                                  .caption!
+                                                  .bodySmall!
                                                   .color,
                                               size: 15,
                                             ),
@@ -210,7 +210,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
                                               ),
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .caption,
+                                                  .bodySmall,
                                             )
                                           ],
                                         ),
@@ -220,7 +220,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
                                               Icons.stop,
                                               color: Theme.of(context)
                                                   .textTheme
-                                                  .caption!
+                                                  .bodySmall!
                                                   .color,
                                               size: 15,
                                             ),
@@ -231,7 +231,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
                                               ),
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .caption,
+                                                  .bodySmall,
                                             )
                                           ],
                                         )
@@ -295,9 +295,9 @@ class SelectedUserBox extends StatelessWidget {
       theme: DatePickerTheme(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         // headerColor: Theme.of,
-        itemStyle: Theme.of(context).textTheme.headline6!,
-        cancelStyle: Theme.of(context).textTheme.headline6!,
-        doneStyle: Theme.of(context).textTheme.headline6!.copyWith(
+        itemStyle: Theme.of(context).textTheme.titleLarge!,
+        cancelStyle: Theme.of(context).textTheme.titleLarge!,
+        doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
               color: Colors.amber,
             ),
         itemHeight: 40,
@@ -335,9 +335,9 @@ class SelectedUserBox extends StatelessWidget {
       theme: DatePickerTheme(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         // headerColor: Theme.of,
-        itemStyle: Theme.of(context).textTheme.headline6!,
-        cancelStyle: Theme.of(context).textTheme.headline6!,
-        doneStyle: Theme.of(context).textTheme.headline6!.copyWith(
+        itemStyle: Theme.of(context).textTheme.titleLarge!,
+        cancelStyle: Theme.of(context).textTheme.titleLarge!,
+        doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
               color: Colors.amber,
             ),
         itemHeight: 40,
@@ -417,14 +417,17 @@ class SelectedUserBox extends StatelessWidget {
                                     children: [
                                       Text(
                                         timeFormat.format(
-                                            selectedParticipant.startTime),
+                                          selectedParticipant.startTime,
+                                        ),
                                         style: const TextStyle(fontSize: 24),
                                       ),
                                       Text(
                                         dateFormat.format(
-                                            selectedParticipant.startTime),
-                                        style:
-                                            Theme.of(context).textTheme.caption,
+                                          selectedParticipant.startTime,
+                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                       ),
                                     ],
                                   ),
@@ -471,8 +474,9 @@ class SelectedUserBox extends StatelessWidget {
                                       Text(
                                         dateFormat.format(
                                             selectedParticipant.stopTime),
-                                        style:
-                                            Theme.of(context).textTheme.caption,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                       ),
                                     ],
                                   ),

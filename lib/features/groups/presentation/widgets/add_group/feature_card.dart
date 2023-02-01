@@ -64,7 +64,7 @@ class _FeatureCardState extends State<FeatureCard> {
                         ),
                         child: Text(
                           getTitle(context, widget.feature),
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
                       const Divider(

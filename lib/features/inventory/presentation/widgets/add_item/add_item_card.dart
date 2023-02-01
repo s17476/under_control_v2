@@ -50,8 +50,10 @@ class AddItemCard extends StatelessWidget {
                               : AppLocalizations.of(context)!
                                   .item_add_card_title,
                           style: TextStyle(
-                            fontSize:
-                                Theme.of(context).textTheme.headline5!.fontSize,
+                            fontSize: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .fontSize,
                           ),
                         ),
                       ),

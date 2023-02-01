@@ -86,7 +86,7 @@ class _ChecklistSelectionTileState extends State<ChecklistSelectionTile> {
                                   query: widget.searchQuery,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline6!
+                                      .titleLarge!
                                       .copyWith(
                                         color: Colors.grey.shade200,
                                         fontSize: 18,

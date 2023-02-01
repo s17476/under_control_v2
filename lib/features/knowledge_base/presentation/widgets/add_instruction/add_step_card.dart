@@ -117,7 +117,7 @@ class AddStepCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: Theme.of(context)
                                     .textTheme
-                                    .headline5!
+                                    .headlineSmall!
                                     .fontSize,
                               ),
                             ),

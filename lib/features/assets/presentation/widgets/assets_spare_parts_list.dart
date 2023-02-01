@@ -51,7 +51,7 @@ class AssetsSparePartsList extends StatelessWidget {
                           AppLocalizations.of(context)!.bottom_bar_title_assets,
                           style: Theme.of(context)
                               .textTheme
-                              .caption!
+                              .bodySmall!
                               .copyWith(fontSize: 18),
                         ),
                       ),

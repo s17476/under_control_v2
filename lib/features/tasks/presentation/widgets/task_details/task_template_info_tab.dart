@@ -61,13 +61,6 @@ class _TaskTemplateInfoTabState extends State<TaskTemplateInfoTab> {
     });
   }
 
-  String _progressTitle() {
-    if (widget.task.isSuccessful) {
-      return AppLocalizations.of(context)!.task_progress_finished_successfully;
-    }
-    return AppLocalizations.of(context)!.task_progress_finished_unsuccessfully;
-  }
-
   @override
   void didChangeDependencies() {
     final companyState = context.watch<CompanyProfileBloc>().state;
@@ -140,7 +133,7 @@ class _TaskTemplateInfoTabState extends State<TaskTemplateInfoTab> {
                                 .task_priority_and_type,
                             style: Theme.of(context)
                                 .textTheme
-                                .caption!
+                                .bodySmall!
                                 .copyWith(fontSize: 10),
                           ),
                           Text(
@@ -173,7 +166,7 @@ class _TaskTemplateInfoTabState extends State<TaskTemplateInfoTab> {
                         '#${widget.task.count}',
                         style: Theme.of(context)
                             .textTheme
-                            .caption!
+                            .bodySmall!
                             .copyWith(fontSize: 14),
                       ),
                     ),
@@ -661,7 +654,7 @@ class ProgressIcon extends StatelessWidget {
           size: 40,
           color: task.executionDate.isBefore(DateTime.now())
               ? Theme.of(context).highlightColor.withAlpha(200)
-              : Theme.of(context).textTheme.caption!.color!.withAlpha(120),
+              : Theme.of(context).textTheme.bodySmall!.color!.withAlpha(120),
         );
       } else {
         // scheduled task, but not started yet
@@ -670,7 +663,7 @@ class ProgressIcon extends StatelessWidget {
           size: 40,
           color: task.executionDate.isBefore(DateTime.now())
               ? Theme.of(context).highlightColor.withAlpha(200)
-              : Theme.of(context).textTheme.caption!.color!.withAlpha(120),
+              : Theme.of(context).textTheme.bodySmall!.color!.withAlpha(120),
         );
       }
     }

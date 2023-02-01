@@ -102,7 +102,7 @@ class Title extends StatelessWidget {
       child: Text(
         AppLocalizations.of(context)!.asset_add_instructions,
         style: TextStyle(
-          fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+          fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
         ),
       ),
     );

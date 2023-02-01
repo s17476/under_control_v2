@@ -10,9 +10,6 @@ Future<dynamic> showTaskTemplateDeleteDialog({
   required BuildContext context,
   required Task task,
 }) {
-  final formKey = GlobalKey<FormState>();
-  String comment = '';
-  String assetStatus = '';
   return showDialog(
     context: context,
     barrierColor: Colors.transparent,
@@ -37,7 +34,7 @@ Future<dynamic> showTaskTemplateDeleteDialog({
                 child: Text(
                   AppLocalizations.of(context)!.cancel,
                   style: TextStyle(
-                    color: Theme.of(context).textTheme.headline1!.color,
+                    color: Theme.of(context).textTheme.displayLarge!.color,
                   ),
                 ),
                 onPressed: () {

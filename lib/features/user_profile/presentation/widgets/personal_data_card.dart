@@ -60,7 +60,8 @@ class PersonalDataCard extends StatelessWidget with ResponsiveSize {
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.person),
                           floatingLabelStyle: TextStyle(
-                            color: Theme.of(context).textTheme.headline1!.color,
+                            color:
+                                Theme.of(context).textTheme.displayLarge!.color,
                           ),
                           labelText: AppLocalizations.of(context)!
                               .user_profile_add_user_personal_data_first_name,
@@ -92,7 +93,8 @@ class PersonalDataCard extends StatelessWidget with ResponsiveSize {
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.person_outline),
                           floatingLabelStyle: TextStyle(
-                            color: Theme.of(context).textTheme.headline1!.color,
+                            color:
+                                Theme.of(context).textTheme.displayLarge!.color,
                           ),
                           labelText: AppLocalizations.of(context)!
                               .user_profile_add_user_personal_data_last_name,
@@ -126,7 +128,8 @@ class PersonalDataCard extends StatelessWidget with ResponsiveSize {
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.phone),
                           floatingLabelStyle: TextStyle(
-                            color: Theme.of(context).textTheme.headline1!.color,
+                            color:
+                                Theme.of(context).textTheme.displayLarge!.color,
                           ),
                           labelText: AppLocalizations.of(context)!
                               .user_profile_add_user_personal_data_phone_number,

@@ -89,8 +89,10 @@ class _AddItemDataCardState extends State<AddItemDataCard> with ResponsiveSize {
                       child: Text(
                         AppLocalizations.of(context)!.item_data,
                         style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline5!.fontSize,
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .fontSize,
                         ),
                       ),
                     ),

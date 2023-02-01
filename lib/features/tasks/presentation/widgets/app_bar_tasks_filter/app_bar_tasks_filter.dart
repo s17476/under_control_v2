@@ -137,13 +137,16 @@ class _AppBarTasksFilterState extends State<AppBarTasksFilter> {
                             AppLocalizations.of(context)!.task_filter_reset,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline4!
+                                .headlineMedium!
                                 .copyWith(fontSize: 12),
                           ),
                           icon: Icon(
                             Icons.refresh,
                             size: 16,
-                            color: Theme.of(context).textTheme.headline4!.color,
+                            color: Theme.of(context)
+                                .textTheme
+                                .headlineMedium!
+                                .color,
                           ),
                         ),
                     ],

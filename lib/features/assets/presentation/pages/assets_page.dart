@@ -222,7 +222,7 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                           AppLocalizations.of(context)!.assets_in_use,
                           style: Theme.of(context)
                               .textTheme
-                              .headline4!
+                              .headlineMedium!
                               .copyWith(fontSize: 20),
                         ),
                       ),
@@ -244,7 +244,7 @@ class _AssetsPageState extends State<AssetsPage> with ResponsiveSize {
                           AppLocalizations.of(context)!.assets_not_in_use,
                           style: Theme.of(context)
                               .textTheme
-                              .headline4!
+                              .headlineMedium!
                               .copyWith(fontSize: 20),
                         ),
                       ),

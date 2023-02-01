@@ -100,7 +100,7 @@ class ItemActionListTile extends StatelessWidget {
                               // date time
                               Text(
                                 dateFormat.format(action.date),
-                                style: Theme.of(context).textTheme.caption,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                               // item
                               if (item != null)
@@ -127,7 +127,7 @@ class ItemActionListTile extends StatelessWidget {
                                 action.description.contains('TASK#')
                                     ? '${AppLocalizations.of(context)!.task} ${action.description.substring(4)}'
                                     : action.description,
-                                style: Theme.of(context).textTheme.caption,
+                                style: Theme.of(context).textTheme.bodySmall,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 6,
                               ),
@@ -147,7 +147,7 @@ class ItemActionListTile extends StatelessWidget {
                                     Text(
                                       '${user.firstName} ${user.lastName}',
                                       style:
-                                          Theme.of(context).textTheme.caption,
+                                          Theme.of(context).textTheme.bodySmall,
                                     ),
                                   ],
                                 ),

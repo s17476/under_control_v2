@@ -71,7 +71,7 @@ class NotApprovedPage extends StatelessWidget with ResponsiveSize {
                         children: [
                           Text(
                             AppLocalizations.of(context)!.well_done,
-                            style: Theme.of(context).textTheme.headline5,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           if (!isAdministrator)
                             Text(
@@ -154,7 +154,7 @@ class NotApprovedPage extends StatelessWidget with ResponsiveSize {
                                         style: TextStyle(
                                           color: Theme.of(context)
                                               .textTheme
-                                              .headline1!
+                                              .displayLarge!
                                               .color,
                                         ),
                                       ),

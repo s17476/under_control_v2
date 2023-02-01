@@ -36,7 +36,8 @@ class AddTaskActionChecklistCard extends StatelessWidget with ResponsiveSize {
                   child: Text(
                     AppLocalizations.of(context)!.checklist,
                     style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+                      fontSize:
+                          Theme.of(context).textTheme.headlineSmall!.fontSize,
                     ),
                   ),
                 ),

@@ -76,7 +76,7 @@ class ActivityCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.check_box_outlined,
-                      color: Theme.of(context).textTheme.caption!.color,
+                      color: Theme.of(context).textTheme.bodySmall!.color,
                       size: 16,
                     ),
                     const SizedBox(
@@ -86,7 +86,7 @@ class ActivityCard extends StatelessWidget {
                       '${AppLocalizations.of(context)!.status_activity} - ${AppLocalizations.of(context)!.status_recent}',
                       style: Theme.of(context)
                           .textTheme
-                          .caption!
+                          .bodySmall!
                           .copyWith(fontSize: 16),
                     ),
                   ],
@@ -109,7 +109,7 @@ class ActivityCard extends StatelessWidget {
                           count,
                           style: Theme.of(context)
                               .textTheme
-                              .caption!
+                              .bodySmall!
                               .copyWith(fontSize: 10),
                         ),
                       );

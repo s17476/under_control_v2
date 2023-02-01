@@ -134,7 +134,8 @@ class _LogoEditorCardState extends State<LogoEditorCard> with ResponsiveSize {
                       child: Text(
                         AppLocalizations.of(context)!.cancel,
                         style: TextStyle(
-                          color: Theme.of(context).textTheme.headline1!.color,
+                          color:
+                              Theme.of(context).textTheme.displayLarge!.color,
                           fontSize: 24,
                         ),
                       ),

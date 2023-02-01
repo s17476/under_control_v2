@@ -45,8 +45,10 @@ class AddGroupLocationsCard extends StatelessWidget {
                         AppLocalizations.of(context)!
                             .home_screen_filter_select_locations,
                         style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline5!.fontSize,
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .fontSize,
                         ),
                       ),
                     ),

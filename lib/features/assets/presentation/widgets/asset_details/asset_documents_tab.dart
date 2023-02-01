@@ -40,14 +40,14 @@ class AssetDocumentsTab extends StatelessWidget {
           Icon(
             FontAwesomeIcons.filePdf,
             size: 70,
-            color: Theme.of(context).textTheme.caption!.color!,
+            color: Theme.of(context).textTheme.bodySmall!.color!,
           ),
           const SizedBox(
             height: 4,
           ),
           Text(
             AppLocalizations.of(context)!.details_no_documents,
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),

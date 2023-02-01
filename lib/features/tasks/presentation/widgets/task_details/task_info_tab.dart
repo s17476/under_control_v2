@@ -143,7 +143,7 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                                 .task_priority_and_type,
                             style: Theme.of(context)
                                 .textTheme
-                                .caption!
+                                .bodySmall!
                                 .copyWith(fontSize: 10),
                           ),
                           Text(
@@ -176,7 +176,7 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                         '#${widget.task.count}',
                         style: Theme.of(context)
                             .textTheme
-                            .caption!
+                            .bodySmall!
                             .copyWith(fontSize: 14),
                       ),
                     ),
@@ -785,7 +785,7 @@ class ProgressIcon extends StatelessWidget {
           size: 40,
           color: task.executionDate.isBefore(DateTime.now())
               ? Theme.of(context).highlightColor.withAlpha(200)
-              : Theme.of(context).textTheme.caption!.color!.withAlpha(120),
+              : Theme.of(context).textTheme.bodySmall!.color!.withAlpha(120),
         );
       } else {
         // scheduled task, but not started yet
@@ -794,7 +794,7 @@ class ProgressIcon extends StatelessWidget {
           size: 40,
           color: task.executionDate.isBefore(DateTime.now())
               ? Theme.of(context).highlightColor.withAlpha(200)
-              : Theme.of(context).textTheme.caption!.color!.withAlpha(120),
+              : Theme.of(context).textTheme.bodySmall!.color!.withAlpha(120),
         );
       }
     }

@@ -54,7 +54,7 @@ class CustomDropdownButton extends StatelessWidget {
               label,
               style: Theme.of(context)
                   .textTheme
-                  .caption!
+                  .bodySmall!
                   .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
             ),
           ),

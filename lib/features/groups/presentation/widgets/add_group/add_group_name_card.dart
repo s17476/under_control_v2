@@ -48,8 +48,10 @@ class AddGroupNameCard extends StatelessWidget {
                               : AppLocalizations.of(context)!
                                   .group_management_add_card_title,
                           style: TextStyle(
-                            fontSize:
-                                Theme.of(context).textTheme.headline5!.fontSize,
+                            fontSize: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .fontSize,
                           ),
                         ),
                       ),

@@ -104,21 +104,24 @@ class _InstructionHistoryState extends State<InstructionHistory> {
                                     index == 0
                                         ? AppLocalizations.of(context)!.created
                                         : AppLocalizations.of(context)!.edited,
-                                    style: Theme.of(context).textTheme.caption,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                   Text(
                                     _timeFormat.format(
                                       widget.instruction.lastEdited[index]
                                           .dateTime,
                                     ),
-                                    style: Theme.of(context).textTheme.caption,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                   Text(
                                     _dateFormat.format(
                                       widget.instruction.lastEdited[index]
                                           .dateTime,
                                     ),
-                                    style: Theme.of(context).textTheme.caption,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ],
                               ),

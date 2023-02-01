@@ -80,7 +80,7 @@ Future<dynamic> showTaskCancelDialog({
                   AppLocalizations.of(context)!
                       .user_profile_add_user_personal_data_back,
                   style: TextStyle(
-                    color: Theme.of(context).textTheme.headline1!.color,
+                    color: Theme.of(context).textTheme.displayLarge!.color,
                   ),
                 ),
                 onPressed: () {

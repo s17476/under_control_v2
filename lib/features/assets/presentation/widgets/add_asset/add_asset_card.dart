@@ -52,8 +52,10 @@ class AddAssetCard extends StatelessWidget {
                                   ? AppLocalizations.of(context)!.asset_edit
                                   : AppLocalizations.of(context)!.asset_add_new,
                           style: TextStyle(
-                            fontSize:
-                                Theme.of(context).textTheme.headline5!.fontSize,
+                            fontSize: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .fontSize,
                           ),
                         ),
                       ),

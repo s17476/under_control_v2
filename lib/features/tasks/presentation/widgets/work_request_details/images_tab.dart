@@ -68,11 +68,11 @@ class ImagesTab extends StatelessWidget {
           Icon(
             Icons.image,
             size: 70,
-            color: Theme.of(context).textTheme.caption!.color!,
+            color: Theme.of(context).textTheme.bodySmall!.color!,
           ),
           Text(
             AppLocalizations.of(context)!.details_no_images,
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),

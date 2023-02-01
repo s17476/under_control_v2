@@ -50,7 +50,7 @@ class CheckpointTile extends StatelessWidget {
                         child: Text(
                           checkpoint.title,
                           style:
-                              Theme.of(context).textTheme.headline6!.copyWith(
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
                                     color: Colors.grey.shade200,
                                     fontSize: 18,
                                   ),

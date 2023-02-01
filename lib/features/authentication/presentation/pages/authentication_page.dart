@@ -92,7 +92,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
             content: Text(
               AppLocalizations.of(context)!.passwords_validation_message,
               style: TextStyle(
-                color: Theme.of(context).textTheme.headline1!.color,
+                color: Theme.of(context).textTheme.displayLarge!.color,
               ),
             ),
             backgroundColor: Theme.of(context).errorColor,
@@ -154,7 +154,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.person),
                     floatingLabelStyle: TextStyle(
-                      color: Theme.of(context).textTheme.headline1!.color,
+                      color: Theme.of(context).textTheme.displayLarge!.color,
                     ),
                     labelText: 'E-mail',
                     contentPadding: const EdgeInsets.symmetric(
@@ -191,7 +191,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                     ),
                     prefixIcon: const Icon(Icons.lock_rounded),
                     floatingLabelStyle: TextStyle(
-                      color: Theme.of(context).textTheme.headline1!.color,
+                      color: Theme.of(context).textTheme.displayLarge!.color,
                     ),
                     labelText: AppLocalizations.of(context)!.password,
                     contentPadding: const EdgeInsets.symmetric(
@@ -235,8 +235,10 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                             ),
                             prefixIcon: const Icon(Icons.lock_rounded),
                             floatingLabelStyle: TextStyle(
-                              color:
-                                  Theme.of(context).textTheme.headline1!.color,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge!
+                                  .color,
                             ),
                             labelText:
                                 AppLocalizations.of(context)!.repeat_password,
@@ -278,11 +280,12 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                               style: TextStyle(
                                 color: Theme.of(context)
                                     .textTheme
-                                    .headline1!
+                                    .displayLarge!
                                     .color,
                               ),
                             ),
-                            backgroundColor: Theme.of(context).errorColor,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.error,
                           ),
                         );
                       if (_isInLoginMode) {

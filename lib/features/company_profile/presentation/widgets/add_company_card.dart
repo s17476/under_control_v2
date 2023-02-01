@@ -104,7 +104,7 @@ class AddCompanyCard extends StatelessWidget with ResponsiveSize {
                             style: TextStyle(
                               fontSize: Theme.of(context)
                                   .textTheme
-                                  .headline5!
+                                  .headlineSmall!
                                   .fontSize,
                             ),
                           ),

@@ -47,7 +47,7 @@ class AddItemPhotoCard extends StatelessWidget with ResponsiveSize {
                       AppLocalizations.of(context)!.item_photo,
                       style: TextStyle(
                         fontSize:
-                            Theme.of(context).textTheme.headline5!.fontSize,
+                            Theme.of(context).textTheme.headlineSmall!.fontSize,
                       ),
                     ),
                   ),

@@ -32,8 +32,10 @@ class WorkRequestsTabView extends StatelessWidget with ResponsiveSize {
             ),
             child: Text(
               AppLocalizations.of(context)!.work_requests,
-              style:
-                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium!
+                  .copyWith(fontSize: 18),
             ),
           ),
           AnimatedSize(

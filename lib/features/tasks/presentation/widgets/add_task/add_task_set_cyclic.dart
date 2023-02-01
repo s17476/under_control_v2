@@ -80,9 +80,9 @@ class _AddTaskSetCyclicCardState extends State<AddTaskSetCyclicCard> {
       theme: DatePickerTheme(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         // headerColor: Theme.of,
-        itemStyle: Theme.of(context).textTheme.headline6!,
-        cancelStyle: Theme.of(context).textTheme.headline6!,
-        doneStyle: Theme.of(context).textTheme.headline6!.copyWith(
+        itemStyle: Theme.of(context).textTheme.titleLarge!,
+        cancelStyle: Theme.of(context).textTheme.titleLarge!,
+        doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
               color: Colors.amber,
             ),
         itemHeight: 40,
@@ -139,7 +139,7 @@ class _AddTaskSetCyclicCardState extends State<AddTaskSetCyclicCard> {
             child: Text(
               AppLocalizations.of(context)!.add_date,
               style: TextStyle(
-                fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+                fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
               ),
             ),
           ),

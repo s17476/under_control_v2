@@ -124,7 +124,8 @@ Future<void> showAddAssetCategoryModalBottomSheet({
                         child: Text(
                           AppLocalizations.of(context)!.cancel,
                           style: TextStyle(
-                            color: Theme.of(context).textTheme.headline1!.color,
+                            color:
+                                Theme.of(context).textTheme.displayLarge!.color,
                           ),
                         ),
                         onPressed: () => Navigator.pop(context),

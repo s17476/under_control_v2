@@ -47,11 +47,11 @@ class ItemInstructionsTab extends StatelessWidget {
                 Icon(
                   Icons.menu_book,
                   size: 70,
-                  color: Theme.of(context).textTheme.caption!.color!,
+                  color: Theme.of(context).textTheme.bodySmall!.color!,
                 ),
                 Text(
                   AppLocalizations.of(context)!.details_no_instructions,
-                  style: Theme.of(context).textTheme.caption,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),

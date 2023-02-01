@@ -74,7 +74,7 @@ class _TaskTypeTabBarState extends State<TaskTypeTabBar>
       _typeTabController.animateTo(taskFilterState.taskType.index);
       switch (taskFilterState.taskPriority) {
         case TaskPriority.unknown:
-          indicatorColor = Theme.of(context).textTheme.headline5!.color!;
+          indicatorColor = Theme.of(context).textTheme.headlineSmall!.color!;
           break;
         case TaskPriority.low:
           indicatorColor = Theme.of(context).primaryColor;
@@ -89,7 +89,7 @@ class _TaskTypeTabBarState extends State<TaskTypeTabBar>
       }
     } else if (taskFilterState is TaskFilterNothingSelectedState) {
       _typeTabController.animateTo(0);
-      indicatorColor = Theme.of(context).textTheme.headline5!.color!;
+      indicatorColor = Theme.of(context).textTheme.headlineSmall!.color!;
     }
 
     super.didChangeDependencies();
@@ -121,7 +121,7 @@ class _TaskTypeTabBarState extends State<TaskTypeTabBar>
             if (!widget.isMini)
               Text(
                 AppLocalizations.of(context)!.task_type,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             TabBar(
               tabs: [

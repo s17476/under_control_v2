@@ -178,7 +178,7 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                                   _company.name,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline4!
+                                      .headlineMedium!
                                       .copyWith(
                                         color: Colors.white,
                                       ),

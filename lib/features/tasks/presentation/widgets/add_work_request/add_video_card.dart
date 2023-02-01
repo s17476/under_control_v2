@@ -94,7 +94,7 @@ class _AddVideoCardState extends State<AddVideoCard> with ResponsiveSize {
             child: Text(
               AppLocalizations.of(context)!.task_add_video,
               style: TextStyle(
-                fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+                fontSize: Theme.of(context).textTheme.headlineSmall!.fontSize,
               ),
             ),
           ),

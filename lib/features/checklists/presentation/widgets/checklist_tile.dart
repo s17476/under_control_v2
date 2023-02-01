@@ -56,7 +56,7 @@ class ChecklistTile extends StatelessWidget {
                           text: checklist.title,
                           query: searchQuery,
                           style:
-                              Theme.of(context).textTheme.headline6!.copyWith(
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
                                     color: Colors.grey.shade200,
                                     fontSize: 18,
                                   ),

@@ -52,8 +52,10 @@ class AddTaskTemplateCard extends StatelessWidget {
                                   : AppLocalizations.of(context)!
                                       .task_templates_add,
                           style: TextStyle(
-                            fontSize:
-                                Theme.of(context).textTheme.headline5!.fontSize,
+                            fontSize: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .fontSize,
                           ),
                         ),
                       ),
