@@ -111,12 +111,19 @@ class HomePageNotifications extends StatelessWidget {
                                 .toList();
                             if (unreadNotifications.isEmpty) {
                               return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: Text(
-                                    AppLocalizations.of(context)!
-                                        .notifications_no_unread,
-                                  ),
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.notifications_off),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .notifications_no_unread,
+                                    ),
+                                  ],
                                 ),
                               );
                             }

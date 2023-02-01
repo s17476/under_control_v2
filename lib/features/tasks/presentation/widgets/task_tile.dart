@@ -52,7 +52,7 @@ class TaskTile extends StatelessWidget {
                       topRight: Radius.circular(10),
                     ),
                     color: notification!.read
-                        ? Theme.of(context).cardColor
+                        ? Colors.black
                         : const Color.fromARGB(255, 110, 0, 0),
                   ),
                   child: Row(

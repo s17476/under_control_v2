@@ -57,7 +57,7 @@ class WorkRequestTile extends StatelessWidget {
                       topRight: Radius.circular(10),
                     ),
                     color: notification!.read
-                        ? Theme.of(context).cardColor
+                        ? Colors.black
                         : const Color.fromARGB(255, 179, 0, 0),
                   ),
                   child: Row(

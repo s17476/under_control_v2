@@ -21,8 +21,9 @@ class NotificationsIcon extends StatelessWidget {
           if (count == 0) {
             return Icon(
               Icons.notifications,
-              color:
-                  Theme.of(context).textTheme.bodySmall!.color!.withAlpha(60),
+              color: isExpanded
+                  ? Theme.of(context).primaryColor.withAlpha(130)
+                  : Theme.of(context).textTheme.bodySmall!.color!.withAlpha(60),
             );
           } else {
             return Stack(
