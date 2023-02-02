@@ -32,7 +32,7 @@ class WorkRequestsStatusRepositoryImpl extends WorkRequestsStatusRepository {
           .collection('companies')
           .doc(params.companyId)
           .collection('workRequests')
-          .where('date', isGreaterThan: startDate)
+          // .where('date', isGreaterThan: startDate)
           .where('locationId', whereIn: params.locations)
           .snapshots();
 

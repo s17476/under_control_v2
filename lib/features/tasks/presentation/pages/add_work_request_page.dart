@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_location_card.dart';
@@ -315,6 +316,7 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
           child: AddAssetLocationCard(
             selectedLocation: _locationId,
             setLocation: _setLocation,
+            featureType: FeatureType.tasks,
           ),
         ),
       AddAssetImagesCard(

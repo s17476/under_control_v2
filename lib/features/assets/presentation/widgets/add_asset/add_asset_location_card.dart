@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
+
 import '../selectable_location_list.dart';
 
 class AddAssetLocationCard extends StatelessWidget {
@@ -8,10 +10,12 @@ class AddAssetLocationCard extends StatelessWidget {
     Key? key,
     required this.selectedLocation,
     required this.setLocation,
+    required this.featureType,
   }) : super(key: key);
 
   final String selectedLocation;
   final Function(String) setLocation;
+  final FeatureType featureType;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +46,7 @@ class AddAssetLocationCard extends StatelessWidget {
                   SelectableLocationsList(
                     selectedLocation: selectedLocation,
                     setLocation: setLocation,
+                    featureType: featureType,
                   ),
                   const SizedBox(
                     height: 50,

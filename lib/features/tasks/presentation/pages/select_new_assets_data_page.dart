@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../assets/data/models/asset_model.dart';
 import '../../../assets/domain/entities/asset.dart';
@@ -109,6 +110,7 @@ class _SelectNewAssetDataPageState extends State<SelectNewAssetDataPage> {
         child: AddAssetLocationCard(
           selectedLocation: _locationId,
           setLocation: _setLocation,
+          featureType: FeatureType.tasks,
         ),
       ),
       SetAssetStatusCard(

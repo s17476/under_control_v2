@@ -37,34 +37,31 @@ List<Widget> getStatusCardWidgets(BuildContext context) {
         ],
       ),
     ),
-    const Padding(
-      key: ValueKey('work-request-status'),
-      padding: EdgeInsets.only(top: 8, left: 8, right: 8),
-      child: WorkRequestsStatus(),
-    ),
     const SizedBox(
       height: 8,
+    ),
+    const Padding(
+      key: ValueKey('work-request-status'),
+      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      child: WorkRequestsStatus(),
     ),
     const Padding(
       key: ValueKey('task-status'),
       padding: EdgeInsets.symmetric(horizontal: 8.0),
       child: TasksStatus(),
     ),
-    const SizedBox(
-      height: 8,
-    ),
     const Padding(
       key: ValueKey('asset-status'),
       padding: EdgeInsets.symmetric(horizontal: 8.0),
       child: AssetsStatus(),
     ),
-    const SizedBox(
-      height: 8,
-    ),
     const Padding(
       key: ValueKey('activity-status'),
-      padding: EdgeInsets.only(bottom: 8, left: 8, right: 8),
+      padding: EdgeInsets.only(left: 8, right: 8),
       child: ActivityCard(),
+    ),
+    const SizedBox(
+      height: 8,
     ),
   ];
 }

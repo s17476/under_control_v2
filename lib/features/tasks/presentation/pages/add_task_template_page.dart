@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
+import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_checkpoints_card.dart';
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
@@ -657,6 +658,7 @@ class _AddTaskTemplatePageState extends State<AddTaskTemplatePage> {
           child: AddAssetLocationCard(
             selectedLocation: _locationId,
             setLocation: _setLocation,
+            featureType: FeatureType.tasks,
           ),
         ),
       AddAssetImagesCard(

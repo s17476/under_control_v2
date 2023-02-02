@@ -66,6 +66,7 @@ class WorkRequestsStatus extends StatelessWidget {
             return const SizedBox();
           }
           return Container(
+            margin: const EdgeInsets.only(bottom: 8),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(10),

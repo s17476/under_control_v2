@@ -83,6 +83,7 @@ class TasksStatus extends StatelessWidget {
           final totalCount =
               successfullCount + unsuccessfullCount + cancelledCount;
           return Container(
+            margin: const EdgeInsets.only(bottom: 8),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(10),

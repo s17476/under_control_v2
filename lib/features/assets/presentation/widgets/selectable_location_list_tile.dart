@@ -15,12 +15,14 @@ class SelectableLocationsListTile extends StatefulWidget {
     required this.selectedLocation,
     required this.childrenLocations,
     required this.setLocation,
+    required this.featureType,
   }) : super(key: key);
 
   final Location location;
   final String selectedLocation;
   final List<Location> childrenLocations;
   final Function(String) setLocation;
+  final FeatureType featureType;
 
   @override
   State<SelectableLocationsListTile> createState() =>
@@ -44,7 +46,7 @@ class _SelectableLocationsListTileState
     // TODO work request/task - has to have own permission
     _isAvailable = getUserPermission(
       context: context,
-      featureType: FeatureType.assets,
+      featureType: widget.featureType,
       permissionType: PermissionType.create,
       locationId: widget.location.id,
     );
@@ -165,6 +167,7 @@ class _SelectableLocationsListTileState
                   for (var child in _directChildren)
                     SelectableLocationsListTile(
                       key: ValueKey(child.id),
+                      featureType: widget.featureType,
                       location: child,
                       selectedLocation: widget.selectedLocation,
                       childrenLocations: getSelectedLocationsChildren(

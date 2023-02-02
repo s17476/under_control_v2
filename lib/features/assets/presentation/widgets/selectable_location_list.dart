@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/location_selection_helpers.dart';
+import '../../../groups/domain/entities/feature.dart';
 import '../../../locations/presentation/blocs/bloc/location_bloc.dart';
 import 'selectable_location_list_tile.dart';
 
@@ -10,10 +11,12 @@ class SelectableLocationsList extends StatelessWidget {
     Key? key,
     required this.selectedLocation,
     required this.setLocation,
+    required this.featureType,
   }) : super(key: key);
 
   final String selectedLocation;
   final Function(String) setLocation;
+  final FeatureType featureType;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,7 @@ class SelectableLocationsList extends StatelessWidget {
             itemCount: topLevelItems.length,
             itemBuilder: (context, index) {
               return SelectableLocationsListTile(
+                featureType: featureType,
                 key: ValueKey(topLevelItems[index].id),
                 location: topLevelItems[index],
                 selectedLocation: selectedLocation,

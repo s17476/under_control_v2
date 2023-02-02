@@ -95,6 +95,7 @@ class AssetsStatus extends StatelessWidget {
               statusReparation +
               statusAttention;
           return Container(
+            margin: const EdgeInsets.only(bottom: 8),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(10),
