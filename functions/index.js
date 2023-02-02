@@ -79,11 +79,13 @@ exports.taskAdded = functions.firestore
             // add token to the list
           
             const userTokens = user.data().deviceTokens;
-            userTokens.forEach(token => {
-              if(tokens.indexOf(token) === -1){
-                tokens.push(token);
-              }
-            });
+            if(userTokens != undefined){
+              userTokens.forEach(token => {
+                if(tokens.indexOf(token) === -1){
+                  tokens.push(token);
+                }
+              });
+            }
             // users to get in app notification
             if(userIds.indexOf(user.id) === -1){
               userIds.push(user.id);
@@ -164,11 +166,14 @@ exports.workRequestAdded = functions.firestore
           if((userPermissions.exists && (userPermissions.data().workRequests == true || userPermissions.data().workRequests == undefined)) || !userPermissions.exists){
             // add token to the list
             const userTokens = user.data().deviceTokens;
-            userTokens.forEach(token => {
-              if(tokens.indexOf(token) === -1){
-                tokens.push(token);
-              }
-            });
+            if(userTokens != undefined){
+
+              userTokens.forEach(token => {
+                if(tokens.indexOf(token) === -1){
+                  tokens.push(token);
+                }
+              });
+            }
             // users to get in app notification
             if(userIds.indexOf(user.id) === -1){
               userIds.push(user.id);

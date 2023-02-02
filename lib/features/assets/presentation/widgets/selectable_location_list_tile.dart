@@ -41,6 +41,7 @@ class _SelectableLocationsListTileState
         .where((element) => element.parentId == widget.location.id)
         .toList();
 
+    // TODO work request/task - has to have own permission
     _isAvailable = getUserPermission(
       context: context,
       featureType: FeatureType.assets,
