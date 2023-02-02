@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/add_asset/add_asset_additional.dart';
 import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
@@ -72,6 +73,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
   bool _isAddAssetVisible = false;
   bool _isAddInventoryVisible = false;
   bool _isAddInstructionsVisible = false;
+  bool _isAddAdditionalVisible = false;
 
   DateTime _addDate = DateTime.now();
   DateTime _lastInspectionDate = DateTime.now();
@@ -248,6 +250,12 @@ class _AddAssetPageState extends State<AddAssetPage> {
     });
   }
 
+  void _toggleAddAdditionalVisibility() {
+    setState(() {
+      _isAddAdditionalVisible = !_isAddAdditionalVisible;
+    });
+  }
+
   void _toggleSparePartSelection(String sparePartId) {
     if (!_spareParts.contains(sparePartId)) {
       setState(() {
@@ -384,6 +392,8 @@ class _AddAssetPageState extends State<AddAssetPage> {
         _toggleAddInventoryVisibility();
       } else if (_isAddInstructionsVisible) {
         _toggleAddInstructionsVisibility();
+      } else if (_isAddAdditionalVisible) {
+        _toggleAddAdditionalVisibility();
       }
     });
     _internalCodeTextEditingController.addListener(() {
@@ -514,32 +524,54 @@ class _AddAssetPageState extends State<AddAssetPage> {
         setLocation: _setLocation,
         currentParentId: _currentParentId,
       ),
-      AddAssetSparePartCard(
-        toggleSelection: _toggleSparePartSelection,
-        spareParts: _spareParts,
-        isAddAssetVisible: _isAddAssetVisible,
-        isAddInventoryVisible: _isAddInventoryVisible,
-        toggleAddAssetVisibility: _toggleAddAssetVisibility,
-        toggleAddInventoryVisibility: _toggleAddInventoryVisibility,
-      ),
-      AddAssetInstructionsCard(
-        toggleSelection: _toggleInstructionSelection,
-        toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
-        instructions: _instructions,
-        isAddInstructionsVisible: _isAddInstructionsVisible,
-      ),
-      AddAssetImagesCard(
+      AddAssetAdditional(
         addImage: _addImage,
         removeImage: _removeImage,
-        images: _images,
-        loading: _loadingImages,
-      ),
-      AddAssetDocumentsCard(
         addDocument: _addDocument,
         removeDocument: _removeDocument,
+        toggleInstructionSelection: _toggleInstructionSelection,
+        toggleSparePartSelection: _toggleSparePartSelection,
+        toggleAddAssetVisibility: _toggleAddAssetVisibility,
+        toggleAddInventoryVisibility: _toggleAddInventoryVisibility,
+        toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
+        toggleAddAdditionalVisibility: _toggleAddAdditionalVisibility,
+        images: _images,
         documents: _documents,
-        loading: _loadingDocuments,
+        spareParts: _spareParts,
+        instructions: _instructions,
+        isAddAssetVisible: _isAddAssetVisible,
+        isAddInventoryVisible: _isAddInventoryVisible,
+        isAddInstructionsVisible: _isAddInstructionsVisible,
+        isAddAdditionalVisible: _isAddAdditionalVisible,
+        loadingImages: _loadingImages,
+        loadingDocuments: _loadingDocuments,
       ),
+      // AddAssetSparePartCard(
+      //   toggleSelection: _toggleSparePartSelection,
+      //   spareParts: _spareParts,
+      //   isAddAssetVisible: _isAddAssetVisible,
+      //   isAddInventoryVisible: _isAddInventoryVisible,
+      //   toggleAddAssetVisibility: _toggleAddAssetVisibility,
+      //   toggleAddInventoryVisibility: _toggleAddInventoryVisibility,
+      // ),
+      // AddAssetInstructionsCard(
+      //   toggleSelection: _toggleInstructionSelection,
+      //   toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
+      //   instructions: _instructions,
+      //   isAddInstructionsVisible: _isAddInstructionsVisible,
+      // ),
+      // AddAssetImagesCard(
+      //   addImage: _addImage,
+      //   removeImage: _removeImage,
+      //   images: _images,
+      //   loading: _loadingImages,
+      // ),
+      // AddAssetDocumentsCard(
+      //   addDocument: _addDocument,
+      //   removeDocument: _removeDocument,
+      //   documents: _documents,
+      //   loading: _loadingDocuments,
+      // ),
       AddAssetSummaryCard(
         asset: _asset,
         pageController: _pageController,
@@ -582,6 +614,9 @@ class _AddAssetPageState extends State<AddAssetPage> {
         if (_isAddInstructionsVisible) {
           _toggleAddInstructionsVisibility();
           return false;
+        }
+        if (_isAddAdditionalVisible) {
+          _toggleAddAdditionalVisibility();
         }
         // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);
