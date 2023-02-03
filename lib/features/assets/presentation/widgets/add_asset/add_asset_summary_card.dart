@@ -481,7 +481,7 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                           .asset_add_instructions_title,
                       validator: () => null,
                       pageController: pageController,
-                      onTapAnimateToPage: 7,
+                      onTapAnimateToPage: 6,
                       child: Text(
                         instructions.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_add_instructions_added}: ${instructions.length}'
@@ -499,7 +499,7 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                           AppLocalizations.of(context)!.asset_add_images_title,
                       validator: () => null,
                       pageController: pageController,
-                      onTapAnimateToPage: 8,
+                      onTapAnimateToPage: 6,
                       child: Text(
                         images.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_add_images_added}: ${images.length}'
@@ -517,7 +517,7 @@ class AddAssetSummaryCard extends StatelessWidget with ResponsiveSize {
                           .asset_add_documents_title,
                       validator: () => null,
                       pageController: pageController,
-                      onTapAnimateToPage: 9,
+                      onTapAnimateToPage: 6,
                       child: Text(
                         documents.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_add_documents_added}: ${documents.length}'

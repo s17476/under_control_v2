@@ -12,8 +12,10 @@ class AssetsSparePartsList extends StatelessWidget {
     Key? key,
     required this.items,
     this.onSelected,
+    this.padding,
   }) : super(key: key);
 
+  final EdgeInsetsGeometry? padding;
   final List<String> items;
   final Function(String)? onSelected;
 
@@ -41,42 +43,42 @@ class AssetsSparePartsList extends StatelessWidget {
                       (asset) => items.contains(asset.id),
                     )
                     .toList();
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (filteredAssets.isNotEmpty)
+                if (filteredAssets.isNotEmpty) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: padding ?? const EdgeInsets.all(8.0),
                         child: Text(
                           AppLocalizations.of(context)!.bottom_bar_title_assets,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(fontSize: 18),
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
-                    ListView.builder(
-                      padding: const EdgeInsets.only(top: 2),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: filteredAssets.length,
-                      itemBuilder: (context, index) {
-                        return AssetTile(
-                          asset: filteredAssets[index],
-                          searchQuery: '',
-                          onSelected: onSelected != null
-                              ? (assetId) => showSparePartAssetDeleteDialog(
-                                    context: context,
-                                    asset: filteredAssets[index],
-                                    onDelete: () => onSelected!(assetId),
-                                  )
-                              : null,
-                          isSelected: true,
-                        );
-                      },
-                    ),
-                  ],
-                );
+                      ListView.builder(
+                        padding: const EdgeInsets.only(top: 4),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: filteredAssets.length,
+                        itemBuilder: (context, index) {
+                          return AssetTile(
+                            asset: filteredAssets[index],
+                            searchQuery: '',
+                            onSelected: onSelected != null
+                                ? (assetId) => showSparePartAssetDeleteDialog(
+                                      context: context,
+                                      asset: filteredAssets[index],
+                                      onDelete: () => onSelected!(assetId),
+                                    )
+                                : null,
+                            isSelected: true,
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                }
+                return const SizedBox();
               } else {
                 // loading shimmer animation
                 return ListView.builder(

@@ -2,19 +2,22 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/add_asset/add_assets_overlay_menu.dart';
 
 import '../../../../core/presentation/widgets/image_viewer.dart';
 import '../../../../core/presentation/widgets/pdf_viewer.dart';
-import '../../../../core/utils/responsive_size.dart';
 import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
 import '../../../../inventory/presentation/widgets/inventory_spare_parts_list.dart';
+import '../../../../knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
 import '../../../../knowledge_base/presentation/widgets/instruction_selection/overlay_instruction_selection.dart';
+import '../../../../knowledge_base/presentation/widgets/instruction_tile.dart';
+import '../../../../knowledge_base/presentation/widgets/shimmer_instruction_tile.dart';
 import '../asset_selection/overlay_asset_selection.dart';
 import '../assets_spare_parts_list.dart';
+import 'add_assets_overlay_menu.dart';
 
 class AddAssetAdditional extends StatelessWidget {
   const AddAssetAdditional({
@@ -128,32 +131,62 @@ class AddAssetAdditional extends StatelessWidget {
                     ),
                     Expanded(
                       child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            // images
-                            ImagesGrigViev(
-                              images: images,
-                              removeImage: removeImage,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: AnimatedSize(
+                            duration: const Duration(milliseconds: 300),
+                            child: Column(
+                              children: [
+                                // images
+                                if (images.isNotEmpty) ...[
+                                  ImagesGrigViev(
+                                    images: images,
+                                    removeImage: removeImage,
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                ],
+                                // documents
+                                if (documents.isNotEmpty) ...[
+                                  DocumentsList(
+                                    documents: documents,
+                                    removeDocument: removeDocument,
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                ],
+                                if (instructions.isNotEmpty) ...[
+                                  InstructionsList(
+                                    instructions: instructions,
+                                    toggleSelection: toggleInstructionSelection,
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                ],
+                                // inventory
+                                InventorySparePartsList(
+                                  items: spareParts,
+                                  onSelected: toggleSparePartSelection,
+                                  padding: EdgeInsets.zero,
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                // assets
+                                AssetsSparePartsList(
+                                  items: spareParts,
+                                  onSelected: toggleSparePartSelection,
+                                  padding: EdgeInsets.zero,
+                                ),
+                                const SizedBox(
+                                  height: 150,
+                                ),
+                              ],
                             ),
-                            // documents
-                            DocumentsList(
-                              documents: documents,
-                              removeDocument: removeDocument,
-                            ),
-                            // assets
-                            AssetsSparePartsList(
-                              items: spareParts,
-                              onSelected: toggleSparePartSelection,
-                            ),
-                            // inventory
-                            InventorySparePartsList(
-                              items: spareParts,
-                              onSelected: toggleSparePartSelection,
-                            ),
-                            const SizedBox(
-                              height: 100,
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
@@ -231,49 +264,101 @@ class DocumentsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: documents.length + 1,
-        itemBuilder: (context, index) {
-          if (index == documents.length) {
-            return const SizedBox(height: 100);
-          }
-          return Stack(
-            key: ValueKey(documents[index].path),
-            children: [
-              AspectRatio(
-                aspectRatio: 2 / 3,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 16,
-                  ),
-                  child: PdfViewer(path: documents[index].path),
-                ),
-              ),
-              Positioned(
-                top: 16,
-                left: 16,
-                child: IconButton(
-                  onPressed: () => removeDocument(documents[index]),
-                  icon: const Icon(
-                    Icons.delete,
-                    size: 30,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black,
-                        blurRadius: 25,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppLocalizations.of(context)!.asset_add_documents_added,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        GridView.count(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          childAspectRatio: 2 / 3,
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          children: documents
+              .map(
+                (document) => Stack(
+                  alignment: Alignment.center,
+                  key: ValueKey(document.path),
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 2 / 3,
+                      child: PdfViewer(path: document.path),
+                    ),
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      child: IconButton(
+                        onPressed: () => removeDocument(document),
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                          size: 30,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 25,
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          );
-        },
-      ),
+              )
+              .toList(),
+        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 16),
+        //   child: ListView.builder(
+        //     shrinkWrap: true,
+        //     itemCount: documents.length + 1,
+        //     itemBuilder: (context, index) {
+        //       if (index == documents.length) {
+        //         return const SizedBox(height: 100);
+        //       }
+        //       return Stack(
+        //         key: ValueKey(documents[index].path),
+        //         children: [
+        //           AspectRatio(
+        //             aspectRatio: 2 / 3,
+        //             child: Padding(
+        //               padding: const EdgeInsets.symmetric(
+        //                 vertical: 8,
+        //                 horizontal: 16,
+        //               ),
+        //               child: PdfViewer(path: documents[index].path),
+        //             ),
+        //           ),
+        //           Positioned(
+        //             top: 16,
+        //             left: 16,
+        //             child: IconButton(
+        //               onPressed: () => removeDocument(documents[index]),
+        //               icon: const Icon(
+        //                 Icons.delete,
+        //                 size: 30,
+        //                 shadows: [
+        //                   Shadow(
+        //                     color: Colors.black,
+        //                     blurRadius: 25,
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
+        //           ),
+        //         ],
+        //       );
+        //     },
+        //   ),
+        // ),
+      ],
     );
   }
 }
@@ -290,63 +375,146 @@ class ImagesGrigViev extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: GridView.count(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        children: images
-            .map(
-              (img) => InkWell(
-                key: ValueKey(img.path),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ImageViewer(
-                        imageProvider: FileImage(img),
-                        title: '',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppLocalizations.of(context)!.asset_add_images_added,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        GridView.count(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          children: images
+              .map(
+                (img) => InkWell(
+                  key: ValueKey(img.path),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImageViewer(
+                          imageProvider: FileImage(img),
+                          title: '',
+                        ),
                       ),
+                    );
+                  },
+                  child: Hero(
+                    tag: img.path,
+                    child: Stack(
+                      children: [
+                        SizedBox.expand(
+                          child: Image.file(
+                            img,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          child: IconButton(
+                            onPressed: () => removeImage(img),
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                              size: 30,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 25,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      ],
+    );
+  }
+}
+
+class InstructionsList extends StatelessWidget {
+  const InstructionsList({
+    Key? key,
+    required this.instructions,
+    required this.toggleSelection,
+  }) : super(key: key);
+
+  final List<String> instructions;
+  final Function(String) toggleSelection;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<InstructionBloc, InstructionState>(
+      builder: (context, state) {
+        if (state is InstructionLoadedState) {
+          if (state.allInstructions.allInstructions.isEmpty) {
+            return const SizedBox();
+          }
+          final filteredItems = state.allInstructions.allInstructions
+              .where(
+                (inst) => instructions.contains(inst.id),
+              )
+              .toList();
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.asset_add_instructions_added,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              ListView.builder(
+                padding: const EdgeInsets.only(top: 2),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: filteredItems.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 4,
+                    ),
+                    child: InstructionTile(
+                      instruction: filteredItems[index],
+                      searchQuery: '',
+                      isSelected:
+                          instructions.contains(filteredItems[index].id),
+                      onSelection: toggleSelection,
                     ),
                   );
                 },
-                child: Hero(
-                  tag: img.path,
-                  child: Stack(
-                    children: [
-                      SizedBox.expand(
-                        child: Image.file(
-                          img,
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        child: IconButton(
-                          onPressed: () => removeImage(img),
-                          icon: const Icon(
-                            Icons.delete,
-                            size: 30,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black,
-                                blurRadius: 25,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ),
-            )
-            .toList(),
-      ),
+            ],
+          );
+        } else {
+          // loading shimmer animation
+          return ListView.builder(
+            padding: const EdgeInsets.only(top: 2),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 6,
+            itemBuilder: (context, index) {
+              return const ShimmerInstructionTile();
+            },
+          );
+        }
+      },
     );
   }
 }

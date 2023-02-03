@@ -12,10 +12,12 @@ class InventorySparePartsList extends StatelessWidget {
     Key? key,
     required this.items,
     required this.onSelected,
+    this.padding,
   }) : super(key: key);
 
   final List<String> items;
   final Function(String) onSelected;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -46,20 +48,18 @@ class InventorySparePartsList extends StatelessWidget {
                   children: [
                     if (filteredItems.isNotEmpty)
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                        ),
+                        padding: padding ??
+                            const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                            ),
                         child: Text(
                           AppLocalizations.of(context)!
                               .bottom_bar_title_inventory,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(fontSize: 18),
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
                     ListView.builder(
-                      padding: const EdgeInsets.only(top: 2),
+                      padding: const EdgeInsets.only(top: 4),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: filteredItems.length,
@@ -73,6 +73,7 @@ class InventorySparePartsList extends StatelessWidget {
                             onDelete: () => onSelected(itemId),
                           ),
                           isSelected: true,
+                          margin: const EdgeInsets.symmetric(vertical: 4),
                         );
                       },
                     ),

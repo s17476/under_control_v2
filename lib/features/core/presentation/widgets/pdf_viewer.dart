@@ -147,17 +147,18 @@ class _PdfViewerState extends State<PdfViewer> {
             child: Row(
               children: [
                 // first page
-                CircleAvatar(
-                  backgroundColor: Colors.black54,
-                  child: IconButton(
-                    onPressed: () =>
-                        _currentPage != 0 ? _controller!.setPage(0) : null,
-                    icon: Icon(
-                      Icons.keyboard_double_arrow_left,
-                      color: _currentPage != 0 ? Colors.white : Colors.grey,
+                if (widget.isFullScreen)
+                  CircleAvatar(
+                    backgroundColor: Colors.black54,
+                    child: IconButton(
+                      onPressed: () =>
+                          _currentPage != 0 ? _controller!.setPage(0) : null,
+                      icon: Icon(
+                        Icons.keyboard_double_arrow_left,
+                        color: _currentPage != 0 ? Colors.white : Colors.grey,
+                      ),
                     ),
                   ),
-                ),
                 const SizedBox(width: 4),
                 // back
                 CircleAvatar(
@@ -197,20 +198,21 @@ class _PdfViewerState extends State<PdfViewer> {
                 ),
                 const SizedBox(width: 4),
                 // last page
-                CircleAvatar(
-                  backgroundColor: Colors.black54,
-                  child: IconButton(
-                    onPressed: () => _currentPage != _pages - 1
-                        ? _controller!.setPage(_pages - 1)
-                        : null,
-                    icon: Icon(
-                      Icons.keyboard_double_arrow_right,
-                      color: _currentPage != _pages - 1
-                          ? Colors.white
-                          : Colors.grey,
+                if (widget.isFullScreen)
+                  CircleAvatar(
+                    backgroundColor: Colors.black54,
+                    child: IconButton(
+                      onPressed: () => _currentPage != _pages - 1
+                          ? _controller!.setPage(_pages - 1)
+                          : null,
+                      icon: Icon(
+                        Icons.keyboard_double_arrow_right,
+                        color: _currentPage != _pages - 1
+                            ? Colors.white
+                            : Colors.grey,
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
