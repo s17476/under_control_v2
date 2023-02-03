@@ -3,10 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
-import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
+import '../../../assets/domain/entities/asset.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_location_card.dart';
 import '../../../assets/utils/asset_status.dart';
 import '../../../core/presentation/pages/loading_page.dart';
@@ -14,13 +12,14 @@ import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/show_snack_bar.dart';
+import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/work_request/work_request_model.dart';
 import '../../domain/entities/task_priority.dart';
 import '../../domain/entities/work_request/work_request.dart';
 import '../blocs/work_request/work_request_bloc.dart';
 import '../blocs/work_request_management/work_request_management_bloc.dart';
-import '../widgets/add_work_request/add_video_card.dart';
+import '../widgets/add_work_request/add_work_request_additional.dart';
 import '../widgets/add_work_request/add_work_request_card.dart';
 import '../widgets/add_work_request/add_work_request_set_asset_card.dart';
 import '../widgets/add_work_request/add_work_request_summary_card.dart';
@@ -58,6 +57,7 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
 
   bool _isAddAssetVisible = false;
   bool _isConnectedToAsset = false;
+  bool _isAddAdditionalVisible = false;
 
   DateTime _date = DateTime.now();
 
@@ -163,6 +163,12 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
     });
   }
 
+  void _toggleAddAdditionalVisibility() {
+    setState(() {
+      _isAddAdditionalVisible = !_isAddAdditionalVisible;
+    });
+  }
+
   void _setPriority(String value) {
     setState(() {
       _priority = value;
@@ -237,6 +243,9 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
       FocusScope.of(context).unfocus();
       if (_isAddAssetVisible) {
         _toggleAddAssetVisibility();
+      }
+      if (_isAddAdditionalVisible) {
+        _toggleAddAdditionalVisibility();
       }
     });
     super.initState();
@@ -319,21 +328,36 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
             featureType: FeatureType.tasks,
           ),
         ),
-      AddAssetImagesCard(
-        addImage: _addImage,
-        removeImage: _removeImage,
-        images: _images,
-        loading: _loadingImages,
-      ),
       KeepAlivePage(
-        child: AddVideoCard(
+        child: AddWorkRequestAdditional(
+          addImage: _addImage,
+          removeImage: _removeImage,
+          images: _images,
+          loadingImages: _loadingImages,
           videoFile: _videoFile,
           videoUrl: (_workRequest != null && _workRequest!.video.isNotEmpty)
               ? _workRequest!.video
               : null,
           updateVideo: _setVideo,
+          isAddAdditionalVisible: _isAddAdditionalVisible,
+          toggleAddAdditionalVisibility: _toggleAddAdditionalVisibility,
         ),
       ),
+      // AddAssetImagesCard(
+      //   addImage: _addImage,
+      //   removeImage: _removeImage,
+      //   images: _images,
+      //   loading: _loadingImages,
+      // ),
+      // KeepAlivePage(
+      //   child: AddVideoCard(
+      //     videoFile: _videoFile,
+      //     videoUrl: (_workRequest != null && _workRequest!.video.isNotEmpty)
+      //         ? _workRequest!.video
+      //         : null,
+      //     updateVideo: _setVideo,
+      //   ),
+      // ),
       SetPriorityCard(
         setPriority: _setPriority,
         priority: _priority,
@@ -359,6 +383,9 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
         if (_isAddAssetVisible) {
           _toggleAddAssetVisibility();
           return false;
+        }
+        if (_isAddAdditionalVisible) {
+          _toggleAddAdditionalVisibility();
         }
         // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);
