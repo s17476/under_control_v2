@@ -84,18 +84,6 @@ class AddAssetOverlayMenu extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Text(
-            //   AppLocalizations.of(context)!.add,
-            //   style: Theme.of(context).textTheme.headlineLarge,
-            // ),
-            // const Divider(
-            //   thickness: 1.5,
-            //   indent: 32,
-            //   endIndent: 32,
-            // ),
-
-            // images
-
             ..._addAssetsOverlayMenuItems(context)
                 .map(
                   (chice) => OverlayMenuItem(

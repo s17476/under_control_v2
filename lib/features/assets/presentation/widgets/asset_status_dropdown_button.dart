@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/assets/utils/get_asset_status_icon.dart';
 
 import '../../../core/presentation/widgets/custom_dropdown_button.dart';
 import '../../utils/asset_status.dart';
@@ -20,10 +21,22 @@ class AssetStatusDropdownButton extends StatelessWidget {
     final dropdownItems = AssetStatus.values
         .where((unit) => unit.name.isNotEmpty)
         .map<DropdownMenuItem<String>>(
-          (unit) => DropdownMenuItem(
-            value: unit.name,
-            child: Text(
-              getLocalizedAssetStatusName(context, unit),
+          (status) => DropdownMenuItem(
+            value: status.name,
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 36,
+                  height: 36,
+                  child: getAssetStatusIcon(context, status, 16, true),
+                ),
+                const SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  getLocalizedAssetStatusName(context, status),
+                ),
+              ],
             ),
           ),
         )
