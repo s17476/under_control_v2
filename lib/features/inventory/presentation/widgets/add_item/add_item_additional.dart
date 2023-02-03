@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,61 +9,46 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/presentation/widgets/image_viewer.dart';
 import '../../../../core/presentation/widgets/pdf_viewer.dart';
-import '../../../../core/utils/show_snack_bar.dart';
-import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
-import '../../../../inventory/presentation/widgets/inventory_spare_parts_list.dart';
+import '../../../../core/utils/responsive_size.dart';
 import '../../../../knowledge_base/presentation/blocs/instruction/instruction_bloc.dart';
 import '../../../../knowledge_base/presentation/widgets/instruction_selection/overlay_instruction_selection.dart';
 import '../../../../knowledge_base/presentation/widgets/instruction_tile.dart';
 import '../../../../knowledge_base/presentation/widgets/shimmer_instruction_tile.dart';
-import '../asset_selection/overlay_asset_selection.dart';
-import '../assets_spare_parts_list.dart';
-import 'add_assets_overlay_menu.dart';
+import 'add_item_overlay_menu.dart';
 
-class AddAssetAdditional extends StatelessWidget {
-  const AddAssetAdditional({
+class AddItemAdditional extends StatelessWidget with ResponsiveSize {
+  const AddItemAdditional({
     Key? key,
     required this.addImage,
     required this.removeImage,
     required this.addDocument,
     required this.removeDocument,
     required this.toggleInstructionSelection,
-    required this.toggleSparePartSelection,
-    required this.toggleAddAssetVisibility,
-    required this.toggleAddInventoryVisibility,
     required this.toggleAddInstructionsVisibility,
     required this.toggleAddAdditionalVisibility,
-    required this.images,
+    required this.itemImage,
+    required this.itemImageUrl,
     required this.documents,
-    required this.spareParts,
     required this.instructions,
-    required this.isAddAssetVisible,
-    required this.isAddInventoryVisible,
     required this.isAddInstructionsVisible,
     required this.isAddAdditionalVisible,
-    required this.loadingImages,
     required this.loadingDocuments,
   }) : super(key: key);
 
-  final Function(File) addImage;
-  final Function(File) removeImage;
+  final Function(ImageSource) addImage;
+  final Function() removeImage;
   final Function(File) addDocument;
   final Function(File) removeDocument;
   final Function(String) toggleInstructionSelection;
-  final Function(String) toggleSparePartSelection;
-  final Function() toggleAddAssetVisibility;
-  final Function() toggleAddInventoryVisibility;
   final Function() toggleAddInstructionsVisibility;
   final Function() toggleAddAdditionalVisibility;
-  final List<File> images;
+  final File? itemImage;
+  final String? itemImageUrl;
   final List<File> documents;
-  final List<String> spareParts;
   final List<String> instructions;
-  final bool isAddAssetVisible;
-  final bool isAddInventoryVisible;
   final bool isAddInstructionsVisible;
   final bool isAddAdditionalVisible;
-  final bool loadingImages;
+
   final bool loadingDocuments;
 
   void _pickPdfFile(BuildContext context) async {
@@ -74,28 +60,6 @@ class AddAssetAdditional extends StatelessWidget {
     if (result != null) {
       File file = File(result.files.single.path!);
       addDocument(file);
-    }
-  }
-
-  void _pickImage(BuildContext context, ImageSource souruce) async {
-    final picker = ImagePicker();
-
-    try {
-      final pickedFile = await picker.pickImage(
-        source: souruce,
-        imageQuality: 100,
-        maxHeight: 2000,
-        maxWidth: 2000,
-      );
-      if (pickedFile != null) {
-        addImage(File(pickedFile.path));
-      }
-    } catch (e) {
-      showSnackBar(
-        context: context,
-        message: AppLocalizations.of(context)!
-            .user_profile_add_user_image_pisker_error,
-      );
     }
   }
 
@@ -137,11 +101,81 @@ class AddAssetAdditional extends StatelessWidget {
                             duration: const Duration(milliseconds: 300),
                             child: Column(
                               children: [
-                                // images
-                                if (images.isNotEmpty) ...[
-                                  ImagesGrigViev(
-                                    images: images,
-                                    removeImage: removeImage,
+                                // image
+                                if (itemImage != null ||
+                                    (itemImageUrl != null &&
+                                        itemImageUrl!.isNotEmpty)) ...[
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .content_image,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge,
+                                      ),
+                                      const SizedBox(
+                                        height: 4,
+                                      ),
+                                      Stack(
+                                        children: [
+                                          if (itemImageUrl != null &&
+                                              itemImageUrl!.isNotEmpty &&
+                                              itemImage == null)
+                                            SizedBox(
+                                              width:
+                                                  responsiveSizePct(small: 100),
+                                              height:
+                                                  responsiveSizePct(small: 100),
+                                              child: CachedNetworkImage(
+                                                imageUrl: itemImageUrl!,
+                                                placeholder: (context, url) =>
+                                                    const Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const SizedBox(),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          if (itemImage != null) ...[
+                                            SizedBox(
+                                              width:
+                                                  responsiveSizePct(small: 100),
+                                              height:
+                                                  responsiveSizePct(small: 100),
+                                              child: Image.file(
+                                                itemImage!,
+                                                fit: BoxFit.fitWidth,
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 0,
+                                              left: 0,
+                                              child: IconButton(
+                                                onPressed: () => removeImage(),
+                                                icon: const Icon(
+                                                  Icons.delete,
+                                                  color: Colors.white,
+                                                  size: 30,
+                                                  shadows: [
+                                                    Shadow(
+                                                      color: Colors.black,
+                                                      blurRadius: 25,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(
                                     height: 8,
@@ -166,21 +200,6 @@ class AddAssetAdditional extends StatelessWidget {
                                     height: 8,
                                   ),
                                 ],
-                                // inventory
-                                InventorySparePartsList(
-                                  items: spareParts,
-                                  onSelected: toggleSparePartSelection,
-                                  padding: EdgeInsets.zero,
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                // assets
-                                AssetsSparePartsList(
-                                  items: spareParts,
-                                  onSelected: toggleSparePartSelection,
-                                  padding: EdgeInsets.zero,
-                                ),
                                 const SizedBox(
                                   height: 150,
                                 ),
@@ -209,31 +228,17 @@ class AddAssetAdditional extends StatelessWidget {
           ),
         ),
         if (isAddAdditionalVisible)
-          AddAssetOverlayMenu(
+          AddItemOverlayMenu(
             onDismiss: toggleAddAdditionalVisibility,
-            pickImage: _pickImage,
+            pickImage: addImage,
             pickPdfFile: _pickPdfFile,
-            toggleAddAssetVisibility: toggleAddAssetVisibility,
             toggleAddInstructionsVisibility: toggleAddInstructionsVisibility,
-            toggleAddInventoryVisibility: toggleAddInventoryVisibility,
           ),
         if (isAddInstructionsVisible)
           OverlayInstructionSelection(
             onDismiss: toggleAddInstructionsVisibility,
             instructions: instructions,
             toggleSelection: toggleInstructionSelection,
-          ),
-        if (isAddAssetVisible)
-          OverlayAssetSelection(
-            spareParts: spareParts,
-            toggleSelection: toggleSparePartSelection,
-            onDismiss: toggleAddAssetVisibility,
-          ),
-        if (isAddInventoryVisible)
-          OverlayInventorySelection(
-            spareParts: spareParts,
-            toggleSelection: toggleSparePartSelection,
-            onDismiss: toggleAddInventoryVisibility,
           ),
       ],
     );
@@ -302,50 +307,6 @@ class DocumentsList extends StatelessWidget {
               )
               .toList(),
         ),
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 16),
-        //   child: ListView.builder(
-        //     shrinkWrap: true,
-        //     itemCount: documents.length + 1,
-        //     itemBuilder: (context, index) {
-        //       if (index == documents.length) {
-        //         return const SizedBox(height: 100);
-        //       }
-        //       return Stack(
-        //         key: ValueKey(documents[index].path),
-        //         children: [
-        //           AspectRatio(
-        //             aspectRatio: 2 / 3,
-        //             child: Padding(
-        //               padding: const EdgeInsets.symmetric(
-        //                 vertical: 8,
-        //                 horizontal: 16,
-        //               ),
-        //               child: PdfViewer(path: documents[index].path),
-        //             ),
-        //           ),
-        //           Positioned(
-        //             top: 16,
-        //             left: 16,
-        //             child: IconButton(
-        //               onPressed: () => removeDocument(documents[index]),
-        //               icon: const Icon(
-        //                 Icons.delete,
-        //                 size: 30,
-        //                 shadows: [
-        //                   Shadow(
-        //                     color: Colors.black,
-        //                     blurRadius: 25,
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //           ),
-        //         ],
-        //       );
-        //     },
-        //   ),
-        // ),
       ],
     );
   }

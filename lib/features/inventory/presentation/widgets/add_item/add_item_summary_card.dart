@@ -303,7 +303,7 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                     ),
 
                     // item photo
-                    if (itemImage != null)
+                    if (itemImage != null) ...[
                       SummaryCard(
                         title: AppLocalizations.of(context)!.item_photo,
                         validator: () => null,
@@ -318,6 +318,10 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                           ),
                         ),
                       ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                    ],
 
                     // instructions
                     SummaryCard(
@@ -325,7 +329,7 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                           .asset_add_instructions_title,
                       validator: () => null,
                       pageController: pageController,
-                      onTapAnimateToPage: 4,
+                      onTapAnimateToPage: 3,
                       child: Text(
                         instructions.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_add_instructions_added}: ${instructions.length}'
@@ -343,7 +347,7 @@ class AddItemSummaryCard extends StatelessWidget with ResponsiveSize {
                           .asset_add_documents_title,
                       validator: () => null,
                       pageController: pageController,
-                      onTapAnimateToPage: 5,
+                      onTapAnimateToPage: 3,
                       child: Text(
                         documents.isNotEmpty
                             ? '${AppLocalizations.of(context)!.asset_add_documents_added}: ${documents.length}'

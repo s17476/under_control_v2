@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../assets/presentation/widgets/add_asset/add_asset_documents.dart';
-import '../../../assets/presentation/widgets/add_asset/add_asset_instructions.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -17,9 +15,9 @@ import '../../domain/entities/item.dart';
 import '../blocs/items/items_bloc.dart';
 import '../blocs/items_management/items_management_bloc.dart';
 import '../widgets/add_alert_quantity_card.dart';
+import '../widgets/add_item/add_item_additional.dart';
 import '../widgets/add_item/add_item_card.dart';
 import '../widgets/add_item/add_item_data_card.dart';
-import '../widgets/add_item/add_item_photo_card.dart';
 import '../widgets/add_item/add_item_summary_card.dart';
 
 class AddItemPage extends StatefulWidget {
@@ -55,6 +53,7 @@ class _AddItemPageState extends State<AddItemPage> {
 
   bool _isAlertQuantitySet = false;
   bool _isAddInstructionsVisible = false;
+  bool _isAddAdditionalVisible = false;
   bool _loadingDocuments = false;
 
   String _category = '';
@@ -249,6 +248,12 @@ class _AddItemPageState extends State<AddItemPage> {
     });
   }
 
+  void _toggleAddAdditionalVisibility() {
+    setState(() {
+      _isAddAdditionalVisible = !_isAddAdditionalVisible;
+    });
+  }
+
   void fetchDocuments(List<String> urls) async {
     setState(() {
       _loadingDocuments = true;
@@ -272,6 +277,9 @@ class _AddItemPageState extends State<AddItemPage> {
       FocusScope.of(context).unfocus();
       if (_isAddInstructionsVisible) {
         _toggleAddInstructionsVisibility();
+      }
+      if (_isAddAdditionalVisible) {
+        _toggleAddAdditionalVisibility();
       }
     });
     super.initState();
@@ -352,26 +360,42 @@ class _AddItemPageState extends State<AddItemPage> {
           itemUnit: _itemUnit,
         ),
       ),
-      KeepAlivePage(
-        child: AddItemPhotoCard(
-          setImage: _setImage,
-          deleteImage: _deleteImage,
-          image: _itemImage,
-          imageUrl: _item?.itemPhoto,
-        ),
-      ),
-      AddAssetInstructionsCard(
-        toggleSelection: _toggleInstructionSelection,
-        toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
-        instructions: _instructions,
-        isAddInstructionsVisible: _isAddInstructionsVisible,
-      ),
-      AddAssetDocumentsCard(
+      AddItemAdditional(
+        documents: _documents,
         addDocument: _addDocument,
         removeDocument: _removeDocument,
-        documents: _documents,
-        loading: _loadingDocuments,
+        loadingDocuments: _loadingDocuments,
+        instructions: _instructions,
+        toggleInstructionSelection: _toggleInstructionSelection,
+        isAddInstructionsVisible: _isAddInstructionsVisible,
+        toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
+        itemImage: _itemImage,
+        itemImageUrl: _item?.itemPhoto,
+        addImage: _setImage,
+        removeImage: _deleteImage,
+        isAddAdditionalVisible: _isAddAdditionalVisible,
+        toggleAddAdditionalVisibility: _toggleAddAdditionalVisibility,
       ),
+      // KeepAlivePage(
+      //   child: AddItemPhotoCard(
+      //     setImage: _setImage,
+      //     deleteImage: _deleteImage,
+      //     image: _itemImage,
+      //     imageUrl: _item?.itemPhoto,
+      //   ),
+      // ),
+      // AddAssetInstructionsCard(
+      //   toggleSelection: _toggleInstructionSelection,
+      //   toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
+      //   instructions: _instructions,
+      //   isAddInstructionsVisible: _isAddInstructionsVisible,
+      // ),
+      // AddAssetDocumentsCard(
+      //   addDocument: _addDocument,
+      //   removeDocument: _removeDocument,
+      //   documents: _documents,
+      //   loading: _loadingDocuments,
+      // ),
       AddItemSummaryCard(
         pageController: _pageController,
         producerTextEditingController: _producerTextEditingController,
@@ -396,6 +420,10 @@ class _AddItemPageState extends State<AddItemPage> {
       onWillPop: () async {
         if (_isAddInstructionsVisible) {
           _toggleAddInstructionsVisibility();
+          return false;
+        }
+        if (_isAddAdditionalVisible) {
+          _toggleAddAdditionalVisibility();
           return false;
         }
         // double click to exit the app
