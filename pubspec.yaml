@@ -52,12 +52,12 @@ dependencies:
   bloc_concurrency: ^0.2.0
   font_awesome_flutter: ^10.2.1
   shimmer: ^2.0.0
-  video_player: ^2.4.7
+  video_player: ^2.5.1
   youtube_player_iframe: ^3.1.0
   file_picker: ^5.2.0+1
   flutter_pdfview: ^1.2.5
   flutter_link_previewer: ^3.1.0
-  video_compress: ^3.1.1
+  video_compress: ^3.1.2
   flutter_cache_manager_firebase: ^2.0.1
   vibration: ^1.7.6
   injectable: ^2.1.0

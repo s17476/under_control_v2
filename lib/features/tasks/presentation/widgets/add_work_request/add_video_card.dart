@@ -106,7 +106,7 @@ class _AddVideoCardState extends State<AddVideoCard> with ResponsiveSize {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                if (widget.videoFile != null || widget.videoUrl != null)
+                if ((widget.videoFile != null || widget.videoUrl != null))
                   Container(
                     constraints: BoxConstraints(
                       maxHeight: MediaQuery.of(context).size.width,

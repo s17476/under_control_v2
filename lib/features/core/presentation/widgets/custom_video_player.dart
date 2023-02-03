@@ -147,7 +147,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       if (widget.videoFile != null) {
         final filePath = widget.videoFile?.path;
         final controllerPath = _videoPlayerController!.dataSource
-            .replaceFirst(RegExp('file://'), '');
+            .replaceFirst(RegExp('file://'), '')
+            .replaceFirst(RegExp('%20'), ' ');
         if (filePath != controllerPath) {
           _initVideo();
         }
