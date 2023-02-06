@@ -51,7 +51,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage>
 
   late TabController _tabController;
 
-  List<String> titles = [];
+  List<String> _titles = [];
   String _appBarTitle = '';
 
   @override
@@ -62,16 +62,11 @@ class _TaskDetailsPageState extends State<TaskDetailsPage>
 
   @override
   void didChangeDependencies() {
-    titles = [
+    _titles = [
       AppLocalizations.of(context)!.details_task,
       AppLocalizations.of(context)!.details_actions,
-      AppLocalizations.of(context)!.details_checklist,
-      AppLocalizations.of(context)!.details_pictures,
-      AppLocalizations.of(context)!.details_video,
-      AppLocalizations.of(context)!.details_instructions,
-      AppLocalizations.of(context)!.details_spare_parts,
     ];
-    _appBarTitle = titles[_tabController.index];
+    _appBarTitle = _titles[_tabController.index];
     final taskId = (ModalRoute.of(context)?.settings.arguments as String);
     final taskState = context.watch<TaskBloc>().state;
     if (taskState is TaskLoadedState) {
@@ -105,19 +100,32 @@ class _TaskDetailsPageState extends State<TaskDetailsPage>
         // number of tabs
         _tabsCount = 2;
 
-        _tabsCount += _task!.checklist.isNotEmpty ? 1 : 0;
-        _tabsCount += _task!.images.isNotEmpty ? 1 : 0;
-        _tabsCount += _task!.video.isNotEmpty ? 1 : 0;
-        _tabsCount += _task!.instructions.isNotEmpty ? 1 : 0;
-        _tabsCount += (_task!.sparePartsAssets.isNotEmpty ||
-                _task!.sparePartsItems.isNotEmpty)
-            ? 1
-            : 0;
+        if (_task!.checklist.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_checklist);
+        }
+        if (_task!.images.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_pictures);
+        }
+        if (_task!.video.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_video);
+        }
+        if (_task!.instructions.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_instructions);
+        }
+        if (_task!.sparePartsAssets.isNotEmpty ||
+            _task!.sparePartsItems.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_spare_parts);
+        }
         _tabController.dispose();
         _tabController = TabController(length: _tabsCount, vsync: this);
         _tabController.addListener(() {
           setState(() {
-            _appBarTitle = titles[_tabController.index];
+            _appBarTitle = _titles[_tabController.index];
           });
         });
         // popup menu items

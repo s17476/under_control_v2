@@ -3,11 +3,13 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:under_control_v2/features/assets/utils/get_next_date.dart';
+import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
 import 'package:under_control_v2/features/tasks/domain/entities/task_type.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../assets/data/models/asset_action/asset_action_model.dart';
 import '../../../assets/data/models/asset_model.dart';
+import '../../../checklists/domain/entities/checkpoint.dart';
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../domain/entities/task/tasks_stream.dart';
@@ -599,6 +601,15 @@ class TaskRepositoryImpl extends TaskRepository {
           transaction.update(companyReference, {'tasksCounter': counterValue});
         });
 
+        List<CheckpointModel> checklist = params.task.checklist
+            .map(
+              (checkpoint) => CheckpointModel(
+                title: checkpoint.title,
+                isChecked: false,
+              ),
+            )
+            .toList();
+
         final nextTask = TaskModel.fromTask(params.task).copyWith(
           id: '',
           count: counterValue,
@@ -613,6 +624,7 @@ class TaskRepositoryImpl extends TaskRepository {
             updatedTask.durationUnit,
             updatedTask.duration,
           ),
+          checklist: checklist,
         );
         final nextTaskMap = nextTask.toMap();
 

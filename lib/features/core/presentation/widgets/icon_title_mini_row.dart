@@ -28,7 +28,7 @@ class IconTitleMiniRow extends StatelessWidget {
           width: 4,
         ),
         HighlightedText(
-          text: title,
+          text: title.length < 25 ? title : '${title.substring(0, 25)}...',
           query: searchQuery,
           style: Theme.of(context).textTheme.bodySmall,
         ),

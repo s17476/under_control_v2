@@ -49,7 +49,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
 
   late TabController _tabController;
 
-  List<String> titles = [];
+  List<String> _titles = [];
   String _appBarTitle = '';
 
   @override
@@ -60,17 +60,12 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
 
   @override
   void didChangeDependencies() {
-    titles = [
+    _titles = [
       AppLocalizations.of(context)!.details_asset,
       AppLocalizations.of(context)!.details_tasks,
       AppLocalizations.of(context)!.details_history,
-      AppLocalizations.of(context)!.details_subassets,
-      AppLocalizations.of(context)!.details_pictures,
-      AppLocalizations.of(context)!.details_spare_parts,
-      AppLocalizations.of(context)!.details_instructions,
-      AppLocalizations.of(context)!.details_documents,
     ];
-    _appBarTitle = titles[_tabController.index];
+    _appBarTitle = _titles[_tabController.index];
 
     // gets current user
     final currentState = context.read<UserProfileBloc>().state;
@@ -93,16 +88,34 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
         }
         // number of tabs
         _tabsCount = 3;
-        _tabsCount += _children.isNotEmpty ? 1 : 0;
-        _tabsCount += _asset!.images.isNotEmpty ? 1 : 0;
-        _tabsCount += _asset!.spareParts.isNotEmpty ? 1 : 0;
-        _tabsCount += _asset!.instructions.isNotEmpty ? 1 : 0;
-        _tabsCount += _asset!.documents.isNotEmpty ? 1 : 0;
+        if (_children.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_subassets);
+        }
+        if (_asset!.images.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_pictures);
+        }
+        if (_asset!.spareParts.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_spare_parts);
+        }
+        if (_asset!.instructions.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_instructions);
+        }
+        if (_asset!.documents.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(
+            AppLocalizations.of(context)!.details_documents,
+          );
+        }
+
         _tabController.dispose();
         _tabController = TabController(length: _tabsCount, vsync: this);
         _tabController.addListener(() {
           setState(() {
-            _appBarTitle = titles[_tabController.index];
+            _appBarTitle = _titles[_tabController.index];
           });
         });
         // popup menu items

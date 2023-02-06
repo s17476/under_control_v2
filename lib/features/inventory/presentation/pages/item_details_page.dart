@@ -50,7 +50,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage>
   String _appBarTitle = '';
   late TabController _tabController;
 
-  List<String> titles = [];
+  List<String> _titles = [];
 
   @override
   void initState() {
@@ -60,14 +60,12 @@ class _ItemDetailsPageState extends State<ItemDetailsPage>
 
   @override
   void didChangeDependencies() {
-    titles = [
+    _titles = [
       AppLocalizations.of(context)!.details_item,
       AppLocalizations.of(context)!.details_actions,
       AppLocalizations.of(context)!.details_locations,
-      AppLocalizations.of(context)!.details_instructions,
-      AppLocalizations.of(context)!.details_documents,
     ];
-    _appBarTitle = titles[_tabController.index];
+    _appBarTitle = _titles[_tabController.index];
     // gets current user
     final currentState = context.read<UserProfileBloc>().state;
     if (currentState is Approved) {
@@ -86,14 +84,20 @@ class _ItemDetailsPageState extends State<ItemDetailsPage>
 
         // number of tabs
         _tabsCount = 3;
-        _tabsCount += _item!.instructions.isNotEmpty ? 1 : 0;
-        _tabsCount += _item!.documents.isNotEmpty ? 1 : 0;
+        if (_item!.instructions.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_instructions);
+        }
+        if (_item!.documents.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_documents);
+        }
 
         _tabController.dispose();
         _tabController = TabController(length: _tabsCount, vsync: this);
         _tabController.addListener(() {
           setState(() {
-            _appBarTitle = titles[_tabController.index];
+            _appBarTitle = _titles[_tabController.index];
           });
         });
 

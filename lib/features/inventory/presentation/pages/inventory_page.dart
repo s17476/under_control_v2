@@ -119,7 +119,10 @@ class InventoryPage extends StatelessWidget with ResponsiveSize {
                         searchQuery: searchQuery,
                       ),
                     )
-                    .toList()
+                    .toList(),
+                const SizedBox(
+                  height: 100,
+                ),
               ],
             );
           }

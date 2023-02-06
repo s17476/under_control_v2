@@ -43,7 +43,7 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
   int _tabsCount = 1;
   late TabController _tabController;
 
-  List<String> titles = [];
+  List<String> _titles = [];
   String _appBarTitle = '';
 
   @override
@@ -54,12 +54,10 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
 
   @override
   void didChangeDependencies() {
-    titles = [
+    _titles = [
       AppLocalizations.of(context)!.details_work_request,
-      AppLocalizations.of(context)!.details_pictures,
-      AppLocalizations.of(context)!.details_video,
     ];
-    _appBarTitle = titles[_tabController.index];
+    _appBarTitle = _titles[_tabController.index];
 
     // gets selected asset
     final workRequestId =
@@ -87,13 +85,19 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
 
         // number of tabs
         _tabsCount = 1;
-        _tabsCount += _workRequest!.images.isNotEmpty ? 1 : 0;
-        _tabsCount += _workRequest!.video.isNotEmpty ? 1 : 0;
+        if (_workRequest!.images.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_pictures);
+        }
+        if (_workRequest!.video.isNotEmpty) {
+          _tabsCount++;
+          _titles.add(AppLocalizations.of(context)!.details_video);
+        }
         _tabController.dispose();
         _tabController = TabController(length: _tabsCount, vsync: this);
         _tabController.addListener(() {
           setState(() {
-            _appBarTitle = titles[_tabController.index];
+            _appBarTitle = _titles[_tabController.index];
           });
         });
         // popup menu items
