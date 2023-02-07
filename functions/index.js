@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 
 const task = require('./tasks/task');
 const workRequest = require('./work_requests/work_request');
+const item = require('./items/item');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -24,3 +25,8 @@ exports.workRequestAdded = functions.firestore
 exports.workRequestDeleted = functions.firestore
   .document("companies/{companyId}/workRequests/{workRequestId}")
   .onDelete((document, context) => workRequest.deleted(document, context, admin));
+
+// item update handler
+exports.itemUpdated = functions.firestore
+  .document("companies/{companyId}/items/{itemId}")
+  .onUpdate((change, context) => item.updated(change, context, admin));
