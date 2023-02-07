@@ -161,7 +161,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         for (var workRequestToRemove in workRequestsToRemove) {
           oldTasks.remove(workRequestToRemove);
         }
-        // merge and sort by priority
+        // merge and sort by execution's date
         List<Task> tmpList = [
           ...oldTasks,
           ...workRequestsList.allTasks,
@@ -171,6 +171,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           allTasks: tmpList,
         );
       }
+
       emit(TaskLoadedState(
         allTasks: workRequestsList,
       ));

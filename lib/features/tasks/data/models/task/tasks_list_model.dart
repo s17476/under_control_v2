@@ -11,17 +11,16 @@ class TasksListModel extends TasksList {
       QuerySnapshot<Map<String, dynamic>> snapshot) {
     List<Task> workRequestsList = [];
     workRequestsList = snapshot.docs
-            .map(
-              (DocumentSnapshot doc) => TaskModel.fromMap(
-                doc.data() as Map<String, dynamic>,
-                doc.id,
-              ),
-            )
-            .toList()
-        // ..sort(
-        //   (a, b) => a.executionDate.compareTo(b.executionDate),
-        // )
-        ;
+        .map(
+          (DocumentSnapshot doc) => TaskModel.fromMap(
+            doc.data() as Map<String, dynamic>,
+            doc.id,
+          ),
+        )
+        .toList()
+      ..sort(
+        (a, b) => a.executionDate.compareTo(b.executionDate),
+      );
     return TasksListModel(allTasks: workRequestsList);
   }
 }
