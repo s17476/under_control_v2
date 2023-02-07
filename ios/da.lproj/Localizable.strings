@@ -7,3 +7,5 @@
 */
 "new_task_title" = "Du har fået en ny opgave";
 "new_work_request_title" = "Ny anmodning";
+"item_below_limit" = "Varens antal under advarsels mængde";
+"asset_no_inspection" = "Ugyldig eftersyn";

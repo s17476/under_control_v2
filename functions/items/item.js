@@ -11,7 +11,6 @@ exports.updated = async function(change, context, admin) {
     const newItem = change.after.data();
 
     const alertQuantity = newItem.alertQuantity;
-    console.log('alertQuantity ', alertQuantity);
 
     // checks if alert quantity was set
     if(alertQuantity != undefined && alertQuantity != -1){
@@ -27,16 +26,9 @@ exports.updated = async function(change, context, admin) {
         for(const quantityInLocation of newItem.amountInLocations){
             totalNewQuantity = totalNewQuantity + quantityInLocation.amount;
         }
-        console.log('totalOldQuantity ', totalOldQuantity);
-        console.log('totalNewQuantity ', totalNewQuantity);
         
+        // item quantity below limit - add notification
         if(totalNewQuantity < totalOldQuantity && totalNewQuantity <= alertQuantity && totalOldQuantity > alertQuantity){
-            console.log('sendNotification');
-
-
-            // TODO:
-            // add android and ios notification localizations
-            // remove logs
 
             // notification data
             const text = newItem.producer + ' ' + newItem.name;
@@ -118,9 +110,31 @@ exports.updated = async function(change, context, admin) {
             if(tokens.length > 0){
                 await admin.messaging().sendToDevice(tokens, payload);
             }
+        }
 
-        }else{
-            console.log('No notification');
+        // item quantity over limit - remove notifications
+        if(totalNewQuantity > totalOldQuantity && totalOldQuantity <= alertQuantity && totalNewQuantity > alertQuantity){
+
+            const companyMembers = await db
+                .collection('users')
+                .where('companyId', '==', companyId)
+                .get();
+                
+            const users = companyMembers.docs;
+
+            if (users.empty) {
+                console.log('No matching documents.');
+                return;
+            }
+
+            for(const user of users){
+                await db
+                .collection('users')
+                .doc(user.id)
+                .collection('notifications')
+                .doc(change.before.id)
+                .delete();
+            }
         }
     }
     return;

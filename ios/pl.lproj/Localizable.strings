@@ -7,3 +7,5 @@
 */
 "new_task_title" = "Otrzymałeś nowe zadanie";
 "new_work_request_title" = "Nowe zlecenie";
+"item_below_limit" = "Poziom przedmiotu poniej limitu";
+"asset_no_inspection" = "Nieaktualny przegląd techniczny";

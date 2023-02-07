@@ -119,12 +119,10 @@ class _ActionsListPageState extends State<ActionsListPage> with ResponsiveSize {
           bottom: TabBar(
             tabs: [
               Tab(
-                icon: Text(
-                  AppLocalizations.of(context)!.all,
-                  style: TextStyle(
-                    color: tabBarIconColor,
-                    fontSize: 18,
-                  ),
+                icon: Icon(
+                  Icons.all_inclusive,
+                  color: tabBarIconColor,
+                  size: tabBarIconSize,
                 ),
               ),
               Tab(
