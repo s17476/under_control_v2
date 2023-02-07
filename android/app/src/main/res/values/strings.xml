@@ -1,6 +1,6 @@
 <resources>
     <string name="new_task_title">You got a new task</string>
     <string name="new_work_request_title">New work request</string>
-    <string name="item_below_limit">Item's quantity below limit</string>
+    <string name="item_below_limit">Item\'s quantity below limit</string>
     <string name="asset_no_inspection">Outdated technical inspection</string>
 </resources>
