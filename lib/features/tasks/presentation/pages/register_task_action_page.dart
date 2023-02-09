@@ -3,18 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task_action/add_task_action_checklist_card.dart';
-import '../../../checklists/data/models/checkpoint_model.dart';
-import '../../data/models/task_action/task_action_model.dart';
-import '../blocs/task_action_management/task_action_management_bloc.dart';
-import '../widgets/add_task_action/add_task_action_summary_card.dart';
-import '../widgets/add_work_request/set_asset_status_card.dart';
 
 import '../../../assets/data/models/asset_model.dart';
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../assets/presentation/blocs/asset_parts/asset_parts_bloc.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
 import '../../../assets/utils/asset_status.dart';
+import '../../../checklists/data/models/checkpoint_model.dart';
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
 import '../../../core/presentation/widgets/keep_alive_page.dart';
@@ -23,16 +18,22 @@ import '../../../core/utils/show_snack_bar.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/task/spare_part_item_model.dart';
 import '../../data/models/task/task_model.dart';
+import '../../data/models/task_action/task_action_model.dart';
 import '../../data/models/task_action/user_action_model.dart';
 import '../../domain/entities/task/task.dart';
 import '../../domain/entities/task_action/task_action.dart';
 import '../blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart';
 import '../blocs/task/task_bloc.dart';
+import '../blocs/task_action_management/task_action_management_bloc.dart';
 import '../widgets/add_task_action/add_task_action_add_participants_card.dart';
 import '../widgets/add_task_action/add_task_action_add_spare_part_card.dart';
+import '../widgets/add_task_action/add_task_action_additional.dart';
 import '../widgets/add_task_action/add_task_action_card.dart';
+import '../widgets/add_task_action/add_task_action_checklist_card.dart';
 import '../widgets/add_task_action/add_task_action_remove_asset_card.dart';
 import '../widgets/add_task_action/add_task_action_spare_part_card.dart';
+import '../widgets/add_task_action/add_task_action_summary_card.dart';
+import '../widgets/add_work_request/set_asset_status_card.dart';
 import 'subtract_item_from_location_page.dart';
 
 class RegisterTaskActionPage extends StatefulWidget {
@@ -52,6 +53,7 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
   bool _isAddItemVisible = false;
   bool _isAddAssetVisible = false;
   bool _isAddUsersVisible = false;
+  bool _isAddAdditionalVisible = false;
 
   // pageview
   List<Widget> _pages = [];
@@ -183,6 +185,12 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
           .add(ReservedSparePartsResetEvent());
       Navigator.pop(context);
     }
+  }
+
+  void _toggleAddAdditionalVisibility() {
+    setState(() {
+      _isAddAdditionalVisible = !_isAddAdditionalVisible;
+    });
   }
 
   void _toggleReplaceConnectedAsset(AssetModel asset) {
@@ -406,6 +414,9 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
       } else if (_isAddUsersVisible) {
         _toggleAddUsersVisibility();
       }
+      if (_isAddAdditionalVisible) {
+        _toggleAddAdditionalVisibility();
+      }
     });
     super.initState();
   }
@@ -511,20 +522,47 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         participants: _participants,
         isAddUsersVisible: _isAddUsersVisible,
       ),
-      AddAssetImagesCard(
+      AddTaskActionAdditional(
+        isAddAdditionalVisible: _isAddAdditionalVisible,
+        toggleAddAdditionalVisibility: _toggleAddAdditionalVisibility,
+        isConnectedToAnAsset: _task!.assetId.isNotEmpty,
         addImage: _addImage,
         removeImage: _removeImage,
         images: _images,
-        loading: _loadingImages,
-      ),
-      AddTaskActionSparePartCard(
+        loadingImages: _loadingImages,
         addItem: _addItem,
         removeItem: _removeItem,
         updateSparePartQuantity: _updateSparePartItemModel,
         toggleAddItemVisibility: _toggleAddItemVisibility,
         sparePartsItems: _sparePartsItems,
         isAddItemVisible: _isAddItemVisible,
+        assetsToRemove: _removedPartsAssets,
+        toggleRemovedAssets: _toggleRemovedAsset,
+        replaceConnectedAssets: _toggleReplaceConnectedAsset,
+        connectedAssetId: _task!.assetId,
+        replacedAsset: _replacedAsset,
+        toggleAssetSelection: _toggleAssetSelection,
+        toggleAddAssetVisibility: _toggleAddAssetVisibility,
+        sparePartsAssets: _addedPartsAssets,
+        isAddAssetVisible: _isAddAssetVisible,
+        replacementAsset: _replacementAsset,
+        isConnectedAssetReplaced: _replacedAsset != null,
+        toggleReplacementAsset: _toggleReplacementAsset,
       ),
+      // AddAssetImagesCard(
+      //   addImage: _addImage,
+      //   removeImage: _removeImage,
+      //   images: _images,
+      //   loading: _loadingImages,
+      // ),
+      // AddTaskActionSparePartCard(
+      //   addItem: _addItem,
+      //   removeItem: _removeItem,
+      //   updateSparePartQuantity: _updateSparePartItemModel,
+      //   toggleAddItemVisibility: _toggleAddItemVisibility,
+      //   sparePartsItems: _sparePartsItems,
+      //   isAddItemVisible: _isAddItemVisible,
+      // ),
       if (_task!.assetId.isNotEmpty)
         AddTaskActionRemoveAssetCard(
           assetsToRemove: _removedPartsAssets,
@@ -582,6 +620,9 @@ class _RegisterTaskActionPageState extends State<RegisterTaskActionPage> {
         } else if (_isAddUsersVisible) {
           _toggleAddUsersVisibility();
           return false;
+        }
+        if (_isAddAdditionalVisible) {
+          _toggleAddAdditionalVisibility();
         }
         // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);

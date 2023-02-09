@@ -104,7 +104,7 @@ class _ItemTileWithQuantityState extends State<ItemTileWithQuantity> {
       doubleQuantity = 0;
     }
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      margin: widget.margin,
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(15),
