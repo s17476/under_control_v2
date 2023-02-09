@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
-import 'package:under_control_v2/features/checklists/data/models/checkpoint_model.dart';
-
 import '../../../../assets/domain/entities/asset.dart';
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/utils/asset_status.dart';
@@ -14,6 +12,7 @@ import '../../../../assets/utils/get_asset_status_icon.dart';
 import '../../../../assets/utils/get_localizad_duration_unit_name.dart';
 import '../../../../assets/utils/get_localizae_asset_status_name.dart';
 import '../../../../assets/utils/get_next_date.dart';
+import '../../../../checklists/data/models/checkpoint_model.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../../core/presentation/widgets/shimmer_custom_dropdown_button.dart';
 import '../../../../core/presentation/widgets/shimmer_user_list_tile.dart';

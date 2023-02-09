@@ -143,11 +143,13 @@ class AssetToRemoveTile extends StatelessWidget {
     required this.asset,
     required this.toggleRemovedAssets,
     required this.isRemoved,
+    this.margin = const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
   }) : super(key: key);
 
   final AssetModel asset;
   final Function(AssetModel) toggleRemovedAssets;
   final bool isRemoved;
+  final EdgeInsetsGeometry margin;
 
   void selectNewDataAndRemove(BuildContext context) async {
     if (isRemoved) {
@@ -168,7 +170,6 @@ class AssetToRemoveTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const borderRadius = 15.0;
-    const margin = EdgeInsets.symmetric(vertical: 4, horizontal: 8);
     return AnimatedContainer(
       margin: margin,
       duration: const Duration(milliseconds: 300),

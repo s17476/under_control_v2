@@ -12,6 +12,7 @@ class AddTaskActionOverlayMenu extends StatelessWidget {
     required this.onDismiss,
     required this.toggleAddAssetVisibility,
     required this.toggleAddItemVisibility,
+    required this.toggleRemoveAssetVisibility,
     required this.pickImage,
     required this.isConnectedToAnAsset,
     required this.showOnlySubAssets,
@@ -20,6 +21,7 @@ class AddTaskActionOverlayMenu extends StatelessWidget {
   final Function() onDismiss;
   final Function() toggleAddAssetVisibility;
   final Function() toggleAddItemVisibility;
+  final Function() toggleRemoveAssetVisibility;
   final Function(BuildContext context, ImageSource souruce) pickImage;
   final bool isConnectedToAnAsset;
   final ValueNotifier<bool> showOnlySubAssets;
@@ -59,6 +61,13 @@ class AddTaskActionOverlayMenu extends StatelessWidget {
             showOnlySubAssets.value = true;
             toggleAddAssetVisibility();
           },
+        ),
+      // remove broken assets
+      if (isConnectedToAnAsset)
+        Choice(
+          title: AppLocalizations.of(context)!.task_action_remove_assets,
+          icon: Icons.clear,
+          onTap: () => toggleRemoveAssetVisibility(),
         ),
     ];
     return choices;

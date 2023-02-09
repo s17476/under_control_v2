@@ -118,6 +118,7 @@ class AddTaskActionSummaryCard extends StatelessWidget with ResponsiveSize {
                       ChecklistSummaryCard(
                         checklist: checklist,
                         pageController: pageController,
+                        isConnectedToAnAsset: isConnectedToAnAsset,
                       ),
 
                     // asset's new status
@@ -289,7 +290,7 @@ class UsedItemsSummaryCard extends StatelessWidget {
             return null;
           },
           pageController: pageController,
-          onTapAnimateToPage: 3,
+          onTapAnimateToPage: 2,
           child: ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -389,7 +390,7 @@ class AssetStatusSummaryCard extends StatelessWidget {
             return null;
           },
           pageController: pageController,
-          onTapAnimateToPage: 6,
+          onTapAnimateToPage: 3,
           child: Builder(builder: (context) {
             if (assetStatus == null) {
               return const SizedBox();
@@ -446,7 +447,7 @@ class SparePartsSummaryCard extends StatelessWidget {
           title: AppLocalizations.of(context)!.item_spare_parts,
           validator: () => null,
           pageController: pageController,
-          onTapAnimateToPage: 4,
+          onTapAnimateToPage: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -540,7 +541,7 @@ class ConnectedAssetSummaryCard extends StatelessWidget {
             return null;
           },
           pageController: pageController,
-          onTapAnimateToPage: 5,
+          onTapAnimateToPage: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -583,10 +584,12 @@ class ChecklistSummaryCard extends StatelessWidget {
     Key? key,
     required this.checklist,
     required this.pageController,
+    required this.isConnectedToAnAsset,
   }) : super(key: key);
 
   final List<CheckpointModel> checklist;
   final PageController pageController;
+  final bool isConnectedToAnAsset;
 
   @override
   Widget build(BuildContext context) {
@@ -596,7 +599,7 @@ class ChecklistSummaryCard extends StatelessWidget {
           title: AppLocalizations.of(context)!.checklist,
           validator: () => null,
           pageController: pageController,
-          onTapAnimateToPage: 7,
+          onTapAnimateToPage: isConnectedToAnAsset ? 4 : 3,
           child: ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,

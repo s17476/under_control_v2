@@ -10,7 +10,6 @@ import '../../../../assets/data/models/asset_model.dart';
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_selection/overlay_asset_selection.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
-import '../../../../assets/presentation/widgets/assets_spare_parts_list.dart';
 import '../../../../assets/utils/show_spare_part_asset_delete_dialog.dart';
 import '../../../../core/presentation/widgets/image_viewer.dart';
 import '../../../../core/presentation/widgets/loading_widget.dart';
@@ -21,6 +20,8 @@ import '../../../../inventory/presentation/widgets/shimmer_item_tile.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
 import '../add_task/item_tile_with_quantity.dart';
 import 'add_task_action_overlay_menu.dart';
+import 'add_task_action_remove_asset_card.dart';
+import 'add_task_action_remove_assets_overlay.dart';
 
 class AddTaskActionAdditional extends HookWidget {
   const AddTaskActionAdditional({
@@ -29,10 +30,10 @@ class AddTaskActionAdditional extends HookWidget {
     required this.removeImage,
     required this.images,
     required this.loadingImages,
-    required this.toggleAddAssetVisibility,
     required this.toggleAssetSelection,
     required this.toggleReplacementAsset,
     required this.sparePartsAssets,
+    required this.toggleAddAssetVisibility,
     required this.isAddAssetVisible,
     required this.isConnectedAssetReplaced,
     required this.replacementAsset,
@@ -47,6 +48,8 @@ class AddTaskActionAdditional extends HookWidget {
     required this.assetsToRemove,
     required this.connectedAssetId,
     required this.replacedAsset,
+    required this.toggleRemoveAssetVisibility,
+    required this.isRemoveAssetVisible,
     required this.isAddAdditionalVisible,
     required this.toggleAddAdditionalVisibility,
     required this.isConnectedToAnAsset,
@@ -59,10 +62,10 @@ class AddTaskActionAdditional extends HookWidget {
   final bool loadingImages;
 
   // add spare parts from assets
-  final Function() toggleAddAssetVisibility;
   final Function(String) toggleAssetSelection;
   final Function(AssetModel?) toggleReplacementAsset;
   final List<String> sparePartsAssets;
+  final Function() toggleAddAssetVisibility;
   final bool isAddAssetVisible;
   final bool isConnectedAssetReplaced;
   final AssetModel? replacementAsset;
@@ -81,6 +84,8 @@ class AddTaskActionAdditional extends HookWidget {
   final List<AssetModel> assetsToRemove;
   final String connectedAssetId;
   final AssetModel? replacedAsset;
+  final Function() toggleRemoveAssetVisibility;
+  final bool isRemoveAssetVisible;
 
   // overlay menu
   final bool isAddAdditionalVisible;
@@ -184,7 +189,7 @@ class AddTaskActionAdditional extends HookWidget {
                                   //   height: 8,
                                   // ),
                                 ],
-                                // used assets
+                                // assets
                                 ...[
                                   SparePartsAssets(
                                     isConnectedAssetReplaced:
@@ -196,6 +201,12 @@ class AddTaskActionAdditional extends HookWidget {
                                     sparePartsAssets: sparePartsAssets,
                                     toggleAssetSelection: toggleAssetSelection,
                                     replacementAsset: replacementAsset,
+                                    connectedAssetId: connectedAssetId,
+                                    replaceConnectedAssets:
+                                        replaceConnectedAssets,
+                                    replacedAsset: replacedAsset,
+                                    assetsToRemove: assetsToRemove,
+                                    toggleRemovedAssets: toggleRemovedAssets,
                                   ),
                                   const SizedBox(
                                     height: 8,
@@ -237,6 +248,7 @@ class AddTaskActionAdditional extends HookWidget {
             toggleAddItemVisibility: toggleAddItemVisibility,
             isConnectedToAnAsset: isConnectedToAnAsset,
             showOnlySubAssets: showOnlySubAssets,
+            toggleRemoveAssetVisibility: toggleRemoveAssetVisibility,
           ),
         if (isAddItemVisible)
           OverlayInventorySelection(
@@ -250,6 +262,15 @@ class AddTaskActionAdditional extends HookWidget {
               ),
             ),
             onDismiss: toggleAddItemVisibility,
+          ),
+        if (isRemoveAssetVisible)
+          AddTaskActionRemoveAssetOverlay(
+            assetsToRemove: assetsToRemove,
+            connectedAssetId: connectedAssetId,
+            onDismiss: toggleRemoveAssetVisibility,
+            replaceConnectedAssets: replaceConnectedAssets,
+            toggleRemovedAssets: toggleRemovedAssets,
+            replacedAsset: replacedAsset,
           ),
         if (isAddAssetVisible)
           OverlayAssetSelection(
@@ -429,6 +450,11 @@ class SparePartsAssets extends StatelessWidget {
     required this.toggleAddAssetVisibility,
     required this.sparePartsAssets,
     required this.toggleAssetSelection,
+    required this.connectedAssetId,
+    this.replacedAsset,
+    required this.replaceConnectedAssets,
+    required this.toggleRemovedAssets,
+    required this.assetsToRemove,
   }) : super(key: key);
 
   final bool isConnectedAssetReplaced;
@@ -438,6 +464,11 @@ class SparePartsAssets extends StatelessWidget {
   final Function() toggleAddAssetVisibility;
   final List<String> sparePartsAssets;
   final Function(String) toggleAssetSelection;
+  final String connectedAssetId;
+  final AssetModel? replacedAsset;
+  final Function(AssetModel) replaceConnectedAssets;
+  final Function(AssetModel) toggleRemovedAssets;
+  final List<AssetModel> assetsToRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -448,6 +479,22 @@ class SparePartsAssets extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.task_connected_asset,
             style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          BlocBuilder<AssetBloc, AssetState>(
+            builder: (context, state) {
+              if (state is AssetLoadedState) {
+                final asset = state.getAssetById(connectedAssetId);
+
+                return AssetToRemoveTile(
+                  asset: AssetModel.fromAsset(asset!),
+                  toggleRemovedAssets: replaceConnectedAssets,
+                  isRemoved: replacedAsset != null,
+                  margin: const EdgeInsets.symmetric(vertical: 4),
+                );
+              } else {
+                return const ShimmerItemTile();
+              }
+            },
           ),
           if (replacementAsset != null)
             AssetTile(
@@ -463,6 +510,21 @@ class SparePartsAssets extends StatelessWidget {
               toggleAddAssetVisibility: toggleAddAssetVisibility,
             ),
         ],
+        // removed assets
+        if (assetsToRemove.isNotEmpty) ...[
+          Text(
+            AppLocalizations.of(context)!.asset_removed,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          ...assetsToRemove.map((asset) => AssetToRemoveTile(
+                asset: AssetModel.fromAsset(asset),
+                toggleRemovedAssets: toggleRemovedAssets,
+                isRemoved: true,
+                margin: const EdgeInsets.symmetric(vertical: 4),
+              )),
+        ],
+
+        // added assets
         SparePartsAssetsList(
           items: sparePartsAssets,
           onSelected: toggleAssetSelection,

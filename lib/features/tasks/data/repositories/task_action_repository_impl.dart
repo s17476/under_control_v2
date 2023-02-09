@@ -263,6 +263,8 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final updatedAssetModel = fetchedAsset.copyWith(
             currentStatus: asset.currentStatus,
             locationId: asset.locationId,
+            isInUse: false,
+            currentParentId: '',
           );
           final assetMap = updatedAssetModel.toMap();
 
@@ -311,6 +313,7 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
           final updatedAssetModel = fetchedAsset.copyWith(
             locationId: params.task.locationId,
             isInUse: true,
+            currentParentId: params.task.assetId,
           );
           final assetMap = updatedAssetModel.toMap();
 
