@@ -180,7 +180,7 @@ class AddTaskActionAddSparePartCard extends HookWidget {
                     }
                   },
             onDismiss: toggleAddAssetVisibility,
-            onlyUnusedParts: showOnlySubAssets.value,
+            allUnusedAssets: showOnlySubAssets.value,
           ),
       ],
     );

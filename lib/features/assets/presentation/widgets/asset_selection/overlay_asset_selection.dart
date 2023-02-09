@@ -20,13 +20,13 @@ class OverlayAssetSelection extends StatefulWidget {
     required this.spareParts,
     required this.toggleSelection,
     required this.onDismiss,
-    this.onlyUnusedParts = false,
+    this.allUnusedAssets = false,
   }) : super(key: key);
 
   final List<String> spareParts;
   final Function(String) toggleSelection;
   final Function() onDismiss;
-  final bool onlyUnusedParts;
+  final bool allUnusedAssets;
 
   @override
   State<OverlayAssetSelection> createState() => _OverlayAssetSelectionState();
@@ -136,10 +136,17 @@ class _OverlayAssetSelectionState extends State<OverlayAssetSelection>
                             ],
                           );
                         }
-
-                        final spareParts = state.allAssets.allAssets
-                            .where((asset) => asset.isSparePart)
-                            .toList();
+                        List<Asset> spareParts;
+                        if (widget.allUnusedAssets) {
+                          spareParts = state.allAssets.allAssets
+                              .where((asset) => !asset.isInUse)
+                              .toList();
+                        } else {
+                          spareParts = state.allAssets.allAssets
+                              .where((asset) =>
+                                  asset.isSparePart && !asset.isInUse)
+                              .toList();
+                        }
 
                         List<Asset> filteredAssets = searchAssets(
                           context,
@@ -147,12 +154,12 @@ class _OverlayAssetSelectionState extends State<OverlayAssetSelection>
                           spareParts,
                           _searchQuery,
                         );
-                        if (widget.onlyUnusedParts) {
-                          filteredAssets = filteredAssets
-                              .where((asset) =>
-                                  asset.isSparePart && !asset.isInUse)
-                              .toList();
-                        }
+                        // if (widget.onlyUnusedParts) {
+                        //   filteredAssets = filteredAssets
+                        //       .where((asset) =>
+                        //           asset.isSparePart && !asset.isInUse)
+                        //       .toList();
+                        // }
                         return ListView.builder(
                           padding: const EdgeInsets.only(top: 2),
                           shrinkWrap: true,

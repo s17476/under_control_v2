@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/presentation/widgets/glass_layer.dart';
@@ -14,12 +13,16 @@ class AddTaskActionOverlayMenu extends StatelessWidget {
     required this.toggleAddAssetVisibility,
     required this.toggleAddItemVisibility,
     required this.pickImage,
+    required this.isConnectedToAnAsset,
+    required this.showOnlySubAssets,
   }) : super(key: key);
 
   final Function() onDismiss;
   final Function() toggleAddAssetVisibility;
   final Function() toggleAddItemVisibility;
   final Function(BuildContext context, ImageSource souruce) pickImage;
+  final bool isConnectedToAnAsset;
+  final ValueNotifier<bool> showOnlySubAssets;
 
   List<Choice> _addTaskActionOverlayMenuItems(BuildContext context) {
     final List<Choice> choices = [
@@ -47,12 +50,16 @@ class AddTaskActionOverlayMenu extends StatelessWidget {
         icon: Icons.apps,
         onTap: toggleAddItemVisibility,
       ),
-      // // assets
-      // Choice(
-      //   title: AppLocalizations.of(context)!.bottom_bar_title_assets,
-      //   icon: Icons.precision_manufacturing,
-      //   onTap: toggleAddAssetVisibility,
-      // ),
+      // assets
+      if (isConnectedToAnAsset)
+        Choice(
+          title: AppLocalizations.of(context)!.task_action_add_assets,
+          icon: Icons.precision_manufacturing,
+          onTap: () {
+            showOnlySubAssets.value = true;
+            toggleAddAssetVisibility();
+          },
+        ),
     ];
     return choices;
   }

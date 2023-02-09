@@ -3,19 +3,26 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../assets/data/models/asset_model.dart';
+import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
+import '../../../../assets/presentation/widgets/asset_selection/overlay_asset_selection.dart';
+import '../../../../assets/presentation/widgets/asset_tile.dart';
+import '../../../../assets/presentation/widgets/assets_spare_parts_list.dart';
+import '../../../../assets/utils/show_spare_part_asset_delete_dialog.dart';
 import '../../../../core/presentation/widgets/image_viewer.dart';
 import '../../../../core/presentation/widgets/loading_widget.dart';
 import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../../inventory/presentation/widgets/inventory_selection/overlay_inventory_selection.dart';
+import '../../../../inventory/presentation/widgets/shimmer_item_tile.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
 import '../add_task/item_tile_with_quantity.dart';
 import 'add_task_action_overlay_menu.dart';
 
-class AddTaskActionAdditional extends StatelessWidget {
+class AddTaskActionAdditional extends HookWidget {
   const AddTaskActionAdditional({
     Key? key,
     required this.addImage,
@@ -103,8 +110,24 @@ class AddTaskActionAdditional extends StatelessWidget {
     }
   }
 
+  void toggleAsset(BuildContext context, String assetId) {
+    if (replacementAsset != null) {
+      toggleReplacementAsset(null);
+    } else {
+      final assetState = context.read<AssetBloc>().state;
+      if (assetState is AssetLoadedState) {
+        final asset = assetState.getAssetById(assetId);
+        if (asset != null) {
+          final assetModel = AssetModel.fromAsset(asset);
+          toggleReplacementAsset(assetModel);
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final showOnlySubAssets = useState(true);
     return Stack(
       children: [
         SafeArea(
@@ -157,6 +180,23 @@ class AddTaskActionAdditional extends StatelessWidget {
                                     sparePartsItems: sparePartsItems,
                                     removeItem: removeItem,
                                   ),
+                                  // const SizedBox(
+                                  //   height: 8,
+                                  // ),
+                                ],
+                                // used assets
+                                ...[
+                                  SparePartsAssets(
+                                    isConnectedAssetReplaced:
+                                        isConnectedAssetReplaced,
+                                    toggleAsset: toggleAsset,
+                                    showOnlySubAssets: showOnlySubAssets,
+                                    toggleAddAssetVisibility:
+                                        toggleAddAssetVisibility,
+                                    sparePartsAssets: sparePartsAssets,
+                                    toggleAssetSelection: toggleAssetSelection,
+                                    replacementAsset: replacementAsset,
+                                  ),
                                   const SizedBox(
                                     height: 8,
                                   ),
@@ -195,6 +235,8 @@ class AddTaskActionAdditional extends StatelessWidget {
             pickImage: _pickImage,
             toggleAddAssetVisibility: toggleAddAssetVisibility,
             toggleAddItemVisibility: toggleAddItemVisibility,
+            isConnectedToAnAsset: isConnectedToAnAsset,
+            showOnlySubAssets: showOnlySubAssets,
           ),
         if (isAddItemVisible)
           OverlayInventorySelection(
@@ -208,6 +250,41 @@ class AddTaskActionAdditional extends StatelessWidget {
               ),
             ),
             onDismiss: toggleAddItemVisibility,
+          ),
+        if (isAddAssetVisible)
+          OverlayAssetSelection(
+            spareParts: replacementAsset != null
+                ? [...sparePartsAssets, replacementAsset!.id]
+                : sparePartsAssets,
+            toggleSelection: showOnlySubAssets.value
+                ? (assetId) {
+                    if (replacementAsset != null &&
+                        replacementAsset!.id == assetId) {
+                      showSnackBar(
+                        context: context,
+                        message: AppLocalizations.of(context)!
+                            .task_action_asset_already_in_use_err_msg,
+                        isErrorMessage: true,
+                      );
+                    } else {
+                      toggleAssetSelection(assetId);
+                    }
+                  }
+                : (assetId) {
+                    if (sparePartsAssets.contains(assetId)) {
+                      showSnackBar(
+                        context: context,
+                        message: AppLocalizations.of(context)!
+                            .task_action_asset_already_in_use_err_msg,
+                        isErrorMessage: true,
+                      );
+                    } else {
+                      toggleAsset(context, assetId);
+                      toggleAddAssetVisibility();
+                    }
+                  },
+            onDismiss: toggleAddAssetVisibility,
+            allUnusedAssets: !showOnlySubAssets.value,
           ),
       ],
     );
@@ -338,6 +415,210 @@ class SparePartsItems extends StatelessWidget {
         }
         return const LoadingWidget();
       },
+    );
+  }
+}
+
+class SparePartsAssets extends StatelessWidget {
+  const SparePartsAssets({
+    Key? key,
+    required this.isConnectedAssetReplaced,
+    this.replacementAsset,
+    required this.toggleAsset,
+    required this.showOnlySubAssets,
+    required this.toggleAddAssetVisibility,
+    required this.sparePartsAssets,
+    required this.toggleAssetSelection,
+  }) : super(key: key);
+
+  final bool isConnectedAssetReplaced;
+  final AssetModel? replacementAsset;
+  final Function(BuildContext, String) toggleAsset;
+  final ValueNotifier<bool> showOnlySubAssets;
+  final Function() toggleAddAssetVisibility;
+  final List<String> sparePartsAssets;
+  final Function(String) toggleAssetSelection;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (isConnectedAssetReplaced) ...[
+          Text(
+            AppLocalizations.of(context)!.task_connected_asset,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          if (replacementAsset != null)
+            AssetTile(
+              asset: replacementAsset!,
+              searchQuery: '',
+              onSelected: (assetId) => toggleAsset(context, assetId),
+              isSelected: true,
+              margin: const EdgeInsets.symmetric(vertical: 4),
+            ),
+          if (replacementAsset == null)
+            AddReplacementAssetButton(
+              showOnlySubAssets: showOnlySubAssets,
+              toggleAddAssetVisibility: toggleAddAssetVisibility,
+            ),
+        ],
+        SparePartsAssetsList(
+          items: sparePartsAssets,
+          onSelected: toggleAssetSelection,
+        ),
+      ],
+    );
+  }
+}
+
+class AddReplacementAssetButton extends StatelessWidget {
+  const AddReplacementAssetButton({
+    Key? key,
+    required this.showOnlySubAssets,
+    required this.toggleAddAssetVisibility,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> showOnlySubAssets;
+  final Function() toggleAddAssetVisibility;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(10),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10),
+            onTap: () {
+              showOnlySubAssets.value = false;
+              toggleAddAssetVisibility();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              height: 100,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add,
+                    size: 36,
+                    color: Theme.of(context).highlightColor,
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!
+                        .task_action_add_replacement_asset,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).highlightColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SparePartsAssetsList extends StatelessWidget {
+  const SparePartsAssetsList({
+    Key? key,
+    required this.items,
+    this.onSelected,
+    this.padding,
+  }) : super(key: key);
+
+  final EdgeInsetsGeometry? padding;
+  final List<String> items;
+  final Function(String)? onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (items.isNotEmpty)
+          BlocBuilder<AssetBloc, AssetState>(
+            builder: (context, state) {
+              if (state is AssetLoadedState) {
+                if (state.allAssets.allAssets.isEmpty) {
+                  return Column(
+                    children: [
+                      const Expanded(child: SizedBox()),
+                      Text(
+                        AppLocalizations.of(context)!.item_no_items,
+                      ),
+                      const Expanded(child: SizedBox()),
+                    ],
+                  );
+                }
+                final filteredAssets = state.allAssets.allAssets
+                    .where(
+                      (asset) => items.contains(asset.id),
+                    )
+                    .toList();
+                if (filteredAssets.isNotEmpty) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.task_action_add_assets,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: filteredAssets.length,
+                        itemBuilder: (context, index) {
+                          return AssetTile(
+                            asset: filteredAssets[index],
+                            searchQuery: '',
+                            onSelected: onSelected != null
+                                ? (assetId) => showSparePartAssetDeleteDialog(
+                                      context: context,
+                                      asset: filteredAssets[index],
+                                      onDelete: () => onSelected!(assetId),
+                                    )
+                                : null,
+                            isSelected: true,
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                }
+                return const SizedBox();
+              } else {
+                // loading shimmer animation
+                return ListView.builder(
+                  padding: const EdgeInsets.only(top: 2),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 6,
+                  itemBuilder: (context, index) {
+                    return const ShimmerItemTile();
+                  },
+                );
+              }
+            },
+          ),
+      ],
     );
   }
 }
