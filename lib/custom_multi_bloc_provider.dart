@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:under_control_v2/features/settings/presentation/blocs/language/language_cubit.dart';
+import 'package:under_control_v2/features/tasks/presentation/cubits/task/task_cubit.dart';
 
 import 'features/assets/presentation/blocs/asset/asset_bloc.dart';
 import 'features/assets/presentation/blocs/asset_action/asset_action_bloc.dart';
@@ -126,6 +127,9 @@ class CustomMultiBlocProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<UcNotificationBloc>()),
         BlocProvider(
           create: (context) => getIt<UcNotificationManagementBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<TaskCubit>(),
         ),
       ],
       child: child,

@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
+import '../../data/models/task/task_model.dart';
 import '../entities/task/tasks_stream.dart';
 
 abstract class TaskRepository {
@@ -11,6 +12,14 @@ abstract class TaskRepository {
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, TasksStream>> getTasksStream(
     ItemsInLocationsParams params,
+  );
+
+  ///Gets task by id.
+  ///
+  ///Returns [TasksStream] if operation is successful.
+  ///Returns [Failure] if operation is unsuccessful.
+  Future<Either<Failure, TaskModel>> getTaskById(
+    IdParams params,
   );
 
   ///Gets stream of tasks from archive in selected locations.

@@ -347,14 +347,16 @@ class MoveItemActionParams extends Equatable {
 class ItemsInLocationsParams extends Equatable {
   final List<String> locations;
   final String companyId;
+  final bool isAll;
 
   const ItemsInLocationsParams({
     required this.locations,
     required this.companyId,
+    this.isAll = true,
   });
 
   @override
-  List<Object> get props => [locations, companyId];
+  List<Object> get props => [locations, companyId, isAll];
 }
 
 class AssetsInLocationsParams extends Equatable {

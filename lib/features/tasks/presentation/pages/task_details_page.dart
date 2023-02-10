@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/tasks/presentation/cubits/task/task_cubit.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -61,7 +62,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage>
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     _titles = [
       AppLocalizations.of(context)!.details_task,
       AppLocalizations.of(context)!.details_actions,
@@ -69,12 +70,21 @@ class _TaskDetailsPageState extends State<TaskDetailsPage>
     _appBarTitle = _titles[_tabController.index];
     final taskId = (ModalRoute.of(context)?.settings.arguments as String);
     final taskState = context.watch<TaskBloc>().state;
+    final taskCubitState = context.watch<TaskCubit>().state;
     if (taskState is TaskLoadedState) {
       _task = taskState.getTaskById(taskId);
       if (_task == null) {
         final taskArchiveState = context.watch<TaskArchiveBloc>().state;
         if (taskArchiveState is TaskArchiveLoadedState) {
           _task = taskArchiveState.getTaskById(taskId);
+        }
+      }
+      if (_task == null) {
+        if (taskCubitState is TaskCubitLoaded &&
+            taskCubitState.task.id == taskId) {
+          _task = taskCubitState.task;
+        } else {
+          context.watch<TaskCubit>().getTaskById(taskId);
         }
       }
       if (_task != null) {

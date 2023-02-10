@@ -121,6 +121,7 @@ class AssetTasksTab extends StatelessWidget {
             );
           },
         ),
+        // TODO - create bloc to get assets tasks
         BlocBuilder<TaskBloc, TaskState>(
           builder: (context, state) {
             if (state is TaskLoadedState) {

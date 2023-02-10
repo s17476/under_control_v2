@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/task/task_bloc.dart';
 
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../../../core/utils/get_user_permission.dart';
@@ -125,9 +126,25 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
                 child: TaskTile(task: task),
               ),
             ),
+            BlocBuilder<TaskBloc, TaskState>(
+              builder: (context, state) {
+                if (state is TaskLoadedState && !state.isAllTasks) {
+                  return TextButton(
+                    onPressed: () => context.read<TaskBloc>().add(
+                          GetTasksStreamEvent(isAllTasks: true),
+                        ),
+                    child: Text(
+                      AppLocalizations.of(context)!.show_all,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  );
+                }
+                return const SizedBox();
+              },
+            ),
           ],
           const SizedBox(
-            height: 50,
+            height: 100,
           ),
         ],
       );

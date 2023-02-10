@@ -28,10 +28,12 @@ class TaskErrorState extends TaskState {
 
 class TaskLoadedState extends TaskState {
   final TasksListModel allTasks;
+  final bool isAllTasks;
 
   TaskLoadedState({
     required this.allTasks,
-  }) : super(properties: [allTasks]);
+    required this.isAllTasks,
+  }) : super(properties: [allTasks, isAllTasks]);
 
   Task? getTaskById(String id) {
     final index = allTasks.allTasks.indexWhere((asset) => asset.id == id);

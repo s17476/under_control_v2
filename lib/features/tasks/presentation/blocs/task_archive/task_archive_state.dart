@@ -28,10 +28,12 @@ class TaskArchiveErrorState extends TaskArchiveState {
 
 class TaskArchiveLoadedState extends TaskArchiveState {
   final TasksListModel allTasks;
+  final bool isAllTasks;
 
   TaskArchiveLoadedState({
     required this.allTasks,
-  }) : super(properties: [allTasks]);
+    required this.isAllTasks,
+  }) : super(properties: [allTasks, isAllTasks]);
 
   Task? getTaskById(String id) {
     final index = allTasks.allTasks.indexWhere((asset) => asset.id == id);

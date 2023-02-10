@@ -20,11 +20,6 @@ class TaskArchivePage extends StatelessWidget {
       ),
       body: BlocBuilder<TaskArchiveBloc, TaskArchiveState>(
         builder: (context, state) {
-          if (state is TaskArchiveEmptyState) {
-            context.read<TaskArchiveBloc>().add(
-                  GetTasksArchiveStreamEvent(),
-                );
-          }
           if (state is TaskArchiveLoadedState) {
             if (state.allTasks.allTasks.isEmpty) {
               return Center(
@@ -33,20 +28,35 @@ class TaskArchivePage extends StatelessWidget {
                 ),
               );
             }
-            return ListView.builder(
+            final tasks = state.allTasks.allTasks
+              ..sort((a, b) => b.executionDate.compareTo(a.executionDate));
+            return ListView(
               shrinkWrap: true,
-              itemCount: state.allTasks.allTasks.length,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(
-                  top: 4,
-                  bottom: 4,
-                  right: 8,
-                  left: 2,
+              children: [
+                ...tasks.map(
+                  (task) => Padding(
+                    padding: const EdgeInsets.only(
+                      top: 4,
+                      bottom: 4,
+                      right: 8,
+                      left: 2,
+                    ),
+                    child: TaskTile(
+                      task: task,
+                    ),
+                  ),
                 ),
-                child: TaskTile(
-                  task: state.allTasks.allTasks[index],
-                ),
-              ),
+                if (!state.isAllTasks)
+                  TextButton(
+                    onPressed: () => context.read<TaskArchiveBloc>().add(
+                          GetTasksArchiveStreamEvent(isAllTasks: true),
+                        ),
+                    child: Text(
+                      AppLocalizations.of(context)!.show_all,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ),
+              ],
             );
           } else {
             // shows shimmer when loading

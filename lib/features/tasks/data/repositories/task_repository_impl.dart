@@ -258,12 +258,25 @@ class TaskRepositoryImpl extends TaskRepository {
       ItemsInLocationsParams params) async {
     try {
       final Stream<QuerySnapshot> querySnapshot;
-      querySnapshot = firebaseFirestore
-          .collection('companies')
-          .doc(params.companyId)
-          .collection('tasks')
-          .where('locationId', whereIn: params.locations)
-          .snapshots();
+      if (params.isAll) {
+        querySnapshot = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('tasks')
+            .where('locationId', whereIn: params.locations)
+            .snapshots();
+      } else {
+        final now = DateTime.now();
+        final stopDate = DateTime(now.year, now.month, now.day)
+            .add(const Duration(days: 31));
+        querySnapshot = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('tasks')
+            .where('executionDate', isLessThan: stopDate)
+            .where('locationId', whereIn: params.locations)
+            .snapshots();
+      }
 
       return Right(TasksStream(allTasks: querySnapshot));
     } on FirebaseException catch (e) {
@@ -280,13 +293,25 @@ class TaskRepositoryImpl extends TaskRepository {
       ItemsInLocationsParams params) async {
     try {
       final Stream<QuerySnapshot> querySnapshot;
-      querySnapshot = firebaseFirestore
-          .collection('companies')
-          .doc(params.companyId)
-          .collection('tasksArchive')
-          .where('locationId', whereIn: params.locations)
-          .orderBy('executionDate')
-          .snapshots();
+      if (params.isAll) {
+        querySnapshot = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('tasksArchive')
+            .where('locationId', whereIn: params.locations)
+            .snapshots();
+      } else {
+        final now = DateTime.now();
+        final startDate = DateTime(now.year, now.month, now.day)
+            .subtract(const Duration(days: 30));
+        querySnapshot = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('tasksArchive')
+            .where('executionDate', isGreaterThanOrEqualTo: startDate)
+            .where('locationId', whereIn: params.locations)
+            .snapshots();
+      }
 
       return Right(TasksStream(allTasks: querySnapshot));
     } on FirebaseException catch (e) {
@@ -663,6 +688,43 @@ class TaskRepositoryImpl extends TaskRepository {
           .snapshots();
 
       return Right(TasksStream(allTasks: querySnapshot));
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, TaskModel>> getTaskById(IdParams params) async {
+    try {
+      TaskModel result;
+      DocumentSnapshot snapshot;
+      snapshot = await firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('tasks')
+          .doc(params.id)
+          .get();
+
+      if (!snapshot.exists) {
+        snapshot = await firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('tasksArchive')
+            .doc(params.id)
+            .get();
+      }
+      if (!snapshot.exists) {
+        throw Exception('Task not found');
+      } else {
+        result = TaskModel.fromMap(
+            snapshot.data() as Map<String, dynamic>, snapshot.id);
+      }
+
+      return Right(result);
     } on FirebaseException catch (e) {
       return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
     } catch (e) {

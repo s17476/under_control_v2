@@ -61,7 +61,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
                 .map((loc) => loc.id)
                 .toList();
           }
-          add(GetTasksStreamEvent());
+          add(GetTasksStreamEvent(isAllTasks: false));
         }
       },
     );
@@ -87,6 +87,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
             allTasks: const TasksListModel(
               allTasks: [],
             ),
+            isAllTasks: event.isAllTasks,
           ),
         );
       } else {
@@ -118,6 +119,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           final params = ItemsInLocationsParams(
             locations: chunk,
             companyId: _companyId,
+            isAll: event.isAllTasks,
           );
 
           final failureOrTasksStream = await getTasksStream(params);
@@ -129,6 +131,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
                 add(UpdateTasksListEvent(
                   snapshot: snapshot,
                   locations: chunk,
+                  isAllTasks: event.isAllTasks,
                 ));
               });
               _workRequestStreamSubscriptions.add(streamSubscription);
@@ -174,6 +177,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
       emit(TaskLoadedState(
         allTasks: workRequestsList,
+        isAllTasks: event.isAllTasks,
       ));
     });
   }

@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
+import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../../groups/domain/entities/feature.dart';
@@ -62,7 +62,7 @@ class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
                 .toList();
           }
 
-          add(GetTasksArchiveStreamEvent());
+          add(GetTasksArchiveStreamEvent(isAllTasks: false));
         }
       },
     );
@@ -89,6 +89,7 @@ class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
             allTasks: const TasksListModel(
               allTasks: [],
             ),
+            isAllTasks: event.isAllTasks,
           ),
         );
       } else {
@@ -121,8 +122,8 @@ class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
           final params = ItemsInLocationsParams(
             locations: chunk,
             companyId: _companyId,
+            isAll: event.isAllTasks,
           );
-
           final failureOrTasksStream = await getArchiveTasksStream(params);
           await failureOrTasksStream.fold(
             (failure) async =>
@@ -133,6 +134,7 @@ class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
                 add(UpdateTasksArchiveListEvent(
                   snapshot: snapshot,
                   locations: chunk,
+                  isAllTasks: event.isAllTasks,
                 ));
               });
               _workRequestArchiveStreamSubscriptions.add(streamSubscription);
@@ -177,6 +179,7 @@ class TaskArchiveBloc extends Bloc<TaskArchiveEvent, TaskArchiveState> {
       }
       emit(TaskArchiveLoadedState(
         allTasks: workRequestsList,
+        isAllTasks: event.isAllTasks,
       ));
     });
   }
