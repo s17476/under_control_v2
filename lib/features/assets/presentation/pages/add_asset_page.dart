@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/add_asset/add_asset_additional.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
 
 import '../../../core/presentation/pages/loading_page.dart';
 import '../../../core/presentation/widgets/creator_bottom_navigation.dart';
@@ -12,6 +10,7 @@ import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/duration_unit.dart';
 import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/show_snack_bar.dart';
+import '../../../groups/domain/entities/feature.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/asset_model.dart';
 import '../../domain/entities/asset.dart';
@@ -19,15 +18,11 @@ import '../../utils/asset_status.dart';
 import '../blocs/asset/asset_bloc.dart';
 import '../blocs/asset_management/asset_management_bloc.dart';
 import '../cubits/cubit/asset_internal_number_cubit.dart';
+import '../widgets/add_asset/add_asset_additional.dart';
 import '../widgets/add_asset/add_asset_card.dart';
 import '../widgets/add_asset/add_asset_data_card.dart';
-import '../widgets/add_asset/add_asset_documents.dart';
-import '../widgets/add_asset/add_asset_images_card.dart';
-import '../widgets/add_asset/add_asset_instructions.dart';
-import '../widgets/add_asset/add_asset_is_in_use_card.dart';
 import '../widgets/add_asset/add_asset_is_spare_part.dart';
 import '../widgets/add_asset/add_asset_location_card.dart';
-import '../widgets/add_asset/add_asset_spare_parts.dart';
 import '../widgets/add_asset/add_asset_status_card.dart';
 import '../widgets/add_asset/add_asset_summary_card.dart';
 
@@ -74,6 +69,7 @@ class _AddAssetPageState extends State<AddAssetPage> {
   bool _isAddInventoryVisible = false;
   bool _isAddInstructionsVisible = false;
   bool _isAddAdditionalVisible = false;
+  bool _isAddParentAssetVisible = false;
 
   DateTime _addDate = DateTime.now();
   DateTime _lastInspectionDate = DateTime.now();
@@ -244,6 +240,12 @@ class _AddAssetPageState extends State<AddAssetPage> {
     });
   }
 
+  void _toggleAddParentAssetVisibility() {
+    setState(() {
+      _isAddParentAssetVisible = !_isAddParentAssetVisible;
+    });
+  }
+
   void _toggleAddInstructionsVisibility() {
     setState(() {
       _isAddInstructionsVisible = !_isAddInstructionsVisible;
@@ -394,6 +396,8 @@ class _AddAssetPageState extends State<AddAssetPage> {
         _toggleAddInstructionsVisibility();
       } else if (_isAddAdditionalVisible) {
         _toggleAddAdditionalVisibility();
+      } else if (_isAddParentAssetVisible) {
+        _toggleAddParentAssetVisibility();
       }
     });
     _internalCodeTextEditingController.addListener(() {
@@ -515,15 +519,21 @@ class _AddAssetPageState extends State<AddAssetPage> {
         setIsSparePart: _setIsSparePart,
         isSparePart: _isSparePart,
         setParentAsset: _setParentAsset,
-      ),
-      AddAssetIsInUseCard(
         setIsInUse: _setIsInUse,
         isInUse: _isInUse,
-        setParentAsset: _setParentAsset,
-        isSparePart: _isSparePart,
         setLocation: _setLocation,
         currentParentId: _currentParentId,
+        isAddParentAssetVisible: _isAddParentAssetVisible,
+        toggleAddParentAssetVisible: _toggleAddParentAssetVisibility,
       ),
+      // AddAssetIsInUseCard(
+      //   setIsInUse: _setIsInUse,
+      //   isInUse: _isInUse,
+      //   setParentAsset: _setParentAsset,
+      //   isSparePart: _isSparePart,
+      //   setLocation: _setLocation,
+      //   currentParentId: _currentParentId,
+      // ),
       AddAssetAdditional(
         addImage: _addImage,
         removeImage: _removeImage,
@@ -617,6 +627,10 @@ class _AddAssetPageState extends State<AddAssetPage> {
         }
         if (_isAddAdditionalVisible) {
           _toggleAddAdditionalVisibility();
+        }
+        if (_isAddParentAssetVisible) {
+          _toggleAddParentAssetVisibility();
+          return false;
         }
         // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);
