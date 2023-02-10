@@ -412,7 +412,7 @@ class _AddTaskAdditionalState extends State<AddTaskAdditional> {
                                               ),
                                             ),
                                             Text(
-                                              '${_compressedFileInfo!.width.toString()}x${_compressedFileInfo!.height.toString()}',
+                                              '${_compressedFileInfo?.width.toString() ?? ''}x${_compressedFileInfo?.height.toString() ?? ''}',
                                             ),
                                           ],
                                         ),
