@@ -6,8 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../core/presentation/widgets/glass_layer.dart';
 import '../../../../core/presentation/widgets/overlay_menu/overlay_menu_item.dart';
 import '../../../../core/utils/choice.dart';
-import '../../pages/add_asset_page.dart';
-import '../../pages/asset_category_management_page.dart';
 
 class AddAssetOverlayMenu extends StatelessWidget {
   const AddAssetOverlayMenu({

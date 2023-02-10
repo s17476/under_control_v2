@@ -3,13 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
-import 'package:under_control_v2/features/groups/domain/entities/feature.dart';
-import 'package:under_control_v2/features/tasks/presentation/widgets/add_task/add_task_checkpoints_card.dart';
 
+import '../../../assets/domain/entities/asset.dart';
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
-import '../../../assets/presentation/widgets/add_asset/add_asset_images_card.dart';
-import '../../../assets/presentation/widgets/add_asset/add_asset_instructions.dart';
 import '../../../assets/presentation/widgets/add_asset/add_asset_location_card.dart';
 import '../../../assets/utils/asset_status.dart';
 import '../../../checklists/data/models/checkpoint_model.dart';
@@ -19,6 +15,7 @@ import '../../../core/presentation/widgets/keep_alive_page.dart';
 import '../../../core/utils/duration_unit.dart';
 import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../../core/utils/show_snack_bar.dart';
+import '../../../groups/domain/entities/feature.dart';
 import '../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/task/spare_part_item_model.dart';
@@ -30,13 +27,12 @@ import '../../domain/entities/task_type.dart';
 import '../../domain/entities/work_request/work_request.dart';
 import '../blocs/task/task_bloc.dart';
 import '../blocs/task_management/task_management_bloc.dart';
+import '../widgets/add_task/add_task_additional.dart';
 import '../widgets/add_task/add_task_assign_card.dart';
 import '../widgets/add_task/add_task_card.dart';
 import '../widgets/add_task/add_task_set_cyclic.dart';
-import '../widgets/add_task/add_task_spare_part_card.dart';
 import '../widgets/add_task/add_task_summary_card.dart';
 import '../widgets/add_task/add_task_type_card.dart';
-import '../widgets/add_work_request/add_video_card.dart';
 import '../widgets/add_work_request/add_work_request_set_asset_card.dart';
 import '../widgets/add_work_request/set_asset_status_card.dart';
 import '../widgets/add_work_request/set_priority_card.dart';
@@ -79,6 +75,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   bool _isConnectedToAsset = false;
   bool _isAddInstructionsVisible = false;
   bool _isAddConnectedAssetVisible = false;
+  bool _isAddAdditionalVisible = false;
   bool _isAddGroupsVisible = false;
   bool _isAddUsersVisible = false;
   bool _isAddChecklist = false;
@@ -237,6 +234,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
   void _toggleAddConnectedAssetVisibility() {
     setState(() {
       _isAddConnectedAssetVisible = !_isAddConnectedAssetVisible;
+    });
+  }
+
+  void _toggleAddAdditionalVisibility() {
+    setState(() {
+      _isAddAdditionalVisible = !_isAddAdditionalVisible;
     });
   }
 
@@ -533,6 +536,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
         _toggleAddChecklistVisibility();
       } else if (_isAddConnectedAssetVisible) {
         _toggleAddConnectedAssetVisibility();
+      } else if (_isAddAdditionalVisible) {
+        _toggleAddAdditionalVisibility();
       }
     });
     super.initState();
@@ -645,38 +650,38 @@ class _AddTaskPageState extends State<AddTaskPage> {
             featureType: FeatureType.tasks,
           ),
         ),
-      AddAssetImagesCard(
-        addImage: _addImage,
-        removeImage: _removeImage,
-        images: _images,
-        loading: _loadingImages,
-      ),
-      KeepAlivePage(
-        child: AddVideoCard(
-          videoFile: _videoFile,
-          videoUrl: (_workRequest != null && _workRequest!.video.isNotEmpty)
-              ? _workRequest!.video
-              : null,
-          updateVideo: _setVideo,
-        ),
-      ),
-      AddAssetInstructionsCard(
-        toggleSelection: _toggleInstructionSelection,
-        toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
-        instructions: _instructions,
-        isAddInstructionsVisible: _isAddInstructionsVisible,
-      ),
-      AddTaskSparePartCard(
-        toggleAssetSelection: _toggleAssetSparePartSelection,
-        toggleItemSelection: _toggleItemSparePartSelection,
-        updateSparePartQuantity: _updateSparePartItemModel,
-        toggleAddAssetVisibility: _toggleAddAssetVisibility,
-        toggleAddItemVisibility: _toggleAddItemVisibility,
-        sparePartsAssets: _sparePartsAssets,
-        sparePartsItems: _sparePartsItems,
-        isAddAssetVisible: _isAddAssetVisible,
-        isAddItemVisible: _isAddItemVisible,
-      ),
+      // AddAssetImagesCard(
+      //   addImage: _addImage,
+      //   removeImage: _removeImage,
+      //   images: _images,
+      //   loading: _loadingImages,
+      // ),
+      // KeepAlivePage(
+      //   child: AddVideoCard(
+      //     videoFile: _videoFile,
+      //     videoUrl: (_workRequest != null && _workRequest!.video.isNotEmpty)
+      //         ? _workRequest!.video
+      //         : null,
+      //     updateVideo: _setVideo,
+      //   ),
+      // ),
+      // AddAssetInstructionsCard(
+      //   toggleSelection: _toggleInstructionSelection,
+      //   toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
+      //   instructions: _instructions,
+      //   isAddInstructionsVisible: _isAddInstructionsVisible,
+      // ),
+      // AddTaskSparePartCard(
+      //   toggleAssetSelection: _toggleAssetSparePartSelection,
+      //   toggleItemSelection: _toggleItemSparePartSelection,
+      //   updateSparePartQuantity: _updateSparePartItemModel,
+      //   toggleAddAssetVisibility: _toggleAddAssetVisibility,
+      //   toggleAddItemVisibility: _toggleAddItemVisibility,
+      //   sparePartsAssets: _sparePartsAssets,
+      //   sparePartsItems: _sparePartsItems,
+      //   isAddAssetVisible: _isAddAssetVisible,
+      //   isAddItemVisible: _isAddItemVisible,
+      // ),
       AddTaskSetCyclicCard(
         executionDate: _executionDate,
         setExecutionDate: _setExecutionDate,
@@ -697,10 +702,41 @@ class _AddTaskPageState extends State<AddTaskPage> {
         isAddUsersVisible: _isAddUsersVisible,
         isAddGroupsVisible: _isAddGroupsVisible,
       ),
-      AddTaskCheckpointsCard(
-        checklist: _checklist,
-        isAddChecklistVisible: _isAddChecklist,
-        toggleAddChecklistVisibility: _toggleAddChecklistVisibility,
+      // AddTaskCheckpointsCard(
+      //   checklist: _checklist,
+      //   isAddChecklistVisible: _isAddChecklist,
+      //   toggleAddChecklistVisibility: _toggleAddChecklistVisibility,
+      // ),
+      KeepAlivePage(
+        child: AddTaskAdditional(
+          addImage: _addImage,
+          removeImage: _removeImage,
+          images: _images,
+          loadingImages: _loadingImages,
+          videoFile: _videoFile,
+          videoUrl: (_workRequest != null && _workRequest!.video.isNotEmpty)
+              ? _workRequest!.video
+              : null,
+          updateVideo: _setVideo,
+          isAddAdditionalVisible: _isAddAdditionalVisible,
+          toggleAddAdditionalVisibility: _toggleAddAdditionalVisibility,
+          instructions: _instructions,
+          isAddInstructionsVisible: _isAddInstructionsVisible,
+          toggleAddInstructionsVisibility: _toggleAddInstructionsVisibility,
+          toggleInstructionSelection: _toggleInstructionSelection,
+          toggleAssetSelection: _toggleAssetSparePartSelection,
+          toggleItemSelection: _toggleItemSparePartSelection,
+          updateSparePartQuantity: _updateSparePartItemModel,
+          toggleAddAssetVisibility: _toggleAddAssetVisibility,
+          toggleAddItemVisibility: _toggleAddItemVisibility,
+          sparePartsAssets: _sparePartsAssets,
+          sparePartsItems: _sparePartsItems,
+          isAddAssetVisible: _isAddAssetVisible,
+          isAddItemVisible: _isAddItemVisible,
+          checklist: _checklist,
+          isAddChecklistVisible: _isAddChecklist,
+          toggleAddChecklistVisibility: _toggleAddChecklistVisibility,
+        ),
       ),
       AddTaskTypeCard(
         setTaskType: _setTaskType,
@@ -760,6 +796,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
           return false;
         } else if (_isAddConnectedAssetVisible) {
           _toggleAddConnectedAssetVisibility();
+          return false;
+        } else if (_isAddAdditionalVisible) {
+          _toggleAddAdditionalVisibility();
           return false;
         }
         // double click to exit the app

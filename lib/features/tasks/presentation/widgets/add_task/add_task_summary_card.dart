@@ -299,7 +299,7 @@ class PriorityAndTypeSummaryCard extends StatelessWidget {
               ? AppLocalizations.of(context)!.task_type_select
               : null,
           pageController: pageController,
-          onTapAnimateToPage: 10,
+          onTapAnimateToPage: 6,
           child: Row(
             children: [
               getTaskPriorityAndTypeIcon(
@@ -448,7 +448,7 @@ class ChecklistSummaryCard extends StatelessWidget {
               ? AppLocalizations.of(context)!.checklist_add_checkpoints_empty
               : null,
           pageController: pageController,
-          onTapAnimateToPage: 9,
+          onTapAnimateToPage: 5,
           child: ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -710,7 +710,7 @@ class AssignedUsersSummaryCard extends StatelessWidget {
           title: AppLocalizations.of(context)!.task_assigned_users,
           validator: () => null,
           pageController: pageController,
-          onTapAnimateToPage: 8,
+          onTapAnimateToPage: 4,
           child: BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
             builder: (context, state) {
               if (state is CompanyProfileLoaded) {
@@ -770,7 +770,7 @@ class AssignedGroupsSummaryCard extends StatelessWidget {
           title: AppLocalizations.of(context)!.task_assigned_groups,
           validator: () => null,
           pageController: pageController,
-          onTapAnimateToPage: 8,
+          onTapAnimateToPage: 4,
           child: BlocBuilder<GroupBloc, GroupState>(
             builder: (context, state) {
               if (state is GroupLoadedState) {
@@ -835,7 +835,7 @@ class NotAssignedSummaryCard extends StatelessWidget {
           validator: () =>
               AppLocalizations.of(context)!.task_assign_groups_or_users_error,
           pageController: pageController,
-          onTapAnimateToPage: 8,
+          onTapAnimateToPage: 4,
           child: const SizedBox(),
         ),
         const SizedBox(
@@ -874,7 +874,7 @@ class SparePartsSummaryCard extends StatelessWidget {
             return null;
           },
           pageController: pageController,
-          onTapAnimateToPage: 6,
+          onTapAnimateToPage: 5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -978,7 +978,7 @@ class ImagesSummaryCard extends StatelessWidget {
           title: AppLocalizations.of(context)!.asset_add_images_title,
           validator: () => null,
           pageController: pageController,
-          onTapAnimateToPage: 3,
+          onTapAnimateToPage: 5,
           child: Text(
             images.isNotEmpty
                 ? '${AppLocalizations.of(context)!.asset_add_images_added}: ${images.length}'
@@ -1007,7 +1007,7 @@ class VideoSummaryCard extends StatelessWidget {
       title: AppLocalizations.of(context)!.content_video,
       validator: () => null,
       pageController: pageController,
-      onTapAnimateToPage: 4,
+      onTapAnimateToPage: 5,
       child: const SizedBox(),
     );
   }

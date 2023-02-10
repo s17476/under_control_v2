@@ -157,6 +157,7 @@ class AddAssetAdditional extends StatelessWidget {
                                     height: 8,
                                   ),
                                 ],
+                                // instructions
                                 if (instructions.isNotEmpty) ...[
                                   InstructionsList(
                                     instructions: instructions,
@@ -302,50 +303,6 @@ class DocumentsList extends StatelessWidget {
               )
               .toList(),
         ),
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 16),
-        //   child: ListView.builder(
-        //     shrinkWrap: true,
-        //     itemCount: documents.length + 1,
-        //     itemBuilder: (context, index) {
-        //       if (index == documents.length) {
-        //         return const SizedBox(height: 100);
-        //       }
-        //       return Stack(
-        //         key: ValueKey(documents[index].path),
-        //         children: [
-        //           AspectRatio(
-        //             aspectRatio: 2 / 3,
-        //             child: Padding(
-        //               padding: const EdgeInsets.symmetric(
-        //                 vertical: 8,
-        //                 horizontal: 16,
-        //               ),
-        //               child: PdfViewer(path: documents[index].path),
-        //             ),
-        //           ),
-        //           Positioned(
-        //             top: 16,
-        //             left: 16,
-        //             child: IconButton(
-        //               onPressed: () => removeDocument(documents[index]),
-        //               icon: const Icon(
-        //                 Icons.delete,
-        //                 size: 30,
-        //                 shadows: [
-        //                   Shadow(
-        //                     color: Colors.black,
-        //                     blurRadius: 25,
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //           ),
-        //         ],
-        //       );
-        //     },
-        //   ),
-        // ),
       ],
     );
   }

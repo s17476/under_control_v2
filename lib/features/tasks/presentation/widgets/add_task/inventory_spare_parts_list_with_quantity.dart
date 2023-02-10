@@ -55,19 +55,16 @@ class InventorySparePartsListWithQuantity extends StatelessWidget {
                     if (filteredItems.isNotEmpty && showTitle)
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
+                          vertical: 4.0,
                         ),
                         child: Text(
                           AppLocalizations.of(context)!
                               .bottom_bar_title_inventory,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(fontSize: 18),
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
                     ListView.builder(
-                      padding: const EdgeInsets.only(top: 2),
+                      padding: const EdgeInsets.only(bottom: 4),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: filteredItems.length,
@@ -79,6 +76,7 @@ class InventorySparePartsListWithQuantity extends StatelessWidget {
                           searchQuery: '',
                           onSelected: onSelected,
                           updateSparePartQuantity: updateSparePartQuantity,
+                          margin: const EdgeInsets.symmetric(vertical: 4),
                         );
                       },
                     ),

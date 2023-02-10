@@ -18,7 +18,6 @@ class AddTaskCheckpointsCard extends StatefulWidget {
   }) : super(key: key);
 
   final List<CheckpointModel> checklist;
-
   final Function() toggleAddChecklistVisibility;
   final bool isAddChecklistVisible;
 
