@@ -1,284 +1,233 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/assets/domain/entities/asset.dart';
 
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/widgets/asset_tile.dart';
-import '../../../../assets/utils/search_assets.dart';
-import '../../../../core/presentation/pages/qr_scanner.dart';
-import '../../../../core/presentation/widgets/custom_text_form_field.dart';
-import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../../core/presentation/widgets/selection_button.dart';
-import '../../../../core/utils/responsive_size.dart';
-import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../inventory/presentation/widgets/shimmer_item_tile.dart';
+import 'overlay_connected_asset_selection.dart';
 
-class AddWorkRequestSetAssetCard extends StatefulWidget {
+class AddWorkRequestSetAssetCard extends StatelessWidget {
   const AddWorkRequestSetAssetCard({
     Key? key,
     required this.setIsConnectedToAsset,
     required this.isConnectedToAsset,
+    required this.toggleAddConnectedAssetVisibility,
+    required this.isAddConnectedAssetVisible,
     required this.setAssetId,
-    required this.setLocation,
     required this.assetId,
+    required this.setLocation,
   }) : super(key: key);
 
   final Function(bool) setIsConnectedToAsset;
   final bool isConnectedToAsset;
+  final bool isAddConnectedAssetVisible;
+  final Function() toggleAddConnectedAssetVisibility;
   final Function(String) setAssetId;
   final String assetId;
   final Function(String) setLocation;
 
   @override
-  State<AddWorkRequestSetAssetCard> createState() =>
-      _AddWorkRequestSetAssetState();
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    // title
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 12,
+                        left: 8,
+                        right: 8,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.task_connected_asset,
+                        style: TextStyle(
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .fontSize,
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      thickness: 1.5,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 3000),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // not connected to an asset
+                              SelectionButton<bool>(
+                                onSelected: setIsConnectedToAsset,
+                                icon: Icons.handyman,
+                                iconSize: 50,
+                                title: AppLocalizations.of(context)!
+                                    .task_connected_asset_no,
+                                titleSize: 18,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Theme.of(context)
+                                        .primaryColor
+                                        .withAlpha(100),
+                                    Theme.of(context).primaryColor,
+                                    Theme.of(context)
+                                        .primaryColor
+                                        .withAlpha(80),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                value: false,
+                                groupValue: isConnectedToAsset,
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              // connected to an asset
+                              SelectionButton<bool>(
+                                onSelected: (val) {
+                                  setIsConnectedToAsset(val);
+                                  setAssetId('');
+                                },
+                                icon: Icons.precision_manufacturing,
+                                iconSize: 50,
+                                title: AppLocalizations.of(context)!
+                                    .task_connected_asset_yes,
+                                titleSize: 18,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.blue.withAlpha(150),
+                                    Colors.blue,
+                                    Colors.blue.withAlpha(80),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                value: true,
+                                groupValue: isConnectedToAsset,
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              if (isConnectedToAsset) ...[
+                                if (assetId.isEmpty)
+                                  SelectAssetButton(
+                                    toggleAddConnectedAssetVisibility:
+                                        toggleAddConnectedAssetVisibility,
+                                  ),
+                                if (assetId.isNotEmpty)
+                                  BlocBuilder<AssetBloc, AssetState>(
+                                    builder: (context, state) {
+                                      if (state is AssetLoadedState) {
+                                        final asset =
+                                            state.getAssetById(assetId);
+                                        if (asset != null) {
+                                          return InkWell(
+                                            onTap:
+                                                toggleAddConnectedAssetVisibility,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            child: IgnorePointer(
+                                              child: AssetTile(
+                                                asset: asset,
+                                                searchQuery: '',
+                                                margin: EdgeInsets.zero,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        return const SizedBox();
+                                      }
+                                      return const ShimmerItemTile();
+                                    },
+                                  )
+                              ],
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (isAddConnectedAssetVisible)
+          OverlayConnectedAssetSelection(
+            setAssetId: setAssetId,
+            assetId: assetId,
+            setLocation: setLocation,
+            onDismiss: toggleAddConnectedAssetVisibility,
+          ),
+      ],
+    );
+  }
 }
 
-class _AddWorkRequestSetAssetState extends State<AddWorkRequestSetAssetCard>
-    with ResponsiveSize {
-  String _searchQuery = '';
+class SelectAssetButton extends StatelessWidget {
+  const SelectAssetButton({
+    Key? key,
+    required this.toggleAddConnectedAssetVisibility,
+  }) : super(key: key);
 
-  final _searchTextEditingController = TextEditingController();
-
-  void _pickCode(BuildContext context) async {
-    FocusScope.of(context).unfocus();
-    try {
-      final code = await Navigator.pushNamed(context, QrScanner.routeName);
-      if (code is String) {
-        _searchTextEditingController.text = code;
-        setState(() {
-          _searchQuery = code;
-        });
-      }
-    } catch (e) {
-      showSnackBar(
-          context: context,
-          message: AppLocalizations.of(context)!.item_no_barcode);
-    }
-  }
-
-  void _clearSearchQuery() {
-    _searchTextEditingController.text = '';
-    setState(() {
-      _searchQuery = '';
-    });
-  }
-
-  @override
-  void dispose() {
-    _searchTextEditingController.dispose();
-    super.dispose();
-  }
+  final Function() toggleAddConnectedAssetVisibility;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                // title
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 12,
-                    left: 8,
-                    right: 8,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(10),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10),
+            onTap: toggleAddConnectedAssetVisibility,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              height: 100,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add,
+                    size: 36,
+                    color: Theme.of(context).highlightColor,
                   ),
-                  child: Text(
-                    AppLocalizations.of(context)!.task_connected_asset,
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.task_connected_asset_select,
                     style: TextStyle(
-                      fontSize:
-                          Theme.of(context).textTheme.headlineSmall!.fontSize,
+                      fontSize: 16,
+                      color: Theme.of(context).highlightColor,
                     ),
                   ),
-                ),
-                const Divider(
-                  thickness: 1.5,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // not connected to an asset
-                        SelectionButton<bool>(
-                          onSelected: widget.setIsConnectedToAsset,
-                          icon: Icons.handyman,
-                          iconSize: widget.isConnectedToAsset ? 30 : 50,
-                          title: AppLocalizations.of(context)!
-                              .task_connected_asset_no,
-                          titleSize: 18,
-                          gradient: LinearGradient(
-                            colors: [
-                              Theme.of(context).primaryColor.withAlpha(100),
-                              Theme.of(context).primaryColor,
-                              Theme.of(context).primaryColor.withAlpha(80),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          value: false,
-                          groupValue: widget.isConnectedToAsset,
-                        ),
-                        SizedBox(
-                          height: widget.isConnectedToAsset ? 8 : 16,
-                        ),
-                        // connected to an asset
-                        SelectionButton<bool>(
-                          onSelected: (val) {
-                            widget.setIsConnectedToAsset(val);
-                            widget.setAssetId('');
-                          },
-                          icon: Icons.precision_manufacturing,
-                          iconSize: widget.isConnectedToAsset ? 30 : 50,
-                          title: AppLocalizations.of(context)!
-                              .task_connected_asset_yes,
-                          titleSize: 18,
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.blue.withAlpha(150),
-                              Colors.blue,
-                              Colors.blue.withAlpha(80),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          value: true,
-                          groupValue: widget.isConnectedToAsset,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        if (widget.isConnectedToAsset)
-                          Text(
-                            AppLocalizations.of(context)!
-                                .task_connected_asset_select,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                          ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        // search box
-                        if (widget.isConnectedToAsset)
-                          Column(
-                            children: [
-                              // search box
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: CustomTextFormField(
-                                      fieldKey: 'search',
-                                      controller: _searchTextEditingController,
-                                      keyboardType: TextInputType.name,
-                                      labelText:
-                                          AppLocalizations.of(context)!.search,
-                                      onChanged: (value) => setState(() {
-                                        _searchQuery = value!;
-                                      }),
-                                      suffixIcon: InkWell(
-                                        onTap: () => _clearSearchQuery(),
-                                        child: const Icon(
-                                          Icons.cancel,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 16,
-                                  ),
-                                  RoundedButton(
-                                    iconSize: 30,
-                                    padding: const EdgeInsets.all(9),
-                                    onPressed: () => _pickCode(context),
-                                    icon: Icons.qr_code_scanner,
-                                    gradient: LinearGradient(colors: [
-                                      Theme.of(context).primaryColor,
-                                      Theme.of(context)
-                                          .primaryColor
-                                          .withAlpha(60),
-                                    ]),
-                                  ),
-                                ],
-                              ),
-                              const Divider(),
-                            ],
-                          ),
-                        if (widget.isConnectedToAsset)
-                          Expanded(
-                            child: BlocBuilder<AssetBloc, AssetState>(
-                              builder: (context, state) {
-                                if (state is AssetLoadedState) {
-                                  if (state.allAssets.allAssets.isEmpty) {
-                                    return Column(
-                                      children: [
-                                        SizedBox(
-                                          height: responsiveSizeVerticalPct(
-                                              small: 40),
-                                        ),
-                                        Text(
-                                          AppLocalizations.of(context)!
-                                              .item_no_items,
-                                        ),
-                                      ],
-                                    );
-                                  }
-
-                                  List<Asset> filteredAssets = searchAssets(
-                                    context,
-                                    state.allAssets.allAssets,
-                                    _searchQuery,
-                                  );
-
-                                  return ListView.builder(
-                                    padding: const EdgeInsets.only(
-                                      top: 2,
-                                      bottom: 50,
-                                    ),
-                                    itemCount: filteredAssets.length,
-                                    itemBuilder: (context, index) {
-                                      return AssetTile(
-                                        key: ValueKey(
-                                          filteredAssets[index].id,
-                                        ),
-                                        margin: const EdgeInsets.symmetric(
-                                          vertical: 4,
-                                        ),
-                                        asset: filteredAssets[index],
-                                        searchQuery: _searchQuery,
-                                        groupValue: widget.assetId,
-                                        onRadioSelected: (val) {
-                                          widget.setAssetId(val);
-                                          widget.setLocation(
-                                              filteredAssets[index].locationId);
-                                        },
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  // loading shimmer animation
-                                  return ListView.builder(
-                                    padding: const EdgeInsets.only(top: 2),
-                                    itemCount: 6,
-                                    itemBuilder: (context, index) {
-                                      return const ShimmerItemTile();
-                                    },
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

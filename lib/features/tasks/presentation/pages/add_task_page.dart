@@ -78,6 +78,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   bool _isAddItemVisible = false;
   bool _isConnectedToAsset = false;
   bool _isAddInstructionsVisible = false;
+  bool _isAddConnectedAssetVisible = false;
   bool _isAddGroupsVisible = false;
   bool _isAddUsersVisible = false;
   bool _isAddChecklist = false;
@@ -230,6 +231,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
   void _toggleAddUsersVisibility() {
     setState(() {
       _isAddUsersVisible = !_isAddUsersVisible;
+    });
+  }
+
+  void _toggleAddConnectedAssetVisibility() {
+    setState(() {
+      _isAddConnectedAssetVisible = !_isAddConnectedAssetVisible;
     });
   }
 
@@ -524,6 +531,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
         _toggleAddUsersVisibility();
       } else if (_isAddChecklist) {
         _toggleAddChecklistVisibility();
+      } else if (_isAddConnectedAssetVisible) {
+        _toggleAddConnectedAssetVisibility();
       }
     });
     super.initState();
@@ -620,6 +629,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
         setAssetId: _setAssetId,
         setLocation: _setLocation,
         assetId: _assetId,
+        isAddConnectedAssetVisible: _isAddConnectedAssetVisible,
+        toggleAddConnectedAssetVisibility: _toggleAddConnectedAssetVisibility,
       ),
       if (_isConnectedToAsset)
         SetAssetStatusCard(
@@ -746,6 +757,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
           return false;
         } else if (_isAddChecklist) {
           _toggleAddChecklistVisibility();
+          return false;
+        } else if (_isAddConnectedAssetVisible) {
+          _toggleAddConnectedAssetVisibility();
           return false;
         }
         // double click to exit the app

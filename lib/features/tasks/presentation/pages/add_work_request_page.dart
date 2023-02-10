@@ -56,6 +56,7 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
   String _assetStatus = '';
 
   bool _isAddAssetVisible = false;
+  bool _isAddConnectedAssetVisible = false;
   bool _isConnectedToAsset = false;
   bool _isAddAdditionalVisible = false;
 
@@ -163,6 +164,12 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
     });
   }
 
+  void _toggleAddConnectedAssetVisibility() {
+    setState(() {
+      _isAddConnectedAssetVisible = !_isAddConnectedAssetVisible;
+    });
+  }
+
   void _toggleAddAdditionalVisibility() {
     setState(() {
       _isAddAdditionalVisible = !_isAddAdditionalVisible;
@@ -244,6 +251,9 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
       if (_isAddAssetVisible) {
         _toggleAddAssetVisibility();
       }
+      if (_isAddConnectedAssetVisible) {
+        _toggleAddConnectedAssetVisibility();
+      }
       if (_isAddAdditionalVisible) {
         _toggleAddAdditionalVisibility();
       }
@@ -314,6 +324,8 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
         setAssetId: _setAssetId,
         setLocation: _setLocation,
         assetId: _assetId,
+        isAddConnectedAssetVisible: _isAddConnectedAssetVisible,
+        toggleAddConnectedAssetVisibility: _toggleAddConnectedAssetVisibility,
       ),
       if (_isConnectedToAsset)
         SetAssetStatusCard(
@@ -384,8 +396,13 @@ class _AddWorkRequestPageState extends State<AddWorkRequestPage> {
           _toggleAddAssetVisibility();
           return false;
         }
+        if (_isAddConnectedAssetVisible) {
+          _toggleAddConnectedAssetVisibility();
+          return false;
+        }
         if (_isAddAdditionalVisible) {
           _toggleAddAdditionalVisibility();
+          return false;
         }
         // double click to exit the app
         final timegap = DateTime.now().difference(preBackpress);
