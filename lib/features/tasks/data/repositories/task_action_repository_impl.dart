@@ -126,6 +126,8 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
         final updatedReplacedAsset = replacedAsset.copyWith(
           locationId: updatedTaskAction.replacedAssetLocationId,
           currentStatus: updatedTaskAction.replacedAssetStatus,
+          isInUse: false,
+          currentParentId: '',
         );
 
         final replacedAssetMap = updatedReplacedAsset.toMap();
@@ -167,6 +169,9 @@ class TaskActionRepositoryImpl extends TaskActionRepository {
 
         final updatedReplacementAsset = replacementAsset.copyWith(
           locationId: params.task.locationId,
+          currentParentId: replacedAsset.currentParentId,
+          isInUse: true,
+          isSparePart: replacedAsset.currentParentId.isNotEmpty,
         );
 
         final replacementAssetMap = updatedReplacementAsset.toMap();
