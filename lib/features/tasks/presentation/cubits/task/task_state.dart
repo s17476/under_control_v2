@@ -12,6 +12,8 @@ class TaskCubitEmpty extends TaskCubitState {}
 
 class TaskCubitError extends TaskCubitState {}
 
+class TaskCubitLoading extends TaskCubitState {}
+
 class TaskCubitLoaded extends TaskCubitState {
   final TaskModel task;
   TaskCubitLoaded({

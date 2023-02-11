@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../blocs/task_archive/task_archive_bloc.dart';
+import '../widgets/show_all_archive_tasks_button.dart';
 import '../widgets/task_tile.dart';
 
 class TaskArchivePage extends StatelessWidget {
@@ -46,16 +47,7 @@ class TaskArchivePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (!state.isAllTasks)
-                  TextButton(
-                    onPressed: () => context.read<TaskArchiveBloc>().add(
-                          GetTasksArchiveStreamEvent(isAllTasks: true),
-                        ),
-                    child: Text(
-                      AppLocalizations.of(context)!.show_all,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ),
+                const ShowAllArchiveTasksButton(),
               ],
             );
           } else {

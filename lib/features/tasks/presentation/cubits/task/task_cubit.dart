@@ -19,6 +19,7 @@ class TaskCubit extends Cubit<TaskCubitState> {
   }) : super(TaskCubitEmpty());
 
   Future<void> getTaskById(String taskId) async {
+    emit(TaskCubitLoading());
     final userState = userProfileBloc.state;
     if (userState is Approved) {
       final params = IdParams(

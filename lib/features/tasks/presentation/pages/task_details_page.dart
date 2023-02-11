@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/tasks/presentation/cubits/task/task_cubit.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -23,6 +22,7 @@ import '../blocs/task_action/task_action_bloc.dart';
 import '../blocs/task_action_management/task_action_management_bloc.dart';
 import '../blocs/task_archive/task_archive_bloc.dart';
 import '../blocs/work_request_management/work_request_management_bloc.dart';
+import '../cubits/task/task_cubit.dart';
 import '../widgets/task_details/task_actions_tab.dart';
 import '../widgets/task_details/task_checklist_tab.dart';
 import '../widgets/task_details/task_info_tab.dart';
@@ -83,6 +83,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage>
         if (taskCubitState is TaskCubitLoaded &&
             taskCubitState.task.id == taskId) {
           _task = taskCubitState.task;
+        } else if (taskCubitState is TaskCubitLoading) {
         } else {
           context.watch<TaskCubit>().getTaskById(taskId);
         }
