@@ -76,7 +76,7 @@ void main() {
         'should emit [WorkRequestLoadedState] when GetWorkRequestsStream is called',
         build: () => workRequestArchiveBloc,
         act: (bloc) async {
-          bloc.add(GetWorkRequestsArchiveStreamEvent());
+          bloc.add(GetWorkRequestsArchiveStreamEvent(isAllWorkRequest: true));
           when(() => mockGetArchiveWorkRequestsStream(any())).thenAnswer(
             (_) async => Right(
               WorkRequestsStream(

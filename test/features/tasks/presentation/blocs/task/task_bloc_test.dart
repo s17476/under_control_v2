@@ -76,7 +76,7 @@ void main() {
         'should emit [TaskLoadedState] when GetTasksStream is called',
         build: () => workRequestBloc,
         act: (bloc) async {
-          bloc.add(GetTasksStreamEvent());
+          bloc.add(GetTasksStreamEvent(isAllTasks: true));
           when(() => mockGetTasksStream(any())).thenAnswer(
             (_) async => Right(
               TasksStream(
