@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/tasks_for_asset/tasks_for_asset_bloc.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';
@@ -55,6 +56,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
   @override
   void initState() {
     _tabController = TabController(length: _tabsCount, vsync: this);
+
     super.initState();
   }
 
@@ -80,12 +82,16 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
         _asset = assetsState.getAssetById(assetId);
       });
       if (_asset != null) {
-        final assetState = context.watch<AssetBloc>().state;
-        if (assetState is AssetLoadedState) {
-          _children = assetState.allAssets.allAssets
-              .where((asset) => asset.currentParentId == _asset!.id)
-              .toList();
-        }
+        // fetch tasks for current asset
+        context
+            .read<TasksForAssetBloc>()
+            .add(GetTasksForAssetEvent(assetId: assetId));
+        _children = assetsState.allAssets.allAssets
+            .where((asset) => asset.currentParentId == _asset!.id)
+            .toList();
+        // final assetState = context.watch<AssetBloc>().state;
+        // if (assetState is AssetLoadedState) {
+        // }
         // number of tabs
         _tabsCount = 3;
         if (_children.isNotEmpty) {

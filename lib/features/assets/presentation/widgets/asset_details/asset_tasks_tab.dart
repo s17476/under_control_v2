@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/core/presentation/widgets/rounded_button.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/tasks_for_asset/tasks_for_asset_bloc.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/add_task_page.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/add_work_request_page.dart';
 
@@ -122,12 +123,11 @@ class AssetTasksTab extends StatelessWidget {
           },
         ),
         // TODO - create bloc to get assets tasks
-        BlocBuilder<TaskBloc, TaskState>(
+        BlocBuilder<TasksForAssetBloc, TasksForAssetState>(
           builder: (context, state) {
-            if (state is TaskLoadedState) {
-              final tasksForAsset = state.allTasks.allTasks
-                  .where((task) => task.assetId == asset.id)
-                  .toList();
+            if (state is TasksForAssetLoaded && state.assetId == asset.id) {
+              final tasksForAsset = state.tasks.allTasks;
+
               if (tasksForAsset.isNotEmpty) {
                 return TasksTabView(
                   tasks: tasksForAsset,

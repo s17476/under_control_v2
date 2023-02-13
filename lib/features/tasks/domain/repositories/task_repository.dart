@@ -16,9 +16,17 @@ abstract class TaskRepository {
 
   ///Gets task by id.
   ///
-  ///Returns [TasksStream] if operation is successful.
+  ///Returns [TaskModel] if operation is successful.
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, TaskModel>> getTaskById(
+    IdParams params,
+  );
+
+  ///Gets tasks for asset.
+  ///
+  ///Returns [TasksStream] if operation is successful.
+  ///Returns [Failure] if operation is unsuccessful.
+  Future<Either<Failure, TasksStream>> getTasksForAsset(
     IdParams params,
   );
 
