@@ -28,10 +28,12 @@ class WorkRequestArchiveErrorState extends WorkRequestArchiveState {
 
 class WorkRequestArchiveLoadedState extends WorkRequestArchiveState {
   final WorkRequestsListModel allWorkRequests;
+  final bool isAllWorkRequests;
 
   WorkRequestArchiveLoadedState({
     required this.allWorkRequests,
-  }) : super(properties: [allWorkRequests]);
+    required this.isAllWorkRequests,
+  }) : super(properties: [allWorkRequests, isAllWorkRequests]);
 
   WorkRequest? getWorkRequestById(String id) {
     final index =

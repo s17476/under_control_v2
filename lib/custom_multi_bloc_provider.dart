@@ -54,6 +54,7 @@ import 'features/tasks/presentation/blocs/task_templates_management/task_templat
 import 'features/tasks/presentation/blocs/work_request/work_request_bloc.dart';
 import 'features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
 import 'features/tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
+import 'features/tasks/presentation/cubits/workRequest/work_request_cubit.dart';
 import 'features/user_profile/presentation/blocs/user_management/user_management_bloc.dart';
 import 'features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import 'injection.dart';
@@ -131,6 +132,9 @@ class CustomMultiBlocProvider extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<TaskCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<WorkRequestCubit>(),
         ),
         BlocProvider(
           create: (context) => getIt<TasksForAssetBloc>(),

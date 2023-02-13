@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 
+import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../../groups/domain/entities/feature.dart';
@@ -63,7 +63,7 @@ class WorkRequestArchiveBloc
                 .toList();
           }
 
-          add(GetWorkRequestsArchiveStreamEvent());
+          add(GetWorkRequestsArchiveStreamEvent(isAllWorkRequest: false));
         }
       },
     );
@@ -90,6 +90,7 @@ class WorkRequestArchiveBloc
             allWorkRequests: const WorkRequestsListModel(
               allWorkRequests: [],
             ),
+            isAllWorkRequests: event.isAllWorkRequest,
           ),
         );
       } else {
@@ -122,6 +123,7 @@ class WorkRequestArchiveBloc
           final params = ItemsInLocationsParams(
             locations: chunk,
             companyId: _companyId,
+            isAll: event.isAllWorkRequest,
           );
 
           final failureOrWorkRequestsStream =
@@ -135,6 +137,7 @@ class WorkRequestArchiveBloc
                 add(UpdateWorkRequestsArchiveListEvent(
                   snapshot: snapshot,
                   locations: chunk,
+                  isAllWorkRequests: event.isAllWorkRequest,
                 ));
               });
               _workRequestArchiveStreamSubscriptions.add(streamSubscription);
@@ -182,6 +185,7 @@ class WorkRequestArchiveBloc
       }
       emit(WorkRequestArchiveLoadedState(
         allWorkRequests: workRequestsList,
+        isAllWorkRequests: event.isAllWorkRequests,
       ));
     });
   }

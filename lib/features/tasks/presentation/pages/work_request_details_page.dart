@@ -18,6 +18,7 @@ import '../../utils/work_request_management_bloc_listener.dart';
 import '../blocs/work_request/work_request_bloc.dart';
 import '../blocs/work_request_archive/work_request_archive_bloc.dart';
 import '../blocs/work_request_management/work_request_management_bloc.dart';
+import '../cubits/workRequest/work_request_cubit.dart';
 import '../widgets/work_request_details/images_tab.dart';
 import '../widgets/work_request_details/video_tab.dart';
 import '../widgets/work_request_details/work_request_info_tab.dart';
@@ -63,6 +64,7 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
     final workRequestId =
         (ModalRoute.of(context)?.settings.arguments as String);
     final workRequestState = context.watch<WorkRequestBloc>().state;
+    final workRequestCubitState = context.watch<WorkRequestCubit>().state;
     if (workRequestState is WorkRequestLoadedState) {
       _workRequest = workRequestState.getWorkRequestById(workRequestId);
       if (_workRequest == null) {
@@ -71,6 +73,15 @@ class _WorkRequestDetailsPageState extends State<WorkRequestDetailsPage>
         if (workRequestArchiveState is WorkRequestArchiveLoadedState) {
           _workRequest =
               workRequestArchiveState.getWorkRequestById(workRequestId);
+        }
+      }
+      if (_workRequest == null) {
+        if (workRequestCubitState is WorkRequestCubitLoaded &&
+            workRequestCubitState.workRequest.id == workRequestId) {
+          _workRequest = workRequestCubitState.workRequest;
+        } else if (workRequestCubitState is WorkRequestCubitLoading) {
+        } else {
+          context.watch<WorkRequestCubit>().getWorkRequestById(workRequestId);
         }
       }
       if (_workRequest != null) {

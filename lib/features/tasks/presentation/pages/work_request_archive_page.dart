@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/widgets/show_all_archive_work_requests_button.dart';
 
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
 import '../blocs/work_request_archive/work_request_archive_bloc.dart';
@@ -20,11 +21,6 @@ class WorkRequestArchivePage extends StatelessWidget {
       ),
       body: BlocBuilder<WorkRequestArchiveBloc, WorkRequestArchiveState>(
         builder: (context, state) {
-          if (state is WorkRequestArchiveEmptyState) {
-            context.read<WorkRequestArchiveBloc>().add(
-                  GetWorkRequestsArchiveStreamEvent(),
-                );
-          }
           if (state is WorkRequestArchiveLoadedState) {
             if (state.allWorkRequests.allWorkRequests.isEmpty) {
               return Center(
@@ -33,21 +29,27 @@ class WorkRequestArchivePage extends StatelessWidget {
                 ),
               );
             }
+            final workRequests = state.allWorkRequests.allWorkRequests
+              ..sort((a, b) => b.date.compareTo(a.date));
             return Scrollbar(
-              child: ListView.builder(
+              child: ListView(
                 shrinkWrap: true,
-                itemCount: state.allWorkRequests.allWorkRequests.length,
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.only(
-                    top: 4,
-                    bottom: 4,
-                    right: 8,
-                    left: 2,
+                children: [
+                  ...workRequests.map(
+                    (workRequest) => Padding(
+                      padding: const EdgeInsets.only(
+                        top: 4,
+                        bottom: 4,
+                        right: 8,
+                        left: 2,
+                      ),
+                      child: WorkRequestTile(
+                        workRequest: workRequest,
+                      ),
+                    ),
                   ),
-                  child: WorkRequestTile(
-                    workRequest: state.allWorkRequests.allWorkRequests[index],
-                  ),
-                ),
+                  const ShowAllArchiveWorkRequestsButton(),
+                ],
               ),
             );
           } else {

@@ -235,12 +235,25 @@ class WorkRequestsRepositoryImpl extends WorkRequestsRepository {
       ItemsInLocationsParams params) async {
     try {
       final Stream<QuerySnapshot> querySnapshot;
-      querySnapshot = firebaseFirestore
-          .collection('companies')
-          .doc(params.companyId)
-          .collection('workRequestsArchive')
-          .where('locationId', whereIn: params.locations)
-          .snapshots();
+      if (params.isAll) {
+        querySnapshot = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('workRequestsArchive')
+            .where('locationId', whereIn: params.locations)
+            .snapshots();
+      } else {
+        final now = DateTime.now();
+        final startDate = DateTime(now.year, now.month, now.day)
+            .subtract(const Duration(days: 30));
+        querySnapshot = firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('workRequestsArchive')
+            .where('date', isGreaterThanOrEqualTo: startDate)
+            .where('locationId', whereIn: params.locations)
+            .snapshots();
+      }
 
       return Right(WorkRequestsStream(allWorkRequests: querySnapshot));
     } on FirebaseException catch (e) {
@@ -472,6 +485,45 @@ class WorkRequestsRepositoryImpl extends WorkRequestsRepository {
       batch.commit();
 
       return Right(VoidResult());
+    } on FirebaseException catch (e) {
+      return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } catch (e) {
+      return const Left(
+        UnsuspectedFailure(message: 'Unsuspected error'),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, WorkRequestModel>> getWorkRequestById(
+    IdParams params,
+  ) async {
+    try {
+      WorkRequestModel result;
+      DocumentSnapshot snapshot;
+      snapshot = await firebaseFirestore
+          .collection('companies')
+          .doc(params.companyId)
+          .collection('workRequests')
+          .doc(params.id)
+          .get();
+
+      if (!snapshot.exists) {
+        snapshot = await firebaseFirestore
+            .collection('companies')
+            .doc(params.companyId)
+            .collection('workRequestsArchive')
+            .doc(params.id)
+            .get();
+      }
+      if (!snapshot.exists) {
+        throw Exception('Work request not found');
+      } else {
+        result = WorkRequestModel.fromMap(
+            snapshot.data() as Map<String, dynamic>, snapshot.id);
+      }
+
+      return Right(result);
     } on FirebaseException catch (e) {
       return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
     } catch (e) {

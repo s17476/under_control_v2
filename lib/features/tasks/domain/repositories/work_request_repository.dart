@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
+import '../../data/models/work_request/work_request_model.dart';
 import '../entities/work_request/work_requests_stream.dart';
 
 abstract class WorkRequestsRepository {
@@ -11,6 +12,14 @@ abstract class WorkRequestsRepository {
   ///Returns [Failure] if operation is unsuccessful.
   Future<Either<Failure, WorkRequestsStream>> getWorkRequestsStream(
     ItemsInLocationsParams params,
+  );
+
+  ///Gets work request by id.
+  ///
+  ///Returns [WorkRequestModel] if operation is successful.
+  ///Returns [Failure] if operation is unsuccessful.
+  Future<Either<Failure, WorkRequestModel>> getWorkRequestById(
+    IdParams params,
   );
 
   ///Gets stream of work Requests from archive in selected locations.
