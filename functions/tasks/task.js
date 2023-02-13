@@ -7,6 +7,22 @@ exports.added = async function(document, context, admin) {
       const newTask = document.data();
       const db = admin.firestore();
 
+      // task execution date
+      const executionDate = newTask.executionDate;
+      const jsDate = executionDate.toDate();
+      jsDate.setHours(0, 0, 0, 0);
+      // now date
+      const nowDate = new Date();
+      nowDate.setHours(0, 0, 0, 0);
+      // date difference
+      var differenceInTime = jsDate.getTime() - nowDate.getTime();
+      var differenceInDays = differenceInTime / (1000 * 3600 * 24);
+
+      // don't send notification if date difference is bigger then 30 days
+      if(differenceInDays > 29){
+        console.log('Date difference bigger than 29 days. Difference: ', differenceInDays);
+        return;
+      }
 
       // notification data
       const text = newTask.title;
