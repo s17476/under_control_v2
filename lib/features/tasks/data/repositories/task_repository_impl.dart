@@ -422,14 +422,14 @@ class TaskRepositoryImpl extends TaskRepository {
         final assetAction = AssetActionModel(
           id: '',
           assetId: params.task.assetId,
-          dateTime: params.task.date,
+          dateTime: DateTime.now(),
           userId: params.task.userId,
           locationId: params.task.locationId,
           isAssetInUse: asset.isInUse,
           isCreate: false,
           assetStatus: params.task.assetStatus,
-          connectedTask: '',
-          connectedWorkRequest: taskReference.id,
+          connectedTask: taskReference.id,
+          connectedWorkRequest: '',
         );
         final actionMap = assetAction.toMap();
 

@@ -43,6 +43,8 @@ class _AssetHistoryTabState extends State<AssetHistoryTab> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: BlocBuilder<AssetActionBloc, AssetActionState>(
+        buildWhen: (previous, current) =>
+            previous.properties != current.properties,
         builder: (context, state) {
           if (state is AssetActionLoadedState) {
             List<AssetAction> actions = [];
@@ -51,6 +53,7 @@ class _AssetHistoryTabState extends State<AssetHistoryTab> {
             } else {
               actions = state.allActions.allAssetActions;
             }
+
             // actions loaded
             return Column(
               children: [
