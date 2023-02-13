@@ -196,7 +196,7 @@ class TaskTile extends StatelessWidget {
                           if (task.assetId.isNotEmpty)
                             ConnectedAsset(assetId: task.assetId),
                           // shows info if work order is not connected to an asset
-                          if (task.assetId.isEmpty) const NoAssetInfo(),
+                          // if (task.assetId.isEmpty) const NoAssetInfo(),
 
                           // title
                           TaskTitle(taskTitle: task.title),
@@ -707,7 +707,7 @@ class ConnectedAsset extends StatelessWidget {
                   Icon(
                     Icons.precision_manufacturing,
                     size: 16,
-                    color: Theme.of(context).highlightColor,
+                    color: Theme.of(context).textTheme.bodyMedium!.color,
                   ),
                   const SizedBox(
                     width: 4,
@@ -717,10 +717,11 @@ class ConnectedAsset extends StatelessWidget {
                       '${asset.producer} - ${asset.model}',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context).highlightColor,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      // style: TextStyle(
+                      //   fontSize: 16,
+                      //   color: Theme.of(context).highlightColor,
+                      // ),
                     ),
                   ),
                 ],

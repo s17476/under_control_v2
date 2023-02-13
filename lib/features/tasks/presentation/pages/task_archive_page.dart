@@ -31,24 +31,26 @@ class TaskArchivePage extends StatelessWidget {
             }
             final tasks = state.allTasks.allTasks
               ..sort((a, b) => b.executionDate.compareTo(a.executionDate));
-            return ListView(
-              shrinkWrap: true,
-              children: [
-                ...tasks.map(
-                  (task) => Padding(
-                    padding: const EdgeInsets.only(
-                      top: 4,
-                      bottom: 4,
-                      right: 8,
-                      left: 2,
-                    ),
-                    child: TaskTile(
-                      task: task,
+            return Scrollbar(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  ...tasks.map(
+                    (task) => Padding(
+                      padding: const EdgeInsets.only(
+                        top: 4,
+                        bottom: 4,
+                        right: 8,
+                        left: 2,
+                      ),
+                      child: TaskTile(
+                        task: task,
+                      ),
                     ),
                   ),
-                ),
-                const ShowAllArchiveTasksButton(),
-              ],
+                  const ShowAllArchiveTasksButton(),
+                ],
+              ),
             );
           } else {
             // shows shimmer when loading

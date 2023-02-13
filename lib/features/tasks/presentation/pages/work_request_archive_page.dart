@@ -33,18 +33,20 @@ class WorkRequestArchivePage extends StatelessWidget {
                 ),
               );
             }
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: state.allWorkRequests.allWorkRequests.length,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(
-                  top: 4,
-                  bottom: 4,
-                  right: 8,
-                  left: 2,
-                ),
-                child: WorkRequestTile(
-                  workRequest: state.allWorkRequests.allWorkRequests[index],
+            return Scrollbar(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: state.allWorkRequests.allWorkRequests.length,
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.only(
+                    top: 4,
+                    bottom: 4,
+                    right: 8,
+                    left: 2,
+                  ),
+                  child: WorkRequestTile(
+                    workRequest: state.allWorkRequests.allWorkRequests[index],
+                  ),
                 ),
               ),
             );

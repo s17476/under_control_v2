@@ -167,7 +167,9 @@ class WorkRequestTile extends StatelessWidget {
                                             Icons.precision_manufacturing,
                                             size: 16,
                                             color: Theme.of(context)
-                                                .highlightColor,
+                                                .textTheme
+                                                .bodyMedium!
+                                                .color,
                                           ),
                                           const SizedBox(
                                             width: 4,
@@ -177,11 +179,9 @@ class WorkRequestTile extends StatelessWidget {
                                               '${asset.producer} - ${asset.model}',
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Theme.of(context)
-                                                    .highlightColor,
-                                              ),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
                                             ),
                                           ),
                                         ],
@@ -193,35 +193,35 @@ class WorkRequestTile extends StatelessWidget {
                               },
                             ),
                           // shows info if work order is not connected to an asset
-                          if (workRequest.assetId.isEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.handyman,
-                                    size: 16,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .color,
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .task_connected_asset_no,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          // if (workRequest.assetId.isEmpty)
+                          //   Padding(
+                          //     padding: const EdgeInsets.only(left: 8.0),
+                          //     child: Row(
+                          //       children: [
+                          //         Icon(
+                          //           Icons.handyman,
+                          //           size: 16,
+                          //           color: Theme.of(context)
+                          //               .textTheme
+                          //               .bodySmall!
+                          //               .color,
+                          //         ),
+                          //         const SizedBox(
+                          //           width: 4,
+                          //         ),
+                          //         Text(
+                          //           AppLocalizations.of(context)!
+                          //               .task_connected_asset_no,
+                          //           maxLines: 2,
+                          //           overflow: TextOverflow.ellipsis,
+                          //           style: Theme.of(context)
+                          //               .textTheme
+                          //               .bodySmall!
+                          //               .copyWith(fontSize: 16),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
 
                           // title
                           Padding(
