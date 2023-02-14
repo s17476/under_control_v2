@@ -28,10 +28,6 @@ class ItemActionsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final inactiveColors = [
-      Colors.grey,
-      Colors.grey.withAlpha(60),
-    ];
     return BlocBuilder<ItemActionBloc, ItemActionState>(
       builder: (context, state) {
         if (state is ItemActionLoadedState) {
@@ -41,168 +37,10 @@ class ItemActionsTab extends StatelessWidget {
           }
           return Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 16,
-                  bottom: 8,
-                  left: 8,
-                  right: 8,
-                ),
-                child: Row(
-                  children: [
-                    // add button
-                    Expanded(
-                      child: RoundedButton(
-                        onPressed: !getUserPermission(
-                          context: context,
-                          featureType: FeatureType.inventory,
-                          permissionType: PermissionType.create,
-                        )
-                            ? () {
-                                showSnackBar(
-                                  context: context,
-                                  message: AppLocalizations.of(context)!
-                                      .permission_no_action,
-                                  isErrorMessage: true,
-                                );
-                              }
-                            : () {
-                                Navigator.pushNamed(
-                                  context,
-                                  AddToItemPage.routeName,
-                                  arguments: item,
-                                );
-                              },
-                        icon: Icons.add,
-                        iconSize: 40,
-                        title: AppLocalizations.of(context)!.add,
-                        titleSize: 16,
-                        foregroundColor: Colors.grey.shade200,
-                        padding: const EdgeInsets.all(16),
-                        gradient: LinearGradient(
-                          colors: !getUserPermission(
-                            context: context,
-                            featureType: FeatureType.inventory,
-                            permissionType: PermissionType.create,
-                          )
-                              ? inactiveColors
-                              : [
-                                  Theme.of(context).primaryColor,
-                                  Theme.of(context).primaryColor.withAlpha(60),
-                                ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    // move button
-                    Expanded(
-                      child: RoundedButton(
-                        onPressed: !getUserPermission(
-                          context: context,
-                          featureType: FeatureType.inventory,
-                          permissionType: PermissionType.create,
-                        )
-                            ? () {
-                                showSnackBar(
-                                  context: context,
-                                  message: AppLocalizations.of(context)!
-                                      .permission_no_action,
-                                  isErrorMessage: true,
-                                );
-                              }
-                            : getItemTotalQuantity(item) > 0
-                                ? () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      MoveInsideItemPage.routeName,
-                                      arguments: item,
-                                    );
-                                  }
-                                : () {},
-                        icon: Icons.compare_arrows_outlined,
-                        iconSize: 40,
-                        title: AppLocalizations.of(context)!.move,
-                        titleSize: 16,
-                        foregroundColor: Colors.grey.shade200,
-                        padding: const EdgeInsets.all(16),
-                        gradient: LinearGradient(
-                          colors: !getUserPermission(
-                            context: context,
-                            featureType: FeatureType.inventory,
-                            permissionType: PermissionType.create,
-                          )
-                              ? inactiveColors
-                              : getItemTotalQuantity(item) > 0
-                                  ? [
-                                      Colors.blue.shade700,
-                                      Colors.blue.shade700.withAlpha(60),
-                                    ]
-                                  : inactiveColors,
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    // subtract button
-                    Expanded(
-                      child: RoundedButton(
-                        onPressed: !getUserPermission(
-                          context: context,
-                          featureType: FeatureType.inventory,
-                          permissionType: PermissionType.create,
-                        )
-                            ? () {
-                                showSnackBar(
-                                  context: context,
-                                  message: AppLocalizations.of(context)!
-                                      .permission_no_action,
-                                  isErrorMessage: true,
-                                );
-                              }
-                            : getItemTotalQuantity(item) > 0
-                                ? () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      SubtractFromItemPage.routeName,
-                                      arguments: item,
-                                    );
-                                  }
-                                : () {},
-                        icon: Icons.remove,
-                        iconSize: 40,
-                        title: AppLocalizations.of(context)!.subtract,
-                        titleSize: 16,
-                        foregroundColor: Colors.grey.shade200,
-                        padding: const EdgeInsets.all(16),
-                        gradient: LinearGradient(
-                          colors: !getUserPermission(
-                            context: context,
-                            featureType: FeatureType.inventory,
-                            permissionType: PermissionType.create,
-                          )
-                              ? inactiveColors
-                              : getItemTotalQuantity(item) > 0
-                                  ? [
-                                      Colors.red.shade600,
-                                      Colors.red.shade600.withAlpha(60),
-                                    ]
-                                  : inactiveColors,
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              const SizedBox(
+                height: 8,
               ),
+              ItemActionButtons(item: item),
               const Divider(
                 thickness: 1.5,
                 indent: 8,
@@ -291,6 +129,185 @@ class ItemActionsTab extends StatelessWidget {
           );
         }
       },
+    );
+  }
+}
+
+class ItemActionButtons extends StatelessWidget {
+  const ItemActionButtons({
+    super.key,
+    required this.item,
+  });
+
+  final Item item;
+
+  @override
+  Widget build(BuildContext context) {
+    final inactiveColors = [
+      Colors.grey,
+      Colors.grey.withAlpha(60),
+    ];
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 8,
+        bottom: 8,
+        left: 8,
+        right: 8,
+      ),
+      child: Row(
+        children: [
+          // add button
+          Expanded(
+            child: RoundedButton(
+              onPressed: !getUserPermission(
+                context: context,
+                featureType: FeatureType.inventory,
+                permissionType: PermissionType.create,
+              )
+                  ? () {
+                      showSnackBar(
+                        context: context,
+                        message:
+                            AppLocalizations.of(context)!.permission_no_action,
+                        isErrorMessage: true,
+                      );
+                    }
+                  : () {
+                      Navigator.pushNamed(
+                        context,
+                        AddToItemPage.routeName,
+                        arguments: item,
+                      );
+                    },
+              icon: Icons.add,
+              iconSize: 40,
+              title: AppLocalizations.of(context)!.add,
+              titleSize: 16,
+              foregroundColor: Colors.grey.shade200,
+              padding: const EdgeInsets.all(16),
+              gradient: LinearGradient(
+                colors: !getUserPermission(
+                  context: context,
+                  featureType: FeatureType.inventory,
+                  permissionType: PermissionType.create,
+                )
+                    ? inactiveColors
+                    : [
+                        Theme.of(context).primaryColor,
+                        Theme.of(context).primaryColor.withAlpha(60),
+                      ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          // move button
+          Expanded(
+            child: RoundedButton(
+              onPressed: !getUserPermission(
+                context: context,
+                featureType: FeatureType.inventory,
+                permissionType: PermissionType.create,
+              )
+                  ? () {
+                      showSnackBar(
+                        context: context,
+                        message:
+                            AppLocalizations.of(context)!.permission_no_action,
+                        isErrorMessage: true,
+                      );
+                    }
+                  : getItemTotalQuantity(item) > 0
+                      ? () {
+                          Navigator.pushNamed(
+                            context,
+                            MoveInsideItemPage.routeName,
+                            arguments: item,
+                          );
+                        }
+                      : () {},
+              icon: Icons.compare_arrows_outlined,
+              iconSize: 40,
+              title: AppLocalizations.of(context)!.move,
+              titleSize: 16,
+              foregroundColor: Colors.grey.shade200,
+              padding: const EdgeInsets.all(16),
+              gradient: LinearGradient(
+                colors: !getUserPermission(
+                  context: context,
+                  featureType: FeatureType.inventory,
+                  permissionType: PermissionType.create,
+                )
+                    ? inactiveColors
+                    : getItemTotalQuantity(item) > 0
+                        ? [
+                            Colors.blue.shade700,
+                            Colors.blue.shade700.withAlpha(60),
+                          ]
+                        : inactiveColors,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+
+          const SizedBox(
+            width: 16,
+          ),
+          // subtract button
+          Expanded(
+            child: RoundedButton(
+              onPressed: !getUserPermission(
+                context: context,
+                featureType: FeatureType.inventory,
+                permissionType: PermissionType.create,
+              )
+                  ? () {
+                      showSnackBar(
+                        context: context,
+                        message:
+                            AppLocalizations.of(context)!.permission_no_action,
+                        isErrorMessage: true,
+                      );
+                    }
+                  : getItemTotalQuantity(item) > 0
+                      ? () {
+                          Navigator.pushNamed(
+                            context,
+                            SubtractFromItemPage.routeName,
+                            arguments: item,
+                          );
+                        }
+                      : () {},
+              icon: Icons.remove,
+              iconSize: 40,
+              title: AppLocalizations.of(context)!.subtract,
+              titleSize: 16,
+              foregroundColor: Colors.grey.shade200,
+              padding: const EdgeInsets.all(16),
+              gradient: LinearGradient(
+                colors: !getUserPermission(
+                  context: context,
+                  featureType: FeatureType.inventory,
+                  permissionType: PermissionType.create,
+                )
+                    ? inactiveColors
+                    : getItemTotalQuantity(item) > 0
+                        ? [
+                            Colors.red.shade600,
+                            Colors.red.shade600.withAlpha(60),
+                          ]
+                        : inactiveColors,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

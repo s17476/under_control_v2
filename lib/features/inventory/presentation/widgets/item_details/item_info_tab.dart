@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/inventory/presentation/widgets/alarm_row.dart';
 
 import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../core/utils/responsive_size.dart';
@@ -8,6 +7,7 @@ import '../../../../core/utils/size_config.dart';
 import '../../../domain/entities/item.dart';
 import '../../../utils/get_item_quantity_in_locations.dart';
 import '../../../utils/get_item_total_quantity.dart';
+import '../alarm_row.dart';
 import '../internal_code_row.dart';
 import '../item_category_row.dart';
 import '../item_unit_row.dart';
@@ -15,6 +15,7 @@ import '../overlay_info_box.dart';
 import '../price_row.dart';
 import '../qr_code_row.dart';
 import '../square_item_image.dart';
+import 'item_actions_tab.dart';
 
 class ItemInfoTab extends StatelessWidget with ResponsiveSize {
   const ItemInfoTab({
@@ -123,6 +124,15 @@ class ItemInfoTab extends StatelessWidget with ResponsiveSize {
                 ),
               ),
             ],
+          ),
+
+          const Divider(
+            thickness: 1.5,
+            endIndent: 8,
+            indent: 8,
+          ),
+          ItemActionButtons(
+            item: item,
           ),
 
           // item data

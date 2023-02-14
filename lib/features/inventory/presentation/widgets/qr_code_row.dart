@@ -24,7 +24,13 @@ class QrCodeRow extends StatelessWidget {
             titleFontSize: 16,
           ),
         ),
-        Text(code),
+        Flexible(
+          child: Text(
+            code,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 3,
+          ),
+        ),
       ],
     );
   }

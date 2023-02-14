@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:under_control_v2/features/tasks/presentation/blocs/tasks_archive_for_asset/tasks_archive_for_asset_bloc.dart';
 
 import '../../../assets/domain/entities/asset.dart';
+import '../../../assets/presentation/pages/task_archive_for_asset_page.dart';
 import '../../domain/entities/task/task.dart';
 import 'task_tile.dart';
 
@@ -43,10 +44,10 @@ class TasksArchiveTabView extends StatelessWidget {
                           isAll: true,
                         ),
                       );
-                  // Navigator.pushNamed(
-                  //   context,
-                  //   AllAssetsWithoutInspectionListPage.routeName,
-                  // );
+                  Navigator.pushNamed(
+                    context,
+                    TaskArchiveForAssetPage.routeName,
+                  );
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),

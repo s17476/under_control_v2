@@ -241,7 +241,7 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
             ),
             Tab(
               icon: Icon(
-                Icons.work_history,
+                Icons.task_alt,
                 color: tabBarIconColor,
                 size: tabBarIconSize,
               ),

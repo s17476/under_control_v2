@@ -11,6 +11,7 @@ import 'custom_multi_bloc_provider.dart';
 import 'features/assets/presentation/pages/add_asset_page.dart';
 import 'features/assets/presentation/pages/asset_category_management_page.dart';
 import 'features/assets/presentation/pages/asset_details_page.dart';
+import 'features/assets/presentation/pages/task_archive_for_asset_page.dart';
 import 'features/assets/presentation/widgets/asset_details/asset_actions_list_page.dart';
 import 'features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'features/authentication/presentation/pages/authentication_page.dart';
@@ -248,6 +249,8 @@ class App extends StatelessWidget
                     const TaskTemplateDetailsPage(),
                 NotificationsPage.routeName: (context) =>
                     const NotificationsPage(),
+                TaskArchiveForAssetPage.routeName: (context) =>
+                    const TaskArchiveForAssetPage(),
               },
               // localization
               localizationsDelegates: const [

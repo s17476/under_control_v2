@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../assets/presentation/widgets/asset_details/shimmer_asset_action_list_tile.dart';
-import '../blocs/task_archive/task_archive_bloc.dart';
-import '../widgets/show_all_archive_tasks_button.dart';
-import '../widgets/task_tile.dart';
+import '../../../tasks/presentation/blocs/tasks_archive_for_asset/tasks_archive_for_asset_bloc.dart';
+import '../../../tasks/presentation/widgets/show_all_archive_tasks_button.dart';
+import '../../../tasks/presentation/widgets/task_tile.dart';
 
-class TaskArchivePage extends StatelessWidget {
-  const TaskArchivePage({Key? key}) : super(key: key);
+class TaskArchiveForAssetPage extends StatelessWidget {
+  const TaskArchiveForAssetPage({Key? key}) : super(key: key);
 
-  static const routeName = '/tasks/task-archive';
+  static const routeName = '/tasks/task-archive-for-asset';
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +19,10 @@ class TaskArchivePage extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.task_archive),
         centerTitle: true,
       ),
-      body: BlocBuilder<TaskArchiveBloc, TaskArchiveState>(
+      body: BlocBuilder<TasksArchiveForAssetBloc, TasksArchiveForAssetState>(
         builder: (context, state) {
-          if (state is TaskArchiveLoadedState) {
-            if (state.allTasks.allTasks.isEmpty) {
-              return Center(
-                child: Text(
-                  AppLocalizations.of(context)!.item_no_items,
-                ),
-              );
-            }
-            final tasks = state.allTasks.allTasks
+          if (state is TasksArchiveForAssetLoaded) {
+            final tasks = state.tasks.allTasks
               ..sort((a, b) => b.executionDate.compareTo(a.executionDate));
             return Scrollbar(
               child: ListView(
@@ -48,7 +41,6 @@ class TaskArchivePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const ShowAllArchiveTasksButton(),
                 ],
               ),
             );
