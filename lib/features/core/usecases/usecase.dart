@@ -264,13 +264,15 @@ class CodeParams extends Equatable {
 class IdParams extends Equatable {
   final String id;
   final String companyId;
+  final bool isAll;
   const IdParams({
     required this.id,
     required this.companyId,
+    this.isAll = false,
   });
 
   @override
-  List<Object> get props => [id, companyId];
+  List<Object> get props => [id, companyId, isAll];
 }
 
 class AssetParams extends Equatable {

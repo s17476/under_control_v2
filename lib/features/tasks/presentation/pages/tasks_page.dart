@@ -129,7 +129,7 @@ class TasksPage extends StatelessWidget with ResponsiveSize {
           ],
           const ShowAllTasksButton(),
           const SizedBox(
-            height: 100,
+            height: 40,
           ),
         ],
       );

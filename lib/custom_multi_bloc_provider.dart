@@ -51,6 +51,7 @@ import 'features/tasks/presentation/blocs/task_filter/task_filter_bloc.dart';
 import 'features/tasks/presentation/blocs/task_management/task_management_bloc.dart';
 import 'features/tasks/presentation/blocs/task_templates/task_templates_bloc.dart';
 import 'features/tasks/presentation/blocs/task_templates_management/task_templates_management_bloc.dart';
+import 'features/tasks/presentation/blocs/tasks_archive_for_asset/tasks_archive_for_asset_bloc.dart';
 import 'features/tasks/presentation/blocs/work_request/work_request_bloc.dart';
 import 'features/tasks/presentation/blocs/work_request_archive/work_request_archive_bloc.dart';
 import 'features/tasks/presentation/blocs/work_request_management/work_request_management_bloc.dart';
@@ -138,6 +139,9 @@ class CustomMultiBlocProvider extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<TasksForAssetBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<TasksArchiveForAssetBloc>(),
         ),
       ],
       child: child,

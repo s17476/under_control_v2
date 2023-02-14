@@ -11,6 +11,7 @@ import '../../../core/utils/get_user_permission.dart';
 import '../../../core/utils/permission.dart';
 import '../../../core/utils/responsive_size.dart';
 import '../../../groups/domain/entities/feature.dart';
+import '../../../tasks/presentation/blocs/tasks_archive_for_asset/tasks_archive_for_asset_bloc.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../data/models/asset_model.dart';
@@ -86,6 +87,10 @@ class _AssetDetailsPageState extends State<AssetDetailsPage>
         context
             .read<TasksForAssetBloc>()
             .add(GetTasksForAssetEvent(assetId: assetId));
+        // fetch finished tasks for current asset
+        context
+            .read<TasksArchiveForAssetBloc>()
+            .add(GetTasksArchiveForAssetEvent(assetId: assetId, isAll: false));
         _children = assetsState.allAssets.allAssets
             .where((asset) => asset.currentParentId == _asset!.id)
             .toList();

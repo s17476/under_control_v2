@@ -6,8 +6,11 @@ import 'package:under_control_v2/features/tasks/presentation/blocs/tasks_for_ass
 import 'package:under_control_v2/features/tasks/presentation/pages/add_task_page.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/add_work_request_page.dart';
 
+import '../../../../tasks/domain/entities/task/task.dart';
 import '../../../../tasks/presentation/blocs/task/task_bloc.dart';
+import '../../../../tasks/presentation/blocs/tasks_archive_for_asset/tasks_archive_for_asset_bloc.dart';
 import '../../../../tasks/presentation/blocs/work_request/work_request_bloc.dart';
+import '../../../../tasks/presentation/widgets/tasks_archive_tab_view.dart';
 import '../../../../tasks/presentation/widgets/tasks_tab_view.dart';
 import '../../../../tasks/presentation/widgets/work_requests_tab_view.dart';
 import '../../../domain/entities/asset.dart';
@@ -122,7 +125,6 @@ class AssetTasksTab extends StatelessWidget {
             );
           },
         ),
-        // TODO - create bloc to get assets tasks
         BlocBuilder<TasksForAssetBloc, TasksForAssetState>(
           builder: (context, state) {
             if (state is TasksForAssetLoaded && state.assetId == asset.id) {
@@ -143,6 +145,39 @@ class AssetTasksTab extends StatelessWidget {
                   ),
                 );
               }
+            }
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 3,
+              itemBuilder: (context, index) =>
+                  const ShimmerAssetActionListTile(),
+            );
+          },
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        // finished tasks
+        BlocBuilder<TasksArchiveForAssetBloc, TasksArchiveForAssetState>(
+          builder: (context, state) {
+            if (state is TasksArchiveForAssetLoaded &&
+                state.assetId == asset.id) {
+              List<Task> tasksForAsset = state.tasks.allTasks;
+              if (tasksForAsset.length > 5) {
+                tasksForAsset = tasksForAsset.sublist(0, 5);
+              }
+              tasksForAsset.sort(
+                (a, b) => b.executionDate.compareTo(a.executionDate),
+              );
+
+              if (tasksForAsset.isNotEmpty) {
+                return TasksArchiveTabView(
+                  tasks: tasksForAsset,
+                  asset: asset,
+                );
+              }
+              return const SizedBox();
             }
             return ListView.builder(
               shrinkWrap: true,

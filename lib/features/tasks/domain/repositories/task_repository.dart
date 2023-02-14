@@ -30,6 +30,14 @@ abstract class TaskRepository {
     IdParams params,
   );
 
+  ///Gets archive tasks for asset.
+  ///
+  ///Returns [TasksStream] if operation is successful.
+  ///Returns [Failure] if operation is unsuccessful.
+  Future<Either<Failure, TasksStream>> getArchiveTasksForAsset(
+    IdParams params,
+  );
+
   ///Gets stream of tasks from archive in selected locations.
   ///
   ///Returns [TasksStream] if operation is successful.
