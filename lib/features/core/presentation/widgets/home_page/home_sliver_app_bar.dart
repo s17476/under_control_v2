@@ -7,6 +7,7 @@ import '../../../../tasks/presentation/blocs/task_filter/task_filter_bloc.dart';
 import '../../../utils/get_user_permission.dart';
 import '../../../utils/permission.dart';
 import 'app_bar_animated_icon.dart';
+import 'calendar_button.dart';
 import 'filter_button.dart';
 import 'notifications_button.dart';
 import 'search_button.dart';
@@ -25,6 +26,8 @@ class HomeSliverAppBar extends StatelessWidget {
     required this.isMenuVisible,
     required this.toggleIsMenuVisible,
     required this.isTaskFilterVisible,
+    required this.toggleIsCalendarVisible,
+    required this.isCalendarVisible,
   }) : super(key: key);
 
   final int pageIndex;
@@ -37,6 +40,8 @@ class HomeSliverAppBar extends StatelessWidget {
   final bool isMenuVisible;
   final VoidCallback toggleIsMenuVisible;
   final bool isTaskFilterVisible;
+  final VoidCallback toggleIsCalendarVisible;
+  final bool isCalendarVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +103,7 @@ class HomeSliverAppBar extends StatelessWidget {
       actions: [
         // tasks and work requests filter
         if (pageIndex == 0 &&
+            !isCalendarVisible &&
             getUserPermission(
               context: context,
               featureType: FeatureType.tasks,
@@ -105,6 +111,18 @@ class HomeSliverAppBar extends StatelessWidget {
             ))
           TaskFilterButton(
             isTaskFilterVisible: isTaskFilterVisible,
+          ),
+
+        // calendar
+        if (pageIndex == 0 &&
+            getUserPermission(
+              context: context,
+              featureType: FeatureType.tasks,
+              permissionType: PermissionType.read,
+            ))
+          CalendarButton(
+            isCalendarVisible: isCalendarVisible,
+            toggleCalendarButton: toggleIsCalendarVisible,
           ),
 
         // search button
@@ -130,7 +148,7 @@ class HomeSliverAppBar extends StatelessWidget {
             isSearchBarExpanded: isSearchBarExpanded,
             toggleIsSearchBarExpanded: toggleIsSearchBarExpanded,
           ),
-        // // filter
+        // notifications
         NotificationsButton(
           isNotificationsExpanded: isNotificationsExpanded,
           toggleIsNotificationsExpanded: toggleIsNotificationsExpanded,

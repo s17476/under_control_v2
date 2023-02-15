@@ -105,7 +105,7 @@ class _MyTasksState extends State<MyTasks> {
                   gradient: LinearGradient(
                     colors: [
                       Theme.of(context).primaryColor.withAlpha(20),
-                      Theme.of(context).scaffoldBackgroundColor
+                      Theme.of(context).scaffoldBackgroundColor,
                     ],
                     stops: const [0, 0.005],
                   ),

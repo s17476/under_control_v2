@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/tasks/presentation/pages/calendar_page.dart';
 
 import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
 import '../../../assets/presentation/pages/assets_page.dart';
@@ -70,6 +71,7 @@ class _HomePageState extends State<HomePage>
   bool _isMenuVisible = false;
   bool _isBottomNavigationAnimating = false;
   bool _isTaskFilterVisible = false;
+  bool _isCalendarVisible = false;
 
   // inventory search
   final _inventorySearchTextEditingController = TextEditingController();
@@ -147,10 +149,19 @@ class _HomePageState extends State<HomePage>
     }
   }
 
+  void _toggleIsCalendarVisible() {
+    setState(() {
+      _isFilterExpanded = false;
+      _isCalendarVisible = !_isCalendarVisible;
+    });
+    context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
+  }
+
   // show/hide filter widget
   void _toggleIsFilterExpanded() {
     setState(() {
       _isFilterExpanded = !_isFilterExpanded;
+      _isCalendarVisible = false;
     });
     context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
   }
@@ -172,6 +183,9 @@ class _HomePageState extends State<HomePage>
       }
       if (_isTaskFilterVisible) {
         context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
+      }
+      if (_isCalendarVisible) {
+        _toggleIsCalendarVisible();
       }
       if (_isFilterExpanded) {
         _toggleIsFilterExpanded();
@@ -224,6 +238,9 @@ class _HomePageState extends State<HomePage>
     // hides filter widget if expanded
     if (_isFilterExpanded) {
       _toggleIsFilterExpanded();
+    }
+    if (_isCalendarVisible) {
+      _toggleIsCalendarVisible();
     }
     // hides notifications
     if (_isNotificationsExpanded) {
@@ -320,17 +337,6 @@ class _HomePageState extends State<HomePage>
 
     // bottom navigation
     _navigationController = CircularBottomNavigationController(_pageIndex);
-    // _pageController.addListener(() {
-    //   if (_pageController.page! - _pageIndex > 0.5 ||
-    //       _pageController.page! - _pageIndex < -0.5) {
-    // TODO - scroll up on page change
-    // _scrollController.animateTo(
-    //   0,
-    //   duration: const Duration(milliseconds: 300),
-    //   curve: Curves.easeInOut,
-    // );
-    //   }
-    // });
 
     // triggers hide/show bottom navigation bar
     _scrollController.addListener(() {
@@ -420,6 +426,10 @@ class _HomePageState extends State<HomePage>
         // hides tasks filter if visible
         if (_isTaskFilterVisible) {
           context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
+          return false;
+        }
+        if (_isCalendarVisible) {
+          _toggleIsCalendarVisible();
           return false;
         }
         // hides search box if visible
@@ -531,6 +541,8 @@ class _HomePageState extends State<HomePage>
                       isSearchBarExpanded: _getFlagForPageIndex(_pageIndex),
                       toggleIsSearchBarExpanded: _toggleIsSearchBarExpanded,
                       isTaskFilterVisible: _isTaskFilterVisible,
+                      toggleIsCalendarVisible: _toggleIsCalendarVisible,
+                      isCalendarVisible: _isCalendarVisible,
                     ),
                   )
                 ],
@@ -595,7 +607,9 @@ class _HomePageState extends State<HomePage>
                                   }
                                 },
                                 children: [
-                                  const TasksPage(),
+                                  _isCalendarVisible
+                                      ? const CalendarPage()
+                                      : const TasksPage(),
                                   InventoryPage(
                                     searchBoxHeight: _searchBoxHeight,
                                     isSearchBoxExpanded:

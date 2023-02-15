@@ -69,6 +69,7 @@ dependencies:
   uuid: ^3.0.7
   firebase_messaging: ^13.1.0
   flutter_local_notifications: ^13.0.0
+  table_calendar: ^3.0.8
   
 dev_dependencies:
   flutter_test:
