@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:under_control_v2/features/settings/presentation/blocs/language/language_cubit.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/calendar_event/calendar_event_bloc.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/calendar_task/calendar_task_bloc.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({
@@ -18,8 +21,27 @@ class _CalendarPageState extends State<CalendarPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
+  final now = DateTime.now();
+  late DateTime from;
+  late DateTime to;
+
+  @override
+  void initState() {
+    from = DateTime(now.year, now.month - 1);
+    to = DateTime(now.year, now.month + 2);
+    context.read<CalendarTaskBloc>().add(
+          GetCalendarTasksStreamEvent(
+            from: from,
+            to: to,
+          ),
+        );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('context.read<CalendarEventBloc>().state');
+    print(context.read<CalendarEventBloc>().state);
     return TableCalendar(
       firstDay: DateTime(2022, 10),
       lastDay: DateTime(2023, 10).subtract(const Duration(days: 1)),
@@ -44,6 +66,7 @@ class _CalendarPageState extends State<CalendarPage> {
         // data format Map<DateTime, List<task>>
         // one month forward
         // one month back
+        // get events for day in BLoC
       },
       weekNumbersVisible: true,
       calendarStyle: CalendarStyle(

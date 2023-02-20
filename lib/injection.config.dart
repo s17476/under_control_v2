@@ -79,7 +79,7 @@ import 'package:under_control_v2/features/assets/presentation/blocs/asset_manage
 import 'package:under_control_v2/features/assets/presentation/blocs/asset_parts/asset_parts_bloc.dart'
     as _i219;
 import 'package:under_control_v2/features/assets/presentation/blocs/dashboard_asset_action/dashboard_asset_action_bloc.dart'
-    as _i258;
+    as _i259;
 import 'package:under_control_v2/features/assets/presentation/cubits/cubit/asset_internal_number_cubit.dart'
     as _i202;
 import 'package:under_control_v2/features/authentication/data/repositories/authentication_repository_impl.dart'
@@ -259,7 +259,7 @@ import 'package:under_control_v2/features/inventory/domain/usecases/update_item.
 import 'package:under_control_v2/features/inventory/domain/usecases/update_item_photo.dart'
     as _i49;
 import 'package:under_control_v2/features/inventory/presentation/blocs/dashboard_item_action/dashboard_item_action_bloc.dart'
-    as _i259;
+    as _i260;
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action/item_action_bloc.dart'
     as _i210;
 import 'package:under_control_v2/features/inventory/presentation/blocs/item_action_management/item_action_management_bloc.dart'
@@ -434,6 +434,10 @@ import 'package:under_control_v2/features/tasks/domain/usecases/work_order/get_w
     as _i159;
 import 'package:under_control_v2/features/tasks/domain/usecases/work_order/update_work_request.dart'
     as _i192;
+import 'package:under_control_v2/features/tasks/presentation/blocs/calendar_event/calendar_event_bloc.dart'
+    as _i262;
+import 'package:under_control_v2/features/tasks/presentation/blocs/calendar_task/calendar_task_bloc.dart'
+    as _i258;
 import 'package:under_control_v2/features/tasks/presentation/blocs/reserved_spare_parts/reserved_spare_parts_bloc.dart'
     as _i32;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task/task_bloc.dart'
@@ -447,7 +451,7 @@ import 'package:under_control_v2/features/tasks/presentation/blocs/task_archive/
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_archive_latest/task_archive_latest_bloc.dart'
     as _i251;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_filter/task_filter_bloc.dart'
-    as _i260;
+    as _i261;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_management/task_management_bloc.dart'
     as _i239;
 import 'package:under_control_v2/features/tasks/presentation/blocs/task_templates/task_templates_bloc.dart'
@@ -520,8 +524,8 @@ import 'package:under_control_v2/features/user_profile/presentation/blocs/user_p
     as _i211;
 
 import 'features/authentication/domain/repositories/injectable_modules.dart'
-    as _i262;
-import 'features/core/injectable_modules/injectable_modules.dart' as _i261;
+    as _i264;
+import 'features/core/injectable_modules/injectable_modules.dart' as _i263;
 
 /// ignore_for_file: unnecessary_lambdas
 /// ignore_for_file: lines_longer_than_80_chars
@@ -1299,38 +1303,45 @@ Future<_i1.GetIt> $initGetIt(
     authenticationBloc: gh<_i203.AuthenticationBloc>(),
     getAssetsStream: gh<_i129.GetAssetsStream>(),
   ));
-  gh.singleton<_i258.DashboardAssetActionBloc>(_i258.DashboardAssetActionBloc(
+  gh.lazySingleton<_i258.CalendarTaskBloc>(() => _i258.CalendarTaskBloc(
+        authenticationBloc: gh<_i203.AuthenticationBloc>(),
+        filterBloc: gh<_i246.FilterBloc>(),
+        getTasksStream: gh<_i153.GetTasksStream>(),
+      ));
+  gh.singleton<_i259.DashboardAssetActionBloc>(_i259.DashboardAssetActionBloc(
     authenticationBloc: gh<_i203.AuthenticationBloc>(),
     filterBloc: gh<_i246.FilterBloc>(),
     getDashboardAssetActionsStream: gh<_i136.GetDashboardAssetActionsStream>(),
     getDashboardLastFiveAssetActionsStream:
         gh<_i138.GetDashboardLastFiveAssetActionsStream>(),
   ));
-  gh.singleton<_i259.DashboardItemActionBloc>(_i259.DashboardItemActionBloc(
+  gh.singleton<_i260.DashboardItemActionBloc>(_i260.DashboardItemActionBloc(
     authenticationBloc: gh<_i203.AuthenticationBloc>(),
     filterBloc: gh<_i246.FilterBloc>(),
     getDashboardItemsActionsStream: gh<_i137.GetDashboardItemsActionsStream>(),
     getDashboardLastFiveItemsActionsStream:
         gh<_i139.GetDashboardLastFiveItemsActionsStream>(),
   ));
-  gh.singleton<_i260.TaskFilterBloc>(_i260.TaskFilterBloc(
+  gh.singleton<_i261.TaskFilterBloc>(_i261.TaskFilterBloc(
     gh<_i203.AuthenticationBloc>(),
     gh<_i211.UserProfileBloc>(),
     gh<_i252.TaskBloc>(),
     gh<_i254.WorkRequestBloc>(),
   ));
+  gh.lazySingleton<_i262.CalendarEventBloc>(
+      () => _i262.CalendarEventBloc(gh<_i258.CalendarTaskBloc>()));
   return getIt;
 }
 
-class _$FirebaseFirestoreService extends _i261.FirebaseFirestoreService {}
+class _$FirebaseFirestoreService extends _i263.FirebaseFirestoreService {}
 
-class _$FirebaseStorageService extends _i261.FirebaseStorageService {}
+class _$FirebaseStorageService extends _i263.FirebaseStorageService {}
 
-class _$FirebaseMessagingService extends _i261.FirebaseMessagingService {}
+class _$FirebaseMessagingService extends _i263.FirebaseMessagingService {}
 
-class _$SharedPreferencesService extends _i261.SharedPreferencesService {}
+class _$SharedPreferencesService extends _i263.SharedPreferencesService {}
 
 class _$FirebaseAuthenticationService
-    extends _i262.FirebaseAuthenticationService {}
+    extends _i264.FirebaseAuthenticationService {}
 
-class _$DataConnectionCheckerModule extends _i262.DataConnectionCheckerModule {}
+class _$DataConnectionCheckerModule extends _i264.DataConnectionCheckerModule {}

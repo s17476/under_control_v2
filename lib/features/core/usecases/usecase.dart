@@ -350,11 +350,15 @@ class ItemsInLocationsParams extends Equatable {
   final List<String> locations;
   final String companyId;
   final bool isAll;
+  final DateTime? from;
+  final DateTime? to;
 
   const ItemsInLocationsParams({
     required this.locations,
     required this.companyId,
     this.isAll = true,
+    this.from,
+    this.to,
   });
 
   @override
