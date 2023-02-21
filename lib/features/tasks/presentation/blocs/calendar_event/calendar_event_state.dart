@@ -1,7 +1,7 @@
 part of 'calendar_event_bloc.dart';
 
 abstract class CalendarEventState extends Equatable {
-  final Map<DateTime, List<Either<WorkRequest, Task>>> events;
+  final Map<DateTime, List<Either<WorkRequest, task.Task>>> events;
   const CalendarEventState({this.events = const {}});
 
   @override

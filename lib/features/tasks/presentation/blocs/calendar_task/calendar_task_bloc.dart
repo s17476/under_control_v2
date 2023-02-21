@@ -39,39 +39,39 @@ class CalendarTaskBloc extends Bloc<CalendarTaskEvent, CalendarTaskState> {
         add(ResetEvent());
       }
     });
-    // _filterStreamSubscription = filterBloc.stream.listen(
-    //   (filterState) {
-    //     if (filterState is FilterLoadedState) {
-    //       if (_taskStreamSubscriptions.isNotEmpty) {
-    //         // cancel old subscriptions
-    //         for (var workRequestSubscription in _taskStreamSubscriptions) {
-    //           workRequestSubscription?.cancel();
-    //         }
-    //         // clear subscriptions list
-    //         _taskStreamSubscriptions.clear();
-    //       }
+    _filterStreamSubscription = filterBloc.stream.listen(
+      (filterState) {
+        if (filterState is FilterLoadedState) {
+          if (_taskStreamSubscriptions.isNotEmpty) {
+            // cancel old subscriptions
+            for (var workRequestSubscription in _taskStreamSubscriptions) {
+              workRequestSubscription?.cancel();
+            }
+            // clear subscriptions list
+            _taskStreamSubscriptions.clear();
+          }
 
-    //       _companyId = filterState.companyId;
-    //       if (filterState.isAdmin && filterState.groups.isEmpty) {
-    //         _locations = filterState.locations.map((loc) => loc.id).toList();
-    //       } else {
-    //         _locations = filterState
-    //             .getAvailableLocations(FeatureType.tasks)
-    //             .map((loc) => loc.id)
-    //             .toList();
-    //       }
-    //       final state = this.state;
-    //       if (state is CalendarTaskLoadedState) {
-    //         add(GetCalendarTasksStreamEvent(from: state.from, to: state.to));
-    //       } else {
-    //         final now = DateTime.now();
-    //         final from = DateTime(now.year, now.month - 1);
-    //         final to = DateTime(now.year, now.month + 2);
-    //         add(GetCalendarTasksStreamEvent(from: from, to: to));
-    //       }
-    //     }
-    //   },
-    // );
+          _companyId = filterState.companyId;
+          if (filterState.isAdmin && filterState.groups.isEmpty) {
+            _locations = filterState.locations.map((loc) => loc.id).toList();
+          } else {
+            _locations = filterState
+                .getAvailableLocations(FeatureType.tasks)
+                .map((loc) => loc.id)
+                .toList();
+          }
+          final state = this.state;
+          if (state is CalendarTaskLoadedState) {
+            add(GetCalendarTasksStreamEvent(from: state.from, to: state.to));
+          } else {
+            final now = DateTime.now();
+            final from = DateTime(now.year, now.month - 1);
+            final to = DateTime(now.year, now.month + 2);
+            add(GetCalendarTasksStreamEvent(from: from, to: to));
+          }
+        }
+      },
+    );
 
     on<ResetEvent>(
       (event, emit) {
@@ -88,6 +88,20 @@ class CalendarTaskBloc extends Bloc<CalendarTaskEvent, CalendarTaskState> {
     );
 
     on<GetCalendarTasksStreamEvent>((event, emit) async {
+      if (_companyId.isEmpty) {
+        final filterState = filterBloc.state;
+        if (filterState is FilterLoadedState) {
+          _companyId = filterState.companyId;
+          if (filterState.isAdmin && filterState.groups.isEmpty) {
+            _locations = filterState.locations.map((loc) => loc.id).toList();
+          } else {
+            _locations = filterState
+                .getAvailableLocations(FeatureType.tasks)
+                .map((loc) => loc.id)
+                .toList();
+          }
+        }
+      }
       if (_locations.isEmpty) {
         emit(
           CalendarTaskLoadedState(

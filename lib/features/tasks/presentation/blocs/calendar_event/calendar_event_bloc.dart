@@ -44,7 +44,7 @@ class CalendarEventBloc extends Bloc<CalendarEventEvent, CalendarEventState> {
           }
         },
       );
-      print(events);
+      emit(CalendarEventLoaded(events: events));
     });
   }
 
