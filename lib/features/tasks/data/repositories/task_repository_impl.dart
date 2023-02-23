@@ -304,24 +304,35 @@ class TaskRepositoryImpl extends TaskRepository {
       ItemsInLocationsParams params) async {
     try {
       final Stream<QuerySnapshot> querySnapshot;
-      if (params.isAll) {
+      if (params.from != null && params.to != null) {
         querySnapshot = firebaseFirestore
             .collection('companies')
             .doc(params.companyId)
             .collection('tasksArchive')
+            .where('executionDate', isLessThan: params.to)
+            .where('executionDate', isGreaterThanOrEqualTo: params.from)
             .where('locationId', whereIn: params.locations)
             .snapshots();
       } else {
-        final now = DateTime.now();
-        final startDate = DateTime(now.year, now.month, now.day)
-            .subtract(const Duration(days: 30));
-        querySnapshot = firebaseFirestore
-            .collection('companies')
-            .doc(params.companyId)
-            .collection('tasksArchive')
-            .where('executionDate', isGreaterThanOrEqualTo: startDate)
-            .where('locationId', whereIn: params.locations)
-            .snapshots();
+        if (params.isAll) {
+          querySnapshot = firebaseFirestore
+              .collection('companies')
+              .doc(params.companyId)
+              .collection('tasksArchive')
+              .where('locationId', whereIn: params.locations)
+              .snapshots();
+        } else {
+          final now = DateTime.now();
+          final startDate = DateTime(now.year, now.month, now.day)
+              .subtract(const Duration(days: 30));
+          querySnapshot = firebaseFirestore
+              .collection('companies')
+              .doc(params.companyId)
+              .collection('tasksArchive')
+              .where('executionDate', isGreaterThanOrEqualTo: startDate)
+              .where('locationId', whereIn: params.locations)
+              .snapshots();
+        }
       }
 
       return Right(TasksStream(allTasks: querySnapshot));
