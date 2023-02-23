@@ -2,15 +2,15 @@ import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:under_control_v2/features/core/presentation/pages/loading_page.dart';
-import 'package:under_control_v2/features/settings/presentation/blocs/language/language_cubit.dart';
-import 'package:under_control_v2/features/tasks/presentation/blocs/calendar_event/calendar_event_bloc.dart';
-import 'package:under_control_v2/features/tasks/presentation/blocs/calendar_task/calendar_task_bloc.dart';
 
+import '../../../core/presentation/pages/loading_page.dart';
+import '../../../settings/presentation/blocs/language/language_cubit.dart';
 import '../../domain/entities/task/task.dart';
 import '../../domain/entities/work_request/work_request.dart';
+import '../blocs/calendar_event/calendar_event_bloc.dart';
+import '../blocs/calendar_task/calendar_task_bloc.dart';
+import '../blocs/calendar_task_archive/calenddar_task_archive_bloc.dart';
 import '../widgets/calendar/events_list.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -29,9 +29,27 @@ class _CalendarPageState extends State<CalendarPage> {
   Map<DateTime, List<dartz.Either<WorkRequest, Task>>>? _events;
   List<dartz.Either<WorkRequest, Task>> _selectedEvents = [];
 
-  final now = DateTime.now();
+  final now = DateTime(DateTime.now().year, DateTime.now().month);
   late DateTime from;
   late DateTime to;
+
+  void updateTasks() {
+    context.read<CalendarTaskBloc>().add(
+          GetCalendarTasksStreamEvent(
+            from: from,
+            to: to,
+          ),
+        );
+  }
+
+  void updateArchiveTasks() {
+    context.read<CalendarTaskArchiveBloc>().add(
+          GetCalendarTasksArchiveStreamEvent(
+            from: from,
+            to: to,
+          ),
+        );
+  }
 
   @override
   void initState() {
@@ -39,12 +57,8 @@ class _CalendarPageState extends State<CalendarPage> {
     to = DateTime(now.year, now.month + 2);
     final calendarState = context.read<CalendarEventBloc>().state;
     if (calendarState is CalendarEventEmpty) {
-      context.read<CalendarTaskBloc>().add(
-            GetCalendarTasksStreamEvent(
-              from: from,
-              to: to,
-            ),
-          );
+      updateTasks();
+      updateArchiveTasks();
     }
     super.initState();
   }
@@ -54,6 +68,9 @@ class _CalendarPageState extends State<CalendarPage> {
     final calendarState = context.watch<CalendarEventBloc>().state;
     if (calendarState is CalendarEventLoaded) {
       _events = calendarState.events;
+      if (_selectedDay == null) {
+        _selectedEvents = _events![normalizeDate(DateTime.now())] ?? [];
+      }
     }
     super.didChangeDependencies();
   }
@@ -66,8 +83,8 @@ class _CalendarPageState extends State<CalendarPage> {
     return ListView(
       children: [
         TableCalendar(
-          firstDay: DateTime(2022, 10),
-          lastDay: DateTime(2023, 10).subtract(const Duration(days: 1)),
+          firstDay: DateTime(2022, 1),
+          lastDay: DateTime(2030, 1).subtract(const Duration(days: 1)),
           focusedDay: _focusedDay,
           calendarFormat: _calendarFormat,
           availableGestures: AvailableGestures.horizontalSwipe,
@@ -84,12 +101,37 @@ class _CalendarPageState extends State<CalendarPage> {
               color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
-          // TODO - use page controller to fetch data from DB
           onCalendarCreated: (pageController) {
-            // data format Map<DateTime, List<task>>
-            // one month forward
-            // one month back
-            // get events for day in BLoC
+            pageController.addListener(
+              () {
+                final pageDifference =
+                    pageController.initialPage - (pageController.page ?? 0);
+
+                if (pageDifference % 1 == 0) {
+                  // going back
+                  if (pageDifference > 0) {
+                    final fromDifference = from.difference(
+                        DateTime(now.year, now.month - pageDifference.toInt()));
+                    if (fromDifference.inDays >= 0) {
+                      from = DateTime(from.year, from.month - 1);
+                      updateTasks();
+                      updateArchiveTasks();
+                    }
+                  }
+                  // going forward
+                  if (pageDifference < 0) {
+                    final toDifference = DateTime(
+                      now.year,
+                      now.month + 1 - pageDifference.toInt(),
+                    ).difference(to);
+                    if (toDifference.inDays >= 0) {
+                      to = DateTime(to.year, to.month + 1);
+                      updateTasks();
+                    }
+                  }
+                }
+              },
+            );
           },
           weekNumbersVisible: true,
           calendarStyle: CalendarStyle(

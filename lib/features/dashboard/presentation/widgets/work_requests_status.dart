@@ -248,16 +248,19 @@ class WorkRequestsStatus extends StatelessWidget {
             ),
           );
         }
-        return Shimmer.fromColors(
-          baseColor: Theme.of(context).cardColor,
-          highlightColor: Theme.of(context).cardColor.withAlpha(60),
-          child: Container(
-            width: double.infinity,
-            height: 145,
-            // margin: margin,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.black,
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Shimmer.fromColors(
+            baseColor: Theme.of(context).cardColor,
+            highlightColor: Theme.of(context).cardColor.withAlpha(60),
+            child: Container(
+              width: double.infinity,
+              height: 145,
+              // margin: margin,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.black,
+              ),
             ),
           ),
         );
