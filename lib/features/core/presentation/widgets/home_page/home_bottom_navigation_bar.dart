@@ -2,7 +2,13 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:under_control_v2/features/assets/presentation/widgets/assets_overlay_menu_items.dart';
 
+import '../../../../dashboard/presentation/widgets/dashboard_overlay_menu_items.dart';
+import '../../../../inventory/utils/inventory_overlay_menu_items.dart';
+import '../../../../knowledge_base/utils/knowledge_base_overlay_menu_items.dart';
+import '../../../../tasks/utils/tasks_overlay_menu_items.dart';
 import '../../../utils/responsive_size.dart';
 import '../animated_floating_menu.dart';
 
@@ -37,6 +43,23 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
   double _floatingActionButtonPosition = 0;
   final double _floatingActionButtonPositionTop = 85;
   final double _floatingActionButtonPositionBottom = 55;
+
+  List<SpeedDialChild> getMenuItems() {
+    switch (widget.navigationController.value) {
+      case 0:
+        return tasksOverlayMenuSpeedDialItems(context);
+      case 1:
+        return inventoryOverlayMenuSpeedDialItems(context);
+      case 2:
+        return dashboardOverlayMenuSpeedDialItems(context);
+      case 3:
+        return assetsOverlayMenuSpeedDialItems(context);
+      case 4:
+        return knowledgeBaseOverlayMenuSpeedDialItems(context);
+      default:
+        return [];
+    }
+  }
 
   @override
   void initState() {
@@ -125,10 +148,29 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
             position: _buttonSlideAnimation!,
             child: FadeTransition(
               opacity: _fadeAnimation!,
-              child: AnimatedFloatingMenu(
+              child: SpeedDial(
+                icon: Icons.menu,
+                activeIcon: Icons.close,
+                overlayOpacity: 0.85,
+                spacing: 3,
+                childPadding: const EdgeInsets.all(5),
+                spaceBetweenChildren: 4,
                 backgroundColor: _floatingButtonBackgroundColor,
-                onPressed: widget.toggleShowMenu,
+                buttonSize: const Size(50, 50),
+                // renderOverlay: true,
+                activeBackgroundColor: Colors.black,
+                elevation: 8.0,
+                animationCurve: Curves.elasticInOut,
+                isOpenOnStart: false,
+                children: getMenuItems(),
+                childrenButtonSize: const Size(60, 60),
+                childMargin: const EdgeInsets.only(right: 0),
+                animationDuration: const Duration(milliseconds: 300),
               ),
+              // child: AnimatedFloatingMenu(
+              //   backgroundColor: _floatingButtonBackgroundColor,
+              //   onPressed: widget.toggleShowMenu,
+              // ),
             ),
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import '../../../core/utils/choice.dart';
 import '../../../core/utils/get_user_permission.dart';
@@ -35,6 +36,40 @@ List<Choice> assetsOverlayMenuItems(BuildContext context) {
         );
       },
     ),
+  ];
+  return choices;
+}
+
+List<SpeedDialChild> assetsOverlayMenuSpeedDialItems(BuildContext context) {
+  final List<SpeedDialChild> choices = [
+    SpeedDialChild(
+      label: AppLocalizations.of(context)!.item_category_title,
+      child: const Icon(Icons.category),
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          AssetCategoryManagementPage.routeName,
+        );
+      },
+      shape: const StadiumBorder(),
+    ),
+    if (getUserPermission(
+      context: context,
+      featureType: FeatureType.assets,
+      permissionType: PermissionType.create,
+    ))
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!.asset_add_new,
+        child: const Icon(Icons.add),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            AddAssetPage.routeName,
+          );
+        },
+        backgroundColor: Colors.blue,
+        shape: const StadiumBorder(),
+      ),
   ];
   return choices;
 }
