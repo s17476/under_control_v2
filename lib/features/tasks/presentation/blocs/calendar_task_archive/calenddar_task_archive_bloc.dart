@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -91,123 +92,130 @@ class CalendarTaskArchiveBloc
       },
     );
 
-    on<GetCalendarTasksArchiveStreamEvent>((event, emit) async {
-      if (_companyId.isEmpty) {
-        final filterState = filterBloc.state;
-        if (filterState is FilterLoadedState) {
-          _companyId = filterState.companyId;
-          if (filterState.isAdmin && filterState.groups.isEmpty) {
-            _locations = filterState.locations.map((loc) => loc.id).toList();
-          } else {
-            _locations = filterState
-                .getAvailableLocations(FeatureType.tasks)
-                .map((loc) => loc.id)
-                .toList();
+    on<GetCalendarTasksArchiveStreamEvent>(
+      transformer: restartable(),
+      (event, emit) async {
+        if (_companyId.isEmpty) {
+          final filterState = filterBloc.state;
+          if (filterState is FilterLoadedState) {
+            _companyId = filterState.companyId;
+            if (filterState.isAdmin && filterState.groups.isEmpty) {
+              _locations = filterState.locations.map((loc) => loc.id).toList();
+            } else {
+              _locations = filterState
+                  .getAvailableLocations(FeatureType.tasks)
+                  .map((loc) => loc.id)
+                  .toList();
+            }
           }
         }
-      }
-      if (_locations.isEmpty) {
-        emit(
-          CalendarTaskArchiveLoadedState(
-            allTasks: const TasksListModel(
-              allTasks: [],
+        if (_locations.isEmpty) {
+          emit(
+            CalendarTaskArchiveLoadedState(
+              allTasks: const TasksListModel(
+                allTasks: [],
+              ),
+              from: event.from,
+              to: event.to,
             ),
-            from: event.from,
-            to: event.to,
-          ),
-        );
-      } else {
+          );
+        } else {
+          emit(CalendarTaskArchiveLoadingState());
+          if (_workRequestArchiveStreamSubscriptions.isNotEmpty) {
+            // cancel old subscriptions
+            for (var workRequestSubscription
+                in _workRequestArchiveStreamSubscriptions) {
+              workRequestSubscription?.cancel();
+            }
+            // clear subscriptions list
+            _workRequestArchiveStreamSubscriptions.clear();
+          }
+
+          final List<List<String>> chunkedLocations = [];
+          // chunks list size, because of DB limitations
+          int chunkSize = 10;
+          for (var i = 0; i < _locations.length; i += chunkSize) {
+            chunkedLocations.add(
+              _locations.sublist(
+                i,
+                i + chunkSize > _locations.length
+                    ? _locations.length
+                    : i + chunkSize,
+              ),
+            );
+          }
+          for (int j = 0; j < chunkedLocations.length; j++) {
+            var chunk = chunkedLocations[j];
+            final params = ItemsInLocationsParams(
+              locations: chunk,
+              companyId: _companyId,
+              from: event.from,
+              to: event.to,
+            );
+            final failureOrTasksStream = await getArchiveTasksStream(params);
+            await failureOrTasksStream.fold(
+              (failure) async => emit(CalendarTaskArchiveErrorState()),
+              (assetsStream) async {
+                final streamSubscription =
+                    assetsStream.allTasks.listen((snapshot) {
+                  add(UpdateCalendarTasksArchiveListEvent(
+                    snapshot: snapshot,
+                    locations: chunk,
+                    from: event.from,
+                    to: event.to,
+                  ));
+                });
+                _workRequestArchiveStreamSubscriptions.add(streamSubscription);
+              },
+            );
+          }
+        }
+      },
+    );
+
+    on<UpdateCalendarTasksArchiveListEvent>(
+      transformer: restartable(),
+      (event, emit) async {
+        List<Task>? oldTasks;
+        // save old tasks if this is not a first chunk
+        if (state is CalendarTaskArchiveLoadedState) {
+          oldTasks =
+              (state as CalendarTaskArchiveLoadedState).allTasks.allTasks;
+        }
         emit(CalendarTaskArchiveLoadingState());
-        if (_workRequestArchiveStreamSubscriptions.isNotEmpty) {
-          // cancel old subscriptions
-          for (var workRequestSubscription
-              in _workRequestArchiveStreamSubscriptions) {
-            workRequestSubscription?.cancel();
-          }
-          // clear subscriptions list
-          _workRequestArchiveStreamSubscriptions.clear();
-        }
-
-        final List<List<String>> chunkedLocations = [];
-        // chunks list size, because of DB limitations
-        int chunkSize = 10;
-        for (var i = 0; i < _locations.length; i += chunkSize) {
-          chunkedLocations.add(
-            _locations.sublist(
-              i,
-              i + chunkSize > _locations.length
-                  ? _locations.length
-                  : i + chunkSize,
-            ),
-          );
-        }
-        for (int j = 0; j < chunkedLocations.length; j++) {
-          var chunk = chunkedLocations[j];
-          final params = ItemsInLocationsParams(
-            locations: chunk,
-            companyId: _companyId,
-            from: event.from,
-            to: event.to,
-          );
-          final failureOrTasksStream = await getArchiveTasksStream(params);
-          await failureOrTasksStream.fold(
-            (failure) async => emit(CalendarTaskArchiveErrorState()),
-            (assetsStream) async {
-              final streamSubscription =
-                  assetsStream.allTasks.listen((snapshot) {
-                add(UpdateCalendarTasksArchiveListEvent(
-                  snapshot: snapshot,
-                  locations: chunk,
-                  from: event.from,
-                  to: event.to,
-                ));
-              });
-              _workRequestArchiveStreamSubscriptions.add(streamSubscription);
-            },
-          );
-        }
-      }
-    });
-
-    on<UpdateCalendarTasksArchiveListEvent>((event, emit) async {
-      List<Task>? oldTasks;
-      // save old tasks if this is not a first chunk
-      if (state is CalendarTaskArchiveLoadedState) {
-        oldTasks = (state as CalendarTaskArchiveLoadedState).allTasks.allTasks;
-      }
-      emit(CalendarTaskArchiveLoadingState());
-      // gets tasks list
-      TasksListModel workRequestsList = TasksListModel.fromSnapshot(
-        event.snapshot as QuerySnapshot<Map<String, dynamic>>,
-      );
-
-      // merge tasks list if this is not a first chunk
-      if (oldTasks != null) {
-        List<Task> workRequestsToRemove = [];
-        for (var oldTask in oldTasks) {
-          if (event.locations.contains(oldTask.locationId)) {
-            workRequestsToRemove.add(oldTask);
-          }
-        }
-        for (var workRequestToRemove in workRequestsToRemove) {
-          oldTasks.remove(workRequestToRemove);
-        }
-        // merge and sort by priority
-        List<Task> tmpList = [
-          ...oldTasks,
-          ...workRequestsList.allTasks,
-        ]..sort((a, b) => b.executionDate.compareTo(a.executionDate));
-
-        workRequestsList = TasksListModel(
-          allTasks: tmpList,
+        // gets tasks list
+        TasksListModel workRequestsList = TasksListModel.fromSnapshot(
+          event.snapshot as QuerySnapshot<Map<String, dynamic>>,
         );
-      }
-      emit(CalendarTaskArchiveLoadedState(
-        allTasks: workRequestsList,
-        from: event.from,
-        to: event.to,
-      ));
-    });
+
+        // merge tasks list if this is not a first chunk
+        if (oldTasks != null) {
+          List<Task> workRequestsToRemove = [];
+          for (var oldTask in oldTasks) {
+            if (event.locations.contains(oldTask.locationId)) {
+              workRequestsToRemove.add(oldTask);
+            }
+          }
+          for (var workRequestToRemove in workRequestsToRemove) {
+            oldTasks.remove(workRequestToRemove);
+          }
+          // merge and sort by priority
+          List<Task> tmpList = [
+            ...oldTasks,
+            ...workRequestsList.allTasks,
+          ]..sort((a, b) => b.executionDate.compareTo(a.executionDate));
+
+          workRequestsList = TasksListModel(
+            allTasks: tmpList,
+          );
+        }
+        emit(CalendarTaskArchiveLoadedState(
+          allTasks: workRequestsList,
+          from: event.from,
+          to: event.to,
+        ));
+      },
+    );
   }
 
   @override
