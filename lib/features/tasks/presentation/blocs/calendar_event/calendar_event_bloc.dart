@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../filter/presentation/blocs/filter/filter_bloc.dart';
 import '../../../domain/entities/task/task.dart' as task;
 import '../../../domain/entities/work_request/work_request.dart';
 import '../calendar_task/calendar_task_bloc.dart';
@@ -18,6 +19,7 @@ part 'calendar_event_state.dart';
 class CalendarEventBloc extends Bloc<CalendarEventEvent, CalendarEventState> {
   final CalendarTaskBloc calendarTaskBloc;
   final CalendarTaskArchiveBloc calendarTaskArchiveBloc;
+  final FilterBloc filterBloc;
 
   late StreamSubscription taskStreamSubscription;
   late StreamSubscription taskArchiveStreamSubscription;
@@ -25,6 +27,7 @@ class CalendarEventBloc extends Bloc<CalendarEventEvent, CalendarEventState> {
   CalendarEventBloc(
     this.calendarTaskBloc,
     this.calendarTaskArchiveBloc,
+    this.filterBloc,
   ) : super(CalendarEventEmpty()) {
     // tasks
     taskStreamSubscription = calendarTaskBloc.stream.listen((state) {
@@ -41,62 +44,66 @@ class CalendarEventBloc extends Bloc<CalendarEventEvent, CalendarEventState> {
     });
 
     on<UpdateEvents>((event, emit) {
-      final oldEvents = state.events;
-      emit(CalendarEventLoading());
-      final Map<DateTime, List<Either<WorkRequest, task.Task>>> events = {};
-      event.events.fold(
-        // TODO add work requests
-        (l) => null,
-        (tasks) {
-          for (var task in tasks) {
-            final date = normalizeDate(task.executionDate);
-            if (events.containsKey(date)) {
-              events.update(date, (list) => list..add(right(task)));
-            } else {
-              events[date] = [right(task)];
+      final filterState = filterBloc.state;
+      if (filterState is FilterLoadedState) {
+        final locations = filterState.locations.map((loc) => loc.id);
+        final oldEvents = state.events;
+        emit(CalendarEventLoading());
+        final Map<DateTime, List<Either<WorkRequest, task.Task>>> events = {};
+        event.events.fold(
+          // TODO add work requests
+          (l) => null,
+          (tasks) {
+            for (var task in tasks) {
+              final date = normalizeDate(task.executionDate);
+              if (events.containsKey(date)) {
+                events.update(date, (list) => list..add(right(task)));
+              } else {
+                events[date] = [right(task)];
+              }
+            }
+          },
+        );
+
+        final doubleKeys =
+            events.keys.where((key) => oldEvents.keys.contains(key));
+
+        Map<DateTime, List<Either<WorkRequest, task.Task>>> combinedEvents = {}
+          ..addAll(events)
+          ..addAll(oldEvents);
+
+        for (var key in doubleKeys) {
+          final oldTasks = oldEvents[key]
+              ?.map((e) => e.fold((_) => null, (r) => r))
+              .where((e) => e != null && locations.contains(e.locationId))
+              .toList();
+          final newTasks = events[key]
+              ?.map((e) => e.fold((_) => null, (r) => r))
+              .where((e) => e != null)
+              .toList();
+
+          if (oldTasks != null && newTasks != null) {
+            for (var task in oldTasks) {
+              if (!newTasks.contains(task)) {
+                newTasks.add(task);
+              }
             }
           }
-        },
-      );
 
-      final doubleKeys =
-          events.keys.where((key) => oldEvents.keys.contains(key));
+          combinedEvents[key] =
+              newTasks!.map((e) => right<WorkRequest, task.Task>(e!)).toList();
 
-      Map<DateTime, List<Either<WorkRequest, task.Task>>> combinedEvents = {}
-        ..addAll(events)
-        ..addAll(oldEvents);
-
-      for (var key in doubleKeys) {
-        final oldTasks = oldEvents[key]
-            ?.map((e) => e.fold((_) => null, (r) => r))
-            .where((e) => e != null)
-            .toList();
-        final newTasks = events[key]
-            ?.map((e) => e.fold((_) => null, (r) => r))
-            .where((e) => e != null)
-            .toList();
-
-        if (oldTasks != null && newTasks != null) {
-          for (var task in oldTasks) {
-            if (!newTasks.contains(task)) {
-              newTasks.add(task);
-            }
-          }
+          combinedEvents.update(
+            key,
+            (value) => value
+              ..addAll(
+                events[key]!.where((element) => element.isLeft()).toList(),
+              ),
+          );
         }
 
-        combinedEvents[key] =
-            newTasks!.map((e) => right<WorkRequest, task.Task>(e!)).toList();
-
-        combinedEvents.update(
-          key,
-          (value) => value
-            ..addAll(
-              events[key]!.where((element) => element.isLeft()).toList(),
-            ),
-        );
+        emit(CalendarEventLoaded(events: combinedEvents));
       }
-
-      emit(CalendarEventLoaded(events: combinedEvents));
     });
   }
 

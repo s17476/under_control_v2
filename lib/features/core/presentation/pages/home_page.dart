@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage>
   void _toggleIsFilterExpanded() {
     setState(() {
       _isFilterExpanded = !_isFilterExpanded;
-      _isCalendarVisible = false;
+      // _isCalendarVisible = false;
     });
     context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
   }
