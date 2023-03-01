@@ -6,11 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import 'package:under_control_v2/features/tasks/domain/entities/work_request/work_request.dart';
-import 'package:under_control_v2/features/tasks/presentation/blocs/calendar_task/calendar_task_bloc.dart';
-import 'package:under_control_v2/features/tasks/presentation/blocs/calendar_task_archive/calenddar_task_archive_bloc.dart';
-
 import '../../../domain/entities/task/task.dart' as task;
+import '../../../domain/entities/work_request/work_request.dart';
+import '../calendar_task/calendar_task_bloc.dart';
+import '../calendar_task_archive/calenddar_task_archive_bloc.dart';
 
 part 'calendar_event_event.dart';
 part 'calendar_event_state.dart';
@@ -42,6 +41,8 @@ class CalendarEventBloc extends Bloc<CalendarEventEvent, CalendarEventState> {
     });
 
     on<UpdateEvents>((event, emit) {
+      final oldEvents = state.events;
+      emit(CalendarEventLoading());
       final Map<DateTime, List<Either<WorkRequest, task.Task>>> events = {};
       event.events.fold(
         // TODO add work requests
@@ -57,7 +58,6 @@ class CalendarEventBloc extends Bloc<CalendarEventEvent, CalendarEventState> {
           }
         },
       );
-      final oldEvents = state.events;
 
       final doubleKeys =
           events.keys.where((key) => oldEvents.keys.contains(key));
