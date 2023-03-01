@@ -87,9 +87,10 @@ class _CalendarPageState extends State<CalendarPage> {
     if (calendarState is CalendarEventLoading) {}
     if (calendarState is CalendarEventLoaded) {
       _events = calendarState.events;
-      if (_selectedDay == null) {
-        _selectedEvents = _events![normalizeDate(DateTime.now())] ?? [];
-      }
+      // if (_selectedDay == null) {
+      _selectedEvents =
+          _events![normalizeDate(_selectedDay ?? DateTime.now())] ?? [];
+      // }
       isLoadingEvents = false;
     }
     super.didChangeDependencies();

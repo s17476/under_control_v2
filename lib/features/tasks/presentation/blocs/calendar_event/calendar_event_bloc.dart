@@ -43,68 +43,35 @@ class CalendarEventBloc extends Bloc<CalendarEventEvent, CalendarEventState> {
       }
     });
 
-    on<UpdateEvents>((event, emit) {
-      final filterState = filterBloc.state;
-      if (filterState is FilterLoadedState) {
-        final locations = filterState.locations.map((loc) => loc.id);
-        final oldEvents = state.events;
+    on<UpdateEvents>(
+      (event, emit) {
         emit(CalendarEventLoading());
         final Map<DateTime, List<Either<WorkRequest, task.Task>>> events = {};
-        event.events.fold(
-          // TODO add work requests
-          (l) => null,
-          (tasks) {
-            for (var task in tasks) {
-              final date = normalizeDate(task.executionDate);
-              if (events.containsKey(date)) {
-                events.update(date, (list) => list..add(right(task)));
-              } else {
-                events[date] = [right(task)];
-              }
-            }
-          },
-        );
-
-        final doubleKeys =
-            events.keys.where((key) => oldEvents.keys.contains(key));
-
-        Map<DateTime, List<Either<WorkRequest, task.Task>>> combinedEvents = {}
-          ..addAll(events)
-          ..addAll(oldEvents);
-
-        for (var key in doubleKeys) {
-          final oldTasks = oldEvents[key]
-              ?.map((e) => e.fold((_) => null, (r) => r))
-              .where((e) => e != null && locations.contains(e.locationId))
-              .toList();
-          final newTasks = events[key]
-              ?.map((e) => e.fold((_) => null, (r) => r))
-              .where((e) => e != null)
-              .toList();
-
-          if (oldTasks != null && newTasks != null) {
-            for (var task in oldTasks) {
-              if (!newTasks.contains(task)) {
-                newTasks.add(task);
-              }
+        final tasksState = calendarTaskBloc.state;
+        if (tasksState is CalendarTaskLoadedState) {
+          for (var task in tasksState.allTasks.allTasks) {
+            final date = normalizeDate(task.executionDate);
+            if (events.containsKey(date)) {
+              events.update(date, (list) => list..add(right(task)));
+            } else {
+              events[date] = [right(task)];
             }
           }
-
-          combinedEvents[key] =
-              newTasks!.map((e) => right<WorkRequest, task.Task>(e!)).toList();
-
-          combinedEvents.update(
-            key,
-            (value) => value
-              ..addAll(
-                events[key]!.where((element) => element.isLeft()).toList(),
-              ),
-          );
         }
-
-        emit(CalendarEventLoaded(events: combinedEvents));
-      }
-    });
+        final tasksArchiveState = calendarTaskArchiveBloc.state;
+        if (tasksArchiveState is CalendarTaskArchiveLoadedState) {
+          for (var task in tasksArchiveState.allTasks.allTasks) {
+            final date = normalizeDate(task.executionDate);
+            if (events.containsKey(date)) {
+              events.update(date, (list) => list..add(right(task)));
+            } else {
+              events[date] = [right(task)];
+            }
+          }
+        }
+        emit(CalendarEventLoaded(events: events));
+      },
+    );
   }
 
   @override
