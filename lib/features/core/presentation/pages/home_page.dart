@@ -670,11 +670,11 @@ class _HomePageState extends State<HomePage>
                       isNotificationsExpanded: _isNotificationsExpanded,
                       onDismiss: _toggleIsNotificationsExpanded,
                     ),
-                    OverlayMenu(
-                      isVisible: _isMenuVisible,
-                      onDismiss: _toggleIsMenuVisible,
-                      pageIndex: _pageIndex,
-                    ),
+                    // OverlayMenu(
+                    //   isVisible: _isMenuVisible,
+                    //   onDismiss: _toggleIsMenuVisible,
+                    //   pageIndex: _pageIndex,
+                    // ),
                     // inventory search box
                     AppBarSearchBox(
                       title: AppLocalizations.of(context)!.search_item,

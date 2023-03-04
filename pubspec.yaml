@@ -16,6 +16,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   equatable: ^2.0.3
   flutter_bloc: ^8.0.1
+  bloc_concurrency: ^0.2.0
   validators: ^3.0.0
   firebase_core: ^1.14.0
   firebase_auth: ^3.3.17
@@ -37,7 +38,6 @@ dependencies:
   mobile_scanner: ^2.0.0
   country_picker: ^2.0.16
   currency_picker: ^2.0.12
-  bloc_concurrency: ^0.2.0
   font_awesome_flutter: ^10.2.1
   shimmer: ^2.0.0
   video_player: ^2.5.1

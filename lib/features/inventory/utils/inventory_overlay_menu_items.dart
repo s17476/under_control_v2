@@ -51,6 +51,7 @@ List<SpeedDialChild> inventoryOverlayMenuSpeedDialItems(BuildContext context) {
           ItemCategoryManagementPage.routeName,
         );
       },
+      shape: const StadiumBorder(),
     ),
     if (getUserPermission(
       context: context,
