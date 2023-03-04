@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_compress/video_compress.dart';
 
@@ -9,7 +10,6 @@ import '../../../../core/presentation/widgets/custom_video_player.dart';
 import '../../../../core/presentation/widgets/image_viewer.dart';
 import '../../../../core/utils/get_file_size.dart';
 import '../../../../core/utils/show_snack_bar.dart';
-import 'add_work_request_overlay_menu.dart';
 
 class AddWorkRequestAdditional extends StatefulWidget {
   const AddWorkRequestAdditional({
@@ -112,6 +112,56 @@ class _AddWorkRequestAdditionalState extends State<AddWorkRequestAdditional> {
             .user_profile_add_user_image_pisker_error,
       );
     }
+  }
+
+  List<SpeedDialChild> _addWorkRequestOverlayMenuItems(BuildContext context) {
+    final List<SpeedDialChild> choices = [
+      // video camera
+      SpeedDialChild(
+        label:
+            '${AppLocalizations.of(context)!.content_video} - ${AppLocalizations.of(context)!.take_photo}',
+        child: const Icon(Icons.camera),
+        onTap: () {
+          _pickVideo(context, ImageSource.camera);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      // video gallery
+      SpeedDialChild(
+        label:
+            '${AppLocalizations.of(context)!.content_video} - ${AppLocalizations.of(context)!.user_profile_add_user_personal_data_gallery}',
+        child: const Icon(Icons.photo_size_select_actual_rounded),
+        onTap: () {
+          _pickVideo(context, ImageSource.gallery);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      // images camera
+      SpeedDialChild(
+        label:
+            '${AppLocalizations.of(context)!.content_image} - ${AppLocalizations.of(context)!.take_photo}',
+        child: const Icon(Icons.camera),
+        onTap: () {
+          _pickImage(context, ImageSource.camera);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      // images gallery
+      SpeedDialChild(
+        label:
+            '${AppLocalizations.of(context)!.content_image} - ${AppLocalizations.of(context)!.user_profile_add_user_personal_data_gallery}',
+        child: const Icon(Icons.photo_size_select_actual_rounded),
+        onTap: () {
+          _pickImage(context, ImageSource.gallery);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+    ];
+    return choices.reversed.toList();
   }
 
   @override
@@ -334,23 +384,47 @@ class _AddWorkRequestAdditionalState extends State<AddWorkRequestAdditional> {
           ),
         ),
         Positioned(
-          bottom: 58,
+          bottom: 70,
           right: 16,
-          child: FloatingActionButton(
+          child: SpeedDial(
+            icon: Icons.add,
+            iconTheme: const IconThemeData(size: 36),
+            activeIcon: Icons.close,
+            overlayOpacity: 0.85,
+            spacing: 3,
+            childPadding: const EdgeInsets.all(5),
+            spaceBetweenChildren: 4,
             backgroundColor: Theme.of(context).primaryColor,
-            onPressed: widget.toggleAddAdditionalVisibility,
-            child: const Icon(
-              Icons.add,
-              size: 40,
-            ),
+            buttonSize: const Size(50, 50),
+            // renderOverlay: true,
+            activeBackgroundColor: Colors.black,
+            elevation: 8.0,
+            animationCurve: Curves.elasticInOut,
+            isOpenOnStart: false,
+            children: _addWorkRequestOverlayMenuItems(context),
+            childrenButtonSize: const Size(60, 60),
+            childMargin: const EdgeInsets.only(right: 0),
+            animationDuration: const Duration(milliseconds: 300),
           ),
         ),
-        if (widget.isAddAdditionalVisible)
-          AddWorkRequestOverlayMenu(
-            onDismiss: widget.toggleAddAdditionalVisibility,
-            pickImage: _pickImage,
-            pickVideo: _pickVideo,
-          ),
+        // Positioned(
+        //   bottom: 58,
+        //   right: 16,
+        //   child: FloatingActionButton(
+        //     backgroundColor: Theme.of(context).primaryColor,
+        //     onPressed: widget.toggleAddAdditionalVisibility,
+        //     child: const Icon(
+        //       Icons.add,
+        //       size: 40,
+        //     ),
+        //   ),
+        // ),
+        // if (widget.isAddAdditionalVisible)
+        //   AddWorkRequestOverlayMenu(
+        //     onDismiss: widget.toggleAddAdditionalVisibility,
+        //     pickImage: _pickImage,
+        //     pickVideo: _pickVideo,
+        //   ),
       ],
     );
   }

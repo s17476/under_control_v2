@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_compress/video_compress.dart';
 
@@ -224,6 +225,100 @@ class _AddTaskAdditionalState extends State<AddTaskAdditional> {
             .user_profile_add_user_image_pisker_error,
       );
     }
+  }
+
+  List<SpeedDialChild> _addTaskOverlayMenuItems(BuildContext context) {
+    final List<SpeedDialChild> choices = [
+      // video camera
+      SpeedDialChild(
+        label:
+            '${AppLocalizations.of(context)!.content_video} - ${AppLocalizations.of(context)!.take_photo}',
+        child: const Icon(Icons.camera),
+        onTap: () {
+          _pickVideo(context, ImageSource.camera);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      // video gallery
+      SpeedDialChild(
+        label:
+            '${AppLocalizations.of(context)!.content_video} - ${AppLocalizations.of(context)!.user_profile_add_user_personal_data_gallery}',
+        child: const Icon(Icons.photo_size_select_actual_rounded),
+        onTap: () {
+          _pickVideo(context, ImageSource.gallery);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      // images camera
+      SpeedDialChild(
+        label:
+            '${AppLocalizations.of(context)!.content_image} - ${AppLocalizations.of(context)!.take_photo}',
+        child: const Icon(Icons.camera),
+        onTap: () {
+          _pickImage(context, ImageSource.camera);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      // images gallery
+      SpeedDialChild(
+        label:
+            '${AppLocalizations.of(context)!.content_image} - ${AppLocalizations.of(context)!.user_profile_add_user_personal_data_gallery}',
+        child: const Icon(Icons.photo_size_select_actual_rounded),
+        onTap: () {
+          _pickImage(context, ImageSource.gallery);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      // instructions
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!.asset_add_instructions,
+        child: const Icon(Icons.menu_book),
+        onTap: widget.toggleAddInstructionsVisibility,
+        shape: const StadiumBorder(),
+        backgroundColor: Colors.purple,
+      ),
+
+      // inventory
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!.bottom_bar_title_inventory,
+        child: const Icon(Icons.apps),
+        onTap: widget.toggleAddItemVisibility,
+        shape: const StadiumBorder(),
+        backgroundColor: Colors.orange,
+      ),
+      // assets
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!.bottom_bar_title_assets,
+        child: const Icon(Icons.precision_manufacturing),
+        onTap: widget.toggleAddAssetVisibility,
+        shape: const StadiumBorder(),
+        backgroundColor: Colors.blue,
+      ),
+      // checklist
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!.checklist_add_button,
+        child: const Icon(Icons.checklist),
+        onTap: widget.toggleAddChecklistVisibility,
+        shape: const StadiumBorder(),
+        backgroundColor: Colors.red,
+      ),
+      // checkpoint
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!.checklist_add_checkpoint,
+        child: const Icon(Icons.done),
+        onTap: () => showAddCheckpointModalBottomSheet(
+          context: context,
+          onSave: _saveCheckpoint,
+        ),
+        shape: const StadiumBorder(),
+        backgroundColor: Colors.red,
+      ),
+    ];
+    return choices.reversed.toList();
   }
 
   @override
@@ -549,29 +644,53 @@ class _AddTaskAdditionalState extends State<AddTaskAdditional> {
           ),
         ),
         Positioned(
-          bottom: 58,
+          bottom: 70,
           right: 16,
-          child: FloatingActionButton(
+          child: SpeedDial(
+            icon: Icons.add,
+            iconTheme: const IconThemeData(size: 36),
+            activeIcon: Icons.close,
+            overlayOpacity: 0.85,
+            spacing: 3,
+            childPadding: const EdgeInsets.all(5),
+            spaceBetweenChildren: 4,
             backgroundColor: Theme.of(context).primaryColor,
-            onPressed: widget.toggleAddAdditionalVisibility,
-            child: const Icon(
-              Icons.add,
-              size: 40,
-            ),
+            buttonSize: const Size(50, 50),
+            // renderOverlay: true,
+            activeBackgroundColor: Colors.black,
+            elevation: 8.0,
+            animationCurve: Curves.elasticInOut,
+            isOpenOnStart: false,
+            children: _addTaskOverlayMenuItems(context),
+            childrenButtonSize: const Size(60, 60),
+            childMargin: const EdgeInsets.only(right: 0),
+            animationDuration: const Duration(milliseconds: 300),
           ),
         ),
-        if (widget.isAddAdditionalVisible)
-          AddTaskOverlayMenu(
-            onDismiss: widget.toggleAddAdditionalVisibility,
-            pickImage: _pickImage,
-            pickVideo: _pickVideo,
-            toggleAddInstructionsVisibility:
-                widget.toggleAddInstructionsVisibility,
-            toggleAddAssetVisibility: widget.toggleAddAssetVisibility,
-            toggleAddItemVisibility: widget.toggleAddItemVisibility,
-            toggleAddChecklistVisibility: widget.toggleAddChecklistVisibility,
-            addCheckpoint: _saveCheckpoint,
-          ),
+        // Positioned(
+        //   bottom: 58,
+        //   right: 16,
+        //   child: FloatingActionButton(
+        //     backgroundColor: Theme.of(context).primaryColor,
+        //     onPressed: widget.toggleAddAdditionalVisibility,
+        //     child: const Icon(
+        //       Icons.add,
+        //       size: 40,
+        //     ),
+        //   ),
+        // ),
+        // if (widget.isAddAdditionalVisible)
+        //   AddTaskOverlayMenu(
+        //     onDismiss: widget.toggleAddAdditionalVisibility,
+        //     pickImage: _pickImage,
+        //     pickVideo: _pickVideo,
+        //     toggleAddInstructionsVisibility:
+        //         widget.toggleAddInstructionsVisibility,
+        //     toggleAddAssetVisibility: widget.toggleAddAssetVisibility,
+        //     toggleAddItemVisibility: widget.toggleAddItemVisibility,
+        //     toggleAddChecklistVisibility: widget.toggleAddChecklistVisibility,
+        //     addCheckpoint: _saveCheckpoint,
+        //   ),
         if (widget.isAddInstructionsVisible)
           OverlayInstructionSelection(
             onDismiss: widget.toggleAddInstructionsVisibility,
