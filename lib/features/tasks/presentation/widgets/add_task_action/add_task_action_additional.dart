@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../assets/data/models/asset_model.dart';
@@ -19,7 +20,6 @@ import '../../../../inventory/presentation/widgets/inventory_selection/overlay_i
 import '../../../../inventory/presentation/widgets/shimmer_item_tile.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
 import '../add_task/item_tile_with_quantity.dart';
-import 'add_task_action_overlay_menu.dart';
 import 'add_task_action_remove_asset_card.dart';
 import 'add_task_action_remove_assets_overlay.dart';
 
@@ -130,6 +130,67 @@ class AddTaskActionAdditional extends HookWidget {
     }
   }
 
+  List<SpeedDialChild> _addTaskActionOverlayMenuItems(
+    BuildContext context,
+    ValueNotifier<bool> showOnlySubAssets,
+  ) {
+    final List<SpeedDialChild> choices = [
+      // camera
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!.take_photo,
+        child: const Icon(Icons.camera),
+        onTap: () {
+          _pickImage(context, ImageSource.camera);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      // gallery
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!
+            .user_profile_add_user_personal_data_gallery,
+        child: const Icon(Icons.photo_size_select_actual_rounded),
+        onTap: () {
+          _pickImage(context, ImageSource.gallery);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+
+      // inventory
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!.task_action_used_items,
+        child: const Icon(Icons.apps),
+        onTap: toggleAddItemVisibility,
+        shape: const StadiumBorder(),
+        backgroundColor: Colors.orange,
+      ),
+
+      // assets
+      if (isConnectedToAnAsset)
+        SpeedDialChild(
+          label: AppLocalizations.of(context)!.task_action_add_assets,
+          child: const Icon(Icons.precision_manufacturing),
+          onTap: () {
+            showOnlySubAssets.value = true;
+            toggleAddAssetVisibility();
+          },
+          shape: const StadiumBorder(),
+          backgroundColor: Colors.blue,
+        ),
+      // remove broken assets
+      if (isConnectedToAnAsset)
+        SpeedDialChild(
+          label: AppLocalizations.of(context)!.task_action_remove_assets,
+          child: const Icon(Icons.clear),
+          onTap: () => toggleRemoveAssetVisibility(),
+          shape: const StadiumBorder(),
+          backgroundColor: Colors.red,
+        ),
+    ];
+    return choices.reversed.toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     final showOnlySubAssets = useState(true);
@@ -229,27 +290,52 @@ class AddTaskActionAdditional extends HookWidget {
           ),
         ),
         Positioned(
-          bottom: 58,
+          bottom: 70,
           right: 16,
-          child: FloatingActionButton(
+          child: SpeedDial(
+            icon: Icons.add,
+            iconTheme: const IconThemeData(size: 36),
+            activeIcon: Icons.close,
+            overlayOpacity: 0.85,
+            spacing: 3,
+            childPadding: const EdgeInsets.all(5),
+            spaceBetweenChildren: 4,
             backgroundColor: Theme.of(context).primaryColor,
-            onPressed: toggleAddAdditionalVisibility,
-            child: const Icon(
-              Icons.add,
-              size: 40,
-            ),
+            buttonSize: const Size(50, 50),
+            // renderOverlay: true,
+            activeBackgroundColor: Colors.black,
+            elevation: 8.0,
+            animationCurve: Curves.elasticInOut,
+            isOpenOnStart: false,
+            children:
+                _addTaskActionOverlayMenuItems(context, showOnlySubAssets),
+            childrenButtonSize: const Size(60, 60),
+            childMargin: const EdgeInsets.only(right: 0),
+            animationDuration: const Duration(milliseconds: 300),
           ),
         ),
-        if (isAddAdditionalVisible)
-          AddTaskActionOverlayMenu(
-            onDismiss: toggleAddAdditionalVisibility,
-            pickImage: _pickImage,
-            toggleAddAssetVisibility: toggleAddAssetVisibility,
-            toggleAddItemVisibility: toggleAddItemVisibility,
-            isConnectedToAnAsset: isConnectedToAnAsset,
-            showOnlySubAssets: showOnlySubAssets,
-            toggleRemoveAssetVisibility: toggleRemoveAssetVisibility,
-          ),
+        // Positioned(
+        //   bottom: 58,
+        //   right: 16,
+        //   child: FloatingActionButton(
+        //     backgroundColor: Theme.of(context).primaryColor,
+        //     onPressed: toggleAddAdditionalVisibility,
+        //     child: const Icon(
+        //       Icons.add,
+        //       size: 40,
+        //     ),
+        //   ),
+        // ),
+        // if (isAddAdditionalVisible)
+        //   AddTaskActionOverlayMenu(
+        //     onDismiss: toggleAddAdditionalVisibility,
+        //     pickImage: _pickImage,
+        //     toggleAddAssetVisibility: toggleAddAssetVisibility,
+        //     toggleAddItemVisibility: toggleAddItemVisibility,
+        //     isConnectedToAnAsset: isConnectedToAnAsset,
+        //     showOnlySubAssets: showOnlySubAssets,
+        //     toggleRemoveAssetVisibility: toggleRemoveAssetVisibility,
+        //   ),
         if (isAddItemVisible)
           OverlayInventorySelection(
             isMultiselection: true,
