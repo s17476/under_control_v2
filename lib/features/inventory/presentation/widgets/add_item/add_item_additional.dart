@@ -5,6 +5,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/presentation/widgets/image_viewer.dart';
@@ -61,6 +63,51 @@ class AddItemAdditional extends StatelessWidget with ResponsiveSize {
       File file = File(result.files.single.path!);
       addDocument(file);
     }
+  }
+
+  List<SpeedDialChild> _addAssetsOverlayMenuItems(BuildContext context) {
+    final List<SpeedDialChild> choices = [
+      // camera
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!.take_photo,
+        child: const Icon(Icons.camera),
+        onTap: () {
+          addImage(ImageSource.camera);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      // gallery
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!
+            .user_profile_add_user_personal_data_gallery,
+        child: const Icon(Icons.photo_size_select_actual_rounded),
+        onTap: () {
+          addImage(ImageSource.gallery);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      // pdf
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!.asset_add_pdf,
+        child: const Icon(FontAwesomeIcons.filePdf),
+        onTap: () {
+          _pickPdfFile(context);
+        },
+        shape: const StadiumBorder(),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      // instructions
+      SpeedDialChild(
+        label: AppLocalizations.of(context)!.asset_add_instructions,
+        child: const Icon(Icons.menu_book),
+        onTap: toggleAddInstructionsVisibility,
+        shape: const StadiumBorder(),
+        backgroundColor: Colors.purple,
+      ),
+    ];
+    return choices.reversed.toList();
   }
 
   @override
@@ -215,25 +262,49 @@ class AddItemAdditional extends StatelessWidget with ResponsiveSize {
             ],
           ),
         ),
+        // Positioned(
+        //   bottom: 58,
+        //   right: 16,
+        //   child: FloatingActionButton(
+        //     backgroundColor: Theme.of(context).primaryColor,
+        //     onPressed: toggleAddAdditionalVisibility,
+        //     child: const Icon(
+        //       Icons.add,
+        //       size: 40,
+        //     ),
+        //   ),
+        // ),
         Positioned(
-          bottom: 58,
+          bottom: 70,
           right: 16,
-          child: FloatingActionButton(
+          child: SpeedDial(
+            icon: Icons.add,
+            iconTheme: const IconThemeData(size: 36),
+            activeIcon: Icons.close,
+            overlayOpacity: 0.85,
+            spacing: 3,
+            childPadding: const EdgeInsets.all(5),
+            spaceBetweenChildren: 4,
             backgroundColor: Theme.of(context).primaryColor,
-            onPressed: toggleAddAdditionalVisibility,
-            child: const Icon(
-              Icons.add,
-              size: 40,
-            ),
+            buttonSize: const Size(50, 50),
+            // renderOverlay: true,
+            activeBackgroundColor: Colors.black,
+            elevation: 8.0,
+            animationCurve: Curves.elasticInOut,
+            isOpenOnStart: false,
+            children: _addAssetsOverlayMenuItems(context),
+            childrenButtonSize: const Size(60, 60),
+            childMargin: const EdgeInsets.only(right: 0),
+            animationDuration: const Duration(milliseconds: 300),
           ),
         ),
-        if (isAddAdditionalVisible)
-          AddItemOverlayMenu(
-            onDismiss: toggleAddAdditionalVisibility,
-            pickImage: addImage,
-            pickPdfFile: _pickPdfFile,
-            toggleAddInstructionsVisibility: toggleAddInstructionsVisibility,
-          ),
+        // if (isAddAdditionalVisible)
+        //   AddItemOverlayMenu(
+        //     onDismiss: toggleAddAdditionalVisibility,
+        //     pickImage: addImage,
+        //     pickPdfFile: _pickPdfFile,
+        //     toggleAddInstructionsVisibility: toggleAddInstructionsVisibility,
+        //   ),
         if (isAddInstructionsVisible)
           OverlayInstructionSelection(
             onDismiss: toggleAddInstructionsVisibility,
