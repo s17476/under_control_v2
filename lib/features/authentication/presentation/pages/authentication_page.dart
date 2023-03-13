@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../core/presentation/widgets/logo_widget.dart';
 import '../../../core/utils/responsive_size.dart';
@@ -86,17 +87,11 @@ class _AuthenticationPageState extends State<AuthenticationPage>
     FocusScope.of(context).unfocus();
     if (!_isInLoginMode) {
       if (_passwordController.text != _repeatPasswordController.text) {
-        ScaffoldMessenger.of(context)
-          ..clearSnackBars()
-          ..showSnackBar(SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.passwords_validation_message,
-              style: TextStyle(
-                color: Theme.of(context).textTheme.displayLarge!.color,
-              ),
-            ),
-            backgroundColor: Theme.of(context).errorColor,
-          ));
+        showSnackBar(
+          context: context,
+          message: AppLocalizations.of(context)!.passwords_validation_message,
+          isErrorMessage: true,
+        );
       } else {
         context.read<AuthenticationBloc>().add(
               SignupEvent(
@@ -271,23 +266,12 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                 child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
                   listener: (context, state) {
                     if (state is Error) {
-                      ScaffoldMessenger.of(context)
-                        ..clearSnackBars()
-                        ..showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              state.message,
-                              style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .displayLarge!
-                                    .color,
-                              ),
-                            ),
-                            backgroundColor:
-                                Theme.of(context).colorScheme.error,
-                          ),
-                        );
+                      showSnackBar(
+                        context: context,
+                        message: state.message,
+                        isErrorMessage: true,
+                      );
+
                       if (_isInLoginMode) {
                         setState(() {
                           _failureCounter++;
