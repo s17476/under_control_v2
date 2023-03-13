@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:under_control_v2/features/tasks/presentation/blocs/calendar_task/calendar_task_bloc.dart';
 
 import '../../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../../assets/presentation/blocs/asset_action/asset_action_bloc.dart';
@@ -25,6 +26,7 @@ import '../../../../knowledge_base/presentation/blocs/instruction_category/instr
 import '../../../../knowledge_base/presentation/blocs/instruction_category_management/instruction_category_management_bloc.dart';
 import '../../../../knowledge_base/presentation/blocs/instruction_management/instruction_management_bloc.dart';
 import '../../../../locations/presentation/blocs/bloc/location_bloc.dart';
+import '../../../../tasks/presentation/blocs/calendar_task_archive/calenddar_task_archive_bloc.dart';
 import '../../../../tasks/presentation/blocs/task/task_bloc.dart';
 import '../../../../tasks/presentation/blocs/task_action/task_action_bloc.dart';
 import '../../../../tasks/presentation/blocs/task_action_management/task_action_management_bloc.dart';
@@ -53,14 +55,19 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _rotateY;
+  int loadersCount = 0;
 
   void _stopAnimation() {
-    if (_animationController.isAnimating) {
+    if (loadersCount > 0) {
+      loadersCount--;
+    }
+    if (loadersCount == 0 && _animationController.isAnimating) {
       _animationController.animateTo(0);
     }
   }
 
   void _startAnimation() {
+    loadersCount++;
     if (!_animationController.isAnimating) {
       _animationController.repeat();
     }
@@ -378,6 +385,24 @@ class _AppBarAnimatedIconState extends State<AppBarAnimatedIcon>
         BlocListener<TaskTemplatesManagementBloc, TaskTemplatesManagementState>(
           listener: (context, state) {
             if (state is TaskTemplatesLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<CalendarTaskBloc, CalendarTaskState>(
+          listener: (context, state) {
+            if (state is CalendarTaskLoadingState) {
+              _startAnimation();
+            } else {
+              _stopAnimation();
+            }
+          },
+        ),
+        BlocListener<CalendarTaskArchiveBloc, CalendarTaskArchiveState>(
+          listener: (context, state) {
+            if (state is CalendarTaskArchiveLoadingState) {
               _startAnimation();
             } else {
               _stopAnimation();
