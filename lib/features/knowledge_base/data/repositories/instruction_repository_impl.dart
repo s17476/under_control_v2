@@ -51,7 +51,6 @@ class InstructionRepositoryImpl extends InstructionRepository {
         final fileName =
             '${instructionReference.id}-${step.id}-${DateTime.now().toIso8601String()}';
         switch (step.contentType) {
-
           // image
           case ContentType.image:
             if (step.file != null) {
@@ -226,54 +225,51 @@ class InstructionRepositoryImpl extends InstructionRepository {
             // filereference
             final fileReference =
                 storageReference.child('$fileNameWithoutExtension.jpg');
-            File? file;
             if (step.file != null) {
-              file = step.file!;
+              // save file
+              await fileReference.putFile(step.file!);
+              addedFiles.add('$fileNameWithoutExtension.jpg');
+              // get file url
+              final fileUrl = await fileReference.getDownloadURL();
+              steps.add(step.copyWith(contentUrl: fileUrl));
             } else {
-              file = await getCachedFirebaseStorageFile(step.contentUrl!);
+              addedFiles.add(firebaseStorage.refFromURL(step.contentUrl!).name);
+              steps.add(step);
             }
-            // save file
-            await fileReference.putFile(file!);
-            addedFiles.add('$fileNameWithoutExtension.jpg');
-            // get file url
-            final fileUrl = await fileReference.getDownloadURL();
-            steps.add(step.copyWith(contentUrl: fileUrl));
             break;
           // video
           case ContentType.video:
             // filereference
             final fileReference =
                 storageReference.child('$fileNameWithoutExtension.mp4');
-            File? file;
             if (step.file != null) {
-              file = step.file!;
+              // save file
+              await fileReference.putFile(step.file!);
+              addedFiles.add('$fileNameWithoutExtension.mp4');
+              // get file url
+              final fileUrl = await fileReference.getDownloadURL();
+              steps.add(step.copyWith(contentUrl: fileUrl));
             } else {
-              file = await getCachedFirebaseStorageFile(step.contentUrl!);
+              addedFiles.add(firebaseStorage.refFromURL(step.contentUrl!).name);
+              steps.add(step);
             }
-            // save file
-            await fileReference.putFile(file!);
-            addedFiles.add('$fileNameWithoutExtension.mp4');
-            // get file url
-            final fileUrl = await fileReference.getDownloadURL();
-            steps.add(step.copyWith(contentUrl: fileUrl));
             break;
           // pdf
           case ContentType.pdf:
             // filereference
             final fileReference =
                 storageReference.child('$fileNameWithoutExtension.pdf');
-            File? file;
             if (step.file != null) {
-              file = step.file!;
+              // save file
+              await fileReference.putFile(step.file!);
+              addedFiles.add('$fileNameWithoutExtension.pdf');
+              // get file url
+              final fileUrl = await fileReference.getDownloadURL();
+              steps.add(step.copyWith(contentUrl: fileUrl));
             } else {
-              file = await getCachedFirebaseStorageFile(step.contentUrl!);
+              addedFiles.add(firebaseStorage.refFromURL(step.contentUrl!).name);
+              steps.add(step);
             }
-            // save file
-            await fileReference.putFile(file!);
-            addedFiles.add('$fileNameWithoutExtension.pdf');
-            // get file url
-            final fileUrl = await fileReference.getDownloadURL();
-            steps.add(step.copyWith(contentUrl: fileUrl));
             break;
           default:
             steps.add(step);
@@ -288,6 +284,8 @@ class InstructionRepositoryImpl extends InstructionRepository {
 
         // remove old files
         for (var file in filesList) {
+          print('file.name');
+          print(file.name);
           if (!addedFiles.contains(file.name)) {
             storageReference.child(file.name).delete();
           }
