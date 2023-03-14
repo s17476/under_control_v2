@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
@@ -133,7 +134,17 @@ class AssetsStatus extends StatelessWidget {
                         alignment: Alignment.center,
                         children: [
                           AspectRatio(
-                            aspectRatio: 1,
+                            aspectRatio: ResponsiveValue(
+                                  context,
+                                  defaultValue: 1,
+                                  valueWhen: [
+                                    const Condition.largerThan(
+                                      name: MOBILE,
+                                      value: 1.5,
+                                    )
+                                  ],
+                                ).value?.toDouble() ??
+                                1,
                             child: PieChart(
                               PieChartData(
                                 pieTouchData: PieTouchData(

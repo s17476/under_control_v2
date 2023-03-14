@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/date_symbol_data_file.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import 'custom_multi_bloc_provider.dart';
 import 'features/assets/presentation/pages/add_asset_page.dart';
@@ -121,6 +121,19 @@ class App extends StatelessWidget
               }
             },
             child: MaterialApp(
+              builder: (context, child) => ResponsiveWrapper.builder(
+                child,
+                defaultScale: true,
+                maxWidth: 1200,
+                minWidth: 480,
+                breakpoints: const [
+                  ResponsiveBreakpoint.resize(480, name: MOBILE),
+                  ResponsiveBreakpoint.autoScale(600, name: TABLET),
+                  ResponsiveBreakpoint.autoScale(800, name: TABLET),
+                  ResponsiveBreakpoint.resize(1200, name: DESKTOP),
+                  ResponsiveBreakpoint.autoScale(2460, name: "4K"),
+                ],
+              ),
               debugShowCheckedModeBanner: false,
               title: 'UnderControl',
               locale: locale,

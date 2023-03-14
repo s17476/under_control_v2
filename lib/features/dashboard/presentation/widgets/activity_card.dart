@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../blocs/activity_bloc/activity_bloc_bloc.dart';
@@ -100,7 +101,14 @@ class ActivityCard extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   mainAxisSpacing: 0,
                   crossAxisSpacing: 0,
-                  childAspectRatio: 2,
+                  childAspectRatio: ResponsiveValue(
+                        context,
+                        defaultValue: 2,
+                        valueWhen: [
+                          const Condition.largerThan(name: MOBILE, value: 3)
+                        ],
+                      ).value?.toDouble() ??
+                      2,
                   crossAxisCount: 8,
                   children: _getDiagramList(activityMap).map((count) {
                     if (count.contains('-')) {
