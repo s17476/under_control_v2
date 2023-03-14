@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../assets/presentation/widgets/asset_tile.dart';
@@ -36,7 +37,7 @@ class NotificationTile extends StatelessWidget {
                   notification: notification,
                 );
               }
-              return const SizedBox();
+              return const InfoTile();
             }
             return const ShimmerTaskActionTile();
           },
@@ -52,7 +53,7 @@ class NotificationTile extends StatelessWidget {
                   notification: notification,
                 );
               }
-              return const SizedBox();
+              return const InfoTile();
             }
             return const ShimmerTaskActionTile();
           },
@@ -69,7 +70,7 @@ class NotificationTile extends StatelessWidget {
                   notification: notification,
                 );
               }
-              return const SizedBox();
+              return const InfoTile();
             }
             return const ShimmerTaskActionTile();
           },
@@ -86,7 +87,7 @@ class NotificationTile extends StatelessWidget {
                   notification: notification,
                 );
               }
-              return const SizedBox();
+              return const InfoTile();
             }
             return const ShimmerTaskActionTile();
           },
@@ -94,5 +95,31 @@ class NotificationTile extends StatelessWidget {
       default:
         return const ShimmerTaskActionTile();
     }
+  }
+}
+
+class InfoTile extends StatelessWidget {
+  const InfoTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Theme.of(context).cardColor,
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.location_off),
+          const SizedBox(
+            width: 4,
+          ),
+          Text(
+            AppLocalizations.of(context)!.notification_not_selected_location,
+          ),
+        ],
+      ),
+    );
   }
 }

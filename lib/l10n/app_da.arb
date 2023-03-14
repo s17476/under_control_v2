@@ -662,5 +662,6 @@
     "notifications_assets": "Meddelelser om aktiver uden gyldig eftersyn.",
     "notifications_assets_tile": "Aktivets status",
     "notifications_unread": "Ulæste",
-    "notifications_no_unread": "Ingen nye meddelelser"
+    "notifications_no_unread": "Ingen nye meddelelser",
+    "notification_not_selected_location": "Meddelelse på uvalgt placering"
 }

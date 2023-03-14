@@ -2726,5 +2726,9 @@
     "notifications_no_unread": "No new notifications",
     "@notifications_no_unread": {
       "description": "notifications"
+    },
+    "notification_not_selected_location": "New notification in unselected location.",
+    "@notification_not_selected_location": {
+      "description": "notifications"
     }
 }
