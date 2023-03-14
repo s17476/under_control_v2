@@ -222,10 +222,10 @@ class InstructionRepositoryImpl extends InstructionRepository {
         switch (step.contentType) {
           // image
           case ContentType.image:
-            // filereference
-            final fileReference =
-                storageReference.child('$fileNameWithoutExtension.jpg');
             if (step.file != null) {
+              // filereference
+              final fileReference =
+                  storageReference.child('$fileNameWithoutExtension.jpg');
               // save file
               await fileReference.putFile(step.file!);
               addedFiles.add('$fileNameWithoutExtension.jpg');
@@ -239,10 +239,10 @@ class InstructionRepositoryImpl extends InstructionRepository {
             break;
           // video
           case ContentType.video:
-            // filereference
-            final fileReference =
-                storageReference.child('$fileNameWithoutExtension.mp4');
             if (step.file != null) {
+              // filereference
+              final fileReference =
+                  storageReference.child('$fileNameWithoutExtension.mp4');
               // save file
               await fileReference.putFile(step.file!);
               addedFiles.add('$fileNameWithoutExtension.mp4');
@@ -256,10 +256,10 @@ class InstructionRepositoryImpl extends InstructionRepository {
             break;
           // pdf
           case ContentType.pdf:
-            // filereference
-            final fileReference =
-                storageReference.child('$fileNameWithoutExtension.pdf');
             if (step.file != null) {
+              // filereference
+              final fileReference =
+                  storageReference.child('$fileNameWithoutExtension.pdf');
               // save file
               await fileReference.putFile(step.file!);
               addedFiles.add('$fileNameWithoutExtension.pdf');
@@ -275,20 +275,18 @@ class InstructionRepositoryImpl extends InstructionRepository {
             steps.add(step);
             break;
         }
+      }
 
-        // all files in folder
-        final filesList = (await storageReference.listAll())
-            .items
-            .where((file) => file.name.contains(params.instruction.id))
-            .toList();
+      // all files in folder
+      final filesList = (await storageReference.listAll())
+          .items
+          .where((file) => file.name.contains(params.instruction.id))
+          .toList();
 
-        // remove old files
-        for (var file in filesList) {
-          print('file.name');
-          print(file.name);
-          if (!addedFiles.contains(file.name)) {
-            storageReference.child(file.name).delete();
-          }
+      // remove old files
+      for (var file in filesList) {
+        if (!addedFiles.contains(file.name)) {
+          storageReference.child(file.name).delete();
         }
       }
 
