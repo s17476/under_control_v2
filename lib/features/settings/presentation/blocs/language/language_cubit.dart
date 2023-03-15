@@ -19,7 +19,9 @@ class LanguageCubit extends Cubit<Locale> {
     if (langCode != null) {
       emit(Locale(langCode.split('_')[0]));
     } else {
-      emit(Locale(Platform.localeName.split('_')[0]));
+      emit(Locale(
+        kIsWeb ? 'en' : Platform.localeName.split('_')[0],
+      ));
     }
   }
 

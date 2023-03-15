@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -43,7 +44,7 @@ void showSnackBar({
       ),
     );
 
-  if (await Vibration.hasVibrator() ?? false) {
+  if (!kIsWeb && (await Vibration.hasVibrator() ?? false)) {
     // error message
     if (isErrorMessage) {
       if (await Vibration.hasCustomVibrationsSupport() ?? false) {
