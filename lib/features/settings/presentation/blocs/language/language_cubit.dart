@@ -1,13 +1,17 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @injectable
 class LanguageCubit extends Cubit<Locale> {
-  LanguageCubit() : super(Locale(Platform.localeName.split('_')[0]));
+  LanguageCubit()
+      : super(Locale(
+          kIsWeb ? 'en' : Platform.localeName.split('_')[0],
+        ));
 
   void getInitLanguage() async {
     final prefs = await SharedPreferences.getInstance();

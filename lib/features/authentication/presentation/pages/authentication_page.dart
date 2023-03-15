@@ -124,7 +124,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>
               // logo widget
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
-                width: double.infinity,
+                width: 500,
                 child: const FittedBox(
                   fit: BoxFit.fitWidth,
                   child: Logo(
@@ -141,25 +141,28 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                 padding: const EdgeInsets.symmetric(
                   horizontal: 32,
                 ),
-                child: TextFormField(
-                  controller: _emailController,
-                  key: const ValueKey('email'),
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.person),
-                    floatingLabelStyle: TextStyle(
-                      color: Theme.of(context).textTheme.displayLarge!.color,
+                child: SizedBox(
+                  width: 500,
+                  child: TextFormField(
+                    controller: _emailController,
+                    key: const ValueKey('email'),
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.person),
+                      floatingLabelStyle: TextStyle(
+                        color: Theme.of(context).textTheme.displayLarge!.color,
+                      ),
+                      labelText: 'E-mail',
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
                     ),
-                    labelText: 'E-mail',
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
                   ),
                 ),
               ),
@@ -171,34 +174,37 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                 padding: const EdgeInsets.symmetric(
                   horizontal: 32,
                 ),
-                child: TextFormField(
-                  controller: _passwordController,
-                  key: const ValueKey('password'),
-                  obscureText: !_passwordIsVisible,
-                  keyboardType: TextInputType.visiblePassword,
-                  textInputAction: TextInputAction.done,
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      onPressed: _togglePasswordVisibility,
-                      icon: _passwordIsVisible
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
+                child: SizedBox(
+                  width: 500,
+                  child: TextFormField(
+                    controller: _passwordController,
+                    key: const ValueKey('password'),
+                    obscureText: !_passwordIsVisible,
+                    keyboardType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        onPressed: _togglePasswordVisibility,
+                        icon: _passwordIsVisible
+                            ? const Icon(Icons.visibility_off)
+                            : const Icon(Icons.visibility),
+                      ),
+                      prefixIcon: const Icon(Icons.lock_rounded),
+                      floatingLabelStyle: TextStyle(
+                        color: Theme.of(context).textTheme.displayLarge!.color,
+                      ),
+                      labelText: AppLocalizations.of(context)!.password,
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
                     ),
-                    prefixIcon: const Icon(Icons.lock_rounded),
-                    floatingLabelStyle: TextStyle(
-                      color: Theme.of(context).textTheme.displayLarge!.color,
-                    ),
-                    labelText: AppLocalizations.of(context)!.password,
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
+                    onEditingComplete: _tryToSubmit,
                   ),
-                  onEditingComplete: _tryToSubmit,
                 ),
               ),
               // repeat password
@@ -215,38 +221,42 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                         padding: const EdgeInsets.symmetric(
                           horizontal: 32,
                         ),
-                        child: TextFormField(
-                          controller: _repeatPasswordController,
-                          key: const ValueKey('password'),
-                          obscureText: !_passwordIsVisible,
-                          keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              onPressed: _togglePasswordVisibility,
-                              icon: _passwordIsVisible
-                                  ? const Icon(Icons.visibility_off)
-                                  : const Icon(Icons.visibility),
+                        child: SizedBox(
+                          width: 500,
+                          child: TextFormField(
+                            enabled: !_isInLoginMode,
+                            controller: _repeatPasswordController,
+                            key: const ValueKey('password'),
+                            obscureText: !_passwordIsVisible,
+                            keyboardType: TextInputType.visiblePassword,
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                onPressed: _togglePasswordVisibility,
+                                icon: _passwordIsVisible
+                                    ? const Icon(Icons.visibility_off)
+                                    : const Icon(Icons.visibility),
+                              ),
+                              prefixIcon: const Icon(Icons.lock_rounded),
+                              floatingLabelStyle: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .displayLarge!
+                                    .color,
+                              ),
+                              labelText:
+                                  AppLocalizations.of(context)!.repeat_password,
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
                             ),
-                            prefixIcon: const Icon(Icons.lock_rounded),
-                            floatingLabelStyle: TextStyle(
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .displayLarge!
-                                  .color,
-                            ),
-                            labelText:
-                                AppLocalizations.of(context)!.repeat_password,
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            filled: true,
+                            onEditingComplete: _tryToSubmit,
                           ),
-                          onEditingComplete: _tryToSubmit,
                         ),
                       ),
                     ],
@@ -284,36 +294,41 @@ class _AuthenticationPageState extends State<AuthenticationPage>
                       padding: const EdgeInsets.symmetric(
                         horizontal: 32,
                       ),
-                      child: ElevatedButton(
-                        onPressed: state is Submitting ? () {} : _tryToSubmit,
-                        child: state is Submitting
-                            ? Padding(
-                                padding: EdgeInsets.all(
-                                  responsiveSizeVerticalPct(small: 1),
-                                ),
-                                child: SizedBox(
-                                  height: responsiveSizeVerticalPct(small: 2.5),
-                                  width: responsiveSizeVerticalPct(small: 2.5),
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.white,
+                      child: SizedBox(
+                        width: 500,
+                        child: ElevatedButton(
+                          onPressed: state is Submitting ? () {} : _tryToSubmit,
+                          child: state is Submitting
+                              ? Padding(
+                                  padding: EdgeInsets.all(
+                                    responsiveSizeVerticalPct(small: 1),
                                   ),
-                                ),
-                              )
-                            : _isInLoginMode
-                                ? Text(
-                                    AppLocalizations.of(context)!.signin,
-                                    style: TextStyle(
-                                      fontSize: responsiveSizePct(
-                                          small: 5.5, medium: 3, large: 1),
-                                    ),
-                                  )
-                                : Text(
-                                    AppLocalizations.of(context)!.signup,
-                                    style: TextStyle(
-                                      fontSize: responsiveSizePct(
-                                          small: 5.5, medium: 3, large: 1),
+                                  child: SizedBox(
+                                    height:
+                                        responsiveSizeVerticalPct(small: 2.5),
+                                    width:
+                                        responsiveSizeVerticalPct(small: 2.5),
+                                    child: const CircularProgressIndicator(
+                                      color: Colors.white,
                                     ),
                                   ),
+                                )
+                              : _isInLoginMode
+                                  ? Text(
+                                      AppLocalizations.of(context)!.signin,
+                                      style: TextStyle(
+                                        fontSize: responsiveSizePct(
+                                            small: 5.5, medium: 3, large: 1),
+                                      ),
+                                    )
+                                  : Text(
+                                      AppLocalizations.of(context)!.signup,
+                                      style: TextStyle(
+                                        fontSize: responsiveSizePct(
+                                            small: 5.5, medium: 3, large: 1),
+                                      ),
+                                    ),
+                        ),
                       ),
                     );
                   },

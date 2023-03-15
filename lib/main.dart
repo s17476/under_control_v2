@@ -124,7 +124,7 @@ class App extends StatelessWidget
               builder: (context, child) => ResponsiveWrapper.builder(
                 child,
                 defaultScale: true,
-                maxWidth: 1200,
+                // maxWidth: 1200,
                 minWidth: 480,
                 breakpoints: const [
                   ResponsiveBreakpoint.resize(480, name: MOBILE),
