@@ -71,6 +71,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
         emit(Loading());
         final userId = (authenticationBloc.state as Authenticated).userId;
         final email = (authenticationBloc.state as Authenticated).email;
+
         // input validation
         final failureOrVoid = inputValidator.addUserValidator(
           event.userProfile.firstName,
@@ -79,7 +80,9 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
           event.avatar,
         );
         await failureOrVoid.fold(
-          (failure) async => emit(NoUserProfileError(message: failure.message)),
+          (failure) async {
+            emit(NoUserProfileError(message: failure.message));
+          },
           (_) async {
             // add avatar to cloud storage
             final failureOrAvatarString = await addUserAvatar(
