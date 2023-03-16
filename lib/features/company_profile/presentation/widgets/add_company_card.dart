@@ -1,5 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:currency_picker/currency_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -81,253 +82,249 @@ class AddCompanyCard extends StatelessWidget with ResponsiveSize {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
+        child: Center(
+          child: SizedBox(
+            width: 700,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    // title
+                    Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        isEditMode
+                            ? AppLocalizations.of(context)!
+                                .add_company_intro_card_edit_title
+                            : AppLocalizations.of(context)!
+                                .add_company_intro_card_title,
+                        style: TextStyle(
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .fontSize,
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      thickness: 1.5,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    CustomTextFormField(
+                      validator: (val) {
+                        if (val!.length < 4) {
+                          return AppLocalizations.of(context)!
+                              .add_company_intro_card_to_short;
+                        }
+                        return null;
+                      },
+                      fieldKey: 'name',
+                      controller: nameTexEditingController,
+                      keyboardType: TextInputType.name,
+                      textCapitalization: TextCapitalization.words,
+                      labelText: AppLocalizations.of(context)!
+                          .add_company_intro_card_name,
+                    ),
+                    const SizedBox(
+                      height: 32,
+                    ),
+                    Row(
                       children: [
-                        // title
-                        Container(
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            isEditMode
-                                ? AppLocalizations.of(context)!
-                                    .add_company_intro_card_edit_title
-                                : AppLocalizations.of(context)!
-                                    .add_company_intro_card_title,
-                            style: TextStyle(
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall!
-                                  .fontSize,
-                            ),
+                        Expanded(
+                          child: CustomTextFormField(
+                            enabled: false,
+                            fieldKey: 'currency',
+                            controller: currencyTexEditingController,
+                            keyboardType: TextInputType.name,
+                            textCapitalization: TextCapitalization.words,
+                            labelText: AppLocalizations.of(context)!.currency,
                           ),
                         ),
-                        const Divider(
-                          thickness: 1.5,
-                        ),
                         const SizedBox(
-                          height: 16,
+                          width: 16,
                         ),
-                        CustomTextFormField(
-                          validator: (val) {
-                            if (val!.length < 4) {
-                              return AppLocalizations.of(context)!
-                                  .add_company_intro_card_to_short;
-                            }
-                            return null;
-                          },
-                          fieldKey: 'name',
-                          controller: nameTexEditingController,
-                          keyboardType: TextInputType.name,
-                          textCapitalization: TextCapitalization.words,
-                          labelText: AppLocalizations.of(context)!
-                              .add_company_intro_card_name,
-                        ),
-                        const SizedBox(
-                          height: 32,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextFormField(
-                                enabled: false,
-                                fieldKey: 'currency',
-                                controller: currencyTexEditingController,
-                                keyboardType: TextInputType.name,
-                                textCapitalization: TextCapitalization.words,
-                                labelText:
-                                    AppLocalizations.of(context)!.currency,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            RoundedButton(
-                              iconSize: 30,
-                              padding: const EdgeInsets.all(9),
-                              onPressed: () => _pickCurrency(context),
-                              icon: Icons.attach_money,
-                              gradient: LinearGradient(colors: [
-                                Theme.of(context).primaryColor,
-                                Theme.of(context).primaryColor.withAlpha(60),
-                              ]),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextFormField(
-                                enabled: false,
-                                fieldKey: 'country',
-                                controller: countryTexEditingController,
-                                keyboardType: TextInputType.name,
-                                textCapitalization: TextCapitalization.words,
-                                labelText: AppLocalizations.of(context)!
-                                    .add_company_intro_card_country,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            RoundedButton(
-                              iconSize: 30,
-                              padding: const EdgeInsets.all(9),
-                              onPressed: () => _pickCountry(context),
-                              icon: Icons.flag,
-                              gradient: LinearGradient(colors: [
-                                Theme.of(context).primaryColor,
-                                Theme.of(context).primaryColor.withAlpha(60),
-                              ]),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        CustomTextFormField(
-                          validator: (val) {
-                            if (val!.length < 4) {
-                              return AppLocalizations.of(context)!
-                                  .add_company_intro_card_to_short;
-                            }
-                            return null;
-                          },
-                          fieldKey: 'address',
-                          controller: addressTexEditingController,
-                          keyboardType: TextInputType.name,
-                          textCapitalization: TextCapitalization.sentences,
-                          labelText: AppLocalizations.of(context)!
-                              .add_company_intro_card_address,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        CustomTextFormField(
-                          validator: (val) {
-                            if (val!.length < 4) {
-                              return AppLocalizations.of(context)!
-                                  .add_company_intro_card_to_short;
-                            }
-                            return null;
-                          },
-                          fieldKey: 'post-code',
-                          controller: postCodeTexEditingController,
-                          keyboardType: TextInputType.number,
-                          textCapitalization: TextCapitalization.none,
-                          labelText: AppLocalizations.of(context)!
-                              .add_company_intro_card_postcode,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        CustomTextFormField(
-                          validator: (val) {
-                            if (val!.length < 4) {
-                              return AppLocalizations.of(context)!
-                                  .add_company_intro_card_to_short;
-                            }
-                            return null;
-                          },
-                          fieldKey: 'city',
-                          controller: cityTexEditingController,
-                          keyboardType: TextInputType.name,
-                          textCapitalization: TextCapitalization.words,
-                          labelText: AppLocalizations.of(context)!
-                              .add_company_intro_card_city,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        CustomTextFormField(
-                          validator: (val) {
-                            if (val!.length < 4) {
-                              return AppLocalizations.of(context)!
-                                  .add_company_intro_card_to_short;
-                            }
-                            return null;
-                          },
-                          fieldKey: 'vat',
-                          controller: vatNumberTexEditingController,
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.characters,
-                          labelText: AppLocalizations.of(context)!
-                              .add_company_intro_card_vat_number,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        CustomTextFormField(
-                          validator: (val) {
-                            if (val!.length < 4) {
-                              return AppLocalizations.of(context)!
-                                  .add_company_intro_card_to_short;
-                            }
-                            return null;
-                          },
-                          fieldKey: 'phone',
-                          controller: phoneNumberTexEditingController,
-                          keyboardType: TextInputType.number,
-                          textCapitalization: TextCapitalization.none,
-                          labelText: AppLocalizations.of(context)!
-                              .add_company_intro_card_phone_number,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        CustomTextFormField(
-                          validator: (val) {
-                            if (val!.length < 4) {
-                              return AppLocalizations.of(context)!
-                                  .add_company_intro_card_to_short;
-                            }
-                            return null;
-                          },
-                          fieldKey: 'email',
-                          controller: emailTexEditingController,
-                          keyboardType: TextInputType.emailAddress,
-                          textCapitalization: TextCapitalization.none,
-                          labelText: AppLocalizations.of(context)!
-                              .add_company_intro_card_email,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        CustomTextFormField(
-                          validator: (val) {
-                            if (val!.length < 4) {
-                              return AppLocalizations.of(context)!
-                                  .add_company_intro_card_to_short;
-                            }
-                            return null;
-                          },
-                          fieldKey: 'homepage',
-                          controller: homepageTexEditingController,
-                          keyboardType: TextInputType.url,
-                          textCapitalization: TextCapitalization.none,
-                          labelText: AppLocalizations.of(context)!
-                              .add_company_intro_card_homepage,
-                        ),
-                        const SizedBox(
-                          height: 50,
+                        RoundedButton(
+                          iconSize: 30,
+                          padding: const EdgeInsets.all(9),
+                          onPressed: () => _pickCurrency(context),
+                          icon: Icons.attach_money,
+                          gradient: LinearGradient(colors: [
+                            Theme.of(context).primaryColor,
+                            Theme.of(context).primaryColor.withAlpha(60),
+                          ]),
                         ),
                       ],
                     ),
-                  ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            enabled: false,
+                            fieldKey: 'country',
+                            controller: countryTexEditingController,
+                            keyboardType: TextInputType.name,
+                            textCapitalization: TextCapitalization.words,
+                            labelText: AppLocalizations.of(context)!
+                                .add_company_intro_card_country,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        RoundedButton(
+                          iconSize: 30,
+                          padding: const EdgeInsets.all(9),
+                          onPressed: () => _pickCountry(context),
+                          icon: Icons.flag,
+                          gradient: LinearGradient(colors: [
+                            Theme.of(context).primaryColor,
+                            Theme.of(context).primaryColor.withAlpha(60),
+                          ]),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    CustomTextFormField(
+                      validator: (val) {
+                        if (val!.length < 4) {
+                          return AppLocalizations.of(context)!
+                              .add_company_intro_card_to_short;
+                        }
+                        return null;
+                      },
+                      fieldKey: 'address',
+                      controller: addressTexEditingController,
+                      keyboardType: TextInputType.name,
+                      textCapitalization: TextCapitalization.sentences,
+                      labelText: AppLocalizations.of(context)!
+                          .add_company_intro_card_address,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    CustomTextFormField(
+                      validator: (val) {
+                        if (val!.length < 4) {
+                          return AppLocalizations.of(context)!
+                              .add_company_intro_card_to_short;
+                        }
+                        return null;
+                      },
+                      fieldKey: 'post-code',
+                      controller: postCodeTexEditingController,
+                      keyboardType: TextInputType.number,
+                      textCapitalization: TextCapitalization.none,
+                      labelText: AppLocalizations.of(context)!
+                          .add_company_intro_card_postcode,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    CustomTextFormField(
+                      validator: (val) {
+                        if (val!.length < 4) {
+                          return AppLocalizations.of(context)!
+                              .add_company_intro_card_to_short;
+                        }
+                        return null;
+                      },
+                      fieldKey: 'city',
+                      controller: cityTexEditingController,
+                      keyboardType: TextInputType.name,
+                      textCapitalization: TextCapitalization.words,
+                      labelText: AppLocalizations.of(context)!
+                          .add_company_intro_card_city,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    CustomTextFormField(
+                      validator: (val) {
+                        if (val!.length < 4) {
+                          return AppLocalizations.of(context)!
+                              .add_company_intro_card_to_short;
+                        }
+                        return null;
+                      },
+                      fieldKey: 'vat',
+                      controller: vatNumberTexEditingController,
+                      keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.characters,
+                      labelText: AppLocalizations.of(context)!
+                          .add_company_intro_card_vat_number,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    CustomTextFormField(
+                      validator: (val) {
+                        if (val!.length < 4) {
+                          return AppLocalizations.of(context)!
+                              .add_company_intro_card_to_short;
+                        }
+                        return null;
+                      },
+                      fieldKey: 'phone',
+                      controller: phoneNumberTexEditingController,
+                      keyboardType: TextInputType.number,
+                      textCapitalization: TextCapitalization.none,
+                      labelText: AppLocalizations.of(context)!
+                          .add_company_intro_card_phone_number,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    CustomTextFormField(
+                      validator: (val) {
+                        if (val!.length < 4) {
+                          return AppLocalizations.of(context)!
+                              .add_company_intro_card_to_short;
+                        }
+                        return null;
+                      },
+                      fieldKey: 'email',
+                      controller: emailTexEditingController,
+                      keyboardType: TextInputType.emailAddress,
+                      textCapitalization: TextCapitalization.none,
+                      labelText: AppLocalizations.of(context)!
+                          .add_company_intro_card_email,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    CustomTextFormField(
+                      validator: (val) {
+                        if (val!.length < 4) {
+                          return AppLocalizations.of(context)!
+                              .add_company_intro_card_to_short;
+                        }
+                        return null;
+                      },
+                      fieldKey: 'homepage',
+                      controller: homepageTexEditingController,
+                      keyboardType: TextInputType.url,
+                      textCapitalization: TextCapitalization.none,
+                      labelText: AppLocalizations.of(context)!
+                          .add_company_intro_card_homepage,
+                    ),
+                    const SizedBox(
+                      height: kIsWeb ? 170 : 50,
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -41,73 +42,88 @@ class _CompaniesListViewState extends State<CompaniesListView> {
       child: RefreshIndicator(
         onRefresh: () async =>
             context.read<CompanyManagementBloc>().add(FetchAllCompaniesEvent()),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 8,
-                left: 8,
-                right: 8,
-                bottom: 10,
-              ),
-              child: TextFormField(
-                controller: _searchController,
-                key: const ValueKey('search'),
-                keyboardType: TextInputType.name,
-                cursorColor: Theme.of(context).textTheme.headlineSmall!.color,
-                decoration: InputDecoration(
-                  suffixIcon: _searchController.text.isEmpty
-                      ? const Icon(
-                          Icons.search,
-                        )
-                      : IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _searchController.text = '';
-                              _searchString = '';
-                            });
-                          },
-                          icon: const Icon(Icons.cancel),
-                          color:
-                              Theme.of(context).textTheme.headlineSmall!.color,
-                        ),
-                  floatingLabelStyle: TextStyle(
-                    color: Theme.of(context).textTheme.displayLarge!.color,
+        child: Center(
+          child: SizedBox(
+            width: 700,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 8,
+                    left: 8,
+                    right: 8,
+                    bottom: 10,
                   ),
-                  hintText: AppLocalizations.of(context)!.search,
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 16,
+                  child: TextFormField(
+                    controller: _searchController,
+                    key: const ValueKey('search'),
+                    keyboardType: TextInputType.name,
+                    cursorColor:
+                        Theme.of(context).textTheme.headlineSmall!.color,
+                    decoration: InputDecoration(
+                      suffixIcon: _searchController.text.isEmpty
+                          ? const Icon(
+                              Icons.search,
+                            )
+                          : IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _searchController.text = '';
+                                  _searchString = '';
+                                });
+                              },
+                              icon: const Icon(Icons.cancel),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .color,
+                            ),
+                      floatingLabelStyle: TextStyle(
+                        color: Theme.of(context).textTheme.displayLarge!.color,
+                      ),
+                      hintText: AppLocalizations.of(context)!.search,
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 16,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _searchString = value.toLowerCase();
+                      });
+                    },
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    _searchString = value.toLowerCase();
-                  });
-                },
-              ),
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(bottom: kIsWeb ? 170 : 50),
+                    itemCount: _filteredCompanies.length,
+                    itemBuilder: (context, index) {
+                      // list item
+                      return Padding(
+                        key: Key(_filteredCompanies[index].id),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: CompaniesListTile(
+                          company: _filteredCompanies[index],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+              ],
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _filteredCompanies.length,
-                itemBuilder: (context, index) {
-                  // list item
-                  return CompaniesListTile(
-                    company: _filteredCompanies[index],
-                    key: Key(_filteredCompanies[index].id),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-          ],
+          ),
         ),
       ),
     );
