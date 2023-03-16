@@ -58,10 +58,13 @@ class _LoadingPageState extends State<LoadingPage>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const FittedBox(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Logo(greenLettersSize: 15, whitheLettersSize: 10),
+          const SizedBox(
+            width: 500,
+            child: FittedBox(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Logo(greenLettersSize: 15, whitheLettersSize: 10),
+              ),
             ),
           ),
           SizedBox(

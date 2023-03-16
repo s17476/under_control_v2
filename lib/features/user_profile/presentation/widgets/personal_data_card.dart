@@ -1,10 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
 
-class PersonalDataCard extends StatelessWidget with ResponsiveSize {
+class PersonalDataCard extends StatelessWidget {
   const PersonalDataCard({
     Key? key,
     required this.firstNameTexEditingController,
@@ -23,131 +24,144 @@ class PersonalDataCard extends StatelessWidget with ResponsiveSize {
       child: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    SizedBox(
-                      height: responsiveSizeVerticalPct(small: 5, medium: 10),
-                    ),
-                    if (MediaQuery.of(context).orientation ==
-                        Orientation.portrait)
+            child: Center(
+              child: SizedBox(
+                width: 500,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
                       Padding(
-                        padding: const EdgeInsets.only(
+                        padding: EdgeInsets.only(
                           left: 48.0,
                           right: 48.0,
-                          top: 48,
+                          top: ResponsiveValue(
+                            context,
+                            defaultValue: 48,
+                            valueWhen: [
+                              const Condition.largerThan(
+                                name: TABLET,
+                                value: 16,
+                              ),
+                            ],
+                          ).value!.toDouble(),
                           bottom: 48,
                         ),
                         child: Image.asset(
                           'assets/person.png',
                         ),
                       ),
-                    // first name
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: responsiveSizePx(small: 16, medium: 150),
-                      ),
-                      child: TextFormField(
-                        scrollPadding: const EdgeInsets.only(bottom: 500),
-                        controller: firstNameTexEditingController,
-                        key: const ValueKey('firstName'),
-                        keyboardType: TextInputType.name,
-                        textCapitalization: TextCapitalization.words,
-                        // textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.person),
-                          floatingLabelStyle: TextStyle(
-                            color:
-                                Theme.of(context).textTheme.displayLarge!.color,
+                      // first name
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        child: TextFormField(
+                          scrollPadding: const EdgeInsets.only(bottom: 500),
+                          controller: firstNameTexEditingController,
+                          key: const ValueKey('firstName'),
+                          keyboardType: TextInputType.name,
+                          textCapitalization: TextCapitalization.words,
+                          // textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.person),
+                            floatingLabelStyle: TextStyle(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge!
+                                  .color,
+                            ),
+                            labelText: AppLocalizations.of(context)!
+                                .user_profile_add_user_personal_data_first_name,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
                           ),
-                          labelText: AppLocalizations.of(context)!
-                              .user_profile_add_user_personal_data_first_name,
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          filled: true,
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    // last name
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: responsiveSizePx(small: 16, medium: 150),
+                      const SizedBox(
+                        height: 16,
                       ),
-                      child: TextFormField(
-                        scrollPadding: const EdgeInsets.only(bottom: 500),
-                        controller: lastNameTexEditingController,
-                        key: const ValueKey('lastName'),
-                        keyboardType: TextInputType.name,
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.person_outline),
-                          floatingLabelStyle: TextStyle(
-                            color:
-                                Theme.of(context).textTheme.displayLarge!.color,
+                      // last name
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        child: TextFormField(
+                          scrollPadding: const EdgeInsets.only(bottom: 500),
+                          controller: lastNameTexEditingController,
+                          key: const ValueKey('lastName'),
+                          keyboardType: TextInputType.name,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.person_outline),
+                            floatingLabelStyle: TextStyle(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge!
+                                  .color,
+                            ),
+                            labelText: AppLocalizations.of(context)!
+                                .user_profile_add_user_personal_data_last_name,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
                           ),
-                          labelText: AppLocalizations.of(context)!
-                              .user_profile_add_user_personal_data_last_name,
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          filled: true,
                         ),
                       ),
-                    ),
 
-                    const SizedBox(
-                      height: 16,
-                    ),
-
-                    // phone number
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: responsiveSizePx(small: 16, medium: 150),
+                      const SizedBox(
+                        height: 16,
                       ),
-                      child: TextFormField(
-                        scrollPadding: const EdgeInsets.only(bottom: 500),
-                        controller: phoneNumberTexEditingController,
-                        key: const ValueKey('phoneNumber'),
-                        keyboardType: TextInputType.phone,
-                        // textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.phone),
-                          floatingLabelStyle: TextStyle(
-                            color:
-                                Theme.of(context).textTheme.displayLarge!.color,
+
+                      // phone number
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        child: TextFormField(
+                          scrollPadding: const EdgeInsets.only(bottom: 500),
+                          controller: phoneNumberTexEditingController,
+                          key: const ValueKey('phoneNumber'),
+                          keyboardType: TextInputType.phone,
+                          // textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.phone),
+                            floatingLabelStyle: TextStyle(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge!
+                                  .color,
+                            ),
+                            labelText: AppLocalizations.of(context)!
+                                .user_profile_add_user_personal_data_phone_number,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
                           ),
-                          labelText: AppLocalizations.of(context)!
-                              .user_profile_add_user_personal_data_phone_number,
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          filled: true,
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    )
-                  ],
+                      const SizedBox(
+                        height: kIsWeb ? 170 : 50,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

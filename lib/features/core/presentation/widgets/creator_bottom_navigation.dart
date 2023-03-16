@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
@@ -258,11 +260,25 @@ class _CreatorBottomNavigationState extends State<CreatorBottomNavigation>
     return AnimatedSize(
       duration: const Duration(milliseconds: 300),
       child: Container(
-        padding: Platform.isIOS ? const EdgeInsets.only(bottom: 8) : null,
+        padding: kIsWeb
+            ? EdgeInsets.symmetric(
+                horizontal: ResponsiveValue(
+                  context,
+                  defaultValue: 32,
+                  valueWhen: [
+                    const Condition.largerThan(name: TABLET, value: 100)
+                  ],
+                ).value!.toDouble(),
+              )
+            : Platform.isIOS
+                ? const EdgeInsets.only(bottom: 8)
+                : null,
         height: _isVisible
-            ? Platform.isIOS
-                ? 53
-                : 45
+            ? kIsWeb
+                ? 100
+                : Platform.isIOS
+                    ? 53
+                    : 45
             : 0,
         width: MediaQuery.of(context).size.width,
         color:

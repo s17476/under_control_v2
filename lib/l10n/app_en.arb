@@ -1,4 +1,8 @@
 {
+    "pick_image": "Pick image",
+    "@pick_image": {
+      "description": "Pick image"
+    },
     "important": "Important",
     "@important": {
       "description": "Important"

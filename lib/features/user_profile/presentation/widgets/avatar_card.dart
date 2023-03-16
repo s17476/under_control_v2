@@ -1,13 +1,14 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../../core/utils/responsive_size.dart';
 import '../../../core/utils/size_config.dart';
 
-class AvatarCard extends StatelessWidget with ResponsiveSize {
+class AvatarCard extends StatelessWidget {
   const AvatarCard({
     Key? key,
     this.image,
@@ -27,81 +28,93 @@ class AvatarCard extends StatelessWidget with ResponsiveSize {
       child: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      SizedBox(
-                        height: responsiveSizeVerticalPct(small: 12, medium: 5),
-                      ),
-                      // avatar
-                      SizedBox(
-                        height: responsiveSizePct(small: 70, medium: 20),
-                        width: responsiveSizePct(small: 70, medium: 20),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: responsiveSizePct(small: 40),
-                              backgroundColor: Theme.of(context).cardColor,
-                              backgroundImage:
-                                  image != null ? FileImage(image!) : null,
-                              child: image == null
-                                  ? Text(
-                                      '?',
-                                      style: TextStyle(
-                                        fontSize: responsiveSizePct(
-                                            small: 20, medium: 10),
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    )
-                                  : null,
+            child: Center(
+              child: SizedBox(
+                width: 500,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        // avatar
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 48.0,
+                            right: 48.0,
+                            top: ResponsiveValue(
+                              context,
+                              defaultValue: 48,
+                              valueWhen: [
+                                const Condition.largerThan(
+                                  name: TABLET,
+                                  value: 16,
+                                ),
+                              ],
+                            ).value!.toDouble(),
+                          ),
+                          child: CircleAvatar(
+                            radius: 200,
+                            backgroundColor: Theme.of(context).cardColor,
+                            backgroundImage: image != null
+                                ? (kIsWeb
+                                    ? NetworkImage(image!.path)
+                                    : FileImage(image!)) as ImageProvider
+                                : null,
+                            child: image == null
+                                ? Text(
+                                    '?',
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .color,
+                                      fontSize: 100,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  )
+                                : null,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        if (!kIsWeb)
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              setAvatar(ImageSource.camera);
+                            },
+                            icon: const Icon(Icons.camera),
+                            label: Text(
+                              AppLocalizations.of(context)!
+                                  .user_profile_add_user_personal_data_take_photo_btn,
                             ),
-                          ],
+                          ),
+                        const SizedBox(
+                          height: 16,
                         ),
-                      ),
-                      SizedBox(
-                        height: responsiveSizePct(small: 15, medium: 3),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          setAvatar(ImageSource.camera);
-                        },
-                        icon: const Icon(Icons.camera),
-                        label: Text(
-                          AppLocalizations.of(context)!
-                              .user_profile_add_user_personal_data_take_photo_btn,
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            setAvatar(ImageSource.gallery);
+                          },
+                          icon: const Icon(
+                            Icons.photo_size_select_actual_rounded,
+                          ),
+                          label: kIsWeb
+                              ? Text(AppLocalizations.of(context)!.pick_image)
+                              : Text(
+                                  AppLocalizations.of(context)!
+                                      .user_profile_add_user_personal_data_gallery,
+                                ),
                         ),
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: Size(
-                                responsiveSizePx(small: double.infinity), 40)),
-                      ),
-                      SizedBox(
-                        height: responsiveSizePx(small: 16, medium: 4),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          setAvatar(ImageSource.gallery);
-                        },
-                        icon: const Icon(
-                          Icons.photo_size_select_actual_rounded,
+                        const SizedBox(
+                          height: kIsWeb ? 170 : 50,
                         ),
-                        label: Text(
-                          AppLocalizations.of(context)!
-                              .user_profile_add_user_personal_data_gallery,
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: Size(
-                                responsiveSizePx(small: double.infinity), 40)),
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
