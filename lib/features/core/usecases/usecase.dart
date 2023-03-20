@@ -510,13 +510,13 @@ class NotificationSettingsParams extends Equatable {
 
 class ShowcaseSettingsParams extends Equatable {
   final String userId;
-  final ShowcaseSettings type;
+  final ShowcaseSettings settings;
 
   const ShowcaseSettingsParams({
     required this.userId,
-    required this.type,
+    required this.settings,
   });
 
   @override
-  List<Object> get props => [userId, type];
+  List<Object> get props => [userId, settings];
 }
