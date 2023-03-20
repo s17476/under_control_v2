@@ -1,11 +1,11 @@
 {
-    "name": "under_control_v2",
-    "short_name": "under_control_v2",
+    "name": "UnderControl CMMS",
+    "short_name": "UC",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "User friendly CMMS",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -21,6 +21,7 @@ import '../../inventory/domain/entities/item_category/item_category.dart';
 import '../../knowledge_base/domain/entities/instruction_category/instruction_category.dart';
 import '../../locations/domain/entities/location.dart';
 import '../../notifications/domain/entities/notification_type.dart';
+import '../../settings/domain/entities/showcase_settings.dart';
 import '../../tasks/domain/entities/work_request/work_request.dart';
 import '../error/failures.dart';
 
@@ -505,4 +506,17 @@ class NotificationSettingsParams extends Equatable {
 
   @override
   List<Object> get props => [userId, type, value];
+}
+
+class ShowcaseSettingsParams extends Equatable {
+  final String userId;
+  final ShowcaseSettings type;
+
+  const ShowcaseSettingsParams({
+    required this.userId,
+    required this.type,
+  });
+
+  @override
+  List<Object> get props => [userId, type];
 }
