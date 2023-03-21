@@ -41,6 +41,7 @@ import 'features/notifications/presentation/blocs/uc_notification/uc_notificatio
 import 'features/notifications/presentation/blocs/uc_notification_management/uc_notification_management_bloc.dart';
 import 'features/notifications/presentation/cubits/cubit/device_token_cubit.dart';
 import 'features/settings/presentation/blocs/notification_settings/notification_settings_cubit.dart';
+import 'features/settings/presentation/blocs/showcase_settings/showcase_settings_cubit.dart';
 import 'features/tasks/presentation/blocs/calendar_event/calendar_event_bloc.dart';
 import 'features/tasks/presentation/blocs/calendar_task/calendar_task_bloc.dart';
 import 'features/tasks/presentation/blocs/calendar_task_archive/calenddar_task_archive_bloc.dart';
@@ -130,6 +131,7 @@ class CustomMultiBlocProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ActivityBloc>()),
         BlocProvider(create: (context) => getIt<DeviceTokenCubit>()),
         BlocProvider(create: (context) => getIt<NotificationSettingsCubit>()),
+        BlocProvider(create: (context) => getIt<ShowcaseSettingsCubit>()),
         BlocProvider(create: (context) => getIt<UcNotificationBloc>()),
         BlocProvider(
           create: (context) => getIt<UcNotificationManagementBloc>(),

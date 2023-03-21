@@ -664,5 +664,8 @@
     "notifications_assets_tile": "Status zasobu",
     "notifications_unread": "Nieodczytane",
     "notifications_no_unread": "Brak nowych powiadomień",
-    "notification_not_selected_location": "Powiadomienie w niewybranej lokacji"
+    "notification_not_selected_location": "Powiadomienie w niewybranej lokacji",
+    "showcase_menu": "Menu",
+    "showcase_menu_description": "Stuknij, by wyświetlić menu",
+    "showcase_menu_drawer": "W menu możesz zobaczyć i edytować swój profil. Znajdziesz tu również wszystkich użytkowników w Twojej organizacji, grupy oraz lokacje. Tylko administratorzy posiadają uprawnienia do ich edycji."
 }

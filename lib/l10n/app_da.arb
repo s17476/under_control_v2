@@ -664,5 +664,8 @@
     "notifications_assets_tile": "Aktivets status",
     "notifications_unread": "Ulæste",
     "notifications_no_unread": "Ingen nye meddelelser",
-    "notification_not_selected_location": "Meddelelse på uvalgt placering"
+    "notification_not_selected_location": "Meddelelse på uvalgt placering",
+    "showcase_menu": "Menu",
+    "showcase_menu_description": "Tryk for at åbne menuen",
+    "showcase_menu_drawer": "Du kan se og redigere din profil i menuen. Du finder også alle brugere i din organisation, grupper og lokationer. Kun administratorer har tilladelse til at redigere dem."
 }

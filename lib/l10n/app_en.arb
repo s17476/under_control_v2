@@ -2734,5 +2734,17 @@
     "notification_not_selected_location": "New notification in unselected location.",
     "@notification_not_selected_location": {
       "description": "notifications"
+    },
+    "showcase_menu": "Menu",
+    "@showcase_menu": {
+      "description": "showcase"
+    },
+    "showcase_menu_description": "Tap to open the menu",
+    "@showcase_menu_description": {
+      "description": "showcase"
+    },
+    "showcase_menu_drawer": "You can view and edit your profile in the menu. You'll also find all users in your organization, groups, and locations. Only administrators have permission to edit them.",
+    "@showcase_menu_drawer": {
+      "description": "showcase"
     }
 }

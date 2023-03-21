@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/calendar_page.dart';
 
 import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
@@ -35,7 +36,6 @@ import '../widgets/home_page/app_bar_search_box.dart';
 import '../widgets/home_page/home_bottom_navigation_bar.dart';
 import '../widgets/home_page/home_sliver_app_bar.dart';
 import '../widgets/home_page/main_drawer.dart';
-import '../widgets/overlay_menu/overlay_menu.dart';
 import 'loading_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,6 +49,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  BuildContext? myContext;
+
+  // showcase keys - admin
+  final _menuKey = GlobalKey();
+  final _drawerKey = GlobalKey();
+  final _bottomNavigationKey = GlobalKey();
+  final _adminLocationsKey = GlobalKey();
+  // showcase keys - all users
+  // TODO - add other keys
+
   // search box height
   final double _searchBoxHeight = 70;
 
@@ -370,6 +380,17 @@ class _HomePageState extends State<HomePage>
       }
     });
 
+    // start admin showcase
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 400), () {
+        ShowCaseWidget.of(myContext!).startShowCase([
+          _menuKey,
+          _drawerKey,
+          // _bottomNavigationKey,
+        ]);
+      });
+    });
+
     super.initState();
   }
 
@@ -386,6 +407,7 @@ class _HomePageState extends State<HomePage>
         _isControlsVisible) {
       _hideControls();
     }
+
     super.didChangeDependencies();
   }
 
@@ -406,322 +428,332 @@ class _HomePageState extends State<HomePage>
     SizeConfig.init(context);
     DateTime preBackpress = DateTime.now();
 
-    return WillPopScope(
-      onWillPop: () async {
-        // hides filter widget if expanded
-        if (_isFilterExpanded) {
-          _toggleIsFilterExpanded();
-          return false;
-        }
-        // hides notifications
-        if (_isNotificationsExpanded) {
-          _toggleIsNotificationsExpanded();
-          return false;
-        }
-        // hides menu drawer if visible
-        if (_isMenuVisible) {
-          _toggleIsMenuVisible();
-          return false;
-        }
-        // hides tasks filter if visible
-        if (_isTaskFilterVisible) {
-          context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
-          return false;
-        }
-        if (_isCalendarVisible) {
-          _toggleIsCalendarVisible();
-          return false;
-        }
-        // hides search box if visible
-        if (_isAssetsSearchBarExpanded ||
-            _isInstructionsSearchBarExpanded ||
-            _isInventorySearchBarExpanded) {
-          _toggleIsSearchBarExpanded();
-          return false;
-        }
-        // double click to exit the app
-        final timegap = DateTime.now().difference(preBackpress);
-        final cantExit = timegap >= const Duration(seconds: 2);
-        preBackpress = DateTime.now();
-        if (cantExit) {
-          // shows snack bar after first click
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Text(
-                  AppLocalizations.of(context)!.back_to_exit,
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                duration: const Duration(seconds: 2),
-                backgroundColor: Colors.black,
-              ),
-            );
-          return false;
-        } else {
-          return true;
-        }
-      },
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<ItemsManagementBloc, ItemsManagementState>(
-            listener: (context, state) =>
-                itemManagementBlocListener(context, state),
-          ),
-          BlocListener<InstructionManagementBloc, InstructionManagementState>(
-            listener: (context, state) =>
-                instructionManagementBlocListener(context, state),
-          ),
-          BlocListener<AssetManagementBloc, AssetManagementState>(
-            listener: (context, state) =>
-                assetManagementBlocListener(context, state),
-          ),
-          BlocListener<WorkRequestManagementBloc, WorkRequestManagementState>(
-            listener: (context, state) =>
-                workRequestManagementBlocListener(context, state),
-          ),
-          BlocListener<TaskManagementBloc, TaskManagementState>(
-            listener: (context, state) =>
-                taskManagementBlocListener(context, state),
-          ),
-          BlocListener<TaskFilterBloc, TaskFilterState>(
-              listener: (context, state) {
-            if ((state is TaskFilterSelectedState ||
-                    state is TaskFilterNothingSelectedState) &&
-                state.isFilterVisible &&
-                _isFilterExpanded) {
-              setState(() {
-                _isFilterExpanded = false;
-              });
+    return ShowCaseWidget(
+      disableBarrierInteraction: true,
+      blurValue: 5,
+      builder: Builder(builder: (context) {
+        myContext = context;
+        return WillPopScope(
+          onWillPop: () async {
+            // hides filter widget if expanded
+            if (_isFilterExpanded) {
+              _toggleIsFilterExpanded();
+              return false;
             }
-            if ((state is TaskFilterSelectedState ||
-                    state is TaskFilterNothingSelectedState) &&
-                state.isFilterVisible &&
-                _isNotificationsExpanded) {
-              setState(() {
-                _isNotificationsExpanded = false;
-              });
+            // hides notifications
+            if (_isNotificationsExpanded) {
+              _toggleIsNotificationsExpanded();
+              return false;
             }
-          }),
-        ],
-        child: Scaffold(
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-
-          drawer: const MainDrawer(),
-          // safe area
-          body: SafeArea(
-            bottom: _isControlsVisible,
-            child: Container(
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: AssetImage('assets/scaffold_background.png'),
-                  fit: BoxFit.cover,
-                ),
-                color: Theme.of(context).scaffoldBackgroundColor,
-              ),
-              child: NestedScrollView(
-                controller: _scrollController,
-                // physics: const NeverScrollableScrollPhysics(),
-                // AppBar
-                headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                  SliverOverlapAbsorber(
-                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                        context),
-                    sliver: HomeSliverAppBar(
-                      pageIndex: _pageIndex,
-                      isFilterExpanded: _isFilterExpanded,
-                      toggleIsFilterExpanded: _toggleIsFilterExpanded,
-                      isNotificationsExpanded: _isNotificationsExpanded,
-                      toggleIsNotificationsExpanded:
-                          _toggleIsNotificationsExpanded,
-                      isMenuVisible: _isMenuVisible,
-                      toggleIsMenuVisible: _toggleIsMenuVisible,
-                      isSearchBarExpanded: _getFlagForPageIndex(_pageIndex),
-                      toggleIsSearchBarExpanded: _toggleIsSearchBarExpanded,
-                      isTaskFilterVisible: _isTaskFilterVisible,
-                      toggleIsCalendarVisible: _toggleIsCalendarVisible,
-                      isCalendarVisible: _isCalendarVisible,
-                    ),
-                  )
-                ],
-                // body
-                body: Stack(
-                  children: [
-                    BlocBuilder<FilterBloc, FilterState>(
-                      builder: (context, state) {
-                        if (state is FilterLoadedState) {
-                          return Stack(
-                            children: [
-                              // locations not selected
-                              if (state.locations.isEmpty)
-                                Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 16,
-                                        top: 8,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .home_screen_filter_select_locations,
-                                              style:
-                                                  const TextStyle(fontSize: 18),
-                                            ),
-                                          ),
-                                          const Icon(
-                                            Icons.arrow_upward,
-                                            size: 50,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const Expanded(
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.location_off,
-                                          size: 100,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 36,
-                                    ),
-                                  ],
-                                ),
-                              // tabs
-                              // if (state is FilterLoadedState &&
-                              //     state.locations.isNotEmpty)
-                              PageView(
-                                controller: _pageController,
-                                onPageChanged: (index) {
-                                  if (!_isBottomNavigationAnimating) {
-                                    setState(() {
-                                      _pageIndex = index;
-                                    });
-                                    _navigationController.value = index;
-                                  }
-                                },
-                                children: [
-                                  _isCalendarVisible
-                                      ? const CalendarPage()
-                                      : const TasksPage(),
-                                  InventoryPage(
-                                    searchBoxHeight: _searchBoxHeight,
-                                    isSearchBoxExpanded:
-                                        _isInventorySearchBarExpanded,
-                                    searchQuery: _inventorySearchQuery,
-                                    isSortedByCategory: false,
-                                  ),
-                                  const DashboardPage(),
-                                  AssetsPage(
-                                    searchBoxHeight: _searchBoxHeight,
-                                    isSearchBoxExpanded:
-                                        _isAssetsSearchBarExpanded,
-                                    searchQuery: _assetsSearchQuery,
-                                  ),
-                                  KnowledgeBasePage(
-                                    searchBoxHeight: _searchBoxHeight,
-                                    isSearchBoxExpanded:
-                                        _isInstructionsSearchBarExpanded,
-                                    searchQuery: _instructionsSearchQuery,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        }
-                        return const SizedBox();
-                      },
-                    ),
-                    Container(
-                      height: 10,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.grey.shade700,
-                            Colors.grey.shade700.withOpacity(0.1),
-                            Colors.transparent,
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
+            // hides menu drawer if visible
+            if (_isMenuVisible) {
+              _toggleIsMenuVisible();
+              return false;
+            }
+            // hides tasks filter if visible
+            if (_isTaskFilterVisible) {
+              context.read<TaskFilterBloc>().add(TaskFilterHideEvent());
+              return false;
+            }
+            if (_isCalendarVisible) {
+              _toggleIsCalendarVisible();
+              return false;
+            }
+            // hides search box if visible
+            if (_isAssetsSearchBarExpanded ||
+                _isInstructionsSearchBarExpanded ||
+                _isInventorySearchBarExpanded) {
+              _toggleIsSearchBarExpanded();
+              return false;
+            }
+            // double click to exit the app
+            final timegap = DateTime.now().difference(preBackpress);
+            final cantExit = timegap >= const Duration(seconds: 2);
+            preBackpress = DateTime.now();
+            if (cantExit) {
+              // shows snack bar after first click
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      AppLocalizations.of(context)!.back_to_exit,
+                      style: const TextStyle(
+                        color: Colors.white,
                       ),
                     ),
-                    // bottom navigation bar
-                    HomeBottomNavigationBar(
-                      animationController: _animationController!,
-                      navigationController: _navigationController,
-                      // pageController: _pageController,
-                      setPageIndex: _setPageIndex,
-                      toggleShowMenu: _toggleIsMenuVisible,
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: Colors.black,
+                  ),
+                );
+              return false;
+            } else {
+              return true;
+            }
+          },
+          child: MultiBlocListener(
+            listeners: [
+              BlocListener<ItemsManagementBloc, ItemsManagementState>(
+                listener: (context, state) =>
+                    itemManagementBlocListener(context, state),
+              ),
+              BlocListener<InstructionManagementBloc,
+                  InstructionManagementState>(
+                listener: (context, state) =>
+                    instructionManagementBlocListener(context, state),
+              ),
+              BlocListener<AssetManagementBloc, AssetManagementState>(
+                listener: (context, state) =>
+                    assetManagementBlocListener(context, state),
+              ),
+              BlocListener<WorkRequestManagementBloc,
+                  WorkRequestManagementState>(
+                listener: (context, state) =>
+                    workRequestManagementBlocListener(context, state),
+              ),
+              BlocListener<TaskManagementBloc, TaskManagementState>(
+                listener: (context, state) =>
+                    taskManagementBlocListener(context, state),
+              ),
+              BlocListener<TaskFilterBloc, TaskFilterState>(
+                  listener: (context, state) {
+                if ((state is TaskFilterSelectedState ||
+                        state is TaskFilterNothingSelectedState) &&
+                    state.isFilterVisible &&
+                    _isFilterExpanded) {
+                  setState(() {
+                    _isFilterExpanded = false;
+                  });
+                }
+                if ((state is TaskFilterSelectedState ||
+                        state is TaskFilterNothingSelectedState) &&
+                    state.isFilterVisible &&
+                    _isNotificationsExpanded) {
+                  setState(() {
+                    _isNotificationsExpanded = false;
+                  });
+                }
+              }),
+            ],
+            child: Scaffold(
+              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+
+              drawer: MainDrawer(drawerKey: _drawerKey),
+              // safe area
+              body: SafeArea(
+                bottom: _isControlsVisible,
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: const DecorationImage(
+                      image: AssetImage('assets/scaffold_background.png'),
+                      fit: BoxFit.cover,
                     ),
-                    // location and group selection filter
-                    HomePageFilter(
-                      isFilterExpanded: _isFilterExpanded,
-                      onDismiss: _toggleIsFilterExpanded,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                  child: NestedScrollView(
+                    controller: _scrollController,
+                    // physics: const NeverScrollableScrollPhysics(),
+                    // AppBar
+                    headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                      SliverOverlapAbsorber(
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                            context),
+                        sliver: HomeSliverAppBar(
+                          pageIndex: _pageIndex,
+                          isFilterExpanded: _isFilterExpanded,
+                          toggleIsFilterExpanded: _toggleIsFilterExpanded,
+                          isNotificationsExpanded: _isNotificationsExpanded,
+                          toggleIsNotificationsExpanded:
+                              _toggleIsNotificationsExpanded,
+                          isMenuVisible: _isMenuVisible,
+                          toggleIsMenuVisible: _toggleIsMenuVisible,
+                          isSearchBarExpanded: _getFlagForPageIndex(_pageIndex),
+                          toggleIsSearchBarExpanded: _toggleIsSearchBarExpanded,
+                          isTaskFilterVisible: _isTaskFilterVisible,
+                          toggleIsCalendarVisible: _toggleIsCalendarVisible,
+                          isCalendarVisible: _isCalendarVisible,
+                          menuKey: _menuKey,
+                        ),
+                      )
+                    ],
+                    // body
+                    body: Stack(
+                      children: [
+                        BlocBuilder<FilterBloc, FilterState>(
+                          builder: (context, state) {
+                            if (state is FilterLoadedState) {
+                              return Stack(
+                                children: [
+                                  // locations not selected
+                                  if (state.locations.isEmpty)
+                                    Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 16,
+                                            top: 8,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .home_screen_filter_select_locations,
+                                                  style: const TextStyle(
+                                                      fontSize: 18),
+                                                ),
+                                              ),
+                                              const Icon(
+                                                Icons.arrow_upward,
+                                                size: 50,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const Expanded(
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.location_off,
+                                              size: 100,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 36,
+                                        ),
+                                      ],
+                                    ),
+                                  // tabs
+                                  // if (state is FilterLoadedState &&
+                                  //     state.locations.isNotEmpty)
+                                  PageView(
+                                    controller: _pageController,
+                                    onPageChanged: (index) {
+                                      if (!_isBottomNavigationAnimating) {
+                                        setState(() {
+                                          _pageIndex = index;
+                                        });
+                                        _navigationController.value = index;
+                                      }
+                                    },
+                                    children: [
+                                      _isCalendarVisible
+                                          ? const CalendarPage()
+                                          : const TasksPage(),
+                                      InventoryPage(
+                                        searchBoxHeight: _searchBoxHeight,
+                                        isSearchBoxExpanded:
+                                            _isInventorySearchBarExpanded,
+                                        searchQuery: _inventorySearchQuery,
+                                        isSortedByCategory: false,
+                                      ),
+                                      const DashboardPage(),
+                                      AssetsPage(
+                                        searchBoxHeight: _searchBoxHeight,
+                                        isSearchBoxExpanded:
+                                            _isAssetsSearchBarExpanded,
+                                        searchQuery: _assetsSearchQuery,
+                                      ),
+                                      KnowledgeBasePage(
+                                        searchBoxHeight: _searchBoxHeight,
+                                        isSearchBoxExpanded:
+                                            _isInstructionsSearchBarExpanded,
+                                        searchQuery: _instructionsSearchQuery,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            }
+                            return const SizedBox();
+                          },
+                        ),
+                        Container(
+                          height: 10,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.grey.shade700,
+                                Colors.grey.shade700.withOpacity(0.1),
+                                Colors.transparent,
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
+                        ),
+                        // bottom navigation bar
+                        HomeBottomNavigationBar(
+                          animationController: _animationController!,
+                          navigationController: _navigationController,
+                          // pageController: _pageController,
+                          setPageIndex: _setPageIndex,
+                          toggleShowMenu: _toggleIsMenuVisible,
+                        ),
+                        // location and group selection filter
+                        HomePageFilter(
+                          isFilterExpanded: _isFilterExpanded,
+                          onDismiss: _toggleIsFilterExpanded,
+                        ),
+                        // notifications
+                        HomePageNotifications(
+                          isNotificationsExpanded: _isNotificationsExpanded,
+                          onDismiss: _toggleIsNotificationsExpanded,
+                        ),
+                        // OverlayMenu(
+                        //   isVisible: _isMenuVisible,
+                        //   onDismiss: _toggleIsMenuVisible,
+                        //   pageIndex: _pageIndex,
+                        // ),
+                        // inventory search box
+                        AppBarSearchBox(
+                          title: AppLocalizations.of(context)!.search_item,
+                          searchBoxHeight: _searchBoxHeight,
+                          isSearchBoxExpanded: _isInventorySearchBarExpanded,
+                          onChanged: _searchInInventory,
+                          searchTextEditingController:
+                              _inventorySearchTextEditingController,
+                        ),
+                        // assets search box
+                        AppBarSearchBox(
+                          title: AppLocalizations.of(context)!.search,
+                          searchBoxHeight: _searchBoxHeight,
+                          isSearchBoxExpanded: _isAssetsSearchBarExpanded,
+                          onChanged: _searchInAssets,
+                          searchTextEditingController:
+                              _assetsSearchTextEditingController,
+                        ),
+                        // instructions search box
+                        AppBarSearchBox(
+                          title: AppLocalizations.of(context)!.search,
+                          searchBoxHeight: _searchBoxHeight,
+                          isSearchBoxExpanded: _isInstructionsSearchBarExpanded,
+                          onChanged: _searchInInstructions,
+                          searchTextEditingController:
+                              _instructionsSearchTextEditingController,
+                        ),
+                        // tasks filter
+                        AppBarTasksFilter(
+                          isTaskFilterVisible: _isTaskFilterVisible,
+                        ),
+                        // loading widget
+                        BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
+                          builder: (context, state) {
+                            if (state is CompanyProfileLoaded) {
+                              return const SizedBox();
+                            }
+                            return const LoadingPage();
+                          },
+                        ),
+                      ],
                     ),
-                    // notifications
-                    HomePageNotifications(
-                      isNotificationsExpanded: _isNotificationsExpanded,
-                      onDismiss: _toggleIsNotificationsExpanded,
-                    ),
-                    // OverlayMenu(
-                    //   isVisible: _isMenuVisible,
-                    //   onDismiss: _toggleIsMenuVisible,
-                    //   pageIndex: _pageIndex,
-                    // ),
-                    // inventory search box
-                    AppBarSearchBox(
-                      title: AppLocalizations.of(context)!.search_item,
-                      searchBoxHeight: _searchBoxHeight,
-                      isSearchBoxExpanded: _isInventorySearchBarExpanded,
-                      onChanged: _searchInInventory,
-                      searchTextEditingController:
-                          _inventorySearchTextEditingController,
-                    ),
-                    // assets search box
-                    AppBarSearchBox(
-                      title: AppLocalizations.of(context)!.search,
-                      searchBoxHeight: _searchBoxHeight,
-                      isSearchBoxExpanded: _isAssetsSearchBarExpanded,
-                      onChanged: _searchInAssets,
-                      searchTextEditingController:
-                          _assetsSearchTextEditingController,
-                    ),
-                    // instructions search box
-                    AppBarSearchBox(
-                      title: AppLocalizations.of(context)!.search,
-                      searchBoxHeight: _searchBoxHeight,
-                      isSearchBoxExpanded: _isInstructionsSearchBarExpanded,
-                      onChanged: _searchInInstructions,
-                      searchTextEditingController:
-                          _instructionsSearchTextEditingController,
-                    ),
-                    // tasks filter
-                    AppBarTasksFilter(
-                      isTaskFilterVisible: _isTaskFilterVisible,
-                    ),
-                    // loading widget
-                    BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
-                      builder: (context, state) {
-                        if (state is CompanyProfileLoaded) {
-                          return const SizedBox();
-                        }
-                        return const LoadingPage();
-                      },
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

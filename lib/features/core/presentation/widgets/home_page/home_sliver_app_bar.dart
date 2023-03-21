@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../../../groups/domain/entities/feature.dart';
 import '../../../../tasks/presentation/blocs/task_filter/task_filter_bloc.dart';
@@ -28,6 +29,7 @@ class HomeSliverAppBar extends StatelessWidget {
     required this.isTaskFilterVisible,
     required this.toggleIsCalendarVisible,
     required this.isCalendarVisible,
+    required this.menuKey,
   }) : super(key: key);
 
   final int pageIndex;
@@ -42,6 +44,7 @@ class HomeSliverAppBar extends StatelessWidget {
   final bool isTaskFilterVisible;
   final VoidCallback toggleIsCalendarVisible;
   final bool isCalendarVisible;
+  final GlobalKey menuKey;
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +89,33 @@ class HomeSliverAppBar extends StatelessWidget {
               }
               Scaffold.of(context).openDrawer();
             },
-            child: const Padding(
-              padding: EdgeInsets.only(top: 2.0),
-              child: AppBarAnimatedIcon(),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 2.0),
+              child: Showcase(
+                key: menuKey,
+                title: AppLocalizations.of(context)!.showcase_menu,
+                description:
+                    AppLocalizations.of(context)!.showcase_menu_description,
+                targetShapeBorder: const CircleBorder(),
+                targetPadding: const EdgeInsets.only(
+                  top: -8,
+                  bottom: 8,
+                ),
+                tooltipBackgroundColor: Theme.of(context).primaryColor,
+                titleTextStyle: Theme.of(context).textTheme.headlineSmall,
+                descTextStyle: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(fontSize: 18),
+                onTargetClick: () async {
+                  Scaffold.of(context).openDrawer();
+                  Future.delayed(const Duration(milliseconds: 400), () {
+                    ShowCaseWidget.of(context).next();
+                  });
+                },
+                disposeOnTap: false,
+                child: const AppBarAnimatedIcon(),
+              ),
             ),
           );
         },

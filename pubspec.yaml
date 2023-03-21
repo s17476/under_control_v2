@@ -60,6 +60,7 @@ dependencies:
   table_calendar: ^3.0.8
   flutter_speed_dial: ^6.2.0
   responsive_framework: ^0.2.0
+  showcaseview: ^2.0.2
   
 dev_dependencies:
   flutter_test:

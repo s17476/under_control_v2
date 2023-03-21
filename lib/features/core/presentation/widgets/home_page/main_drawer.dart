@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -17,7 +18,12 @@ import '../logo_widget.dart';
 import 'custom_menu_item.dart';
 
 class MainDrawer extends StatelessWidget with ResponsiveSize {
-  const MainDrawer({Key? key}) : super(key: key);
+  const MainDrawer({
+    Key? key,
+    required this.drawerKey,
+  }) : super(key: key);
+
+  final GlobalKey drawerKey;
 
   @override
   Widget build(BuildContext context) {
@@ -30,124 +36,163 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
           ),
           child: Column(
             children: [
-              const FittedBox(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 8,
-                    right: 8,
-                    top: 4,
-                  ),
-                  child: Logo(greenLettersSize: 30, whitheLettersSize: 20),
+              Showcase(
+                key: drawerKey,
+                title: AppLocalizations.of(context)!.showcase_menu,
+                targetPadding: const EdgeInsets.only(
+                  top: -8,
+                  bottom: 32,
+                  left: 8,
+                  right: 8,
                 ),
-              ),
-              BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
-                builder: (context, state) {
-                  if (state is CompanyProfileLoaded) {
-                    return InkWell(
-                      onTap: () => Navigator.popAndPushNamed(
-                        context,
-                        CompanyDetailsPage.routeName,
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        child: Text(
-                          state.company.name,
-                          style: const TextStyle(fontSize: 22),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
+                description: AppLocalizations.of(context)!.showcase_menu_drawer,
+                targetBorderRadius: BorderRadius.circular(15),
+                tooltipBackgroundColor: Theme.of(context).primaryColor,
+                titleTextStyle: Theme.of(context).textTheme.headlineSmall,
+                descTextStyle: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(fontSize: 18),
+                onTargetClick: () async {
+                  Scaffold.of(context).closeDrawer();
+                  // Future.delayed(const Duration(milliseconds: 400), () {
+                  ShowCaseWidget.of(context).next();
+                  // });
+                },
+                disposeOnTap: false,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 100,
+                      child: FittedBox(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 8,
+                            right: 8,
+                            top: 4,
+                          ),
+                          child:
+                              Logo(greenLettersSize: 30, whitheLettersSize: 20),
                         ),
                       ),
-                    );
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
-              ),
-              const Divider(),
-              BlocBuilder<UserProfileBloc, UserProfileState>(
-                builder: (context, state) {
-                  if (state is Approved) {
-                    return InkWell(
-                      onTap: () => Navigator.popAndPushNamed(
-                        context,
-                        UserDetailsPage.routeName,
-                        arguments: state.userProfile,
-                      ),
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          // avatar
-                          CachedUserAvatar(
-                            size: responsiveSizePct(small: 15),
-                            imageUrl: state.userProfile.avatarUrl,
-                          ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // first name
-                                Text(
-                                  state.userProfile.firstName,
-                                  style: const TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 30,
+                      child:
+                          BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
+                        builder: (context, state) {
+                          if (state is CompanyProfileLoaded) {
+                            return InkWell(
+                              onTap: () => Navigator.popAndPushNamed(
+                                context,
+                                CompanyDetailsPage.routeName,
+                              ),
+                              child: Container(
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  state.company.name,
+                                  style: const TextStyle(fontSize: 22),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
-                                // last name
-                                Text(
-                                  state.userProfile.lastName,
-                                  style: const TextStyle(fontSize: 16),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
+                              ),
+                            );
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        },
+                      ),
+                    ),
+                    const Divider(),
+                    BlocBuilder<UserProfileBloc, UserProfileState>(
+                      builder: (context, state) {
+                        if (state is Approved) {
+                          return InkWell(
+                            onTap: () => Navigator.popAndPushNamed(
+                              context,
+                              UserDetailsPage.routeName,
+                              arguments: state.userProfile,
+                            ),
+                            child: Row(
+                              children: [
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                // avatar
+                                CachedUserAvatar(
+                                  size: responsiveSizePct(small: 15),
+                                  imageUrl: state.userProfile.avatarUrl,
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // first name
+                                      Text(
+                                        state.userProfile.firstName,
+                                        style: const TextStyle(fontSize: 16),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                      ),
+                                      // last name
+                                      Text(
+                                        state.userProfile.lastName,
+                                        style: const TextStyle(fontSize: 16),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
-              ),
-              const Divider(),
-              // users
-              CustomMenuItem(
-                onTap: () {
-                  Navigator.popAndPushNamed(
-                    context,
-                    UsersListPage.routeName,
-                  );
-                },
-                icon: Icons.person,
-                label: AppLocalizations.of(context)!.drawer_item_users,
-              ),
-              // groups
-              CustomMenuItem(
-                onTap: () {
-                  Navigator.popAndPushNamed(
-                      context, GroupManagementPage.routeName);
-                },
-                icon: Icons.group,
-                // iconBackgroundColor: Colors.amber,
-                label: AppLocalizations.of(context)!.drawer_item_groups,
-              ),
-              // locations
-              CustomMenuItem(
-                onTap: () {
-                  Navigator.popAndPushNamed(
-                    context,
-                    LocationManagementPage.routeName,
-                  );
-                },
-                icon: Icons.location_on,
-                label: AppLocalizations.of(context)!.drawer_item_locations,
+                          );
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      },
+                    ),
+                    const Divider(),
+                    // users
+                    CustomMenuItem(
+                      onTap: () {
+                        Navigator.popAndPushNamed(
+                          context,
+                          UsersListPage.routeName,
+                        );
+                      },
+                      icon: Icons.person,
+                      label: AppLocalizations.of(context)!.drawer_item_users,
+                    ),
+                    // groups
+                    CustomMenuItem(
+                      onTap: () {
+                        Navigator.popAndPushNamed(
+                            context, GroupManagementPage.routeName);
+                      },
+                      icon: Icons.group,
+                      // iconBackgroundColor: Colors.amber,
+                      label: AppLocalizations.of(context)!.drawer_item_groups,
+                    ),
+                    // locations
+                    CustomMenuItem(
+                      onTap: () {
+                        Navigator.popAndPushNamed(
+                          context,
+                          LocationManagementPage.routeName,
+                        );
+                      },
+                      icon: Icons.location_on,
+                      label:
+                          AppLocalizations.of(context)!.drawer_item_locations,
+                    ),
+                  ],
+                ),
               ),
 
               const Expanded(child: SizedBox()),

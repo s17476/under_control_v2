@@ -87,7 +87,8 @@ class _PassiveHomePageState extends State<PassiveHomePage>
             workRequestManagementBlocListener(context, state),
         child: Scaffold(
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          drawer: const MainDrawer(),
+          // TODO showcase
+          drawer: MainDrawer(drawerKey: GlobalKey()),
           appBar: AppBar(
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(40.0),

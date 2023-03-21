@@ -1206,6 +1206,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  showcaseview:
+    dependency: "direct main"
+    description:
+      name: showcaseview
+      sha256: d420ebe8dc6946814f492a9c9e476f7a7083fa1adf3ed0443ab92eedf1b1052c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   simple_gesture_detector:
     dependency: transitive
     description:
