@@ -125,9 +125,10 @@ class App extends StatelessWidget
                 child,
                 defaultScale: true,
                 // maxWidth: 1200,
-                minWidth: 480,
+                // minWidth: 480,
+
                 breakpoints: const [
-                  ResponsiveBreakpoint.resize(480, name: MOBILE),
+                  ResponsiveBreakpoint.resize(350, name: MOBILE),
                   ResponsiveBreakpoint.autoScale(600, name: TABLET),
                   ResponsiveBreakpoint.autoScale(800, name: TABLET),
                   ResponsiveBreakpoint.resize(1200, name: DESKTOP),

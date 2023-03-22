@@ -667,5 +667,7 @@
     "notification_not_selected_location": "Powiadomienie w niewybranej lokacji",
     "showcase_menu": "Menu",
     "showcase_menu_description": "Stuknij, by wyświetlić menu",
-    "showcase_menu_drawer": "W menu możesz zobaczyć i edytować swój profil. Znajdziesz tu również wszystkich użytkowników w Twojej organizacji, grupy oraz lokacje. Tylko administratorzy posiadają uprawnienia do ich edycji."
+    "showcase_menu_drawer": "W menu możesz zobaczyć i edytować swój profil. Znajdziesz tu również wszystkich użytkowników w Twojej organizacji, grupy oraz lokacje. Tylko administratorzy posiadają uprawnienia do ich edycji.",
+    "showcase_notifications_description": "W tym miejscu pojawią się informacje o nieodczytanych powiadomieniach.",
+    "showcase_filter_description": "Filtr lokacji jest jednym z najważniejszych narzędzi w UnderControl. Możesz tu wybrać lokacje, dla których aplikacja wyświetla dane. Administratorzy mogą również wybrać dostępne w lokacjach grupy, by symulować ich poziom dostępu."
 }

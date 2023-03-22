@@ -667,5 +667,7 @@
     "notification_not_selected_location": "Meddelelse på uvalgt placering",
     "showcase_menu": "Menu",
     "showcase_menu_description": "Tryk for at åbne menuen",
-    "showcase_menu_drawer": "Du kan se og redigere din profil i menuen. Du finder også alle brugere i din organisation, grupper og lokationer. Kun administratorer har tilladelse til at redigere dem."
+    "showcase_menu_drawer": "Du kan se og redigere din profil i menuen. Du finder også alle brugere i din organisation, grupper og lokationer. Kun administratorer har tilladelse til at redigere dem.",
+    "showcase_notifications_description": "Oplysninger om ulæste notifikationer vises her.",
+    "showcase_filter_description": "Placeringsfilteret er et af de vigtigste værktøjer i UnderControl. Her kan du vælge de steder, som applikationen viser data for. Administratorer kan også vælge grupper, der er tilgængelige på udvalgte steder, for at simulere deres adgangsniveau."
 }

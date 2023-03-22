@@ -2746,5 +2746,13 @@
     "showcase_menu_drawer": "You can view and edit your profile in the menu. You'll also find all users in your organization, groups, and locations. Only administrators have permission to edit them.",
     "@showcase_menu_drawer": {
       "description": "showcase"
+    },
+    "showcase_notifications_description": "Information about unread notifications will appear here.",
+    "@showcase_notifications_description": {
+      "description": "showcase"
+    },
+    "showcase_filter_description": "The location filter is one of the most important tools in UnderControl. Here you can select the locations for which the application displays data. Administrators can also select groups available at selected locations to simulate their access level.",
+    "@showcase_filter_description": {
+      "description": "showcase"
     }
 }

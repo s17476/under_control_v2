@@ -54,8 +54,8 @@ class _HomePageState extends State<HomePage>
   // showcase keys - admin
   final _menuKey = GlobalKey();
   final _drawerKey = GlobalKey();
-  final _bottomNavigationKey = GlobalKey();
-  final _adminLocationsKey = GlobalKey();
+  final _notificationsKey = GlobalKey();
+  final _filterKey = GlobalKey();
   // showcase keys - all users
   // TODO - add other keys
 
@@ -82,6 +82,7 @@ class _HomePageState extends State<HomePage>
   bool _isBottomNavigationAnimating = false;
   bool _isTaskFilterVisible = false;
   bool _isCalendarVisible = false;
+  bool _isShowcaseBarrierInteractionDisabled = true;
 
   // inventory search
   final _inventorySearchTextEditingController = TextEditingController();
@@ -102,6 +103,13 @@ class _HomePageState extends State<HomePage>
 
   // bottom navigation show/hide animation
   AnimationController? _animationController;
+
+  void _toggleShowcaseBarrierInteraction() {
+    setState(() {
+      _isShowcaseBarrierInteractionDisabled =
+          !_isShowcaseBarrierInteractionDisabled;
+    });
+  }
 
   // search in inventory
   void _searchInInventory() {
@@ -386,7 +394,8 @@ class _HomePageState extends State<HomePage>
         ShowCaseWidget.of(myContext!).startShowCase([
           _menuKey,
           _drawerKey,
-          // _bottomNavigationKey,
+          _notificationsKey,
+          _filterKey,
         ]);
       });
     });
@@ -429,7 +438,7 @@ class _HomePageState extends State<HomePage>
     DateTime preBackpress = DateTime.now();
 
     return ShowCaseWidget(
-      disableBarrierInteraction: true,
+      disableBarrierInteraction: _isShowcaseBarrierInteractionDisabled,
       blurValue: 5,
       builder: Builder(builder: (context) {
         myContext = context;
@@ -538,7 +547,11 @@ class _HomePageState extends State<HomePage>
             child: Scaffold(
               backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
 
-              drawer: MainDrawer(drawerKey: _drawerKey),
+              drawer: MainDrawer(
+                drawerKey: _drawerKey,
+                toggleShowcaseBarierInteraction:
+                    _toggleShowcaseBarrierInteraction,
+              ),
               // safe area
               body: SafeArea(
                 bottom: _isControlsVisible,
@@ -572,7 +585,11 @@ class _HomePageState extends State<HomePage>
                           isTaskFilterVisible: _isTaskFilterVisible,
                           toggleIsCalendarVisible: _toggleIsCalendarVisible,
                           isCalendarVisible: _isCalendarVisible,
+                          toggleShowcaseBarierInteraction:
+                              _toggleShowcaseBarrierInteraction,
                           menuKey: _menuKey,
+                          notificationsKey: _notificationsKey,
+                          filterKey: _filterKey,
                         ),
                       )
                     ],

@@ -29,7 +29,10 @@ class HomeSliverAppBar extends StatelessWidget {
     required this.isTaskFilterVisible,
     required this.toggleIsCalendarVisible,
     required this.isCalendarVisible,
+    required this.toggleShowcaseBarierInteraction,
     required this.menuKey,
+    required this.notificationsKey,
+    required this.filterKey,
   }) : super(key: key);
 
   final int pageIndex;
@@ -44,7 +47,10 @@ class HomeSliverAppBar extends StatelessWidget {
   final bool isTaskFilterVisible;
   final VoidCallback toggleIsCalendarVisible;
   final bool isCalendarVisible;
+  final VoidCallback toggleShowcaseBarierInteraction;
   final GlobalKey menuKey;
+  final GlobalKey notificationsKey;
+  final GlobalKey filterKey;
 
   @override
   Widget build(BuildContext context) {
@@ -97,10 +103,6 @@ class HomeSliverAppBar extends StatelessWidget {
                 description:
                     AppLocalizations.of(context)!.showcase_menu_description,
                 targetShapeBorder: const CircleBorder(),
-                targetPadding: const EdgeInsets.only(
-                  top: -8,
-                  bottom: 8,
-                ),
                 tooltipBackgroundColor: Theme.of(context).primaryColor,
                 titleTextStyle: Theme.of(context).textTheme.headlineSmall,
                 descTextStyle: Theme.of(context)
@@ -109,6 +111,7 @@ class HomeSliverAppBar extends StatelessWidget {
                     .copyWith(fontSize: 18),
                 onTargetClick: () async {
                   Scaffold.of(context).openDrawer();
+
                   Future.delayed(const Duration(milliseconds: 400), () {
                     ShowCaseWidget.of(context).next();
                   });
@@ -176,26 +179,56 @@ class HomeSliverAppBar extends StatelessWidget {
             toggleIsSearchBarExpanded: toggleIsSearchBarExpanded,
           ),
         // notifications
-        NotificationsButton(
-          isNotificationsExpanded: isNotificationsExpanded,
-          toggleIsNotificationsExpanded: toggleIsNotificationsExpanded,
-          isFilterExpanded: isFilterExpanded,
-          toggleIsFilterExpanded: toggleIsFilterExpanded,
-          isSearchBarExpanded: isSearchBarExpanded,
-          toggleIsSearchBarExpanded: toggleIsSearchBarExpanded,
-          isMenuVisible: isMenuVisible,
-          toggleIsMenuVisible: toggleIsMenuVisible,
+        Showcase(
+          key: notificationsKey,
+          title: AppLocalizations.of(context)!.notifications,
+          description:
+              AppLocalizations.of(context)!.showcase_notifications_description,
+          targetShapeBorder: const CircleBorder(),
+          targetPadding: const EdgeInsets.only(
+            top: 8,
+            bottom: 8,
+          ),
+          tooltipBackgroundColor: Theme.of(context).primaryColor,
+          titleTextStyle: Theme.of(context).textTheme.headlineSmall,
+          descTextStyle:
+              Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
+          child: NotificationsButton(
+            isNotificationsExpanded: isNotificationsExpanded,
+            toggleIsNotificationsExpanded: toggleIsNotificationsExpanded,
+            isFilterExpanded: isFilterExpanded,
+            toggleIsFilterExpanded: toggleIsFilterExpanded,
+            isSearchBarExpanded: isSearchBarExpanded,
+            toggleIsSearchBarExpanded: toggleIsSearchBarExpanded,
+            isMenuVisible: isMenuVisible,
+            toggleIsMenuVisible: toggleIsMenuVisible,
+          ),
         ),
         // filter
-        FilterButton(
-          isNotificationsExpanded: isNotificationsExpanded,
-          toggleIsNotificationsExpanded: toggleIsNotificationsExpanded,
-          isFilterExpanded: isFilterExpanded,
-          toggleIsFilterExpanded: toggleIsFilterExpanded,
-          isSearchBarExpanded: isSearchBarExpanded,
-          toggleIsSearchBarExpanded: toggleIsSearchBarExpanded,
-          isMenuVisible: isMenuVisible,
-          toggleIsMenuVisible: toggleIsMenuVisible,
+        Showcase(
+          key: filterKey,
+          title: AppLocalizations.of(context)!.filter,
+          description:
+              AppLocalizations.of(context)!.showcase_filter_description,
+          targetShapeBorder: const CircleBorder(),
+          targetPadding: const EdgeInsets.only(
+            top: 8,
+            bottom: 8,
+          ),
+          tooltipBackgroundColor: Theme.of(context).primaryColor,
+          titleTextStyle: Theme.of(context).textTheme.headlineSmall,
+          descTextStyle:
+              Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
+          child: FilterButton(
+            isNotificationsExpanded: isNotificationsExpanded,
+            toggleIsNotificationsExpanded: toggleIsNotificationsExpanded,
+            isFilterExpanded: isFilterExpanded,
+            toggleIsFilterExpanded: toggleIsFilterExpanded,
+            isSearchBarExpanded: isSearchBarExpanded,
+            toggleIsSearchBarExpanded: toggleIsSearchBarExpanded,
+            isMenuVisible: isMenuVisible,
+            toggleIsMenuVisible: toggleIsMenuVisible,
+          ),
         ),
         const SizedBox(
           width: 8,

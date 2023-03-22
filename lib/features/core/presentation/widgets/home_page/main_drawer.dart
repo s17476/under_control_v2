@@ -21,9 +21,11 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
   const MainDrawer({
     Key? key,
     required this.drawerKey,
+    this.toggleShowcaseBarierInteraction,
   }) : super(key: key);
 
   final GlobalKey drawerKey;
+  final VoidCallback? toggleShowcaseBarierInteraction;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,9 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                     .copyWith(fontSize: 18),
                 onTargetClick: () async {
                   Scaffold.of(context).closeDrawer();
+                  if (toggleShowcaseBarierInteraction != null) {
+                    toggleShowcaseBarierInteraction!();
+                  }
                   // Future.delayed(const Duration(milliseconds: 400), () {
                   ShowCaseWidget.of(context).next();
                   // });
