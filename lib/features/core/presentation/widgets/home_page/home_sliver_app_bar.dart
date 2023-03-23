@@ -105,10 +105,7 @@ class HomeSliverAppBar extends StatelessWidget {
                 targetShapeBorder: const CircleBorder(),
                 tooltipBackgroundColor: Theme.of(context).primaryColor,
                 titleTextStyle: Theme.of(context).textTheme.headlineSmall,
-                descTextStyle: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontSize: 18),
+                descTextStyle: Theme.of(context).textTheme.bodyLarge,
                 onTargetClick: () async {
                   Scaffold.of(context).openDrawer();
 
@@ -191,8 +188,7 @@ class HomeSliverAppBar extends StatelessWidget {
           ),
           tooltipBackgroundColor: Theme.of(context).primaryColor,
           titleTextStyle: Theme.of(context).textTheme.headlineSmall,
-          descTextStyle:
-              Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
+          descTextStyle: Theme.of(context).textTheme.bodyLarge,
           child: NotificationsButton(
             isNotificationsExpanded: isNotificationsExpanded,
             toggleIsNotificationsExpanded: toggleIsNotificationsExpanded,
@@ -217,8 +213,7 @@ class HomeSliverAppBar extends StatelessWidget {
           ),
           tooltipBackgroundColor: Theme.of(context).primaryColor,
           titleTextStyle: Theme.of(context).textTheme.headlineSmall,
-          descTextStyle:
-              Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
+          descTextStyle: Theme.of(context).textTheme.bodyLarge,
           child: FilterButton(
             isNotificationsExpanded: isNotificationsExpanded,
             toggleIsNotificationsExpanded: toggleIsNotificationsExpanded,

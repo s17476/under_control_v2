@@ -56,6 +56,8 @@ class _HomePageState extends State<HomePage>
   final _drawerKey = GlobalKey();
   final _notificationsKey = GlobalKey();
   final _filterKey = GlobalKey();
+  final _bottomNavigationKey = GlobalKey();
+  final _bottomMenuKey = GlobalKey();
   // showcase keys - all users
   // TODO - add other keys
 
@@ -396,6 +398,8 @@ class _HomePageState extends State<HomePage>
           _drawerKey,
           _notificationsKey,
           _filterKey,
+          _bottomNavigationKey,
+          _bottomMenuKey,
         ]);
       });
     });
@@ -440,6 +444,7 @@ class _HomePageState extends State<HomePage>
     return ShowCaseWidget(
       disableBarrierInteraction: _isShowcaseBarrierInteractionDisabled,
       blurValue: 5,
+      disableMovingAnimation: true,
       builder: Builder(builder: (context) {
         myContext = context;
         return WillPopScope(
@@ -706,6 +711,8 @@ class _HomePageState extends State<HomePage>
                           // pageController: _pageController,
                           setPageIndex: _setPageIndex,
                           toggleShowMenu: _toggleIsMenuVisible,
+                          bottomNavigationKey: _bottomNavigationKey,
+                          bottomMenuKey: _bottomMenuKey,
                         ),
                         // location and group selection filter
                         HomePageFilter(

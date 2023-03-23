@@ -3,14 +3,14 @@ import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:under_control_v2/features/assets/presentation/widgets/assets_overlay_menu_items.dart';
+import 'package:showcaseview/showcaseview.dart';
 
+import '../../../../assets/presentation/widgets/assets_overlay_menu_items.dart';
 import '../../../../dashboard/presentation/widgets/dashboard_overlay_menu_items.dart';
 import '../../../../inventory/utils/inventory_overlay_menu_items.dart';
 import '../../../../knowledge_base/utils/knowledge_base_overlay_menu_items.dart';
 import '../../../../tasks/utils/tasks_overlay_menu_items.dart';
 import '../../../utils/responsive_size.dart';
-import '../animated_floating_menu.dart';
 
 class HomeBottomNavigationBar extends StatefulWidget {
   final AnimationController animationController;
@@ -18,14 +18,17 @@ class HomeBottomNavigationBar extends StatefulWidget {
   // final PageController pageController;
   final Function setPageIndex;
   final Function toggleShowMenu;
+  final GlobalKey bottomNavigationKey;
+  final GlobalKey bottomMenuKey;
 
   const HomeBottomNavigationBar({
     Key? key,
     required this.animationController,
     required this.navigationController,
-    // required this.pageController,
     required this.setPageIndex,
     required this.toggleShowMenu,
+    required this.bottomNavigationKey,
+    required this.bottomMenuKey,
   }) : super(key: key);
 
   @override
@@ -148,24 +151,35 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
             position: _buttonSlideAnimation!,
             child: FadeTransition(
               opacity: _fadeAnimation!,
-              child: SpeedDial(
-                icon: Icons.menu,
-                activeIcon: Icons.close,
-                overlayOpacity: 0.85,
-                spacing: 3,
-                childPadding: const EdgeInsets.all(5),
-                spaceBetweenChildren: 4,
-                backgroundColor: _floatingButtonBackgroundColor,
-                buttonSize: const Size(50, 50),
-                // renderOverlay: true,
-                activeBackgroundColor: Colors.black,
-                elevation: 8.0,
-                animationCurve: Curves.elasticInOut,
-                isOpenOnStart: false,
-                children: getMenuItems(),
-                childrenButtonSize: const Size(60, 60),
-                childMargin: const EdgeInsets.only(right: 0),
-                animationDuration: const Duration(milliseconds: 300),
+              child: Showcase(
+                key: widget.bottomMenuKey,
+                title: AppLocalizations.of(context)!.showcase_bottom_menu,
+                description: AppLocalizations.of(context)!
+                    .showcase_bottom_menu_description,
+                targetShapeBorder: const CircleBorder(),
+                targetPadding: const EdgeInsets.all(4),
+                tooltipBackgroundColor: Theme.of(context).primaryColor,
+                titleTextStyle: Theme.of(context).textTheme.headlineSmall,
+                descTextStyle: Theme.of(context).textTheme.bodyLarge,
+                child: SpeedDial(
+                  icon: Icons.menu,
+                  activeIcon: Icons.close,
+                  overlayOpacity: 0.85,
+                  spacing: 3,
+                  childPadding: const EdgeInsets.all(5),
+                  spaceBetweenChildren: 4,
+                  backgroundColor: _floatingButtonBackgroundColor,
+                  buttonSize: const Size(50, 50),
+                  // renderOverlay: true,
+                  activeBackgroundColor: Colors.black,
+                  elevation: 8.0,
+                  animationCurve: Curves.elasticInOut,
+                  isOpenOnStart: false,
+                  children: getMenuItems(),
+                  childrenButtonSize: const Size(60, 60),
+                  childMargin: const EdgeInsets.only(right: 0),
+                  animationDuration: const Duration(milliseconds: 300),
+                ),
               ),
               // child: AnimatedFloatingMenu(
               //   backgroundColor: _floatingButtonBackgroundColor,
@@ -182,29 +196,38 @@ class _HomeBottomNavigationBarState extends State<HomeBottomNavigationBar>
               // bottom tab bar
               SlideTransition(
                 position: _tabBarSlideAnimation!,
-                child: CircularBottomNavigation(
-                  _tabItems,
-                  barBackgroundColor:
-                      Theme.of(context).appBarTheme.backgroundColor!,
-                  barHeight: 44,
-                  iconsSize: 24,
-                  circleSize: 54,
-                  controller: widget.navigationController,
-                  selectedCallback: (index) {
-                    setState(() {
-                      if (index == 4) {
-                        _floatingActionButtonPosition =
-                            _floatingActionButtonPositionTop;
-                      } else if (_floatingActionButtonPosition ==
-                          _floatingActionButtonPositionTop) {
-                        _floatingActionButtonPosition =
-                            _floatingActionButtonPositionBottom;
-                      }
-                      _floatingButtonBackgroundColor =
-                          _tabItems[index ?? 2].circleColor;
-                      widget.setPageIndex(index ?? 2);
-                    });
-                  },
+                child: Showcase(
+                  key: widget.bottomNavigationKey,
+                  title: AppLocalizations.of(context)!.showcase_navigation,
+                  description: AppLocalizations.of(context)!
+                      .showcase_navigation_description,
+                  tooltipBackgroundColor: Theme.of(context).primaryColor,
+                  titleTextStyle: Theme.of(context).textTheme.headlineSmall,
+                  descTextStyle: Theme.of(context).textTheme.bodyLarge,
+                  child: CircularBottomNavigation(
+                    _tabItems,
+                    barBackgroundColor:
+                        Theme.of(context).appBarTheme.backgroundColor!,
+                    barHeight: 44,
+                    iconsSize: 24,
+                    circleSize: 54,
+                    controller: widget.navigationController,
+                    selectedCallback: (index) {
+                      setState(() {
+                        if (index == 4) {
+                          _floatingActionButtonPosition =
+                              _floatingActionButtonPositionTop;
+                        } else if (_floatingActionButtonPosition ==
+                            _floatingActionButtonPositionTop) {
+                          _floatingActionButtonPosition =
+                              _floatingActionButtonPositionBottom;
+                        }
+                        _floatingButtonBackgroundColor =
+                            _tabItems[index ?? 2].circleColor;
+                        widget.setPageIndex(index ?? 2);
+                      });
+                    },
+                  ),
                 ),
               ),
             ],

@@ -51,10 +51,7 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                 targetBorderRadius: BorderRadius.circular(15),
                 tooltipBackgroundColor: Theme.of(context).primaryColor,
                 titleTextStyle: Theme.of(context).textTheme.headlineSmall,
-                descTextStyle: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontSize: 18),
+                descTextStyle: Theme.of(context).textTheme.bodyLarge,
                 onTargetClick: () async {
                   Scaffold.of(context).closeDrawer();
                   if (toggleShowcaseBarierInteraction != null) {

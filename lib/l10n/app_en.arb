@@ -2754,5 +2754,21 @@
     "showcase_filter_description": "The location filter is one of the most important tools in UnderControl. Here you can select the locations for which the application displays data. Administrators can also select groups available at selected locations to simulate their access level.",
     "@showcase_filter_description": {
       "description": "showcase"
+    },
+    "showcase_navigation": "Navigation",
+    "@showcase_navigation": {
+      "description": "showcase"
+    },
+    "showcase_navigation_description": "Use the bottom navigation to move between application screens.",
+    "@showcase_navigation_description": {
+      "description": "showcase"
+    },
+    "showcase_bottom_menu": "Bottom menu",
+    "@showcase_bottom_menu": {
+      "description": "showcase"
+    },
+    "showcase_bottom_menu_description": "This menu displays functions relevant to the current application screen. Check out its content on different screens to discover all the possibilities.",
+    "@showcase_bottom_menu_description": {
+      "description": "showcase"
     }
 }
