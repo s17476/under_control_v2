@@ -131,7 +131,6 @@ class CustomMultiBlocProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ActivityBloc>()),
         BlocProvider(create: (context) => getIt<DeviceTokenCubit>()),
         BlocProvider(create: (context) => getIt<NotificationSettingsCubit>()),
-        BlocProvider(create: (context) => getIt<ShowcaseSettingsCubit>()),
         BlocProvider(create: (context) => getIt<UcNotificationBloc>()),
         BlocProvider(
           create: (context) => getIt<UcNotificationManagementBloc>(),
@@ -157,6 +156,7 @@ class CustomMultiBlocProvider extends StatelessWidget {
         BlocProvider(
           create: (context) => getIt<CalendarEventBloc>(),
         ),
+        BlocProvider(create: (context) => getIt<ShowcaseSettingsCubit>()),
       ],
       child: child,
     );

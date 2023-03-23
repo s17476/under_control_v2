@@ -29,7 +29,6 @@ class ShowcaseSettingsCubit extends Cubit<ShowcaseSettingsState> {
     this.authenticationBloc,
     this.getShowcaseSettings,
     this.updateShowcaseSettings,
-    this._authStreamSubscription,
   ) : super(ShowcaseSettingsEmpty()) {
     _authStreamSubscription = authenticationBloc.stream.listen((state) {
       if (state is Unauthenticated) {

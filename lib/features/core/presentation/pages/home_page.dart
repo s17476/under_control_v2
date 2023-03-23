@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:under_control_v2/features/settings/data/models/showcase_settings_model.dart';
+import 'package:under_control_v2/features/settings/presentation/blocs/showcase_settings/showcase_settings_cubit.dart';
 import 'package:under_control_v2/features/tasks/presentation/pages/calendar_page.dart';
 
 import '../../../assets/presentation/blocs/asset_management/asset_management_bloc.dart';
@@ -28,6 +30,7 @@ import '../../../tasks/presentation/pages/tasks_page.dart';
 import '../../../tasks/presentation/widgets/app_bar_tasks_filter/app_bar_tasks_filter.dart';
 import '../../../tasks/utils/task_management_bloc_listener.dart';
 import '../../../tasks/utils/work_request_management_bloc_listener.dart';
+import '../../../user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 import '../../utils/get_user_permission.dart';
 import '../../utils/permission.dart';
 import '../../utils/show_snack_bar.dart';
@@ -390,20 +393,6 @@ class _HomePageState extends State<HomePage>
       }
     });
 
-    // start admin showcase
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 400), () {
-        ShowCaseWidget.of(myContext!).startShowCase([
-          _menuKey,
-          _drawerKey,
-          _notificationsKey,
-          _filterKey,
-          _bottomNavigationKey,
-          _bottomMenuKey,
-        ]);
-      });
-    });
-
     super.initState();
   }
 
@@ -419,6 +408,39 @@ class _HomePageState extends State<HomePage>
     } else if (MediaQuery.of(context).viewInsets.bottom != 0 &&
         _isControlsVisible) {
       _hideControls();
+    }
+
+    String? userId;
+    final userState = context.read<UserProfileBloc>().state;
+    if (userState is Approved) {
+      userId = userState.userProfile.id;
+    }
+
+    final showcaseState = context.read<ShowcaseSettingsCubit>().state;
+    print('showcaseState');
+    print(showcaseState);
+    if (showcaseState is ShowcaseSettingsLoaded) {
+      // shows always showcase for demo user - info@undercontrol-cmms.com
+      if ((userId != null && userId == 'WMRoKu045dQ8sMX3Vhi9qvAr5wF2') ||
+          showcaseState.settings.firstRun) {
+        // start admin showcase
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Future.delayed(const Duration(milliseconds: 400), () {
+            ShowCaseWidget.of(myContext!).startShowCase([
+              _menuKey,
+              _drawerKey,
+              _notificationsKey,
+              _filterKey,
+              _bottomNavigationKey,
+              _bottomMenuKey,
+            ]);
+          });
+        });
+        context.read<ShowcaseSettingsCubit>().updateSettings(
+              settings: ShowcaseSettingsModel.fromDomain(showcaseState.settings)
+                  .copyWith(firstRun: false),
+            );
+      }
     }
 
     super.didChangeDependencies();

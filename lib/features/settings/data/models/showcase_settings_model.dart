@@ -34,8 +34,8 @@ class ShowcaseSettingsModel extends ShowcaseSettings {
 
   factory ShowcaseSettingsModel.initial() {
     return const ShowcaseSettingsModel(
-      firstRunAdmin: false,
-      firstRun: false,
+      firstRunAdmin: true,
+      firstRun: true,
     );
   }
 
