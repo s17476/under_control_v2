@@ -3,7 +3,8 @@ enum NotificationType {
   workRequests('workRequests'),
   tasks('tasks'),
   items('items'),
-  assets('assets');
+  assets('assets'),
+  newUser('newUser');
 
   final String name;
 
@@ -19,6 +20,8 @@ enum NotificationType {
         return NotificationType.items;
       case 'assets':
         return NotificationType.assets;
+      case 'newUser':
+        return NotificationType.newUser;
       default:
         return NotificationType.unknown;
     }

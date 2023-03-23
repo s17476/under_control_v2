@@ -417,8 +417,6 @@ class _HomePageState extends State<HomePage>
     }
 
     final showcaseState = context.read<ShowcaseSettingsCubit>().state;
-    print('showcaseState');
-    print(showcaseState);
     if (showcaseState is ShowcaseSettingsLoaded) {
       // shows always showcase for demo user - info@undercontrol-cmms.com
       if ((userId != null && userId == 'WMRoKu045dQ8sMX3Vhi9qvAr5wF2') ||

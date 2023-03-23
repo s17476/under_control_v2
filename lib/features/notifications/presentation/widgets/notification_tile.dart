@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/shimmer_user_list_tile.dart';
+import 'package:under_control_v2/features/core/presentation/widgets/user_list_tile.dart';
+import 'package:under_control_v2/features/user_profile/presentation/pages/users_list_page.dart';
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../assets/presentation/widgets/asset_tile.dart';
+import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../inventory/presentation/widgets/item_tile.dart';
 import '../../../tasks/presentation/blocs/task/task_bloc.dart';
@@ -90,6 +94,23 @@ class NotificationTile extends StatelessWidget {
               return const InfoTile();
             }
             return const ShimmerTaskActionTile();
+          },
+        );
+      case NotificationType.newUser:
+        return BlocBuilder<CompanyProfileBloc, CompanyProfileState>(
+          builder: (context, state) {
+            if (state is CompanyProfileLoaded) {
+              final user = state.getUserById(notification.connectedId);
+              if (user != null) {
+                return UserListTile(
+                  user: user,
+                  onTap: (_) =>
+                      Navigator.pushNamed(context, UsersListPage.routeName),
+                );
+              }
+              return const InfoTile();
+            }
+            return const ShimmerUserListTile();
           },
         );
       default:

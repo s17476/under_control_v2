@@ -3,4 +3,5 @@
     <string name="new_work_request_title">Nowe zlecenie</string>
     <string name="item_below_limit">Poziom przedmiotu poniej limitu</string>
     <string name="asset_no_inspection">Nieaktualny przegląd techniczny</string>
+    <string name="new_user">Nowy użytkownik chce dołączyć do twojej organizacji</string>
 </resources>

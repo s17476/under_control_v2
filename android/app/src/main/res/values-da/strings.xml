@@ -3,4 +3,5 @@
     <string name="new_work_request_title">Ny anmodning</string>
     <string name="item_below_limit">Varens antal under advarsels mængde</string>
     <string name="asset_no_inspection">Ugyldig eftersyn</string>
+    <string name="new_user">En ny bruger ønsker at tilslutte sig din organisation</string>
 </resources>
