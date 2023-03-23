@@ -88,6 +88,7 @@ class _HomePageState extends State<HomePage>
   bool _isTaskFilterVisible = false;
   bool _isCalendarVisible = false;
   bool _isShowcaseBarrierInteractionDisabled = true;
+  bool _showOnboarding = true;
 
   // inventory search
   final _inventorySearchTextEditingController = TextEditingController();
@@ -410,34 +411,38 @@ class _HomePageState extends State<HomePage>
       _hideControls();
     }
 
-    String? userId;
-    final userState = context.read<UserProfileBloc>().state;
-    if (userState is Approved) {
-      userId = userState.userProfile.id;
-    }
+    if (_showOnboarding) {
+      String? userId;
+      final userState = context.read<UserProfileBloc>().state;
+      if (userState is Approved) {
+        userId = userState.userProfile.id;
+      }
 
-    final showcaseState = context.read<ShowcaseSettingsCubit>().state;
-    if (showcaseState is ShowcaseSettingsLoaded) {
-      // shows always showcase for demo user - info@undercontrol-cmms.com
-      if ((userId != null && userId == 'WMRoKu045dQ8sMX3Vhi9qvAr5wF2') ||
-          showcaseState.settings.firstRun) {
-        // start admin showcase
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Future.delayed(const Duration(milliseconds: 400), () {
-            ShowCaseWidget.of(myContext!).startShowCase([
-              _menuKey,
-              _drawerKey,
-              _notificationsKey,
-              _filterKey,
-              _bottomNavigationKey,
-              _bottomMenuKey,
-            ]);
+      final showcaseState = context.read<ShowcaseSettingsCubit>().state;
+      if (showcaseState is ShowcaseSettingsLoaded) {
+        // shows always showcase for demo user - info@undercontrol-cmms.com
+        if ((userId != null && userId == 'WMRoKu045dQ8sMX3Vhi9qvAr5wF2') ||
+            showcaseState.settings.firstRun) {
+          // start admin showcase
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Future.delayed(const Duration(milliseconds: 400), () {
+              ShowCaseWidget.of(myContext!).startShowCase([
+                _menuKey,
+                _drawerKey,
+                _notificationsKey,
+                _filterKey,
+                _bottomNavigationKey,
+                _bottomMenuKey,
+              ]);
+            });
           });
-        });
-        context.read<ShowcaseSettingsCubit>().updateSettings(
-              settings: ShowcaseSettingsModel.fromDomain(showcaseState.settings)
-                  .copyWith(firstRun: false),
-            );
+          context.read<ShowcaseSettingsCubit>().updateSettings(
+                settings:
+                    ShowcaseSettingsModel.fromDomain(showcaseState.settings)
+                        .copyWith(firstRun: false),
+              );
+          _showOnboarding = false;
+        }
       }
     }
 

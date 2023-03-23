@@ -4,6 +4,7 @@ const admin = require("firebase-admin");
 const task = require('./tasks/task');
 const workRequest = require('./work_requests/work_request');
 const item = require('./items/item');
+const newUser = require('./users/users');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -30,3 +31,8 @@ exports.workRequestDeleted = functions.firestore
 exports.itemUpdated = functions.firestore
   .document("companies/{companyId}/items/{itemId}")
   .onUpdate((change, context) => item.updated(change, context, admin));
+
+// new user
+exports.newUser = functions.firestore
+  .document("users/{userId}")
+  .onUpdate((change, context) => newUser.added(change, context, admin));
