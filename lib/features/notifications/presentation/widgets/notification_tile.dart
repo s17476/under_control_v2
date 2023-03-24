@@ -18,6 +18,7 @@ import '../../../tasks/presentation/widgets/task_tile.dart';
 import '../../../tasks/presentation/widgets/work_request_tile.dart';
 import '../../domain/entities/notification_type.dart';
 import '../../domain/entities/uc_notification.dart';
+import '../blocs/uc_notification_management/uc_notification_management_bloc.dart';
 
 class NotificationTile extends StatelessWidget {
   final UcNotification notification;
@@ -105,8 +106,15 @@ class NotificationTile extends StatelessWidget {
               if (user != null) {
                 return UserListTile(
                   user: user,
-                  onTap: (_) =>
-                      Navigator.pushNamed(context, UsersListPage.routeName),
+                  onTap: (_) {
+                    Navigator.pushNamed(context, UsersListPage.routeName);
+                    context.read<UcNotificationManagementBloc>().add(
+                          MarkAsReadEvent(
+                            notificationId: notification.id,
+                          ),
+                        );
+                  },
+                  notification: notification,
                 );
               }
               return const InfoTile();

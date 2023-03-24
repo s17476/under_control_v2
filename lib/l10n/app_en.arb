@@ -1049,6 +1049,10 @@
     "@user_new_users": {
       "description": "New users"
     },
+    "user_new_user": "New user",
+    "@user_new_user": {
+      "description": "New users"
+    },
     "user_no_new_users": "No new users",
     "@user_no_new_users": {
       "description": "No new users"
