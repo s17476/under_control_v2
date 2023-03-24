@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../company_profile/domain/entities/company_users_list.dart';
+import '../../../../user_profile/domain/entities/user_profile.dart';
 import '../../../data/models/company_users_list_model.dart';
 import '../../../domain/usecases/fetch_new_users.dart';
 import '../company_profile/company_profile_bloc.dart';

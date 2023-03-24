@@ -12,6 +12,8 @@ exports.added = async function(change, context, admin){
   // updated user
   const newUser = change.after.data();
 
+
+  // new user want to join company
   if(oldUser.companyId == "" && newUser.companyId != ""){
 
     // notification data
@@ -83,6 +85,31 @@ exports.added = async function(change, context, admin){
     // send notifications
     if(tokens.length > 0){
       await admin.messaging().sendToDevice(tokens, payload);
+    }
+  }
+
+
+  // user approved / rejected
+  if(!oldUser.approved && (newUser.approved || newUser.rejected)){
+    const companyMembers = await db
+      .collection('users')
+      .where('companyId', '==', newUser.companyId)
+      .get();
+        
+    const users = companyMembers.docs;
+
+    if (users.empty) {
+      console.log('No matching documents.');
+      return;
+    }
+
+    for(const user of users){
+      await db
+        .collection('users')
+        .doc(user.id)
+        .collection('notifications')
+        .doc(userId)
+        .delete();
     }
   }
 

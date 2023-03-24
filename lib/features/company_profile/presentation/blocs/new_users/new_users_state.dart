@@ -30,4 +30,17 @@ class NewUsersLoadedState extends NewUsersState {
   NewUsersLoadedState({
     required this.newUsers,
   }) : super(properties: [newUsers]);
+
+  UserProfile? getUserById(String userId) {
+    int index = -1;
+    index = newUsers.passiveUsers.indexWhere((element) => element.id == userId);
+    if (index >= 0) {
+      return newUsers.passiveUsers[index];
+    }
+    index = newUsers.activeUsers.indexWhere((element) => element.id == userId);
+    if (index >= 0) {
+      return newUsers.activeUsers[index];
+    }
+    return null;
+  }
 }
