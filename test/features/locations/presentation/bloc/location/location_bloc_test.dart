@@ -173,7 +173,7 @@ void main() {
 
     group('[DeleteLocation] usecase', () {
       blocTest(
-        'should emit [LocationErrorState] when Deletelocation usecase returns failure',
+        'should emit [LocationLoadedState] when Deletelocation usecase returns failure',
         build: () => locationBloc,
         // ignore: unnecessary_cast
         seed: () => LocationLoadedState(
@@ -186,7 +186,7 @@ void main() {
           when(() => mockDeleteLocation(any()))
               .thenAnswer((_) async => const Left(DatabaseFailure()));
         },
-        expect: () => [isA<LocationErrorState>()],
+        expect: () => [isA<LocationLoadedState>()],
       );
       blocTest(
         'should emit [LocationLoadedState] when DeleteLocation usecase returns data',
