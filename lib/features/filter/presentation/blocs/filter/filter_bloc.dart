@@ -79,6 +79,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
         _companyId = '';
         _isAdmin = false;
         _userGroups = [];
+        emit(FilterEmptyState());
       },
     );
 
