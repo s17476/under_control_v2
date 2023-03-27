@@ -196,6 +196,7 @@
     "drawer_item_settings": "Ustawienia",
     "drawer_item_groups": "Grupy",
     "drawer_item_users": "Użytkownicy",
+    "location_no_locations": "Wygląda na to, że nie dodałeś jeszcze żadnej lokacji. Idź do: Menu -> Lokacje -> Dodaj lokację",
     "location_management_title": "Lokacje",
     "location_unknown": "Lokacja nieznana",
     "location_delete_assets": "Nie można usunąć. W lokacji znajdują się aktywa. Usuń lub przenieś je zanim usuniesz lokację.",

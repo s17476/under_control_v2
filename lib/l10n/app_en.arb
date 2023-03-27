@@ -793,6 +793,10 @@
     "@drawer_item_users": {
       "description": "Drawer item - users"
     },
+    "location_no_locations": "It looks like you haven't added any locations yet. Go to: Menu -> Locations -> Add Location",
+    "@location_no_locations": {
+      "description": "Locations empty"
+    },
     "location_management_title": "Locations",
     "@location_management_title": {
       "description": "Location management page - title"
