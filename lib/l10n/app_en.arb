@@ -797,6 +797,18 @@
     "@location_unknown": {
       "description": "Location unknown"
     },
+    "location_delete_assets": "Cannot be deleted. There are assets in the location. Delete or move them before deleting the location.",
+    "@location_delete_assets": {
+      "description": "Location"
+    },
+    "location_delete_tasks": "Cannot be deleted. There are work requests or tasks in the location. Delete or move them before deleting the location.",
+    "@location_delete_tasks": {
+      "description": "Location"
+    },
+    "location_delete_items": "Cannot be deleted. There are items in the location. Delete or move them before deleting the location.",
+    "@location_delete_items": {
+      "description": "Location"
+    },
     "location_management_add_card": "Add location",
     "@location_management_add_card": {
       "description": "Location management page - add card"

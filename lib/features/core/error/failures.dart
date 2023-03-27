@@ -18,6 +18,10 @@ class UnsuspectedFailure extends Failure {
   const UnsuspectedFailure({message = ''}) : super(message: message);
 }
 
+class DeleteFailure extends Failure {
+  const DeleteFailure({message = ''}) : super(message: message);
+}
+
 class CategoryNotEmptyFailure extends Failure {
   const CategoryNotEmptyFailure({message = ''}) : super(message: message);
 }

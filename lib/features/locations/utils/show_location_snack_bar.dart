@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../presentation/blocs/bloc/location_bloc.dart';
 
@@ -28,6 +29,18 @@ void showLocationSnackBar({
         message = AppLocalizations.of(context)!
             .location_management_add_location_message_update_success;
         break;
+      case 'assets':
+        message = AppLocalizations.of(context)!.location_delete_assets;
+        error = true;
+        break;
+      case 'tasks':
+        message = AppLocalizations.of(context)!.location_delete_tasks;
+        error = true;
+        break;
+      case 'items':
+        message = AppLocalizations.of(context)!.location_delete_items;
+        error = true;
+        break;
       default:
         message = '';
     }
@@ -36,20 +49,10 @@ void showLocationSnackBar({
     error = true;
   }
   if (message.isNotEmpty) {
-    ScaffoldMessenger.of(context)
-      ..clearSnackBars()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(
-            message,
-            style: const TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          backgroundColor: error
-              ? Theme.of(context).errorColor
-              : Theme.of(context).primaryColor,
-        ),
-      );
+    showSnackBar(
+      context: context,
+      message: message,
+      isErrorMessage: error,
+    );
   }
 }

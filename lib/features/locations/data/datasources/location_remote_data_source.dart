@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:under_control_v2/features/core/error/exceptions.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
@@ -46,6 +47,51 @@ class LocationRemoteDataSourceImpl extends LocationRemoteDataSource {
   Future<Either<Failure, VoidResult>> deleteLocation(
       LocationParams params) async {
     try {
+      // checks assets in location
+      final assetsInlocation = await firebaseFirestore
+          .collection('companies')
+          .doc(params.comapnyId)
+          .collection('assets')
+          .where('locationId', isEqualTo: params.location.id)
+          .get();
+
+      if (assetsInlocation.docs.isNotEmpty) {
+        throw const DeleteException(message: 'assets');
+      }
+      // checks tasks in location
+      final tasksInlocation = await firebaseFirestore
+          .collection('companies')
+          .doc(params.comapnyId)
+          .collection('tasks')
+          .where('locationId', isEqualTo: params.location.id)
+          .get();
+
+      if (tasksInlocation.docs.isNotEmpty) {
+        throw const DeleteException(message: 'tasks');
+      }
+      // checks work requests in location
+      final workRequestsInlocation = await firebaseFirestore
+          .collection('companies')
+          .doc(params.comapnyId)
+          .collection('workRequests')
+          .where('locationId', isEqualTo: params.location.id)
+          .get();
+
+      if (workRequestsInlocation.docs.isNotEmpty) {
+        throw const DeleteException(message: 'tasks');
+      }
+      // checks items in location
+      final itemsInlocation = await firebaseFirestore
+          .collection('companies')
+          .doc(params.comapnyId)
+          .collection('items')
+          .where('locations', arrayContains: params.location.id)
+          .get();
+
+      if (itemsInlocation.docs.isNotEmpty) {
+        throw const DeleteException(message: 'items');
+      }
+
       firebaseFirestore
           .collection('companies')
           .doc(params.comapnyId)
@@ -56,6 +102,10 @@ class LocationRemoteDataSourceImpl extends LocationRemoteDataSource {
       return Right(VoidResult());
     } on FirebaseException catch (e) {
       return Left(DatabaseFailure(message: e.message ?? 'DataBase Failure'));
+    } on DeleteException catch (e) {
+      return Left(
+        DeleteFailure(message: e.message),
+      );
     } catch (e) {
       return const Left(
         UnsuspectedFailure(message: 'Unsuspected error'),

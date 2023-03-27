@@ -127,7 +127,16 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           ),
         );
         await failureOrVoidresult.fold(
-          (failure) async => emit(LocationErrorState(message: failure.message)),
+          (failure) async => emit(
+            LocationLoadedState(
+              allLocations: currentState.allLocations,
+              children: currentState.children,
+              context: currentState.context,
+              error: true,
+              selectedLocations: currentState.selectedLocations,
+              message: failure.message,
+            ),
+          ),
           (_) async {
             emit(currentState.copyWith(message: deleteSuccess));
           },
