@@ -587,6 +587,10 @@
     "@main_drawer_signout": {
       "description": "Main drawer signout button"
     },
+    "main_drawer_signout_question": "Are you sure you want to sign out?",
+    "@main_drawer_signout_question": {
+      "description": "Main drawer signout question"
+    },
     "user_profile_add_user_signout": "Signout",
     "@user_profile_add_user_signout": {
       "description": "Add user page signout button"

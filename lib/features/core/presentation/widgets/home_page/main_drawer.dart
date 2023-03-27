@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:under_control_v2/features/core/utils/show_signout_dialog.dart';
 
 import '../../../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -213,13 +214,15 @@ class MainDrawer extends StatelessWidget with ResponsiveSize {
                 children: [
                   const Divider(),
                   CustomMenuItem(
-                    onTap: () =>
-                        context.read<AuthenticationBloc>().add(SignoutEvent()),
+                    onTap: () => showSignoutDialog(context: context),
                     icon: Icons.logout_outlined,
                     // iconBackgroundColor: Colors.black38,
                     label: AppLocalizations.of(context)!.main_drawer_signout,
                   ),
                 ],
+              ),
+              const SizedBox(
+                height: 8,
               ),
             ],
           ),
