@@ -191,14 +191,15 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
               ),
             ),
           // delete account
-          Choice(
-            title: AppLocalizations.of(context)!.user_details_delete,
-            icon: Icons.delete,
-            onTap: () => showDeleteAccountDialog(
-              context: context,
-              name: _user!.firstName,
+          if (_user!.id == _currentUser.id)
+            Choice(
+              title: AppLocalizations.of(context)!.user_details_delete,
+              icon: Icons.delete,
+              onTap: () => showDeleteAccountDialog(
+                context: context,
+                name: _user!.firstName,
+              ),
             ),
-          ),
         ];
       }
     }

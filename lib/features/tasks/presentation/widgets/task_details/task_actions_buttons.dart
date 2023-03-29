@@ -68,64 +68,64 @@ class _TaskActionsButtonsState extends State<TaskActionsButtons> {
         Row(
           children: [
             // start button
-            Expanded(
-              child: RoundedButton(
-                isLoading: _isLoading,
-                onPressed: !_canContinues
-                    ? _showContinueInfo
-                    : !getUserPermission(
-                        context: context,
-                        featureType: FeatureType.tasks,
-                        permissionType: PermissionType.create,
-                      )
-                        ? () {
-                            showSnackBar(
-                              context: context,
-                              message: AppLocalizations.of(context)!
-                                  .permission_no_action,
-                              isErrorMessage: true,
-                            );
-                          }
-                        : () {
-                            showSnackBar(
-                              context: context,
-                              message:
-                                  'COMMING SOON - Feature under development',
-                              isErrorMessage: true,
-                            );
-                            // Navigator.pushNamed(
-                            //   context,
-                            //   AddToItemPage.routeName,
-                            //   arguments: task,
-                            // );
-                          },
-                icon: Icons.play_arrow,
-                iconSize: 40,
-                title: AppLocalizations.of(context)!.task_action_start,
-                titleSize: 16,
-                foregroundColor: Colors.grey.shade200,
-                padding: const EdgeInsets.all(16),
-                gradient: LinearGradient(
-                  colors:
-                      // TODO - add live task recording
-                      //  _canContinues
-                      //     ? [
-                      //         Colors.amber.shade800,
-                      //         Colors.amber.shade700.withAlpha(60),
-                      //       ]
-                      //     :
-                      [
-                    Colors.grey.shade700,
-                    Colors.grey.shade700.withAlpha(60),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 16,
-            ),
+            // Expanded(
+            //   child: RoundedButton(
+            //     isLoading: _isLoading,
+            //     onPressed: !_canContinues
+            //         ? _showContinueInfo
+            //         : !getUserPermission(
+            //             context: context,
+            //             featureType: FeatureType.tasks,
+            //             permissionType: PermissionType.create,
+            //           )
+            //             ? () {
+            //                 showSnackBar(
+            //                   context: context,
+            //                   message: AppLocalizations.of(context)!
+            //                       .permission_no_action,
+            //                   isErrorMessage: true,
+            //                 );
+            //               }
+            //             : () {
+            //                 showSnackBar(
+            //                   context: context,
+            //                   message:
+            //                       '',
+            //                   isErrorMessage: true,
+            //                 );
+            //                 // Navigator.pushNamed(
+            //                 //   context,
+            //                 //   AddToItemPage.routeName,
+            //                 //   arguments: task,
+            //                 // );
+            //               },
+            //     icon: Icons.play_arrow,
+            //     iconSize: 40,
+            //     title: AppLocalizations.of(context)!.task_action_start,
+            //     titleSize: 16,
+            //     foregroundColor: Colors.grey.shade200,
+            //     padding: const EdgeInsets.all(16),
+            //     gradient: LinearGradient(
+            //       colors:
+            //           // TODO - add live task recording
+            //           //  _canContinues
+            //           //     ? [
+            //           //         Colors.amber.shade800,
+            //           //         Colors.amber.shade700.withAlpha(60),
+            //           //       ]
+            //           //     :
+            //           [
+            //         Colors.grey.shade700,
+            //         Colors.grey.shade700.withAlpha(60),
+            //       ],
+            //       begin: Alignment.topLeft,
+            //       end: Alignment.bottomRight,
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(
+            //   width: 16,
+            // ),
             // register button
             Expanded(
               child: RoundedButton(
