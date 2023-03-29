@@ -1001,6 +1001,18 @@
     "@group_toggle_group_members": {
       "description": "Group manage members"
     },
+    "user_details_delete": "Delete account",
+    "@user_details_delete": {
+      "description": "Delete account"
+    },
+    "user_details_delete_validation": "The correct answer is:",
+    "@user_details_delete_validation": {
+      "description": "Delete account"
+    },
+    "user_details_delete_info": "To confirm the deletion of your user account, please enter your name below.",
+    "@user_details_delete_info": {
+      "description": "Delete account"
+    },
     "user_details_no_data": "No data",
     "@user_details_no_data": {
       "description": "No user details"

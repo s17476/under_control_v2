@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/user_profile/utils/show_delete_account_dialog.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../company_profile/utils/user_management_dialogs.dart';
@@ -189,6 +190,15 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                 isActive: false,
               ),
             ),
+          // delete account
+          Choice(
+            title: AppLocalizations.of(context)!.user_details_delete,
+            icon: Icons.delete,
+            onTap: () => showDeleteAccountDialog(
+              context: context,
+              name: _user!.firstName,
+            ),
+          ),
         ];
       }
     }
