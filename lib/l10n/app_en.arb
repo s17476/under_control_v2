@@ -1009,7 +1009,7 @@
     "@user_details_delete_validation": {
       "description": "Delete account"
     },
-    "user_details_delete_info": "To confirm the deletion of your user account, please enter your name below.",
+    "user_details_delete_info": "To confirm the deletion of your user account, please enter your name below. If you are the only user in this company, all its data will also be deleted.",
     "@user_details_delete_info": {
       "description": "Delete account"
     },

@@ -42,7 +42,7 @@ exports.added = async function(document, context, admin){
       users = requestUsers.docs;
       
 
-      if (users.empty) {
+      if (users.length === 0) {
         console.log('No matching documents.');
         return;
       }
@@ -103,14 +103,14 @@ exports.deleted = async function(document, context, admin){
 
       const db = admin.firestore();
 
-      const companyMembers = await db
+      const companyMembers = await db 
         .collection('users')
         .where('companyId', '==', companyId)
         .get();
         
       const users = companyMembers.docs;
 
-      if (users.empty) {
+      if (users.length === 0) {
         console.log('No matching documents.');
         return;
       }

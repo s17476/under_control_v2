@@ -75,7 +75,7 @@ exports.added = async function(document, context, admin) {
         }
       }
 
-      if (users.empty) {
+      if (users.length === 0) {
         console.log('No matching documents.');
         return;
       }
@@ -142,7 +142,7 @@ exports.deleted = async function(document, context, admin) {
         
       const users = companyMembers.docs;
 
-      if (users.empty) {
+      if (users.length === 0) {
         console.log('No matching documents.');
         return;
       }

@@ -51,7 +51,7 @@ exports.added = async function(change, context, admin){
         
     users = groupUsers.docs;
 
-    if (users.empty) {
+    if (users.length === 0) {
       console.log('No matching documents.');
       return;
     }
@@ -77,7 +77,7 @@ exports.added = async function(change, context, admin){
       await db
         .collection('users')
         .doc(adminId)
-        .collection('notifications')
+        .collection('notifications') 
         .doc(userId)
         .set(dbPayload);
     }
@@ -98,7 +98,7 @@ exports.added = async function(change, context, admin){
         
     const users = companyMembers.docs;
 
-    if (users.empty) {
+    if (users.length === 0) {
       console.log('No matching documents.');
       return;
     }

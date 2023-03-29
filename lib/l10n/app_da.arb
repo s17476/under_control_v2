@@ -247,7 +247,7 @@
     "group_toggle_group_members": "Administrer gruppemedlemmer",
     "user_details_delete": "Slet konto",
     "user_details_delete_validation": "Det rigtige svar er:",
-    "user_details_delete_info": "For at bekræfte sletningen af ​​din brugerkonto skal du indtaste dit navn nedenfor.",
+    "user_details_delete_info": "For at bekræfte sletningen af ​​din brugerkonto skal du indtaste dit navn nedenfor. Hvis du er den eneste bruger i denne organisation, vil alle dens data også blive slettet.",
     "user_details_no_data": "Ingen data",
     "user_details_title": "Brugeroplysninger",
     "user_details_data": "Brugerdata",

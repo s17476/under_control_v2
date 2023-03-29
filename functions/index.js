@@ -5,6 +5,7 @@ const task = require('./tasks/task');
 const workRequest = require('./work_requests/work_request');
 const item = require('./items/item');
 const newUser = require('./users/users');
+const company = require('./company/company');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -35,4 +36,9 @@ exports.itemUpdated = functions.firestore
 // new user
 exports.newUser = functions.firestore
   .document("users/{userId}")
-  .onUpdate((change, context) => newUser.added(change, context, admin));
+  .onUpdate((change, context) => newUser.added(change, context, admin)); 
+
+// user deleted
+exports.userDeleted = functions.firestore
+  .document("users/{userId}")
+  .onDelete((document, context) => company.userDeleted(document, context, admin));
