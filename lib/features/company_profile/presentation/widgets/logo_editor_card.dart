@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../../core/presentation/widgets/glass_layer.dart';
 import '../../../core/presentation/widgets/overlay_icon_button.dart';
@@ -46,16 +47,12 @@ class _LogoEditorCardState extends State<LogoEditorCard> with ResponsiveSize {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context)
-        ..clearSnackBars()
-        ..showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!
-                  .user_profile_add_user_image_pisker_error,
-            ),
-          ),
-        );
+      showSnackBar(
+        context: context,
+        message: AppLocalizations.of(context)!
+            .user_profile_add_user_image_pisker_error,
+        isErrorMessage: true,
+      );
     }
   }
 
@@ -76,18 +73,19 @@ class _LogoEditorCardState extends State<LogoEditorCard> with ResponsiveSize {
                   padding: const EdgeInsets.all(8.0),
 
                   // indexed stack
-                  child: IndexedStack(
-                    index: _logo == null ? 0 : 1,
+                  child: Stack(
+                    // index: _logo == null ? 0 : 1,
                     children: [
                       // original logo
-                      SizedBox(
-                        height: responsiveSizePct(small: 90),
-                        width: responsiveSizePct(small: 90),
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: widget.company.logo,
+                      if (_logo == null && widget.company.logo.isNotEmpty)
+                        SizedBox(
+                          height: responsiveSizePct(small: 90),
+                          width: responsiveSizePct(small: 90),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: widget.company.logo,
+                          ),
                         ),
-                      ),
 
                       // updated logo
                       if (_logo != null)

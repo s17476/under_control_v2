@@ -165,11 +165,12 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
                         children: [
                           Row(
                             children: [
-                              CachedUserAvatar(
-                                size: responsiveSizePct(small: 30),
-                                imageUrl: _company.logo,
-                                isCircular: false,
-                              ),
+                              if (_company.logo.isNotEmpty)
+                                CachedUserAvatar(
+                                  size: responsiveSizePct(small: 30),
+                                  imageUrl: _company.logo,
+                                  isCircular: false,
+                                ),
                               const SizedBox(
                                 width: 8,
                               ),
