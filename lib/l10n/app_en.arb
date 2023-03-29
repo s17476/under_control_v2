@@ -1197,6 +1197,14 @@
     "@company_details_edit_logo": {
       "description": "Edit logo"
     },
+    "company_details_delete": "Delete company",
+    "@company_details_delete": {
+      "description": "Delete company"
+    },
+    "company_details_delete_info": "All company data will be deleted automatically if the last user in that company deletes their account. To delete your user account go to User Screen -> Menu -> Delete Account.",
+    "@company_details_delete": {
+      "description": "Delete company"
+    },
     "company_details_title": "Company details",
     "@company_details_title": {
       "description": "Company details"

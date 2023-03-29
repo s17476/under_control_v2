@@ -285,6 +285,8 @@
     "user_confirm_unmake_admin": "Potwierdź odebranie praw",
     "user_unmake_admin_question": "Czy na pewno odebrać prawa administratora dla {name}?",
     "company_details_edit_logo": "Edytuj logo",
+    "company_details_delete": "Usuń organizację",
+    "company_details_delete_info": "Wszystkie dane organizacji zostaną usunięte automatycznie jeżeli ostatni użytkownik w tej organizacji usunie swoje konto. By usunąć swoje konto użytkownika przejdź do Ekranu Użytkownika -> Menu -> Usuń konto.",
     "company_details_title": "Szczegóły organizacji",
     "company_details_data": "Dane organizacji",
     "company_details_contact": "Dane kontaktowe",

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/company_profile/utils/show_company_delete_dialog.dart';
 
 import '../../../core/presentation/widgets/cached_user_avatar.dart';
 import '../../../core/presentation/widgets/icon_title_row.dart';
@@ -73,6 +74,11 @@ class _CompanyDetailsState extends State<CompanyDetailsPage>
         title: AppLocalizations.of(context)!.company_details_edit_logo,
         icon: Icons.image,
         onTap: () => _showLogoEditor(),
+      ),
+      Choice(
+        title: AppLocalizations.of(context)!.company_details_delete,
+        icon: Icons.delete,
+        onTap: () => showCompanyDeleteDialog(context: context),
       ),
     ];
 

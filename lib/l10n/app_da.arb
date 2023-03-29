@@ -285,6 +285,8 @@
     "user_confirm_unmake_admin": "Bekræft tilbagekaldelse",
     "user_unmake_admin_question": "Er du sikker på, at du vil ophæve administratorrettigheder for {name}?",
     "company_details_edit_logo": "Rediger logo",
+    "company_details_delete": "Slet organisation",
+    "company_details_delete_info": "Alle organisationsdata slettes automatisk, hvis den sidste bruger i den pågældende organisation sletter sin konto. For at slette din brugerkonto skal du gå til Brugerskærm -> Menu -> Slet konto.",
     "company_details_title": "Organisationsoplysninger",
     "company_details_data": "Organisationsdata",
     "company_details_contact": "Kontaktoplysninger",
