@@ -5,6 +5,7 @@ import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
 import '../../assets/presentation/widgets/asset_status_dropdown_button.dart';
 import '../../assets/utils/asset_status.dart';
+import '../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../core/presentation/widgets/glass_layer.dart';
 
 Future<dynamic> showDeleteAccountDialog({
@@ -89,6 +90,9 @@ Future<dynamic> showDeleteAccountDialog({
                   if (formKey.currentState!.validate() &&
                       (name.trim().toLowerCase() ==
                           answer.trim().toLowerCase())) {
+                    context
+                        .read<AuthenticationBloc>()
+                        .add(DeleteAccountEvent());
                     Navigator.pop(context, true);
                   }
                 },

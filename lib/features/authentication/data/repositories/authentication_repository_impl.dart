@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/usecases/usecase.dart';
@@ -17,12 +18,14 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   // final NetworkInfo networkInfo;
   final FirebaseFirestore firebaseFirestore;
   final FirebaseMessaging firebaseMessaging;
+  final FirebaseStorage firebaseStorage;
 
   AuthenticationRepositoryImpl({
     required this.firebaseAuth,
     // required this.networkInfo,
     required this.firebaseFirestore,
     required this.firebaseMessaging,
+    required this.firebaseStorage,
   });
 
   @override
@@ -129,6 +132,35 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       {required String email, String password = ''}) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return Right(VoidResult());
+    } on FirebaseAuthException catch (e) {
+      return Left(
+        AuthenticationFailure(message: e.message ?? 'Authentication error'),
+      );
+    } catch (e) {
+      return const Left(UnsuspectedFailure(message: 'Unsuspected error'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, VoidResult>> deleteAccount() async {
+    try {
+      // delete avatar
+      final userAvatar = firebaseStorage
+          .ref()
+          .child('avatars')
+          .child('${firebaseAuth.currentUser!.uid}.jpg');
+      await userAvatar.delete();
+
+      // delete user profile
+      final userProfile = firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid);
+      await userProfile.delete();
+
+      // delete user account
+      await firebaseAuth.currentUser!.delete();
+
       return Right(VoidResult());
     } on FirebaseAuthException catch (e) {
       return Left(

@@ -25,6 +25,8 @@ class SendPasswordResetEmailEvent extends AuthenticationEvent {
 
 class SignoutEvent extends AuthenticationEvent {}
 
+class DeleteAccountEvent extends AuthenticationEvent {}
+
 class ResendVerificationEmailEvent extends AuthenticationEvent {}
 
 class AutoSigninEvent extends AuthenticationEvent {

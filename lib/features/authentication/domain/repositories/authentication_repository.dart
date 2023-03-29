@@ -26,5 +26,7 @@ abstract class AuthenticationRepository {
 
   Future<Either<Failure, VoidResult>> signout();
 
+  Future<Either<Failure, VoidResult>> deleteAccount();
+
   Future<Either<Failure, VoidResult>> sendVerificationEmail();
 }

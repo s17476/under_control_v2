@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../domain/usecases/check_email_verification.dart';
+import '../../../domain/usecases/delete_account.dart';
 import '../../../domain/usecases/send_password_reset_email.dart';
 import '../../../domain/usecases/send_verification_email.dart';
 import '../../../domain/usecases/auto_signin.dart';
@@ -25,6 +26,7 @@ class AuthenticationBloc
   final Signin signin;
   final Signup signup;
   final Signout signout;
+  final DeleteAccount deleteAccount;
   final AutoSignin autoSignin;
   final SendVerificationEmail sendVerificationEmail;
   final CheckEmailVerification checkEmailVerification;
@@ -35,6 +37,7 @@ class AuthenticationBloc
     required this.signin,
     required this.signup,
     required this.signout,
+    required this.deleteAccount,
     required this.autoSignin,
     required this.sendVerificationEmail,
     required this.checkEmailVerification,
@@ -121,11 +124,22 @@ class AuthenticationBloc
       emit(Submitting());
       final failureOrVoid = await signout(NoParams());
 
-      failureOrVoid.fold(
-        (failure) => emit(Error(message: failure.message)),
-        (_) => emit(Unauthenticated()),
+      await failureOrVoid.fold(
+        (failure) async => emit(Error(message: failure.message)),
+        (_) async => emit(Unauthenticated()),
       );
     });
+
+    on<DeleteAccountEvent>(
+      (event, emit) async {
+        final failureOrVoidresult = await deleteAccount(NoParams());
+
+        await failureOrVoidresult.fold(
+          (failure) async => emit(Error(message: failure.message)),
+          (_) async => emit(Unauthenticated()),
+        );
+      },
+    );
 
     on<SendPasswordResetEmailEvent>((event, emit) async {
       final failureOrVoid = await sendPasswordResetEmail(

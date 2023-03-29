@@ -195,10 +195,16 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
             Choice(
               title: AppLocalizations.of(context)!.user_details_delete,
               icon: Icons.delete,
-              onTap: () => showDeleteAccountDialog(
-                context: context,
-                name: _user!.firstName,
-              ),
+              onTap: () async {
+                await showDeleteAccountDialog(
+                  context: context,
+                  name: _user!.firstName,
+                ).then((value) {
+                  if (value != null && value is bool && value) {
+                    Navigator.pop(context);
+                  }
+                });
+              },
             ),
         ];
       }
