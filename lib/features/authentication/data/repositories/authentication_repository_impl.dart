@@ -143,8 +143,16 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, VoidResult>> deleteAccount() async {
+  Future<Either<Failure, VoidResult>> deleteAccount(
+    String password,
+  ) async {
     try {
+      final user = firebaseAuth.currentUser!;
+      // reauthenticate with credencial
+      final credential =
+          EmailAuthProvider.credential(email: user.email!, password: password);
+      final authResult = await user.reauthenticateWithCredential(credential);
+
       // delete avatar
       final userAvatar = firebaseStorage
           .ref()
@@ -159,7 +167,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       await userProfile.delete();
 
       // delete user account
-      await firebaseAuth.currentUser!.delete();
+      await authResult.user!.delete();
 
       return Right(VoidResult());
     } on FirebaseAuthException catch (e) {

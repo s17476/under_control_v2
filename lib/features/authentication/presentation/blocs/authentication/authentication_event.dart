@@ -25,7 +25,9 @@ class SendPasswordResetEmailEvent extends AuthenticationEvent {
 
 class SignoutEvent extends AuthenticationEvent {}
 
-class DeleteAccountEvent extends AuthenticationEvent {}
+class DeleteAccountEvent extends AuthenticationEvent {
+  const DeleteAccountEvent({super.password});
+}
 
 class ResendVerificationEmailEvent extends AuthenticationEvent {}
 

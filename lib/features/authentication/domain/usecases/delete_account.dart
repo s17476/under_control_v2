@@ -6,7 +6,7 @@ import '../../../core/usecases/usecase.dart';
 import '../../../core/error/failures.dart';
 
 @lazySingleton
-class DeleteAccount implements FutureUseCase<VoidResult, NoParams> {
+class DeleteAccount implements FutureUseCase<VoidResult, AuthParams> {
   final AuthenticationRepository authenticationRepository;
 
   DeleteAccount({
@@ -14,7 +14,7 @@ class DeleteAccount implements FutureUseCase<VoidResult, NoParams> {
   });
 
   @override
-  Future<Either<Failure, VoidResult>> call(NoParams params) async {
-    return await authenticationRepository.deleteAccount();
+  Future<Either<Failure, VoidResult>> call(AuthParams params) async {
+    return await authenticationRepository.deleteAccount(params.password);
   }
 }

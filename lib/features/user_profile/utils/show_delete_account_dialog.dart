@@ -10,7 +10,6 @@ import '../../core/presentation/widgets/glass_layer.dart';
 
 Future<dynamic> showDeleteAccountDialog({
   required BuildContext context,
-  required String name,
 }) {
   final formKey = GlobalKey<FormState>();
   String answer = '';
@@ -42,23 +41,26 @@ Future<dynamic> showDeleteAccountDialog({
                 Form(
                   key: formKey,
                   child: TextFormField(
-                    minLines: 1,
-                    maxLines: 6,
                     onChanged: (value) {
                       answer = value;
                     },
                     validator: (value) {
-                      if (value!.trim().toLowerCase() !=
-                          name.trim().toLowerCase()) {
-                        return '${AppLocalizations.of(context)!.user_details_delete_validation} $name';
+                      final result = RegExp(
+                        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$',
+                      ).hasMatch(value!.trim());
+                      if (result) {
+                        return null;
+                      } else {
+                        return AppLocalizations.of(context)!
+                            .password_validation;
                       }
-                      return null;
                     },
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!
-                          .user_profile_add_user_personal_data_first_name,
+                      errorMaxLines: 5,
+                      hintText: AppLocalizations.of(context)!.password,
                     ),
+                    obscureText: true,
                   ),
                 ),
                 const SizedBox(
@@ -87,12 +89,10 @@ Future<dynamic> showDeleteAccountDialog({
                   ),
                 ),
                 onPressed: () {
-                  if (formKey.currentState!.validate() &&
-                      (name.trim().toLowerCase() ==
-                          answer.trim().toLowerCase())) {
+                  if (formKey.currentState!.validate()) {
                     context
                         .read<AuthenticationBloc>()
-                        .add(DeleteAccountEvent());
+                        .add(DeleteAccountEvent(password: answer));
                     Navigator.pop(context, true);
                   }
                 },

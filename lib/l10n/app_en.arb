@@ -291,6 +291,10 @@
     "@password_reset_button": {
       "description": "Password reset buttons"
     },
+    "password_validation": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter and one number",
+    "@password_validation": {
+      "description": "Password"
+    },
     "cancel": "Cancel",
     "@cancel": {
       "description": "Cancel buttons"
@@ -1009,7 +1013,7 @@
     "@user_details_delete_validation": {
       "description": "Delete account"
     },
-    "user_details_delete_info": "To confirm the deletion of your user account, please enter your name below. If you are the only user in this company, all its data will also be deleted.",
+    "user_details_delete_info": "To confirm the deletion of your user account, please enter your password below. If you are the only user in this company, all its data will also be deleted.",
     "@user_details_delete_info": {
       "description": "Delete account"
     },

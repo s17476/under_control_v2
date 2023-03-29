@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:under_control_v2/features/authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:under_control_v2/features/user_profile/utils/show_delete_account_dialog.dart';
 
 import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
@@ -198,12 +199,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
               onTap: () async {
                 await showDeleteAccountDialog(
                   context: context,
-                  name: _user!.firstName,
-                ).then((value) {
-                  if (value != null && value is bool && value) {
-                    Navigator.pop(context);
-                  }
-                });
+                );
               },
             ),
         ];
@@ -235,244 +231,282 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
         }
         return true;
       },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: _user!.isActive
-              ? Theme.of(context).primaryColor.withAlpha(50)
-              : Colors.grey.shade800,
-          title: Text(appBarTitle),
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarIconBrightness: Brightness.light,
-          ),
-          actions: [
-            // shows popup menu if current user is administrator
-            // or current user is selected user
-            if (_user != null &&
-                (_currentUser.administrator || _currentUser.id == _user!.id))
-              PopupMenuButton<Choice>(
-                onSelected: (Choice choice) {
-                  if (_isAvatarEditorVisible) {
-                    _hideAvatarEditor();
-                  }
-                  if (_isGroupManagementVisible) {
-                    _hideGroupManagement();
-                  }
-                  choice.onTap();
-                },
-                itemBuilder: (BuildContext context) {
-                  return _choices.map((Choice choice) {
-                    return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(choice.icon),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Expanded(
-                            child: Text(
-                              choice.title,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList();
-                },
-              ),
-          ],
-        ),
-        body: _user == null
-            ? const LoadingWidget()
-            : BlocListener<UserManagementBloc, UserManagementState>(
-                listener: (context, state) {
-                  if (state is UserManagementSuccessful) {
-                    String message = '';
-                    switch (state.message) {
-                      case userUpdated:
-                        message = AppLocalizations.of(context)!
-                            .user_details_data_updated;
-                        break;
-                      case avatarUpdated:
-                        message = AppLocalizations.of(context)!
-                            .user_details_avatar_updated;
-                        break;
-                      case userAssignedToGroup:
-                        message = AppLocalizations.of(context)!
-                            .user_details_user_assigned;
-                        break;
-                      case userUnassignedFromGroup:
-                        message = AppLocalizations.of(context)!
-                            .user_details_user_unassigned;
-                        break;
-                      default:
-                        message = '';
-                        break;
+      child: BlocListener<AuthenticationBloc, AuthenticationState>(
+        listener: (context, state) {
+          if (state is Authenticated && state.message.isNotEmpty) {
+            showSnackBar(
+                context: context, message: state.message, isErrorMessage: true);
+          }
+          if (state is Unauthenticated) {
+            Navigator.pop(context);
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: _user!.isActive
+                ? Theme.of(context).primaryColor.withAlpha(50)
+                : Colors.grey.shade800,
+            title: Text(appBarTitle),
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarIconBrightness: Brightness.light,
+            ),
+            actions: [
+              // shows popup menu if current user is administrator
+              // or current user is selected user
+              if (_user != null &&
+                  (_currentUser.administrator || _currentUser.id == _user!.id))
+                PopupMenuButton<Choice>(
+                  onSelected: (Choice choice) {
+                    if (_isAvatarEditorVisible) {
+                      _hideAvatarEditor();
                     }
-                    if (message.isNotEmpty) {
-                      showSnackBar(
-                        context: context,
-                        message: message,
-                        isErrorMessage: state.error,
-                      );
+                    if (_isGroupManagementVisible) {
+                      _hideGroupManagement();
                     }
-                  }
-                },
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Stack(
-                    children: [
-                      SingleChildScrollView(
-                        child: Column(
+                    choice.onTap();
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return _choices.map((Choice choice) {
+                      return PopupMenuItem<Choice>(
+                        value: choice,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            // avatar and name
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(50),
-                                  bottomRight: Radius.circular(50),
-                                ),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: const Alignment(0, 1),
-                                  colors: _user!.isActive
-                                      ? [
-                                          Theme.of(context)
-                                              .primaryColor
-                                              .withAlpha(50),
-                                          Theme.of(context).primaryColor,
-                                          Theme.of(context)
-                                              .primaryColor
-                                              .withAlpha(50),
-                                        ]
-                                      : [
-                                          Colors.grey.shade800,
-                                          Colors.grey.shade600,
-                                          Colors.grey.shade800,
-                                        ],
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  CachedUserAvatar(
-                                    size: responsiveSizePct(small: 70),
-                                    imageUrl: _user!.avatarUrl,
-                                  ),
-                                  Text(
-                                    _user!.firstName,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium!
-                                        .copyWith(
-                                          color: Colors.white,
-                                        ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    _user!.lastName,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium!
-                                        .copyWith(
-                                          color: Colors.white,
-                                        ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
+                            Icon(choice.icon),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            Expanded(
+                              child: Text(
+                                choice.title,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            // user data
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 16,
-                                left: 16,
-                                right: 16,
+                          ],
+                        ),
+                      );
+                    }).toList();
+                  },
+                ),
+            ],
+          ),
+          body: _user == null
+              ? const LoadingWidget()
+              : BlocListener<UserManagementBloc, UserManagementState>(
+                  listener: (context, state) {
+                    if (state is UserManagementSuccessful) {
+                      String message = '';
+                      switch (state.message) {
+                        case userUpdated:
+                          message = AppLocalizations.of(context)!
+                              .user_details_data_updated;
+                          break;
+                        case avatarUpdated:
+                          message = AppLocalizations.of(context)!
+                              .user_details_avatar_updated;
+                          break;
+                        case userAssignedToGroup:
+                          message = AppLocalizations.of(context)!
+                              .user_details_user_assigned;
+                          break;
+                        case userUnassignedFromGroup:
+                          message = AppLocalizations.of(context)!
+                              .user_details_user_unassigned;
+                          break;
+                        default:
+                          message = '';
+                          break;
+                      }
+                      if (message.isNotEmpty) {
+                        showSnackBar(
+                          context: context,
+                          message: message,
+                          isErrorMessage: state.error,
+                        );
+                      }
+                    }
+                  },
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Stack(
+                      children: [
+                        SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              // avatar and name
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(50),
+                                    bottomRight: Radius.circular(50),
+                                  ),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: const Alignment(0, 1),
+                                    colors: _user!.isActive
+                                        ? [
+                                            Theme.of(context)
+                                                .primaryColor
+                                                .withAlpha(50),
+                                            Theme.of(context).primaryColor,
+                                            Theme.of(context)
+                                                .primaryColor
+                                                .withAlpha(50),
+                                          ]
+                                        : [
+                                            Colors.grey.shade800,
+                                            Colors.grey.shade600,
+                                            Colors.grey.shade800,
+                                          ],
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    CachedUserAvatar(
+                                      size: responsiveSizePct(small: 70),
+                                      imageUrl: _user!.avatarUrl,
+                                    ),
+                                    Text(
+                                      _user!.firstName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium!
+                                          .copyWith(
+                                            color: Colors.white,
+                                          ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      _user!.lastName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium!
+                                          .copyWith(
+                                            color: Colors.white,
+                                          ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              child: Column(
-                                children: [
-                                  // title
-                                  IconTitleRow(
-                                    icon: Icons.person,
-                                    iconColor: Colors.grey.shade300,
-                                    iconBackground: Colors.black,
-                                    title: AppLocalizations.of(context)!
-                                        .user_details_data,
-                                    titleFontSize: 16,
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  // phone number
-                                  InkWell(
-                                    onTap: () =>
-                                        makePhoneCall(_user!.phoneNumber),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.call,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                          ),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .add_company_intro_card_phone_number,
+                              // user data
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 16,
+                                  left: 16,
+                                  right: 16,
+                                ),
+                                child: Column(
+                                  children: [
+                                    // title
+                                    IconTitleRow(
+                                      icon: Icons.person,
+                                      iconColor: Colors.grey.shade300,
+                                      iconBackground: Colors.black,
+                                      title: AppLocalizations.of(context)!
+                                          .user_details_data,
+                                      titleFontSize: 16,
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    // phone number
+                                    InkWell(
+                                      onTap: () =>
+                                          makePhoneCall(_user!.phoneNumber),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.call,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                             ),
-                                          ),
-                                          Text(_user!.phoneNumber),
-                                        ],
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .add_company_intro_card_phone_number,
+                                              ),
+                                            ),
+                                            Text(_user!.phoneNumber),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  // sms
-                                  InkWell(
-                                    onTap: () => sendSms(_user!.phoneNumber),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.message,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                          ),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .user_details_sms,
+                                    // sms
+                                    InkWell(
+                                      onTap: () => sendSms(_user!.phoneNumber),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.message,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                             ),
-                                          ),
-                                          Text(_user!.phoneNumber),
-                                        ],
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .user_details_sms,
+                                              ),
+                                            ),
+                                            Text(_user!.phoneNumber),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  // email
-                                  InkWell(
-                                    onTap: () => mailTo(_user!.email),
-                                    child: Padding(
+                                    // email
+                                    InkWell(
+                                      onTap: () => mailTo(_user!.email),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.email,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .add_company_intro_card_email,
+                                              ),
+                                            ),
+                                            Text(
+                                              _user!.email,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
+                                        vertical: 8.0,
+                                      ),
                                       child: Row(
                                         children: [
                                           Icon(
-                                            Icons.email,
+                                            Icons.calendar_month,
                                             color:
                                                 Theme.of(context).primaryColor,
                                           ),
@@ -482,234 +516,210 @@ class _UserDetailsPageState extends State<UserDetailsPage> with ResponsiveSize {
                                           Expanded(
                                             child: Text(
                                               AppLocalizations.of(context)!
-                                                  .add_company_intro_card_email,
+                                                  .user_details_join_date,
                                             ),
                                           ),
                                           Text(
-                                            _user!.email,
+                                            DateFormat('dd-MM-yyyy')
+                                                .format(_user!.joinDate),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 8.0,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.calendar_month,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .user_details_join_date,
-                                          ),
-                                        ),
-                                        Text(
-                                          DateFormat('dd-MM-yyyy')
-                                              .format(_user!.joinDate),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            const Divider(
-                              indent: 8,
-                              endIndent: 8,
-                              thickness: 1.5,
-                            ),
+                              const Divider(
+                                indent: 8,
+                                endIndent: 8,
+                                thickness: 1.5,
+                              ),
 
-                            // user premissions
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 8,
-                                left: 16,
-                                right: 16,
-                              ),
-                              child: Column(
-                                children: [
-                                  // title
-                                  IconTitleRow(
-                                    icon: Icons.error,
-                                    iconColor: Colors.grey.shade300,
-                                    iconBackground: Colors.black,
-                                    title: AppLocalizations.of(context)!
-                                        .user_details_permissions,
-                                    titleFontSize: 16,
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  // is active users
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 8.0,
+                              // user premissions
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 8,
+                                  left: 16,
+                                  right: 16,
+                                ),
+                                child: Column(
+                                  children: [
+                                    // title
+                                    IconTitleRow(
+                                      icon: Icons.error,
+                                      iconColor: Colors.grey.shade300,
+                                      iconBackground: Colors.black,
+                                      title: AppLocalizations.of(context)!
+                                          .user_details_permissions,
+                                      titleFontSize: 16,
                                     ),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          _user!.isActive
-                                              ? Icons.done
-                                              : Icons.clear,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .active_user,
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    // is active users
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            _user!.isActive
+                                                ? Icons.done
+                                                : Icons.clear,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           ),
-                                        ),
-                                        Text(
-                                          _user!.isActive
-                                              ? AppLocalizations.of(context)!
-                                                  .yes
-                                              : AppLocalizations.of(context)!
-                                                  .no,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  // administrator
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          _user!.administrator
-                                              ? Icons.gpp_good
-                                              : Icons.gpp_bad,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .user_details_admin,
+                                          const SizedBox(
+                                            width: 8,
                                           ),
-                                        ),
-                                        Text(
-                                          _user!.administrator
-                                              ? AppLocalizations.of(context)!
-                                                  .yes
-                                              : AppLocalizations.of(context)!
-                                                  .no,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Divider(
-                              indent: 8,
-                              endIndent: 8,
-                              thickness: 1.5,
-                            ),
-
-                            // user groups
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 8,
-                                left: 16,
-                                right: 16,
-                              ),
-                              child: Column(
-                                children: [
-                                  // title
-                                  IconTitleRow(
-                                    icon: Icons.group,
-                                    iconColor: Colors.grey.shade300,
-                                    iconBackground: Colors.black,
-                                    title: AppLocalizations.of(context)!
-                                        .drawer_item_groups,
-                                    titleFontSize: 16,
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  // groups
-                                  BlocBuilder<GroupBloc, GroupState>(
-                                    builder: (context, state) {
-                                      if (state is GroupLoadedState) {
-                                        List<Group> userGroups = [];
-                                        for (var group
-                                            in state.allGroups.allGroups) {
-                                          if (_user!.userGroups
-                                              .contains(group.id)) {
-                                            userGroups.add(group);
-                                          }
-                                        }
-                                        if (userGroups.isEmpty) {
-                                          return Text(
-                                            AppLocalizations.of(context)!
-                                                .group_no_user_groups,
-                                          );
-                                        } else {
-                                          return ListView.builder(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemCount: userGroups.length,
-                                            itemBuilder: (context, index) =>
-                                                GroupTile(
-                                              group: userGroups[index],
-                                              onTap: (group) =>
-                                                  Navigator.pushNamed(
-                                                context,
-                                                GroupDetailsPage.routeName,
-                                                arguments: group,
-                                              ),
-                                              user: _user,
+                                          Expanded(
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .active_user,
                                             ),
+                                          ),
+                                          Text(
+                                            _user!.isActive
+                                                ? AppLocalizations.of(context)!
+                                                    .yes
+                                                : AppLocalizations.of(context)!
+                                                    .no,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // administrator
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            _user!.administrator
+                                                ? Icons.gpp_good
+                                                : Icons.gpp_bad,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .user_details_admin,
+                                            ),
+                                          ),
+                                          Text(
+                                            _user!.administrator
+                                                ? AppLocalizations.of(context)!
+                                                    .yes
+                                                : AppLocalizations.of(context)!
+                                                    .no,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Divider(
+                                indent: 8,
+                                endIndent: 8,
+                                thickness: 1.5,
+                              ),
+
+                              // user groups
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 8,
+                                  left: 16,
+                                  right: 16,
+                                ),
+                                child: Column(
+                                  children: [
+                                    // title
+                                    IconTitleRow(
+                                      icon: Icons.group,
+                                      iconColor: Colors.grey.shade300,
+                                      iconBackground: Colors.black,
+                                      title: AppLocalizations.of(context)!
+                                          .drawer_item_groups,
+                                      titleFontSize: 16,
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    // groups
+                                    BlocBuilder<GroupBloc, GroupState>(
+                                      builder: (context, state) {
+                                        if (state is GroupLoadedState) {
+                                          List<Group> userGroups = [];
+                                          for (var group
+                                              in state.allGroups.allGroups) {
+                                            if (_user!.userGroups
+                                                .contains(group.id)) {
+                                              userGroups.add(group);
+                                            }
+                                          }
+                                          if (userGroups.isEmpty) {
+                                            return Text(
+                                              AppLocalizations.of(context)!
+                                                  .group_no_user_groups,
+                                            );
+                                          } else {
+                                            return ListView.builder(
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemCount: userGroups.length,
+                                              itemBuilder: (context, index) =>
+                                                  GroupTile(
+                                                group: userGroups[index],
+                                                onTap: (group) =>
+                                                    Navigator.pushNamed(
+                                                  context,
+                                                  GroupDetailsPage.routeName,
+                                                  arguments: group,
+                                                ),
+                                                user: _user,
+                                              ),
+                                            );
+                                          }
+                                        } else {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
                                           );
                                         }
-                                      } else {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 16,
-                                  ),
-                                ],
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 16,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      if (_isAvatarEditorVisible && _user != null)
-                        AvatarEditorCard(
-                          user: _user!,
-                          onDismiss: _hideAvatarEditor,
-                        ),
-                      if (_isGroupManagementVisible)
-                        ManageGroupsCard(
-                          user: _user!,
-                          onToggleGroupSelection: _toggleGroup,
-                          onDismiss: _hideGroupManagement,
-                        ),
-                    ],
+                        if (_isAvatarEditorVisible && _user != null)
+                          AvatarEditorCard(
+                            user: _user!,
+                            onDismiss: _hideAvatarEditor,
+                          ),
+                        if (_isGroupManagementVisible)
+                          ManageGroupsCard(
+                            user: _user!,
+                            onToggleGroupSelection: _toggleGroup,
+                            onDismiss: _hideGroupManagement,
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+        ),
       ),
     );
   }

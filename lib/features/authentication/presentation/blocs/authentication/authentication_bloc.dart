@@ -132,10 +132,19 @@ class AuthenticationBloc
 
     on<DeleteAccountEvent>(
       (event, emit) async {
-        final failureOrVoidresult = await deleteAccount(NoParams());
+        final failureOrVoidresult = await deleteAccount(
+          AuthParams(
+            email: event.email,
+            password: event.password,
+          ),
+        );
 
         await failureOrVoidresult.fold(
-          (failure) async => emit(Error(message: failure.message)),
+          (failure) async {
+            if (state is Authenticated) {
+              emit((state as Authenticated).copyWith(message: failure.message));
+            }
+          },
           (_) async => emit(Unauthenticated()),
         );
       },
