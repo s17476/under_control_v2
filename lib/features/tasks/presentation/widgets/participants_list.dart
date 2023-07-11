@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
@@ -10,7 +9,6 @@ import '../../../core/presentation/widgets/loading_widget.dart';
 import '../../../core/presentation/widgets/rounded_button.dart';
 import '../../../core/presentation/widgets/user_list_tile.dart';
 import '../../../core/utils/duration_apis.dart';
-import '../../../core/utils/get_locale_type.dart';
 import '../../../user_profile/domain/entities/user_profile.dart';
 import '../../data/models/task_action/user_action_model.dart';
 
@@ -273,78 +271,78 @@ class SelectedUserBox extends StatelessWidget {
 
   void _pickStartDate(BuildContext context, UserActionModel participant) async {
     FocusScope.of(context).unfocus();
-    DatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      // minTime: DateTime(2021, 1, 1),
-      maxTime: participant.stopTime.subtract(const Duration(minutes: 5)),
-      onConfirm: (date) {
-        updateParticipant(
-          participant.copyWith(
-            startTime: date.subtract(
-              Duration(seconds: date.second),
-            ),
-          ),
-        );
-      },
-      currentTime: participant.startTime.isBefore(
-              participant.stopTime.subtract(const Duration(minutes: 5)))
-          ? participant.startTime
-          : participant.stopTime.subtract(const Duration(minutes: 5)),
-      locale: getLocaleType(context),
-      // TODO datetime
-      // theme: DatePickerTheme(
-      //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      //   // headerColor: Theme.of,
-      //   itemStyle: Theme.of(context).textTheme.titleLarge!,
-      //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
-      //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-      //         color: Colors.amber,
-      //       ),
-      //   itemHeight: 40,
-      // ),
-    );
+    // DatePicker.showDateTimePicker(
+    //   context,
+    //   showTitleActions: true,
+    //   // minTime: DateTime(2021, 1, 1),
+    //   maxTime: participant.stopTime.subtract(const Duration(minutes: 5)),
+    //   onConfirm: (date) {
+    //     updateParticipant(
+    //       participant.copyWith(
+    //         startTime: date.subtract(
+    //           Duration(seconds: date.second),
+    //         ),
+    //       ),
+    //     );
+    //   },
+    //   currentTime: participant.startTime.isBefore(
+    //           participant.stopTime.subtract(const Duration(minutes: 5)))
+    //       ? participant.startTime
+    //       : participant.stopTime.subtract(const Duration(minutes: 5)),
+    //   locale: getLocaleType(context),
+    //   // TODO datetime
+    //   // theme: DatePickerTheme(
+    //   //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    //   //   // headerColor: Theme.of,
+    //   //   itemStyle: Theme.of(context).textTheme.titleLarge!,
+    //   //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
+    //   //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+    //   //         color: Colors.amber,
+    //   //       ),
+    //   //   itemHeight: 40,
+    //   // ),
+    // );
   }
 
   void _pickStopDate(BuildContext context, UserActionModel participant) async {
     FocusScope.of(context).unfocus();
-    DatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      // minTime: participant.startTime,
-      maxTime: DateTime.now(),
-      onConfirm: (date) {
-        if (date.isBefore(participant.startTime)) {
-          updateParticipant(
-            participant.copyWith(
-              stopTime: date.subtract(Duration(seconds: date.second)),
-              startTime: date.subtract(
-                Duration(minutes: 5, seconds: date.second),
-              ),
-            ),
-          );
-        } else {
-          updateParticipant(participant.copyWith(
-            stopTime: date.subtract(
-              Duration(seconds: date.second),
-            ),
-          ));
-        }
-      },
-      currentTime: participant.stopTime,
-      locale: getLocaleType(context),
-      // TODO datetime
-      // theme: DatePickerTheme(
-      //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      //   // headerColor: Theme.of,
-      //   itemStyle: Theme.of(context).textTheme.titleLarge!,
-      //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
-      //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-      //         color: Colors.amber,
-      //       ),
-      //   itemHeight: 40,
-      // ),
-    );
+    // DatePicker.showDateTimePicker(
+    //   context,
+    //   showTitleActions: true,
+    //   // minTime: participant.startTime,
+    //   maxTime: DateTime.now(),
+    //   onConfirm: (date) {
+    //     if (date.isBefore(participant.startTime)) {
+    //       updateParticipant(
+    //         participant.copyWith(
+    //           stopTime: date.subtract(Duration(seconds: date.second)),
+    //           startTime: date.subtract(
+    //             Duration(minutes: 5, seconds: date.second),
+    //           ),
+    //         ),
+    //       );
+    //     } else {
+    //       updateParticipant(participant.copyWith(
+    //         stopTime: date.subtract(
+    //           Duration(seconds: date.second),
+    //         ),
+    //       ));
+    //     }
+    //   },
+    //   currentTime: participant.stopTime,
+    //   locale: getLocaleType(context),
+    //   // TODO datetime
+    //   // theme: DatePickerTheme(
+    //   //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    //   //   // headerColor: Theme.of,
+    //   //   itemStyle: Theme.of(context).textTheme.titleLarge!,
+    //   //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
+    //   //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+    //   //         color: Colors.amber,
+    //   //       ),
+    //   //   itemHeight: 40,
+    //   // ),
+    // );
   }
 
   @override

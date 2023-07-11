@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
@@ -8,7 +7,6 @@ import '../../../../company_profile/presentation/blocs/company_profile/company_p
 import '../../../../core/presentation/pages/qr_scanner.dart';
 import '../../../../core/presentation/widgets/custom_text_form_field.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
-import '../../../../core/utils/get_locale_type.dart';
 import '../../../../core/utils/show_snack_bar.dart';
 import '../../../utils/show_add_asset_category_modal_bottom_sheet.dart';
 import '../asset_category_dropdown_button.dart';
@@ -59,38 +57,38 @@ class _AddAssetDataCardState extends State<AddAssetDataCard> {
   void _pickDate() async {
     FocusScope.of(context).unfocus();
     final now = DateTime.now();
-    DatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      minTime: DateTime(2021, 1, 1),
-      maxTime: DateTime(
-        now.year,
-        now.month,
-        now.day,
-        now.hour,
-        now.minute,
-        now.second + 3,
-      ),
-      onConfirm: (date) {
-        widget.setDate(date);
-        setState(() {
-          _dateTextEditingController.text = _dateFormat.format(date);
-        });
-      },
-      currentTime: _dateFormat.parse(_dateTextEditingController.text),
-      locale: getLocaleType(context),
-      // TODO datetime
-      // theme: DatePickerTheme(
-      //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      //   // headerColor: Theme.of,
-      //   itemStyle: Theme.of(context).textTheme.titleLarge!,
-      //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
-      //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-      //         color: Colors.amber,
-      //       ),
-      //   itemHeight: 40,
-      // ),
-    );
+    // DatePicker.showDateTimePicker(
+    //   context,
+    //   showTitleActions: true,
+    //   minTime: DateTime(2021, 1, 1),
+    //   maxTime: DateTime(
+    //     now.year,
+    //     now.month,
+    //     now.day,
+    //     now.hour,
+    //     now.minute,
+    //     now.second + 3,
+    //   ),
+    //   onConfirm: (date) {
+    //     widget.setDate(date);
+    //     setState(() {
+    //       _dateTextEditingController.text = _dateFormat.format(date);
+    //     });
+    //   },
+    //   currentTime: _dateFormat.parse(_dateTextEditingController.text),
+    //   locale: getLocaleType(context),
+    //   // TODO datetime
+    //   // theme: DatePickerTheme(
+    //   //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    //   //   // headerColor: Theme.of,
+    //   //   itemStyle: Theme.of(context).textTheme.titleLarge!,
+    //   //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
+    //   //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+    //   //         color: Colors.amber,
+    //   //       ),
+    //   //   itemHeight: 40,
+    //   // ),
+    // );
   }
 
   @override

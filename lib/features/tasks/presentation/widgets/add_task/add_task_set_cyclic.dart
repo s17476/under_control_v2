@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
@@ -11,7 +10,6 @@ import '../../../../core/presentation/widgets/icon_title_row.dart';
 import '../../../../core/presentation/widgets/rounded_button.dart';
 import '../../../../core/presentation/widgets/selection_button.dart';
 import '../../../../core/utils/duration_unit.dart';
-import '../../../../core/utils/get_locale_type.dart';
 
 class AddTaskSetCyclicCard extends StatefulWidget {
   const AddTaskSetCyclicCard({
@@ -57,38 +55,38 @@ class _AddTaskSetCyclicCardState extends State<AddTaskSetCyclicCard> {
   void _pickDate() async {
     FocusScope.of(context).unfocus();
     final now = DateTime.now();
-    DatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      minTime: DateTime(
-        now.year,
-        now.month,
-        now.day,
-        now.hour,
-        now.minute - 5,
-        now.second,
-      ),
-      onConfirm: (date) {
-        widget.setExecutionDate(date);
-        setState(() {
-          _dateTextEditingController.text = _dateFormat.format(date);
-        });
-        _generateNextInspectionDate(lastInspectionDate: date);
-      },
-      currentTime: _dateFormat.parse(_dateTextEditingController.text),
-      locale: getLocaleType(context),
-      // TODO datetime
-      // theme: DatePickerTheme(
-      //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      //   // headerColor: Theme.of,
-      //   itemStyle: Theme.of(context).textTheme.titleLarge!,
-      //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
-      //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-      //         color: Colors.amber,
-      //       ),
-      //   itemHeight: 40,
-      // ),
-    );
+    // DatePicker.showDateTimePicker(
+    //   context,
+    //   showTitleActions: true,
+    //   minTime: DateTime(
+    //     now.year,
+    //     now.month,
+    //     now.day,
+    //     now.hour,
+    //     now.minute - 5,
+    //     now.second,
+    //   ),
+    //   onConfirm: (date) {
+    //     widget.setExecutionDate(date);
+    //     setState(() {
+    //       _dateTextEditingController.text = _dateFormat.format(date);
+    //     });
+    //     _generateNextInspectionDate(lastInspectionDate: date);
+    //   },
+    //   currentTime: _dateFormat.parse(_dateTextEditingController.text),
+    //   locale: getLocaleType(context),
+    //   // TODO datetime
+    //   // theme: DatePickerTheme(
+    //   //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    //   //   // headerColor: Theme.of,
+    //   //   itemStyle: Theme.of(context).textTheme.titleLarge!,
+    //   //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
+    //   //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+    //   //         color: Colors.amber,
+    //   //       ),
+    //   //   itemHeight: 40,
+    //   // ),
+    // );
   }
 
   void _generateNextInspectionDate({
