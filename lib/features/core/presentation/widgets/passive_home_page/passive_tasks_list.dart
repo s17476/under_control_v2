@@ -5,6 +5,6 @@ class PassiveTasksList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('passive tasks list');
+    return const Text('passive tasks list');
   }
 }

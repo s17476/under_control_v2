@@ -342,12 +342,14 @@ class _HomePageState extends State<HomePage>
     // notifications
     // FirebaseMessaging.onMessage.listen(showFlutterNotification);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // ignore: avoid_print
       print('A new onMessage event was published!');
       // showSnackBar(
       //     context: context, message: 'A new onMessage event was published!');
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      // ignore: avoid_print
       print('A new onMessageOpenedApp event was published!');
       // showSnackBar(
       //     context: context,

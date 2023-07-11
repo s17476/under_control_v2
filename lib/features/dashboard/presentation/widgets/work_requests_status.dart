@@ -23,10 +23,7 @@ class WorkRequestsStatus extends StatelessWidget {
         (state.cancelled.allWorkRequests.length / totalCount);
 
     return List.generate(3, (i) {
-      // final isTouched = i == touchedIndex;
-      final isTouched = false;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 15.0;
+      const radius = 15.0;
       switch (i) {
         case 0:
           return PieChartSectionData(
@@ -45,7 +42,7 @@ class WorkRequestsStatus extends StatelessWidget {
         case 2:
           return PieChartSectionData(
             showTitle: false,
-            color: Theme.of(context).errorColor,
+            color: Theme.of(context).colorScheme.error,
             value: awaitingPercentage,
             radius: radius,
           );
@@ -232,7 +229,7 @@ class WorkRequestsStatus extends StatelessWidget {
                                   Container(
                                     height: 16,
                                     width: 16,
-                                    color: Theme.of(context).errorColor,
+                                    color: Theme.of(context).colorScheme.error,
                                   ),
                                   const SizedBox(
                                     width: 4,

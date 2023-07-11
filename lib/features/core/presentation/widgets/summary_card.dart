@@ -25,7 +25,7 @@ class SummaryCard extends StatelessWidget {
   ]) =>
       errorMessage == null
           ? Theme.of(context).primaryColor
-          : errorColor ?? Theme.of(context).errorColor.withAlpha(220);
+          : errorColor ?? Theme.of(context).colorScheme.error.withAlpha(220);
   IconData getIcon(BuildContext context, String? errorMessage) =>
       errorMessage == null ? Icons.done : Icons.clear;
 

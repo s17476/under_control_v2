@@ -12,10 +12,10 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig.init(context);
 
-    return Scaffold(
+    return const Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
+        children: [
           Expanded(
             child: Center(
               child: Logo(greenLettersSize: 15, whitheLettersSize: 10),

@@ -35,7 +35,7 @@ class _QrScannerState extends State<QrScanner> {
             icon: ValueListenableBuilder(
               valueListenable: _cameraController.torchState,
               builder: (context, state, child) {
-                switch (state as TorchState) {
+                switch (state) {
                   case TorchState.off:
                     return const Icon(Icons.flash_off, color: Colors.grey);
                   case TorchState.on:
@@ -51,7 +51,7 @@ class _QrScannerState extends State<QrScanner> {
             icon: ValueListenableBuilder(
               valueListenable: _cameraController.cameraFacingState,
               builder: (context, state, child) {
-                switch (state as CameraFacing) {
+                switch (state) {
                   case CameraFacing.front:
                     return const Icon(Icons.camera_front);
                   case CameraFacing.back:
@@ -65,13 +65,13 @@ class _QrScannerState extends State<QrScanner> {
         ],
       ),
       body: MobileScanner(
-        allowDuplicates: true,
+        // allowDuplicates: true,
         controller: _cameraController,
-        onDetect: (barcode, args) {
-          if (barcode.rawValue == null) {
+        onDetect: (capture) {
+          if (capture.barcodes.isEmpty) {
             debugPrint('Failed to scan Barcode');
           } else if (!_codeFound) {
-            final String code = barcode.rawValue!;
+            final String code = capture.barcodes.firstOrNull?.rawValue ?? '';
             // double code check
             if (code == _firstTryCode) {
               Navigator.pop(context, code);

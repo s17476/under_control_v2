@@ -9,7 +9,6 @@ import 'package:uuid/uuid.dart';
 
 import '../../../assets/data/models/asset_action/asset_action_model.dart';
 import '../../../assets/data/models/asset_model.dart';
-import '../../../checklists/domain/entities/checkpoint.dart';
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../domain/entities/task/tasks_stream.dart';

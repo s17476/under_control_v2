@@ -91,7 +91,6 @@ class _TaskTemplateInfoTabState extends State<TaskTemplateInfoTab> {
 
   @override
   Widget build(BuildContext context) {
-    final detailedDateFormat = DateFormat('dd-MM-yyyy HH:mm');
     final dateFormat = DateFormat('dd-MM-yyyy');
     SizeConfig.init(context);
     return WillPopScope(
@@ -643,7 +642,7 @@ class ProgressIcon extends StatelessWidget {
         return Icon(
           Icons.cancel_outlined,
           size: 40,
-          color: Theme.of(context).errorColor.withAlpha(160),
+          color: Theme.of(context).colorScheme.error.withAlpha(160),
         );
       }
     } else {

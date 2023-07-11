@@ -19,10 +19,6 @@ class CustomYoutubePlayer extends StatefulWidget {
 class _CustomYoutubePlayerState extends State<CustomYoutubePlayer> {
   late YoutubePlayerController _controller;
 
-  void _initVideo() {
-    _controller.cueVideoById(videoId: widget.contentUrl);
-  }
-
   @override
   void initState() {
     _controller = YoutubePlayerController(
@@ -32,14 +28,15 @@ class _CustomYoutubePlayerState extends State<CustomYoutubePlayer> {
         showFullscreenButton: false,
         loop: false,
       ),
-    )..onInit = _initVideo;
+    );
+    _controller.cueVideoById(videoId: widget.contentUrl);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     if (_controller.metadata.videoId != widget.contentUrl) {
-      _initVideo();
+      _controller.cueVideoById(videoId: widget.contentUrl);
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,

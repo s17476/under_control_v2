@@ -25,10 +25,7 @@ class AssetsStatus extends StatelessWidget {
     final reparationPercentage = (reparation + noInspection) / totalCount;
 
     return List.generate(3, (i) {
-      // final isTouched = i == touchedIndex;
-      final isTouched = false;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 15.0;
+      const radius = 15.0;
       switch (i) {
         case 0:
           return PieChartSectionData(
@@ -47,7 +44,7 @@ class AssetsStatus extends StatelessWidget {
         case 2:
           return PieChartSectionData(
             showTitle: false,
-            color: Theme.of(context).errorColor,
+            color: Theme.of(context).colorScheme.error,
             value: reparationPercentage,
             radius: radius,
           );

@@ -48,7 +48,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       } else {
         // gets file directly from network
         _videoPlayerController =
-            VideoPlayerController.network(widget.videoUrl!);
+            VideoPlayerController.networkUrl(Uri(path: widget.videoUrl!));
       }
 
       await _videoPlayerController!.initialize();

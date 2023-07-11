@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +7,6 @@ import 'package:uuid/uuid.dart';
 
 import '../../../core/error/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../../../core/utils/get_cached_firebase_storage_file.dart';
 import '../../domain/entities/content_type.dart';
 import '../../domain/entities/instructions_stream.dart';
 import '../../domain/repositories/instruction_repository.dart';

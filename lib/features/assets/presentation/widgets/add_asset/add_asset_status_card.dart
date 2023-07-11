@@ -78,16 +78,17 @@ class _AddAssetStatusCardState extends State<AddAssetStatusCard> {
       },
       currentTime: _dateFormat.parse(_dateTextEditingController.text),
       locale: getLocaleType(context),
-      theme: DatePickerTheme(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        // headerColor: Theme.of,
-        itemStyle: Theme.of(context).textTheme.titleLarge!,
-        cancelStyle: Theme.of(context).textTheme.titleLarge!,
-        doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-              color: Colors.amber,
-            ),
-        itemHeight: 40,
-      ),
+      // TODO datetime
+      // theme: DatePickerTheme(
+      //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      //   // headerColor: Theme.of,
+      //   itemStyle: Theme.of(context).textTheme.titleLarge!,
+      //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
+      //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+      //         color: Colors.amber,
+      //       ),
+      //   itemHeight: 40,
+      // ),
     );
   }
 

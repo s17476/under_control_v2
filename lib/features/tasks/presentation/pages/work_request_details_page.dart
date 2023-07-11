@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:under_control_v2/features/assets/presentation/blocs/asset_action/asset_action_bloc.dart';
-import 'package:under_control_v2/features/assets/presentation/blocs/asset_action_management/asset_action_management_bloc.dart';
 
 import '../../../core/presentation/widgets/home_page/app_bar_animated_icon.dart';
 import '../../../core/presentation/widgets/loading_widget.dart';

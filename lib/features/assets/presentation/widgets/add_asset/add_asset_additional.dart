@@ -19,7 +19,6 @@ import '../../../../knowledge_base/presentation/widgets/instruction_tile.dart';
 import '../../../../knowledge_base/presentation/widgets/shimmer_instruction_tile.dart';
 import '../asset_selection/overlay_asset_selection.dart';
 import '../assets_spare_parts_list.dart';
-import 'add_assets_overlay_menu.dart';
 
 class AddAssetAdditional extends StatelessWidget {
   const AddAssetAdditional({

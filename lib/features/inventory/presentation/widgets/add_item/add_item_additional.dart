@@ -16,7 +16,6 @@ import '../../../../knowledge_base/presentation/blocs/instruction/instruction_bl
 import '../../../../knowledge_base/presentation/widgets/instruction_selection/overlay_instruction_selection.dart';
 import '../../../../knowledge_base/presentation/widgets/instruction_tile.dart';
 import '../../../../knowledge_base/presentation/widgets/shimmer_instruction_tile.dart';
-import 'add_item_overlay_menu.dart';
 
 class AddItemAdditional extends StatelessWidget with ResponsiveSize {
   const AddItemAdditional({

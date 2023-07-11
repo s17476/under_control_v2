@@ -53,7 +53,8 @@ class ResetPasswordTextButton extends StatelessWidget {
                 TextButton(
                   child: Text(
                     AppLocalizations.of(context)!.password_reset_button,
-                    style: TextStyle(color: Theme.of(context).errorColor),
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.error),
                   ),
                   onPressed: () {
                     context.read<AuthenticationBloc>().add(

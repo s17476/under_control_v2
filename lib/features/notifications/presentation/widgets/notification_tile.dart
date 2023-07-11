@@ -7,7 +7,6 @@ import 'package:under_control_v2/features/user_profile/presentation/pages/users_
 
 import '../../../assets/presentation/blocs/asset/asset_bloc.dart';
 import '../../../assets/presentation/widgets/asset_tile.dart';
-import '../../../company_profile/presentation/blocs/company_profile/company_profile_bloc.dart';
 import '../../../company_profile/presentation/blocs/new_users/new_users_bloc.dart';
 import '../../../inventory/presentation/blocs/items/items_bloc.dart';
 import '../../../inventory/presentation/widgets/item_tile.dart';

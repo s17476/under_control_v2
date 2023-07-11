@@ -23,7 +23,6 @@ import '../../../../knowledge_base/presentation/widgets/instruction_selection/ov
 import '../../../../knowledge_base/presentation/widgets/instruction_tile.dart';
 import '../../../../knowledge_base/presentation/widgets/shimmer_instruction_tile.dart';
 import '../../../data/models/task/spare_part_item_model.dart';
-import 'add_task_overlay_menu.dart';
 import 'inventory_spare_parts_list_with_quantity.dart';
 import 'overlay_checklist_selection.dart';
 

@@ -40,8 +40,6 @@ class AddTaskActionRemoveAssetOverlay extends StatefulWidget {
 
 class _AddTaskActionRemoveAssetOverlayState
     extends State<AddTaskActionRemoveAssetOverlay> with ResponsiveSize {
-  String _searchQuery = '';
-
   final _searchTextEditingController = TextEditingController();
 
   void _pickCode(BuildContext context) async {
@@ -50,9 +48,7 @@ class _AddTaskActionRemoveAssetOverlayState
       final code = await Navigator.pushNamed(context, QrScanner.routeName);
       if (code is String) {
         _searchTextEditingController.text = code;
-        setState(() {
-          _searchQuery = code;
-        });
+        setState(() {});
       }
     } catch (e) {
       showSnackBar(
@@ -63,9 +59,7 @@ class _AddTaskActionRemoveAssetOverlayState
 
   void _clearSearchQuery() {
     _searchTextEditingController.text = '';
-    setState(() {
-      _searchQuery = '';
-    });
+    setState(() {});
   }
 
   @override
@@ -91,9 +85,7 @@ class _AddTaskActionRemoveAssetOverlayState
                       controller: _searchTextEditingController,
                       keyboardType: TextInputType.name,
                       labelText: AppLocalizations.of(context)!.search,
-                      onChanged: (value) => setState(() {
-                        _searchQuery = value!;
-                      }),
+                      onChanged: (value) => setState(() {}),
                       suffixIcon: InkWell(
                         onTap: () => _clearSearchQuery(),
                         child: const Icon(

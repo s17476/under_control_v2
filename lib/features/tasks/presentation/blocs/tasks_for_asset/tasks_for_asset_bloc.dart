@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -9,7 +9,6 @@ import 'package:under_control_v2/features/core/usecases/usecase.dart';
 import 'package:under_control_v2/features/user_profile/presentation/blocs/user_profile/user_profile_bloc.dart';
 
 import '../../../data/models/task/tasks_list_model.dart';
-import '../../../domain/entities/task/task.dart';
 import '../../../domain/usecases/task/get_tasks_stream_for_asset.dart';
 
 part 'tasks_for_asset_event.dart';

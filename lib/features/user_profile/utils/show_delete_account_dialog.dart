@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:under_control_v2/features/core/utils/show_snack_bar.dart';
 
-import '../../assets/presentation/widgets/asset_status_dropdown_button.dart';
-import '../../assets/utils/asset_status.dart';
 import '../../authentication/presentation/blocs/authentication/authentication_bloc.dart';
 import '../../core/presentation/widgets/glass_layer.dart';
 

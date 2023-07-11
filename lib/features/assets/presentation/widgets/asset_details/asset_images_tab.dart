@@ -44,8 +44,10 @@ class AssetImagesTab extends StatelessWidget {
                       child: Shimmer.fromColors(
                         baseColor:
                             Theme.of(context).appBarTheme.backgroundColor!,
-                        highlightColor:
-                            Theme.of(context).backgroundColor.withAlpha(150),
+                        highlightColor: Theme.of(context)
+                            .colorScheme
+                            .background
+                            .withAlpha(150),
                         child: Container(
                           color: Colors.black,
                         ),
