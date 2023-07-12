@@ -74,6 +74,7 @@ android {
            signingConfig signingConfigs.release
        }
    }
+    namespace 'com.lnasoftware.under_control_v2'
 }
 
 flutter {
