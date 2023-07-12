@@ -16,11 +16,11 @@ Widget getActionIcon(BuildContext context, ItemActionType itemActionType) {
         size: iconSize,
       );
     case ItemActionType.moveAdd:
-      return SizedBox(
+      return const SizedBox(
         width: iconSize,
         height: iconSize,
         child: Stack(
-          children: const [
+          children: [
             Positioned(
               right: 0,
               bottom: 0,
@@ -41,11 +41,11 @@ Widget getActionIcon(BuildContext context, ItemActionType itemActionType) {
         ),
       );
     case ItemActionType.moveRemove:
-      return SizedBox(
+      return const SizedBox(
         width: iconSize,
         height: iconSize,
         child: Stack(
-          children: const [
+          children: [
             Positioned(
               right: 0,
               bottom: 0,

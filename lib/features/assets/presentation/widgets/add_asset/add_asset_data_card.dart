@@ -56,7 +56,7 @@ class _AddAssetDataCardState extends State<AddAssetDataCard> {
 
   void _pickDate() async {
     FocusScope.of(context).unfocus();
-    final now = DateTime.now();
+    // final now = DateTime.now();
     // DatePicker.showDateTimePicker(
     //   context,
     //   showTitleActions: true,

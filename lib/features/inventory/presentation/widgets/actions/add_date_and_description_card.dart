@@ -31,7 +31,7 @@ class _AddDateAndDescriptionCardState extends State<AddDateAndDescriptionCard>
 
   void _pickDate() async {
     FocusScope.of(context).unfocus();
-    final now = DateTime.now();
+    // final now = DateTime.now();
     // DatePicker.showDateTimePicker(
     //   context,
     //   showTitleActions: true,

@@ -285,7 +285,7 @@ class _TaskInfoTabState extends State<TaskInfoTab> {
                                       iconColor: Colors.white,
                                       iconBackground: widget.task.isSuccessful
                                           ? Theme.of(context).primaryColor
-                                          : Theme.of(context).errorColor,
+                                          : Theme.of(context).colorScheme.error,
                                       title: _progressTitle(),
                                       titleFontSize: 16,
                                     ),
@@ -774,7 +774,7 @@ class ProgressIcon extends StatelessWidget {
         return Icon(
           Icons.cancel_outlined,
           size: 40,
-          color: Theme.of(context).errorColor.withAlpha(160),
+          color: Theme.of(context).colorScheme.error.withAlpha(160),
         );
       }
     } else {

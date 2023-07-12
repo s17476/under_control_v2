@@ -271,7 +271,7 @@ class _AddAlertQuantityCardState extends State<AddAlertQuantityCard>
                     child: Text(
                       _errorMessage!,
                       style: TextStyle(
-                        color: Theme.of(context).errorColor,
+                        color: Theme.of(context).colorScheme.error,
                       ),
                     ),
                   ),

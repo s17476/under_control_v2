@@ -116,9 +116,12 @@ class AddTaskTypeCard extends StatelessWidget with ResponsiveSize {
                           titleSize: 24,
                           gradient: LinearGradient(
                             colors: [
-                              Theme.of(context).errorColor.withAlpha(100),
-                              Theme.of(context).errorColor,
-                              Theme.of(context).errorColor.withAlpha(80),
+                              Theme.of(context)
+                                  .colorScheme
+                                  .error
+                                  .withAlpha(100),
+                              Theme.of(context).colorScheme.error,
+                              Theme.of(context).colorScheme.error.withAlpha(80),
                             ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,

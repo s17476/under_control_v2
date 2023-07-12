@@ -15,10 +15,10 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.drawer_item_settings),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      body: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          children: const [
+          children: [
             LanguageSettingsTile(),
             Divider(
               thickness: 1.5,

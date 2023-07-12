@@ -154,9 +154,9 @@ class ItemInfoTab extends StatelessWidget with ResponsiveSize {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             gradient: LinearGradient(colors: [
-                              Theme.of(context).errorColor.withAlpha(80),
-                              Theme.of(context).errorColor,
-                              Theme.of(context).errorColor.withAlpha(80)
+                              Theme.of(context).colorScheme.error.withAlpha(80),
+                              Theme.of(context).colorScheme.error,
+                              Theme.of(context).colorScheme.error.withAlpha(80)
                             ])),
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),

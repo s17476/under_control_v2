@@ -37,7 +37,7 @@ void showValidationSnackBar(UserProfileState state, BuildContext context) {
             style: const TextStyle(color: Colors.white),
           ),
           backgroundColor: state.error
-              ? Theme.of(context).errorColor
+              ? Theme.of(context).colorScheme.error
               : Theme.of(context).snackBarTheme.backgroundColor,
         ),
       );

@@ -101,8 +101,8 @@ Future<dynamic> showTaskCompleteDialog({
                       padding: const EdgeInsets.all(16),
                       gradient: LinearGradient(
                         colors: [
-                          Theme.of(context).errorColor.withAlpha(200),
-                          Theme.of(context).errorColor.withAlpha(100),
+                          Theme.of(context).colorScheme.error.withAlpha(200),
+                          Theme.of(context).colorScheme.error.withAlpha(100),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,

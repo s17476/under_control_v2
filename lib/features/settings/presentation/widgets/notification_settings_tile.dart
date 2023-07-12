@@ -27,10 +27,10 @@ class NotificationSettingsTile extends StatelessWidget {
               AppLocalizations.of(context)!.notifications,
               style: const TextStyle(fontSize: 16),
             ),
-            Expanded(
+            const Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: const [
+                children: [
                   SizedBox(
                     width: 8,
                   ),

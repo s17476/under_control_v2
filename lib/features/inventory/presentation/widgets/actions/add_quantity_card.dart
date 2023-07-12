@@ -201,7 +201,7 @@ class _AddQuantityCardState extends State<AddQuantityCard> with ResponsiveSize {
                     child: Text(
                       _errorMessage!,
                       style: TextStyle(
-                        color: Theme.of(context).errorColor,
+                        color: Theme.of(context).colorScheme.error,
                       ),
                     ),
                   ),

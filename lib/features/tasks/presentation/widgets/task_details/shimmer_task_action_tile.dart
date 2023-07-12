@@ -48,8 +48,8 @@ class ShimmerTaskActionTile extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              Row(
-                children: const [
+              const Row(
+                children: [
                   CircleAvatar(
                     radius: 15,
                     backgroundColor: Colors.black26,
