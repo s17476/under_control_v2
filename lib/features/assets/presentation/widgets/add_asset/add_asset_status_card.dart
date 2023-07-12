@@ -1,3 +1,4 @@
+import 'package:bottom_picker/bottom_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
@@ -40,7 +41,7 @@ class AddAssetStatusCard extends StatefulWidget {
 class _AddAssetStatusCardState extends State<AddAssetStatusCard> {
   final _dateTextEditingController = TextEditingController();
   final _nextDateTextEditingController = TextEditingController();
-  final _dateFormat = DateFormat('dd-MM-yyyy HH:mm');
+  final _dateFormat = DateFormat('dd-MM-yyyy');
 
   void _setDurationUnit(String value) {
     widget.setDurationUnit(value);
@@ -54,40 +55,43 @@ class _AddAssetStatusCardState extends State<AddAssetStatusCard> {
 
   void _pickDate() async {
     FocusScope.of(context).unfocus();
-    // final now = DateTime.now();
-    // DatePicker.showDateTimePicker(
-    //   context,
-    //   showTitleActions: true,
-    //   minTime: DateTime(2019, 1, 1),
-    //   maxTime: DateTime(
-    //     now.year,
-    //     now.month,
-    //     now.day,
-    //     now.hour,
-    //     now.minute,
-    //     now.second + 3,
-    //   ),
-    //   onConfirm: (date) {
-    //     widget.setLastInspectionDate(date);
-    //     setState(() {
-    //       _dateTextEditingController.text = _dateFormat.format(date);
-    //     });
-    //     _generateNextInspectionDate(lastInspectionDate: date);
-    //   },
-    //   currentTime: _dateFormat.parse(_dateTextEditingController.text),
-    //   locale: getLocaleType(context),
-    //   // TODO datetime
-    //   // theme: DatePickerTheme(
-    //   //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-    //   //   // headerColor: Theme.of,
-    //   //   itemStyle: Theme.of(context).textTheme.titleLarge!,
-    //   //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
-    //   //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-    //   //         color: Colors.amber,
-    //   //       ),
-    //   //   itemHeight: 40,
-    //   // ),
-    // );
+    final now = DateTime.now();
+    BottomPicker.date(
+      title: AppLocalizations.of(context)!.add_date,
+      titleStyle: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 15,
+        color: Theme.of(context).primaryColor,
+      ),
+      backgroundColor: Theme.of(context).colorScheme.background,
+      onSubmit: (date) {
+        widget.setLastInspectionDate(date);
+        setState(() {
+          _dateTextEditingController.text = _dateFormat.format(date);
+        });
+        _generateNextInspectionDate(lastInspectionDate: date);
+      },
+      dismissable: true,
+      closeIconColor: Theme.of(context).textTheme.labelMedium!.color!,
+      gradientColors: [
+        Theme.of(context).primaryColor,
+        Theme.of(context).primaryColor.withAlpha(80),
+      ],
+      pickerTextStyle: TextStyle(
+        color: Theme.of(context).textTheme.labelMedium!.color,
+        fontSize: 20,
+      ),
+      initialDateTime: _dateFormat.parse(_dateTextEditingController.text),
+      minDateTime: DateTime(2019, 1, 1),
+      maxDateTime: DateTime(
+        now.year,
+        now.month,
+        now.day,
+        now.hour,
+        now.minute,
+        now.second + 3,
+      ),
+    ).show(context);
   }
 
   void _generateNextInspectionDate({

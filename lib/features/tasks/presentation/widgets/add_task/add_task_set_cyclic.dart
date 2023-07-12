@@ -1,3 +1,4 @@
+import 'package:bottom_picker/bottom_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
@@ -54,39 +55,43 @@ class _AddTaskSetCyclicCardState extends State<AddTaskSetCyclicCard> {
 
   void _pickDate() async {
     FocusScope.of(context).unfocus();
-    // final now = DateTime.now();
-    // DatePicker.showDateTimePicker(
-    //   context,
-    //   showTitleActions: true,
-    //   minTime: DateTime(
-    //     now.year,
-    //     now.month,
-    //     now.day,
-    //     now.hour,
-    //     now.minute - 5,
-    //     now.second,
-    //   ),
-    //   onConfirm: (date) {
-    //     widget.setExecutionDate(date);
-    //     setState(() {
-    //       _dateTextEditingController.text = _dateFormat.format(date);
-    //     });
-    //     _generateNextInspectionDate(lastInspectionDate: date);
-    //   },
-    //   currentTime: _dateFormat.parse(_dateTextEditingController.text),
-    //   locale: getLocaleType(context),
-    //   // TODO datetime
-    //   // theme: DatePickerTheme(
-    //   //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-    //   //   // headerColor: Theme.of,
-    //   //   itemStyle: Theme.of(context).textTheme.titleLarge!,
-    //   //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
-    //   //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-    //   //         color: Colors.amber,
-    //   //       ),
-    //   //   itemHeight: 40,
-    //   // ),
-    // );
+    final now = DateTime.now();
+    BottomPicker.dateTime(
+      title: AppLocalizations.of(context)!.add_date,
+      titleStyle: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 15,
+        color: Theme.of(context).primaryColor,
+      ),
+      backgroundColor: Theme.of(context).colorScheme.background,
+      onSubmit: (date) {
+        widget.setExecutionDate(date);
+        setState(() {
+          _dateTextEditingController.text = _dateFormat.format(date);
+        });
+        _generateNextInspectionDate(lastInspectionDate: date);
+      },
+      dismissable: true,
+      closeIconColor: Theme.of(context).textTheme.labelMedium!.color!,
+      gradientColors: [
+        Theme.of(context).primaryColor,
+        Theme.of(context).primaryColor.withAlpha(80),
+      ],
+      pickerTextStyle: TextStyle(
+        color: Theme.of(context).textTheme.labelMedium!.color,
+        fontSize: 20,
+      ),
+      initialDateTime: _dateFormat.parse(_dateTextEditingController.text),
+      minDateTime: DateTime(
+        now.year,
+        now.month,
+        now.day,
+        now.hour,
+        now.minute - 5,
+        now.second,
+      ),
+      use24hFormat: true,
+    ).show(context);
   }
 
   void _generateNextInspectionDate({

@@ -1,3 +1,4 @@
+import 'package:bottom_picker/bottom_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -271,78 +272,102 @@ class SelectedUserBox extends StatelessWidget {
 
   void _pickStartDate(BuildContext context, UserActionModel participant) async {
     FocusScope.of(context).unfocus();
-    // DatePicker.showDateTimePicker(
-    //   context,
-    //   showTitleActions: true,
-    //   // minTime: DateTime(2021, 1, 1),
-    //   maxTime: participant.stopTime.subtract(const Duration(minutes: 5)),
-    //   onConfirm: (date) {
-    //     updateParticipant(
-    //       participant.copyWith(
-    //         startTime: date.subtract(
-    //           Duration(seconds: date.second),
-    //         ),
-    //       ),
-    //     );
-    //   },
-    //   currentTime: participant.startTime.isBefore(
-    //           participant.stopTime.subtract(const Duration(minutes: 5)))
-    //       ? participant.startTime
-    //       : participant.stopTime.subtract(const Duration(minutes: 5)),
-    //   locale: getLocaleType(context),
-    //   // TODO datetime
-    //   // theme: DatePickerTheme(
-    //   //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-    //   //   // headerColor: Theme.of,
-    //   //   itemStyle: Theme.of(context).textTheme.titleLarge!,
-    //   //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
-    //   //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-    //   //         color: Colors.amber,
-    //   //       ),
-    //   //   itemHeight: 40,
-    //   // ),
-    // );
+    final now = DateTime.now();
+    BottomPicker.dateTime(
+      title: AppLocalizations.of(context)!.add_date,
+      titleStyle: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 15,
+        color: Theme.of(context).primaryColor,
+      ),
+      backgroundColor: Theme.of(context).colorScheme.background,
+      onSubmit: (date) {
+        updateParticipant(
+          participant.copyWith(
+            startTime: date.subtract(
+              Duration(seconds: date.second),
+            ),
+          ),
+        );
+      },
+      dismissable: true,
+      closeIconColor: Theme.of(context).textTheme.labelMedium!.color!,
+      gradientColors: [
+        Theme.of(context).primaryColor,
+        Theme.of(context).primaryColor.withAlpha(80),
+      ],
+      pickerTextStyle: TextStyle(
+        color: Theme.of(context).textTheme.labelMedium!.color,
+        fontSize: 20,
+      ),
+      initialDateTime: participant.startTime.isBefore(
+              participant.stopTime.subtract(const Duration(minutes: 5)))
+          ? participant.startTime
+          : participant.stopTime.subtract(const Duration(minutes: 5)),
+      minDateTime: DateTime(2019, 1, 1),
+      maxDateTime: DateTime(
+        now.year,
+        now.month,
+        now.day,
+        now.hour,
+        now.minute,
+        now.second + 3,
+      ),
+      use24hFormat: true,
+    ).show(context);
   }
 
   void _pickStopDate(BuildContext context, UserActionModel participant) async {
     FocusScope.of(context).unfocus();
-    // DatePicker.showDateTimePicker(
-    //   context,
-    //   showTitleActions: true,
-    //   // minTime: participant.startTime,
-    //   maxTime: DateTime.now(),
-    //   onConfirm: (date) {
-    //     if (date.isBefore(participant.startTime)) {
-    //       updateParticipant(
-    //         participant.copyWith(
-    //           stopTime: date.subtract(Duration(seconds: date.second)),
-    //           startTime: date.subtract(
-    //             Duration(minutes: 5, seconds: date.second),
-    //           ),
-    //         ),
-    //       );
-    //     } else {
-    //       updateParticipant(participant.copyWith(
-    //         stopTime: date.subtract(
-    //           Duration(seconds: date.second),
-    //         ),
-    //       ));
-    //     }
-    //   },
-    //   currentTime: participant.stopTime,
-    //   locale: getLocaleType(context),
-    //   // TODO datetime
-    //   // theme: DatePickerTheme(
-    //   //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-    //   //   // headerColor: Theme.of,
-    //   //   itemStyle: Theme.of(context).textTheme.titleLarge!,
-    //   //   cancelStyle: Theme.of(context).textTheme.titleLarge!,
-    //   //   doneStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-    //   //         color: Colors.amber,
-    //   //       ),
-    //   //   itemHeight: 40,
-    //   // ),
-    // );
+    final now = DateTime.now();
+    BottomPicker.dateTime(
+      title: AppLocalizations.of(context)!.add_date,
+      titleStyle: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 15,
+        color: Theme.of(context).primaryColor,
+      ),
+      backgroundColor: Theme.of(context).colorScheme.background,
+      onSubmit: (date) {
+        if (date.isBefore(participant.startTime)) {
+          updateParticipant(
+            participant.copyWith(
+              stopTime: date.subtract(Duration(seconds: date.second)),
+              startTime: date.subtract(
+                Duration(minutes: 5, seconds: date.second),
+              ),
+            ),
+          );
+        } else {
+          updateParticipant(participant.copyWith(
+            stopTime: date.subtract(
+              Duration(seconds: date.second),
+            ),
+          ));
+        }
+      },
+      dismissable: true,
+      closeIconColor: Theme.of(context).textTheme.labelMedium!.color!,
+      gradientColors: [
+        Theme.of(context).primaryColor,
+        Theme.of(context).primaryColor.withAlpha(80),
+      ],
+      pickerTextStyle: TextStyle(
+        color: Theme.of(context).textTheme.labelMedium!.color,
+        fontSize: 20,
+      ),
+      initialDateTime: participant.stopTime,
+      minDateTime: DateTime(2019, 1, 1),
+      maxDateTime: DateTime(
+        now.year,
+        now.month,
+        now.day,
+        now.hour,
+        now.minute,
+        now.second + 3,
+      ),
+      use24hFormat: true,
+    ).show(context);
   }
 
   @override

@@ -37,7 +37,7 @@ void showNotificationSnackBar({
               )
             : null,
         backgroundColor:
-            isErrorMessage ? Theme.of(context).errorColor : Colors.amber,
+            isErrorMessage ? Theme.of(context).colorScheme.error : Colors.amber,
         duration: Duration(seconds: isErrorMessage ? 3 : 1),
       ),
     );
